@@ -85,11 +85,13 @@ namespace System.Maui.Platform.GTK.Controls
 			WindowPosition = Gtk.WindowPosition.None;
 			BorderWidth = 1;
 			Resizable = false;
-			AllowGrow = false;
+			// GtkWindow:allow-grow has been deprecated since version 2.22 and should not be used in newly-written code. Use GtkWindow:resizable property instead
+			// AllowGrow = false;
 			Decorated = false;
 			DestroyWithParent = true;
 			SkipPagerHint = true;
 			SkipTaskbarHint = true;
+			uint padding = 0;
 
 			_timeBox = new Gtk.HBox();
 			_timeBox.Spacing = 6;
@@ -97,65 +99,74 @@ namespace System.Maui.Platform.GTK.Controls
 
 			_labelHour = new Gtk.Label();
 			_labelHour.LabelProp = "H:";
-			_timeBox.Add(_labelHour);
-
-			Gtk.Box.BoxChild w2 = ((Gtk.Box.BoxChild)(_timeBox[_labelHour]));
-			w2.Position = 0;
-			w2.Expand = false;
-			w2.Fill = false;
+			
+			_timeBox.PackStart(_labelHour, false, false, padding);
+			// _timeBox.Add(_labelHour);
+			// var w2 = ((Gtk.Box.BoxChild)(_timeBox[_labelHour]));
+			// w2.Position = 0;
+			// w2.Expand = false;
+			// w2.Fill = false;
 
 			_txtHour = new Gtk.SpinButton(0D, 24D, 1D);
 			_txtHour.CanFocus = true;
 			_txtHour.Adjustment.PageIncrement = 1D;
 			_txtHour.ClimbRate = 1D;
 			_txtHour.Numeric = true;
-			_timeBox.Add(_txtHour);
+			_timeBox.PackStart(_txtHour, false, false, padding);
+			// _timeBox.Add(_txtHour);
 
-			Gtk.Box.BoxChild w3 = ((Gtk.Box.BoxChild)(_timeBox[_txtHour]));
-			w3.Position = 1;
-			w3.Expand = false;
-			w3.Fill = false;
+			// var w3 = ((Gtk.Box.BoxChild)(_timeBox[_txtHour]));
+			// w3.Position = 1;
+			// w3.Expand = false;
+			// w3.Fill = false;
 
 			_labelMin = new Gtk.Label();
 			_labelMin.LabelProp = "M:";
-			_timeBox.Add(_labelMin);
-			Gtk.Box.BoxChild w4 = ((Gtk.Box.BoxChild)(_timeBox[_labelMin]));
+			_timeBox.PackStart(_labelMin, false, false, padding);
 
-			w4.Position = 2;
-			w4.Expand = false;
-			w4.Fill = false;
+			// _timeBox.Add(_labelMin);
+			// var w4 = ((Gtk.Box.BoxChild)(_timeBox[_labelMin]));
+			//
+			// w4.Position = 2;
+			// w4.Expand = false;
+			// w4.Fill = false;
 
 			_txtMin = new Gtk.SpinButton(0D, 60D, 1D);
 			_txtMin.CanFocus = true;
 			_txtMin.Adjustment.PageIncrement = 10D;
 			_txtMin.ClimbRate = 1D;
 			_txtMin.Numeric = true;
-			_timeBox.Add(_txtMin);
+			_timeBox.PackStart(_txtMin, false, false, padding);
 
-			Gtk.Box.BoxChild w5 = ((Gtk.Box.BoxChild)(_timeBox[_txtMin]));
-			w5.Position = 3;
-			w5.Expand = false;
-			w5.Fill = false;
+			// _timeBox.Add(_txtMin);
+			//
+			// var w5 = ((Gtk.Box.BoxChild)(_timeBox[_txtMin]));
+			// w5.Position = 3;
+			// w5.Expand = false;
+			// w5.Fill = false;
 
 			_labelSec = new Gtk.Label();
 			_labelSec.LabelProp = "S:";
-			_timeBox.Add(_labelSec);
-			Gtk.Box.BoxChild w6 = ((Gtk.Box.BoxChild)(_timeBox[_labelSec]));
-			w6.Position = 4;
-			w6.Expand = false;
-			w6.Fill = false;
+			_timeBox.PackStart(_labelSec, false, false, padding);
+
+			// _timeBox.Add(_labelSec);
+			// var w6 = ((Gtk.Box.BoxChild)(_timeBox[_labelSec]));
+			// w6.Position = 4;
+			// w6.Expand = false;
+			// w6.Fill = false;
 
 			_txtSec = new Gtk.SpinButton(0D, 60D, 1D);
 			_txtSec.CanFocus = true;
 			_txtSec.Adjustment.PageIncrement = 10D;
 			_txtSec.ClimbRate = 1D;
 			_txtSec.Numeric = true;
-			_timeBox.Add(_txtSec);
-
-			Gtk.Box.BoxChild w7 = ((Gtk.Box.BoxChild)(_timeBox[_txtSec]));
-			w7.Position = 5;
-			w7.Expand = false;
-			w7.Fill = false;
+			_timeBox.PackStart(_txtSec, false, false, padding);
+			// _timeBox.Add(_txtSec);
+			//
+			// var w7 = ((Gtk.Box.BoxChild)(_timeBox[_txtSec]));
+			// w7.Position = 5;
+			// w7.Expand = false;
+			// w7.Fill = false;
 
 			Add(_timeBox);
 
