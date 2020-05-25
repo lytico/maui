@@ -119,28 +119,29 @@ namespace System.Maui.Platform.GTK.Helpers
 
 		private static void AddExtraButtons(ActionSheetArguments arguments, MessageDialog messageDialog)
 		{
-			var vbox = messageDialog.VBox;
-
-			// As we are not showing any message in this dialog, we just 
-			// hide default container and avoid it from using space
-			vbox.Children[0].Hide();
-
-			if (arguments.Buttons.Any())
-			{
-				for (int i = 0; i < arguments.Buttons.Count(); i++)
-				{
-					var button = new Gtk.Button();
-					button.Label = arguments.Buttons.ElementAt(i);
-					button.Clicked += (o, e) =>
-					{
-						arguments.SetResult(button.Label);
-						messageDialog.Dispose();
-					};
-					button.Show();
-
-					vbox.PackStart(button, false, false, 0);
-				}
-			}
+			// GTK3 TODO:
+			// var vbox = messageDialog.VBox;
+			//
+			// // As we are not showing any message in this dialog, we just 
+			// // hide default container and avoid it from using space
+			// vbox.Children[0].Hide();
+			//
+			// if (arguments.Buttons.Any())
+			// {
+			// 	for (int i = 0; i < arguments.Buttons.Count(); i++)
+			// 	{
+			// 		var button = new Gtk.Button();
+			// 		button.Label = arguments.Buttons.ElementAt(i);
+			// 		button.Clicked += (o, e) =>
+			// 		{
+			// 			arguments.SetResult(button.Label);
+			// 			messageDialog.Dispose();
+			// 		};
+			// 		button.Show();
+			//
+			// 		vbox.PackStart(button, false, false, 0);
+			// 	}
+			// }
 		}
 
 		private static ButtonsType GetAlertButtons(AlertArguments arguments)
