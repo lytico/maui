@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 
 namespace System.Maui.Platform.GTK.Renderers
 {
+	#if _GTK2_
 	public class WebViewRenderer : ViewRenderer<WebView, Controls.WebView>, IWebViewDelegate, IEffectControlProvider
 	{
 		private bool _disposed;
@@ -250,4 +251,5 @@ namespace System.Maui.Platform.GTK.Renderers
 			Control.Reload();
 		}
 	}
+#endif
 }

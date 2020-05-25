@@ -21,6 +21,7 @@ namespace System.Maui.Platform.GTK.Controls
 		event EventHandler LoadStarted;
 		event EventHandler LoadFinished;
 	}
+#if _GTK2_	
 
 	public class WebView : EventBox, IWebView
 	{
@@ -341,4 +342,5 @@ namespace System.Maui.Platform.GTK.Controls
 			_webview.Editable = false;
 		}
 	}
+#endif
 }
