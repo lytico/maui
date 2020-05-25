@@ -181,7 +181,7 @@ namespace System.Maui.Platform.GTK.Renderers
 				if (image != null)
 				{
 					Control.ImageWidget.Pixbuf = image;
-					Control.ImageSpacing = (uint)Element.ContentLayout.Spacing;
+					Control.ImagePadding = (uint)Element.ContentLayout.Spacing;
 					Control.SetImagePosition(Element.ContentLayout.Position.AsPositionType());
 				}
 
