@@ -1,0 +1,129 @@
+{
+  "runtimeTarget": {
+    "name": ".NETStandard,Version=v2.0/",
+    "signature": ""
+  },
+  "compilationOptions": {},
+  "targets": {
+    ".NETStandard,Version=v2.0": {},
+    ".NETStandard,Version=v2.0/": {
+      "GtkSharp/1.0.0": {
+        "dependencies": {
+          "AtkSharp": "3.22.24.30",
+          "CairoSharp": "3.22.24.30",
+          "GLibSharp": "3.22.24.30",
+          "GdkSharp": "3.22.24.30",
+          "GioSharp": "3.22.24.30",
+          "NETStandard.Library": "2.0.3",
+          "PangoSharp": "3.22.24.30"
+        },
+        "runtime": {
+          "GtkSharp.dll": {}
+        }
+      },
+      "Microsoft.NETCore.Platforms/1.1.0": {},
+      "NETStandard.Library/2.0.3": {
+        "dependencies": {
+          "Microsoft.NETCore.Platforms": "1.1.0"
+        }
+      },
+      "AtkSharp/3.22.24.30": {
+        "dependencies": {
+          "GLibSharp": "3.22.24.30"
+        },
+        "runtime": {
+          "AtkSharp.dll": {}
+        }
+      },
+      "CairoSharp/3.22.24.30": {
+        "runtime": {
+          "CairoSharp.dll": {}
+        }
+      },
+      "GdkSharp/3.22.24.30": {
+        "dependencies": {
+          "CairoSharp": "3.22.24.30",
+          "GLibSharp": "3.22.24.30",
+          "GioSharp": "3.22.24.30",
+          "PangoSharp": "3.22.24.30"
+        },
+        "runtime": {
+          "GdkSharp.dll": {}
+        }
+      },
+      "GioSharp/3.22.24.30": {
+        "dependencies": {
+          "GLibSharp": "3.22.24.30"
+        },
+        "runtime": {
+          "GioSharp.dll": {}
+        }
+      },
+      "GLibSharp/3.22.24.30": {
+        "runtime": {
+          "GLibSharp.dll": {}
+        }
+      },
+      "PangoSharp/3.22.24.30": {
+        "dependencies": {
+          "CairoSharp": "3.22.24.30",
+          "GLibSharp": "3.22.24.30"
+        },
+        "runtime": {
+          "PangoSharp.dll": {}
+        }
+      }
+    }
+  },
+  "libraries": {
+    "GtkSharp/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "Microsoft.NETCore.Platforms/1.1.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-kz0PEW2lhqygehI/d6XsPCQzD7ff7gUJaVGPVETX611eadGsA3A877GdSlU0LRVMCTH/+P3o2iDTak+S08V2+A==",
+      "path": "microsoft.netcore.platforms/1.1.0",
+      "hashPath": "microsoft.netcore.platforms.1.1.0.nupkg.sha512"
+    },
+    "NETStandard.Library/2.0.3": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-st47PosZSHrjECdjeIzZQbzivYBJFv6P2nv4cj2ypdI204DO+vZ7l5raGMiX4eXMJ53RfOIg+/s4DHVZ54Nu2A==",
+      "path": "netstandard.library/2.0.3",
+      "hashPath": "netstandard.library.2.0.3.nupkg.sha512"
+    },
+    "AtkSharp/3.22.24.30": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "CairoSharp/3.22.24.30": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "GdkSharp/3.22.24.30": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "GioSharp/3.22.24.30": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "GLibSharp/3.22.24.30": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "PangoSharp/3.22.24.30": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    }
+  }
+}
