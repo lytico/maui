@@ -93,7 +93,7 @@ namespace System.Maui.Platform.GTK.Controls
 
 		protected virtual void OnButtonPressEvent(object o, ButtonPressEventArgs args)
 		{
-			Close();
+			OnClose();
 		}
 
 		protected virtual void OnCalendarButtonPressEvent(object o, ButtonPressEventArgs args)
@@ -109,7 +109,7 @@ namespace System.Maui.Platform.GTK.Controls
 		protected virtual void OnCalendarDaySelectedDoubleClick(object sender, EventArgs e)
 		{
 			OnDateTimeChanged?.Invoke(this, new DateEventArgs(SelectedDate));
-			Close();
+			OnClose();
 		}
 
 		private void BuildDatePickerWindow()
@@ -151,10 +151,10 @@ namespace System.Maui.Platform.GTK.Controls
 			_calendar.DaySelectedDoubleClick += new EventHandler(OnCalendarDaySelectedDoubleClick);
 		}
 
-		void Close()
+		void OnClose()
 		{
 			Helpers.GrabHelper.RemoveGrab(this);
-			Destroy();
+			base.Close();
 		}
 
 		void NotifyDateChanged()

@@ -75,7 +75,7 @@ namespace System.Maui.Platform.GTK.Controls
 
 		protected virtual void OnButtonPressEvent(object o, Gtk.ButtonPressEventArgs args)
 		{
-			Close();
+			OnClose();
 		}
 
 		private void BuildTimePickerWindow()
@@ -175,10 +175,10 @@ namespace System.Maui.Platform.GTK.Controls
 			_txtSec.ButtonPressEvent += new Gtk.ButtonPressEventHandler(OnTxtSecButtonPressEvent);
 		}
 
-		private void Close()
+		private void OnClose()
 		{
 			Helpers.GrabHelper.RemoveGrab(this);
-			Destroy();
+			base.Close();
 		}
 
 		private void RefreshTime()
