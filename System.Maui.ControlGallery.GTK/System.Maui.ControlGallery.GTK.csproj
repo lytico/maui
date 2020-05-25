@@ -39,41 +39,6 @@
     <StartupObject />
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="atk-sharp, Version=2.12.0.0, Culture=neutral, PublicKeyToken=35e10195dab3c99f, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\System.Maui.Platform.GTK\Libs\gtk-sharp\gtk-sharp-2.0\atk-sharp.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="gdk-sharp, Version=2.12.0.0, Culture=neutral, PublicKeyToken=35e10195dab3c99f, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\System.Maui.Platform.GTK\Libs\gtk-sharp\gtk-sharp-2.0\gdk-sharp.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="glade-sharp, Version=2.12.0.0, Culture=neutral, PublicKeyToken=35e10195dab3c99f, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\System.Maui.Platform.GTK\Libs\gtk-sharp\gtk-sharp-2.0\glade-sharp.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="glib-sharp, Version=2.12.0.0, Culture=neutral, PublicKeyToken=35e10195dab3c99f, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\System.Maui.Platform.GTK\Libs\gtk-sharp\gtk-sharp-2.0\glib-sharp.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="gtk-dotnet, Version=2.12.0.0, Culture=neutral, PublicKeyToken=35e10195dab3c99f, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\System.Maui.Platform.GTK\Libs\gtk-sharp\gtk-sharp-2.0\gtk-dotnet.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="gtk-sharp, Version=2.12.0.0, Culture=neutral, PublicKeyToken=35e10195dab3c99f, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\System.Maui.Platform.GTK\Libs\gtk-sharp\gtk-sharp-2.0\gtk-sharp.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="pango-sharp, Version=2.12.0.0, Culture=neutral, PublicKeyToken=35e10195dab3c99f, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\System.Maui.Platform.GTK\Libs\gtk-sharp\gtk-sharp-2.0\pango-sharp.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Windows" />
@@ -109,10 +74,10 @@
       <Project>{57b8b73d-c3b5-4c42-869e-7b2f17d354ac}</Project>
       <Name>System.Maui.Core</Name>
     </ProjectReference>
-    <ProjectReference Include="..\System.Maui.Maps.GTK\System.Maui.Maps.GTK.csproj">
-      <Project>{a9772bb1-0e17-42f5-a6db-60bfccbfdb9d}</Project>
-      <Name>System.Maui.Maps.GTK</Name>
-    </ProjectReference>
+<!--    <ProjectReference Include="..\System.Maui.Maps.GTK\System.Maui.Maps.GTK.csproj">-->
+<!--      <Project>{a9772bb1-0e17-42f5-a6db-60bfccbfdb9d}</Project>-->
+<!--      <Name>System.Maui.Maps.GTK</Name>-->
+<!--    </ProjectReference>-->
     <ProjectReference Include="..\System.Maui.Maps\System.Maui.Maps.csproj">
       <Project>{7d13bac2-c6a4-416a-b07e-c169b199e52b}</Project>
       <Name>System.Maui.Maps</Name>
@@ -270,6 +235,29 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="GalleryPages" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="AtkSharp, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+      <HintPath>Libs\GtkSharp\AtkSharp.dll</HintPath>
+    </Reference>
+    <Reference Include="CairoSharp, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+      <HintPath>Libs\GtkSharp\CairoSharp.dll</HintPath>
+    </Reference>
+    <Reference Include="GdkSharp, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+      <HintPath>Libs\GtkSharp\GdkSharp.dll</HintPath>
+    </Reference>
+    <Reference Include="GioSharp, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+      <HintPath>Libs\GtkSharp\GioSharp.dll</HintPath>
+    </Reference>
+    <Reference Include="GLibSharp, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+      <HintPath>Libs\GtkSharp\GLibSharp.dll</HintPath>
+    </Reference>
+    <Reference Include="GtkSharp, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+      <HintPath>Libs\GtkSharp\GtkSharp.dll</HintPath>
+    </Reference>
+    <Reference Include="PangoSharp, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+      <HintPath>Libs\GtkSharp\PangoSharp.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it.

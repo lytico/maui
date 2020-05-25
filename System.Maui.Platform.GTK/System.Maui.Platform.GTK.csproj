@@ -207,22 +207,22 @@
       <HintPath>Libs\GtkSharp\PangoSharp.dll</HintPath>
     </Reference>
   </ItemGroup>
-  <ItemGroup>
-    <None Include="app.config" />
-    <Content Include="Libs\GMaps\GMap.NET.Core.dll" />
-    <Content Include="Libs\GMaps\GMap.NET.GTK.dll" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Libs\webkit-sharp\webkit-sharp.dll.config" />
-    <None Include="webkit-sharp.dll.config">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <Content Include="Libs\webkit-sharp\README.txt" />
-    <Content Include="Libs\webkit-sharp\webkit-sharp.dll" />
-    <Content Include="Resources\hamburger.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-  </ItemGroup>
+<!--  <ItemGroup>-->
+<!--    <None Include="app.config" />-->
+<!--    <Content Include="Libs\GMaps\GMap.NET.Core.dll" />-->
+<!--    <Content Include="Libs\GMaps\GMap.NET.GTK.dll" />-->
+<!--  </ItemGroup>-->
+<!--  <ItemGroup>-->
+<!--    <Content Include="Libs\webkit-sharp\webkit-sharp.dll.config" />-->
+<!--    <None Include="webkit-sharp.dll.config">-->
+<!--      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>-->
+<!--    </None>-->
+<!--    <Content Include="Libs\webkit-sharp\README.txt" />-->
+<!--    <Content Include="Libs\webkit-sharp\webkit-sharp.dll" />-->
+<!--    <Content Include="Resources\hamburger.png">-->
+<!--      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>-->
+<!--    </Content>-->
+<!--  </ItemGroup>-->
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
        Other similar extension points exist, see Microsoft.Common.targets.

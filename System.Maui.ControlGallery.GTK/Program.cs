@@ -5,7 +5,7 @@ using System;
 using System.Maui.Platform.GTK;
 using System.Maui.Platform.GTK.Renderers;
 using System.Maui.Controls;
-using System.Maui.Maps.GTK;
+// using System.Maui.Maps.GTK;
 
 [assembly: ExportRenderer(typeof(DisposePage), typeof(DisposePageRenderer))]
 [assembly: ExportRenderer(typeof(DisposeLabel), typeof(DisposeLabelRenderer))]
@@ -22,7 +22,7 @@ namespace System.Maui.ControlGallery.GTK
             GtkThemes.Init();
             Gtk.Application.Init();
             System.Maui.Maui.SetFlags("CarouselView_Experimental");
-            FormsMaps.Init(string.Empty);
+            // FormsMaps.Init(string.Empty);
             System.Maui.Maui.Init();
             var app = new App();
             var window = new FormsWindow();
