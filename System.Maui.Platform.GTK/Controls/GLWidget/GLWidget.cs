@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Threading;
 using System.ComponentModel;
 using Cairo;
@@ -120,17 +120,6 @@ namespace OpenTK.GLWidget
 		~GLWidget()
 		{
 			Dispose(false);
-		}
-
-		/// <summary>
-		/// Destroys this <see cref="Widget"/>, disposing it and destroying it in the context of GTK.
-		/// </summary>
-		public override void Destroy()
-		{
-			GC.SuppressFinalize(this);
-			Dispose(true);
-
-			base.Destroy();
 		}
 
 		/// <summary>
