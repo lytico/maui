@@ -70,15 +70,17 @@ namespace System.Maui.Platform.GTK.Extensions
 
 		static void GetContainerChildXY (Fixed parent, Widget child, out int x, out int y)
 		{
-			using (GLib.Value val = parent.ChildGetProperty(child, "x"))
-			{
-				x = (int)val;
-			}
-
-			using (GLib.Value val = parent.ChildGetProperty(child, "y"))
-			{
-				y = (int)val;
-			}
+			x = child.Allocation.X;
+			y = child.Allocation.Y;
+			// using (GLib.Value val = parent.ChildGetProperty(child, "x"))
+			// {
+			// 	x = (int)val;
+			// }
+			//
+			// using (GLib.Value val = parent.ChildGetProperty(child, "y"))
+			// {
+			// 	y = (int)val;
+			// }
 		}
 
 		public static void SetSize(this Widget self, double width, double height)
