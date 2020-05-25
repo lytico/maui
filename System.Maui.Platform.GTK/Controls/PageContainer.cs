@@ -1,6 +1,6 @@
 namespace System.Maui.Platform.GTK.Controls
 {
-	public class PageContainer : Gtk.Object
+	public class PageContainer : GLib.Object
 	{
 		public PageContainer(System.Maui.Page element, int index)
 		{
