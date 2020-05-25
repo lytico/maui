@@ -22,7 +22,7 @@
     <OutputPath>bin\Debug\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
+    <WarningLevel>0</WarningLevel>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <Optimize>true</Optimize>
@@ -31,47 +31,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
-  <ItemGroup>
-    <Reference Include="atk-sharp, Version=2.12.0.0, Culture=neutral, PublicKeyToken=35e10195dab3c99f, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>Libs\gtk-sharp\gtk-sharp-2.0\atk-sharp.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="gdk-sharp, Version=2.12.0.0, Culture=neutral, PublicKeyToken=35e10195dab3c99f, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>Libs\gtk-sharp\gtk-sharp-2.0\gdk-sharp.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="glade-sharp, Version=2.12.0.0, Culture=neutral, PublicKeyToken=35e10195dab3c99f, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>Libs\gtk-sharp\gtk-sharp-2.0\glade-sharp.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="glib-sharp, Version=2.12.0.0, Culture=neutral, PublicKeyToken=35e10195dab3c99f, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>Libs\gtk-sharp\gtk-sharp-2.0\glib-sharp.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="gtk-dotnet, Version=2.12.0.0, Culture=neutral, PublicKeyToken=35e10195dab3c99f, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>Libs\gtk-sharp\gtk-sharp-2.0\gtk-dotnet.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="gtk-sharp, Version=2.12.0.0, Culture=neutral, PublicKeyToken=35e10195dab3c99f, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>Libs\gtk-sharp\gtk-sharp-2.0\gtk-sharp.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="Mono.Cairo, Version=4.0.0.0, Culture=neutral, PublicKeyToken=0738eb9f132ed756, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>Libs\gtk-sharp\Mono.Cairo\Mono.Cairo.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="pango-sharp, Version=2.12.0.0, Culture=neutral, PublicKeyToken=35e10195dab3c99f, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>Libs\gtk-sharp\gtk-sharp-2.0\pango-sharp.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
+   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />
@@ -150,6 +110,7 @@
     <Compile Include="Extensions\ImageExtensions.cs" />
     <Compile Include="Extensions\LabelExtensions.cs" />
     <Compile Include="Extensions\PageExtensions.cs" />
+    <Compile Include="Extensions\StyleExtensions.cs" />
     <Compile Include="Extensions\VisualElementExtensions.cs" />
     <Compile Include="Extensions\WidgetExtensions.cs" />
     <Compile Include="Forms.cs" />
@@ -224,31 +185,38 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Reference Include="AtkSharp, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+      <HintPath>Libs\GtkSharp\AtkSharp.dll</HintPath>
+    </Reference>
+    <Reference Include="CairoSharp, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+      <HintPath>Libs\GtkSharp\CairoSharp.dll</HintPath>
+    </Reference>
+    <Reference Include="GdkSharp, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+      <HintPath>Libs\GtkSharp\GdkSharp.dll</HintPath>
+    </Reference>
+    <Reference Include="GioSharp, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+      <HintPath>Libs\GtkSharp\GioSharp.dll</HintPath>
+    </Reference>
+    <Reference Include="GLibSharp, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+      <HintPath>Libs\GtkSharp\GLibSharp.dll</HintPath>
+    </Reference>
+    <Reference Include="GtkSharp, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+      <HintPath>Libs\GtkSharp\GtkSharp.dll</HintPath>
+    </Reference>
+    <Reference Include="PangoSharp, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+      <HintPath>Libs\GtkSharp\PangoSharp.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
     <None Include="app.config" />
     <Content Include="Libs\GMaps\GMap.NET.Core.dll" />
     <Content Include="Libs\GMaps\GMap.NET.GTK.dll" />
-    <Content Include="Libs\gtk-sharp\gtk-sharp-2.0\atk-sharp.dll" />
-    <Content Include="Libs\gtk-sharp\gtk-sharp-2.0\atk-sharp.pdb" />
-    <Content Include="Libs\gtk-sharp\gtk-sharp-2.0\gdk-sharp.dll" />
-    <Content Include="Libs\gtk-sharp\gtk-sharp-2.0\gdk-sharp.pdb" />
-    <Content Include="Libs\gtk-sharp\gtk-sharp-2.0\glade-sharp.dll" />
-    <Content Include="Libs\gtk-sharp\gtk-sharp-2.0\glade-sharp.pdb" />
-    <Content Include="Libs\gtk-sharp\gtk-sharp-2.0\glib-sharp.dll" />
-    <Content Include="Libs\gtk-sharp\gtk-sharp-2.0\glib-sharp.pdb" />
-    <Content Include="Libs\gtk-sharp\gtk-sharp-2.0\gtk-dotnet.dll" />
-    <Content Include="Libs\gtk-sharp\gtk-sharp-2.0\gtk-dotnet.pdb" />
-    <Content Include="Libs\gtk-sharp\gtk-sharp-2.0\gtk-sharp.dll" />
-    <Content Include="Libs\gtk-sharp\gtk-sharp-2.0\pango-sharp.dll" />
-    <Content Include="Libs\gtk-sharp\gtk-sharp-2.0\pango-sharp.pdb" />
-    <Content Include="Libs\gtk-sharp\Mono.Cairo\Mono.Cairo.dll" />
-    <Content Include="Libs\gtk-sharp\Mono.Posix\Mono.Posix.dll" />
-    <Content Include="Libs\gtk-sharp\README.txt" />
+  </ItemGroup>
+  <ItemGroup>
     <Content Include="Libs\webkit-sharp\webkit-sharp.dll.config" />
     <None Include="webkit-sharp.dll.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-  </ItemGroup>
-  <ItemGroup>
     <Content Include="Libs\webkit-sharp\README.txt" />
     <Content Include="Libs\webkit-sharp\webkit-sharp.dll" />
     <Content Include="Resources\hamburger.png">
