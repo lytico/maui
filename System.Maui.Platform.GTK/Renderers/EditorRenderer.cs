@@ -124,7 +124,7 @@ namespace System.Maui.Platform.GTK.Renderers
 
 				TextBuffer buffer = Control.TextView.Buffer;
 				TextTag tag = buffer.TagTable.Lookup(TextColorTagName);
-				tag.ForegroundGdk = Element.IsEnabled ? textColor : Control.Style.Foregrounds[(int)StateType.Normal];
+				tag.ForegroundGdk = Element.IsEnabled ? textColor : Control.ForegroundColor(StateType.Normal);
 				Control.TextView.Buffer.ApplyTag(tag, buffer.StartIter, buffer.EndIter);
 			}
 		}
@@ -152,7 +152,7 @@ namespace System.Maui.Platform.GTK.Renderers
 
 		private static void AdjustMinimumHeight(TextView textView, FontDescription font = null)
 		{
-			var fDescr = font != null ? font : textView.Style.FontDescription;
+			var fDescr = font != null ? font : textView.StyleContext.GetFont(textView.StateFlags);
 			var metrics = textView.PangoContext.GetMetrics(font, Language.Default);
 			var pangoUnits = (metrics.Ascent + metrics.Descent) / Pango.Scale.PangoScale;
 

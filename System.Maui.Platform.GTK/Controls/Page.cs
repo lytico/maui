@@ -84,7 +84,7 @@ namespace System.Maui.Platform.GTK.Controls
 
 		private void BuildPage()
 		{
-			_defaultBackgroundColor = Style.Backgrounds[(int)StateType.Normal];
+			_defaultBackgroundColor = this.BackgroundColor(StateType.Normal);
 
 			_toolbar = new HBox();
 			_content = new GtkFormsContainer();

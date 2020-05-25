@@ -1,6 +1,7 @@
 using Gtk;
 using Pango;
 using System;
+using System.Maui.Platform.GTK.Extensions;
 
 namespace System.Maui.Platform.GTK.Controls
 {
@@ -25,7 +26,7 @@ namespace System.Maui.Platform.GTK.Controls
 			_placeholderContainer.Add(_placeholder);
 			_placeholderContainer.ButtonPressEvent += PlaceHolderContainerPressed;
 
-			SetBackgroundColor(_entry.Style.BaseColors[(int)StateType.Normal]);
+			SetBackgroundColor(_entry.BaseColor(StateType.Normal));
 
 			Add(_table);
 
@@ -56,7 +57,7 @@ namespace System.Maui.Platform.GTK.Controls
 
 		public void SetTextColor(Gdk.Color color)
 		{
-			_entry.ModifyText(StateType.Normal, color);
+			_entry.ModifyTextColor(StateType.Normal, color);
 		}
 
 		public void SetPlaceholderTextColor(Gdk.Color color)

@@ -1,6 +1,7 @@
 using Gtk;
 using System;
 using System.Linq;
+using System.Maui.Platform.GTK.Extensions;
 using Cairo;
 
 namespace System.Maui.Platform.GTK.Controls
@@ -119,7 +120,8 @@ namespace System.Maui.Platform.GTK.Controls
 			WindowPosition = WindowPosition.Mouse;
 			BorderWidth = 1;
 			Resizable = false;
-			AllowGrow = false;
+			// obsolete: replaced by Resizable
+			// AllowGrow = false;
 			Decorated = false;
 			DestroyWithParent = true;
 			SkipPagerHint = true;
@@ -132,9 +134,9 @@ namespace System.Maui.Platform.GTK.Controls
 			_calendar = new RangeCalendar();
 			_calendar.CanFocus = true;
 			_calendar.DisplayOptions = CalendarDisplayOptions.ShowHeading;
-			_datebox.Add(_calendar);
-			Box.BoxChild dateBoxChild = ((Box.BoxChild)(_datebox[_calendar]));
-			dateBoxChild.Position = 0;
+			_datebox.PackStart(_calendar, false, false, 0);
+			// Box.BoxChild dateBoxChild = ((Box.BoxChild)(_datebox[_calendar]));
+			// dateBoxChild.Position = 0;
 
 			Add(_datebox);
 
@@ -243,7 +245,7 @@ namespace System.Maui.Platform.GTK.Controls
 
 			CurrentDate = DateTime.Now;
 
-			TextColor = _comboBox.Entry.Style.Text(StateType.Normal);
+			TextColor = _comboBox.Entry.TextColor(StateType.Normal);
 
 			_comboBox.Entry.CanDefault = false;
 			_comboBox.Entry.CanFocus = false;

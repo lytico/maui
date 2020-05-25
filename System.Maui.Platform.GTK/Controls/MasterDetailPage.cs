@@ -325,7 +325,7 @@ namespace System.Maui.Platform.GTK.Controls
 
 			public MasterDetailMasterTitleContainer()
 			{
-				_defaultBackgroundColor = Style.Backgrounds[(int)StateType.Normal];
+				_defaultBackgroundColor = this.BackgroundColor(StateType.Normal);
 
 				_root = new HBox();
 				_hamburguerIcon = new Gtk.Image();
@@ -345,7 +345,7 @@ namespace System.Maui.Platform.GTK.Controls
 				_hamburguerButton.Clicked += OnHamburguerButtonClicked;
 
 				_titleLabel = new Gtk.Label();
-				_defaultTextColor = _titleLabel.Style.Foregrounds[(int)StateType.Normal];
+				_defaultTextColor = _titleLabel.ForegroundColor(StateType.Normal);
 
 				_root.PackStart(_hamburguerButton, false, false, GtkToolbarConstants.ToolbarItemSpacing);
 				_root.PackStart(_titleLabel, false, false, 25);

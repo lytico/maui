@@ -37,7 +37,7 @@ namespace System.Maui.Platform.GTK.Controls
 			set
 			{
 				_color = value;
-				Entry.ModifyText(Gtk.StateType.Normal, _color);
+				Entry.ModifyTextColor(Gtk.StateType.Normal, _color);
 			}
 		}
 

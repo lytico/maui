@@ -1,5 +1,6 @@
 using System;
 using System.Linq;
+using System.Maui.Platform.GTK.Extensions;
 using Cairo;
 using Gtk;
 
@@ -256,7 +257,7 @@ namespace System.Maui.Platform.GTK.Controls
 
 			CurrentTime = new TimeSpan(DateTime.Now.Ticks);
 
-			TextColor = _comboBox.Entry.Style.Text(Gtk.StateType.Normal);
+			TextColor = _comboBox.Entry.TextColor(Gtk.StateType.Normal);
 
 			_comboBox.Entry.Changed += new EventHandler(OnTxtTimeChanged);
 			_comboBox.PopupButton.Clicked += new EventHandler(OnBtnShowTimePickerClicked);
@@ -324,7 +325,7 @@ namespace System.Maui.Platform.GTK.Controls
 
 		protected virtual void OnTxtTimeChanged(object sender, EventArgs e)
 		{
-			_comboBox.Entry.ModifyText(Gtk.StateType.Normal, TextColor);
+			_comboBox.Entry.ModifyTextColor(Gtk.StateType.Normal, TextColor);
 
 			TimeChanged?.Invoke(this, e);
 		}

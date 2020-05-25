@@ -23,8 +23,8 @@ namespace System.Maui.Platform.GTK.Controls
 
 		public ImageButton()
 		{
-			_defaultBackgroundColor = Style.Backgrounds[(int)StateType.Normal];
-			_defaultBorderColor = Style.BaseColors[(int)StateType.Active];
+			_defaultBackgroundColor = this.BackgroundColor(StateType.Normal);
+			_defaultBorderColor = this.BaseColor(StateType.Active);
 
 			Relief = ReliefStyle.None;
 

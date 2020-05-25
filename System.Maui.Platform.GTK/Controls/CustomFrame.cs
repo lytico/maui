@@ -24,8 +24,8 @@ namespace System.Maui.Platform.GTK.Controls
 			_borderWidth = 0;
 			_hasShadow = false;
 			_shadowWidth = 2;
-			_defaultBackgroundColor = Style.Backgrounds[(int)StateType.Normal].ToXFColor();
-			_defaultBorderColor = Style.BaseColors[(int)StateType.Active].ToXFColor();
+			_defaultBackgroundColor = this.BackgroundColor(StateType.Normal).ToXFColor();
+			_defaultBorderColor = this.BaseColor(StateType.Active).ToXFColor();
 		}
 
 		public void SetBackgroundColor(Color? color)

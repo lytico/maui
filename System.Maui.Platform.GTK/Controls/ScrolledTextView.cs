@@ -1,3 +1,4 @@
+using System.Maui.Platform.GTK.Extensions;
 using Gtk;
 
 namespace System.Maui.Platform.GTK.Controls
@@ -44,7 +45,7 @@ namespace System.Maui.Platform.GTK.Controls
 
 			_placeholderContainer.ButtonPressEvent += PlaceHolderContainerPressed;
 
-			SetBackgroundColor(TextView.Style.BaseColors[(int)StateType.Normal]);
+			SetBackgroundColor(TextView.BaseColor(StateType.Normal));
 
 			Add(_table);
 
@@ -102,7 +103,7 @@ namespace System.Maui.Platform.GTK.Controls
 
 		private void InsertText(object o, InsertTextArgs args)
 		{
-			args.RetVal = args.Length <= _maxLength;
+			args.RetVal = args.NewTextLength <= _maxLength;
 		}
 
 		private void FocusedOut(object o, FocusOutEventArgs args)
