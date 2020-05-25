@@ -250,7 +250,7 @@ namespace System.Maui.Platform.GTK.Controls
 			_comboBox.Entry.CanDefault = false;
 			_comboBox.Entry.CanFocus = false;
 			_comboBox.Entry.IsEditable = false;
-			_comboBox.Entry.State = StateType.Normal;
+			_comboBox.Entry.SetStateFlags(StateFlags.Normal,true); //.State = StateType.Normal;
 			_comboBox.Entry.FocusGrabbed += new EventHandler(OnEntryFocused);
 			_comboBox.PopupButton.Clicked += new EventHandler(OnBtnShowCalendarClicked);
 		}
@@ -330,7 +330,7 @@ namespace System.Maui.Platform.GTK.Controls
 
 		public void ClosePicker()
 		{
-			var windows = Window.ListToplevels();
+			var windows = Gtk.Window.ListToplevels();
 			var window = windows.FirstOrDefault(w => w.GetType() == typeof(DatePickerWindow));
 
 			if (window != null)
