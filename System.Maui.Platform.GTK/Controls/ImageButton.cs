@@ -18,7 +18,7 @@ namespace System.Maui.Platform.GTK.Controls
 
 		private Gtk.Image _image;
 		private Gtk.Label _label;
-		private uint _imageSpacing = 0;
+		private uint _imagePadding = 0;
 		private uint _borderWidth = 0;
 
 		public ImageButton()
@@ -41,17 +41,17 @@ namespace System.Maui.Platform.GTK.Controls
 
 		public Gtk.Image ImageWidget => _image;
 
-		public uint ImageSpacing
+		public uint ImagePadding
 		{
 			get
 			{
-				return _imageSpacing;
+				return _imagePadding;
 			}
 
 			set
 			{
-				_imageSpacing = value;
-				UpdateImageSpacing();
+				_imagePadding = value;
+				UpdateImagePadding();
 			}
 		}
 
@@ -113,18 +113,18 @@ namespace System.Maui.Platform.GTK.Controls
 
 			cr.Rectangle(Allocation.Left, Allocation.Top, Allocation.Width, Allocation.Height);
 
-				// Draw BackgroundColor
-				if (_backgroundColor.HasValue)
-				{
-					var color = _backgroundColor.Value;
-					cr.SetSourceRGBA(color.Red / colorMaxValue, color.Green / colorMaxValue, color.Blue / colorMaxValue, 1.0);
-					cr.FillPreserve();
-				}
+			// Draw BackgroundColor
+			if (_backgroundColor.HasValue)
+			{
+				var color = _backgroundColor.Value;
+				cr.SetSourceRGBA(color.Red / colorMaxValue, color.Green / colorMaxValue, color.Blue / colorMaxValue, 1.0);
+				cr.FillPreserve();
+			}
 
-				// Draw BorderColor
-				if (_borderColor.HasValue)
-				{
-					cr.LineWidth = _borderWidth;
+			// Draw BorderColor
+			if (_borderColor.HasValue)
+			{
+				cr.LineWidth = _borderWidth;
 
 				var color = _borderColor.Value;
 				cr.SetSourceRGB(color.Red / colorMaxValue, color.Green / colorMaxValue, color.Blue / colorMaxValue);
@@ -147,23 +147,23 @@ namespace System.Maui.Platform.GTK.Controls
 			{
 				case PositionType.Left:
 					_imageAndLabelContainer = new HBox();
-					_imageAndLabelContainer.PackStart(_image, false, false, _imageSpacing);
+					_imageAndLabelContainer.PackStart(_image, false, false, _imagePadding);
 					_imageAndLabelContainer.PackStart(_label, false, false, 0);
 					break;
 				case PositionType.Top:
 					_imageAndLabelContainer = new VBox();
-					_imageAndLabelContainer.PackStart(_image, false, false, _imageSpacing);
+					_imageAndLabelContainer.PackStart(_image, false, false, _imagePadding);
 					_imageAndLabelContainer.PackStart(_label, false, false, 0);
 					break;
 				case PositionType.Right:
 					_imageAndLabelContainer = new HBox();
 					_imageAndLabelContainer.PackStart(_label, false, false, 0);
-					_imageAndLabelContainer.PackStart(_image, false, false, _imageSpacing);
+					_imageAndLabelContainer.PackStart(_image, false, false, _imagePadding);
 					break;
 				case PositionType.Bottom:
 					_imageAndLabelContainer = new VBox();
 					_imageAndLabelContainer.PackStart(_label, false, false, 0);
-					_imageAndLabelContainer.PackStart(_image, false, false, _imageSpacing);
+					_imageAndLabelContainer.PackStart(_image, false, false, _imagePadding);
 					break;
 			}
 
@@ -174,9 +174,9 @@ namespace System.Maui.Platform.GTK.Controls
 			}
 		}
 
-		private void UpdateImageSpacing()
+		private void UpdateImagePadding()
 		{
-			_imageAndLabelContainer.SetChildPacking(_image, false, false, _imageSpacing, PackType.Start);
+			_imageAndLabelContainer.SetChildPacking(_image, false, false, _imagePadding, PackType.Start);
 		}
 	}
 }
