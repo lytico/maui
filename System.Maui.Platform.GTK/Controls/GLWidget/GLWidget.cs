@@ -1,6 +1,7 @@
 using System;
 using System.Threading;
 using System.ComponentModel;
+using Cairo;
 using OpenTK.Graphics;
 using OpenTK.Platform;
 using Gtk;
@@ -220,12 +221,7 @@ namespace OpenTK.GLWidget
 			ShuttingDown?.Invoke(this, EventArgs.Empty);
 		}
 
-		/// <summary>
-		/// Called when the widget is exposed.
-		/// </summary>
-		/// <param name="cr"></param>
-		/// <returns></returns>
-		protected override bool OnExposeEvent(Gdk.EventExpose evnt)
+		protected override bool OnDrawn(Context cr)
 		{
 			if (!_initialized)
 			{
@@ -235,9 +231,8 @@ namespace OpenTK.GLWidget
 			{
 				_graphicsContext.MakeCurrent(_windowInfo);
 			}
-
-			bool result = base.OnExposeEvent(evnt);
-
+			var result =  base.OnDrawn(cr);
+			
 			OnRenderFrame();
 
 			evnt.Window.Display.Sync(); // Add Sync call to fix resize rendering problem (Jay L. T. Cornwall) - How does this affect VSync?

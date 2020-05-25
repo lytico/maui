@@ -1,6 +1,7 @@
 using Gtk;
 using System;
 using System.Linq;
+using Cairo;
 
 namespace System.Maui.Platform.GTK.Controls
 {
@@ -78,15 +79,15 @@ namespace System.Maui.Platform.GTK.Controls
 
 		public event DateEventHandler OnDateTimeChanged;
 
-		protected override bool OnExposeEvent(Gdk.EventExpose args)
+		protected override bool OnDrawn(Context cr)
 		{
-			base.OnExposeEvent(args);
+			base.OnDrawn(cr);
 
-			int winWidth, winHeight;
-			GetSize(out winWidth, out winHeight);
-			GdkWindow.DrawRectangle(
-				Style.ForegroundGC(StateType.Insensitive), false, 0, 0, winWidth - 1, winHeight - 1);
-
+			GetSize(out var winWidth, out var winHeight);
+			// GTK3 TODO:
+			// GdkWindow.DrawRectangle(
+			// 	Style.ForegroundGC(StateType.Insensitive), false, 0, 0, winWidth - 1, winHeight - 1);
+			
 			return false;
 		}
 

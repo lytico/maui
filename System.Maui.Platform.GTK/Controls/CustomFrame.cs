@@ -1,6 +1,7 @@
 using Gdk;
 using Gtk;
 using System.Maui.Platform.GTK.Extensions;
+using Cairo;
 
 namespace System.Maui.Platform.GTK.Controls
 {
@@ -75,40 +76,37 @@ namespace System.Maui.Platform.GTK.Controls
 			QueueDraw();
 		}
 
-		protected override bool OnExposeEvent(EventExpose evnt)
+		protected override bool OnDrawn(Context cr)
 		{
-			using (var cr = CairoHelper.Create(GdkWindow))
+			// Draw Shadow
+			if (_hasShadow)
 			{
-				// Draw Shadow
-				if (_hasShadow)
-				{
-					var color = Color.Black;
-					cr.SetSourceRGBA(color.R, color.G, color.B, color.A);
-					cr.Rectangle(Allocation.Left + _shadowWidth, Allocation.Top + _shadowWidth, Allocation.Width + _shadowWidth, Allocation.Height + _shadowWidth);
-					cr.Fill();
-				}
-
-				// Draw BackgroundColor
-				if (_backgroundColor.HasValue)
-				{
-					var color = _backgroundColor.Value;
-					cr.SetSourceRGBA(color.R, color.G, color.B, color.A);
-					cr.Rectangle(Allocation.Left, Allocation.Top, Allocation.Width, Allocation.Height);
-					cr.FillPreserve();
-				}
-
-				// Draw BorderColor
-				if (_borderColor.HasValue)
-				{
-					cr.LineWidth = _borderWidth;
-					var color = _borderColor.Value;
-					cr.SetSourceRGBA(color.R, color.G, color.B, color.A);
-					cr.Rectangle(Allocation.Left, Allocation.Top, Allocation.Width, Allocation.Height);
-					cr.StrokePreserve();
-				}
+				var color = Color.Black;
+				cr.SetSourceRGBA(color.R, color.G, color.B, color.A);
+				cr.Rectangle(Allocation.Left + _shadowWidth, Allocation.Top + _shadowWidth, Allocation.Width + _shadowWidth, Allocation.Height + _shadowWidth);
+				cr.Fill();
 			}
 
-			return base.OnExposeEvent(evnt);
+			// Draw BackgroundColor
+			if (_backgroundColor.HasValue)
+			{
+				var color = _backgroundColor.Value;
+				cr.SetSourceRGBA(color.R, color.G, color.B, color.A);
+				cr.Rectangle(Allocation.Left, Allocation.Top, Allocation.Width, Allocation.Height);
+				cr.FillPreserve();
+			}
+
+			// Draw BorderColor
+			if (_borderColor.HasValue)
+			{
+				cr.LineWidth = _borderWidth;
+				var color = _borderColor.Value;
+				cr.SetSourceRGBA(color.R, color.G, color.B, color.A);
+				cr.Rectangle(Allocation.Left, Allocation.Top, Allocation.Width, Allocation.Height);
+				cr.StrokePreserve();
+			}
+			return base.OnDrawn(cr);
 		}
+
 	}
 }

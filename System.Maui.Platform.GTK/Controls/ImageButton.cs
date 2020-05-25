@@ -2,6 +2,7 @@ using Gdk;
 using Gtk;
 using System;
 using System.Maui.Platform.GTK.Extensions;
+using Cairo;
 
 namespace System.Maui.Platform.GTK.Controls
 {
@@ -106,13 +107,11 @@ namespace System.Maui.Platform.GTK.Controls
 			base.Dispose(disposing);
 		}
 
-		protected override bool OnExposeEvent(EventExpose evnt)
+		protected override bool OnDrawn(Context cr)
 		{
 			double colorMaxValue = 65535;
 
-			using (var cr = CairoHelper.Create(GdkWindow))
-			{
-				cr.Rectangle(Allocation.Left, Allocation.Top, Allocation.Width, Allocation.Height);
+			cr.Rectangle(Allocation.Left, Allocation.Top, Allocation.Width, Allocation.Height);
 
 				// Draw BackgroundColor
 				if (_backgroundColor.HasValue)
@@ -127,13 +126,11 @@ namespace System.Maui.Platform.GTK.Controls
 				{
 					cr.LineWidth = _borderWidth;
 
-					var color = _borderColor.Value;
-					cr.SetSourceRGB(color.Red / colorMaxValue, color.Green / colorMaxValue, color.Blue / colorMaxValue);
-					cr.Stroke();
-				}
+				var color = _borderColor.Value;
+				cr.SetSourceRGB(color.Red / colorMaxValue, color.Green / colorMaxValue, color.Blue / colorMaxValue);
+				cr.Stroke();
 			}
-
-			return base.OnExposeEvent(evnt);
+			return base.OnDrawn(cr);
 		}
 
 		private void RecreateContainer()
