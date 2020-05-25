@@ -14,7 +14,7 @@ namespace System.Maui.Platform.GTK.Renderers
 			{
 				// Use Gtk.ProgressBar, a widget which indicates progress visually.
 				var progressBar = new Gtk.ProgressBar();
-				progressBar.Adjustment = new Gtk.Adjustment(0, 0, 1, 0.1, 1, 1); // Default increment: 0.1
+				// progressBar.Adjustment = new Gtk.Adjustment(0, 0, 1, 0.1, 1, 1); // Default increment: 0.1
 				SetNativeControl(progressBar);
 			}
 
@@ -37,7 +37,8 @@ namespace System.Maui.Platform.GTK.Renderers
 			if (Control == null)
 				return;
 
-			Control.Adjustment.Value = Element.Progress;
+			// Control.Adjustment.Value = Element.Progress;
+			Control.Fraction = Element.Progress;
 			Control.TooltipText = string.Format("{0}%", (Element.Progress * 100));
 		}
 
