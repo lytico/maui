@@ -33,7 +33,7 @@ namespace System.Maui.Platform.GTK
 			if (application == null)
 				throw new ArgumentNullException (nameof (application));
 
-			Application.SetCurrentApplication (application);
+			System.Maui.Application.SetCurrentApplication (application);
 			_application = application;
 
 			application.PropertyChanged += ApplicationOnPropertyChanged;
@@ -70,7 +70,7 @@ namespace System.Maui.Platform.GTK
 
 		private void ApplicationOnPropertyChanged (object sender, PropertyChangedEventArgs args)
 		{
-			if (args.PropertyName == nameof (Application.MainPage)) {
+			if (args.PropertyName == nameof (System.Maui.Application.MainPage)) {
 				UpdateMainPage ();
 			}
 		}
