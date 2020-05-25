@@ -99,11 +99,11 @@ namespace System.Maui.Platform.GTK.Controls
 		{
 			if (string.IsNullOrEmpty(_entry.Text) && !string.IsNullOrEmpty(_placeholder.Text))
 			{
-				_placeholderContainer.GdkWindow?.Raise();
+				_placeholderContainer.Window?.Raise();
 			}
 			else
 			{
-				_entry.GdkWindow?.Raise();
+				_entry.Window?.Raise();
 			}
 		}
 
@@ -113,7 +113,7 @@ namespace System.Maui.Platform.GTK.Controls
 			{
 				_entry.Sensitive = true;
 				_entry.HasFocus = true;
-				_entry.GdkWindow?.Raise();
+				_entry.Window?.Raise();
 			}
 		}
 

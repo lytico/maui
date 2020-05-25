@@ -264,7 +264,7 @@ namespace System.Maui.Platform.GTK.Controls
 			Add(_masterContainerWrapper);
 
 			_detail.ShowAll();
-			_masterContainerWrapper.GdkWindow?.Raise(); // Forcing Master to be on top
+			_masterContainerWrapper.Window?.Raise(); // Forcing Master to be on top
 		}
 
 		private async void RefreshPresented(bool isPresented)

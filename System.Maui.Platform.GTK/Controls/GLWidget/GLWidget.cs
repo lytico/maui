@@ -234,8 +234,8 @@ namespace OpenTK.GLWidget
 			var result =  base.OnDrawn(cr);
 			
 			OnRenderFrame();
-
-			evnt.Window.Display.Sync(); // Add Sync call to fix resize rendering problem (Jay L. T. Cornwall) - How does this affect VSync?
+			
+			Window.Display.Sync(); // Add Sync call to fix resize rendering problem (Jay L. T. Cornwall) - How does this affect VSync?
 
 			_graphicsContext.SwapBuffers();
 
@@ -289,7 +289,7 @@ namespace OpenTK.GLWidget
 
 			GraphicsMode graphicsMode = new GraphicsMode(colorBufferColorFormat, DepthBPP, StencilBPP, Samples, accumulationColorFormat, buffers, Stereo);
 
-			IntPtr widgetWindowHandle = this.GdkWindow.Handle;
+			IntPtr widgetWindowHandle = this.Window.Handle;
 
 			// IWindowInfo
 			if (Configuration.RunningOnWindows)

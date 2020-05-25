@@ -342,7 +342,7 @@ namespace System.Maui.Platform.GTK.Controls
 			int x = 0;
 			int y = 0;
 
-			GdkWindow.GetOrigin(out x, out y);
+			Window.GetOrigin(out x, out y);
 			y += Allocation.Height;
 
 			var picker = new DatePickerWindow();

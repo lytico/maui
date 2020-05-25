@@ -128,7 +128,7 @@ namespace System.Maui.Platform.GTK.Controls
 			{
 				TextView.Sensitive = true;
 				TextView.HasFocus = true;
-				TextView.GdkWindow?.Raise();
+				TextView.Window?.Raise();
 			}
 		}
 	}
