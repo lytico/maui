@@ -37,8 +37,9 @@ using System.Maui.Platform.GTK.Renderers;
 [assembly: ExportRenderer(typeof(TabbedPage), typeof(TabbedPageRenderer))]
 [assembly: ExportRenderer(typeof(TableView), typeof(TableViewRenderer))]
 [assembly: ExportRenderer(typeof(TimePicker), typeof(TimePickerRenderer))]
+#if _GTK2_
 [assembly: ExportRenderer(typeof(WebView), typeof(WebViewRenderer))]
-
+#endif
 [assembly: ExportCell(typeof(Cell), typeof(CellRenderer))]
 [assembly: ExportCell(typeof(System.Maui.EntryCell), typeof(EntryCellRenderer))]
 [assembly: ExportCell(typeof(System.Maui.TextCell), typeof(TextCellRenderer))]
