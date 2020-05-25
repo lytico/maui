@@ -51,15 +51,14 @@ namespace System.Maui.Platform.GTK.Cells
 			return request.Request.Height;
 		}
 
-		public override void Destroy()
+		protected override void Dispose(bool disposing)
 		{
 			IVisualElementRenderer renderer;
 			if (_rendererRef != null && _rendererRef.TryGetTarget(out renderer) && renderer.Element != null)
 			{
 				_rendererRef = null;
 			}
-
-			base.Destroy();
+			base.Dispose(disposing);
 		}
 
 		protected override void UpdateCell()

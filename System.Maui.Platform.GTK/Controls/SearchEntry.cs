@@ -109,10 +109,9 @@ namespace System.Maui.Platform.GTK.Controls
 			}
 		}
 
-		public override void Destroy()
+		protected override void Dispose(bool disposing)
 		{
-			base.Destroy();
-
+	
 			if (_entryWrapper?.Entry != null)
 			{
 				_entryWrapper.Entry.Changed -= EntryChanged;
@@ -122,6 +121,7 @@ namespace System.Maui.Platform.GTK.Controls
 			{
 				_clearButton.Clicked -= CancelButtonClicked;
 			}
+			base.Dispose(disposing);
 		}
 
 		public void SetBackgroundColor(Gdk.Color color)

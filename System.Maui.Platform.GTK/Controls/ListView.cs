@@ -115,7 +115,7 @@ namespace System.Maui.Platform.GTK.Controls
 			_selectionColor = DefaultSelectionColor;
 		}
 
-		public override void Destroy()
+		protected override void Dispose(bool disposing)
 		{
 			_store?.Dispose();
 			_store = null;
@@ -129,7 +129,8 @@ namespace System.Maui.Platform.GTK.Controls
 			_footer = null;
 			_viewPort = null;
 			_refreshHeader = null;
-			base.Destroy();
+			
+			base.Dispose(disposing);
 		}
 
 		public static Gdk.Color DefaultSelectionColor = Color.FromHex("#3498DB").ToGtkColor();
@@ -369,7 +370,6 @@ namespace System.Maui.Platform.GTK.Controls
 				{
 					_headerContainer.RemoveFromContainer(child);
 					child.Dispose();
-					child.Destroy();
 				}
 			}
 
@@ -389,7 +389,6 @@ namespace System.Maui.Platform.GTK.Controls
 				{
 					_footerContainer.RemoveFromContainer(child);
 					child.Dispose();
-					child.Destroy();
 				}
 			}
 

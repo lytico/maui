@@ -79,32 +79,6 @@ namespace System.Maui.Platform.GTK.Renderers
 			return Container.GetDesiredSize(widthConstraint, heightConstraint);
 		}
 
-		public override void Destroy()
-		{
-			base.Destroy();
-
-			if (!_disposed)
-			{
-				if (_appeared)
-				{
-					ReadOnlyCollection<Element> children = ((IElementController)Element).LogicalChildren;
-					for (var i = 0; i < children.Count; i++)
-					{
-						var visualChild = children[i] as VisualElement;
-						visualChild?.Cleanup();
-					}
-
-					Page.SendDisappearing();
-				}
-
-				_appeared = false;
-
-				Dispose(true);
-
-				_disposed = true;
-			}
-		}
-
 		protected override void OnShown()
 		{
 			base.OnShown();
@@ -140,8 +114,24 @@ namespace System.Maui.Platform.GTK.Renderers
 			}
 		}
 
-		protected virtual void Dispose(bool disposing)
+		protected override void Dispose(bool disposing)
 		{
+			if (_disposed) return;
+			
+			if (_appeared)
+			{
+				ReadOnlyCollection<Element> children = ((IElementController)Element).LogicalChildren;
+				for (var i = 0; i < children.Count; i++)
+				{
+					var visualChild = children[i] as VisualElement;
+					visualChild?.Cleanup();
+				}
+
+				Page.SendDisappearing();
+			}
+
+			_appeared = false;
+
 			if (disposing)
 			{
 				if (Element != null)
@@ -151,10 +141,13 @@ namespace System.Maui.Platform.GTK.Renderers
 
 				Platform.SetRenderer(Element, null);
 
-				Control.Destroy();
+				Control.Dispose();
 				Control = null;
 				Element = null;
 			}
+			base.Dispose(disposing);
+
+			_disposed = true;
 		}
 
 		protected virtual void OnElementChanged(VisualElementChangedEventArgs e)

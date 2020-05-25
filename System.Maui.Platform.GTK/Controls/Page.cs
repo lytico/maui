@@ -66,9 +66,9 @@ namespace System.Maui.Platform.GTK.Controls
 			_image.Pixbuf = await imageSource.GetNativeImageAsync();
 		}
 
-		public override void Destroy()
+		protected override void Dispose(bool disposing)
 		{
-			base.Destroy();
+
 			if (_contentContainerWrapper != null)
 			{
 				_contentContainerWrapper.SizeAllocated -= OnContentContainerWrapperSizeAllocated;
@@ -79,6 +79,7 @@ namespace System.Maui.Platform.GTK.Controls
 			_toolbar = null;
 			_content = null;
 			_headerContainer = null;
+			base.Dispose(disposing);
 		}
 
 		private void BuildPage()
@@ -111,7 +112,7 @@ namespace System.Maui.Platform.GTK.Controls
 
 		private void RefreshToolbar(HBox newToolbar)
 		{
-			_toolbar.Destroy();
+			_toolbar.Dispose();
 			_toolbar = newToolbar;
 			_headerContainer.Add(_toolbar);
 			_toolbar.ShowAll();
@@ -119,7 +120,7 @@ namespace System.Maui.Platform.GTK.Controls
 
 		private void RefreshContent(GtkFormsContainer newContent)
 		{
-			_content.Destroy();
+			_content.Dispose();
 			_content = newContent;
 			_contentContainer.Add(_content);
 			_content.ShowAll();

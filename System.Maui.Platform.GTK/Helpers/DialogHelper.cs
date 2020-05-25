@@ -31,7 +31,7 @@ namespace System.Maui.Platform.GTK.Helpers
 				arguments.SetResult(false);
 			}
 
-			messageDialog.Destroy();
+			messageDialog.Dispose();
 		}
 
 		public static void ShowActionSheet(PlatformRenderer platformRender, ActionSheetArguments arguments)
@@ -59,7 +59,7 @@ namespace System.Maui.Platform.GTK.Helpers
 				arguments.SetResult(arguments.Destruction);
 			}
 
-			messageDialog.Destroy();
+			messageDialog.Dispose();
 		}
 
 		private static void SetDialogTitle(string title, MessageDialog messageDialog)
@@ -134,7 +134,7 @@ namespace System.Maui.Platform.GTK.Helpers
 					button.Clicked += (o, e) =>
 					{
 						arguments.SetResult(button.Label);
-						messageDialog.Destroy();
+						messageDialog.Dispose();
 					};
 					button.Show();
 

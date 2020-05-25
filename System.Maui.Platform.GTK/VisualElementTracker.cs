@@ -170,7 +170,7 @@ namespace System.Maui.Platform.GTK
 				_control.ButtonPressEvent -= OnControlButtonPressEvent;
 			}
 
-			Container.Destroy();
+			Container.Dispose();
 			Container = null;
 		}
 

@@ -59,13 +59,6 @@ namespace System.Maui.Platform.GTK
 			Icon = appliccationIconPixbuf;
 		}
 
-		public sealed override void Dispose ()
-		{
-			base.Dispose ();
-
-			Dispose (true);
-		}
-
 		protected override bool OnDeleteEvent (Gdk.Event evnt)
 		{
 			base.OnDeleteEvent (evnt);
@@ -138,12 +131,13 @@ namespace System.Maui.Platform.GTK
 			}
 		}
 
-		private void Dispose (bool disposing)
+		protected override void Dispose (bool disposing)
 		{
 			if (disposing && _application != null) {
 				WindowStateEvent -= OnWindowStateEvent;
 				_application.PropertyChanged -= ApplicationOnPropertyChanged;
 			}
+			base.Dispose(disposing);
 		}
 	}
 }

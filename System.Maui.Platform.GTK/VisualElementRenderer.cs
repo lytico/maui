@@ -139,12 +139,6 @@ namespace System.Maui.Platform.GTK
 			UpdateIsVisible();
 		}
 
-		public override void Destroy()
-		{
-			base.Destroy();
-			Dispose(true);
-		}
-
 		protected override void OnSizeAllocated(Gdk.Rectangle allocation)
 		{
 			base.OnSizeAllocated(allocation);
@@ -208,15 +202,16 @@ namespace System.Maui.Platform.GTK
 			UpdateSensitive();
 		}
 
-		protected virtual void Dispose(bool disposing)
+		protected override void Dispose(bool disposing)
 		{
 			if (!disposing || _disposed)
-				return;
-
+				base.Dispose(disposing);
+			
 			_disposed = true;
 
 			Tracker?.Dispose();
 			Tracker = null;
+			base.Dispose(disposing);
 		}
 
 		protected virtual void OnElementPropertyChanged(object sender, PropertyChangedEventArgs e)

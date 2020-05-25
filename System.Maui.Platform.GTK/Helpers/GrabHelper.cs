@@ -25,13 +25,13 @@ namespace System.Maui.Platform.GTK.Helpers
 				if (grabbed != Gdk.GrabStatus.Success)
 				{
 					Grab.Remove(window);
-					window.Destroy();
+					window.Dispose();
 				}
 			}
 			else
 			{
 				Grab.Remove(window);
-				window.Destroy();
+				window.Dispose();
 			}
 		}
 

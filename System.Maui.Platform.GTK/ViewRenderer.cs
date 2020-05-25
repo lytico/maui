@@ -17,7 +17,7 @@ namespace System.Maui.Platform.GTK
 		{
 			if (Control != null)
 			{
-				Control.Destroy();
+				Control.Dispose();
 				Control = null;
 			}
 			base.Dispose(disposing);

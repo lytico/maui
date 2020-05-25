@@ -97,13 +97,13 @@ namespace System.Maui.Platform.GTK.Controls
 			RecreateContainer();
 		}
 
-		public override void Destroy()
+		protected override void Dispose(bool disposing)
 		{
-			base.Destroy();
 			_label = null;
 			_image = null;
 			_imageAndLabelContainer = null;
 			_container = null;
+			base.Dispose(disposing);
 		}
 
 		protected override bool OnExposeEvent(EventExpose evnt)

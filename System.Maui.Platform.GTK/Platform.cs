@@ -61,7 +61,7 @@ namespace System.Maui.Platform.GTK
 
 			renderer = GetRenderer((VisualElement)view);
 
-			(renderer as Widget)?.Destroy();
+			(renderer as Widget)?.Dispose();
 			view.ClearValue(RendererProperty);
 		}
 
@@ -112,7 +112,7 @@ namespace System.Maui.Platform.GTK
 				DisposeModelAndChildrenRenderers(modal);
 			DisposeModelAndChildrenRenderers(Page);
 
-			PlatformRenderer.Destroy();
+			PlatformRenderer.Dispose();
 		}
 
 		internal void SetPage(Page newRoot)

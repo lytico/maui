@@ -200,7 +200,7 @@ namespace System.Maui.Platform.GTK
 		{
 			foreach (var child in _toolbarSection.Children)
 			{
-				child.Destroy();
+				child.Dispose();
 				_toolbarSection.Remove(child);
 			}
 

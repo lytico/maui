@@ -130,7 +130,7 @@ namespace System.Maui.Platform.GTK.Renderers
 				{
 					_listView.OnItemTapped -= OnItemTapped;
 					_listView.OnRefresh -= OnRefresh;
-					_listView.Destroy();
+					_listView.Dispose();
 					_listView = null;
 				}
 

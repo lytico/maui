@@ -72,14 +72,14 @@ namespace System.Maui.Platform.GTK.Controls
 			GLib.Source.Remove(_timerId);
 		}
 
-		public override void Destroy()
+		protected override void Dispose(bool disposing)
 		{
-			base.Destroy();
-
 			if (_glWidget != null)
 			{
-				_glWidget.Destroy();
+				_glWidget.Dispose();
+				_glWidget = null;
 			}
+			base.Dispose(disposing);
 		}
 
 		private bool Render()

@@ -89,7 +89,7 @@ namespace System.Maui.Platform.GTK.Renderers
 			}
 			if (_viewPort != null)
 			{
-				_viewPort.Destroy();
+				_viewPort.Dispose();
 				_viewPort = null;
 			}
 
