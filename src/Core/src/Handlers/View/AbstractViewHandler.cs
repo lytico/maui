@@ -6,7 +6,7 @@ using NativeView = AppKit.NSView;
 #elif MONOANDROID
 using NativeView = Android.Views.View;
 #elif NETSTANDARD || (NET6_0 && !IOS && !ANDROID)
-using NativeView = System.Object;
+using NativeView = Microsoft.Maui.Limaki.Extensions.INativeView;
 #endif
 
 namespace Microsoft.Maui.Handlers
@@ -16,7 +16,7 @@ namespace Microsoft.Maui.Handlers
 #if !NETSTANDARD || IOS || ANDROID
 		where TNativeView : NativeView
 #else
-		where TNativeView : class
+		where TNativeView : class, NativeView
 #endif
 	{
 		protected readonly PropertyMapper _defaultMapper;
