@@ -2,9 +2,9 @@ using System;
 
 namespace Microsoft.Maui.Handlers
 {
-	public partial class SwitchHandler : AbstractViewHandler<ISwitch, Limaki.Extensions.SwitchNativeView>
+	public partial class SwitchHandler : AbstractViewHandler<ISwitch, Limaki.Extensions.ISwitchNativeView>
 	{
-		protected override Limaki.Extensions.SwitchNativeView CreateNativeView() => throw new NotImplementedException();
+		protected override Limaki.Extensions.ISwitchNativeView CreateNativeView() => throw new NotImplementedException();
 
 		public static void MapIsToggled(SwitchHandler handler, ISwitch view) { }
 		public static void MapTrackColor(SwitchHandler handler, ISwitch view) { }

@@ -1,29 +1,36 @@
 namespace Microsoft.Maui.Limaki.Extensions {
     public interface INativeView {
-        void UpdateIsEnabled(IView view);
 
-        void UpdateBackgroundColor(IView view);
+    }
 
-        void UpdateAutomationId(IView view);
+    public interface IViewNativeView: INativeView 
+    {
+
+	    void UpdateIsEnabled(IView view);
+
+	    void UpdateBackgroundColor(IView view);
+
+	    void UpdateAutomationId(IView view);
+
     }
 
     public interface IProgressBarNativeView : INativeView {
         void UpdateProgress(IProgress progress);
     }
 
-    public interface ButtonNativeView : INativeView { }
+    public interface IButtonNativeView : INativeView { }
 
-    public interface EditorNativeView : INativeView { }
+    public interface IEditorNativeView : INativeView { }
 
-    public interface EntryNativeView : INativeView { }
+    public interface IEntryNativeView : INativeView { }
 
-    public interface LabelNativeView : INativeView { }
+    public interface ILabelNativeView : INativeView { }
 
-    public interface LayoutNativeView : INativeView { }
+    public interface ILayoutNativeView : INativeView { }
 
-    public interface SearchBarNativeView : INativeView { }
+    public interface ISearchBarNativeView : INativeView { }
 
-    public interface SwitchNativeView : INativeView { }
+    public interface ISwitchNativeView : INativeView { }
 
-    public interface SliderNativeView : INativeView { }
+    public interface ISliderNativeView : INativeView { }
 }

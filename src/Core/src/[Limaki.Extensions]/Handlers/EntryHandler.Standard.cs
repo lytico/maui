@@ -2,9 +2,9 @@
 
 namespace Microsoft.Maui.Handlers
 {
-	public partial class EntryHandler : AbstractViewHandler<IEntry, Limaki.Extensions.EntryNativeView>
+	public partial class EntryHandler : AbstractViewHandler<IEntry, Limaki.Extensions.IEntryNativeView>
 	{
-		protected override Limaki.Extensions.EntryNativeView CreateNativeView() => throw new NotImplementedException();
+		protected override Limaki.Extensions.IEntryNativeView CreateNativeView() => throw new NotImplementedException();
 
 		public static void MapText(IViewHandler handler, IEntry entry) { }
 		public static void MapTextColor(IViewHandler handler, IEntry entry) { }

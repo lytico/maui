@@ -31,17 +31,17 @@ namespace Microsoft.Maui.Handlers
 
 		public static void MapIsEnabled(IViewHandler handler, IView view)
 		{
-			(handler.NativeView as INativeView)?.UpdateIsEnabled(view);
+			(handler.NativeView as IViewNativeView)?.UpdateIsEnabled(view);
 		}
 
 		public static void MapBackgroundColor(IViewHandler handler, IView view)
 		{
-			(handler.NativeView as INativeView)?.UpdateBackgroundColor(view);
+			(handler.NativeView as IViewNativeView)?.UpdateBackgroundColor(view);
 		}
 
 		public static void MapAutomationId(IViewHandler handler, IView view)
 		{
-			(handler.NativeView as INativeView)?.UpdateAutomationId(view);
+			(handler.NativeView as IViewNativeView)?.UpdateAutomationId(view);
 		}
 
 	}

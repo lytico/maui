@@ -2,9 +2,9 @@ using System;
 
 namespace Microsoft.Maui.Handlers
 {
-	public partial class LabelHandler : AbstractViewHandler<ILabel, Limaki.Extensions.LabelNativeView>
+	public partial class LabelHandler : AbstractViewHandler<ILabel, Limaki.Extensions.ILabelNativeView>
 	{
-		protected override Limaki.Extensions.LabelNativeView CreateNativeView() => throw new NotImplementedException();
+		protected override Limaki.Extensions.ILabelNativeView CreateNativeView() => throw new NotImplementedException();
 
 		public static void MapText(IViewHandler handler, ILabel label) { }
 		public static void MapTextColor(IViewHandler handler, ILabel label) { }

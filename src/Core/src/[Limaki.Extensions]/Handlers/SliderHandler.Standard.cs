@@ -2,9 +2,9 @@ using System;
 
 namespace Microsoft.Maui.Handlers
 {
-	public partial class SliderHandler : AbstractViewHandler<ISlider, Limaki.Extensions.SliderNativeView>
+	public partial class SliderHandler : AbstractViewHandler<ISlider, Limaki.Extensions.ISliderNativeView>
 	{
-		protected override Limaki.Extensions.SliderNativeView CreateNativeView() => throw new NotImplementedException();
+		protected override Limaki.Extensions.ISliderNativeView CreateNativeView() => throw new NotImplementedException();
 
 		public static void MapMinimum(IViewHandler handler, ISlider slider) { }
 		public static void MapMaximum(IViewHandler handler, ISlider slider) { }
