@@ -6,7 +6,7 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK.Controls
 	{
 		bool _disposed;
 
-		public NavigationChildPage(Microsoft.Maui.Controls.Compatibility.Page page)
+		public NavigationChildPage(Microsoft.Maui.Controls.Page page)
 		{
 			Page = page;
 			Identifier = Guid.NewGuid().ToString();
@@ -23,6 +23,6 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK.Controls
 
 		public string Identifier { get; set; }
 
-		public Microsoft.Maui.Controls.Compatibility.Page Page { get; private set; }
+		public Microsoft.Maui.Controls.Page Page { get; private set; }
 	}
 }

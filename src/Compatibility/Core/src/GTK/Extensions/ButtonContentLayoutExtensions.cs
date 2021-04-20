@@ -1,22 +1,22 @@
 using System;
 using Gtk;
-using static Microsoft.Maui.Controls.Compatibility.Button;
+using static Microsoft.Maui.Controls.Button;
 
 namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK.Extensions
 {
 	public static class ButtonContentLayoutExtensions
 	{
-		public static PositionType AsPositionType(this ButtonContentLayout.ImagePosition position)
+		public static PositionType AsPositionType(this Button.ButtonContentLayout.ImagePosition position)
 		{
 			switch (position)
 			{
-				case ButtonContentLayout.ImagePosition.Bottom:
+				case Button.ButtonContentLayout.ImagePosition.Bottom:
 					return PositionType.Bottom;
-				case ButtonContentLayout.ImagePosition.Left:
+				case Button.ButtonContentLayout.ImagePosition.Left:
 					return PositionType.Left;
-				case ButtonContentLayout.ImagePosition.Right:
+				case Button.ButtonContentLayout.ImagePosition.Right:
 					return PositionType.Right;
-				case ButtonContentLayout.ImagePosition.Top:
+				case Button.ButtonContentLayout.ImagePosition.Top:
 					return PositionType.Top;
 				default:
 					throw new ArgumentOutOfRangeException(nameof(position));

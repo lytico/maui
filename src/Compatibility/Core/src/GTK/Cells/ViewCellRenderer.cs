@@ -1,5 +1,6 @@
 using Gtk;
 using Microsoft.Maui.Controls.Compatibility.Platform.GTK.Extensions;
+using Microsoft.Maui.Graphics;
 
 namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK.Cells
 {
@@ -12,7 +13,7 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK.Cells
 
 		protected override void OnForceUpdateSizeRequest(Cell cell, Container nativeCell)
 		{
-			var viewCell = cell as Microsoft.Maui.Controls.Compatibility.ViewCell;
+			var viewCell = cell as Microsoft.Maui.Controls.ViewCell;
 			var view = viewCell?.View;
 
 			if (view != null)

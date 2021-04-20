@@ -2,6 +2,7 @@ using System;
 using Cairo;
 using Gdk;
 using Gtk;
+using Color=Gdk.Color;
 
 namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK
 {

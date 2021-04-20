@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using Gtk;
 using Microsoft.Maui.Controls.Compatibility.Platform.GTK.Extensions;
+using Microsoft.Maui.Graphics;
 using Container = Microsoft.Maui.Controls.Compatibility.Platform.GTK.GtkFormsContainer;
 using Control = Gtk.Widget;
 

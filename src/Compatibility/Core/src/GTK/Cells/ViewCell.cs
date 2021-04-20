@@ -16,7 +16,7 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK.Cells
 			{
 				_lastAllocation = allocation;
 
-				var viewCell = Cell as Microsoft.Maui.Controls.Compatibility.ViewCell;
+				var viewCell = Cell as Microsoft.Maui.Controls.ViewCell;
 				var view = viewCell.View;
 
 				if (view == null)
@@ -44,7 +44,7 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK.Cells
 			}
 		}
 
-		private double GetHeightMeasure(Microsoft.Maui.Controls.Compatibility.ViewCell viewCell, Gdk.Rectangle allocation)
+		private double GetHeightMeasure(Microsoft.Maui.Controls.ViewCell viewCell, Gdk.Rectangle allocation)
 		{
 			var request = viewCell.View.Measure(allocation.Width, double.PositiveInfinity, MeasureFlags.IncludeMargins);
 
@@ -64,7 +64,7 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK.Cells
 
 		protected override void UpdateCell()
 		{
-			var viewCell = Cell as Microsoft.Maui.Controls.Compatibility.ViewCell;
+			var viewCell = Cell as Microsoft.Maui.Controls.ViewCell;
 
 			if (viewCell != null)
 				Device.BeginInvokeOnMainThread(viewCell.SendDisappearing);
@@ -93,7 +93,7 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK.Cells
 
 		private IVisualElementRenderer GetNewRenderer()
 		{
-			var viewCell = Cell as Microsoft.Maui.Controls.Compatibility.ViewCell;
+			var viewCell = Cell as Microsoft.Maui.Controls.ViewCell;
 
 			if (viewCell.View == null)
 			{

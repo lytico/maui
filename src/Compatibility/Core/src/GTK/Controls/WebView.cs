@@ -1,7 +1,6 @@
 using System;
 using System.Reflection;
 using System.Runtime.InteropServices;
-using System.Windows.Forms;
 using Gtk;
 using Microsoft.Maui.Controls.Compatibility.Platform.GTK.Helpers;
 

@@ -4,6 +4,7 @@ using System.ComponentModel;
 using Gtk;
 using Microsoft.Maui.Controls.Compatibility.Internals;
 using Microsoft.Maui.Controls.Compatibility.Platform.GTK.Extensions;
+using Microsoft.Maui.Graphics;
 using Container = Microsoft.Maui.Controls.Compatibility.Platform.GTK.GtkFormsContainer;
 
 namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK.Renderers
@@ -192,7 +193,7 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK.Renderers
 		{
 			if (e.PropertyName == VisualElement.BackgroundColorProperty.PropertyName)
 				UpdateBackgroundColor();
-			else if (e.PropertyName == Microsoft.Maui.Controls.Compatibility.Page.BackgroundImageSourceProperty.PropertyName)
+			else if (e.PropertyName == Microsoft.Maui.Controls.Page.BackgroundImageSourceProperty.PropertyName)
 				UpdateBackgroundImage();
 		}
 

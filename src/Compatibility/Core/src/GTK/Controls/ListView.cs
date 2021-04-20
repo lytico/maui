@@ -8,6 +8,7 @@ using OpenTK.Input;
 using Microsoft.Maui.Controls.Compatibility.Internals;
 using Microsoft.Maui.Controls.Compatibility.Platform.GTK.Cells;
 using Microsoft.Maui.Controls.Compatibility.Platform.GTK.Extensions;
+using Microsoft.Maui.Graphics;
 
 namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK.Controls
 {

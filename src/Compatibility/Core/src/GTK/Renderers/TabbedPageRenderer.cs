@@ -6,6 +6,7 @@ using Microsoft.Maui.Controls.Compatibility.Internals;
 using Microsoft.Maui.Controls.Compatibility.Platform.GTK.Controls;
 using Microsoft.Maui.Controls.Compatibility.Platform.GTK.Extensions;
 using Microsoft.Maui.Controls.Compatibility.PlatformConfiguration.GTKSpecific;
+using Microsoft.Maui.Graphics;
 
 namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK.Renderers
 {
@@ -178,14 +179,14 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK.Renderers
 
 		void OnPagePropertyChanged(object sender, PropertyChangedEventArgs e)
 		{
-			if (e.PropertyName == Microsoft.Maui.Controls.Compatibility.Page.TitleProperty.PropertyName)
+			if (e.PropertyName == Microsoft.Maui.Controls.Page.TitleProperty.PropertyName)
 			{
 				var page = (Page)sender;
 				var index = TabbedPage.GetIndex(page);
 
 				Widget.SetTabLabelText(index, page.Title);
 			}
-			else if (e.PropertyName == Microsoft.Maui.Controls.Compatibility.Page.IconImageSourceProperty.PropertyName)
+			else if (e.PropertyName == Microsoft.Maui.Controls.Page.IconImageSourceProperty.PropertyName)
 			{
 				var page = (Page)sender;
 				var index = TabbedPage.GetIndex(page);

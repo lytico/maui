@@ -10,6 +10,7 @@ using Microsoft.Maui.Controls.Compatibility.Platform.GTK.Controls;
 using Microsoft.Maui.Controls.Compatibility.Platform.GTK.Extensions;
 using Microsoft.Maui.Controls.Compatibility.Platform.GTK.Helpers;
 using Microsoft.Maui.Controls.Compatibility.PlatformConfiguration.GTKSpecific;
+using Microsoft.Maui.Controls.Internals;
 using Container = Microsoft.Maui.Controls.Compatibility.Platform.GTK.GtkFormsContainer;
 
 namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK.Renderers
@@ -265,9 +266,9 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK.Renderers
 
 		private void OnCurrentPagePropertyChanged(object sender, PropertyChangedEventArgs e)
 		{
-			if (e.PropertyName == Microsoft.Maui.Controls.Compatibility.Page.TitleProperty.PropertyName)
+			if (e.PropertyName == Microsoft.Maui.Controls.Page.TitleProperty.PropertyName)
 				UpdateTitle();
-			else if (e.PropertyName == Microsoft.Maui.Controls.Compatibility.Page.IconImageSourceProperty.PropertyName)
+			else if (e.PropertyName == Microsoft.Maui.Controls.Page.IconImageSourceProperty.PropertyName)
 				UpdateIcon();
 		}
 

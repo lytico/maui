@@ -1,3 +1,4 @@
+using Microsoft.Maui.Controls;
 using Microsoft.Maui.Controls.Compatibility;
 using Microsoft.Maui.Controls.Compatibility.Platform.GTK;
 using Microsoft.Maui.Controls.Compatibility.Platform.GTK.Cells;
@@ -43,8 +44,8 @@ using Microsoft.Maui.Controls.Compatibility.Platform.GTK.Renderers;
 [assembly: ExportRenderer(typeof(WebView), typeof(WebViewRenderer))]
 
 [assembly: ExportCell(typeof(Cell), typeof(CellRenderer))]
-[assembly: ExportCell(typeof(Microsoft.Maui.Controls.Compatibility.EntryCell), typeof(EntryCellRenderer))]
-[assembly: ExportCell(typeof(Microsoft.Maui.Controls.Compatibility.TextCell), typeof(TextCellRenderer))]
-[assembly: ExportCell(typeof(Microsoft.Maui.Controls.Compatibility.ImageCell), typeof(ImageCellRenderer))]
-[assembly: ExportCell(typeof(Microsoft.Maui.Controls.Compatibility.SwitchCell), typeof(SwitchCellRenderer))]
-[assembly: ExportCell(typeof(Microsoft.Maui.Controls.Compatibility.ViewCell), typeof(ViewCellRenderer))]
+[assembly: ExportCell(typeof(Microsoft.Maui.Controls.EntryCell), typeof(EntryCellRenderer))]
+[assembly: ExportCell(typeof(Microsoft.Maui.Controls.TextCell), typeof(TextCellRenderer))]
+[assembly: ExportCell(typeof(Microsoft.Maui.Controls.ImageCell), typeof(ImageCellRenderer))]
+[assembly: ExportCell(typeof(Microsoft.Maui.Controls.SwitchCell), typeof(SwitchCellRenderer))]
+[assembly: ExportCell(typeof(Microsoft.Maui.Controls.ViewCell), typeof(ViewCellRenderer))]

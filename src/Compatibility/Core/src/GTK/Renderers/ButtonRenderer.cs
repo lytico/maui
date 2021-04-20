@@ -3,6 +3,7 @@ using System.ComponentModel;
 using Gtk;
 using Microsoft.Maui.Controls.Compatibility.Platform.GTK.Controls;
 using Microsoft.Maui.Controls.Compatibility.Platform.GTK.Extensions;
+using Microsoft.Maui.Graphics;
 using GtkImageButton = Microsoft.Maui.Controls.Compatibility.Platform.GTK.Controls.ImageButton;
 
 namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK.Renderers

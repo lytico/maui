@@ -288,7 +288,7 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK.Controls
 			}
 		}
 
-		public void SetBackgroundColor(Gdk.Color color)
+		public new void SetBackgroundColor(Gdk.Color color)
 		{
 			_comboBox.SetBackgroundColor(color);
 		}

@@ -9,14 +9,14 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK.Cells
 		public override CellBase GetCell(Cell item, Gtk.Container reusableView, Controls.ListView listView)
 		{
 			var gtkImageCell = base.GetCell(item, reusableView, listView) as ImageCell;
-			var imageCell = (Microsoft.Maui.Controls.Compatibility.ImageCell)item;
+			var imageCell = (Microsoft.Maui.Controls.ImageCell)item;
 			SetImage(imageCell, gtkImageCell);
 			return gtkImageCell;
 		}
 
 		protected override Gtk.Container GetCellWidgetInstance(Cell item)
 		{
-			var imageCell = (Microsoft.Maui.Controls.Compatibility.ImageCell)item;
+			var imageCell = (Microsoft.Maui.Controls.ImageCell)item;
 
 			var text = imageCell.Text ?? string.Empty;
 			var textColor = imageCell.TextColor.ToGtkColor();
@@ -36,7 +36,7 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK.Cells
 			base.CellPropertyChanged(sender, args);
 
 			var gtkImageCell = (ImageCell)sender;
-			var imageCell = (Microsoft.Maui.Controls.Compatibility.ImageCell)gtkImageCell.Cell;
+			var imageCell = (Microsoft.Maui.Controls.ImageCell)gtkImageCell.Cell;
 
 			if (args.PropertyName == Microsoft.Maui.Controls.Compatibility.TextCell.TextProperty.PropertyName)
 			{
@@ -46,16 +46,16 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK.Cells
 			{
 				gtkImageCell.Detail = imageCell.Detail ?? string.Empty;
 			}
-			else if (args.PropertyName == Microsoft.Maui.Controls.Compatibility.ImageCell.ImageSourceProperty.PropertyName)
+			else if (args.PropertyName == Microsoft.Maui.Controls.ImageCell.ImageSourceProperty.PropertyName)
 			{
 				SetImage(imageCell, gtkImageCell);
 			}
 		}
 
-		private static void SetImage(Microsoft.Maui.Controls.Compatibility.ImageCell cell, ImageCell target)
+		private static void SetImage(Microsoft.Maui.Controls.ImageCell cell, ImageCell target)
 		{
 			target.Image = null;
-			_ = cell.ApplyNativeImageAsync(Microsoft.Maui.Controls.Compatibility.ImageCell.ImageSourceProperty, image =>
+			_ = cell.ApplyNativeImageAsync(Microsoft.Maui.Controls.ImageCell.ImageSourceProperty, image =>
 			{
 				target.Image = image;
 			});

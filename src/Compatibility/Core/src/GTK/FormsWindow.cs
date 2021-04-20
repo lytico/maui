@@ -2,6 +2,7 @@ using System;
 using System.ComponentModel;
 using System.Threading;
 using Gtk;
+using Microsoft.Maui.Graphics;
 
 namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK
 {

@@ -5,6 +5,7 @@ using System.Linq;
 using System.Reflection;
 using Microsoft.Maui.Controls.Compatibility.Internals;
 using Microsoft.Maui.Controls.Compatibility.Platform.GTK;
+using Microsoft.Maui.Graphics;
 
 namespace Microsoft.Maui.Controls.Compatibility
 {

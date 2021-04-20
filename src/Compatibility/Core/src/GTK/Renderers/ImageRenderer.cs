@@ -9,6 +9,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Gdk;
 using Microsoft.Maui.Controls.Compatibility.Platform.GTK.Extensions;
+using Color = Microsoft.Maui.Graphics.Color;
 using DrawingFont = System.Drawing.Font;
 using IOPath = System.IO.Path;
 

@@ -5,6 +5,7 @@ using Gtk;
 using Microsoft.Maui.Controls.Compatibility.Internals;
 using Microsoft.Maui.Controls.Compatibility.Platform.GTK.Controls;
 using Microsoft.Maui.Controls.Compatibility.Platform.GTK.Extensions;
+using Microsoft.Maui.Graphics;
 
 namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK.Renderers
 {
@@ -117,7 +118,7 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK.Renderers
 
 		private async void HandleFlyoutPropertyChanged(object sender, PropertyChangedEventArgs e)
 		{
-			if (e.PropertyName == Microsoft.Maui.Controls.Compatibility.Page.IconImageSourceProperty.PropertyName)
+			if (e.PropertyName == Microsoft.Maui.Controls.Page.IconImageSourceProperty.PropertyName)
 				await UpdateHamburguerIconAsync();
 		}
 
@@ -197,7 +198,7 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK.Renderers
 
 		private Task UpdateHamburguerIconAsync()
 		{
-			return Page.Flyout.ApplyNativeImageAsync(Microsoft.Maui.Controls.Compatibility.Page.IconImageSourceProperty, image =>
+			return Page.Flyout.ApplyNativeImageAsync(Microsoft.Maui.Controls.Page.IconImageSourceProperty, image =>
 			{
 				Widget.UpdateHamburguerIcon(image);
 

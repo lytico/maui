@@ -1,6 +1,7 @@
 using System.ComponentModel;
 using Microsoft.Maui.Controls.Compatibility.Platform.GTK.Extensions;
 using Microsoft.Maui.Controls.Compatibility.PlatformConfiguration.GTKSpecific;
+using Microsoft.Maui.Graphics;
 
 namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK.Renderers
 {

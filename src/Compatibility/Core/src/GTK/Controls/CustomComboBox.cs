@@ -43,8 +43,8 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK.Controls
 
 		public void SetBackgroundColor(Gdk.Color color)
 		{
-			ModifyBg(Gtk.StateType.Normal, Microsoft.Maui.Controls.Compatibility.Color.Red.ToGtkColor());
-			Entry.ModifyBase(Gtk.StateType.Normal, Microsoft.Maui.Controls.Compatibility.Color.Blue.ToGtkColor());
+			ModifyBg(Gtk.StateType.Normal, Graphics.Color.Red.ToGtkColor());
+			Entry.ModifyBase(Gtk.StateType.Normal, Graphics.Color.Blue.ToGtkColor());
 		}
 
 		private void BuildCustomComboBox()

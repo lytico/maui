@@ -3,6 +3,7 @@ using System.ComponentModel;
 using Gtk;
 using Microsoft.Maui.Controls.Compatibility.Platform.GTK.Extensions;
 using Microsoft.Maui.Controls.Compatibility.Platform.GTK.Helpers;
+using Microsoft.Maui.Graphics;
 using NativeLabel = Gtk.Label;
 
 namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK.Renderers

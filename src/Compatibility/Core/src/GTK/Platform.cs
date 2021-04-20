@@ -6,6 +6,8 @@ using Gtk;
 using Microsoft.Maui.Controls.Compatibility.Internals;
 using Microsoft.Maui.Controls.Compatibility.Platform.GTK.Helpers;
 using Microsoft.Maui.Controls.Compatibility.Platform.GTK.Renderers;
+using Microsoft.Maui.Controls.Internals;
+using Microsoft.Maui.Graphics;
 
 namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK
 {

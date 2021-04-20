@@ -1,4 +1,5 @@
 using System;
+using Microsoft.Maui.Graphics;
 using Container = Microsoft.Maui.Controls.Compatibility.Platform.GTK.GtkFormsContainer;
 
 namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK

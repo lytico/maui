@@ -30,9 +30,9 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK.Controls
 	{
 		public Container GtkPage { get; set; }
 
-		public Microsoft.Maui.Controls.Compatibility.Page Page { get; set; }
+		public Microsoft.Maui.Controls.Page Page { get; set; }
 
-		public CarouselPage(Container gtkPage, Microsoft.Maui.Controls.Compatibility.Page page)
+		public CarouselPage(Container gtkPage, Microsoft.Maui.Controls.Page page)
 		{
 			GtkPage = gtkPage;
 			Page = page;
@@ -123,7 +123,7 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK.Controls
 
 		public void AddPage(int index, object element)
 		{
-			var page = element as Microsoft.Maui.Controls.Compatibility.Page;
+			var page = element as Microsoft.Maui.Controls.Page;
 
 			if (page != null)
 			{
@@ -139,7 +139,7 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK.Controls
 
 		public void RemovePage(object element)
 		{
-			var page = element as Microsoft.Maui.Controls.Compatibility.Page;
+			var page = element as Microsoft.Maui.Controls.Page;
 
 			if (page != null)
 			{
