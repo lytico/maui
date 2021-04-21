@@ -1,7 +1,7 @@
 <Project Sdk="MSBuild.Sdk.Extras">
 
   <PropertyGroup>
-    <TargetFrameworks>MonoAndroid10.0;Xamarin.iOS10</TargetFrameworks>
+    <TargetFrameworks>net5.0</TargetFrameworks>
   </PropertyGroup>
 
   <ItemGroup>
@@ -23,7 +23,9 @@
   <ItemGroup Condition="$(TargetFramework.StartsWith('MonoAndroid')) == true ">
     <ProjectReference Include="..\..\..\Compatibility\Core\src\Android\Compatibility.Android.csproj" />
   </ItemGroup>
-
+  <ItemGroup Condition="$(TargetFramework.StartsWith('net5.0')) == true ">
+    <ProjectReference Include="..\..\..\Compatibility\Core\src\GtkSharp\Compatibility.GtkSharp.csproj" />
+  </ItemGroup>
   <ItemGroup>
     <MauiImage Include="Resources\Images\*" />
     <MauiImage Include="Resources\AppIcons\appicon.svg" ForegroundFile="Resources\AppIcons\appicon_foreground.svg" IsAppIcon="true" />
