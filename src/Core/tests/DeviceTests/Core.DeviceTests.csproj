@@ -1,6 +1,6 @@
 ﻿<Project Sdk="MSBuild.Sdk.Extras">
   <PropertyGroup>
-    <TargetFrameworks>Xamarin.iOS10;MonoAndroid10.0</TargetFrameworks>
+    <TargetFrameworks>$(MauiPlatformsLegacy)</TargetFrameworks>
     <RootNamespace>Microsoft.Maui.Core.DeviceTests</RootNamespace>
     <AssemblyName>Microsoft.Maui.Core.DeviceTests</AssemblyName>
     <Nullable>disable</Nullable>
@@ -17,6 +17,11 @@
   </ItemGroup>
   <ItemGroup>
     <MauiFont Include="Fonts\*" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Update="Handlers\HandlerTestBase.Linux.cs">
+      <SubType>Code</SubType>
+    </Compile>
   </ItemGroup>
   <Import Project="..\..\..\..\.nuspec\Microsoft.Maui.Resizetizer.targets" />
 </Project>
