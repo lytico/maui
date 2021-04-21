@@ -2,6 +2,7 @@
 
 namespace Microsoft.Maui.Graphics.Native.Gtk
 {
+
 	public static class ColorExtensions
 	{
 		public static Gdk.RGBA ToNative(this Color color)
