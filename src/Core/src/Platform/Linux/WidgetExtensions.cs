@@ -23,7 +23,7 @@ namespace Microsoft.Maui
 		public static void SetBackgroundColor(this Gtk.Widget widget, Gtk.StateFlags state, MG.Color color)
 		{
 #pragma warning disable 612
-			widget.OverrideColor(state, color.ToGtkRgbaValue());
+			widget.OverrideBackgroundColor(state, color.ToGtkRgba());
 #pragma warning restore 612
 		}
 

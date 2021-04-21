@@ -7,7 +7,7 @@ namespace Microsoft.Maui
 		public static void UpdateProgress(this ProgressBar nativeProgressBar, IProgress progress)
 		{
 			nativeProgressBar.PulseStep = progress.Progress;
-			nativeProgressBar.TooltipText = string.Format("{0}%", progress.Progress * 100);
+			nativeProgressBar.TooltipText = $"{progress.Progress * 100}%";
 		}
 	}
 }

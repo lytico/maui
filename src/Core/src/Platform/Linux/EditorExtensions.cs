@@ -7,10 +7,15 @@ namespace Microsoft.Maui
 		public static void UpdateText(this TextView nativeEditor, IEditor editor)
 		{
 			var text = editor.Text;
-			TextBuffer buffer = nativeEditor.Buffer;
+			var buffer = nativeEditor.Buffer;
 
-			if (buffer.Text != text)
+			if (buffer.Text == text) return;
+
+			if (text == null)
+				buffer.Clear();
+			else
 				buffer.Text = text;
+
 		}
 	}
 }

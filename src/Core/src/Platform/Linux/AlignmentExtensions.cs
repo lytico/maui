@@ -16,5 +16,18 @@ namespace Microsoft.Maui
 					return Align.Center;
 			}
 		}
+		
+		public static Justification ToJustification(this TextAlignment alignment)
+		{
+			switch (alignment)
+			{
+				case TextAlignment.Start:
+					return Justification.Left;
+				case TextAlignment.End:
+					return Justification.Right;
+				default:
+					return Justification.Center;
+			}
+		}
 	}
 }

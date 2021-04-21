@@ -50,8 +50,9 @@ namespace Microsoft.Maui
 
 		public static void UpdateTextAlignment(this Label nativeLabel, ILabel label)
 		{
+			nativeLabel.Justify = label.HorizontalTextAlignment.ToJustification(); 
+			return;
 			var hAlignmentValue = label.HorizontalTextAlignment.ToNative();
-
 			nativeLabel.Halign = hAlignmentValue; 
 		}
 	}

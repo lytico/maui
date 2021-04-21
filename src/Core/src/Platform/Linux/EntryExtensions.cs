@@ -11,5 +11,6 @@ namespace Microsoft.Maui
 			if (nativeEntry.Text != text)
 				nativeEntry.Text = text;
 		}
+		
 	}
 }
