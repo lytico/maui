@@ -1,10 +1,13 @@
 ﻿using System;
 using Gtk;
+using Microsoft.Maui.Graphics.Native.Gtk;
 
 namespace Microsoft.Maui.Handlers
 {
+
 	public partial class ButtonHandler : ViewHandler<IButton, Button>
 	{
+
 		protected override Button CreateNativeView()
 		{
 			return new Button();
@@ -29,8 +32,11 @@ namespace Microsoft.Maui.Handlers
 			handler.NativeView?.UpdateText(button);
 		}
 
-		[MissingMapper]
-		public static void MapTextColor(ButtonHandler handler, IButton button) { }
+		public static void MapTextColor(ButtonHandler handler, IButton button)
+		{
+			handler.NativeView?.SetForegroundColor(button.TextColor);
+			handler.NativeView?.SetForegroundColor(Gtk.StateFlags.Prelight, button.TextColor);
+		}
 
 		[MissingMapper]
 		public static void MapCharacterSpacing(ButtonHandler handler, IButton button) { }
@@ -38,8 +44,10 @@ namespace Microsoft.Maui.Handlers
 		[MissingMapper]
 		public static void MapFont(ButtonHandler handler, IButton button) { }
 
-		[MissingMapper]
-		public static void MapPadding(ButtonHandler handler, IButton button) { }
+		public static void MapPadding(ButtonHandler handler, IButton button)
+		{
+			handler.NativeView.WithMargin(button.Padding);
+		}
 
 		void OnButtonPressEvent(object? o, ButtonPressEventArgs args)
 		{
@@ -55,5 +63,7 @@ namespace Microsoft.Maui.Handlers
 		{
 			VirtualView?.Clicked();
 		}
+
 	}
+
 }

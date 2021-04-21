@@ -3,6 +3,7 @@ using Gtk;
 
 namespace Microsoft.Maui
 {
+
 	public static class LabelExtensions
 	{
 		public static void UpdateText(this Label nativeLabel, ILabel label)
