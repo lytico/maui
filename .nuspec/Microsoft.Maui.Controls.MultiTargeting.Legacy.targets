@@ -1,0 +1,52 @@
+<Project>
+  <ItemGroup Condition="$(TargetFramework.StartsWith('Xamarin.iOS')) != true AND $(TargetFramework.StartsWith('net6.0-ios')) != true AND $(TargetFramework.StartsWith('net6.0-maccatalyst')) != true ">
+    <Compile Remove="**\*.ios.cs" />
+    <None Include="**\*.ios.cs" />
+    <Compile Remove="**\ios\*.cs" />
+    <None Include="**\ios\*.cs" />
+  </ItemGroup>
+  <ItemGroup Condition="$(TargetFramework.StartsWith('Xamarin.TVOS')) != true ">
+    <Compile Remove="**\*.tvos.cs" />
+    <None Include="**\*.tvos.cs" />
+    <Compile Remove="**\tvos\*.cs" />
+    <None Include="**\tvos\*.cs" />
+  </ItemGroup>
+  <ItemGroup Condition="$(TargetFramework.StartsWith('tizen')) != true ">
+    <Compile Remove="**\*.tizen.cs" />
+    <None Include="**\*.tizen.cs" />
+    <Compile Remove="**\tizen\*.cs" />
+    <None Include="**\tizen\*.cs" />
+  </ItemGroup>
+  <ItemGroup Condition="$(TargetFramework.StartsWith('MonoAndroid')) != true AND $(TargetFramework.StartsWith('net6.0-android')) != true ">
+    <Compile Remove="**\*.android.cs" />
+    <None Include="**\*.android.cs" />
+    <Compile Remove="**\android\*.cs" />
+    <None Include="**\android\*.cs" />
+  </ItemGroup>
+  <ItemGroup Condition="$(TargetFramework.StartsWith('netstandard')) != true ">
+    <Compile Remove="**\*.netstandard.cs" />
+    <None Include="**\*.netstandard.cs" />
+    <Compile Remove="**\netstandard\*.cs" />
+    <None Include="**\netstandard\*.cs" />
+  </ItemGroup>
+  <ItemGroup Condition="$(TargetFramework.Contains('uap10.0')) != true ">
+    <Compile Remove="**\*.uwp.cs" />
+    <None Include="**\*.uwp.cs" />
+    <Compile Remove="**\uwp\*.cs" />
+    <None Include="**\uwp\*.cs" />
+  </ItemGroup>
+  <ItemGroup Condition=" $(TargetFramework.StartsWith('Xamarin.Mac20')) != true ">
+    <Compile Remove="**\*.macos.cs" />
+    <None Include="**\*.macos.cs" />
+    <Compile Remove="**\*.macos.*.cs" />
+    <None Include="**\*.macos.*.cs" />
+    <Compile Remove="**\macos\*.cs" />
+    <None Include="**\macos\*.cs" />
+  </ItemGroup>
+  <ItemGroup Condition=" $(TargetFramework.StartsWith('Xamarin.WatchOS'))  != true ">
+    <Compile Remove="**\*.watchos.cs" />
+    <None Include="**\*.watchos.cs" />
+    <Compile Remove="**\watchos\*.cs" />
+    <None Include="**\watchos\*.cs" />
+  </ItemGroup>
+</Project>
