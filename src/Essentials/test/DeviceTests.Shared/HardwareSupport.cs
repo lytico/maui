@@ -12,6 +12,9 @@ namespace Microsoft.Maui.Essentials.DeviceTests
 #elif WINDOWS_UWP
             // UWP does not emulate, and only some devices have, an accelerometer
             Windows.Devices.Sensors.Accelerometer.GetDefault() != null;
+#elif LINUX
+            // currently, all linux suppurt is set to false
+            false;
 #endif
 
 		public static bool HasMagnetometer =>
@@ -24,6 +27,9 @@ namespace Microsoft.Maui.Essentials.DeviceTests
 #elif WINDOWS_UWP
             // UWP does not emulate, and only some devices have, a magnetometer
             Windows.Devices.Sensors.Magnetometer.GetDefault() != null;
+#elif LINUX
+			// currently, all linux suppurt is set to false
+			false;		
 #endif
 
 		public static bool HasGyroscope =>
@@ -36,6 +42,9 @@ namespace Microsoft.Maui.Essentials.DeviceTests
 #elif WINDOWS_UWP
             // UWP does not emulate, and only some devices have, a gyroscope
             Windows.Devices.Sensors.Gyrometer.GetDefault() != null;
+#elif LINUX
+			// currently, all linux suppurt is set to false
+			false;		
 #endif
 
 		public static bool HasCompass =>
@@ -48,6 +57,9 @@ namespace Microsoft.Maui.Essentials.DeviceTests
 #elif WINDOWS_UWP
             // UWP does not emulate, and only some devices have, a compass
             Windows.Devices.Sensors.Compass.GetDefault() != null;
+#elif LINUX
+			// currently, all linux suppurt is set to false
+			false;		
 #endif
 
 		public static bool HasBattery =>
@@ -61,6 +73,9 @@ namespace Microsoft.Maui.Essentials.DeviceTests
             // UWP appears to emulate a battery
             // TODO: verify this
             true;
+#elif LINUX
+			// currently, all linux suppurt is set to false
+			false;		
 #endif
 
 		public static bool HasFlash =>
@@ -73,6 +88,9 @@ namespace Microsoft.Maui.Essentials.DeviceTests
 #elif WINDOWS_UWP
             // TODO: most UWP devices don't have a camera lamp (mobile devices do, we we don't care about those)
             false;
+#elif LINUX
+			// currently, all linux suppurt is set to false
+			false;		
 #endif
 
 		public static bool HasBarometer =>
@@ -84,6 +102,9 @@ namespace Microsoft.Maui.Essentials.DeviceTests
 #elif WINDOWS_UWP
             // TODO: most UWP devices don't have a barometer (mobile devices do, we we don't care about those)
             false;
+#elif LINUX
+			// currently, all linux suppurt is set to false
+			false;		
 #endif
 	}
 }

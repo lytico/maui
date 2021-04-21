@@ -103,6 +103,8 @@ namespace Microsoft.Maui.Essentials.DeviceTests
             });
             return tcs.Task;
         }
+#elif LINUX
+
 #endif
 	}
 }
