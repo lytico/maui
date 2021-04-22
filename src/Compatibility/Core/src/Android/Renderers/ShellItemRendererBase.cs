@@ -330,12 +330,12 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.Android
 			switch (navSource)
 			{
 				case ShellNavigationSource.Push:
-					t.SetCustomAnimations(Resource.Animation.enterfromright, Resource.Animation.exittoleft);
+					t.SetCustomAnimations(Resource.Animation.EnterFromLeft, Resource.Animation.ExitToLeft);
 					break;
 
 				case ShellNavigationSource.Pop:
 				case ShellNavigationSource.PopToRoot:
-					t.SetCustomAnimations(Resource.Animation.enterfromleft, Resource.Animation.exittoright);
+					t.SetCustomAnimations(Resource.Animation.EnterFromLeft, Resource.Animation.ExitToRight);
 					break;
 
 				case ShellNavigationSource.ShellSectionChanged:

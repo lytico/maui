@@ -207,12 +207,12 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.Android
 
 			if (ToolbarResource == 0)
 			{
-				ToolbarResource = Resource.Layout.toolbar;
+				ToolbarResource = Resource.Layout.Toolbar;
 			}
 
 			if (TabLayoutResource == 0)
 			{
-				TabLayoutResource = Resource.Layout.tabbar;
+				TabLayoutResource = Resource.Layout.Tabbar;
 			}
 
 			if (ToolbarResource != 0)
