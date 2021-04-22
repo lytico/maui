@@ -1,6 +1,7 @@
 using System;
 using Gtk;
 using Microsoft.Maui.LifecycleEvents;
+using Application = GLib.Application;
 
 namespace Microsoft.Maui
 {
@@ -14,27 +15,39 @@ namespace Microsoft.Maui
 			Shown += OnShown;
 			Hidden += OnHidden;
 			VisibilityNotifyEvent += OnVisibilityNotifyEvent;
+			DeleteEvent += OnDeleteEvent;
 
+		}
+
+		void OnDeleteEvent(object o, DeleteEventArgs args)
+		{
+			MauiGtkApplication.Current.Services?.InvokeLifecycleEvents<LinuxLifecycle.OnDelete>(del => del(this, args));
+
+			if (MauiGtkApplication.Current.MainWindow == o)
+			{
+				((Application)MauiGtkApplication.CurrentGtkApplication).Quit();
+				Gtk.Application.Quit();
+			}
 		}
 
 		void OnVisibilityNotifyEvent(object o, VisibilityNotifyEventArgs args)
 		{
-			MauiGtkApplication0.Current.Services?.InvokeLifecycleEvents<LinuxLifecycle.OnVisibilityChanged>(del => del(this, args));
+			MauiGtkApplication.Current.Services?.InvokeLifecycleEvents<LinuxLifecycle.OnVisibilityChanged>(del => del(this, args));
 		}
 
 		void OnHidden(object? sender, EventArgs args)
 		{
-			MauiGtkApplication0.Current.Services?.InvokeLifecycleEvents<LinuxLifecycle.OnHidden>(del => del(this, args));
+			MauiGtkApplication.Current.Services?.InvokeLifecycleEvents<LinuxLifecycle.OnHidden>(del => del(this, args));
 		}
 
 		void OnShown(object? sender, EventArgs args)
 		{
-			MauiGtkApplication0.Current.Services?.InvokeLifecycleEvents<LinuxLifecycle.OnShown>(del => del(this, args));
+			MauiGtkApplication.Current.Services?.InvokeLifecycleEvents<LinuxLifecycle.OnShown>(del => del(this, args));
 		}
 
 		void OnWindowStateEvent(object o, WindowStateEventArgs args)
 		{
-			MauiGtkApplication0.Current.Services?.InvokeLifecycleEvents<LinuxLifecycle.OnStateChanged>(del => del(this, args));
+			MauiGtkApplication.Current.Services?.InvokeLifecycleEvents<LinuxLifecycle.OnStateChanged>(del => del(this, args));
 		}
 
 
