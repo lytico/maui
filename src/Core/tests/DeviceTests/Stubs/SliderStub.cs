@@ -12,7 +12,7 @@ namespace Microsoft.Maui.DeviceTests.Stubs
 		public double Maximum { get; set; }
 		public double Value
 		{
-			get => Math.Clamp(_value, Minimum, Maximum);
+			get => _value.Clamp(Minimum, Maximum);
 			set => _value = value;
 		}
 

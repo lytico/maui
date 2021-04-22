@@ -25,7 +25,7 @@ namespace Microsoft.Maui.DeviceTests
 		[InlineData(0, 10000, -10000)]
 		public async Task PercentValueInitializesCorrectly(double min, double max, double value)
 		{
-			var expectedValue = Math.Clamp(value, min, max);
+			var expectedValue = value.Clamp(min, max);
 			var expectedPercent = (expectedValue - min) / (max - min);
 
 			var slider = new SliderStub()

@@ -18,10 +18,5 @@
   <ItemGroup>
     <MauiFont Include="Fonts\*" />
   </ItemGroup>
-  <ItemGroup>
-    <Compile Update="Handlers\HandlerTestBase.Linux.cs">
-      <SubType>Code</SubType>
-    </Compile>
-  </ItemGroup>
   <Import Project="..\..\..\..\.nuspec\Microsoft.Maui.Resizetizer.targets" />
 </Project>

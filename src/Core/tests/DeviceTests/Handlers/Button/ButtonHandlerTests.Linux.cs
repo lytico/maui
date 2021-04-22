@@ -45,9 +45,9 @@ namespace Microsoft.Maui.DeviceTests
 			Assert.Equal(nativeFont, nativeButton.GetPangoFontDescription());
 
 			if (string.IsNullOrEmpty(family))
-				Assert.Equal(fontManager.DefaultTypeface, nativeButton.Typeface);
+				Assert.Equal(fontManager.DefaultFontFamily.ToString(), nativeButton.GetPangoFontFamily().ToString());
 			else
-				Assert.NotEqual(fontManager.DefaultTypeface, nativeButton.Typeface);
+				Assert.NotEqual(fontManager.DefaultFontFamily.ToString(), nativeButton.GetPangoFontFamily().ToString());
 		}
 
 		[Fact(DisplayName = "Button Padding Initializing")]
@@ -106,7 +106,7 @@ namespace Microsoft.Maui.DeviceTests
 
 			if (button != null)
 			{
-				button.GetPangoFontDescription().Stretch.
+				return (int)button.GetPangoFontDescription().Stretch;
 			}
 
 			return -1;

@@ -20,5 +20,7 @@ namespace Microsoft.Maui.DeviceTests
 
 			await ValidatePropertyInitValue(checkBoxStub, () => checkBoxStub.IsChecked, GetNativeIsChecked, checkBoxStub.IsChecked);
 		}
+
+
 	}
 }
