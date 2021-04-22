@@ -40,9 +40,9 @@ namespace Microsoft.Maui.DeviceTests
 
 			var fontManager = handler.Services.GetRequiredService<IFontManager>();
 
-			var nativeFont = fontManager.GetTypeface(Font.OfSize(family, 0.0));
+			var nativeFont = fontManager.GetFontFamily(Font.OfSize(family, 0.0));
 
-			Assert.Equal(nativeFont, nativeButton.Typeface);
+			Assert.Equal(nativeFont, nativeButton.GetPangoFontDescription());
 
 			if (string.IsNullOrEmpty(family))
 				Assert.Equal(fontManager.DefaultTypeface, nativeButton.Typeface);
