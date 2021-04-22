@@ -1,45 +1,66 @@
 <Project>
-  <ItemGroup Condition="$(TargetFramework.StartsWith('Xamarin.iOS')) != true AND $(TargetFramework.StartsWith('net6.0-ios')) != true AND $(TargetFramework.StartsWith('net6.0-maccatalyst')) != true ">
-    <Compile Remove="**\*.iOS.cs" />
-    <None Include="**\*.iOS.cs" />
-    <Compile Remove="**\iOS\*.cs" />
-    <None Include="**\iOS\*.cs" />
+  <PropertyGroup Condition="$(TargetFramework.StartsWith('Xamarin.iOS')) == true OR $(TargetFramework.StartsWith('net6.0-ios')) == true OR $(TargetFramework.StartsWith('net6.0-maccatalyst')) == true ">
+    <MauiTarget>iOS</MauiTarget>
+  </PropertyGroup>
+  <PropertyGroup Condition="$(TargetFramework.StartsWith('Xamarin.Mac')) == true ">
+    <MauiTarget>Mac</MauiTarget>
+  </PropertyGroup>
+  <PropertyGroup Condition="$(TargetFramework.StartsWith('Xamarin.Mac')) == true OR $(TargetFramework.StartsWith('Xamarin.iOS')) == true OR $(TargetFramework.StartsWith('net6.0-ios')) == true OR $(TargetFramework.StartsWith('net6.0-maccatalyst')) == true">
+    <MauiTarget>MaciOS</MauiTarget>
+  </PropertyGroup>
+  <PropertyGroup Condition="$(TargetFramework.StartsWith('MonoAndroid')) == true OR $(TargetFramework.StartsWith('net6.0-android')) == true ">
+    <MauiTarget>Android</MauiTarget>
+  </PropertyGroup>
+  <PropertyGroup Condition="$(TargetFramework.StartsWith('netstandard')) == true ">
+    <MauiTarget>Standard</MauiTarget>
+  </PropertyGroup>
+  <PropertyGroup Condition="$(TargetFramework.Contains('-windows')) == true ">
+    <MauiTarget>Windows</MauiTarget>
+  </PropertyGroup>
+  <PropertyGroup Condition="$(TargetFramework.StartsWith('net5.0')) == true OR $(TargetFramework.StartsWith('net48')) == true ">
+    <MauiTarget>Linux</MauiTarget>
+  </PropertyGroup>
+  <ItemGroup Condition="$(MauiTarget) != 'iOS'">
+    <Compile Remove="**\*.iOS.cs"/>
+    <None Include="**\*.iOS.cs"/>
+    <Compile Remove="**\iOS\*.cs"/>
+    <None Include="**\iOS\*.cs"/>
   </ItemGroup>
-  <ItemGroup Condition="$(TargetFramework.StartsWith('Xamarin.Mac')) != true ">
-    <Compile Remove="**\*.Mac.cs" />
-    <None Include="**\*.Mac.cs" />
-    <Compile Remove="**\Mac\*.cs" />
-    <None Include="**\Mac\*.cs" />
+  <ItemGroup Condition="$(MauiTarget) != 'Mac'">
+    <Compile Remove="**\*.Mac.cs"/>
+    <None Include="**\*.Mac.cs"/>
+    <Compile Remove="**\Mac\*.cs"/>
+    <None Include="**\Mac\*.cs"/>
   </ItemGroup>
-  <ItemGroup Condition="$(TargetFramework.StartsWith('Xamarin.Mac')) != true AND $(TargetFramework.StartsWith('Xamarin.iOS')) != true AND $(TargetFramework.StartsWith('net6.0-ios')) != true AND $(TargetFramework.StartsWith('net6.0-maccatalyst')) != true">
-    <Compile Remove="**\*.MaciOS.cs" />
-    <None Include="**\*.MaciOS.cs" />
-    <Compile Remove="**\MaciOS\*.cs" />
-    <None Include="**\MaciOS\*.cs" />
+  <ItemGroup Condition="$(MauiTarget) != 'MaciOS'">
+    <Compile Remove="**\*.MaciOS.cs"/>
+    <None Include="**\*.MaciOS.cs"/>
+    <Compile Remove="**\MaciOS\*.cs"/>
+    <None Include="**\MaciOS\*.cs"/>
   </ItemGroup>
-  <ItemGroup Condition="$(TargetFramework.StartsWith('MonoAndroid')) != true AND $(TargetFramework.StartsWith('net6.0-android')) != true ">
-    <Compile Remove="**\*.Android.cs" />
-    <None Include="**\*.Android.cs" />
-    <Compile Remove="**\Android\*.cs" />
-    <None Include="**\Android\*.cs" />
+  <ItemGroup Condition="$(MauiTarget) != 'Android'">
+    <Compile Remove="**\*.Android.cs"/>
+    <None Include="**\*.Android.cs"/>
+    <Compile Remove="**\Android\*.cs"/>
+    <None Include="**\Android\*.cs"/>
   </ItemGroup>
-  <ItemGroup Condition="$(TargetFramework.StartsWith('netstandard')) != true ">
-    <Compile Remove="**\*.Standard.cs" />
-    <None Include="**\*.Standard.cs" />
-    <Compile Remove="**\Standard\*.cs" />
-    <None Include="**\Standard\*.cs" />
+  <ItemGroup Condition="$(MauiTarget) != 'Standard'">
+    <Compile Remove="**\*.Standard.cs"/>
+    <None Include="**\*.Standard.cs"/>
+    <Compile Remove="**\Standard\*.cs"/>
+    <None Include="**\Standard\*.cs"/>
   </ItemGroup>
-  <ItemGroup Condition="$(TargetFramework.Contains('-windows')) != true ">
-    <Compile Remove="**\*.Windows.cs" />
-    <None Include="**\*.Windows.cs" />
-    <Compile Remove="**\Windows\*.cs" />
-    <None Include="**\Windows\*.cs" />
+  <ItemGroup Condition="$(MauiTarget) != 'Windows'">
+    <Compile Remove="**\*.Windows.cs"/>
+    <None Include="**\*.Windows.cs"/>
+    <Compile Remove="**\Windows\*.cs"/>
+    <None Include="**\Windows\*.cs"/>
   </ItemGroup>
-  <ItemGroup Condition="$(TargetFramework.StartsWith('net5.0')) != true ">
-    <Compile Remove="**\*.Linux.cs" />
-    <None Include="**\*.Linux.cs" />
-    <Compile Remove="**\Linux\*.cs" />
-    <None Include="**\Linux\*.cs" />
+  <ItemGroup Condition="$(MauiTarget) != 'Linux'">
+    <Compile Remove="**\*.Linux.cs"/>
+    <None Include="**\*.Linux.cs"/>
+    <Compile Remove="**\Linux\*.cs"/>
+    <None Include="**\Linux\*.cs"/>
   </ItemGroup>
   <PropertyGroup>
     <!-- Windows -->
@@ -56,8 +77,8 @@
   </PropertyGroup>
 
   <ItemGroup Condition="$(TargetFramework.StartsWith('MonoAndroid')) == true OR $(TargetFramework.StartsWith('net6.0-android')) == true ">
-    <AndroidResource Include="$(MonoAndroidResourcePrefix)\*\*.xml" />
-    <AndroidResource Include="$(MonoAndroidResourcePrefix)\*\*.axml" />
+    <AndroidResource Include="$(MonoAndroidResourcePrefix)\*\*.xml"/>
+    <AndroidResource Include="$(MonoAndroidResourcePrefix)\*\*.axml"/>
   </ItemGroup>
 
   <!-- iOS -->
@@ -70,8 +91,8 @@
     <DefineConstants>$(DefineConstants);MACCATALYST;IOS</DefineConstants>
   </PropertyGroup>
 
-    <!-- Linux -->
-  <PropertyGroup Condition=" '$(TargetFramework)' == 'net5.0' ">
+  <!-- Linux -->
+  <PropertyGroup Condition="$(MauiTarget) == 'Linux' ">
     <DefineConstants>$(DefineConstants);LINUX</DefineConstants>
   </PropertyGroup>
 
@@ -80,25 +101,25 @@
   </PropertyGroup>
   <!-- If this becomes part of the product we will remove these but for now it's useful having them all in one place -->
   <ItemGroup Condition="$(TargetFramework.StartsWith('MonoAndroid')) == true OR '$(TargetPlatformIdentifier)' == 'android' OR '$(TargetFramework)' == 'net6.0-android'">
-    <PackageReference Include="Xamarin.AndroidX.Lifecycle.LiveData" />
-    <PackageReference Include="Xamarin.Google.Android.Material" />
-    <PackageReference Include="Xamarin.AndroidX.Legacy.Support.V4" />
+    <PackageReference Include="Xamarin.AndroidX.Lifecycle.LiveData"/>
+    <PackageReference Include="Xamarin.Google.Android.Material"/>
+    <PackageReference Include="Xamarin.AndroidX.Legacy.Support.V4"/>
   </ItemGroup>
-  <PropertyGroup Condition="$(TargetFramework.Contains('-windows')) == true ">
+  <PropertyGroup Condition="$(MauiTarget) == 'Windows' ">
     <TargetPlatformMinVersion>10.0.17763.0</TargetPlatformMinVersion>
     <RuntimeIdentifiers>win10-x86;win10-x64;win10-arm64</RuntimeIdentifiers>
     <DefineConstants>WINDOWS;$(DefineConstants)</DefineConstants>
   </PropertyGroup>
-  <ItemGroup Condition="$(TargetFramework.Contains('-windows')) == true ">
-    <PackageReference Include="Microsoft.ProjectReunion" />
-    <PackageReference Include="Microsoft.ProjectReunion.Foundation" />
-    <PackageReference Include="Microsoft.ProjectReunion.WinUI" />
+  <ItemGroup Condition="$(MauiTarget) == 'Windows' ">
+    <PackageReference Include="Microsoft.ProjectReunion"/>
+    <PackageReference Include="Microsoft.ProjectReunion.Foundation"/>
+    <PackageReference Include="Microsoft.ProjectReunion.WinUI"/>
   </ItemGroup>
-  <ItemGroup Condition="$(TargetFramework.Contains('net5.0')) == true ">
-    <PackageReference Include="GtkSharp" Version="3.24.24.34" />
+  <ItemGroup Condition="$(MauiTarget) == 'Linux' ">
+    <PackageReference Include="GtkSharp" Version="3.24.24.34"/>
   </ItemGroup>
 
-  <Target Name="Net6WinUIWorkaround" BeforeTargets="_GetSdkToolsPathsFromSdk" Condition="$(TargetFramework.Contains('-windows')) == true ">
+  <Target Name="Net6WinUIWorkaround" BeforeTargets="_GetSdkToolsPathsFromSdk" Condition="$(MauiTarget) == 'Windows' ">
     <PropertyGroup>
       <TargetPlatformIdentifierAdjusted>UAP</TargetPlatformIdentifierAdjusted>
     </PropertyGroup>

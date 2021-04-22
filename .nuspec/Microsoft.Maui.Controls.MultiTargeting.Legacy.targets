@@ -1,5 +1,5 @@
 <Project>
-  <ItemGroup Condition="$(TargetFramework.StartsWith('Xamarin.iOS')) != true AND $(TargetFramework.StartsWith('net6.0-ios')) != true AND $(TargetFramework.StartsWith('net6.0-maccatalyst')) != true ">
+  <ItemGroup Condition="$(MauiTarget) != 'iOS'">
     <Compile Remove="**\*.ios.cs" />
     <None Include="**\*.ios.cs" />
     <Compile Remove="**\ios\*.cs" />
@@ -17,13 +17,13 @@
     <Compile Remove="**\tizen\*.cs" />
     <None Include="**\tizen\*.cs" />
   </ItemGroup>
-  <ItemGroup Condition="$(TargetFramework.StartsWith('MonoAndroid')) != true AND $(TargetFramework.StartsWith('net6.0-android')) != true ">
+  <ItemGroup Condition="$(MauiTarget) != 'Android'">
     <Compile Remove="**\*.android.cs" />
     <None Include="**\*.android.cs" />
     <Compile Remove="**\android\*.cs" />
     <None Include="**\android\*.cs" />
   </ItemGroup>
-  <ItemGroup Condition="$(TargetFramework.StartsWith('netstandard')) != true ">
+  <ItemGroup Condition="$(MauiTarget) != 'Standard'">
     <Compile Remove="**\*.netstandard.cs" />
     <None Include="**\*.netstandard.cs" />
     <Compile Remove="**\netstandard\*.cs" />
@@ -35,7 +35,7 @@
     <Compile Remove="**\uwp\*.cs" />
     <None Include="**\uwp\*.cs" />
   </ItemGroup>
-  <ItemGroup Condition=" $(TargetFramework.StartsWith('Xamarin.Mac20')) != true ">
+  <ItemGroup Condition="$(MauiTarget) != 'MacOs'">
     <Compile Remove="**\*.macos.cs" />
     <None Include="**\*.macos.cs" />
     <Compile Remove="**\*.macos.*.cs" />

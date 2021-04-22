@@ -3,9 +3,10 @@
   <PropertyGroup>
     <BuildForWinUI Condition="'$(SolutionFileName)' == 'Microsoft.Maui.WinUI.sln'">true</BuildForWinUI>
     <BuildForNet6 Condition="'$(SolutionFileName)' == 'Microsoft.Maui-net6.sln' or '$(BuildForWinUI)' == 'true'">true</BuildForNet6>
+    <MauiLinuxTargets>net48</MauiLinuxTargets>
     <MauiPlatforms>net6.0-ios;net6.0-maccatalyst;net6.0-android</MauiPlatforms>
-    <MauiPlatformsLegacy>net5.0;Xamarin.iOS10;MonoAndroid10.0</MauiPlatformsLegacy>
-    <MauiPlatformsLegacy>net5.0</MauiPlatformsLegacy>
+    <MauiPlatformsLegacy>$(MauiLinuxTargets);Xamarin.iOS10;MonoAndroid10.0</MauiPlatformsLegacy>
+    <MauiPlatformsLegacy>$(MauiLinuxTargets);MonoAndroid10.0</MauiPlatformsLegacy>
     <WindowsTargetFramework Condition="'$(WindowsTargetFramework)' == ''">net6.0-windows10.0.18362</WindowsTargetFramework>
     <MauiPlatforms Condition="'$(Packing)' == 'true'">$(MauiPlatforms);$(WindowsTargetFramework)</MauiPlatforms>
     <MauiPlatforms Condition="'$(BuildForWinUI)' == 'true'">$(WindowsTargetFramework)</MauiPlatforms>
