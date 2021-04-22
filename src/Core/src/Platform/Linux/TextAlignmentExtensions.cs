@@ -2,7 +2,7 @@
 
 namespace Microsoft.Maui
 {
-	public static class AlignmentExtensions
+	public static class TextAlignmentExtensions
 	{
 		public static Align ToNative(this TextAlignment alignment)
 		{

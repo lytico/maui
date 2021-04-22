@@ -39,12 +39,7 @@ namespace Microsoft.Maui
 	  }
   
   
-    public enum Style
-  {
-    Normal,
-    Oblique,
-    Italic,
-  }
+    public enum Style { Normal, Oblique,  Italic  }
   
     public enum Variant
   {
@@ -84,17 +79,12 @@ namespace Microsoft.Maui
 			get => _defaultFontFamily ??= GetFontFamily(default);
 		}
 
-		public double DefaultFontSize { get; set; }
+		double? _defaultFontSize;
 
-		public FontDescription GetFontFamily(Font font)
-		{
-			if (font == default)
-			{
-				return SystemContext.FontDescription;
-			}
+		public double DefaultFontSize => _defaultFontSize ??= DefaultFontFamily?.GetSize() ?? 0;
 
-			throw new NotImplementedException();
-		}
+		public FontDescription GetFontFamily(Font font) => 
+			font == default ? SystemContext.FontDescription : font.ToFontDescription();
 
 		public double GetFontSize(Font font)
 		{
