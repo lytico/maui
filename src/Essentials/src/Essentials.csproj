@@ -17,14 +17,14 @@
     <!--    <Configurations>Debug;Release</Configurations>-->
     <!--    <LangVersion>9.0</LangVersion>-->
   </PropertyGroup>
-  <Import Project="..\..\..\.nuspec\Microsoft.Maui.Controls.MultiTargeting.targets"/>
+  <Import Project="..\..\..\.nuspec\Microsoft.Maui.Controls.MultiTargeting.targets" />
 
   <PropertyGroup>
     <!-- TODO: adopt patterns from Microsoft.Maui.Controls.MultiTargeting.targets and remove this:-->
 <!--    <EnableDefaultCompileItems>false</EnableDefaultCompileItems>-->
   </PropertyGroup>
 
-  <Import Project="..\..\..\.nuspec\Microsoft.Maui.Controls.MultiTargeting.Legacy.targets"/>
+  <Import Project="..\..\..\.nuspec\Microsoft.Maui.Controls.MultiTargeting.Legacy.targets" />
   
   <PropertyGroup Condition=" '$(Configuration)'=='Debug' ">
     <DebugSymbols>true</DebugSymbols>
@@ -38,27 +38,27 @@
     <AllowedOutputExtensionsInPackageBuildOutputFolder>$(AllowedOutputExtensionsInPackageBuildOutputFolder);.pdb</AllowedOutputExtensionsInPackageBuildOutputFolder>
   </PropertyGroup>
   <ItemGroup Condition=" '$(Configuration)'=='Release' And '$(OS)' == 'Windows_NT' ">
-    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0" PrivateAssets="All"/>
+    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0" PrivateAssets="All" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\..\..\LICENSE" PackagePath="" Pack="true"/>
-    <None Include="..\..\..\Assets\xamarin.essentials_128x128.png" PackagePath="icon.png" Pack="true"/>
-    <None Include="nugetreadme.txt" PackagePath="readme.txt" Pack="true"/>
-    <PackageReference Include="mdoc" Version="5.7.4.10" PrivateAssets="All"/>
-    <PackageReference Include="Xamarin.Build.TypeRedirector" Version="0.1.2-preview" PrivateAssets="all"/>
+    <None Include="..\..\..\LICENSE" PackagePath="" Pack="true" />
+    <None Include="..\..\..\Assets\xamarin.essentials_128x128.png" PackagePath="icon.png" Pack="true" />
+    <None Include="nugetreadme.txt" PackagePath="readme.txt" Pack="true" />
+    <PackageReference Include="mdoc" Version="5.7.4.10" PrivateAssets="All" />
+    <PackageReference Include="Xamarin.Build.TypeRedirector" Version="0.1.2-preview" PrivateAssets="all" />
 <!--    <Compile Include="**\*.shared.cs"/>-->
 <!--    <Compile Include="**\*.shared.*.cs"/>-->
   </ItemGroup>
   <ItemGroup Condition=" $(TargetFramework.StartsWith('netstandard1.')) ">
-    <PackageReference Include="System.ValueTuple" Version="4.5.0"/>
+    <PackageReference Include="System.ValueTuple" Version="4.5.0" />
   </ItemGroup>
   <ItemGroup Condition=" $(TargetFramework.StartsWith('netstandard')) ">
-    <PackageReference Include="System.Numerics.Vectors" Version="4.5.0"/>
+    <PackageReference Include="System.Numerics.Vectors" Version="4.5.0" />
 <!--    <Compile Include="**\*.netstandard.cs"/>-->
 <!--    <Compile Include="**\*.netstandard.*.cs"/>-->
   </ItemGroup>
   <ItemGroup Condition=" $(TargetFramework.StartsWith('uap10.0')) ">
-    <PackageReference Include="Microsoft.NETCore.UniversalWindowsPlatform" Version="6.2.9" PrivateAssets="all"/>
+    <PackageReference Include="Microsoft.NETCore.UniversalWindowsPlatform" Version="6.2.9" PrivateAssets="all" />
 <!--    <Compile Include="**\*.uwp.cs"/>-->
 <!--    <Compile Include="**\*.uwp.*.cs"/>-->
     <SDKReference Include="WindowsMobile, Version=10.0.16299.0">
@@ -68,51 +68,56 @@
   <ItemGroup Condition=" $(TargetFramework.StartsWith('MonoAndroid')) ">
 <!--    <Compile Include="**\*.android.cs"/>-->
 <!--    <Compile Include="**\*.android.*.cs"/>-->
-    <PackageReference Include="System.Numerics.Vectors" Version="4.5.0"/>
-    <Reference Include="System.Numerics"/>
-    <AndroidResource Include="Resources\xml\*.xml"/>
+    <PackageReference Include="System.Numerics.Vectors" Version="4.5.0" />
+    <Reference Include="System.Numerics" />
+    <AndroidResource Include="Resources\xml\*.xml" />
   </ItemGroup>
   <!-- NOTE: When Android 11.x comes out we neeed to make this check more robust -->
   <ItemGroup Condition="$(TargetFramework.StartsWith('MonoAndroid')) And '$(TargetFramework)' != 'MonoAndroid10.0'">
-    <PackageReference Include="Xamarin.Android.Support.Compat" Version="28.0.0.3"/>
-    <PackageReference Include="Xamarin.Android.Support.CustomTabs" Version="28.0.0.3"/>
-    <PackageReference Condition=" '$(OS)' == 'Windows_NT' And $(TargetFrameworkVersion.TrimStart('vV')) &lt; 9.0 And $(TargetFrameworkVersion.TrimStart('vV')) &lt; 10.0" Include="Xamarin.Android.Support.Core.Utils" Version="28.0.0.3"/>
-    <PackageReference Condition=" '$(OS)' != 'Windows_NT' " Include="Xamarin.Android.Support.Core.Utils" Version="28.0.0.3"/>
+    <PackageReference Include="Xamarin.Android.Support.Compat" Version="28.0.0.3" />
+    <PackageReference Include="Xamarin.Android.Support.CustomTabs" Version="28.0.0.3" />
+    <PackageReference Condition=" '$(OS)' == 'Windows_NT' And $(TargetFrameworkVersion.TrimStart('vV')) &lt; 9.0 And $(TargetFrameworkVersion.TrimStart('vV')) &lt; 10.0" Include="Xamarin.Android.Support.Core.Utils" Version="28.0.0.3" />
+    <PackageReference Condition=" '$(OS)' != 'Windows_NT' " Include="Xamarin.Android.Support.Core.Utils" Version="28.0.0.3" />
   </ItemGroup>
   <!-- NOTE: When Android 11.x comes out we neeed to make this check more robust -->
   <ItemGroup Condition="'$(TargetFramework)' == 'MonoAndroid10.0'">
-    <PackageReference Include="Xamarin.AndroidX.Browser"/>
+    <PackageReference Include="Xamarin.AndroidX.Browser" />
   </ItemGroup>
   <ItemGroup Condition=" $(TargetFramework.StartsWith('Xamarin.iOS')) ">
 <!--    <Compile Include="**\*.ios.cs"/>-->
 <!--    <Compile Include="**\*.ios.*.cs"/>-->
-    <PackageReference Include="System.Numerics.Vectors" Version="4.5.0"/>
-    <Reference Include="System.Numerics"/>
-    <Reference Include="OpenTK-1.0"/>
+    <PackageReference Include="System.Numerics.Vectors" Version="4.5.0" />
+    <Reference Include="System.Numerics" />
+    <Reference Include="OpenTK-1.0" />
   </ItemGroup>
   <ItemGroup Condition=" $(TargetFramework.StartsWith('Xamarin.TVOS')) ">
 <!--    <Compile Include="**\*.tvos.cs"/>-->
 <!--    <Compile Include="**\*.tvos.*.cs"/>-->
-    <PackageReference Include="System.Numerics.Vectors" Version="4.5.0"/>
-    <Reference Include="System.Numerics"/>
-    <Reference Include="OpenTK-1.0"/>
+    <PackageReference Include="System.Numerics.Vectors" Version="4.5.0" />
+    <Reference Include="System.Numerics" />
+    <Reference Include="OpenTK-1.0" />
   </ItemGroup>
   <ItemGroup Condition=" $(TargetFramework.StartsWith('Xamarin.WatchOS')) ">
 <!--    <Compile Include="**\*.watchos.cs"/>-->
 <!--    <Compile Include="**\*.watchos.*.cs"/>-->
-    <PackageReference Include="System.Numerics.Vectors" Version="4.5.0"/>
-    <Reference Include="System.Numerics"/>
+    <PackageReference Include="System.Numerics.Vectors" Version="4.5.0" />
+    <Reference Include="System.Numerics" />
   </ItemGroup>
   <ItemGroup Condition=" $(TargetFramework.StartsWith('tizen')) ">
-    <PackageReference Include="Tizen.NET" Version="4.0.0" PrivateAssets="All"/>
+    <PackageReference Include="Tizen.NET" Version="4.0.0" PrivateAssets="All" />
 <!--    <Compile Include="**\*.tizen.cs"/>-->
 <!--    <Compile Include="**\*.tizen.*.cs"/>-->
   </ItemGroup>
   <ItemGroup Condition=" $(TargetFramework.StartsWith('Xamarin.Mac20')) ">
 <!--    <Compile Include="**\*.macos.cs"/>-->
 <!--    <Compile Include="**\*.macos.*.cs"/>-->
-    <Reference Include="System.Numerics"/>
-    <Reference Include="System.Numerics.Vectors"/>
-    <Reference Include="OpenTK"/>
+    <Reference Include="System.Numerics" />
+    <Reference Include="System.Numerics.Vectors" />
+    <Reference Include="OpenTK" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Update="WebAuthenticator\AppleSignInAuthenticator.android.cs">
+      <SubType>Code</SubType>
+    </Compile>
   </ItemGroup>
 </Project>
