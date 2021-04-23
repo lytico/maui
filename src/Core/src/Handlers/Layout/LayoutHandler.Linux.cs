@@ -1,5 +1,7 @@
 ﻿using System;
 using Gtk;
+using Microsoft.Maui.Graphics;
+using Microsoft.Maui.Layouts;
 
 namespace Microsoft.Maui.Handlers
 {
@@ -18,7 +20,23 @@ namespace Microsoft.Maui.Handlers
 			{
 				CrossPlatformMeasure = VirtualView.Measure,
 				CrossPlatformArrange = VirtualView.Arrange,
-				CrossPlatformSize = () => VirtualView.DesiredSize
+				CrossPlatformDesiredSizeSize = () => VirtualView.DesiredSize,
+				
+				CrossPlatformArrangeChildren = () =>
+				{
+					foreach (var element in VirtualView.Children)
+					{
+						element.Handler?.SetFrame(element.Frame);
+					}
+				},
+				
+				CrossPlatformInvalidateChildrenMeasure = () =>
+				{
+					foreach (var element in VirtualView.Children)
+					{
+						element.InvalidateMeasure();
+					}
+				}
 			};
 		}
 
@@ -43,7 +61,6 @@ namespace Microsoft.Maui.Handlers
 			NativeView.QueueAllocate();
 			NativeView.QueueResize();
 		}
-
 
 		public void Add(IView child)
 		{

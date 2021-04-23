@@ -15,4 +15,9 @@
 		<PackageReference Include="Microsoft.Extensions.Logging.Abstractions" />
 		<PackageReference Include="Microsoft.Maui.Graphics" />
 	</ItemGroup>
+	<ItemGroup>
+	  <Compile Update="Platform\Linux\LayoutViewAsBox.cs">
+	    <SubType>Code</SubType>
+	  </Compile>
+	</ItemGroup>
 </Project>
