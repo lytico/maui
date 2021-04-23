@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using GLib;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -21,48 +22,64 @@ namespace Microsoft.Maui
 
 		protected void RegisterLifecycleEvents(Gtk.Application app)
 		{
+			isfired = false;
 
-			app.Startup += OnStartup;
-			app.Shutdown += OnShutdown;
+			app.Startup += OnStartup!;
+			app.Shutdown += OnShutdown!;
 			app.Opened += OnOpened;
 			app.WindowAdded += OnWindowAdded;
-			app.Activated += OnActivated;
-			app.WindowRemoved += OnWindowRemoved;
-			app.CommandLine += OnCommandLine;
+			app.Activated += OnActivated!;
+			app.WindowRemoved += OnWindowRemoved!;
+			app.CommandLine += OnCommandLine!;
 
+			if (false)
+#pragma warning disable 162
+			{
+				// this has to be after all event registration
+				app.Register(GLib.Cancellable.Current);
+			}
+#pragma warning restore 162
 		}
 
-		void OnStartup(object sender, EventArgs args)
+#if DEBUG
+		static bool isfired = false;
+#endif
+		protected void OnStartup(object sender, EventArgs args)
 		{
-			Services?.InvokeLifecycleEvents<LinuxLifecycle.OnStartup>(del => del(CurrentGtkApplication, args));
+
+#if DEBUG
+			Trace.WriteLine($"{nameof(OnStartup)}");
+			isfired = true;
+#endif
+			Services.InvokeLifecycleEvents<LinuxLifecycle.OnStartup>(del => del(CurrentGtkApplication, args));
 		}
 
-		void OnOpened(object o, OpenedArgs args)
+		protected void OnOpened(object o, OpenedArgs args)
 		{
 			Services?.InvokeLifecycleEvents<LinuxLifecycle.OnOpened>(del => del(CurrentGtkApplication, args));
 		}
 
-		void OnActivated(object sender, EventArgs args)
+		protected void OnActivated(object sender, EventArgs args)
 		{
 			Services?.InvokeLifecycleEvents<LinuxLifecycle.OnApplicationActivated>(del => del(CurrentGtkApplication, args));
 		}
 
-		void OnShutdown(object sender, EventArgs args)
+		protected void OnShutdown(object sender, EventArgs args)
 		{
 			Services?.InvokeLifecycleEvents<LinuxLifecycle.OnShutdown>(del => del(CurrentGtkApplication, args));
 		}
 
-		void OnCommandLine(object o, CommandLineArgs args)
+		protected void OnCommandLine(object o, CommandLineArgs args)
 		{
 			;
 		}
 
-		void OnWindowRemoved(object o, WindowRemovedArgs args)
+		protected void OnWindowRemoved(object o, WindowRemovedArgs args)
 		{
 			;
 		}
 
-		void OnWindowAdded(object o, WindowAddedArgs args)
+		protected void OnWindowAdded(object o, WindowAddedArgs args)
 		{
 			;
 		}
@@ -71,10 +88,11 @@ namespace Microsoft.Maui
 		{
 
 			Gtk.Application.Init();
-			CurrentGtkApplication = new Gtk.Application(Name ?? string.Empty, ApplicationFlags.None);
-			CurrentGtkApplication.Register(GLib.Cancellable.Current);
-			RegisterLifecycleEvents(CurrentGtkApplication);
-			
+			var app = new Gtk.Application(Name ?? string.Empty, ApplicationFlags.None);
+			RegisterLifecycleEvents(app);
+
+			CurrentGtkApplication = app;
+
 			Current = this;
 
 			MainWindow = new MauiGtkMainWindow();
@@ -104,26 +122,32 @@ namespace Microsoft.Maui
 
 			MainWindow.Child = canvas;
 
-			CurrentGtkApplication.AddWindow(MainWindow);
+			app.AddWindow(MainWindow);
 
 			MainWindow.ShowAll();
 
-			
-			
-			Gtk.Application.Run();
+			((Application)app).Run();
 
 			Services?.InvokeLifecycleEvents<LinuxLifecycle.OnLaunched>(del => del(CurrentGtkApplication, args));
 
+			Gtk.Application.Run();
+
+#if DEBUG
+			if (!isfired)
+			{
+				Trace.WriteLine("lifecycle broken");
+			}
+#endif
 		}
 
-		Container CreateRootContainer()
+		protected Container CreateRootContainer()
 		{
 			var b = new Box(Orientation.Horizontal, 0);
 
 			return b;
 		}
 
-		void ConfigureNativeServices(HostBuilderContext ctx, IServiceCollection services)
+		protected void ConfigureNativeServices(HostBuilderContext ctx, IServiceCollection services)
 		{ }
 
 	}
@@ -136,6 +160,7 @@ namespace Microsoft.Maui
 
 		public string? Name { get; set; }
 
+		// https://developer.gnome.org/gtk3/stable/GtkApplication.html
 		public static Gtk.Application CurrentGtkApplication { get; internal set; } = null!;
 
 		public static MauiGtkApplication Current { get; internal set; } = null!;
