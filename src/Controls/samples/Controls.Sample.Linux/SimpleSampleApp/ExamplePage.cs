@@ -39,12 +39,19 @@ namespace Maui.SimpleSampleApp
 			var paddingButton = new Button
 			{
 				Padding = new Thickness(10),
-				Text = "This button has a padding!!",
+				Text = "Change the label!",
 				BackgroundColor = Colors.Red,
 				TextColor = Colors.Yellow,
 			};
 
 			verticalStack.Add(paddingButton);
+
+			var label = new Label { Text = "a label" };
+			verticalStack.Add(label);
+
+			const string ltext = "changed";
+			paddingButton.Clicked += (s, e) => label.Text = label.Text==ltext?$"{ltext} again":ltext;
+			
 			Content = verticalStack;
 		}
 
