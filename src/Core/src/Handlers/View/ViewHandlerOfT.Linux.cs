@@ -30,7 +30,23 @@ namespace Microsoft.Maui.Handlers
 
 		public override Size GetDesiredSize(double widthConstraint, double heightConstraint)
 		{
-			return new(widthConstraint, heightConstraint);
+			// return new(widthConstraint, heightConstraint);
+			
+			if (widthConstraint < 0 || heightConstraint < 0)
+				return Size.Zero;
+			
+			var nativeView = NativeView;
+
+			if (nativeView == null)
+				return Size.Zero;
+
+			nativeView.WidthRequest = (int)widthConstraint;
+			nativeView.HeightRequest=(int)heightConstraint;
+			nativeView.QueueAllocate();
+			
+			var result = new Size(nativeView.Allocation.Width,nativeView.Allocation.Height);
+
+			return new SizeRequest(result);
 		}
 
 		protected override void SetupContainer()
