@@ -1,33 +1,71 @@
-﻿using Cairo;
+﻿using System;
+using Cairo;
 using Gtk;
-using Rectangle = Gdk.Rectangle;
+using Microsoft.Maui.Graphics;
+using Microsoft.Maui.Graphics.Native.Gtk;
 
 namespace Microsoft.Maui
 {
-	public class LayoutView : Fixed
+	public class LayoutView : Box
 	{
 #if DEBUG
-		protected override bool OnDrawn(Context cr)
+		public LayoutView():base(Orientation.Vertical,0)
 		{
-			var r = base.OnDrawn(cr);
-
-			cr.Save();
-			cr.ShowText($"{nameof(LayoutView)}");
-			cr.Restore();
-			return r;
 		}
+
+		// protected override bool OnDrawn(Context cr)
+		// {
+		// 	var r = base.OnDrawn(cr);
+		//
+		// 	cr.Save();
+		// 	cr.ShowText($"{nameof(LayoutView)}");
+		// 	cr.Restore();
+		// 	return r;
+		// }
 #endif
-		protected override void OnAdjustSizeRequest(Orientation orientation, out int minimum_size, out int natural_size)
+		
+		internal Func<double, double, Size>? CrossPlatformMeasure { get; set; }
+		internal Action<Graphics.Rectangle>? CrossPlatformArrange { get; set; }
+
+		internal Func<Size>? CrossPlatformSize { get; set; }
+
+		int SizeFor(Orientation or, Graphics.Size size)
+			=> (int) (or == Orientation.Horizontal ? size.Width : size.Height);
+		// protected override void OnAdjustSizeRequest(Orientation orientation, out int minimum_size, out int natural_size)
+		// {
+		// 	base.OnAdjustSizeRequest(orientation, out minimum_size, out natural_size);
+		// 	if (CrossPlatformMeasure == null || CrossPlatformSize==null)
+		// 	{
+		// 		return;
+		// 	}
+		//
+		// 	// var size = SizeFor(orientation,CrossPlatformSize());
+		// 	// minimum_size = Math.Max(size,minimum_size);
+		// 	// natural_size = Math.Max(size,natural_size);
+		// 	
+		// }
+
+		// protected override void OnSizeAllocated(Gdk.Rectangle allocation)
+		// {
+		// 	if (CrossPlatformArrange == null)
+		// 	{
+		// 		base.OnSizeAllocated(allocation);
+		// 		return;
+		// 	}
+		// 	//
+		// 	// CrossPlatformArrange(allocation.ToRectangle());
+		// }
+		
+		
+		public new void Add(Widget child)
 		{
-			base.OnAdjustSizeRequest(orientation, out minimum_size, out natural_size);
+			PackStart(child,false,false,0);
 		}
 
-		protected override void OnSizeAllocated(Rectangle allocation)
+		public new void Remove (Widget child)
 		{
-			base.OnSizeAllocated(allocation);
-	
+			base.Remove(child);
 		}
-		
 		
 	}
 }
