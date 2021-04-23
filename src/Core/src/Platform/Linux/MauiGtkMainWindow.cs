@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics;
 using Gtk;
 using Microsoft.Maui.LifecycleEvents;
 using Application = GLib.Application;
@@ -25,8 +26,10 @@ namespace Microsoft.Maui
 
 			if (MauiGtkApplication.Current.MainWindow == o)
 			{
+
 				((Application)MauiGtkApplication.CurrentGtkApplication).Quit();
-				Gtk.Application.Quit();
+
+				args.Event.SendEvent = true;
 			}
 		}
 
@@ -49,7 +52,6 @@ namespace Microsoft.Maui
 		{
 			MauiGtkApplication.Current.Services?.InvokeLifecycleEvents<LinuxLifecycle.OnStateChanged>(del => del(this, args));
 		}
-
 
 	}
 

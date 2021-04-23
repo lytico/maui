@@ -21,14 +21,21 @@ namespace Microsoft.Maui
 		protected void RegisterLifecycleEvents(Gtk.Application app)
 		{
 			isfired = false;
-
-			if (true)
 #pragma warning disable 162
+			if (true)
 			{
-				// this has to be after all event registration?
-				app.Register(GLib.Cancellable.Current);
+				// if called after event-register, the events are not called
+				// if called before event-register, the events are immidiatly called (to early)
+				var c = new GLib.Cancellable();
+
+				app.Register(c);
+				Debug.WriteLine($"{nameof(GLib.Cancellable)}");
+				isfired = true;
+
 			}
+
 #pragma warning restore 162
+
 			app.Startup += OnStartup!;
 			app.Shutdown += OnShutdown!;
 			app.Opened += OnOpened;
@@ -46,7 +53,7 @@ namespace Microsoft.Maui
 		{
 
 #if DEBUG
-			Trace.WriteLine($"{nameof(OnStartup)}");
+			Debug.WriteLine($"{nameof(OnStartup)}");
 			isfired = true;
 #endif
 			Services.InvokeLifecycleEvents<LinuxLifecycle.OnStartup>(del => del(CurrentGtkApplication, args));
@@ -59,12 +66,21 @@ namespace Microsoft.Maui
 
 		protected void OnActivated(object sender, EventArgs args)
 		{
+			StartupMainWindow();
+			StartupLauch(sender, args);
+
 			Services?.InvokeLifecycleEvents<LinuxLifecycle.OnApplicationActivated>(del => del(CurrentGtkApplication, args));
 		}
 
 		protected void OnShutdown(object sender, EventArgs args)
 		{
 			Services?.InvokeLifecycleEvents<LinuxLifecycle.OnShutdown>(del => del(CurrentGtkApplication, args));
+			// current is null, so this has no effect
+			GLib.Cancellable.Current?.Cancel();
+
+			MauiGtkApplication.DispatchPendingEvents();
+			MauiGtkApplication.Invoke(() => Gtk.Application.Quit());
+			;
 		}
 
 		protected void OnCommandLine(object o, GLib.CommandLineArgs args)
@@ -86,20 +102,8 @@ namespace Microsoft.Maui
 		// TODO: find a better algo for id
 		public string ApplicationId => $"{typeof(TStartup).Namespace}.{typeof(TStartup).Name}.{base.Name}".PadRight(255, ' ').Substring(0, 255).Trim();
 
-		protected void Launch(EventArgs args)
+		protected void StartupLauch(object sender, EventArgs args)
 		{
-
-			Gtk.Application.Init();
-			var app = new Gtk.Application(ApplicationId, GLib.ApplicationFlags.None);
-			RegisterLifecycleEvents(app);
-
-			CurrentGtkApplication = app;
-
-			Current = this;
-
-			MainWindow = new MauiGtkMainWindow();
-			app.AddWindow(MainWindow);
-
 			var startup = new TStartup();
 
 			var host = startup
@@ -124,18 +128,47 @@ namespace Microsoft.Maui
 			canvas.Child = content.ToNative(window.MauiContext);
 
 			MainWindow.Child = canvas;
-
+			MainWindow.QueueDraw();
 			MainWindow.ShowAll();
+
+			Services?.InvokeLifecycleEvents<LinuxLifecycle.OnLaunched>(del => del(CurrentGtkApplication, args));
+		}
+
+		void StartupMainWindow()
+		{
+			MainWindow = new MauiGtkMainWindow();
+			CurrentGtkApplication.AddWindow(MainWindow);
+
+		}
+
+		protected void Launch(EventArgs args)
+		{
+
+			Gtk.Application.Init();
+			var app = new Gtk.Application(ApplicationId, GLib.ApplicationFlags.None);
+
+			RegisterLifecycleEvents(app);
+
+			CurrentGtkApplication = app;
+
+			Current = this;
 
 			((GLib.Application)app).Run();
 
+#pragma warning disable 162
+
+			if (false) // if called before Gtk.Application.Run(), gtk_main_quit: assertion 'main_loops != NULL' failed
+			{
+				Services?.InvokeLifecycleEvents<LinuxLifecycle.OnLaunched>(del => del(CurrentGtkApplication, args));
+			}
+#pragma warning restore 162
+
 			Gtk.Application.Run();
-			Services?.InvokeLifecycleEvents<LinuxLifecycle.OnLaunched>(del => del(CurrentGtkApplication, args));
 
 #if DEBUG
 			if (!isfired)
 			{
-				Trace.WriteLine("lifecycle broken");
+				Debug.WriteLine("lifecycle broken");
 			}
 #endif
 		}
@@ -177,6 +210,39 @@ namespace Microsoft.Maui
 		public IServiceProvider Services { get; protected set; } = null!;
 
 		public IApplication Application { get; protected set; } = null!;
+
+		public static void DispatchPendingEvents()
+		{
+			// The loop is limited to 1000 iterations as a workaround for an issue that some users
+			// have experienced. Sometimes EventsPending starts return 'true' for all iterations,
+			// causing the loop to never end.
+
+			int n = 1000;
+#pragma warning disable 612
+			Gdk.Threads.Enter();
+#pragma warning restore 612
+
+			while (Gtk.Application.EventsPending() && --n > 0)
+			{
+				Gtk.Application.RunIteration(false);
+			}
+
+#pragma warning disable 612
+			Gdk.Threads.Leave();
+#pragma warning restore 612
+		}
+
+		public static void Invoke(System.Action action)
+		{
+			if (action == null)
+				throw new ArgumentNullException("action");
+
+			// Switch to no Invoke(Action) once a gtk# release is done.
+			Gtk.Application.Invoke((o, args) =>
+			{
+				action();
+			});
+		}
 
 	}
 
