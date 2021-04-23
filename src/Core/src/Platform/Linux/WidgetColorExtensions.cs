@@ -10,6 +10,9 @@ namespace Microsoft.Maui
 
 		public static void SetBackgroundColor(this Gtk.Widget widget, Graphics.Color color)
 		{
+			if (color == null)
+				return;
+
 			widget.SetBackgroundColor(Gtk.StateType.Normal, color);
 		}
 
@@ -69,6 +72,8 @@ namespace Microsoft.Maui
 
 		public static void SetForegroundColor(this Gtk.Widget widget, Gtk.StateFlags state, Graphics.Color color)
 		{
+			if (color == null)
+				return;
 #pragma warning disable 612
 			widget.OverrideColor(state, color.ToGdkRgba());
 #pragma warning restore 612

@@ -34,8 +34,12 @@ namespace Microsoft.Maui.Handlers
 
 		public static void MapTextColor(ButtonHandler handler, IButton button)
 		{
-			handler.NativeView?.SetForegroundColor(button.TextColor);
-			handler.NativeView?.SetForegroundColor(Gtk.StateFlags.Prelight, button.TextColor);
+			if (handler?.NativeView is { } nativeView)
+			{
+				nativeView.SetForegroundColor(button.TextColor);
+			    nativeView.SetForegroundColor(Gtk.StateFlags.Prelight, button.TextColor);
+			}
+
 		}
 
 		[MissingMapper]
