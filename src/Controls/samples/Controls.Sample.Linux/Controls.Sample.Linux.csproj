@@ -21,19 +21,19 @@
     <Compile Update="SimpleSampleApp\Startup.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="SimpleSampleApp\MyApp.cs">
+    <Compile Update="SimpleSampleApp\SimpleSampleMauiApp.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="SimpleSampleApp\MainWindow.cs">
+    <Compile Update="SimpleSampleApp\SimpleSampleMainWindow.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="SimpleSampleApp\Window.cs">
+    <Compile Update="SimpleSampleApp\SimpleSampleWindow.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="SimpleSampleApp\BasePage.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="SimpleSampleApp\MainPage.cs">
+    <Compile Update="SimpleSampleApp\ExamplePage.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="SimpleSampleApp\MainPageViewModel.cs">

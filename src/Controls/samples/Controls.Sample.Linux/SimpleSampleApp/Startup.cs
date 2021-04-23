@@ -31,7 +31,7 @@ namespace Maui.SimpleSampleApp
 				// Use just the Forms renderers
 				appBuilder = appBuilder
 					.UseCompatibilityRenderers()
-					.UseMauiApp<MyApp>();
+					.UseMauiApp<SimpleSampleMauiApp>();
 			}
 
 			appBuilder
@@ -57,9 +57,9 @@ namespace Maui.SimpleSampleApp
 					// else if (UseSemanticsPage)
 					// 	services.AddTransient<IPage, SemanticsPage>();
 					// else
-						services.AddTransient<IPage, MainPage>();
+						services.AddTransient<IPage, ExamplePage>();
 
-					services.AddTransient<IWindow, MainWindow>();
+					services.AddTransient<IWindow, SimpleSampleMainWindow>();
 				})
 				.ConfigureFonts(fonts =>
 				{

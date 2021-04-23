@@ -14,7 +14,7 @@ namespace Controls.Sample.Linux
 		static void Main(string[] args)
 		{
 
-			var app  = new MainApplication();
+			var app  = new SimpleSampleGtkApplication();
 			app.Run();
 
 		}

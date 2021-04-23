@@ -5,9 +5,9 @@ using Microsoft.Maui;
 
 namespace Maui.SimpleSampleApp
 {
-	public class MyApp : IApplication
+	public class SimpleSampleMauiApp : IApplication
 	{
-		public MyApp(IServiceProvider services, ITextService textService)
+		public SimpleSampleMauiApp(IServiceProvider services, ITextService textService)
 		{
 			Services = services;
 
