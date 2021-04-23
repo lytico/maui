@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Diagnostics;
+using Gdk;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Maui.Hosting;
 using Microsoft.Maui.LifecycleEvents;
 using Gtk;
+using Microsoft.Maui.Graphics;
 
 namespace Microsoft.Maui
 {
@@ -102,6 +104,19 @@ namespace Microsoft.Maui
 		// TODO: find a better algo for id
 		public string ApplicationId => $"{typeof(TStartup).Namespace}.{typeof(TStartup).Name}.{base.Name}".PadRight(255, ' ').Substring(0, 255).Trim();
 
+		Widget CreateRootContainer(Widget nativePage)
+		{
+			var b = new Box(Orientation.Vertical, 0)
+			{
+				Fill = true,
+				Expand = true,
+			};
+
+			b.PackStart(nativePage, true, true, 0);
+
+			return b;
+		}
+
 		protected void StartupLauch(object sender, EventArgs args)
 		{
 			var startup = new TStartup();
@@ -122,10 +137,10 @@ namespace Microsoft.Maui
 			window.MauiContext = mauiContext;
 
 			var content = (window.Page as IView) ?? window.Page.View;
+			var nativeContent = content.ToNative(window.MauiContext);
 
-			var canvas = CreateRootContainer();
-
-			canvas.Child = content.ToNative(window.MauiContext);
+			var canvas = TopContainerOverride?.Invoke(nativeContent) ?? CreateRootContainer(nativeContent);
+			nativeContent.SetBackgroundColor(Colors.White);
 
 			MainWindow.Child = canvas;
 			MainWindow.QueueDraw();
@@ -173,13 +188,6 @@ namespace Microsoft.Maui
 #endif
 		}
 
-		protected Container CreateRootContainer()
-		{
-			var b = new Box(Orientation.Horizontal, 0);
-
-			return b;
-		}
-
 		protected void ConfigureNativeServices(HostBuilderContext ctx, IServiceCollection services)
 		{ }
 
@@ -187,6 +195,13 @@ namespace Microsoft.Maui
 
 	public abstract class MauiGtkApplication
 	{
+
+		/// <summary>
+		/// overrides creation of rootcontainer
+		/// rootcontainer is MainWindow 's <see cref="Gtk.Window.Child"/>
+		/// paramter is Maui's Mainwindows <see cref="IWindow.Page"/> as Gtk.Widget
+		/// </summary>
+		public Func<Widget, Widget> TopContainerOverride { get; set; } = null!;
 
 		protected MauiGtkApplication()
 		{ }
