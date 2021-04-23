@@ -1,12 +1,10 @@
 ﻿using System;
 using System.Diagnostics;
-using GLib;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Maui.Hosting;
 using Microsoft.Maui.LifecycleEvents;
 using Gtk;
-using Application = GLib.Application;
 
 namespace Microsoft.Maui
 {
@@ -24,6 +22,13 @@ namespace Microsoft.Maui
 		{
 			isfired = false;
 
+			if (true)
+#pragma warning disable 162
+			{
+				// this has to be after all event registration?
+				app.Register(GLib.Cancellable.Current);
+			}
+#pragma warning restore 162
 			app.Startup += OnStartup!;
 			app.Shutdown += OnShutdown!;
 			app.Opened += OnOpened;
@@ -32,13 +37,6 @@ namespace Microsoft.Maui
 			app.WindowRemoved += OnWindowRemoved!;
 			app.CommandLine += OnCommandLine!;
 
-			if (false)
-#pragma warning disable 162
-			{
-				// this has to be after all event registration
-				app.Register(GLib.Cancellable.Current);
-			}
-#pragma warning restore 162
 		}
 
 #if DEBUG
@@ -54,7 +52,7 @@ namespace Microsoft.Maui
 			Services.InvokeLifecycleEvents<LinuxLifecycle.OnStartup>(del => del(CurrentGtkApplication, args));
 		}
 
-		protected void OnOpened(object o, OpenedArgs args)
+		protected void OnOpened(object o, GLib.OpenedArgs args)
 		{
 			Services?.InvokeLifecycleEvents<LinuxLifecycle.OnOpened>(del => del(CurrentGtkApplication, args));
 		}
@@ -69,7 +67,7 @@ namespace Microsoft.Maui
 			Services?.InvokeLifecycleEvents<LinuxLifecycle.OnShutdown>(del => del(CurrentGtkApplication, args));
 		}
 
-		protected void OnCommandLine(object o, CommandLineArgs args)
+		protected void OnCommandLine(object o, GLib.CommandLineArgs args)
 		{
 			;
 		}
@@ -84,11 +82,15 @@ namespace Microsoft.Maui
 			;
 		}
 
+		// https://developer.gnome.org/gio/stable/GApplication.html#g-application-id-is-valid
+		// TODO: find a better algo for id
+		public string ApplicationId => $"{typeof(TStartup).Namespace}.{typeof(TStartup).Name}.{base.Name}".PadRight(255, ' ').Substring(0, 255).Trim();
+
 		protected void Launch(EventArgs args)
 		{
 
 			Gtk.Application.Init();
-			var app = new Gtk.Application(Name ?? string.Empty, ApplicationFlags.None);
+			var app = new Gtk.Application(ApplicationId, GLib.ApplicationFlags.None);
 			RegisterLifecycleEvents(app);
 
 			CurrentGtkApplication = app;
@@ -96,6 +98,7 @@ namespace Microsoft.Maui
 			Current = this;
 
 			MainWindow = new MauiGtkMainWindow();
+			app.AddWindow(MainWindow);
 
 			var startup = new TStartup();
 
@@ -122,15 +125,12 @@ namespace Microsoft.Maui
 
 			MainWindow.Child = canvas;
 
-			app.AddWindow(MainWindow);
-
 			MainWindow.ShowAll();
 
-			((Application)app).Run();
-
-			Services?.InvokeLifecycleEvents<LinuxLifecycle.OnLaunched>(del => del(CurrentGtkApplication, args));
+			((GLib.Application)app).Run();
 
 			Gtk.Application.Run();
+			Services?.InvokeLifecycleEvents<LinuxLifecycle.OnLaunched>(del => del(CurrentGtkApplication, args));
 
 #if DEBUG
 			if (!isfired)
@@ -158,7 +158,14 @@ namespace Microsoft.Maui
 		protected MauiGtkApplication()
 		{ }
 
-		public string? Name { get; set; }
+		string? _name;
+
+		// https://developer.gnome.org/gio/stable/GApplication.html#g-application-id-is-valid
+		public string? Name
+		{
+			get => _name ??= $"A{Guid.NewGuid()}";
+			set { _name = value; }
+		}
 
 		// https://developer.gnome.org/gtk3/stable/GtkApplication.html
 		public static Gtk.Application CurrentGtkApplication { get; internal set; } = null!;
