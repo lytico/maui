@@ -1,4 +1,7 @@
-﻿using Microsoft.Maui.Graphics;
+﻿using System;
+using Gdk;
+using Rectangle = Microsoft.Maui.Graphics.Rectangle;
+using Size = Microsoft.Maui.Graphics.Size;
 
 namespace Microsoft.Maui.Handlers
 {
@@ -13,7 +16,7 @@ namespace Microsoft.Maui.Handlers
 
 		public override Size GetDesiredSize(double widthConstraint, double heightConstraint)
 		{
-			return new Size(widthConstraint, heightConstraint);
+			return new(widthConstraint, heightConstraint);
 		}
 
 		protected override void SetupContainer()
@@ -25,5 +28,11 @@ namespace Microsoft.Maui.Handlers
 		{
 
 		}
+
+		protected void InvokeEvent(Action action)
+		{
+			MauiGtkApplication.Invoke(action);
+		}
+
 	}
 }

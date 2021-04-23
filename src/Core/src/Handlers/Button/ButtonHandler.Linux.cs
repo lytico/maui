@@ -1,6 +1,5 @@
 ﻿using System;
 using Gtk;
-using Microsoft.Maui.Graphics.Native.Gtk;
 
 namespace Microsoft.Maui.Handlers
 {
@@ -37,7 +36,7 @@ namespace Microsoft.Maui.Handlers
 			if (handler?.NativeView is { } nativeView)
 			{
 				nativeView.SetForegroundColor(button.TextColor);
-			    nativeView.SetForegroundColor(Gtk.StateFlags.Prelight, button.TextColor);
+				nativeView.SetForegroundColor(Gtk.StateFlags.Prelight, button.TextColor);
 			}
 
 		}
@@ -55,17 +54,17 @@ namespace Microsoft.Maui.Handlers
 
 		void OnButtonPressEvent(object? o, ButtonPressEventArgs args)
 		{
-			VirtualView?.Pressed();
+			InvokeEvent(() => VirtualView?.Pressed());
 		}
 
 		void OnButtonReleaseEvent(object? o, ButtonReleaseEventArgs args)
 		{
-			VirtualView?.Released();
+			InvokeEvent(() => VirtualView?.Released());
 		}
 
 		void OnButtonClicked(object? sender, EventArgs e)
 		{
-			VirtualView?.Clicked();
+			InvokeEvent(() => VirtualView?.Clicked());
 		}
 
 	}
