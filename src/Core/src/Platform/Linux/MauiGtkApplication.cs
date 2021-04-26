@@ -24,7 +24,7 @@ namespace Microsoft.Maui
 		{
 			isfired = false;
 #pragma warning disable 162
-			if (true)
+			if (false)
 			{
 				// if called after event-register, the events are not called
 				// if called before event-register, the events are immidiatly called (to early)
@@ -38,13 +38,13 @@ namespace Microsoft.Maui
 
 #pragma warning restore 162
 
-			app.Startup += OnStartup!;
-			app.Shutdown += OnShutdown!;
+			app.Startup += OnStartup;
+			app.Shutdown += OnShutdown;
 			app.Opened += OnOpened;
 			app.WindowAdded += OnWindowAdded;
-			app.Activated += OnActivated!;
-			app.WindowRemoved += OnWindowRemoved!;
-			app.CommandLine += OnCommandLine!;
+			app.Activated += OnActivated;
+			app.WindowRemoved += OnWindowRemoved;
+			app.CommandLine += OnCommandLine;
 
 		}
 
@@ -58,6 +58,8 @@ namespace Microsoft.Maui
 			Debug.WriteLine($"{nameof(OnStartup)}");
 			isfired = true;
 #endif
+			StartupMainWindow();
+
 			Services.InvokeLifecycleEvents<LinuxLifecycle.OnStartup>(del => del(CurrentGtkApplication, args));
 		}
 
@@ -68,7 +70,6 @@ namespace Microsoft.Maui
 
 		protected void OnActivated(object sender, EventArgs args)
 		{
-			StartupMainWindow();
 			StartupLauch(sender, args);
 
 			Services?.InvokeLifecycleEvents<LinuxLifecycle.OnApplicationActivated>(del => del(CurrentGtkApplication, args));
@@ -77,11 +78,9 @@ namespace Microsoft.Maui
 		protected void OnShutdown(object sender, EventArgs args)
 		{
 			Services?.InvokeLifecycleEvents<LinuxLifecycle.OnShutdown>(del => del(CurrentGtkApplication, args));
-			// current is null, so this has no effect
-			GLib.Cancellable.Current?.Cancel();
 
 			MauiGtkApplication.DispatchPendingEvents();
-			MauiGtkApplication.Invoke(() => Gtk.Application.Quit());
+
 			;
 		}
 
@@ -140,11 +139,14 @@ namespace Microsoft.Maui
 			var nativeContent = content.ToNative(window.MauiContext);
 
 			var canvas = TopContainerOverride?.Invoke(nativeContent) ?? CreateRootContainer(nativeContent);
+#if DEBUG
 			nativeContent.SetBackgroundColor(Colors.White);
-
+#endif
 			MainWindow.Child = canvas;
 			MainWindow.QueueDraw();
 			MainWindow.ShowAll();
+
+			MainWindow.Present();
 
 			Services?.InvokeLifecycleEvents<LinuxLifecycle.OnLaunched>(del => del(CurrentGtkApplication, args));
 		}
@@ -178,7 +180,7 @@ namespace Microsoft.Maui
 			}
 #pragma warning restore 162
 
-			Gtk.Application.Run();
+			// Gtk.Application.Run();
 
 #if DEBUG
 			if (!isfired)
