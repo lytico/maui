@@ -142,7 +142,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Compatibility.ControlGaller
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Controls.Sample.Linux", "src\Controls\samples\Controls.Sample.Linux\Controls.Sample.Linux.csproj", "{A7B49F6D-913A-4286-8E8B-76D5E5250891}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Compatibility.GTK", "src\Compatibility\Core\src\GTK\Compatibility.GTK.csproj", "{0D497738-2598-431D-8CAF-8FBF3D9F99EC}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Compatibility.GTK_2", "src\Compatibility\Core\src\GTK2\Compatibility.GTK_2.csproj", "{0D497738-2598-431D-8CAF-8FBF3D9F99EC}"
 EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
