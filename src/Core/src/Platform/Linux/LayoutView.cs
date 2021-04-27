@@ -6,12 +6,11 @@ using Microsoft.Maui.Graphics.Native.Gtk;
 using Rectangle = Microsoft.Maui.Graphics.Rectangle;
 using Size = Microsoft.Maui.Graphics.Size;
 
-
 namespace Microsoft.Maui
 {
 
 	// refactored from: https://github.com/mono/xwt/blob/501f6b529fca632655295169094f637627c74c47/Xwt.Gtk/Xwt.GtkBackend/BoxBackend.cs
-	
+
 	public class LayoutView : Container
 	{
 
@@ -30,7 +29,7 @@ namespace Microsoft.Maui
 			return r;
 		}
 #endif
-		
+
 		public Func<ILayout>? CrossPlatformVirtualView { get; set; }
 
 		public ILayout? VirtualView => CrossPlatformVirtualView?.Invoke();
@@ -71,10 +70,17 @@ namespace Microsoft.Maui
 			}
 		}
 
-		void UpdateFocusChain(Orientation orientation)
+		// this is maybe not needed:
+		void UpdateFocusChain()
 		{
+			Orientation GetOrientation() =>
+				// TODO: find out what orientation it has, or find another sort kriteria, eg. tabstop
+				Orientation.Vertical;
+
+			var orientation = GetOrientation();
+
 			var focusChain = _children
-			   .OrderBy(kvp => orientation == Orientation.Horizontal ? kvp.Value.Rect.X : kvp.Value.Rect.Y)
+			   // .OrderBy(kvp => orientation == Orientation.Horizontal ? kvp.Value.Rect.X : kvp.Value.Rect.Y)
 			   .Select(kvp => kvp.Value.Widget)
 			   .ToArray();
 
@@ -94,7 +100,7 @@ namespace Microsoft.Maui
 
 			r.Rect = rect;
 			_children[w] = r;
-			UpdateFocusChain(GetOrientation());
+			UpdateFocusChain();
 
 			return true;
 
@@ -336,8 +342,6 @@ namespace Microsoft.Maui
 			return mesured;
 
 		}
-
-		Orientation GetOrientation() => Orientation.Vertical;
 
 		#endregion
 
