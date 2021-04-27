@@ -11,6 +11,7 @@
     <PackageReference Include="Microsoft.Extensions.Hosting" Version="3.1.5" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\..\Compatibility\Core\src\Gtk\Compatibility.Gtk.csproj" />
     <ProjectReference Include="..\..\..\Core\src\Core.csproj" />
     <ProjectReference Include="..\..\..\Core\tests\DeviceTests\Core.DeviceTests.csproj" />
     <ProjectReference Include="..\..\src\Core\Controls.Core.csproj" />
