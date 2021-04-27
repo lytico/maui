@@ -13,30 +13,13 @@ namespace Microsoft.Maui.Handlers
 		{
 			if (VirtualView == null)
 			{
-				throw new InvalidOperationException($"{nameof(VirtualView)} must be set to create a {nameof(LayoutView)}");
+				throw new InvalidOperationException($"{nameof(VirtualView)} must be set to create a {nameof(LayoutViewAsFixed)}");
 			}
 
 			return new LayoutView
 			{
-				CrossPlatformMeasure = VirtualView.Measure,
-				CrossPlatformArrange = VirtualView.Arrange,
-				CrossPlatformDesiredSizeSize = () => VirtualView.DesiredSize,
-				
-				CrossPlatformArrangeChildren = () =>
-				{
-					foreach (var element in VirtualView.Children)
-					{
-						element.Handler?.SetFrame(element.Frame);
-					}
-				},
-				
-				CrossPlatformInvalidateChildrenMeasure = () =>
-				{
-					foreach (var element in VirtualView.Children)
-					{
-						element.InvalidateMeasure();
-					}
-				}
+				CrossPlatformVirtualView = () => VirtualView,
+
 			};
 		}
 
@@ -48,13 +31,12 @@ namespace Microsoft.Maui.Handlers
 			_ = VirtualView ?? throw new InvalidOperationException($"{nameof(VirtualView)} should have been set by base class.");
 			_ = MauiContext ?? throw new InvalidOperationException($"{nameof(MauiContext)} should have been set by base class.");
 
-			NativeView.CrossPlatformMeasure = VirtualView.Measure;
-			NativeView.CrossPlatformArrange = VirtualView.Arrange;
+			NativeView.CrossPlatformVirtualView = () => VirtualView;
 
 			foreach (var child in VirtualView.Children)
 			{
 				if (child.ToNative(MauiContext) is { } nativeChild)
-					NativeView.Add(nativeChild);
+					NativeView.Add(child, nativeChild);
 
 			}
 
@@ -69,7 +51,7 @@ namespace Microsoft.Maui.Handlers
 			_ = MauiContext ?? throw new InvalidOperationException($"{nameof(MauiContext)} should have been set by base class.");
 
 			if (child.ToNative(MauiContext) is { } nativeChild)
-				NativeView.Add(nativeChild);
+				NativeView.Add(child, nativeChild);
 
 			NativeView.QueueAllocate();
 		}
@@ -84,6 +66,13 @@ namespace Microsoft.Maui.Handlers
 				NativeView.Remove(nativeChild);
 
 			NativeView.QueueAllocate();
+		}
+
+		public override void SetFrame(Rectangle rect)
+		{
+			_ = NativeView ?? throw new InvalidOperationException($"{nameof(NativeView)} should have been set by base class.");
+
+			NativeView.SetFrame(rect);
 		}
 
 	}
