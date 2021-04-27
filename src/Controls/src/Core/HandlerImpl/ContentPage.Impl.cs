@@ -28,58 +28,38 @@ namespace Microsoft.Maui.Controls
 		{
 			Content = null;
 		}
-
-		internal override void InvalidateMeasureInternal(InvalidationTrigger trigger)
-		{
-			IsArrangeValid = false;
-			base.InvalidateMeasureInternal(trigger);
-		}
-
 		protected override Size MeasureOverride(double widthConstraint, double heightConstraint)
 		{
-			var width = widthConstraint;
-			var height = heightConstraint;
-
-#if WINDOWS
-			if (double.IsInfinity(width))
+			if (Content is IFrameworkElement frameworkElement)
 			{
-				width = 800;
+				frameworkElement.Measure(widthConstraint, heightConstraint);
 			}
 
-			if (double.IsInfinity(height))
-			{
-				height = 800;
-			}
-#endif
-
-			IsMeasureValid = true;
-			return new Size(width, height);
+			return new Size(widthConstraint, heightConstraint);
 		}
 
 		protected override void ArrangeOverride(Rectangle bounds)
 		{
-			if (IsArrangeValid)
+			// Update the Bounds (Frame) for this page
+			Layout(bounds);
+
+			if (Content is IFrameworkElement element)
 			{
-				return;
+				element.Arrange(bounds);
+				element.Handler?.SetFrame(element.Frame);
 			}
 
-			IsArrangeValid = true;
-			IsMeasureValid = true;
-			Arrange(bounds);
-			Handler?.SetFrame(Frame);
-
-			if (Content is IFrameworkElement fe)
-			{
-				fe.InvalidateArrange();
-				fe.Measure(Frame.Width, Frame.Height);
-				fe.Arrange(Frame);
-			}
-
-			if (Content is Layout layout)
-				layout.ResolveLayoutChanges();
-
+			// return Frame.Size;
 		}
 
+		protected override void InvalidateMeasureOverride()
+		{
+			base.InvalidateMeasureOverride();
+			if (Content is IFrameworkElement frameworkElement)
+			{
+				frameworkElement.InvalidateMeasure();
+			}
+		}
 
 	}
 }
