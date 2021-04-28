@@ -26,6 +26,8 @@ namespace Maui.SimpleSampleApp
 			SetupMauiLayoutSimple();
 			// SetupMauiLayout();
 			//SetupCompatibilityLayout();
+			MinimumHeightRequest = 50;
+			MinimumWidthRequest = 150;
 		}
 
 		void SetupMauiLayoutSimple()
@@ -33,10 +35,10 @@ namespace Maui.SimpleSampleApp
 			var verticalStack = new VerticalStackLayout()
 			{
 				Spacing = 5,
-				BackgroundColor = Colors.WhiteSmoke
+				BackgroundColor = Colors.WhiteSmoke,
 			};
 
-			var paddingButton = new Button
+			var button = new Button
 			{
 				Padding = new Thickness(10),
 				Text = "Change the label!",
@@ -44,13 +46,73 @@ namespace Maui.SimpleSampleApp
 				TextColor = Colors.Yellow,
 			};
 
-			verticalStack.Add(paddingButton);
+			verticalStack.Add(button);
 
-			var label = new Label { Text = "a label" };
+			var label = new Label
+			{
+				Text = "a label" ,
+				HorizontalTextAlignment = TextAlignment.Center,
+				
+
+			};
 			verticalStack.Add(label);
 
 			const string ltext = "changed";
-			paddingButton.Clicked += (s, e) => label.Text = label.Text==ltext?$"{ltext} again":ltext;
+			button.Clicked += (s, e) =>
+			{
+				label.Text = label.Text == ltext ? $"{ltext} again" : ltext;
+
+				if (s is Button sender)
+				{
+					label.TextColor = sender.BackgroundColor;
+					label.BackgroundColor = sender.TextColor;
+				}
+			};
+
+			var label1 = new Label
+			{
+				Text = "another label", 
+				HorizontalTextAlignment = TextAlignment.End,
+				TextColor = Colors.Coral,
+				Margin = new Thickness(5),
+				Padding = new Thickness(2),
+				FontAttributes = FontAttributes.Italic,
+				TextDecorations = TextDecorations.Underline,
+				FontSize = 14
+				
+			};
+			
+			verticalStack.Add(label1);
+
+			var entry = new Entry
+			{
+				Placeholder = "write something"
+			};
+
+			button.Clicked += (s, e) =>
+			{
+				entry.Text = string.IsNullOrEmpty(entry.Text) ? "entry text" : null;
+			};
+			verticalStack.Add(entry);
+
+			var activityIndicator = new ActivityIndicator
+			{
+				Color = Colors.Chartreuse
+			};
+
+			button.Clicked += (s, e) => activityIndicator.IsRunning = ! activityIndicator.IsRunning;
+			verticalStack.Add(activityIndicator);
+			
+			var editor = new Editor
+			{
+				Placeholder = "write something longer"
+			};
+
+			button.Clicked += (s, e) =>
+			{
+				editor.Text = string.IsNullOrEmpty(editor.Text) ? "editor text" : null;
+			};
+			verticalStack.Add(editor);
 			
 			Content = verticalStack;
 		}

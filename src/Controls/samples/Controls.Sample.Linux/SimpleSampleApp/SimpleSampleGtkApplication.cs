@@ -1,3 +1,4 @@
+using System;
 using Gtk;
 using Microsoft.Maui;
 using Microsoft.Maui.Graphics;
@@ -10,7 +11,7 @@ namespace Maui.SimpleSampleApp
 
 		public SimpleSampleGtkApplication() : base()
 		{
-			TopContainerOverride = OnTopContainerOverride;
+			// TopContainerOverride = OnTopContainerOverride;
 		}
 
 		Widget OnTopContainerOverride(Widget nativePage)
@@ -35,6 +36,18 @@ namespace Maui.SimpleSampleApp
 			b.PackStart(nativePage, true, true, 0);
 
 			return b;
+
+#pragma warning disable 162
+			var bin = new Bin(IntPtr.Zero)
+			{
+				Expand = true,
+				Child = nativePage,
+				Halign = Align.Fill,
+				Valign = Align.Fill
+			};
+
+			return bin;
+#pragma warning restore 162
 		}
 
 	}
