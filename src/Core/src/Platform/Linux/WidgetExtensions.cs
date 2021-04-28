@@ -73,6 +73,16 @@ namespace Microsoft.Maui
 			}
 		}
 
+		public static void UpdateFont(this Widget widget, ITextStyle textStyle, IFontManager fontManager)
+		{
+			var font = textStyle.Font;
+
+			var fontFamily = fontManager.GetFontFamily(font);
+#pragma warning disable 612
+			widget.ModifyFont(fontFamily);
+#pragma warning restore 612
+
+		}
 	}
 
 }

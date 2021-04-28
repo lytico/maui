@@ -4,7 +4,11 @@ namespace Microsoft.Maui
 {
 	public static class TextAlignmentExtensions
 	{
-		public static Align ToNative(this TextAlignment alignment)
+		
+		// https://developer.gnome.org/gtk3/stable/GtkWidget.html#GtkWidget--halign
+		// How to distribute horizontal space if widget gets extra space, see GtkAlign
+		
+		internal static Align ToGtkAlign(this TextAlignment alignment)
 		{
 			switch (alignment)
 			{
@@ -29,5 +33,26 @@ namespace Microsoft.Maui
 					return Justification.Center;
 			}
 		}
+		
+		/// <summary>
+		/// https://developer.gnome.org/gtk3/stable/GtkLabel.html#gtk-label-set-xalign
+		/// The xalign property determines the horizontal aligment of the label text inside the labels size allocation.
+		/// Compare this to “halign”, which determines how the labels size allocation is positioned in the space available for the label.
+		/// </summary>
+		/// <param name="alignment"></param>
+		/// <returns></returns>
+		public static float ToXyAlign(this TextAlignment alignment)
+		{
+			switch (alignment)
+			{
+				case TextAlignment.Start:
+					return 0f;
+				case TextAlignment.End:
+					return 1f;
+				default:
+					return 0.5f;
+			}
+		}
+
 	}
 }

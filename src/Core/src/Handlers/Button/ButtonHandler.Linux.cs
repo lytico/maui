@@ -33,19 +33,16 @@ namespace Microsoft.Maui.Handlers
 
 		public static void MapTextColor(ButtonHandler handler, IButton button)
 		{
-			if (handler?.NativeView is { } nativeView)
-			{
-				nativeView.SetForegroundColor(button.TextColor);
-				nativeView.SetForegroundColor(Gtk.StateFlags.Prelight, button.TextColor);
-			}
-
+			handler.NativeView?.UpdateTextColor(button.TextColor);
 		}
 
 		[MissingMapper]
 		public static void MapCharacterSpacing(ButtonHandler handler, IButton button) { }
 
-		[MissingMapper]
-		public static void MapFont(ButtonHandler handler, IButton button) { }
+		public static void MapFont(ButtonHandler handler, IButton button)
+		{
+			handler.MapFont(button);
+		}
 
 		public static void MapPadding(ButtonHandler handler, IButton button)
 		{

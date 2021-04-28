@@ -60,11 +60,6 @@ namespace Microsoft.Maui
 			return widget.StyleContext.GetColor(state).ToColor();
 		}
 
-		public static void SetForegroundColor(this Gtk.Widget widget, Graphics.Color color)
-		{
-			widget.SetForegroundColor(Gtk.StateType.Normal, color);
-		}
-
 		public static void SetForegroundColor(this Gtk.Widget widget, Gtk.StateType state, Graphics.Color color)
 		{
 			widget.SetForegroundColor(state.ToStateFlag(), color);
@@ -77,6 +72,20 @@ namespace Microsoft.Maui
 #pragma warning disable 612
 			widget.OverrideColor(state, color.ToGdkRgba());
 #pragma warning restore 612
+		}
+
+		public static void SetForegroundColor(this Gtk.Widget widget, Graphics.Color color)
+		{
+			widget.SetForegroundColor(Gtk.StateType.Normal, color);
+		}
+
+		public static void UpdateTextColor(this Gtk.Widget widget, Graphics.Color textColor)
+		{
+			if (textColor == null)
+				return;
+
+			widget.SetForegroundColor(textColor);
+			widget.SetForegroundColor(Gtk.StateFlags.Prelight, textColor);
 		}
 
 		public static Gtk.StateFlags ToStateFlag(this Gtk.StateType state)

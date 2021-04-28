@@ -22,21 +22,6 @@ namespace Microsoft.Maui
 
 		protected void RegisterLifecycleEvents(Gtk.Application app)
 		{
-			isfired = false;
-#pragma warning disable 162
-			if (false)
-			{
-				// if called after event-register, the events are not called
-				// if called before event-register, the events are immidiatly called (to early)
-				var c = new GLib.Cancellable();
-
-				app.Register(c);
-				Debug.WriteLine($"{nameof(GLib.Cancellable)}");
-				isfired = true;
-
-			}
-
-#pragma warning restore 162
 
 			app.Startup += OnStartup;
 			app.Shutdown += OnShutdown;
@@ -48,16 +33,9 @@ namespace Microsoft.Maui
 
 		}
 
-#if DEBUG
-		static bool isfired = false;
-#endif
 		protected void OnStartup(object sender, EventArgs args)
 		{
 
-#if DEBUG
-			Debug.WriteLine($"{nameof(OnStartup)}");
-			isfired = true;
-#endif
 			StartupMainWindow();
 
 			Services.InvokeLifecycleEvents<LinuxLifecycle.OnStartup>(del => del(CurrentGtkApplication, args));
@@ -81,7 +59,6 @@ namespace Microsoft.Maui
 
 			MauiGtkApplication.DispatchPendingEvents();
 
-			;
 		}
 
 		protected void OnCommandLine(object o, GLib.CommandLineArgs args)
@@ -105,12 +82,10 @@ namespace Microsoft.Maui
 
 		Widget CreateRootContainer(Widget nativePage)
 		{
-			var b = new Box(Orientation.Vertical, 0)
+			var b = new VBox
 			{
-				Fill = true,
 				Expand = true,
 			};
-
 			b.PackStart(nativePage, true, true, 0);
 
 			return b;
@@ -172,22 +147,6 @@ namespace Microsoft.Maui
 
 			((GLib.Application)app).Run();
 
-#pragma warning disable 162
-
-			if (false) // if called before Gtk.Application.Run(), gtk_main_quit: assertion 'main_loops != NULL' failed
-			{
-				Services?.InvokeLifecycleEvents<LinuxLifecycle.OnLaunched>(del => del(CurrentGtkApplication, args));
-			}
-#pragma warning restore 162
-
-			// Gtk.Application.Run();
-
-#if DEBUG
-			if (!isfired)
-			{
-				Debug.WriteLine("lifecycle broken");
-			}
-#endif
 		}
 
 		protected void ConfigureNativeServices(HostBuilderContext ctx, IServiceCollection services)

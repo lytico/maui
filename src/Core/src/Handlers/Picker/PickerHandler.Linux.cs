@@ -18,8 +18,10 @@ namespace Microsoft.Maui.Handlers
 		[MissingMapper]
 		public static void MapCharacterSpacing(PickerHandler handler, IPicker view) { }
 
-		[MissingMapper]
-		public static void MapFont(PickerHandler handler, IPicker view) { }
+		public static void MapFont(PickerHandler handler, IPicker view)
+		{
+			handler.MapFont(view);
+		}
 
 		[MissingMapper]
 		public static void MapTextColor(PickerHandler handler, IPicker view) { }
