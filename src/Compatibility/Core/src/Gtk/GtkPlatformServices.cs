@@ -6,39 +6,10 @@ using System.Threading.Tasks;
 using Gtk;
 using Microsoft.Maui.Controls.Internals;
 using Microsoft.Maui.Graphics;
-using Microsoft.Maui.Hosting;
 using Action = System.Action;
 
 namespace Microsoft.Maui.Controls.Compatibility
 {
-
-	public static class AppHostBuilderExtensions
-	{
-
-		public static IAppHostBuilder UseCompatibilityRenderers(this IAppHostBuilder builder)
-		{
-
-			return builder;
-		}
-
-	}
-
-}
-
-namespace Microsoft.Maui.Controls.Compatibility
-{
-
-	public static class Forms
-	{
-
-		public static void Init(IActivationState state)
-		{
-			var gtkServices = new GtkPlatformServices();
-			Device.PlatformServices = gtkServices;
-
-		}
-
-	}
 
 	public class GtkPlatformServices : IPlatformServices
 	{
@@ -62,17 +33,36 @@ namespace Microsoft.Maui.Controls.Compatibility
 
 		public string GetHash(string input)
 		{
-			throw new NotImplementedException();
+			return Internals.Crc64.GetHash(input);
 		}
 
-		public string GetMD5Hash(string input)
-		{
-			throw new NotImplementedException();
-		}
+		string IPlatformServices.GetMD5Hash(string input) => GetHash(input);
 
 		public double GetNamedSize(NamedSize size, Type targetElementType, bool useOldSizes)
 		{
-			throw new NotImplementedException();
+			switch (size)
+			{
+				case NamedSize.Default:
+					return 11;
+				case NamedSize.Micro:
+				case NamedSize.Caption:
+					return 12;
+				case NamedSize.Medium:
+					return 17;
+				case NamedSize.Large:
+					return 22;
+				case NamedSize.Small:
+				case NamedSize.Body:
+					return 14;
+				case NamedSize.Header:
+					return 46;
+				case NamedSize.Subtitle:
+					return 20;
+				case NamedSize.Title:
+					return 24;
+				default:
+					throw new ArgumentOutOfRangeException(nameof(size));
+			}
 		}
 
 		public Color GetNamedColor(string name)
@@ -102,13 +92,19 @@ namespace Microsoft.Maui.Controls.Compatibility
 
 		public void StartTimer(TimeSpan interval, Func<bool> callback)
 		{
-			throw new NotImplementedException();
+			GLib.Timeout.Add((uint)interval.TotalMilliseconds, () =>
+			{
+				var result = callback();
+				return result;
+			});
 		}
 
 		public string RuntimePlatform => Device.GTK;
 
 		public void QuitApplication()
-		{ }
+		{
+			((GLib.Application)MauiGtkApplication.CurrentGtkApplication).Quit();
+		}
 
 		public SizeRequest GetNativeSize(VisualElement view, double widthConstraint, double heightConstraint)
 		{
