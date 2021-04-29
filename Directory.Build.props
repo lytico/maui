@@ -2,7 +2,7 @@
   <Import Project="eng\Versions.props" />
 
   <PropertyGroup>
-
+    <BuildForGtk3>true</BuildForGtk3>
     <BuildForWinUI Condition="'$(SolutionFileName)' == 'Microsoft.Maui.WinUI.sln'">true</BuildForWinUI>
     <BuildForNet6 Condition="'$(SolutionFileName)' == 'Microsoft.Maui-net6.sln' or '$(BuildForWinUI)' == 'true'">true</BuildForNet6>
     <MauiPlatforms>net6.0-ios;net6.0-maccatalyst;net6.0-android</MauiPlatforms>
@@ -11,8 +11,8 @@
     <MauiPlatforms Condition="'$(BuildForWinUI)' == 'true'">$(WindowsTargetFramework)</MauiPlatforms>
 
     <!-- This is used to easily build for a specific target to make the IDE work a bit better  -->   
-    <NonNet6Platforms>Xamarin.iOS10;MonoAndroid10.0</NonNet6Platforms>
-    <NonNet6EssentialsPlatforms>netstandard2.0;netstandard2.1;Xamarin.iOS10;MonoAndroid90;MonoAndroid10.0;tizen40;Xamarin.Mac20;</NonNet6EssentialsPlatforms>
+    <NonNet6Platforms>MonoAndroid10.0;net48</NonNet6Platforms>
+    <NonNet6EssentialsPlatforms>netstandard2.0;netstandard2.1;MonoAndroid10.0;</NonNet6EssentialsPlatforms>
     <NonNet6EssentialsPlatforms Condition=" '$(OS)' == 'Windows_NT'">$(NonNet6EssentialsPlatforms);uap10.0.16299;</NonNet6EssentialsPlatforms>
 
     <BuildNonNet6ForiOS>false</BuildNonNet6ForiOS>

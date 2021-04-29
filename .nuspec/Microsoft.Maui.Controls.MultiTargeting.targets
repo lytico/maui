@@ -1,35 +1,59 @@
 <Project>
-  <ItemGroup Condition="$(TargetFramework.StartsWith('Xamarin.iOS')) != true AND $(TargetFramework.StartsWith('net6.0-ios')) != true AND $(TargetFramework.StartsWith('net6.0-maccatalyst')) != true ">
+  <PropertyGroup Condition="$(TargetFramework.StartsWith('Xamarin.iOS')) == true OR $(TargetFramework.StartsWith('net6.0-ios')) == true OR $(TargetFramework.StartsWith('net6.0-maccatalyst')) == true ">
+    <MauiTarget>iOS</MauiTarget>
+  </PropertyGroup>
+  <PropertyGroup Condition="$(TargetFramework.StartsWith('Xamarin.Mac')) == true ">
+    <MauiTarget>Mac</MauiTarget>
+  </PropertyGroup>
+  <PropertyGroup Condition="$(TargetFramework.StartsWith('Xamarin.Mac')) == true OR $(TargetFramework.StartsWith('Xamarin.iOS')) == true OR $(TargetFramework.StartsWith('net6.0-ios')) == true OR $(TargetFramework.StartsWith('net6.0-maccatalyst')) == true">
+    <MauiTarget>MaciOS</MauiTarget>
+  </PropertyGroup>
+  <PropertyGroup Condition="$(TargetFramework.StartsWith('MonoAndroid')) == true OR $(TargetFramework.StartsWith('net6.0-android')) == true ">
+    <MauiTarget>Android</MauiTarget>
+  </PropertyGroup>
+  <PropertyGroup Condition="$(TargetFramework.StartsWith('netstandard')) == true ">
+    <MauiTarget>Standard</MauiTarget>
+  </PropertyGroup>
+  <PropertyGroup Condition="$(TargetFramework.Contains('-windows')) == true ">
+    <MauiTarget>Windows</MauiTarget>
+  </PropertyGroup>
+  <PropertyGroup Condition="$(BuildForGtk3) == true AND $(MauiTarget) != 'Android'" >
+    <MauiTarget>Gtk3</MauiTarget>
+  </PropertyGroup>
+  <PropertyGroup Condition="$(MauiTarget) != 'Gtk3'">
+    <BuildForGtk3>false</BuildForGtk3>
+  </PropertyGroup>
+  <ItemGroup Condition="$(MauiTarget) != 'iOS'">
     <Compile Remove="**\*.iOS.cs" />
     <None Include="**\*.iOS.cs" />
     <Compile Remove="**\iOS\*.cs" />
     <None Include="**\iOS\*.cs" />
   </ItemGroup>
-  <ItemGroup Condition="$(TargetFramework.StartsWith('Xamarin.Mac')) != true ">
+  <ItemGroup Condition="$(MauiTarget) != 'Mac'">
     <Compile Remove="**\*.Mac.cs" />
     <None Include="**\*.Mac.cs" />
     <Compile Remove="**\Mac\*.cs" />
     <None Include="**\Mac\*.cs" />
   </ItemGroup>
-  <ItemGroup Condition="$(TargetFramework.StartsWith('Xamarin.Mac')) != true AND $(TargetFramework.StartsWith('Xamarin.iOS')) != true AND $(TargetFramework.StartsWith('net6.0-ios')) != true AND $(TargetFramework.StartsWith('net6.0-maccatalyst')) != true">
+  <ItemGroup Condition="$(MauiTarget) != 'MaciOS'">
     <Compile Remove="**\*.MaciOS.cs" />
     <None Include="**\*.MaciOS.cs" />
     <Compile Remove="**\MaciOS\*.cs" />
     <None Include="**\MaciOS\*.cs" />
   </ItemGroup>
-  <ItemGroup Condition="$(TargetFramework.StartsWith('MonoAndroid')) != true AND $(TargetFramework.StartsWith('net6.0-android')) != true ">
+  <ItemGroup Condition="$(MauiTarget) != 'Android'">
     <Compile Remove="**\*.Android.cs" />
     <None Include="**\*.Android.cs" />
     <Compile Remove="**\Android\*.cs" />
     <None Include="**\Android\*.cs" />
   </ItemGroup>
-  <ItemGroup Condition="$(TargetFramework.StartsWith('netstandard')) != true ">
+  <ItemGroup Condition="$(MauiTarget) != 'Standard'">
     <Compile Remove="**\*.Standard.cs" />
     <None Include="**\*.Standard.cs" />
     <Compile Remove="**\Standard\*.cs" />
     <None Include="**\Standard\*.cs" />
   </ItemGroup>
-  <ItemGroup Condition="$(TargetFramework.Contains('-windows')) != true ">
+  <ItemGroup Condition="$(MauiTarget) != 'Windows'">
     <Compile Remove="**\*.Windows.cs" />
     <None Include="**\*.Windows.cs" />
     <Compile Remove="**\Windows\**\*.cs" />
@@ -41,7 +65,15 @@
     <Compile Remove="**\*.uwp.cs" />
     <None Include="**\*.uwp.cs" />
   </ItemGroup>
-  
+  <ItemGroup Condition="$(MauiTarget) != 'Gtk3'">
+    <Compile Remove="**\*.Linux.cs" />
+    <None Include="**\*.Linux.cs" />
+    <Compile Remove="**\Linux\*.cs" />
+    <None Include="**\Linux\*.cs" />
+  </ItemGroup>
+  <PropertyGroup Condition="$(BuildForGtk3) == true ">
+    <DefineConstants>$(DefineConstants);LINUX</DefineConstants>
+  </PropertyGroup>
   <PropertyGroup>
     <!-- Windows -->
     <WindowsProjectFolder>Platform\Windows\</WindowsProjectFolder>
@@ -96,6 +128,9 @@
     <PackageReference Include="Microsoft.ProjectReunion.Foundation" />
     <PackageReference Include="Microsoft.ProjectReunion.WinUI" />
     <PackageReference Include="Microsoft.Graphics.Win2D" />
+  </ItemGroup>
+  <ItemGroup Condition="$(BuildForGtk3) == true ">
+    <PackageReference Include="GtkSharp" Version="3.24.24.34" />
   </ItemGroup>
   <Target Name="Net6WinUIWorkaround" BeforeTargets="_GetSdkToolsPathsFromSdk" Condition="$(TargetFramework.Contains('-windows')) == true ">
     <PropertyGroup>
