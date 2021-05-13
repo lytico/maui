@@ -82,10 +82,11 @@ namespace Microsoft.Maui
 
 		Widget CreateRootContainer(Widget nativePage)
 		{
-			var b = new VBox
+			var b = new Box(Orientation.Vertical, 0)
 			{
 				Expand = true,
 			};
+
 			b.PackStart(nativePage, true, true, 0);
 
 			return b;
