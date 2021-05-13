@@ -95,7 +95,7 @@ namespace Microsoft.Maui
 		public static void UpdateWidth(this Widget nativeView, IView view) { }
 
 		public static void UpdateHeight(this Widget nativeView, IView view) { }
-		
+
 		public static void UpdateFont(this Widget widget, ITextStyle textStyle, IFontManager fontManager)
 		{
 			var font = textStyle.Font;
@@ -107,7 +107,66 @@ namespace Microsoft.Maui
 
 		}
 
+		public static void ReplaceChild(this Gtk.Container cont, Gtk.Widget oldWidget, Gtk.Widget newWidget)
+		{
+			if (oldWidget.Parent != cont)
+				return;
 
+			switch (cont)
+			{
+				case IGtkContainer container:
+					container.ReplaceChild(oldWidget, newWidget);
+
+					break;
+				case Gtk.Notebook notebook:
+				{
+					Gtk.Notebook.NotebookChild nc = (Gtk.Notebook.NotebookChild)notebook[oldWidget];
+					var detachable = nc.Detachable;
+					var pos = nc.Position;
+					var reorderable = nc.Reorderable;
+					var tabExpand = nc.TabExpand;
+					var tabFill = nc.TabFill;
+					var label = notebook.GetTabLabel(oldWidget);
+					notebook.Remove(oldWidget);
+					notebook.InsertPage(newWidget, label, pos);
+
+					nc = (Gtk.Notebook.NotebookChild)notebook[newWidget];
+					nc.Detachable = detachable;
+					nc.Reorderable = reorderable;
+					nc.TabExpand = tabExpand;
+					nc.TabFill = tabFill;
+
+					break;
+				}
+				case Gtk.Paned paned:
+				{
+					var pc = (Gtk.Paned.PanedChild)paned[oldWidget];
+					var resize = pc.Resize;
+					var shrink = pc.Shrink;
+					var pos = paned.Position;
+
+					if (paned.Child1 == oldWidget)
+					{
+						paned.Remove(oldWidget);
+						paned.Pack1(newWidget, resize, shrink);
+					}
+					else
+					{
+						paned.Remove(oldWidget);
+						paned.Pack2(newWidget, resize, shrink);
+					}
+
+					paned.Position = pos;
+
+					break;
+				}
+				case Gtk.Bin bin:
+					bin.Remove(oldWidget);
+					bin.Child = newWidget;
+
+					break;
+			}
+		}
 
 	}
 
