@@ -2,7 +2,7 @@
 
 namespace Microsoft.Maui.Handlers
 {
-	public partial class StepperHandler : ViewHandler<ISlider, SpinButton>
+	public partial class StepperHandler : ViewHandler<IStepper, SpinButton>
 	{
 		protected override SpinButton CreateNativeView()
 		{

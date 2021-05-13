@@ -5,7 +5,13 @@ namespace Microsoft.Maui.Handlers
 {
 	public partial class ImageHandler : ViewHandler<IImage, Gtk.Image>
 	{
-		protected override Gtk.Image CreateNativeView() => throw new NotImplementedException();
+
+		protected override Gtk.Image CreateNativeView()
+		{
+			var img = new Gtk.Image();
+
+			return img;
+		}
 
 		[MissingMapper]
 		public static void MapAspect(ImageHandler handler, IImage image) { }
