@@ -108,10 +108,9 @@ namespace Microsoft.Maui
 
 			var activationState = new ActivationState(mauiContext);
 			var window = Application.CreateWindow(activationState);
-			window.MauiContext = mauiContext;
 
-			var content = (window.Page as IView) ?? window.Page.View;
-			var nativeContent = content.ToNative(window.MauiContext);
+			var content = window.View;
+			var nativeContent = content.ToNative(mauiContext);
 
 			var canvas = TopContainerOverride?.Invoke(nativeContent) ?? CreateRootContainer(nativeContent);
 #if DEBUG

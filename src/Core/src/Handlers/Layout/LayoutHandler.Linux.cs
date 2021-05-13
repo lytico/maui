@@ -68,7 +68,7 @@ namespace Microsoft.Maui.Handlers
 			NativeView.QueueAllocate();
 		}
 
-		public override void SetFrame(Rectangle rect)
+		public override void NativeArrange(Rectangle rect)
 		{
 			_ = NativeView ?? throw new InvalidOperationException($"{nameof(NativeView)} should have been set by base class.");
 
