@@ -1,19 +1,15 @@
+using System;
 using Gtk;
 using Microsoft.Maui.Controls;
 
 namespace Microsoft.Maui.Handlers.ScrollView
 {
 
-	public class ScrollViewHandler:ViewHandler<Controls.ScrollView,Gtk.Widget>
+	public class ScrollViewHandler:ViewHandler<Controls.ScrollView,Gtk.ScrolledWindow>
 	{
 		public static PropertyMapper<Controls.ScrollView, ScrollViewHandler> ScrollViewMapper = new(ViewHandler.ViewMapper)
 		{
-			// [nameof(ISlider.Maximum)] = MapMaximum,
-			// [nameof(ISlider.MaximumTrackColor)] = MapMaximumTrackColor,
-			// [nameof(ISlider.Minimum)] = MapMinimum,
-			// [nameof(ISlider.MinimumTrackColor)] = MapMinimumTrackColor,
-			// [nameof(ISlider.ThumbColor)] = MapThumbColor,
-			// [nameof(ISlider.Value)] = MapValue,
+
 		};
 
 		public ScrollViewHandler() : base(ScrollViewMapper)
@@ -23,9 +19,14 @@ namespace Microsoft.Maui.Handlers.ScrollView
 
 		public ScrollViewHandler(PropertyMapper mapper=null) : base(mapper) { }
 
-		protected override Widget CreateNativeView()
+		protected override ScrolledWindow CreateNativeView()
 		{
-			throw new System.NotImplementedException();
+			if (VirtualView == null)
+				throw new ArgumentException();
+			
+			var s = new ScrolledWindow();
+			s.Child = VirtualView.Content.ToNative(MauiContext);
+			return s;
 		}
 
 	}
