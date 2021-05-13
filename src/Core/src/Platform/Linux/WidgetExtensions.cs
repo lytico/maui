@@ -1,5 +1,7 @@
 using System;
 using Gtk;
+using Microsoft.Maui.Graphics;
+using Microsoft.Maui.Graphics.Native.Gtk;
 
 namespace Microsoft.Maui
 {
@@ -73,6 +75,27 @@ namespace Microsoft.Maui
 			}
 		}
 
+		public static void Arrange(this Widget? nativeView, Rectangle rect)
+		{
+			if (nativeView == null)
+				return;
+
+			if (rect.IsEmpty)
+				return;
+
+			if (rect != nativeView.Allocation.ToRectangle())
+			{
+				nativeView.SizeAllocate(rect.ToNative());
+				nativeView.QueueResize();
+			}
+		}
+
+		public static void InvalidateMeasure(this Widget nativeView, IView view) { }
+
+		public static void UpdateWidth(this Widget nativeView, IView view) { }
+
+		public static void UpdateHeight(this Widget nativeView, IView view) { }
+		
 		public static void UpdateFont(this Widget widget, ITextStyle textStyle, IFontManager fontManager)
 		{
 			var font = textStyle.Font;
@@ -83,6 +106,9 @@ namespace Microsoft.Maui
 #pragma warning restore 612
 
 		}
+
+
+
 	}
 
 }

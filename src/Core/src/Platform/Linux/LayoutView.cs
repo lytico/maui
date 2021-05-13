@@ -80,7 +80,7 @@ namespace Microsoft.Maui
 			var orientation = GetOrientation();
 
 			var focusChain = _children
-			   // .OrderBy(kvp => orientation == Orientation.Horizontal ? kvp.Value.Rect.X : kvp.Value.Rect.Y)
+				// .OrderBy(kvp => orientation == Orientation.Horizontal ? kvp.Value.Rect.X : kvp.Value.Rect.Y)
 			   .Select(kvp => kvp.Value.Widget)
 			   .ToArray();
 
@@ -322,11 +322,9 @@ namespace Microsoft.Maui
 
 			foreach (var v in VirtualView.Children)
 			{
-				if (v.IsMeasureValid)
-				{
-					size.Width = Math.Max(size.Width, v.DesiredSize.Width + v.Frame.X);
-					size.Height = Math.Max(size.Height, v.DesiredSize.Height + v.Frame.Y);
-				}
+
+				size.Width = Math.Max(size.Width, v.DesiredSize.Width + v.Frame.X);
+				size.Height = Math.Max(size.Height, v.DesiredSize.Height + v.Frame.Y);
 
 				v.InvalidateArrange();
 				v.Arrange(v.Frame);
