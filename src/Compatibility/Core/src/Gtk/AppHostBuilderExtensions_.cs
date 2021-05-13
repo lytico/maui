@@ -1,3 +1,4 @@
+using Microsoft.Maui.Handlers.ScrollView;
 using Microsoft.Maui.Hosting;
 
 namespace Microsoft.Maui.Controls.Compatibility
@@ -9,6 +10,10 @@ namespace Microsoft.Maui.Controls.Compatibility
 		public static IAppHostBuilder UseCompatibilityRenderers(this IAppHostBuilder builder)
 		{
 
+			builder.ConfigureMauiHandlers(col =>
+			{
+				col.AddHandler<ScrollView,ScrollViewHandler>();
+			});
 			return builder;
 		}
 		
