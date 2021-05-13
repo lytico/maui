@@ -8,7 +8,10 @@ namespace Microsoft.Maui.Handlers
 
 		protected override TextView CreateNativeView()
 		{
-			return new();
+			return new()
+			{
+				WrapMode = WrapMode.WordChar
+			};
 		}
 
 		public static void MapText(EditorHandler handler, IEditor editor)
@@ -40,7 +43,7 @@ namespace Microsoft.Maui.Handlers
 		public static void MapIsReadOnly(EditorHandler handler, IEditor editor)
 		{
 			if (handler.NativeView is { } nativeView)
-				nativeView.Editable = editor.IsReadOnly;
+				nativeView.Editable = !editor.IsReadOnly;
 		}
 
 		public static void MapTextColor(EditorHandler handler, IEditor editor)

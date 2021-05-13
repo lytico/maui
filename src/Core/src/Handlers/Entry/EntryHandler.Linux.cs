@@ -51,7 +51,7 @@ namespace Microsoft.Maui.Handlers
 		public static void MapIsReadOnly(EntryHandler handler, IEntry entry)
 		{
 			if (handler.NativeView is { } nativeView)
-				nativeView.IsEditable = entry.IsReadOnly;
+				nativeView.IsEditable = ! entry.IsReadOnly;
 		}
 
 		public static void MapFont(EntryHandler handler, IEntry entry)
