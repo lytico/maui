@@ -23,7 +23,7 @@ namespace Maui.SimpleSampleApp
 			BindingContext = _viewModel = viewModel;
 
 			SetupMauiLayoutSimple();
-			// SetupMauiLayout();
+			SetupMauiLayout();
 			//SetupCompatibilityLayout();
 		}
 
