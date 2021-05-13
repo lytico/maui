@@ -41,7 +41,12 @@
     <Compile Remove="**\*.uwp.cs" />
     <None Include="**\*.uwp.cs" />
   </ItemGroup>
-  
+  <ItemGroup Condition="$(TargetFramework.StartsWith('net5.0')) != true ">
+    <Compile Remove="**\*.Linux.cs" />
+    <None Include="**\*.Linux.cs" />
+    <Compile Remove="**\Linux\*.cs" />
+    <None Include="**\Linux\*.cs" />
+  </ItemGroup>
   <PropertyGroup>
     <!-- Windows -->
     <WindowsProjectFolder>Platform\Windows\</WindowsProjectFolder>
@@ -68,6 +73,11 @@
 
   <PropertyGroup Condition=" '$(TargetFramework)' == 'net6.0-maccatalyst' ">
     <DefineConstants>$(DefineConstants);MACCATALYST;IOS</DefineConstants>
+  </PropertyGroup>
+
+    <!-- Linux -->
+  <PropertyGroup Condition=" '$(TargetFramework)' == 'net5.0' ">
+    <DefineConstants>$(DefineConstants);LINUX</DefineConstants>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|netstandard2.0|AnyCPU'">
@@ -97,6 +107,10 @@
     <PackageReference Include="Microsoft.ProjectReunion.WinUI" />
     <PackageReference Include="Microsoft.Graphics.Win2D" />
   </ItemGroup>
+  <ItemGroup Condition="$(TargetFramework.Contains('net5.0')) == true ">
+    <PackageReference Include="GtkSharp" Version="3.24.24.34" />
+  </ItemGroup>
+
   <Target Name="Net6WinUIWorkaround" BeforeTargets="_GetSdkToolsPathsFromSdk" Condition="$(TargetFramework.Contains('-windows')) == true ">
     <PropertyGroup>
       <TargetPlatformIdentifierAdjusted>UAP</TargetPlatformIdentifierAdjusted>
