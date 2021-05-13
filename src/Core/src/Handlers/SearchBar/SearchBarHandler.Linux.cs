@@ -1,6 +1,6 @@
 ﻿namespace Microsoft.Maui.Handlers
 {
-	public partial class SearchBarHandler : ViewHandler<ITimePicker, MauiSearchBar>
+	public partial class SearchBarHandler : ViewHandler<ISearchBar, MauiSearchBar>
 	{
 		protected override MauiSearchBar CreateNativeView()
 		{
