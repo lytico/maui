@@ -18,12 +18,7 @@ namespace Microsoft.Maui.Controls.Compatibility
 
 		public void BeginInvokeOnMainThread(Action action)
 		{
-			GLib.Idle.Add(delegate
-			{
-				action();
-
-				return false;
-			});
+			MauiGtkApplication.Invoke(action);
 		}
 
 		public Ticker CreateTicker()
@@ -116,7 +111,7 @@ namespace Microsoft.Maui.Controls.Compatibility
 		{
 			if (view.Handler.NativeView is Widget w)
 			{
-				return new SizeRequest(new Size(w.Allocation.Width, w.Allocation.Height));
+				return view.Handler.GetDesiredSize(widthConstraint, heightConstraint);
 			}
 
 			return new SizeRequest(new Size(widthConstraint, heightConstraint));
