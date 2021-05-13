@@ -11,7 +11,7 @@ namespace Microsoft.Maui
 
 	// refactored from: https://github.com/mono/xwt/blob/501f6b529fca632655295169094f637627c74c47/Xwt.Gtk/Xwt.GtkBackend/BoxBackend.cs
 
-	public class LayoutView : Container
+	public class LayoutView : Container, IGtkContainer
 	{
 
 #if DEBUG
