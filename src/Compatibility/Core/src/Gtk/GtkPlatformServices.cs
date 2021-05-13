@@ -14,21 +14,26 @@ namespace Microsoft.Maui.Controls.Compatibility
 	public class GtkPlatformServices : IPlatformServices
 	{
 
-		public bool IsInvokeRequired { get; set; }
+		public bool IsInvokeRequired => Thread.CurrentThread.IsBackground;
 
 		public void BeginInvokeOnMainThread(Action action)
 		{
-			throw new NotImplementedException();
+			GLib.Idle.Add(delegate
+			{
+				action();
+
+				return false;
+			});
 		}
 
 		public Ticker CreateTicker()
 		{
-			throw new NotImplementedException();
+			return new GtkTicker();
 		}
 
 		public Assembly[] GetAssemblies()
 		{
-			throw new NotImplementedException();
+			return AppDomain.CurrentDomain.GetAssemblies();
 		}
 
 		public string GetHash(string input)
@@ -95,6 +100,7 @@ namespace Microsoft.Maui.Controls.Compatibility
 			GLib.Timeout.Add((uint)interval.TotalMilliseconds, () =>
 			{
 				var result = callback();
+
 				return result;
 			});
 		}
