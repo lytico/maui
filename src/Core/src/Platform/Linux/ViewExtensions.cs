@@ -1,4 +1,6 @@
-﻿using Gtk;
+﻿using System;
+using Gtk;
+using Microsoft.Maui.Graphics;
 
 namespace Microsoft.Maui
 {
@@ -9,9 +11,21 @@ namespace Microsoft.Maui
 
 		}
 
-		public static void UpdateBackgroundColor(this Widget nativeView, IView view)
+		[PortHandler("implement drawing of other paints than solidpaint")]
+		public static void UpdateBackground(this Widget nativeView, IView view)
 		{
-			nativeView.SetBackgroundColor(view.BackgroundColor);
+			if (view.Background is SolidPaint solidPaint)
+			{
+				nativeView.SetBackgroundColor(solidPaint.Color);
+			}
+			else if (view.Background is Paint paint) 
+			{
+				nativeView.SetBackgroundColor(paint.BackgroundColor);
+			}
+			else
+			{
+				;
+			}
 		}
 
 		public static void UpdateIsEnabled(this Widget nativeView, IView view) =>
