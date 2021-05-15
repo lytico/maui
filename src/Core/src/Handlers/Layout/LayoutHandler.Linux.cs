@@ -72,7 +72,7 @@ namespace Microsoft.Maui.Handlers
 		{
 			_ = NativeView ?? throw new InvalidOperationException($"{nameof(NativeView)} should have been set by base class.");
 
-			NativeView.SetFrame(rect);
+			NativeView.NativeArrange(rect);
 		}
 
 	}

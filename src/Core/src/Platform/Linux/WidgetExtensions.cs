@@ -9,8 +9,8 @@ namespace Microsoft.Maui
 	public static class WidgetExtensions
 	{
 
-		public static void UpdateIsEnabled(this Widget native, bool isEnabled) =>
-			native.Sensitive = isEnabled;
+		public static void UpdateIsEnabled(this Widget nativeView, bool isEnabled) =>
+			nativeView.Sensitive = isEnabled;
 
 		public static SizeRequest GetDesiredSize(
 			this Widget? nativeView,
@@ -20,7 +20,19 @@ namespace Microsoft.Maui
 			if (nativeView == null)
 				return Graphics.Size.Zero;
 
+			var widthConstrained = !double.IsPositiveInfinity(widthConstraint);
+			var heightConstrained = !double.IsPositiveInfinity(heightConstraint);
+
+			// https://developer.gnome.org/gtk3/stable/GtkWidget.html#gtk-widget-get-preferred-size
 			nativeView.GetPreferredSize(out var minimumSize, out var req);
+
+			var desW = widthConstrained ? (int)widthConstraint : -1;
+
+			if (widthConstrained && desW > 0)
+			{
+				// https://developer.gnome.org/gtk3/stable/GtkWidget.html#gtk-widget-get-preferred-height-and-baseline-for-width
+				nativeView.GetPreferredHeightAndBaselineForWidth(desW, out var minimumHeightB, out var naturalHeightB, out var minimumBaseline, out var naturalBaseline);
+			}
 
 			var desiredSize = new Gdk.Size(
 				req.Width > 0 ? req.Width : 0,
@@ -47,13 +59,14 @@ namespace Microsoft.Maui
 				heightFits = heightConstraint >= desiredSize.Height;
 			}
 
+			heightFits = heightFits || heightConstraint == 0;
 			var size = new Graphics.Size(desiredSize.Width, heightFits ? desiredSize.Height : (int)heightConstraint);
 
 			return new SizeRequest(size);
 
 		}
 
-		public static void SetSize(this Gtk.Widget self, double width, double height)
+		public static void SetSize(this Gtk.Widget nativeView, double width, double height)
 		{
 			int calcWidth = (int)Math.Round(width);
 			int calcHeight = (int)Math.Round(height);
@@ -69,9 +82,9 @@ namespace Microsoft.Maui
 				calcHeight = -1;
 			}
 
-			if (calcWidth != self.WidthRequest || calcHeight != self.HeightRequest)
+			if (calcWidth != nativeView.WidthRequest || calcHeight != nativeView.HeightRequest)
 			{
-				self.SetSizeRequest(calcWidth, calcHeight);
+				nativeView.SetSizeRequest(calcWidth, calcHeight);
 			}
 		}
 
@@ -90,19 +103,42 @@ namespace Microsoft.Maui
 			}
 		}
 
-		public static void InvalidateMeasure(this Widget nativeView, IView view) { }
+		public static void InvalidateMeasure(this Widget nativeView, IView view)
+		{
+			;
+		}
 
-		public static void UpdateWidth(this Widget nativeView, IView view) { }
+		static int Request(double viewSize) => viewSize >= 0 ? (int)viewSize : -1;
 
-		public static void UpdateHeight(this Widget nativeView, IView view) { }
+		public static void UpdateWidth(this Widget nativeView, IView view)
+		{
+			var widthRequest = Request(view.Width);
 
-		public static void UpdateFont(this Widget widget, ITextStyle textStyle, IFontManager fontManager)
+			if (widthRequest != -1 && widthRequest != nativeView.WidthRequest && widthRequest != nativeView.AllocatedWidth)
+			{
+				nativeView.WidthRequest = widthRequest;
+			}
+
+		}
+
+		public static void UpdateHeight(this Widget nativeView, IView view)
+		{
+			var heightRequest = Request(view.Height);
+
+			if (heightRequest != -1 && heightRequest != nativeView.HeightRequest && heightRequest != nativeView.AllocatedHeight)
+			{
+				nativeView.HeightRequest = heightRequest;
+			}
+
+		}
+
+		public static void UpdateFont(this Widget nativeView, ITextStyle textStyle, IFontManager fontManager)
 		{
 			var font = textStyle.Font;
 
 			var fontFamily = fontManager.GetFontFamily(font);
 #pragma warning disable 612
-			widget.ModifyFont(fontFamily);
+			nativeView.ModifyFont(fontFamily);
 #pragma warning restore 612
 
 		}

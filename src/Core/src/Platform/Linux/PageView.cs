@@ -36,6 +36,28 @@ namespace Microsoft.Maui
 			}
 		}
 
+		protected override void OnSizeAllocated(Gdk.Rectangle allocation)
+		{
+			base.OnSizeAllocated(allocation);
+		}
+
+		protected override void OnAdjustSizeRequest(Orientation orientation, out int minimum_size, out int natural_size)
+		{
+			base.OnAdjustSizeRequest(orientation, out minimum_size, out natural_size);
+
+			if (CrossPlatformMeasure == null)
+				return;
+
+			if (orientation == Orientation.Horizontal) // widthRequest
+			{
+				var m = CrossPlatformMeasure(minimum_size, double.PositiveInfinity);
+			}
+			else
+			{
+				var m = CrossPlatformMeasure(double.PositiveInfinity,minimum_size);
+			}
+		}
+
 	}
 
 }
