@@ -1,8 +1,29 @@
-﻿namespace Microsoft.Maui
+﻿using System;
+using System.Runtime.Serialization;
+
+namespace Microsoft.Maui
 {
-	public class MauiDatePicker : Gtk.Box
+	public class MauiDatePicker : Gtk.Label
 	{
-		public MauiDatePicker() : base(Gtk.Orientation.Horizontal, 0) { }
+
+		public MauiDatePicker() : base()
+		{
+			Format = string.Empty;
+		}
+		
+		DateTime _time;
+
+		public DateTime Date
+		{
+			get => _time;
+			set
+			{
+				_time = value;
+				Text = _time.ToString();
+			}
+		}
+
+		public string Format { get; set; }
 
 	}
 }
