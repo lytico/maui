@@ -20,72 +20,64 @@ namespace Microsoft.Maui
 			if (nativeView == null)
 				return Graphics.Size.Zero;
 
+			if (widthConstraint < 0 || heightConstraint < 0)
+				return Size.Zero;
+			
 			var widthConstrained = !double.IsPositiveInfinity(widthConstraint);
 			var heightConstrained = !double.IsPositiveInfinity(heightConstraint);
 
-			// https://developer.gnome.org/gtk3/stable/GtkWidget.html#gtk-widget-get-preferred-size
-			nativeView.GetPreferredSize(out var minimumSize, out var req);
-
-			var desW = widthConstrained ? (int)widthConstraint : -1;
-
-			if (widthConstrained && desW > 0)
+			if (nativeView.RequestMode == SizeRequestMode.HeightForWidth)
 			{
-				// https://developer.gnome.org/gtk3/stable/GtkWidget.html#gtk-widget-get-preferred-height-and-baseline-for-width
-				nativeView.GetPreferredHeightAndBaselineForWidth(desW, out var minimumHeightB, out var naturalHeightB, out var minimumBaseline, out var naturalBaseline);
+				;
 			}
 
-			var desiredSize = new Gdk.Size(
-				req.Width > 0 ? req.Width : 0,
-				req.Height > 0 ? req.Height : 0);
-
-			var widthFits = widthConstraint >= desiredSize.Width;
-			var heightFits = heightConstraint >= desiredSize.Height;
-
-			if (widthFits && heightFits) // Enough space with given constraints
+			if (nativeView.RequestMode == SizeRequestMode.WidthForHeight)
 			{
-				return new SizeRequest(new Graphics.Size(desiredSize.Width, desiredSize.Height));
+				;
 			}
 
-			if (!widthFits)
+			if (nativeView.RequestMode == SizeRequestMode.ConstantSize)
 			{
-				nativeView.SetSize((int)widthConstraint, -1);
-
-				nativeView.GetPreferredSize(out minimumSize, out req);
-
-				desiredSize = new Gdk.Size(
-					req.Width > 0 ? req.Width : 0,
-					req.Height > 0 ? req.Height : 0);
-
-				heightFits = heightConstraint >= desiredSize.Height;
+				;
 			}
 
-			heightFits = heightFits || heightConstraint == 0;
-			var size = new Graphics.Size(desiredSize.Width, heightFits ? desiredSize.Height : (int)heightConstraint);
-
-			return new SizeRequest(size);
-
-		}
-
-		public static void SetSize(this Gtk.Widget nativeView, double width, double height)
-		{
-			int calcWidth = (int)Math.Round(width);
-			int calcHeight = (int)Math.Round(height);
-
-			// Avoid negative values
-			if (calcWidth < -1)
+			if (!widthConstrained && !heightConstrained)
 			{
-				calcWidth = -1;
+				// https://developer.gnome.org/gtk3/stable/GtkWidget.html#gtk-widget-get-preferred-size
+				nativeView.GetPreferredSize(out var minimumSize, out var req);
+
+				return new SizeRequest(req.ToSize(), minimumSize.ToSize());
 			}
 
-			if (calcHeight < -1)
+			int minimumHeight = 0;
+			int naturalHeight = 0;
+			int minimumWidth = 0;
+			int naturalWidth = 0;
+
+			if (widthConstrained)
 			{
-				calcHeight = -1;
+				nativeView.GetPreferredHeightForWidth((int)widthConstraint, out minimumHeight, out naturalHeight);
+
+				if (!heightConstrained)
+				{
+					nativeView.GetPreferredWidthForHeight(Math.Max(minimumHeight, naturalHeight), out minimumWidth, out naturalWidth);
+
+				}
+
 			}
 
-			if (calcWidth != nativeView.WidthRequest || calcHeight != nativeView.HeightRequest)
+			if (heightConstrained)
 			{
-				nativeView.SetSizeRequest(calcWidth, calcHeight);
+				nativeView.GetPreferredWidthForHeight((int)heightConstraint, out minimumWidth, out naturalWidth);
+
+				if (!widthConstrained)
+				{
+					nativeView.GetPreferredHeightForWidth(Math.Max(minimumWidth, naturalWidth), out minimumHeight, out naturalHeight);
+				}
+
 			}
+
+			return new SizeRequest(new Size(naturalWidth, naturalHeight), new Size(minimumWidth, minimumHeight));
 		}
 
 		public static void Arrange(this Widget? nativeView, Rectangle rect)
