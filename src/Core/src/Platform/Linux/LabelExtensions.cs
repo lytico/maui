@@ -12,6 +12,11 @@ namespace Microsoft.Maui
 			nativeLabel.Text = label.Text;
 		}
 
+		public static void UpdateMaxLines(this Label nativeLabel, ILabel label)
+		{
+			nativeLabel.Lines = label.MaxLines;
+		}
+		
 		public static void UpdateLineBreakMode(this Label nativeLabel, ILabel label)
 		{
 			switch (label.LineBreakMode)
@@ -35,6 +40,7 @@ namespace Microsoft.Maui
 					break;
 				case LineBreakMode.HeadTruncation:
 					nativeLabel.LineWrap = false;
+					nativeLabel.Wrap = true;
 					nativeLabel.LineWrapMode = Pango.WrapMode.Word;
 					nativeLabel.Ellipsize = Pango.EllipsizeMode.Start;
 
@@ -42,11 +48,13 @@ namespace Microsoft.Maui
 				case LineBreakMode.TailTruncation:
 					nativeLabel.LineWrap = false;
 					nativeLabel.LineWrapMode = Pango.WrapMode.Word;
+					nativeLabel.Wrap = true;
 					nativeLabel.Ellipsize = Pango.EllipsizeMode.End;
 
 					break;
 				case LineBreakMode.MiddleTruncation:
 					nativeLabel.LineWrap = false;
+					nativeLabel.Wrap = true;
 					nativeLabel.LineWrapMode = Pango.WrapMode.Word;
 					nativeLabel.Ellipsize = Pango.EllipsizeMode.Middle;
 

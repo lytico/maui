@@ -14,15 +14,15 @@ namespace Microsoft.Maui.Handlers
 
 		protected override void ConnectHandler(TextView nativeView)
 		{
-			nativeView.Buffer.Changed += OnNativeViewChanged;
+			nativeView.Buffer.Changed += OnNativeTextChanged;
 		}
 
 		protected override void DisconnectHandler(TextView nativeView)
 		{
-			nativeView.Buffer.Changed -= OnNativeViewChanged;
+			nativeView.Buffer.Changed -= OnNativeTextChanged;
 		}
 
-		protected void OnNativeViewChanged(object sender, EventArgs e)
+		protected void OnNativeTextChanged(object sender, EventArgs e)
 		{
 			if (sender != NativeView?.Buffer || VirtualView == null)
 				return;
