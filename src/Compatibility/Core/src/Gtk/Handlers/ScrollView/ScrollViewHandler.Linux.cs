@@ -6,21 +6,8 @@ using NativeView = Gtk.Widget;
 namespace Microsoft.Maui.Handlers.ScrollView
 {
 
-	public static class ScrollViewExtensions
-	{
-
-		public static PolicyType ToNative(this ScrollBarVisibility it) => it switch
-		{
-			ScrollBarVisibility.Default => PolicyType.Automatic,
-			ScrollBarVisibility.Always => PolicyType.Always,
-			ScrollBarVisibility.Never => PolicyType.Never,
-			_ => throw new ArgumentOutOfRangeException(nameof(it), it, null)
-		};
-
-	}
-
 	// https://developer.gnome.org/gtk3/stable/GtkScrolledWindow.html
-	public class ScrollViewHandler : ViewHandler<Controls.ScrollView, Gtk.ScrolledWindow>
+	public class ScrollViewHandler : ViewHandler<Controls.ScrollView, GtkScrollView>
 	{
 
 		public static PropertyMapper<Controls.ScrollView, ScrollViewHandler> ScrollViewMapper = new(ViewHandler.ViewMapper)
@@ -99,6 +86,8 @@ namespace Microsoft.Maui.Handlers.ScrollView
 				default:
 					throw new ArgumentOutOfRangeException();
 			}
+
+			nativeView.ScrollOrientation = view.Orientation;
 		}
 
 		public static void MapHorizontalScrollBarVisibility(ScrollViewHandler handler, Controls.ScrollView view)
@@ -124,9 +113,9 @@ namespace Microsoft.Maui.Handlers.ScrollView
 
 		public ScrollViewHandler(PropertyMapper mapper = null) : base(mapper) { }
 
-		protected override ScrolledWindow CreateNativeView()
+		protected override GtkScrollView CreateNativeView()
 		{
-			var s = new ScrolledWindow();
+			var s = new GtkScrollView();
 
 			s.SizeAllocated += (s, o) =>
 			{
@@ -153,10 +142,10 @@ namespace Microsoft.Maui.Handlers.ScrollView
 				NativeView.Child = VirtualView.Content.ToNative(MauiContext);
 		}
 
-		protected override void ConnectHandler(ScrolledWindow nativeView)
+		protected override void ConnectHandler(GtkScrollView nativeView)
 		{ }
 
-		protected override void DisconnectHandler(ScrolledWindow nativeView)
+		protected override void DisconnectHandler(GtkScrollView nativeView)
 		{ }
 
 	}
