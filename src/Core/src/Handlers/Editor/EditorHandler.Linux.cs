@@ -1,4 +1,5 @@
-﻿using Gtk;
+﻿using System;
+using Gtk;
 
 namespace Microsoft.Maui.Handlers
 {
@@ -8,15 +9,49 @@ namespace Microsoft.Maui.Handlers
 
 		protected override TextView CreateNativeView()
 		{
-			return new()
-			{
-				WrapMode = WrapMode.WordChar
-			};
+			return new() { WrapMode = WrapMode.WordChar };
+		}
+
+		protected override void ConnectHandler(TextView nativeView)
+		{
+			nativeView.Buffer.Changed += OnNativeViewChanged;
+		}
+
+		protected override void DisconnectHandler(TextView nativeView)
+		{
+			nativeView.Buffer.Changed -= OnNativeViewChanged;
+		}
+
+		protected void OnNativeViewChanged(object sender, EventArgs e)
+		{
+			if (sender != NativeView?.Buffer || VirtualView == null)
+				return;
+
+			var text = NativeView.Buffer.Text;
+
+			if (VirtualView.Text != text)
+				VirtualView.Text = text;
 		}
 
 		public static void MapText(EditorHandler handler, IEditor editor)
 		{
 			handler.NativeView?.UpdateText(editor);
+		}
+
+		public static void MapFont(EditorHandler handler, IEditor editor)
+		{
+			handler.MapFont(editor);
+		}
+
+		public static void MapIsReadOnly(EditorHandler handler, IEditor editor)
+		{
+			if (handler.NativeView is { } nativeView)
+				nativeView.Editable = !editor.IsReadOnly;
+		}
+
+		public static void MapTextColor(EditorHandler handler, IEditor editor)
+		{
+			handler.NativeView?.UpdateTextColor(editor.TextColor);
 		}
 
 		[MissingMapper]
@@ -33,23 +68,6 @@ namespace Microsoft.Maui.Handlers
 
 		[MissingMapper]
 		public static void MapIsTextPredictionEnabled(EditorHandler handler, IEditor editor) { }
-
-		public static void MapFont(EditorHandler handler, IEditor editor)
-		{
-			handler.MapFont(editor);
-
-		}
-
-		public static void MapIsReadOnly(EditorHandler handler, IEditor editor)
-		{
-			if (handler.NativeView is { } nativeView)
-				nativeView.Editable = !editor.IsReadOnly;
-		}
-
-		public static void MapTextColor(EditorHandler handler, IEditor editor)
-		{
-			handler.NativeView?.UpdateTextColor(editor.TextColor);
-		}
 
 	}
 
