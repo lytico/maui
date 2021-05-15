@@ -34,8 +34,12 @@ namespace Microsoft.Maui.Handlers
 
 		public void MapFont(ITextStyle textStyle)
 		{
-			var nativeView = NativeView;
+			MapFont(NativeView, textStyle);
 
+		}
+
+		public void MapFont(Gtk.Widget? nativeView, ITextStyle textStyle)
+		{
 			if (nativeView == null)
 				return;
 
