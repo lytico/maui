@@ -22,10 +22,6 @@ namespace Microsoft.Maui.Handlers
 			handler.NativeView?.UpdateTextColor(label.TextColor);
 		}
 
-		[MissingMapper]
-		public static void MapCharacterSpacing(LabelHandler handler, ILabel label)
-		{ }
-
 		public static void MapFont(LabelHandler handler, ILabel label)
 		{
 			handler.MapFont(label);
@@ -41,11 +37,10 @@ namespace Microsoft.Maui.Handlers
 			handler.NativeView?.UpdateLineBreakMode(label);
 		}
 
-		[MissingMapper]
-		public static void MapTextDecorations(LabelHandler handler, ILabel label) { }
-
-		[MissingMapper]
-		public static void MapMaxLines(LabelHandler handler, ILabel label) { }
+		public static void MapMaxLines(LabelHandler handler, ILabel label)
+		{
+			handler.NativeView?.UpdateMaxLines(label);
+		}
 
 		public static void MapPadding(LabelHandler handler, ILabel label)
 		{
@@ -54,7 +49,23 @@ namespace Microsoft.Maui.Handlers
 		}
 
 		[MissingMapper]
-		public static void MapLineHeight(LabelHandler handler, ILabel label) { }
+		public static void MapCharacterSpacing(LabelHandler handler, ILabel label)
+		{
+			
+		}
+
+		[MissingMapper]
+		public static void MapTextDecorations(LabelHandler handler, ILabel label)
+		{
+			
+		}
+
+		[MissingMapper]
+		public static void MapLineHeight(LabelHandler handler, ILabel label)
+		{
+			// there is no LineHeight for label in gtk3:
+			// https://gitlab.gnome.org/GNOME/gtk/-/issues/2379
+		}
 
 	}
 
