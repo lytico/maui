@@ -14,16 +14,28 @@ namespace Microsoft.Maui
 	public class LayoutView : Container, IGtkContainer
 	{
 
-#if DEBUG
-
 		protected override bool OnDrawn(Cairo.Context cr)
 		{
+			var bk = this.GetBackgroundColor(this.StateFlags);
+
+			if (bk != null)
+			{
+				cr.Save();
+				cr.SetSourceColor(bk.ToCairoColor());
+				cr.Rectangle(0, 0, Allocation.Width, Allocation.Height);
+
+				cr.Fill();
+				cr.Restore();
+			}
+
 			var r = base.OnDrawn(cr);
+#if DEBUG
 
 			cr.Save();
 			cr.SetSourceColor(Graphics.Colors.Red.ToCairoColor());
 			cr.Rectangle(0, 0, Allocation.Width, Allocation.Height);
 			cr.Stroke();
+
 			cr.Restore();
 
 			return r;
@@ -146,12 +158,16 @@ namespace Microsoft.Maui
 				allocation = new Gdk.Rectangle(0, 0, Allocation.Width, Allocation.Height);
 			}
 
+			if (allocation.Size != Allocation.Size)
+			{
+				VirtualView.Arrange(allocation.ToRectangle());
+			}
+
 		}
 
 		protected Requisition OnGetRequisition(SizeConstraint widthConstraint, SizeConstraint heightConstraint)
 		{
 			if (VirtualView == null)
-
 			{
 				return Requisition.Zero;
 			}
@@ -289,7 +305,7 @@ namespace Microsoft.Maui
 
 		#region adoptions
 
-		public void SetFrame(Rectangle rect)
+		public void NativeArrange(Rectangle rect)
 		{
 			var nativeView = this;
 			var virtualView = VirtualView;
@@ -309,33 +325,57 @@ namespace Microsoft.Maui
 
 		public Size GetSizeRequest(SizeConstraint widthConstraint, SizeConstraint heightConstraint)
 		{
-			if (VirtualView == null)
+			var virtualView = VirtualView;
+
+			if (virtualView == null)
 			{
 				return Size.Zero;
 			}
 
-			VirtualView.InvalidateMeasure();
+			var frame = new Rectangle(virtualView.Frame.X, virtualView.Frame.Y, virtualView.DesiredSize.Width, virtualView.DesiredSize.Height);
 
-			var size1 = VirtualView.Measure(widthConstraint.IsConstrained ? widthConstraint.AvailableSize : -1, heightConstraint.IsConstrained ? heightConstraint.AvailableSize : -1);
-
-			var size = Size.Zero;
-
-			foreach (var v in VirtualView.Children)
+			if (frame != virtualView.Frame)
 			{
-
-				size.Width = Math.Max(size.Width, v.DesiredSize.Width + v.Frame.X);
-				size.Height = Math.Max(size.Height, v.DesiredSize.Height + v.Frame.Y);
-
-				v.InvalidateArrange();
-				v.Arrange(v.Frame);
-				SetAllocation(v, v.Frame);
+				virtualView.InvalidateMeasure();
 
 			}
 
+			var size1 = virtualView.Measure(widthConstraint.IsConstrained ? widthConstraint.AvailableSize : double.PositiveInfinity, heightConstraint.IsConstrained ? heightConstraint.AvailableSize : double.PositiveInfinity);
+
+			var size = Size.Zero;
+
+			foreach (var child in virtualView.Children)
+			{
+
+				size.Width = Math.Max(size.Width, child.DesiredSize.Width + child.Frame.X);
+				size.Height = Math.Max(size.Height, child.DesiredSize.Height + child.Frame.Y);
+				var childFrame = new Rectangle(child.Frame.X, child.Frame.Y, child.DesiredSize.Width, child.DesiredSize.Height);
+
+				var childSize = child.Measure(double.PositiveInfinity, double.PositiveInfinity);
+
+				// if (childFrame != child.Frame)
+				// {
+				// 	child.InvalidateArrange();
+				// 	child.Arrange(childFrame);
+				// }
+				// else
+				// {
+				// 	;
+				// }
+
+				SetAllocation(child, child.Frame);
+
+			}
+
+			size = size1;
 			var mesured = new Size(size.Width > 0 ? size.Width : widthConstraint.AvailableSize, size.Height > 0 ? size.Height : heightConstraint.AvailableSize);
-			VirtualView.InvalidateMeasure();
-			VirtualView.InvalidateArrange();
-			VirtualView.Arrange(new Rectangle(Graphics.Point.Zero, mesured));
+
+			if (frame.Size != mesured)
+			{
+				virtualView.InvalidateMeasure();
+				virtualView.InvalidateArrange();
+				virtualView.Arrange(new Rectangle(Graphics.Point.Zero, mesured));
+			}
 
 			return mesured;
 
