@@ -41,21 +41,28 @@ namespace Microsoft.Maui
 			base.OnSizeAllocated(allocation);
 		}
 
-		protected override void OnAdjustSizeRequest(Orientation orientation, out int minimum_size, out int natural_size)
+		protected override void OnGetPreferredHeightForWidth(int width, out int minimumHeight, out int naturalHeight)
 		{
-			base.OnAdjustSizeRequest(orientation, out minimum_size, out natural_size);
+			base.OnGetPreferredHeightForWidth(width, out minimumHeight, out naturalHeight);
 
-			if (CrossPlatformMeasure == null)
-				return;
+			if (Content == null) return;
 
-			if (orientation == Orientation.Horizontal) // widthRequest
-			{
-				var m = CrossPlatformMeasure(minimum_size, double.PositiveInfinity);
-			}
-			else
-			{
-				var m = CrossPlatformMeasure(double.PositiveInfinity,minimum_size);
-			}
+			Content.GetPreferredHeightForWidth(width, out var childMinimumHeight, out var childNaturalHeight);
+			minimumHeight = Math.Max(minimumHeight, childMinimumHeight);
+			naturalHeight = Math.Max(naturalHeight, childNaturalHeight);
+
+
+		}
+
+		protected override void OnGetPreferredWidthForHeight(int height, out int minimumWidth, out int naturalWidth)
+		{
+			base.OnGetPreferredWidthForHeight(height, out minimumWidth, out naturalWidth);
+			
+			if (Content == null) return;
+
+			Content.GetPreferredWidthForHeight(height, out var childMinimumWidth, out var childNaturalWidth);
+			minimumWidth = Math.Max(minimumWidth, childMinimumWidth);
+			naturalWidth = Math.Max(naturalWidth, childNaturalWidth);
 		}
 
 	}
