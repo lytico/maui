@@ -240,6 +240,10 @@ namespace Microsoft.Maui
 
 			var widthConstrained = !double.IsPositiveInfinity(widthConstraint);
 			var heightConstrained = !double.IsPositiveInfinity(heightConstraint);
+			
+			var widthHandled = virtualView.Width >= 0 && virtualView.DesiredSize.Width > 0;
+			var heightHandled = virtualView.Height >= 0 && virtualView.DesiredSize.Height > 0;
+			
 			var size1 = virtualView.Measure(widthConstraint, heightConstraint);
 
 			var minSize = Size.Zero;
@@ -251,9 +255,10 @@ namespace Microsoft.Maui
 				var allocation = kvp.Value;
 				var view = kvp.Key;
 
-				if (heightConstraint == 1)
+				if (allocation.Rect.Width==0)
 				{
 					var fullsize = view.Measure(view.Margin.VerticalThickness, view.Margin.HorizontalThickness);
+					var heigthForMinWidthMea = view.Measure(view.Margin.VerticalThickness, double.PositiveInfinity);
 					var heigthForMinWidth = widget.GetDesiredSize(0, double.PositiveInfinity);
 				}
 				var sizeRequest = widget.GetDesiredSize(widthConstraint, heightConstraint);
