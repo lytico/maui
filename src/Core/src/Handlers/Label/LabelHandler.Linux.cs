@@ -23,6 +23,9 @@ namespace Microsoft.Maui.Handlers
 		private bool _perfectSizeValid;
 		// private bool _allocated = false;
 
+		// note: maybe fix that problem with own label class
+		// drawn by Microsoft.Maui.Graphics.Native.Gtk - TextLayout.cs
+		
 		private SizeRequest GetPerfectSize(int widthConstraint = -1)
 		{
 			if (NativeView is not { } nativeView)
