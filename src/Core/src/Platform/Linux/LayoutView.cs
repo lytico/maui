@@ -229,8 +229,41 @@ namespace Microsoft.Maui
 			// return base.OnGetRequestMode();
 		}
 
-		public Size GetSizeRequest(double widthConstraint, double heightConstraint, SizeRequestMode mode)
+		bool isWithAllocated = false;
+		int withAllocate = -1;
+		bool isHeigthAllocated = false;
+		int heigthAllocate = -1;
+
+		protected override void OnAdjustSizeAllocation(Orientation orientation, out int minimumSize, out int naturalSize, out int allocatedPos, out int allocatedSize)
 		{
+			base.OnAdjustSizeAllocation(orientation, out minimumSize, out naturalSize, out allocatedPos, out allocatedSize);
+			isWithAllocated = orientation == Orientation.Horizontal && allocatedSize > 1;
+			isHeigthAllocated = orientation == Orientation.Vertical && allocatedSize > 1;
+
+			if (isWithAllocated)
+				withAllocate = allocatedSize;
+
+			if (isHeigthAllocated)
+				heigthAllocate = allocatedSize;
+		}
+
+		// protected override void OnAdjustSizeRequest(Orientation orientation, out int minimumSize, out int naturalSize)
+		// {
+		// 	base.OnAdjustSizeRequest(orientation, out minimumSize, out naturalSize);
+		// }
+
+		public SizeRequest GetSizeRequest(double widthConstraint, double heightConstraint, SizeRequestMode mode)
+		{
+			var widthHandled = AllocatedWidth > 1; // && virtualView.DesiredSize.Width > 0;
+			var heightHandled = AllocatedHeight > 1; // && virtualView.DesiredSize.Height > 0;
+			var widthConstrained = !double.IsPositiveInfinity(widthConstraint);
+			var heightConstrained = !double.IsPositiveInfinity(heightConstraint);
+
+			if (!widthHandled || !heightHandled)
+			{
+				return new Size(widthConstraint, heightConstraint);
+			}
+
 			var virtualView = VirtualView;
 
 			if (virtualView == null)
@@ -238,75 +271,122 @@ namespace Microsoft.Maui
 				return Size.Zero;
 			}
 
-			var widthConstrained = !double.IsPositiveInfinity(widthConstraint);
-			var heightConstrained = !double.IsPositiveInfinity(heightConstraint);
-			
-			var widthHandled = virtualView.Width >= 0 && virtualView.DesiredSize.Width > 0;
-			var heightHandled = virtualView.Height >= 0 && virtualView.DesiredSize.Height > 0;
-			
+			var withFactor = widthHandled && widthConstrained && widthConstraint > 1 ? widthConstraint / AllocatedWidth : 1;
+			var heigthFactor = heightHandled && heightConstrained && heightConstraint > 1 ? heightConstraint / AllocatedHeight : 1;
+
 			var size1 = virtualView.Measure(widthConstraint, heightConstraint);
 
-			var minSize = Size.Zero;
-			var desiredSize = Size.Zero;
-
-			foreach (var kvp in _children.ToArray())
+			if (false)
+#pragma warning disable 162
 			{
-				var widget = kvp.Value.Widget;
-				var allocation = kvp.Value;
-				var view = kvp.Key;
+				var minimumSize = Size.Zero;
+				var desiredSize = Size.Zero;
 
-				if (allocation.Rect.Width==0)
+				foreach (var kvp in _children.ToArray())
 				{
-					var fullsize = view.Measure(view.Margin.VerticalThickness, view.Margin.HorizontalThickness);
-					var heigthForMinWidthMea = view.Measure(view.Margin.VerticalThickness, double.PositiveInfinity);
-					var heigthForMinWidth = widget.GetDesiredSize(0, double.PositiveInfinity);
+					var widget = kvp.Value.Widget;
+					var allocation = kvp.Value;
+					var view = kvp.Key;
+
+					if (view.Handler == null)
+						continue;
+
+					var minWidth = 0d;
+					var minHeight = 0d;
+					var desiredWidth = 0d;
+					var desiredHeight = 0d;
+					var viewFrame = view.Frame;
+
+					if (mode == SizeRequestMode.WidthForHeight)
+					{
+						// initial width request for widget:
+						if (allocation.Rect.Width == 0)
+						{
+							//var fullsize = view.Measure(view.Margin.HorizontalThickness, view.Margin.VerticalThickness);
+							var mea = view.Measure(AllocatedWidth + view.Margin.HorizontalThickness, double.PositiveInfinity);
+							minWidth = mea.Width;
+							desiredHeight = mea.Height;
+							var s = view.Handler.GetDesiredSize(double.PositiveInfinity, double.PositiveInfinity);
+							desiredWidth = s.Width;
+							minHeight = s.Height;
+						}
+						else
+						{
+							var wfh = view.Measure(view.Margin.HorizontalThickness, allocation.Rect.Height * heigthFactor);
+							desiredHeight = wfh.Height;
+							desiredWidth = wfh.Width;
+							var s = view.Handler.GetDesiredSize(view.Margin.HorizontalThickness, view.Margin.VerticalThickness);
+							minHeight = s.Height;
+							minWidth = s.Width;
+
+						}
+					}
+					else
+					{
+						// initial heigh request for widget:
+						if (allocation.Rect.Height == 0)
+						{
+							var mea = view.Measure(widthConstraint + view.Margin.VerticalThickness, double.PositiveInfinity);
+							desiredWidth = mea.Width;
+							minHeight = mea.Height;
+							var s = view.Handler.GetDesiredSize(widthConstraint, double.PositiveInfinity);
+							minWidth = s.Width;
+							desiredHeight = s.Height;
+						}
+						else
+						{
+							var hfw = view.Measure(allocation.Rect.Width * withFactor, view.Margin.VerticalThickness);
+							desiredHeight = hfw.Height;
+							desiredWidth = hfw.Width;
+							var s = view.Handler.GetDesiredSize(view.Margin.HorizontalThickness, view.Margin.VerticalThickness);
+							minHeight = s.Height;
+							minWidth = s.Width;
+
+						}
+					}
+
+					viewFrame = view.Frame;
+
+					minimumSize.Width = Math.Max(minimumSize.Width, viewFrame.X + minWidth);
+					minimumSize.Height = Math.Max(minimumSize.Height, viewFrame.Y + minHeight);
+					desiredSize.Width = Math.Max(Math.Max(desiredSize.Width, viewFrame.X + desiredWidth), minimumSize.Width);
+					desiredSize.Height = Math.Max(Math.Max(desiredSize.Height, viewFrame.Y + desiredHeight), minimumSize.Height);
+					// SetAllocation(cv, fr);
+
 				}
-				var sizeRequest = widget.GetDesiredSize(widthConstraint, heightConstraint);
-				var measure = view.Measure(widthConstraint, heightConstraint);
-				// after Measure, IView.DesiredSize == measured size == sizeRequest.Request
-				
-				var viewFrame = view.Frame;
 
-				var minimumFrame = new Rectangle(viewFrame.Location, sizeRequest.Minimum);
-				var desiredFrame = new Rectangle(viewFrame.Location, sizeRequest.Request);
-				minSize.Width = Math.Max(minSize.Width, minimumFrame.Right);
-				minSize.Height = Math.Max(minSize.Height, minimumFrame.Bottom);
-				desiredSize.Width = Math.Max(desiredSize.Width, desiredFrame.Right);
-				desiredSize.Height = Math.Max(desiredSize.Height, desiredFrame.Bottom);
-				// SetAllocation(cv, fr);
-
+				var size2 = virtualView.Arrange(new(Point.Zero, minimumSize));
 			}
+#pragma warning restore 162
 
-			var size2 = virtualView.Arrange(new(Point.Zero, minSize));
+			var size2_ = virtualView.Arrange(new(Point.Zero, size1));
 
 			foreach (var child in virtualView.Children)
 			{
 				SetAllocation(child, child.Frame);
 			}
 
-			return size2;
+			return new SizeRequest(size1, size1);
+		}
+
+		int ToSize(double it) => double.IsPositiveInfinity(it) ? 0 : (int)it;
+
+		protected override void OnGetPreferredWidthForHeight(int height, out int minimumWidth, out int naturalWidth)
+		{
+			base.OnGetPreferredWidthForHeight(height, out minimumWidth, out naturalWidth);
+			var sizeRequest = GetSizeRequest(double.PositiveInfinity, height, SizeRequestMode.WidthForHeight);
+
+			minimumWidth = Math.Max(WidthRequest, ToSize(sizeRequest.Minimum.Width));
+			naturalWidth = Math.Max(WidthRequest, ToSize(sizeRequest.Request.Width));
 		}
 
 		protected override void OnGetPreferredHeightForWidth(int width, out int minimumHeight, out int naturalHeight)
 		{
 			base.OnGetPreferredHeightForWidth(width, out minimumHeight, out naturalHeight);
-			var size = GetSizeRequest(width, double.PositiveInfinity, SizeRequestMode.HeightForWidth);
+			var sizeRequest = GetSizeRequest(width, double.PositiveInfinity, SizeRequestMode.HeightForWidth);
 
-			if (size.Height < HeightRequest)
-				minimumHeight = naturalHeight = HeightRequest;
-			else
-				minimumHeight = naturalHeight = (int)size.Height;
-		}
-
-		protected override void OnGetPreferredWidthForHeight(int height, out int minimumWidth, out int naturalWidth)
-		{
-			base.OnGetPreferredWidthForHeight(height, out minimumWidth, out naturalWidth);
-			var size = GetSizeRequest(double.PositiveInfinity, height, SizeRequestMode.WidthForHeight);
-
-			if (size.Width < WidthRequest)
-				minimumWidth = naturalWidth = WidthRequest;
-			else
-				minimumWidth = naturalWidth = (int)size.Width;
+			minimumHeight = Math.Max(HeightRequest, ToSize(sizeRequest.Minimum.Height));
+			naturalHeight = Math.Max(HeightRequest, ToSize(sizeRequest.Request.Height));
 		}
 
 		#region adoptions
