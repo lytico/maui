@@ -18,7 +18,8 @@ namespace Maui.SimpleSampleApp
 		readonly MainPageViewModel _viewModel;
 
 		const string LoremIpsum =
-			"Lorem ipsum dolor sit amet, consectetur adipiscing elit. " +
+			"Lorem ipsum dolor sit amet, consectetur adipiscing elit. " ;
+		const string LoremIpsum2 =			
 			"Quisque ut dolor metus. Duis vel iaculis mauris, sit amet finibus mi. " +
 			"Etiam congue ornare risus, in facilisis libero tempor eget. " +
 			"Phasellus mattis mollis libero ut semper. In sit amet sapien odio. " +
@@ -31,16 +32,16 @@ namespace Maui.SimpleSampleApp
 			_services = services;
 			BindingContext = _viewModel = viewModel;
 			
-			SetupMauiLayoutLayouts();
+			// SetupMauiLayoutLayouts();
 			
 			// SetupMauiLayoutSimple();
-			// SetupMauiLayout();
+			SetupMauiLayout();
 			// SetupCompatibilityLayout();
 		}
 
 		void SetupMauiLayoutLayouts()
 		{
-			void Fill(Microsoft.Maui.Controls.Layout2.Layout l, string m, int count)
+			void Fill(Microsoft.Maui.Controls.Layout2.Layout l, string m, int count, Color bkCol)
 			{
 				var i = 0;
 
@@ -48,9 +49,9 @@ namespace Maui.SimpleSampleApp
 				{
 					var label = new Label
 					{
-						Text = $"{m} {i} {LoremIpsum}",
+						Text = $"{m} {i}",
 						HorizontalTextAlignment = TextAlignment.Center,
-						BackgroundColor = Colors.Coral,
+						BackgroundColor = bkCol,
 						Margin = new Thickness(i),
 						LineBreakMode = LineBreakMode.TailTruncation,
 						MaxLines = i
@@ -65,8 +66,23 @@ namespace Maui.SimpleSampleApp
 				Spacing = 5,
 				BackgroundColor = Colors.WhiteSmoke,
 			};
+			var verticalStack2 = new VerticalStackLayout()
+			{
+				Spacing = 5,
+				BackgroundColor = Colors.NavajoWhite,
+			};
+			Fill(verticalStack2, nameof(verticalStack2), 4, Colors.Coral);
+			
+			var horizontalStack1 = new HorizontalStackLayout()
+			{
+				Spacing = 5,
+				BackgroundColor = Colors.NavajoWhite,
+			};
+			Fill(horizontalStack1, nameof(horizontalStack1), 4, Colors.Azure);
+			
+			verticalStack1.Add(verticalStack2);
+			verticalStack1.Add(horizontalStack1);
 
-			Fill(verticalStack1, nameof(verticalStack1), 4);
 			Content = verticalStack1;
 
 		}
