@@ -17,14 +17,58 @@ namespace Maui.SimpleSampleApp
 		readonly IServiceProvider _services;
 		readonly MainPageViewModel _viewModel;
 
+		const string LoremIpsum =
+			"Lorem ipsum dolor sit amet, consectetur adipiscing elit. " +
+			"Quisque ut dolor metus. Duis vel iaculis mauris, sit amet finibus mi. " +
+			"Etiam congue ornare risus, in facilisis libero tempor eget. " +
+			"Phasellus mattis mollis libero ut semper. In sit amet sapien odio. " +
+			"Sed interdum ullamcorper dui eu rutrum. Vestibulum non sagittis justo. " +
+			"Cras rutrum scelerisque elit, et porta est lobortis ac. " +
+			"Pellentesque eu ornare tortor. Sed bibendum a nisl at laoreet.";
+		
 		public ExamplePage(IServiceProvider services, MainPageViewModel viewModel)
 		{
 			_services = services;
 			BindingContext = _viewModel = viewModel;
+			
+			SetupMauiLayoutLayouts();
+			
+			// SetupMauiLayoutSimple();
+			// SetupMauiLayout();
+			// SetupCompatibilityLayout();
+		}
 
-			SetupMauiLayoutSimple();
-			SetupMauiLayout();
-			//SetupCompatibilityLayout();
+		void SetupMauiLayoutLayouts()
+		{
+			void Fill(Microsoft.Maui.Controls.Layout2.Layout l, string m, int count)
+			{
+				var i = 0;
+
+				while (i++ < count)
+				{
+					var label = new Label
+					{
+						Text = $"{m} {i} {LoremIpsum}",
+						HorizontalTextAlignment = TextAlignment.Center,
+						BackgroundColor = Colors.Coral,
+						Margin = new Thickness(i),
+						LineBreakMode = LineBreakMode.TailTruncation,
+						MaxLines = i
+
+					};
+					l.Add(label);
+				}
+			}
+
+			var verticalStack1 = new VerticalStackLayout()
+			{
+				Spacing = 5,
+				BackgroundColor = Colors.WhiteSmoke,
+			};
+
+			Fill(verticalStack1, nameof(verticalStack1), 4);
+			Content = verticalStack1;
+
 		}
 
 		void SetupMauiLayoutSimple()
@@ -113,14 +157,7 @@ namespace Maui.SimpleSampleApp
 
 		void SetupMauiLayout()
 		{
-			const string loremIpsum =
-				"Lorem ipsum dolor sit amet, consectetur adipiscing elit. " +
-				"Quisque ut dolor metus. Duis vel iaculis mauris, sit amet finibus mi. " +
-				"Etiam congue ornare risus, in facilisis libero tempor eget. " +
-				"Phasellus mattis mollis libero ut semper. In sit amet sapien odio. " +
-				"Sed interdum ullamcorper dui eu rutrum. Vestibulum non sagittis justo. " +
-				"Cras rutrum scelerisque elit, et porta est lobortis ac. " +
-				"Pellentesque eu ornare tortor. Sed bibendum a nisl at laoreet.";
+
 
 			var verticalStack = new VerticalStackLayout()
 			{
@@ -185,30 +222,31 @@ namespace Maui.SimpleSampleApp
 				BackgroundColor = Colors.LightBlue
 			});
 
-			verticalStack.Add(new Label { Text = loremIpsum });
+			verticalStack.Add(new Label { Text = LoremIpsum });
 
 			verticalStack.Add(new Label
 			{
-				Text = loremIpsum,
+				Text = LoremIpsum,
 				MaxLines = 2
 			});
 
 			verticalStack.Add(new Label
 			{
-				Text = loremIpsum,
+				Text = LoremIpsum,
 				LineBreakMode = LineBreakMode.TailTruncation
 			});
 
 			verticalStack.Add(new Label
 			{
-				Text = loremIpsum,
+				Text = LoremIpsum,
 				MaxLines = 2,
-				LineBreakMode = LineBreakMode.TailTruncation
+				LineBreakMode = LineBreakMode.TailTruncation,
+				WidthRequest = 200
 			});
 
 			verticalStack.Add(new Label
 			{
-				Text = "This should have five times the line height! " + loremIpsum,
+				Text = "This should have five times the line height! " + LoremIpsum,
 				LineHeight = 5,
 				MaxLines = 2
 			});
