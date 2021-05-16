@@ -1,5 +1,6 @@
 ﻿using System;
 using Gtk;
+using Microsoft.Maui.Graphics;
 
 namespace Microsoft.Maui.Handlers
 {
@@ -20,6 +21,19 @@ namespace Microsoft.Maui.Handlers
 		protected override void DisconnectHandler(TextView nativeView)
 		{
 			nativeView.Buffer.Changed -= OnNativeTextChanged;
+		}
+
+
+		public override Size GetDesiredSize(double widthConstraint, double heightConstraint)
+		{
+			var res =  base.GetDesiredSize(widthConstraint, heightConstraint);
+
+			if (res.Height == 0 && 	NativeView is { } nativeView)
+			{
+				res.Height = (int)Math.Round(nativeView.GetFontHeigth());
+			}
+
+			return res;
 		}
 
 		protected void OnNativeTextChanged(object sender, EventArgs e)
