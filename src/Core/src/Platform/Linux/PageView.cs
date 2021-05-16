@@ -36,11 +36,6 @@ namespace Microsoft.Maui
 			}
 		}
 
-		protected override void OnSizeAllocated(Gdk.Rectangle allocation)
-		{
-			base.OnSizeAllocated(allocation);
-		}
-
 		protected override void OnGetPreferredHeightForWidth(int width, out int minimumHeight, out int naturalHeight)
 		{
 			base.OnGetPreferredHeightForWidth(width, out minimumHeight, out naturalHeight);
@@ -48,16 +43,19 @@ namespace Microsoft.Maui
 			if (Content == null) return;
 
 			Content.GetPreferredHeightForWidth(width, out var childMinimumHeight, out var childNaturalHeight);
-			minimumHeight = Math.Max(minimumHeight, childMinimumHeight);
-			naturalHeight = Math.Max(naturalHeight, childNaturalHeight);
-
-
+			minimumHeight = Math.Max(Math.Max(minimumHeight, childMinimumHeight), hr);
+			naturalHeight = Math.Max(Math.Max(naturalHeight, childNaturalHeight), hr);
+			hr = 0;
+			
 		}
+
+		int hr = 0;
 
 		protected override void OnGetPreferredWidthForHeight(int height, out int minimumWidth, out int naturalWidth)
 		{
 			base.OnGetPreferredWidthForHeight(height, out minimumWidth, out naturalWidth);
-			
+			hr = Math.Max(hr, height);
+
 			if (Content == null) return;
 
 			Content.GetPreferredWidthForHeight(height, out var childMinimumWidth, out var childNaturalWidth);
