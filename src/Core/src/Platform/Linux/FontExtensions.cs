@@ -65,7 +65,17 @@ namespace Microsoft.Maui
 				Stretch = it.ToFontStretch()
 			};
 
+		public static double GetFontHeigth(this Widget it, Pango.FontDescription? font = null)
+		{
+			font ??= it.GetPangoFontDescription();
+			var metrics = it.PangoContext.GetMetrics(font, Pango.Language.Default);
+			var pangoUnits = (metrics.Ascent + metrics.Descent) / Pango.Scale.PangoScale;
 
+			var resolution = it.Screen.Resolution;
+			var height = (pangoUnits * (resolution / 72.0));
+
+			return height;
+		}
 
 	}
 
