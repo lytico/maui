@@ -44,7 +44,7 @@ namespace Microsoft.Maui.Handlers
 
 		public static void MapPadding(LabelHandler handler, ILabel label)
 		{
-			handler.NativeView.WithMargin(label.Padding);
+			handler.NativeView.WithPadding(label.Padding);
 
 		}
 
