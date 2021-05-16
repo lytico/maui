@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Gtk;
+using Microsoft.Maui.Graphics;
 using Microsoft.Maui.Graphics.Native.Gtk;
 using Rectangle = Microsoft.Maui.Graphics.Rectangle;
 using Size = Microsoft.Maui.Graphics.Size;
@@ -172,7 +173,7 @@ namespace Microsoft.Maui
 				return Requisition.Zero;
 			}
 
-			var size = GetSizeRequest(widthConstraint, heightConstraint);
+			var size = GetSizeRequest0(widthConstraint, heightConstraint);
 
 			return size.ToGtkRequisition();
 		}
@@ -245,62 +246,72 @@ namespace Microsoft.Maui
 			// return base.OnGetRequestMode();
 		}
 
-		protected override void OnGetPreferredHeight(out int minimumHeight, out int naturalHeight)
+		public Size GetSizeRequest1(double widthConstraint, double heightConstraint, SizeRequestMode mode)
 		{
-			base.OnGetPreferredHeight(out minimumHeight, out naturalHeight);
-			// containers need initial width in heigt_for_width mode
-			// dirty fix: do not constrain width on first allocation 
-			var forceWidth = SizeConstraint.Unconstrained;
+			var virtualView = VirtualView;
 
-			if (IsReallocating)
-				forceWidth = SizeConstraint.WithSize(Allocation.Width);
+			if (virtualView == null)
+			{
+				return Size.Zero;
+			}
 
-			var size = OnGetRequisition(forceWidth, SizeConstraint.Unconstrained);
+			var widthConstrained = !double.IsPositiveInfinity(widthConstraint);
+			var heightConstrained = !double.IsPositiveInfinity(heightConstraint);
+			var size1 = virtualView.Measure(widthConstraint, heightConstraint);
 
-			if (size.Height < HeightRequest)
-				minimumHeight = naturalHeight = HeightRequest;
-			else
-				minimumHeight = naturalHeight = size.Height;
-		}
+			var minSize = Size.Zero;
+			var desiredSize = Size.Zero;
 
-		protected override void OnGetPreferredWidth(out int minimumWidth, out int naturalWidth)
-		{
-			base.OnGetPreferredWidth(out minimumWidth, out naturalWidth);
-			// containers need initial height in width_for_height mode
-			// dirty fix: do not constrain height on first allocation
-			var forceHeight = SizeConstraint.Unconstrained;
+			foreach (var kvp in _children.ToArray())
+			{
+				var w = kvp.Value.Widget;
+				var allocation = kvp.Value;
+				var cv = kvp.Key;
+				var s = w.GetDesiredSize(widthConstraint, heightConstraint);
 
-			if (IsReallocating)
-				forceHeight = SizeConstraint.WithSize(Allocation.Width);
+				var ms = cv.Measure(widthConstraint, widthConstraint);
+				var fr = cv.Frame;
 
-			var size = OnGetRequisition(SizeConstraint.Unconstrained, forceHeight);
+				var minRe = new Rectangle(fr.Location, s.Minimum);
+				var desRe = new Rectangle(fr.Location, s.Request);
+				minSize.Width = Math.Max(minSize.Width, minRe.Right);
+				minSize.Height = Math.Max(minSize.Height, minRe.Bottom);
+				desiredSize.Width = Math.Max(desiredSize.Width, desRe.Right);
+				desiredSize.Height = Math.Max(desiredSize.Height, desRe.Bottom);
+				// SetAllocation(cv, fr);
 
-			if (size.Width < WidthRequest)
-				minimumWidth = naturalWidth = WidthRequest;
-			else
-				minimumWidth = naturalWidth = size.Width;
+			}
+
+			var size2 = virtualView.Arrange(new(Point.Zero, minSize));
+
+			foreach (var child in virtualView.Children)
+			{
+				SetAllocation(child, child.Frame);
+			}
+
+			return size2;
 		}
 
 		protected override void OnGetPreferredHeightForWidth(int width, out int minimumHeight, out int naturalHeight)
 		{
 			base.OnGetPreferredHeightForWidth(width, out minimumHeight, out naturalHeight);
-			var size = OnGetRequisition(SizeConstraint.WithSize(width), SizeConstraint.Unconstrained);
+			var size = GetSizeRequest1(width, double.PositiveInfinity, SizeRequestMode.HeightForWidth);
 
 			if (size.Height < HeightRequest)
 				minimumHeight = naturalHeight = HeightRequest;
 			else
-				minimumHeight = naturalHeight = size.Height;
+				minimumHeight = naturalHeight = (int)size.Height;
 		}
 
 		protected override void OnGetPreferredWidthForHeight(int height, out int minimumWidth, out int naturalWidth)
 		{
 			base.OnGetPreferredWidthForHeight(height, out minimumWidth, out naturalWidth);
-			var size = OnGetRequisition(SizeConstraint.Unconstrained, SizeConstraint.WithSize(height));
+			var size = GetSizeRequest1(double.PositiveInfinity, height, SizeRequestMode.WidthForHeight);
 
 			if (size.Width < WidthRequest)
 				minimumWidth = naturalWidth = WidthRequest;
 			else
-				minimumWidth = naturalWidth = size.Width;
+				minimumWidth = naturalWidth = (int)size.Width;
 		}
 
 		#region adoptions
@@ -323,7 +334,7 @@ namespace Microsoft.Maui
 			}
 		}
 
-		public Size GetSizeRequest(SizeConstraint widthConstraint, SizeConstraint heightConstraint)
+		public Size GetSizeRequest0(SizeConstraint widthConstraint, SizeConstraint heightConstraint)
 		{
 			var virtualView = VirtualView;
 

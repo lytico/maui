@@ -97,7 +97,7 @@ namespace Microsoft.Maui
 
 		public static void InvalidateMeasure(this Widget nativeView, IView view)
 		{
-			;
+			nativeView.QueueAllocate();
 		}
 
 		static int Request(double viewSize) => viewSize >= 0 ? (int)viewSize : -1;
