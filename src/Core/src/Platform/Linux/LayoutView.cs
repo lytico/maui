@@ -4,6 +4,7 @@ using System.Linq;
 using Gtk;
 using Microsoft.Maui.Graphics;
 using Microsoft.Maui.Graphics.Native.Gtk;
+using Microsoft.Maui.Layouts;
 using Rectangle = Microsoft.Maui.Graphics.Rectangle;
 using Size = Microsoft.Maui.Graphics.Size;
 
@@ -249,9 +250,16 @@ namespace Microsoft.Maui
 				var widget = kvp.Value.Widget;
 				var allocation = kvp.Value;
 				var view = kvp.Key;
-				var sizeRequest = widget.GetDesiredSize(widthConstraint, heightConstraint);
 
-				var measure = view.Measure(widthConstraint, widthConstraint);
+				if (heightConstraint == 1)
+				{
+					var fullsize = view.Measure(view.Margin.VerticalThickness, view.Margin.HorizontalThickness);
+					var heigthForMinWidth = widget.GetDesiredSize(0, double.PositiveInfinity);
+				}
+				var sizeRequest = widget.GetDesiredSize(widthConstraint, heightConstraint);
+				var measure = view.Measure(widthConstraint, heightConstraint);
+				// after Measure, IView.DesiredSize == measured size == sizeRequest.Request
+				
 				var viewFrame = view.Frame;
 
 				var minimumFrame = new Rectangle(viewFrame.Location, sizeRequest.Minimum);
