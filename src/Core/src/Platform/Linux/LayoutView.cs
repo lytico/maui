@@ -166,18 +166,6 @@ namespace Microsoft.Maui
 
 		}
 
-		protected Requisition OnGetRequisition(SizeConstraint widthConstraint, SizeConstraint heightConstraint)
-		{
-			if (VirtualView == null)
-			{
-				return Requisition.Zero;
-			}
-
-			var size = GetSizeRequest0(widthConstraint, heightConstraint);
-
-			return size.ToGtkRequisition();
-		}
-
 		protected override void OnSizeAllocated(Gdk.Rectangle allocation)
 		{
 			base.OnSizeAllocated(allocation);
@@ -205,12 +193,6 @@ namespace Microsoft.Maui
 
 			foreach (var c in _children.Values.Select(v => v.Widget).ToArray())
 				callback(c);
-		}
-
-		public void QueueResizeIfRequired()
-		{
-			// since we have no SizeRequest event, we must always queue up for resize
-			QueueResize();
 		}
 
 		protected override void OnUnrealized()
@@ -246,7 +228,7 @@ namespace Microsoft.Maui
 			// return base.OnGetRequestMode();
 		}
 
-		public Size GetSizeRequest1(double widthConstraint, double heightConstraint, SizeRequestMode mode)
+		public Size GetSizeRequest(double widthConstraint, double heightConstraint, SizeRequestMode mode)
 		{
 			var virtualView = VirtualView;
 
@@ -264,20 +246,20 @@ namespace Microsoft.Maui
 
 			foreach (var kvp in _children.ToArray())
 			{
-				var w = kvp.Value.Widget;
+				var widget = kvp.Value.Widget;
 				var allocation = kvp.Value;
-				var cv = kvp.Key;
-				var s = w.GetDesiredSize(widthConstraint, heightConstraint);
+				var view = kvp.Key;
+				var sizeRequest = widget.GetDesiredSize(widthConstraint, heightConstraint);
 
-				var ms = cv.Measure(widthConstraint, widthConstraint);
-				var fr = cv.Frame;
+				var measure = view.Measure(widthConstraint, widthConstraint);
+				var viewFrame = view.Frame;
 
-				var minRe = new Rectangle(fr.Location, s.Minimum);
-				var desRe = new Rectangle(fr.Location, s.Request);
-				minSize.Width = Math.Max(minSize.Width, minRe.Right);
-				minSize.Height = Math.Max(minSize.Height, minRe.Bottom);
-				desiredSize.Width = Math.Max(desiredSize.Width, desRe.Right);
-				desiredSize.Height = Math.Max(desiredSize.Height, desRe.Bottom);
+				var minimumFrame = new Rectangle(viewFrame.Location, sizeRequest.Minimum);
+				var desiredFrame = new Rectangle(viewFrame.Location, sizeRequest.Request);
+				minSize.Width = Math.Max(minSize.Width, minimumFrame.Right);
+				minSize.Height = Math.Max(minSize.Height, minimumFrame.Bottom);
+				desiredSize.Width = Math.Max(desiredSize.Width, desiredFrame.Right);
+				desiredSize.Height = Math.Max(desiredSize.Height, desiredFrame.Bottom);
 				// SetAllocation(cv, fr);
 
 			}
@@ -295,7 +277,7 @@ namespace Microsoft.Maui
 		protected override void OnGetPreferredHeightForWidth(int width, out int minimumHeight, out int naturalHeight)
 		{
 			base.OnGetPreferredHeightForWidth(width, out minimumHeight, out naturalHeight);
-			var size = GetSizeRequest1(width, double.PositiveInfinity, SizeRequestMode.HeightForWidth);
+			var size = GetSizeRequest(width, double.PositiveInfinity, SizeRequestMode.HeightForWidth);
 
 			if (size.Height < HeightRequest)
 				minimumHeight = naturalHeight = HeightRequest;
@@ -306,7 +288,7 @@ namespace Microsoft.Maui
 		protected override void OnGetPreferredWidthForHeight(int height, out int minimumWidth, out int naturalWidth)
 		{
 			base.OnGetPreferredWidthForHeight(height, out minimumWidth, out naturalWidth);
-			var size = GetSizeRequest1(double.PositiveInfinity, height, SizeRequestMode.WidthForHeight);
+			var size = GetSizeRequest(double.PositiveInfinity, height, SizeRequestMode.WidthForHeight);
 
 			if (size.Width < WidthRequest)
 				minimumWidth = naturalWidth = WidthRequest;
@@ -334,110 +316,7 @@ namespace Microsoft.Maui
 			}
 		}
 
-		public Size GetSizeRequest0(SizeConstraint widthConstraint, SizeConstraint heightConstraint)
-		{
-			var virtualView = VirtualView;
-
-			if (virtualView == null)
-			{
-				return Size.Zero;
-			}
-
-			var frame = new Rectangle(virtualView.Frame.X, virtualView.Frame.Y, virtualView.DesiredSize.Width, virtualView.DesiredSize.Height);
-
-			if (frame != virtualView.Frame)
-			{
-				virtualView.InvalidateMeasure();
-
-			}
-
-			var size1 = virtualView.Measure(widthConstraint.IsConstrained ? widthConstraint.AvailableSize : double.PositiveInfinity, heightConstraint.IsConstrained ? heightConstraint.AvailableSize : double.PositiveInfinity);
-
-			var size = Size.Zero;
-
-			foreach (var child in virtualView.Children)
-			{
-
-				size.Width = Math.Max(size.Width, child.DesiredSize.Width + child.Frame.X);
-				size.Height = Math.Max(size.Height, child.DesiredSize.Height + child.Frame.Y);
-				var childFrame = new Rectangle(child.Frame.X, child.Frame.Y, child.DesiredSize.Width, child.DesiredSize.Height);
-
-				var childSize = child.Measure(double.PositiveInfinity, double.PositiveInfinity);
-
-				// if (childFrame != child.Frame)
-				// {
-				// 	child.InvalidateArrange();
-				// 	child.Arrange(childFrame);
-				// }
-				// else
-				// {
-				// 	;
-				// }
-
-				SetAllocation(child, child.Frame);
-
-			}
-
-			size = size1;
-			var mesured = new Size(size.Width > 0 ? size.Width : widthConstraint.AvailableSize, size.Height > 0 ? size.Height : heightConstraint.AvailableSize);
-
-			if (frame.Size != mesured)
-			{
-				virtualView.InvalidateMeasure();
-				virtualView.InvalidateArrange();
-				virtualView.Arrange(new Rectangle(Graphics.Point.Zero, mesured));
-			}
-
-			return mesured;
-
-		}
-
 		#endregion
-
-	}
-
-	public struct SizeConstraint : IEquatable<SizeConstraint>
-	{
-
-		// The value '0' is used for Unconstrained, since that's the default value of SizeContraint
-		// Since a constraint of '0' is valid, we use NegativeInfinity as a marker for constraint=0.
-		double _value;
-
-		public static readonly SizeConstraint Unconstrained = new();
-
-		public static implicit operator SizeConstraint(double size) => new() { AvailableSize = size };
-
-		public static SizeConstraint WithSize(double size) => new() { AvailableSize = size };
-
-		public double AvailableSize
-		{
-			get => double.IsNegativeInfinity(_value) ? 0 : _value;
-			set
-			{
-				_value = value <= 0 ? double.NegativeInfinity : value;
-			}
-		}
-
-		public bool IsConstrained
-		{
-			get => _value != 0;
-		}
-
-		public static bool operator ==(SizeConstraint s1, SizeConstraint s2) => (s1._value == s2._value);
-
-		public static bool operator !=(SizeConstraint s1, SizeConstraint s2) => (s1._value != s2._value);
-
-		public static SizeConstraint operator +(SizeConstraint c, double s) => !c.IsConstrained ? c : WithSize(c.AvailableSize + s);
-
-		public static SizeConstraint operator -(SizeConstraint c, double s) => !c.IsConstrained ? c : WithSize(Math.Max(c.AvailableSize - s, 0));
-
-		public override bool Equals(object? ob) => (ob is SizeConstraint constraint) && this == constraint;
-
-		public bool Equals(SizeConstraint other) => this == other;
-
-		public override int GetHashCode() => _value.GetHashCode();
-
-		public override string ToString() => IsConstrained ? AvailableSize.ToString() : "Unconstrained";
 
 	}
 
