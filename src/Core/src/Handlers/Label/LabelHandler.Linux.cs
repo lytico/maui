@@ -18,74 +18,15 @@ namespace Microsoft.Maui.Handlers
 			};
 		}
 
-		private SizeRequest _perfectSize;
-
-		private bool _perfectSizeValid;
-		// private bool _allocated = false;
-
-		// note: maybe fix that problem with own label class
-		// drawn by Microsoft.Maui.Graphics.Native.Gtk - TextLayout.cs
-		
-		private SizeRequest GetPerfectSize(int widthConstraint = -1)
-		{
-			if (NativeView is not { } nativeView)
-				return default;
-
-			nativeView.Layout.Width = Pango.Units.FromPixels(widthConstraint);
-			nativeView.Layout.GetPixelSize(out int w, out int h);
-
-			return new SizeRequest(new Size(w, h));
-		}
+		// note:fix that problem by using
+		// Microsoft.Maui.Graphics.Native.Gtk - NativeGraphicsService.GetStringSize
 
 		public virtual Size GetDesiredSize1(double widthConstraint, double heightConstraint)
 		{
 			if (VirtualView is not { } virtualView)
 				return default;
 
-			// if (!_allocated && PlatformHelper.GetGTKPlatform() == GTKPlatform.Windows)
-			// {
-			// 	return default(SizeRequest);
-			// }
-
-			if (!_perfectSizeValid)
-			{
-				_perfectSize = GetPerfectSize();
-				_perfectSize.Minimum = new Size(Math.Min(10, _perfectSize.Request.Width), _perfectSize.Request.Height);
-				_perfectSizeValid = true;
-			}
-
-			var widthFits = widthConstraint >= _perfectSize.Request.Width;
-			var heightFits = heightConstraint >= _perfectSize.Request.Height;
-
-			if (widthFits && heightFits)
-				return _perfectSize;
-
-			var result = GetPerfectSize((int)widthConstraint);
-			var tinyWidth = Math.Min(10, result.Request.Width);
-			result.Minimum = new Size(tinyWidth, result.Request.Height);
-
-			if (widthFits || virtualView.LineBreakMode == LineBreakMode.NoWrap)
-			{
-				return new SizeRequest(
-					new Size(result.Request.Width, _perfectSize.Request.Height),
-					new Size(result.Minimum.Width, _perfectSize.Request.Height));
-			}
-
-			bool containerIsNotInfinitelyWide = !double.IsInfinity(widthConstraint);
-
-			if (containerIsNotInfinitelyWide)
-			{
-				bool textCouldHaveWrapped = virtualView.LineBreakMode == LineBreakMode.WordWrap || virtualView.LineBreakMode == LineBreakMode.CharacterWrap;
-				bool textExceedsContainer = result.Request.Width > widthConstraint;
-
-				if (textExceedsContainer || textCouldHaveWrapped)
-				{
-					var expandedWidth = Math.Max(tinyWidth, widthConstraint);
-					result.Request = new Size(expandedWidth, result.Request.Height);
-				}
-			}
-
-			return result;
+			return base.GetDesiredSize(widthConstraint, heightConstraint);
 		}
 
 		public static void MapText(LabelHandler handler, ILabel label)
