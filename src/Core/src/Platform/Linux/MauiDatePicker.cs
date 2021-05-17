@@ -14,7 +14,7 @@ namespace Microsoft.Maui
 #pragma warning disable 169
 		// to simulate
 		// Tapping either of the DatePicker displays invokes the platform date picker
-		Gtk.Calendar _calendar;
+		Gtk.Calendar? _calendar;
 #pragma warning restore 169
 		
 		DateTime _time;
