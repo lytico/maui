@@ -4,6 +4,8 @@ using Gtk;
 namespace Microsoft.Maui.Handlers
 {
 
+	// https://developer.gnome.org/gtk3/stable/GtkComboBox.html
+	
 	public partial class PickerHandler : ViewHandler<IPicker, ComboBox>
 	{
 
@@ -29,6 +31,32 @@ namespace Microsoft.Maui.Handlers
 			SetValues(NativeView, VirtualView);
 		}
 
+		protected override void ConnectHandler(ComboBox nativeView)
+		{
+			base.ConnectHandler(nativeView);
+			
+			_ = NativeView ?? throw new InvalidOperationException($"{nameof(NativeView)} should have been set by base class.");
+
+			NativeView.Changed +=OnNativeViewChanged;
+		}
+
+		void OnNativeViewChanged(object? sender, EventArgs args)
+		{
+			if (sender is ComboBox nativeView && VirtualView is {} virtualView)
+			{
+				virtualView.SelectedIndex = nativeView.Active;
+			}
+		}
+
+		protected override void DisconnectHandler(ComboBox nativeView)
+		{
+			base.DisconnectHandler(nativeView);
+			
+			_ = NativeView ?? throw new InvalidOperationException($"{nameof(NativeView)} should have been set by base class.");
+
+			NativeView.Changed -=OnNativeViewChanged;
+		}
+
 		public static void SetValues(ComboBox nativeView, IPicker virtualView)
 		{
 			var list = new ItemDelegateList<string>(virtualView);
@@ -42,25 +70,18 @@ namespace Microsoft.Maui.Handlers
 			{
 				model.AppendValues(text);
 			}
+
+			nativeView.Active = virtualView.SelectedIndex;
 		}
 
-		[MissingMapper]
-		public static void MapTitle(PickerHandler handler, IPicker view) { }
-
-		public static void MapSelectedIndex(PickerHandler handler, IPicker view) { }
-
-		[MissingMapper]
-		public static void MapCharacterSpacing(PickerHandler handler, IPicker view) { }
-
-		public static void MapFont(PickerHandler handler, IPicker view)
+		public static void MapSelectedIndex(PickerHandler handler, IPicker view)
 		{
-			handler.MapFont(view);
-
+			if (handler.NativeView is { } nativeView)
+			{
+				nativeView.Active = view.SelectedIndex;
+			}
 		}
-
-		[MissingMapper]
-		public static void MapTextColor(PickerHandler handler, IPicker view) { }
-
+		
 		public static void MapReload(PickerHandler handler, IPicker picker)
 		{
 			var nativeView = handler.NativeView ?? throw new InvalidOperationException($"{nameof(NativeView)} should have been set by base class.");
@@ -69,6 +90,21 @@ namespace Microsoft.Maui.Handlers
 			SetValues(nativeView, picker);
 
 		}
+
+		public static void MapFont(PickerHandler handler, IPicker view)
+		{
+			handler.MapFont(view);
+
+		}
+		
+		[MissingMapper]
+		public static void MapCharacterSpacing(PickerHandler handler, IPicker view) { }
+		
+		[MissingMapper]
+		public static void MapTitle(PickerHandler handler, IPicker view) { }
+		
+		[MissingMapper]
+		public static void MapTextColor(PickerHandler handler, IPicker view) { }
 
 		[MissingMapper]
 		public static void MapHorizontalTextAlignment(PickerHandler handler, IPicker view) { }
