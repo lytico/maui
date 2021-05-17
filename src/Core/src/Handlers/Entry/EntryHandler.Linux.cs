@@ -22,7 +22,7 @@ namespace Microsoft.Maui.Handlers
 			nativeView.Changed -= OnNativeViewChanged;
 		}
 
-		protected void OnNativeViewChanged(object sender, EventArgs e)
+		protected void OnNativeViewChanged(object? sender, EventArgs e)
 		{
 			if (sender != NativeView)
 				return;

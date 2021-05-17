@@ -36,15 +36,17 @@ namespace Microsoft.Maui.Handlers
 			return res;
 		}
 
-		protected void OnNativeTextChanged(object sender, EventArgs e)
+		protected void OnNativeTextChanged(object? sender, EventArgs e)
 		{
-			if (sender != NativeView?.Buffer || VirtualView == null)
+			if (NativeView is not { } nativeView || VirtualView is not { } virtualView) 
 				return;
+			
+			if (sender != nativeView.Buffer) return;
 
-			var text = NativeView.Buffer.Text;
+			var text = nativeView.Buffer.Text;
 
-			if (VirtualView.Text != text)
-				VirtualView.Text = text;
+			if (virtualView.Text != text) 
+				virtualView.Text = text;
 		}
 
 		public static void MapText(EditorHandler handler, IEditor editor)
