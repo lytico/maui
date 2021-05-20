@@ -34,9 +34,6 @@ namespace Microsoft.Maui.Handlers
 			};
 		}
 
-		// note:fix that problem by using
-		// Microsoft.Maui.Graphics.Native.Gtk - NativeGraphicsService.GetStringSize
-
 		public override Size GetDesiredSize(double widthConstraint, double heightConstraint)
 		{
 			if (NativeView is not { } nativeView)
@@ -56,19 +53,24 @@ namespace Microsoft.Maui.Handlers
 				SharedTextLayout.LineBreakMode = virtualView.LineBreakMode.GetLineBreakMode();
 			}
 
-			var (width,height) = SharedTextLayout.GetPixelSize(NativeView.Text, double.IsInfinity(widthConstraint)?-1:widthConstraint);
+			var (width, height) = SharedTextLayout.GetPixelSize(NativeView.Text, double.IsInfinity(widthConstraint) ? -1 : widthConstraint);
+			// try use layout from Label: not working
+			// var SharedTextLayout = new Microsoft.Maui.Graphics.Native.Gtk.TextLayout(NativeGraphicsService.Instance.SharedContext);
+			// SharedTextLayout.SetLayout(nativeView.Layout);
+			// SharedTextLayout.FontDescription = nativeView.Layout.FontDescription;
+			// SharedTextLayout.HorizontalAlignment = virtualView.HorizontalTextAlignment.GetHorizontalAlignment();
+			// SharedTextLayout.TextFlow = TextFlow.ClipBounds;
+			// SharedTextLayout.FontFamily = SharedTextLayout.FontDescription.Family;
+			// SharedTextLayout.PangoFontSize = SharedTextLayout.FontDescription.Size;
+			// var (width,height) = SharedTextLayout.GetPixelSize(NativeView.Text, double.IsInfinity(widthConstraint)?-1:widthConstraint);
 			var inkRect = new Pango.Rectangle();
 			var logicalRect = new Pango.Rectangle();
 			nativeView.Layout.GetLineReadonly(0).GetExtents(ref inkRect, ref logicalRect);
 
-			// nativeView.SetSizeRequest((int)ts.Width,(int)ts.Height);
-			// nativeView.QueueResize();
-			// nativeView.QueueComputeExpand();
-			// res.Width = ts.Width + nativeView.MarginStart + nativeView.MarginEnd;
-			// res.Height = ts.Height + nativeView.MarginTop + nativeView.MarginBottom;
-			return new Size(width,height);
+			width += nativeView.MarginStart + nativeView.MarginEnd;
+			height += nativeView.MarginTop + nativeView.MarginBottom;
+			return new Size(width, height);
 
-			
 		}
 
 		public static void MapText(LabelHandler handler, ILabel label)
