@@ -18,10 +18,18 @@ namespace Microsoft.Maui.Handlers
 			NativeView.CrossPlatformMeasure = VirtualView.Measure;
 			NativeView.CrossPlatformArrange = VirtualView.Arrange;
 
+		}
+
+		void UpdateContent()
+		{
+			_ = NativeView ?? throw new InvalidOperationException($"{nameof(NativeView)} should have been set by base class.");
+			_ = MauiContext ?? throw new InvalidOperationException($"{nameof(MauiContext)} should have been set by base class.");
+			_ = VirtualView ?? throw new InvalidOperationException($"{nameof(VirtualView)} should have been set by base class.");
+
 			if (VirtualView.Content != null)
 				NativeView.Content = VirtualView.Content.ToNative(MauiContext);
 		}
-
+		
 		protected override PageView CreateNativeView()
 		{
 			if (VirtualView == null)
@@ -38,9 +46,16 @@ namespace Microsoft.Maui.Handlers
 			return pw;
 		}
 
+		public static void MapContent(PageHandler handler, IPage page)
+		{
+			handler.UpdateContent();
+		}
+		
 		[MissingMapper]
 		public static void MapTitle(PageHandler handler, IPage page)
 		{ }
+		
+		
 
 	}
 
