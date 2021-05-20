@@ -1,14 +1,15 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using Gdk;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Maui;
-using Microsoft.Maui.Controls;
 using Microsoft.Maui.Controls.Compatibility;
 using Microsoft.Maui.Hosting;
 using Microsoft.Maui.LifecycleEvents;
+using Window = Microsoft.Maui.Controls.Window;
 
 namespace Maui.SimpleSampleApp
 {
@@ -82,15 +83,22 @@ namespace Maui.SimpleSampleApp
 				{
 					events.AddEvent<Action<string>>("CustomEventName", value => LogEvent("CustomEventName"));
 
-
-#if WINDOWS
 					// Log everything in this one
 					events.AddWindows(windows => windows
-						.OnActivated((a, b) => LogEvent(nameof(WindowsLifecycle.OnActivated)))
-						.OnClosed((a, b) => LogEvent(nameof(WindowsLifecycle.OnClosed)))
-						.OnLaunched((a, b) => LogEvent(nameof(WindowsLifecycle.OnLaunched)))
-						.OnVisibilityChanged((a, b) => LogEvent(nameof(WindowsLifecycle.OnVisibilityChanged))));
-#endif
+						.OnActivated((a, b) => LogEvent(nameof(LinuxLifecycle.OnApplicationActivated)))
+						.OnClosed((a, b) => LogEvent(nameof(LinuxLifecycle.OnHidden)))
+						.OnLaunched((a, b) => LogEvent(nameof(LinuxLifecycle.OnLaunched)))
+						.OnVisibilityChanged((a, b) =>
+						{
+							LogEvent(nameof(LinuxLifecycle.OnVisibilityChanged));
+
+							if (b.Event.State == VisibilityState.Unobscured)
+							{
+								if (a.AllocatedWidth < 2)
+									a.WidthRequest = 200;
+							}
+						}
+						));
 
 					static bool LogEvent(string eventName, string type = null)
 					{
