@@ -17,9 +17,9 @@ namespace Maui.SimpleSampleApp
 		readonly IServiceProvider _services;
 		readonly MainPageViewModel _viewModel;
 
-		const string LoremIpsum2 =
+		const string LoremIpsum =
 			"Lorem ipsum dolor sit amet, consectetur adipiscing elit. " ;
-		const string LoremIpsum =			
+		const string LoremIpsum2 =			
 			"Quisque ut dolor metus. Duis vel iaculis mauris, sit amet finibus mi. " +
 			"Etiam congue ornare risus, in facilisis libero tempor eget. " +
 			"Phasellus mattis mollis libero ut semper. In sit amet sapien odio. " +
@@ -32,10 +32,10 @@ namespace Maui.SimpleSampleApp
 			_services = services;
 			BindingContext = _viewModel = viewModel;
 			
-			SetupMauiLayoutLayouts();
+			// SetupMauiLayoutLayouts();
 			
 			// SetupMauiLayoutSimple();
-			// SetupMauiLayout();
+			SetupMauiLayout();
 			// SetupCompatibilityLayout();
 		}
 
