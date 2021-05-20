@@ -14,20 +14,14 @@ namespace Microsoft.Maui.Handlers
 		private static Microsoft.Maui.Graphics.Native.Gtk.TextLayout? _textLayout;
 
 		public Microsoft.Maui.Graphics.Native.Gtk.TextLayout SharedTextLayout => _textLayout ??= new Microsoft.Maui.Graphics.Native.Gtk.TextLayout(
-			Microsoft.Maui.Graphics.Native.Gtk.NativeGraphicsService.Instance.SharedContext)
-		{
-			HeightForWidth = true
-		};
+			Microsoft.Maui.Graphics.Native.Gtk.NativeGraphicsService.Instance.SharedContext) { HeightForWidth = true };
 
 		// https://developer.gnome.org/gtk3/stable/GtkLabel.html
 		protected override Label CreateNativeView()
 		{
 			return new Label()
 			{
-				// Hexpand = true,
-				// MaxWidthChars = 1,
 				LineWrap = true,
-				// nativeView.Lines = 10;
 				Halign = Align.Fill,
 				Xalign = 0,
 				MaxWidthChars = 1
@@ -42,7 +36,17 @@ namespace Microsoft.Maui.Handlers
 			if (VirtualView is not { } virtualView)
 				return default;
 
-			var res = base.GetDesiredSize(widthConstraint, heightConstraint);
+			var (baseWidth, baseHeight) = base.GetDesiredSize(widthConstraint, heightConstraint);
+			int width = -1;
+			int height = 1;
+
+			var widthConstrained = !double.IsPositiveInfinity(widthConstraint);
+			var heightConstrained = !double.IsPositiveInfinity(heightConstraint);
+
+			// try use layout from Label: not working
+			// var SharedTextLayout = new Microsoft.Maui.Graphics.Native.Gtk.TextLayout(NativeGraphicsService.Instance.SharedContext);
+			// SharedTextLayout.SetLayout(nativeView.Layout);
+			// ...
 
 			lock (SharedTextLayout)
 			{
@@ -51,24 +55,21 @@ namespace Microsoft.Maui.Handlers
 				SharedTextLayout.PangoFontSize = virtualView.Font.FontSize.ScaledToPango();
 				SharedTextLayout.HorizontalAlignment = virtualView.HorizontalTextAlignment.GetHorizontalAlignment();
 				SharedTextLayout.LineBreakMode = virtualView.LineBreakMode.GetLineBreakMode();
+
+				SharedTextLayout.HeightForWidth = !heightConstrained;
+				var constraint = SharedTextLayout.HeightForWidth ? widthConstraint : heightConstraint;
+				(width, height) = SharedTextLayout.GetPixelSize(NativeView.Text, double.IsInfinity(constraint) ? -1 : constraint);
+
 			}
 
-			var (width, height) = SharedTextLayout.GetPixelSize(NativeView.Text, double.IsInfinity(widthConstraint) ? -1 : widthConstraint);
-			// try use layout from Label: not working
-			// var SharedTextLayout = new Microsoft.Maui.Graphics.Native.Gtk.TextLayout(NativeGraphicsService.Instance.SharedContext);
-			// SharedTextLayout.SetLayout(nativeView.Layout);
-			// SharedTextLayout.FontDescription = nativeView.Layout.FontDescription;
-			// SharedTextLayout.HorizontalAlignment = virtualView.HorizontalTextAlignment.GetHorizontalAlignment();
-			// SharedTextLayout.TextFlow = TextFlow.ClipBounds;
-			// SharedTextLayout.FontFamily = SharedTextLayout.FontDescription.Family;
-			// SharedTextLayout.PangoFontSize = SharedTextLayout.FontDescription.Size;
-			// var (width,height) = SharedTextLayout.GetPixelSize(NativeView.Text, double.IsInfinity(widthConstraint)?-1:widthConstraint);
 			var inkRect = new Pango.Rectangle();
 			var logicalRect = new Pango.Rectangle();
 			nativeView.Layout.GetLineReadonly(0).GetExtents(ref inkRect, ref logicalRect);
+			var lineHeigh = logicalRect.Height.ScaledFromPango();
 
 			width += nativeView.MarginStart + nativeView.MarginEnd;
 			height += nativeView.MarginTop + nativeView.MarginBottom;
+
 			return new Size(width, height);
 
 		}
