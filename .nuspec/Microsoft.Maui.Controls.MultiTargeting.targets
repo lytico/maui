@@ -110,6 +110,9 @@
   </ItemGroup>
   <ItemGroup Condition="$(DefineConstants.Contains('GTK')) == true ">
     <PackageReference Include="GtkSharp" Version="3.24.24.34" />
+    <Reference Include="Microsoft.Maui.Graphics.Gtk">
+      <HintPath>$(SolutionDir)\src\Microsoft.Maui.Graphics.Gtk\Microsoft.Maui.Graphics.Gtk.dll</HintPath>
+    </Reference>
   </ItemGroup>
 
   <ItemGroup Condition=" '$(TargetFramework)' == 'net48' ">
