@@ -33,6 +33,7 @@ namespace Microsoft.Maui.Handlers
 
 			NativeView.CrossPlatformVirtualView = () => VirtualView;
 
+			NativeView.ClearChildren();
 			foreach (var child in VirtualView.Children)
 			{
 				if (child.ToNative(MauiContext) is { } nativeChild)
