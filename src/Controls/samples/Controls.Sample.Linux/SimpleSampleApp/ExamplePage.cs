@@ -32,10 +32,10 @@ namespace Maui.SimpleSampleApp
 			_services = services;
 			BindingContext = _viewModel = viewModel;
 			
-			// SetupMauiLayoutLayouts();
+			SetupMauiLayoutLayouts();
 			
 			// SetupMauiLayoutSimple();
-			SetupMauiLayout();
+			// SetupMauiLayout();
 			// SetupCompatibilityLayout();
 		}
 
@@ -95,7 +95,7 @@ namespace Maui.SimpleSampleApp
 				Margin = new Thickness(2),
 				LineBreakMode = LineBreakMode.TailTruncation,
 				MaxLines = 2,
-				Text =  LoremIpsum2
+				Text =  LoremIpsum
 			});
 			verticalStack1.Add(verticalStack3);
 			Content = verticalStack1;
