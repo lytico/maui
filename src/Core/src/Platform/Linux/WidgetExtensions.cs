@@ -12,6 +12,24 @@ namespace Microsoft.Maui
 		public static void UpdateIsEnabled(this Widget nativeView, bool isEnabled) =>
 			nativeView.Sensitive = isEnabled;
 
+		public static void UpdateVisibility(this Widget nativeView, Visibility visibility)
+		{
+			switch (visibility)
+			{
+				case Visibility.Hidden:
+					nativeView.Visible = false;
+					break;
+				case Visibility.Visible:
+					nativeView.Visible = true;
+					break;
+				case Visibility.Collapsed:
+					
+					break;
+				default:
+					throw new ArgumentOutOfRangeException(nameof(visibility), visibility, null);
+			}
+		}
+
 		public static SizeRequest GetDesiredSize(
 			this Widget? nativeView,
 			double widthConstraint,
