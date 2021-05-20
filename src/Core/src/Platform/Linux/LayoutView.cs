@@ -120,8 +120,20 @@ namespace Microsoft.Maui
 
 		}
 
+		public void ClearChildren()
+		{
+			foreach (var c in Children)
+			{
+				Remove(c);
+			}
+			_children.Clear();
+		}
+
 		public void Add(IView view, Widget gw)
 		{
+			if (_children.ContainsKey(view))
+				return;
+
 			_children.Add(view, new ChildAllocation
 			{
 				Widget = gw,
