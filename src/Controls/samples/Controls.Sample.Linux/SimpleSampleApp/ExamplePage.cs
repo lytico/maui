@@ -17,9 +17,9 @@ namespace Maui.SimpleSampleApp
 		readonly IServiceProvider _services;
 		readonly MainPageViewModel _viewModel;
 
-		const string LoremIpsum =
+		const string LoremIpsum2 =
 			"Lorem ipsum dolor sit amet, consectetur adipiscing elit. " ;
-		const string LoremIpsum2 =			
+		const string LoremIpsum =			
 			"Quisque ut dolor metus. Duis vel iaculis mauris, sit amet finibus mi. " +
 			"Etiam congue ornare risus, in facilisis libero tempor eget. " +
 			"Phasellus mattis mollis libero ut semper. In sit amet sapien odio. " +
@@ -69,7 +69,7 @@ namespace Maui.SimpleSampleApp
 			var verticalStack2 = new VerticalStackLayout()
 			{
 				Spacing = 5,
-				BackgroundColor = Colors.NavajoWhite,
+				BackgroundColor = Colors.LightYellow,
 			};
 			Fill(verticalStack2, nameof(verticalStack2), 4, Colors.Coral);
 			
@@ -78,11 +78,26 @@ namespace Maui.SimpleSampleApp
 				Spacing = 5,
 				BackgroundColor = Colors.NavajoWhite,
 			};
-			Fill(horizontalStack1, nameof(horizontalStack1), 4, Colors.Azure);
+			Fill(horizontalStack1, nameof(horizontalStack1), 4, Colors.Aquamarine);
 			
 			verticalStack1.Add(verticalStack2);
 			verticalStack1.Add(horizontalStack1);
 
+			var verticalStack3 = new VerticalStackLayout()
+			{
+				Spacing = 5,
+				BackgroundColor = Colors.Lime,
+			};
+			verticalStack3.Add(new Label
+			{
+				HorizontalTextAlignment = TextAlignment.Center,
+				BackgroundColor = Colors.Bisque,
+				Margin = new Thickness(2),
+				LineBreakMode = LineBreakMode.TailTruncation,
+				MaxLines = 2,
+				Text =  LoremIpsum2
+			});
+			verticalStack1.Add(verticalStack3);
 			Content = verticalStack1;
 
 		}
