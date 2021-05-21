@@ -3,8 +3,10 @@ using System;
 
 namespace Microsoft.Maui
 {
+
 	public static class HandlerExtensions
 	{
+
 		public static Widget ToNative(this IView view, IMauiContext context)
 		{
 			_ = view ?? throw new ArgumentNullException(nameof(view));
