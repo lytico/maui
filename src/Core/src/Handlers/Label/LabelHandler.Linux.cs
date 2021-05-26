@@ -58,14 +58,16 @@ namespace Microsoft.Maui.Handlers
 
 				SharedTextLayout.HeightForWidth = !heightConstrained;
 				var constraint = SharedTextLayout.HeightForWidth ? widthConstraint : heightConstraint;
+
+				if (!heightConstrained && virtualView.MaxLines > 0)
+				{
+					var layout = SharedTextLayout.GetLayout();
+					layout.Height = (int)layout.GetLineHeigth() * virtualView.MaxLines;
+				}
+
 				(width, height) = SharedTextLayout.GetPixelSize(NativeView.Text, double.IsInfinity(constraint) ? -1 : constraint);
 
 			}
-
-			var inkRect = new Pango.Rectangle();
-			var logicalRect = new Pango.Rectangle();
-			nativeView.Layout.GetLineReadonly(0).GetExtents(ref inkRect, ref logicalRect);
-			var lineHeigh = logicalRect.Height.ScaledFromPango();
 
 			width += nativeView.MarginStart + nativeView.MarginEnd;
 			height += nativeView.MarginTop + nativeView.MarginBottom;
