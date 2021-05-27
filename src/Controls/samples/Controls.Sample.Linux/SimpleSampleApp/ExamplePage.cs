@@ -611,8 +611,7 @@ namespace Maui.SimpleSampleApp
 
 			verticalStack.Add(new Image()
 			{
-				Source =
-					new UriImageSource() { Uri = new System.Uri("dotnet_bot.png") }
+				Source = "dotnet_bot.png"
 			});
 
 			Content = verticalStack;
