@@ -126,6 +126,7 @@ namespace Microsoft.Maui
 			{
 				Remove(c);
 			}
+
 			_children.Clear();
 		}
 
@@ -172,10 +173,7 @@ namespace Microsoft.Maui
 				allocation = new Gdk.Rectangle(0, 0, Allocation.Width, Allocation.Height);
 			}
 
-			if (allocation.Size != Allocation.Size)
-			{
-				VirtualView.Arrange(allocation.ToRectangle());
-			}
+			GetSizeRequest(allocation.Width, allocation.Height, SizeRequestMode.ConstantSize);
 
 		}
 
@@ -196,7 +194,12 @@ namespace Microsoft.Maui
 			foreach (var cr in _children.ToArray())
 			{
 				var r = cr.Value.Rect;
-				cr.Value.Widget.SizeAllocate(new Gdk.Rectangle(allocation.X + (int)r.X, allocation.Y + (int)r.Y, (int)r.Width, (int)r.Height));
+				var w = cr.Value.Widget;
+
+				if (r.IsEmpty)
+					continue;
+
+				w.SizeAllocate(new Gdk.Rectangle(allocation.X + (int)r.X, allocation.Y + (int)r.Y, (int)r.Width, (int)r.Height));
 			}
 		}
 
@@ -254,11 +257,6 @@ namespace Microsoft.Maui
 			var widthConstrained = !double.IsPositiveInfinity(widthConstraint);
 			var heightConstrained = !double.IsPositiveInfinity(heightConstraint);
 
-			if (!widthHandled || !heightHandled)
-			{
-				return new Size(widthConstraint, heightConstraint);
-			}
-
 			var virtualView = VirtualView;
 
 			if (virtualView == null)
@@ -266,36 +264,79 @@ namespace Microsoft.Maui
 				return Size.Zero;
 			}
 
+			void VSetAllocation()
+			{
+				if (mode != SizeRequestMode.ConstantSize)
+					return;
+
+				foreach (var child in virtualView!.Children)
+				{
+					SetAllocation(child, child.Frame);
+				}
+			}
+
+			if (!widthHandled || !heightHandled)
+			{
+				return new Size(widthConstraint, heightConstraint);
+			}
+
 			var withFactor = widthHandled && widthConstrained && widthConstraint > 1 ? widthConstraint / AllocatedWidth : 1;
 			var heigthFactor = heightHandled && heightConstrained && heightConstraint > 1 ? heightConstraint / AllocatedHeight : 1;
+
+			if ((virtualView.Frame.Size.Width == widthConstraint || !widthConstrained) && (virtualView.Frame.Size.Height == heightConstraint || !heightConstrained))
+			{
+				VSetAllocation();
+
+				return new Size(widthConstraint, heightConstraint);
+			}
 
 			var size1 = virtualView.Measure(widthConstraint, heightConstraint);
 
 			var size2 = virtualView.Arrange(new(Point.Zero, size1));
 
-			foreach (var child in virtualView.Children)
-			{
-				SetAllocation(child, child.Frame);
-			}
+			VSetAllocation();
 
 			return new SizeRequest(size1, size2);
 		}
 
 		int ToSize(double it) => double.IsPositiveInfinity(it) ? 0 : (int)it;
 
+		// protected override void OnGetPreferredWidth(out int minimumWidth, out int naturalWidth)
+		// {
+		// 	base.OnGetPreferredWidth(out minimumWidth, out naturalWidth);
+		// 	var constraint = IsReallocating ? Allocation.Height : double.PositiveInfinity;
+		// 	var sizeRequest = GetSizeRequest(double.PositiveInfinity, constraint, SizeRequestMode.WidthForHeight);
+		//
+		// 	minimumWidth = Math.Max(WidthRequest, ToSize(sizeRequest.Minimum.Width));
+		// 	naturalWidth = Math.Max(WidthRequest, ToSize(sizeRequest.Request.Width));
+		// }
+
 		protected override void OnGetPreferredWidthForHeight(int height, out int minimumWidth, out int naturalWidth)
 		{
 			base.OnGetPreferredWidthForHeight(height, out minimumWidth, out naturalWidth);
-			var sizeRequest = GetSizeRequest(double.PositiveInfinity, height, SizeRequestMode.WidthForHeight);
+			var constraint = IsReallocating || Allocation.Width > 1 ? Allocation.Width : double.PositiveInfinity;
+			var sizeRequest = GetSizeRequest(constraint, height, SizeRequestMode.WidthForHeight);
 
 			minimumWidth = Math.Max(WidthRequest, ToSize(sizeRequest.Minimum.Width));
 			naturalWidth = Math.Max(WidthRequest, ToSize(sizeRequest.Request.Width));
 		}
 
+		// protected override void OnGetPreferredHeight(out int minimumHeight, out int naturalHeight)
+		// {
+		// 	base.OnGetPreferredHeight(out minimumHeight, out naturalHeight);
+		// 	var constraint = IsReallocating ? Allocation.Width : double.PositiveInfinity;
+		// 	var sizeRequest = GetSizeRequest(constraint, double.PositiveInfinity, SizeRequestMode.HeightForWidth);
+		//
+		// 	minimumHeight = Math.Max(HeightRequest, ToSize(sizeRequest.Minimum.Height));
+		// 	naturalHeight = Math.Max(HeightRequest, ToSize(sizeRequest.Request.Height));
+		// }
+
 		protected override void OnGetPreferredHeightForWidth(int width, out int minimumHeight, out int naturalHeight)
 		{
 			base.OnGetPreferredHeightForWidth(width, out minimumHeight, out naturalHeight);
-			var sizeRequest = GetSizeRequest(width, double.PositiveInfinity, SizeRequestMode.HeightForWidth);
+			var constraint = IsReallocating || Allocation.Height > 1 ? Allocation.Height : double.PositiveInfinity;
+
+			var sizeRequest = GetSizeRequest(width, constraint, SizeRequestMode.HeightForWidth);
 
 			minimumHeight = Math.Max(HeightRequest, ToSize(sizeRequest.Minimum.Height));
 			naturalHeight = Math.Max(HeightRequest, ToSize(sizeRequest.Request.Height));
