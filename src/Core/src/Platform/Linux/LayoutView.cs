@@ -189,7 +189,6 @@ namespace Microsoft.Maui
 				IsReallocating = false;
 			}
 
-
 		}
 
 		protected override void ForAll(bool includeInternals, Callback callback)
