@@ -49,15 +49,7 @@ namespace Microsoft.Maui
 		public ILayout? VirtualView => CrossPlatformVirtualView?.Invoke();
 
 		public bool IsReallocating;
-		Dictionary<IView, ChildAllocation> _children = new();
-
-		struct ChildAllocation
-		{
-
-			public Rectangle Rect;
-			public Widget Widget;
-
-		}
+		Dictionary<IView, Widget> _children = new();
 
 		public LayoutView()
 		{
@@ -66,21 +58,14 @@ namespace Microsoft.Maui
 
 		public void ReplaceChild(Widget oldWidget, Widget newWidget)
 		{
-			var view = _children.FirstOrDefault(kvp => kvp.Value.Widget == oldWidget).Key;
-			ChildAllocation r = default;
-
-			if (view != null)
-			{
-				r = _children[view];
-			}
+			var view = _children.FirstOrDefault(kvp => kvp.Value == oldWidget).Key;
 
 			Remove(oldWidget);
 			Add(newWidget);
 
 			if (view != null)
 			{
-				r.Widget = newWidget;
-				_children[view] = r;
+				_children[view] = newWidget;
 			}
 		}
 
@@ -95,29 +80,10 @@ namespace Microsoft.Maui
 
 			var focusChain = _children
 				// .OrderBy(kvp => orientation == Orientation.Horizontal ? kvp.Value.Rect.X : kvp.Value.Rect.Y)
-			   .Select(kvp => kvp.Value.Widget)
+			   .Values
 			   .ToArray();
 
 			FocusChain = focusChain;
-		}
-
-		public bool SetAllocation(IView w, Rectangle rect)
-		{
-			if (VirtualView == null)
-			{
-				return false;
-			}
-
-			_children.TryGetValue(w, out ChildAllocation r);
-
-			if (r.Rect == rect) return false;
-
-			r.Rect = rect;
-			_children[w] = r;
-			UpdateFocusChain();
-
-			return true;
-
 		}
 
 		public void ClearChildren()
@@ -135,11 +101,7 @@ namespace Microsoft.Maui
 			if (_children.ContainsKey(view))
 				return;
 
-			_children.Add(view, new ChildAllocation
-			{
-				Widget = gw,
-				Rect = new Rectangle(0, 0, 0, 0)
-			});
+			_children[view] = gw;
 
 			Add(gw);
 		}
@@ -152,7 +114,7 @@ namespace Microsoft.Maui
 		protected override void OnRemoved(Widget widget)
 		{
 
-			var view = _children.FirstOrDefault(kvp => kvp.Value.Widget == widget).Key;
+			var view = _children.FirstOrDefault(kvp => kvp.Value == widget).Key;
 
 			if (view != null)
 				_children.Remove(view);
@@ -180,6 +142,12 @@ namespace Microsoft.Maui
 		protected override void OnSizeAllocated(Gdk.Rectangle allocation)
 		{
 			base.OnSizeAllocated(allocation);
+			var virtualView = VirtualView;
+
+			if (virtualView == null)
+			{
+				return;
+			}
 
 			try
 			{
@@ -191,10 +159,13 @@ namespace Microsoft.Maui
 				IsReallocating = false;
 			}
 
+			virtualView.Arrange(allocation.ToRectangle());
+
 			foreach (var cr in _children.ToArray())
 			{
-				var r = cr.Value.Rect;
-				var w = cr.Value.Widget;
+				var w = cr.Value;
+				var v = cr.Key;
+				var r = v.Frame;
 
 				if (r.IsEmpty)
 					continue;
@@ -207,7 +178,7 @@ namespace Microsoft.Maui
 		{
 			base.ForAll(includeInternals, callback);
 
-			foreach (var c in _children.Values.Select(v => v.Widget).ToArray())
+			foreach (var c in _children.Values.ToArray())
 				callback(c);
 		}
 
@@ -236,20 +207,6 @@ namespace Microsoft.Maui
 			base.OnRealized();
 		}
 
-		protected override SizeRequestMode OnGetRequestMode()
-		{
-			// dirty fix: unwrapped labels report fixed sizes, forcing parents to fixed mode
-			// -> report always width_for_height, since we don't support angles
-			return SizeRequestMode.WidthForHeight;
-			// return base.OnGetRequestMode();
-		}
-
-		protected override void OnAdjustSizeAllocation(Orientation orientation, out int minimumSize, out int naturalSize, out int allocatedPos, out int allocatedSize)
-		{
-			base.OnAdjustSizeAllocation(orientation, out minimumSize, out naturalSize, out allocatedPos, out allocatedSize);
-
-		}
-
 		public SizeRequest GetSizeRequest(double widthConstraint, double heightConstraint, SizeRequestMode mode)
 		{
 			var widthHandled = AllocatedWidth > 1; // && virtualView.DesiredSize.Width > 0;
@@ -264,78 +221,37 @@ namespace Microsoft.Maui
 				return Size.Zero;
 			}
 
-			void VSetAllocation()
-			{
-				if (mode != SizeRequestMode.ConstantSize)
-					return;
-
-				foreach (var child in virtualView!.Children)
-				{
-					SetAllocation(child, child.Frame);
-				}
-			}
-
-			if (!widthHandled || !heightHandled)
-			{
-				return new Size(widthConstraint, heightConstraint);
-			}
-
 			var withFactor = widthHandled && widthConstrained && widthConstraint > 1 ? widthConstraint / AllocatedWidth : 1;
 			var heigthFactor = heightHandled && heightConstrained && heightConstraint > 1 ? heightConstraint / AllocatedHeight : 1;
 
 			if ((virtualView.Frame.Size.Width == widthConstraint || !widthConstrained) && (virtualView.Frame.Size.Height == heightConstraint || !heightConstrained))
 			{
-				VSetAllocation();
-
 				return new Size(widthConstraint, heightConstraint);
 			}
 
 			var size1 = virtualView.Measure(widthConstraint, heightConstraint);
 
-			var size2 = virtualView.Arrange(new(Point.Zero, size1));
-
-			VSetAllocation();
-
-			return new SizeRequest(size1, size2);
+			return new SizeRequest(size1, size1);
 		}
 
 		int ToSize(double it) => double.IsPositiveInfinity(it) ? 0 : (int)it;
 
-		// protected override void OnGetPreferredWidth(out int minimumWidth, out int naturalWidth)
-		// {
-		// 	base.OnGetPreferredWidth(out minimumWidth, out naturalWidth);
-		// 	var constraint = IsReallocating ? Allocation.Height : double.PositiveInfinity;
-		// 	var sizeRequest = GetSizeRequest(double.PositiveInfinity, constraint, SizeRequestMode.WidthForHeight);
-		//
-		// 	minimumWidth = Math.Max(WidthRequest, ToSize(sizeRequest.Minimum.Width));
-		// 	naturalWidth = Math.Max(WidthRequest, ToSize(sizeRequest.Request.Width));
-		// }
-
 		protected override void OnGetPreferredWidthForHeight(int height, out int minimumWidth, out int naturalWidth)
 		{
 			base.OnGetPreferredWidthForHeight(height, out minimumWidth, out naturalWidth);
-			var constraint = IsReallocating || Allocation.Width > 1 ? Allocation.Width : double.PositiveInfinity;
-			var sizeRequest = GetSizeRequest(constraint, height, SizeRequestMode.WidthForHeight);
+			var constraint = IsReallocating && Allocation.Width > 1 ? Allocation.Width : double.PositiveInfinity;
+			var c1 = WidthRequest > 0 ? WidthRequest : 0;
+			var sizeRequest = GetSizeRequest(c1, height, SizeRequestMode.WidthForHeight);
 
 			minimumWidth = Math.Max(WidthRequest, ToSize(sizeRequest.Minimum.Width));
 			naturalWidth = Math.Max(WidthRequest, ToSize(sizeRequest.Request.Width));
 		}
 
-		// protected override void OnGetPreferredHeight(out int minimumHeight, out int naturalHeight)
-		// {
-		// 	base.OnGetPreferredHeight(out minimumHeight, out naturalHeight);
-		// 	var constraint = IsReallocating ? Allocation.Width : double.PositiveInfinity;
-		// 	var sizeRequest = GetSizeRequest(constraint, double.PositiveInfinity, SizeRequestMode.HeightForWidth);
-		//
-		// 	minimumHeight = Math.Max(HeightRequest, ToSize(sizeRequest.Minimum.Height));
-		// 	naturalHeight = Math.Max(HeightRequest, ToSize(sizeRequest.Request.Height));
-		// }
-
 		protected override void OnGetPreferredHeightForWidth(int width, out int minimumHeight, out int naturalHeight)
 		{
 			base.OnGetPreferredHeightForWidth(width, out minimumHeight, out naturalHeight);
-			var constraint = IsReallocating || Allocation.Height > 1 ? Allocation.Height : double.PositiveInfinity;
-
+			var constraint = IsReallocating && Allocation.Height > 1 ? Allocation.Height : double.PositiveInfinity;
+			var c1 = HeightRequest > 0 ? HeightRequest : 0;
 			var sizeRequest = GetSizeRequest(width, constraint, SizeRequestMode.HeightForWidth);
 
 			minimumHeight = Math.Max(HeightRequest, ToSize(sizeRequest.Minimum.Height));

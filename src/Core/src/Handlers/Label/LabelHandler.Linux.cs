@@ -36,17 +36,16 @@ namespace Microsoft.Maui.Handlers
 			if (VirtualView is not { } virtualView)
 				return default;
 
-			var (baseWidth, baseHeight) = base.GetDesiredSize(widthConstraint, heightConstraint);
 			int width = -1;
-			int height = 1;
+			int height = -1;
 
 			var widthConstrained = !double.IsPositiveInfinity(widthConstraint);
 			var heightConstrained = !double.IsPositiveInfinity(heightConstraint);
 
+			var hMargin = nativeView.MarginStart + nativeView.MarginEnd;
+			var vMargin = nativeView.MarginTop + nativeView.MarginBottom;
+
 			// try use layout from Label: not working
-			// var SharedTextLayout = new Microsoft.Maui.Graphics.Native.Gtk.TextLayout(NativeGraphicsService.Instance.SharedContext);
-			// SharedTextLayout.SetLayout(nativeView.Layout);
-			// ...
 
 			lock (SharedTextLayout)
 			{
@@ -57,20 +56,35 @@ namespace Microsoft.Maui.Handlers
 				SharedTextLayout.LineBreakMode = virtualView.LineBreakMode.GetLineBreakMode();
 
 				SharedTextLayout.HeightForWidth = !heightConstrained;
-				var constraint = SharedTextLayout.HeightForWidth ? widthConstraint : heightConstraint;
+
+				var constraint = Math.Max(SharedTextLayout.HeightForWidth ? widthConstraint + virtualView.Margin.HorizontalThickness - hMargin : heightConstraint + virtualView.Margin.VerticalThickness - vMargin,
+					1);
+
+				var lh = 0;
+				var layout = SharedTextLayout.GetLayout();
 
 				if (!heightConstrained && virtualView.MaxLines > 0)
 				{
-					var layout = SharedTextLayout.GetLayout();
-					layout.Height = (int)layout.GetLineHeigth() * virtualView.MaxLines;
+					lh = (int)layout.GetLineHeigth(false) * virtualView.MaxLines;
+					layout.Height = (int)lh;
+
+				}
+				else
+				{
+					layout.Height = -1;
 				}
 
 				(width, height) = SharedTextLayout.GetPixelSize(NativeView.Text, double.IsInfinity(constraint) ? -1 : constraint);
 
+				if (!heightConstrained && virtualView.MaxLines > 0)
+				{
+
+					height = (int)lh.ScaledFromPango();
+				}
 			}
 
-			width += nativeView.MarginStart + nativeView.MarginEnd;
-			height += nativeView.MarginTop + nativeView.MarginBottom;
+			width += hMargin;
+			height += vMargin;
 
 			return new Size(width, height);
 
