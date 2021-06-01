@@ -63,9 +63,9 @@ namespace Microsoft.Maui.Handlers
 				var lh = 0;
 				var layout = SharedTextLayout.GetLayout();
 
-				if (!heightConstrained && virtualView.MaxLines > 0)
+				if (!heightConstrained && nativeView.Lines > 0)
 				{
-					lh = (int)layout.GetLineHeigth(false) * virtualView.MaxLines;
+					lh = (int)layout.GetLineHeigth(false) * nativeView.Lines;
 					layout.Height = (int)lh;
 
 				}
@@ -76,10 +76,10 @@ namespace Microsoft.Maui.Handlers
 
 				(width, height) = SharedTextLayout.GetPixelSize(NativeView.Text, double.IsInfinity(constraint) ? -1 : constraint);
 
-				if (!heightConstrained && virtualView.MaxLines > 0)
+				if (!heightConstrained && nativeView.Lines > 0)
 				{
 
-					height = (int)lh.ScaledFromPango();
+					height = Math.Min((int)lh.ScaledFromPango(), height);
 				}
 			}
 
