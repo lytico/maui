@@ -135,8 +135,37 @@ namespace Microsoft.Maui
 				allocation = new Gdk.Rectangle(0, 0, Allocation.Width, Allocation.Height);
 			}
 
-			GetSizeRequest(allocation.Width, allocation.Height, SizeRequestMode.ConstantSize);
+			var size = GetSizeRequest(allocation.Width, allocation.Height, SizeRequestMode.ConstantSize);
 
+			if (size.Request.Width != allocation.Width || size.Request.Height != allocation.Height)
+			{
+				;
+			}
+
+		}
+
+		protected void AllocateChildren(Gdk.Rectangle allocation)
+		{
+			var virtualView = VirtualView;
+
+			if (virtualView == null)
+			{
+				return;
+			}
+
+			virtualView.Arrange(allocation.ToRectangle());
+
+			foreach (var cr in _children.ToArray())
+			{
+				var w = cr.Value;
+				var v = cr.Key;
+				var r = v.Frame;
+
+				if (r.IsEmpty)
+					continue;
+
+				w.SizeAllocate(new Gdk.Rectangle(allocation.X + (int)r.X, allocation.Y + (int)r.Y, (int)r.Width, (int)r.Height));
+			}
 		}
 
 		protected override void OnSizeAllocated(Gdk.Rectangle allocation)
@@ -153,25 +182,14 @@ namespace Microsoft.Maui
 			{
 				IsReallocating = true;
 				OnReallocate(allocation);
+				AllocateChildren(allocation);
 			}
 			finally
 			{
 				IsReallocating = false;
 			}
 
-			virtualView.Arrange(allocation.ToRectangle());
 
-			foreach (var cr in _children.ToArray())
-			{
-				var w = cr.Value;
-				var v = cr.Key;
-				var r = v.Frame;
-
-				if (r.IsEmpty)
-					continue;
-
-				w.SizeAllocate(new Gdk.Rectangle(allocation.X + (int)r.X, allocation.Y + (int)r.Y, (int)r.Width, (int)r.Height));
-			}
 		}
 
 		protected override void ForAll(bool includeInternals, Callback callback)
