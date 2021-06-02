@@ -17,12 +17,19 @@ namespace Microsoft.Maui
 		public static void UpdateMaxLines(this Label nativeLabel, ILabel label)
 		{
 			nativeLabel.Lines = label.MaxLines;
+			nativeLabel.AdjustMaxLines();
 
+		}
+
+		public static void AdjustMaxLines(this Label nativeLabel)
+		{
 			if (nativeLabel.Lines > 0)
 			{
 				nativeLabel.LineWrap = true;
+
+				if (nativeLabel.Ellipsize == EllipsizeMode.None)
+					nativeLabel.Ellipsize = EllipsizeMode.End;
 			}
-			// nativeLabel.LineWrap = label.MaxLines > 0;
 		}
 
 		public static Microsoft.Maui.Graphics.Extras.LineBreakMode GetLineBreakMode(this LineBreakMode lineBreakMode) =>
@@ -122,6 +129,7 @@ namespace Microsoft.Maui
 				default:
 					throw new ArgumentOutOfRangeException();
 			}
+			nativeLabel.AdjustMaxLines();
 		}
 
 		public static void UpdateTextAlignment(this Label nativeLabel, ILabel label)

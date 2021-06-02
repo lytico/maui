@@ -62,11 +62,13 @@ namespace Microsoft.Maui.Handlers
 
 				var lh = 0;
 				var layout = SharedTextLayout.GetLayout();
+				layout.Ellipsize = nativeView.Ellipsize;
+				layout.Spacing = nativeView.Layout.Spacing;
 
 				if (!heightConstrained && nativeView.Lines > 0)
 				{
 					lh = (int)layout.GetLineHeigth(false) * nativeView.Lines;
-					layout.Height = (int)lh;
+					layout.Height = lh;
 
 				}
 				else
@@ -139,6 +141,18 @@ namespace Microsoft.Maui.Handlers
 		{
 			// there is no LineHeight for label in gtk3:
 			// https://gitlab.gnome.org/GNOME/gtk/-/issues/2379
+
+			if (handler.NativeView is not { } nativeView)
+				return;
+
+			if (handler.VirtualView is not { } virtualView)
+				return;
+
+			if (label.LineHeight > 1)
+				// should be: https://developer.gnome.org/pango/1.46/pango-Layout-Objects.html#pango-layout-set-line-spacing
+			    // see: https://github.com/GtkSharp/GtkSharp/issues/258
+				nativeView.Layout.Spacing = (int)label.LineHeight.ScaledToPango();
+
 		}
 
 	}
