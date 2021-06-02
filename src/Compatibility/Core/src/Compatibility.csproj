@@ -60,7 +60,6 @@
     <Reference Include="System.Xml" />
     <Reference Include="System.Core" />
     <Reference Include="System.Net.Http" />
-    <Compile Include="RendererToHandlerShim.iOS.cs" />
   </ItemGroup>
   <ItemGroup Condition="$(DefineConstants.Contains('GTK')) == true ">
     <Compile Include="$(GtkRoot)**\*.cs"></Compile>
