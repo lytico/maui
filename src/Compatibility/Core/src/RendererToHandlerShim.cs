@@ -13,6 +13,9 @@ using ViewHandler = Microsoft.Maui.Handlers.ViewHandler<Microsoft.Maui.IView, UI
 #elif NETSTANDARD
 using NativeView = System.Object;
 using ViewHandler = Microsoft.Maui.Handlers.ViewHandler<Microsoft.Maui.IView, System.Object>;
+#elif GTK
+using NativeView = Gtk.Widget;
+using ViewHandler = Microsoft.Maui.Handlers.ViewHandler<Microsoft.Maui.IView, Gtk.Widget>;
 #elif WINDOWS
 using ViewHandler = Microsoft.Maui.Handlers.ViewHandler<Microsoft.Maui.IView, Microsoft.UI.Xaml.FrameworkElement>;
 using NativeView = Microsoft.UI.Xaml.FrameworkElement;
@@ -29,7 +32,7 @@ namespace Microsoft.Maui.Controls.Compatibility
 		{
 		}
 
-#if __ANDROID__ || __IOS__ || WINDOWS
+#if __ANDROID__ || __IOS__ || WINDOWS 
 		internal IVisualElementRenderer VisualElementRenderer { get; private set; }
 
 		public static IViewHandler CreateShim(object renderer)
