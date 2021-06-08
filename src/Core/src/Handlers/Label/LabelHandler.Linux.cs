@@ -76,7 +76,7 @@ namespace Microsoft.Maui.Handlers
 					layout.Height = -1;
 				}
 
-				(width, height) = SharedTextLayout.GetPixelSize(NativeView.Text, double.IsInfinity(constraint) ? -1 : constraint);
+				(width, height) = layout.GetPixelSize(NativeView.Text, double.IsInfinity(constraint) ? -1 : constraint, SharedTextLayout.HeightForWidth);
 
 				if (!heightConstrained && nativeView.Lines > 0)
 				{
