@@ -84,7 +84,7 @@ namespace Microsoft.Maui.Handlers
 					layout.Width = Math.Max((widthConstraint - hMargin).ScaledToPango(), -1);
 				}
 
-				(width, height) = layout.GetPixelSize(nativeView.Text, double.IsInfinity(constraint) ? -1 : constraint, heightForWidth);
+				(width, height) = layout.GetPixelSize(nativeView.Text, constraint, heightForWidth);
 
 				if (lh > 0)
 				{

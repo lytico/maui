@@ -23,7 +23,7 @@ namespace Microsoft.Maui.Graphics.Native.Gtk
 
 		public static (int width, int height) GetPixelSize(this Pango.Layout layout, string text, double desiredSize = -1d, bool heightForWidth = true)
 		{
-
+			desiredSize = double.IsInfinity(desiredSize) ? -1 : desiredSize;
 			if (desiredSize > 0)
 			{
 				if (heightForWidth)
