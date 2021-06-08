@@ -4,12 +4,7 @@ using System.Threading.Tasks;
 
 namespace Microsoft.Maui.Handlers
 {
-	// https://developer.gnome.org/gtk3/stable/GtkImage.html
-	
-	// GtkImage has nothing like Aspect; maybe an ownerdrawn class is needed 
-	// could be: https://developer.gnome.org/gtk3/stable/GtkDrawingArea.html
-	// or Microsoft.Maui.Graphics.Native.Gtk.GtkGraphicsView
-	
+
 	public partial class ImageHandler : ViewHandler<IImage, ImageView>
 	{
 
@@ -22,7 +17,7 @@ namespace Microsoft.Maui.Handlers
 
 		[MissingMapper]
 		public static void MapAspect(ImageHandler handler, IImage image) { }
-		
+
 		[MissingMapper]
 		public static void MapIsAnimationPlaying(ImageHandler handler, IImage image) { }
 
@@ -41,5 +36,7 @@ namespace Microsoft.Maui.Handlers
 
 			handler._sourceManager.CompleteLoad(result);
 		}
+
 	}
+
 }
