@@ -134,7 +134,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Compatibility", "src\Compat
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Controls.SourceGen", "src\Controls\src\SourceGen\Controls.SourceGen.csproj", "{061EC251-FB7A-43B2-A6AD-065D2CCEF1BD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Controls.Sample.Linux", "src\Controls\samples\Controls.Sample.Linux\Controls.Sample.Linux.csproj", "{976A1257-F99A-4F23-9106-681C7395F392}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Controls.Sample.Gtk", "src\Controls\samples\Controls.Sample.Gtk\Controls.Sample.Gtk.csproj", "{976A1257-F99A-4F23-9106-681C7395F392}"
 EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
