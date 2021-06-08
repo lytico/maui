@@ -123,38 +123,8 @@ namespace Microsoft.Maui
 			QueueResize();
 		}
 
-		protected void OnReallocate(Gdk.Rectangle allocation = default)
+		protected void AllocateChildren(Rectangle allocation)
 		{
-			if (VirtualView == null)
-			{
-				return;
-			}
-
-			if (allocation == default)
-			{
-				allocation = new Gdk.Rectangle(0, 0, Allocation.Width, Allocation.Height);
-			}
-
-			var size = GetSizeRequest(allocation.Width, allocation.Height, SizeRequestMode.ConstantSize);
-
-			if (size.Request.Width != allocation.Width || size.Request.Height != allocation.Height)
-			{
-				;
-			}
-
-		}
-
-		protected void AllocateChildren(Gdk.Rectangle allocation)
-		{
-			var virtualView = VirtualView;
-
-			if (virtualView == null)
-			{
-				return;
-			}
-
-			virtualView.InvalidateArrange();
-			virtualView.Arrange(new Rectangle(allocation.X, allocation.Y, allocation.Width, allocation.Height));
 
 			foreach (var cr in _children.ToArray())
 			{
@@ -165,11 +135,25 @@ namespace Microsoft.Maui
 				if (r.IsEmpty)
 					continue;
 
-				var cAlloc = new Gdk.Rectangle(allocation.X + (int)r.X, allocation.Y + (int)r.Y, (int)r.Width, (int)r.Height);
+				var cAlloc = new Gdk.Rectangle((int)(allocation.X + r.X), (int)(allocation.Y + r.Y), (int)r.Width, (int)r.Height);
 
 				// if (cAlloc != w.Allocation) // it's allways needed to implicit arrange children:
 				w.SizeAllocate(cAlloc);
 			}
+		}
+
+		protected void ArrangeAllocation(Rectangle allocation)
+		{
+			var virtualView = VirtualView;
+
+			if (virtualView == null)
+			{
+				return;
+			}
+
+			virtualView.InvalidateArrange();
+			virtualView.Arrange(allocation);
+
 		}
 
 		protected override void OnSizeAllocated(Gdk.Rectangle allocation)
@@ -185,8 +169,12 @@ namespace Microsoft.Maui
 			try
 			{
 				IsReallocating = true;
-				OnReallocate(allocation);
-				AllocateChildren(allocation);
+
+				AllocatedSize = ArrangedSize ?? GetSizeRequest(allocation.Width, allocation.Height, SizeRequestMode.ConstantSize);
+
+				var mAllocation = allocation.ToRectangle();
+				ArrangeAllocation(mAllocation);
+				AllocateChildren(mAllocation);
 			}
 			finally
 			{
@@ -217,7 +205,7 @@ namespace Microsoft.Maui
 			{
 				try
 				{
-					OnReallocate();
+					AllocatedSize ??= GetSizeRequest(Allocation.Width, Allocation.Height, SizeRequestMode.ConstantSize);
 				}
 				catch
 				{
@@ -230,10 +218,6 @@ namespace Microsoft.Maui
 
 		public SizeRequest GetSizeRequest(double widthConstraint, double heightConstraint, SizeRequestMode mode)
 		{
-			var widthHandled = AllocatedWidth > 1; // && virtualView.DesiredSize.Width > 0;
-			var heightHandled = AllocatedHeight > 1; // && virtualView.DesiredSize.Height > 0;
-			var widthConstrained = !double.IsPositiveInfinity(widthConstraint);
-			var heightConstrained = !double.IsPositiveInfinity(heightConstraint);
 
 			var virtualView = VirtualView;
 
@@ -241,14 +225,6 @@ namespace Microsoft.Maui
 			{
 				return Size.Zero;
 			}
-
-			var withFactor = widthHandled && widthConstrained && widthConstraint > 1 ? widthConstraint / AllocatedWidth : 1;
-			var heigthFactor = heightHandled && heightConstrained && heightConstraint > 1 ? heightConstraint / AllocatedHeight : 1;
-
-			// if ((virtualView.Frame.Size.Width == widthConstraint ) && (virtualView.Frame.Size.Height == heightConstraint ))
-			// {
-			// 	return virtualView.Frame.Size;
-			// }
 
 			virtualView.InvalidateMeasure();
 			var size1 = virtualView.Measure(widthConstraint, heightConstraint);
@@ -278,7 +254,7 @@ namespace Microsoft.Maui
 				}
 			}
 
-			minimumHeight = Math.Max(ArrangedSize.HasValue ? (int)ArrangedSize.Value.Height : HeightRequest, ToSize(size.Minimum.Height));
+			minimumHeight = Math.Max(HeightRequest, ToSize(size.Minimum.Height));
 			naturalHeight = Math.Max(HeightRequest, ToSize(size.Request.Height));
 		}
 
@@ -302,12 +278,13 @@ namespace Microsoft.Maui
 				}
 			}
 
-			minimumWidth = Math.Max(ArrangedSize.HasValue ? (int)ArrangedSize.Value.Width : WidthRequest, ToSize(size.Minimum.Width));
+			minimumWidth = Math.Max(WidthRequest, ToSize(size.Minimum.Width));
 			naturalWidth = Math.Max(WidthRequest, ToSize(size.Request.Width));
 
 		}
 
 		Size? ArrangedSize;
+		Size? AllocatedSize;
 
 		protected override void OnAdjustSizeRequest(Orientation orientation, out int minimumSize, out int naturalSize)
 		{
