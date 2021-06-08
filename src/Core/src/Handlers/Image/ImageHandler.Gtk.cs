@@ -6,6 +6,10 @@ namespace Microsoft.Maui.Handlers
 {
 	// https://developer.gnome.org/gtk3/stable/GtkImage.html
 	
+	// GtkImage has nothing like Aspect; maybe an ownerdrawn class is needed 
+	// could be: https://developer.gnome.org/gtk3/stable/GtkDrawingArea.html
+	// or Microsoft.Maui.Graphics.Native.Gtk.GtkGraphicsView
+	
 	public partial class ImageHandler : ViewHandler<IImage, Gtk.Image>
 	{
 
