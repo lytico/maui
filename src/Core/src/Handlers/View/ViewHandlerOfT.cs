@@ -62,7 +62,7 @@ namespace Microsoft.Maui.Handlers
 			if (VirtualView == view)
 				return;
 
-			if (VirtualView?.Handler != null)
+			if (VirtualView?.Handler != null && VirtualView.Handler != this)
 				VirtualView.Handler = null;
 
 			bool setupNativeView = VirtualView == null;
@@ -94,9 +94,7 @@ namespace Microsoft.Maui.Handlers
 			{
 				var map = imv.GetPropertyMapperOverrides();
 				var instancePropertyMapper = map as PropertyMapper<TVirtualView>;
-				if (map != null && instancePropertyMapper == null)
-				{
-				}
+				
 				if (instancePropertyMapper != null)
 				{
 					instancePropertyMapper.Chained = _defaultMapper;
