@@ -10,12 +10,12 @@ namespace Microsoft.Maui.Handlers
 	// could be: https://developer.gnome.org/gtk3/stable/GtkDrawingArea.html
 	// or Microsoft.Maui.Graphics.Native.Gtk.GtkGraphicsView
 	
-	public partial class ImageHandler : ViewHandler<IImage, Gtk.Image>
+	public partial class ImageHandler : ViewHandler<IImage, ImageView>
 	{
 
-		protected override Gtk.Image CreateNativeView()
+		protected override ImageView CreateNativeView()
 		{
-			var img = new Gtk.Image();
+			var img = new ImageView();
 
 			return img;
 		}
