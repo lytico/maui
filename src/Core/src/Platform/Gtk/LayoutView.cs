@@ -258,63 +258,87 @@ namespace Microsoft.Maui
 
 		int ToSize(double it) => double.IsPositiveInfinity(it) ? 0 : (int)it;
 
-		int? lastHeight;
-		int? lastWidth;
-
-		protected override void OnAdjustSizeRequest(Orientation orientation, out int minimumSize, out int naturalSize)
-		{
-			base.OnAdjustSizeRequest(orientation, out minimumSize, out naturalSize);
-
-			if (orientation == Orientation.Vertical && minimumSize != lastHeight)
-			{
-				;
-			}
-
-			if (orientation == Orientation.Horizontal && minimumSize != lastWidth)
-			{
-				;
-			}
-		}
-
 		protected override void OnGetPreferredHeight(out int minimumHeight, out int naturalHeight)
 		{
 			SizeRequest size;
 
-			if (RequestMode == SizeRequestMode.HeightForWidth)
-			{
-				OnGetPreferredWidth(out var minimumWidth, out var naturalWidth);
-				lastWidth = lastWidth.HasValue ? Math.Min(minimumWidth, lastWidth.Value) : minimumWidth;
-				size = GetSizeRequest(minimumWidth, double.PositiveInfinity, SizeRequestMode.HeightForWidth);
-			}
+			if (ArrangedSize.HasValue)
+				size = ArrangedSize.Value;
 			else
 			{
-				size = GetSizeRequest(double.PositiveInfinity, 0, SizeRequestMode.WidthForHeight);
+
+				if (RequestMode == SizeRequestMode.HeightForWidth)
+				{
+					OnGetPreferredWidth(out var minimumWidth, out var naturalWidth);
+					size = GetSizeRequest(minimumWidth, double.PositiveInfinity, SizeRequestMode.HeightForWidth);
+				}
+				else
+				{
+					size = GetSizeRequest(double.PositiveInfinity, 0, SizeRequestMode.WidthForHeight);
+				}
 			}
 
-			minimumHeight = Math.Max(HeightRequest, ToSize(size.Minimum.Height));
+			minimumHeight = Math.Max(ArrangedSize.HasValue ? (int)ArrangedSize.Value.Height : HeightRequest, ToSize(size.Minimum.Height));
 			naturalHeight = Math.Max(HeightRequest, ToSize(size.Request.Height));
-			lastHeight = lastHeight.HasValue ? Math.Min(minimumHeight, lastHeight.Value) : minimumHeight;
 		}
 
 		protected override void OnGetPreferredWidth(out int minimumWidth, out int naturalWidth)
 		{
 			SizeRequest size;
 
-			if (RequestMode == SizeRequestMode.HeightForWidth)
+			if (ArrangedSize.HasValue)
+				size = ArrangedSize.Value;
+			else
 			{
-				size = GetSizeRequest(0, double.PositiveInfinity, SizeRequestMode.HeightForWidth);
+
+				if (RequestMode == SizeRequestMode.HeightForWidth)
+				{
+					size = GetSizeRequest(0, double.PositiveInfinity, SizeRequestMode.HeightForWidth);
+				}
+				else
+				{
+					GetPreferredHeight(out var minimumHeight, out var naturalHeight);
+					size = GetSizeRequest(0, minimumHeight, SizeRequestMode.WidthForHeight);
+				}
+			}
+
+			minimumWidth = Math.Max(ArrangedSize.HasValue ? (int)ArrangedSize.Value.Width : WidthRequest, ToSize(size.Minimum.Width));
+			naturalWidth = Math.Max(WidthRequest, ToSize(size.Request.Width));
+
+		}
+
+		Size? ArrangedSize;
+
+		protected override void OnAdjustSizeRequest(Orientation orientation, out int minimumSize, out int naturalSize)
+		{
+			base.OnAdjustSizeRequest(orientation, out minimumSize, out naturalSize);
+
+			if (!ArrangedSize.HasValue)
+				return;
+
+			if (orientation == Orientation.Horizontal)
+			{
+				minimumSize = (int)ArrangedSize.Value.Width;
 			}
 			else
 			{
-				GetPreferredHeight(out var minimumHeight, out var naturalHeight);
-				lastHeight = minimumHeight;
-				size = GetSizeRequest(0, minimumHeight, SizeRequestMode.WidthForHeight);
+				minimumSize = (int)ArrangedSize.Value.Height;
 			}
 
-			minimumWidth = Math.Max(WidthRequest, ToSize(size.Minimum.Width));
-			naturalWidth = Math.Max(WidthRequest, ToSize(size.Request.Width));
-			lastWidth = lastWidth.HasValue ? Math.Min(minimumWidth, lastWidth.Value) : minimumWidth;
+		}
 
+		public void Arrange(Rectangle rect)
+		{
+
+			if (rect.IsEmpty)
+				return;
+
+			if (rect != Allocation.ToRectangle())
+			{
+				ArrangedSize = GetSizeRequest(rect.Width, rect.Height, SizeRequestMode.ConstantSize);
+				SizeAllocate(rect.ToNative());
+				QueueAllocate();
+			}
 		}
 
 	}
