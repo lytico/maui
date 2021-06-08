@@ -62,6 +62,8 @@ namespace Microsoft.Maui.Handlers
 
 				var lh = 0d;
 				var layout = SharedTextLayout.GetLayout();
+				layout.Height = -1;
+				layout.Width = -1;
 				layout.Ellipsize = nativeView.Ellipsize;
 				layout.Spacing = nativeView.Layout.Spacing;
 				layout.SetText(nativeView.Text);
@@ -72,10 +74,6 @@ namespace Microsoft.Maui.Handlers
 					{
 						lh = layout.GetLineHeigth(nativeView.Lines, false);
 						layout.Height = (int)lh;
-					}
-					else
-					{
-						layout.Height = -1;
 					}
 				}
 
