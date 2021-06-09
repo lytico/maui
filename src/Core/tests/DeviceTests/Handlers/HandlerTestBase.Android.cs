@@ -188,6 +188,58 @@ namespace Microsoft.Maui.DeviceTests
 			return Math.Floor(nativeView.RotationY);
 		}
 
+		protected float GetOpacity(IViewHandler viewHandler) =>
+			((View)viewHandler.NativeView).Alpha;
+
+		double GetTranslationX(IViewHandler viewHandler)
+		{
+			var nativeView = (View)viewHandler.NativeView;
+
+			return Math.Floor(nativeView.Context.FromPixels(nativeView.TranslationX));
+		}
+
+		double GetTranslationY(IViewHandler viewHandler)
+		{
+			var nativeView = (View)viewHandler.NativeView;
+
+			return Math.Floor(nativeView.Context.FromPixels(nativeView.TranslationY));
+		}
+
+		double GetScaleX(IViewHandler viewHandler)
+		{
+			var nativeView = (View)viewHandler.NativeView;
+
+			return Math.Floor(nativeView.ScaleX);
+		}
+
+		double GetScaleY(IViewHandler viewHandler)
+		{
+			var nativeView = (View)viewHandler.NativeView;
+
+			return Math.Floor(nativeView.ScaleY);
+		}
+
+		double GetRotation(IViewHandler viewHandler)
+		{
+			var nativeView = (View)viewHandler.NativeView;
+
+			return Math.Floor(nativeView.Rotation);
+		}
+
+		double GetRotationX(IViewHandler viewHandler)
+		{
+			var nativeView = (View)viewHandler.NativeView;
+
+			return Math.Floor(nativeView.RotationX);
+		}
+
+		double GetRotationY(IViewHandler viewHandler)
+		{
+			var nativeView = (View)viewHandler.NativeView;
+
+			return Math.Floor(nativeView.RotationY);
+		}
+
 		protected Visibility GetVisibility(IViewHandler viewHandler)
 		{
 			var nativeView = (View)viewHandler.NativeView;
