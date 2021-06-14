@@ -68,7 +68,6 @@
     <Reference Include="System.Net.Http"/>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AppHostBuilderExtensions.Controls.cs" />
     <Compile Include="AppHostBuilderExtensions.cs" />
     <Compile Include="MauiHandlersCollectionExtensions.cs" />
     <Compile Include="Forms.cs" />
