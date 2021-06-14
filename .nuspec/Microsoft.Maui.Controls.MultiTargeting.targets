@@ -76,7 +76,6 @@
     <DefineConstants>$(DefineConstants);IOS</DefineConstants>
   </PropertyGroup>
 
-  <!-- Mac -->
   <PropertyGroup Condition=" '$(TargetFramework)' == 'net6.0-maccatalyst' ">
     <DefineConstants>$(DefineConstants);MACCATALYST;IOS</DefineConstants>
   </PropertyGroup>
