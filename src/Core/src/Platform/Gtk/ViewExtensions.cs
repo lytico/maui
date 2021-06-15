@@ -1,6 +1,7 @@
 ﻿using System;
 using Gtk;
 using Microsoft.Maui.Graphics;
+using Microsoft.Maui.Graphics.Native.Gtk;
 
 namespace Microsoft.Maui
 {
@@ -14,18 +15,33 @@ namespace Microsoft.Maui
 		[PortHandler("implement drawing of other paints than solidpaint")]
 		public static void UpdateBackground(this Widget nativeView, IView view)
 		{
+			var bkColor = view.Background?.BackgroundColor;
+
 			if (view.Background is SolidPaint solidPaint)
 			{
-				nativeView.SetBackgroundColor(solidPaint.Color);
+				bkColor = solidPaint.Color;
 			}
-			else if (view.Background is Paint paint)
+
+			if (bkColor == null)
+				return;
+
+			switch (nativeView)
 			{
-				nativeView.SetBackgroundColor(paint.BackgroundColor);
+				case ProgressBar:
+					nativeView.SetColor(bkColor, "background-color", "trough > progress");
+
+					break;
+				case ComboBox box:
+					// no effect: box.SetColor(bkColor, "border-color");
+					box.GetCellRendererText().SetBackground(bkColor);
+
+					break;
+				default:
+					nativeView.SetBackgroundColor(bkColor);
+
+					break;
 			}
-			else
-			{
-				;
-			}
+
 		}
 
 		public static void UpdateIsEnabled(this Widget nativeView, IView view) =>
@@ -35,10 +51,8 @@ namespace Microsoft.Maui
 			nativeView?.UpdateVisibility(view.Visibility);
 
 		public static void UpdateSemantics(this Widget nativeView, IView view)
-		{
-			
-		}
-		
+		{ }
+
 		public static void UpdateOpacity(this Widget nativeView, IView view) { }
 
 	}
