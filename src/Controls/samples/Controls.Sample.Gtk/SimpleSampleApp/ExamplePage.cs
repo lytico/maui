@@ -509,7 +509,9 @@ namespace Maui.SimpleSampleApp
 			var picker = new Picker
 			{
 				Title = "Select a monkey",
-				FontFamily = "Dokdo"
+				FontFamily = "Dokdo",
+				TextColor = Colors.Chartreuse,
+				BackgroundColor = Colors.Yellow
 			};
 
 			picker.ItemsSource = monkeyList;
