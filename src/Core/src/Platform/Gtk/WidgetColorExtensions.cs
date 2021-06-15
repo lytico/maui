@@ -1,5 +1,6 @@
 using System;
 using Gtk;
+using Microsoft.Maui.Graphics;
 using Microsoft.Maui.Graphics.Native.Gtk;
 
 namespace Microsoft.Maui
@@ -63,20 +64,44 @@ namespace Microsoft.Maui
 			return widget.StyleContext.GetColor(state).ToColor();
 		}
 
-		public static void SetForegroundColor(this Gtk.Widget widget, Gtk.StateType state, Graphics.Color color)
+		public static void SetForegroundColor(this Gtk.Widget widget, Gtk.StateType state, Graphics.Color? color)
 		{
 			widget.SetForegroundColor(state.ToStateFlag(), color);
 		}
 
-		public static void SetColor(this Gtk.Widget widget, Gdk.RGBA gdkRgba, string attr)
+		public static void SetStyleColor(this Gtk.Widget widget, Color? color, string style, string attr, string? subStyle = null)
 		{
-			var path = widget.StyleContext.Path.ToString().Split(':')[0];
+			if (color == null)
+				return;
+
+			widget.SetStyleColor(color.ToGdkRgba(), style, attr, subStyle);
+		}
+
+		public static void SetStyleColor(this Gtk.Widget widget, Gdk.RGBA gdkRgba, string style, string attr, string? subStyle = null)
+		{
 			using var p = new Gtk.CssProvider();
-			p.LoadFromData($"{path}{{{attr}:{gdkRgba.ToString()}}}");
+
+			subStyle = subStyle != null ? $" > {subStyle} " : subStyle;
+
+			p.LoadFromData($"{style}{subStyle}{{{attr}:{gdkRgba.ToString()}}}");
 			widget.StyleContext.AddProvider(p, Gtk.StyleProviderPriority.User);
 		}
 
-		public static void SetForegroundColor(this Gtk.Widget widget, Gtk.StateFlags state, Graphics.Color color)
+		public static void SetColor(this Gtk.Widget widget, Color? color, string attr, string? subStyle = null)
+		{
+			if (color == null)
+				return;
+
+			widget.SetColor(color.ToGdkRgba(), attr, subStyle);
+		}
+
+		public static void SetColor(this Gtk.Widget widget, Gdk.RGBA gdkRgba, string attr, string? subStyle = null)
+		{
+			var style = widget.StyleContext.Path.ToString().Split(':')[0];
+			widget.SetStyleColor(gdkRgba, style, attr, subStyle);
+		}
+
+		public static void SetForegroundColor(this Gtk.Widget widget, Gtk.StateFlags state, Color? color)
 		{
 			if (color == null)
 				return;
@@ -93,18 +118,18 @@ namespace Microsoft.Maui
 			gdkRgba = widget.StyleContext.GetColor(state);
 		}
 
-		public static void SetForegroundColor(this Gtk.Widget widget, Graphics.Color color)
+		public static void SetForegroundColor(this Gtk.Widget widget, Color? color)
 		{
 			widget.SetForegroundColor(Gtk.StateType.Normal, color);
 		}
 
-		public static void UpdateTextColor(this Gtk.Widget widget, Graphics.Color textColor)
+		public static void UpdateTextColor(this Gtk.Widget widget, Graphics.Color? textColor)
 		{
 			if (textColor == null)
 				return;
 
 			widget.SetForegroundColor(textColor);
-			widget.SetForegroundColor(Gtk.StateFlags.Prelight, textColor);
+			// widget.SetForegroundColor(Gtk.StateFlags.Prelight, textColor);
 		}
 
 		public static Gtk.StateFlags ToStateFlag(this Gtk.StateType state)
