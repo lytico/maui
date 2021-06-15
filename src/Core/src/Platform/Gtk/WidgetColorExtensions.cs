@@ -23,9 +23,12 @@ namespace Microsoft.Maui
 
 		public static void SetBackgroundColor(this Gtk.Widget widget, Gtk.StateFlags state, Graphics.Color color)
 		{
+			var gdkRgba = color.ToGdkRgba();
+
 #pragma warning disable 612
-			widget.OverrideBackgroundColor(state, color.ToGdkRgba());
+			// widget.OverrideBackgroundColor(state, color.ToGdkRgba());
 #pragma warning restore 612
+			widget.SetColor(gdkRgba, "background-color");
 		}
 
 		public static Graphics.Color GetBackgroundColor(this Gtk.Widget widget)
@@ -65,13 +68,29 @@ namespace Microsoft.Maui
 			widget.SetForegroundColor(state.ToStateFlag(), color);
 		}
 
+		public static void SetColor(this Gtk.Widget widget, Gdk.RGBA gdkRgba, string attr)
+		{
+			var path = widget.StyleContext.Path.ToString().Split(':')[0];
+			using var p = new Gtk.CssProvider();
+			p.LoadFromData($"{path}{{{attr}:{gdkRgba.ToString()}}}");
+			widget.StyleContext.AddProvider(p, Gtk.StyleProviderPriority.User);
+		}
+
 		public static void SetForegroundColor(this Gtk.Widget widget, Gtk.StateFlags state, Graphics.Color color)
 		{
 			if (color == null)
 				return;
+
+			var gdkRgba = color.ToGdkRgba();
+
+			if (gdkRgba.Equals(widget.StyleContext.GetColor(state)))
+				return;
+
 #pragma warning disable 612
-			widget.OverrideColor(state, color.ToGdkRgba());
+			// widget.OverrideColor(state,gdkRgba);
 #pragma warning restore 612
+			widget.SetColor(gdkRgba, "color");
+			gdkRgba = widget.StyleContext.GetColor(state);
 		}
 
 		public static void SetForegroundColor(this Gtk.Widget widget, Graphics.Color color)
