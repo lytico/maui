@@ -33,7 +33,7 @@ namespace Microsoft.Maui
 		{
 			var puf = nativeImage.SaveToBuffer(ImageFormat.Png.ToImageExtension());
 
-			return $"url('data:image/png;base64,{Convert.ToBase64String(puf)}')";
+			return $"url(\"data:image/png;base64,{Convert.ToBase64String(puf)}\")";
 		}
 
 		[PortHandler("implement drawing of other paints than GradientPaint")]
