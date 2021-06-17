@@ -511,13 +511,18 @@ namespace Maui.SimpleSampleApp
 				Title = "Select a monkey",
 				FontFamily = "Dokdo",
 				TextColor = Colors.Chartreuse,
-				BackgroundColor = Colors.Yellow
+				BackgroundColor = Colors.Yellow,
+				HorizontalTextAlignment = TextAlignment.Center
 			};
 
 			picker.ItemsSource = monkeyList;
 			verticalStack.Add(picker);
 
-			verticalStack.Add(new Slider());
+			verticalStack.Add(new Slider
+			{
+				ThumbColor =  Colors.Aqua,
+				ThumbImageSource = "dotnet_bot.png"
+			});
 
 			verticalStack.Add(new Stepper());
 			verticalStack.Add(new Stepper { BackgroundColor = Colors.IndianRed });
@@ -669,7 +674,8 @@ namespace Maui.SimpleSampleApp
 			var topRight = new Label
 			{
 				Text = "Top Right",
-				BackgroundColor = Colors.Orange
+				BackgroundColor = Colors.Orange,
+				TextColor = Colors.Chocolate
 			};
 
 			layout.Add(topRight);
