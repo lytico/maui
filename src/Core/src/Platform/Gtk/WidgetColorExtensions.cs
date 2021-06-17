@@ -69,36 +69,36 @@ namespace Microsoft.Maui
 			widget.SetForegroundColor(state.ToStateFlag(), color);
 		}
 
-		public static void SetStyleColor(this Gtk.Widget widget, Color? color, string style, string attr, string? subStyle = null)
+		public static void SetStyleColor(this Gtk.Widget widget, Color? color, string mainNode, string attr, string? subNode = null)
 		{
 			if (color == null)
 				return;
 
-			widget.SetStyleColor(color.ToGdkRgba(), style, attr, subStyle);
+			widget.SetStyleColor(color.ToGdkRgba(), mainNode, attr, subNode);
 		}
 
-		public static void SetStyleColor(this Gtk.Widget widget, Gdk.RGBA gdkRgba, string style, string attr, string? subStyle = null)
+		public static void SetStyleColor(this Gtk.Widget widget, Gdk.RGBA color, string mainNode, string attr, string? subNode = null)
 		{
 			using var p = new Gtk.CssProvider();
 
-			subStyle = subStyle != null ? $" > {subStyle} " : subStyle;
+			subNode = subNode != null ? $" > {subNode} " : subNode;
 
-			p.LoadFromData($"{style}{subStyle}{{{attr}:{gdkRgba.ToString()}}}");
+			p.LoadFromData($"{mainNode}{subNode}{{{attr}:{color.ToString()}}}");
 			widget.StyleContext.AddProvider(p, Gtk.StyleProviderPriority.User);
 		}
 
-		public static void SetColor(this Gtk.Widget widget, Color? color, string attr, string? subStyle = null)
+		public static void SetColor(this Gtk.Widget widget, Color? color, string attr, string? subNode = null)
 		{
 			if (color == null)
 				return;
 
-			widget.SetColor(color.ToGdkRgba(), attr, subStyle);
+			widget.SetColor(color.ToGdkRgba(), attr, subNode);
 		}
 
-		public static void SetColor(this Gtk.Widget widget, Gdk.RGBA gdkRgba, string attr, string? subStyle = null)
+		public static void SetColor(this Gtk.Widget widget, Gdk.RGBA color, string attr, string? subNode = null)
 		{
-			var style = widget.StyleContext.Path.ToString().Split(':')[0];
-			widget.SetStyleColor(gdkRgba, style, attr, subStyle);
+			var mainNode = widget.CssMainNode();
+			widget.SetStyleColor(color, mainNode, attr, subNode);
 		}
 
 		public static void SetForegroundColor(this Gtk.Widget widget, Gtk.StateFlags state, Color? color)
