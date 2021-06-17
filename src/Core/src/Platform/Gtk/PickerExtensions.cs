@@ -21,6 +21,22 @@ namespace Microsoft.Maui
 			nativeView.GetCellRendererText().SetForeground(color);
 		}
 
+		public static void UpdateHorizontalTextAlignment(this Gtk.ComboBox? nativeView, TextAlignment? alignment)
+		{
+			if (nativeView == null || alignment == null)
+				return;
+
+			var nativeAlign = alignment.Value.ToXyAlign();
+
+			if (nativeView.HasEntry)
+			{
+				nativeView.Entry.Xalign = nativeAlign;
+			}
+
+			if (nativeView.GetCellRendererText() is { } cell)
+				cell.Xalign = nativeAlign;
+		}
+
 	}
 
 }

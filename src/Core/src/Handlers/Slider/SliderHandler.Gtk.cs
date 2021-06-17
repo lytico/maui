@@ -62,12 +62,41 @@ namespace Microsoft.Maui.Handlers
 		[MissingMapper]
 		public static void MapMaximumTrackColor(SliderHandler handler, ISlider slider) { }
 
-		[MissingMapper]
-		public static void MapThumbColor(SliderHandler handler, ISlider slider) { }
+		public static void MapThumbColor(SliderHandler handler, ISlider slider)
+		{
+			if (handler.NativeView is not { } nativeView)
+				return;
+
+			// this don't work cause slider is an icon
+			nativeView.SetColor(slider.ThumbColor, "color", "contents > trough > slider");
+
+		}
 
 		[MissingMapper]
 		public static void MapThumbImageSource(SliderHandler handler, ISlider slider)
-		{ }
+		{
+			if (handler.NativeView is not { } nativeView)
+				return;
+
+			var img = slider.ThumbImageSource;
+
+			if (img == null)
+				return;
+
+			var provider = handler.GetRequiredService<IImageSourceServiceProvider>();
+
+			img.UpdateImageSourceAsync(1, provider, p =>
+				{
+					if (p == null)
+						return;
+
+					var css = p.CssImage();
+					// not working:
+					nativeView.SetStyleImage(css, nativeView.CssMainNode(), "background-image", "contents > trough > slider");
+
+				})
+			   .FireAndForget(handler);
+		}
 
 	}
 

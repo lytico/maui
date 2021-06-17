@@ -108,8 +108,10 @@ namespace Microsoft.Maui.Handlers
 			handler.NativeView.UpdateTextColor(view?.TextColor);
 		}
 
-		[MissingMapper]
-		public static void MapHorizontalTextAlignment(PickerHandler handler, IPicker view) { }
+		public static void MapHorizontalTextAlignment(PickerHandler handler, IPicker view)
+		{
+			handler.NativeView.UpdateHorizontalTextAlignment(view.HorizontalTextAlignment);
+		}
 
 		[MissingMapper]
 		public static void MapTitleColor(PickerHandler handler, IPicker view) { }
