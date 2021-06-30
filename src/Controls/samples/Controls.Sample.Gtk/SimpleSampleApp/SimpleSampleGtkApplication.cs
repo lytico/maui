@@ -10,7 +10,7 @@ namespace Maui.SimpleSampleApp
 
 		public SimpleSampleGtkApplication() : base()
 		{
-			// TopContainerOverride = OnTopContainerOverride;
+			TopContainerOverride = OnTopContainerOverride;
 		}
 
 		Widget OnTopContainerOverride(Widget nativePage)
@@ -24,12 +24,13 @@ namespace Maui.SimpleSampleApp
 			};
 
 			var txt = $"{typeof(Startup).Namespace} {nameof(TopContainerOverride)}";
-			var t = new Label(txt);
-			t.SetBackgroundColor(Colors.White);
-			t.SetForegroundColor(Colors.Coral);
-			var but = new Button() { Label = "Gtk Test" };
 
-			b.PackStart(t, false, false, 0);
+			var but = new Button() { Label = "Gtk Test" };
+			var filename = "dotnet_bot.png";
+			var pix = new Gdk.Pixbuf(filename);
+			var css = pix.CssImage();
+// css =  $"url('{filename}')";
+			but.SetStyleImage(css, "background-image");
 			b.PackStart(but, false, false, 0);
 
 			b.PackStart(nativePage, true, true, 0);

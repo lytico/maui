@@ -31,9 +31,11 @@ namespace Microsoft.Maui
 
 		public static string CssImage(this Gdk.Pixbuf nativeImage)
 		{
+			// seems that CssParser doesn't support base64:
+			// https://github.com/GNOME/gtk/blob/gtk-3-22/gtk/gtkcssparser.c
+			// _gtk_css_parser_read_url
 			var puf = nativeImage.SaveToBuffer(ImageFormat.Png.ToImageExtension());
-
-			return $"url(\"data:image/png;base64,{Convert.ToBase64String(puf)}\")";
+			return $"url(\"data:image/png;base64,{Convert.ToBase64String(puf, Base64FormattingOptions.None)}\")";
 		}
 
 		[PortHandler("implement drawing of other paints than GradientPaint")]
@@ -80,9 +82,13 @@ namespace Microsoft.Maui
 		{
 			using var p = new Gtk.CssProvider();
 
+			p.ParsingError += (o, args) =>
+			{
+				;
+			}; 
 			subNode = subNode != null ? $" > {subNode} " : subNode;
 
-			p.LoadFromData($"{mainNode}{subNode}{{{attr}:{cssImage}}}");
+			p.LoadFromData($"{mainNode}{subNode}{{{attr}:{cssImage};}}");
 			widget.StyleContext.AddProvider(p, Gtk.StyleProviderPriority.User);
 		}
 

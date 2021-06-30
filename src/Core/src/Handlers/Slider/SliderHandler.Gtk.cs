@@ -84,13 +84,13 @@ namespace Microsoft.Maui.Handlers
 			if (img == null)
 				return;
 
-			if (img is IFileImageSource fis)
-			{
-				var css = $"url('{fis.File}')";
-				// working with small svg images:
-				nativeView.SetStyleImage(css, "background-image", "contents > trough > slider");
-				return;
-			}
+			// if (img is IFileImageSource fis)
+			// {
+			// 	var css = $"url('{fis.File}')";
+			// 	// working with small svg images:
+			// 	nativeView.SetStyleImage(css, "background-image", "contents > trough > slider");
+			// 	return;
+			// }
 
 			var provider = handler.GetRequiredService<IImageSourceServiceProvider>();
 
