@@ -20,6 +20,7 @@ namespace Microsoft.Maui.Handlers
 		public static PropertyMapper<IView, ViewHandler> ViewMapper = new PropertyMapper<IView, ViewHandler>
 		{
 			[nameof(IView.AutomationId)] = MapAutomationId,
+			[nameof(IView.Clip)] = MapClip,
 			[nameof(IView.Visibility)] = MapVisibility,
 			[nameof(IView.Background)] = MapBackground,
 			[nameof(IView.Width)] = MapWidth,
@@ -152,6 +153,24 @@ namespace Microsoft.Maui.Handlers
 			((NativeView?)handler.NativeView)?.UpdateAutomationId(view);
 		}
 
+		public static void MapClip(IViewHandler handler, IView view)
+		{
+			var clipGeometry = view.Clip;
+#if WINDOWS
+			((NativeView?)handler.ContainerView)?.UpdateClip(view);
+#else
+			if (clipGeometry != null)
+				handler.HasContainer = true;
+			else
+			{
+				if (handler is ViewHandler viewHandler)
+					handler.HasContainer = viewHandler.NeedsContainer;
+			}
+
+			((WrapperView?)handler.ContainerView)?.UpdateClip(view);
+#endif
+		}
+
 		static partial void MappingSemantics(ViewHandler handler, IView view);
 
 		public static void MapSemantics(ViewHandler handler, IView view)
@@ -176,6 +195,9 @@ namespace Microsoft.Maui.Handlers
 		public static void MapFrame(ViewHandler handler, IView view)
 		{
 			MappingFrame(handler, view);
+#if WINDOWS
+			MapClip(handler, view);
+#endif
 		}
 	}
 }

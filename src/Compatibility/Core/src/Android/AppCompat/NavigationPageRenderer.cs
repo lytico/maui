@@ -22,7 +22,7 @@ using Microsoft.Maui.Graphics;
 using static Android.Views.View;
 using static Microsoft.Maui.Controls.PlatformConfiguration.AndroidSpecific.AppCompat.NavigationPage;
 using ActionBarDrawerToggle = AndroidX.AppCompat.App.ActionBarDrawerToggle;
-using APlatform = Microsoft.Maui.Controls.Compatibility.Platform.Android.AppCompat.Platform;
+using APlatform = Microsoft.Maui.Controls.Compatibility.Platform.Android.Platform;
 using AToolbar = AndroidX.AppCompat.Widget.Toolbar;
 using AView = Android.Views.View;
 using Color = Microsoft.Maui.Graphics.Color;
@@ -958,8 +958,7 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.Android.AppCompat
 						toggle.SyncState();
 					}
 
-					var activity = (AppCompatActivity)context.GetActivity();
-					var icon = new DrawerArrowDrawable(activity.SupportActionBar.ThemedContext);
+					var icon = new DrawerArrowDrawable(context.GetThemedContext());
 					icon.Progress = 1;
 					bar.NavigationIcon = icon;
 
