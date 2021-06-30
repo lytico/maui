@@ -29,7 +29,12 @@ namespace Microsoft.Maui
 			return mainNode;
 		}
 
-		public static string CssImage(this Gdk.Pixbuf nativeImage)
+        /// <summary>
+        /// seems that CssParser doesn't support base64:
+        /// https://github.com/GNOME/gtk/blob/gtk-3-22/gtk/gtkcssparser.c
+        /// _gtk_css_parser_read_url
+        /// </summary>
+        public static string CssImage(this Gdk.Pixbuf nativeImage)
 		{
 			var puf = nativeImage.SaveToBuffer(ImageFormat.Png.ToImageExtension());
 

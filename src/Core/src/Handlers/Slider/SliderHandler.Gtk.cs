@@ -83,6 +83,13 @@ namespace Microsoft.Maui.Handlers
 
 			if (img == null)
 				return;
+            
+            if (img is IFileImageSource fis)
+            {
+                var css = $"url('{fis.File}')";
+                nativeView.SetStyleImage(css, "background-image", "contents > trough > slider");
+                return;
+            }
 
 			var provider = handler.GetRequiredService<IImageSourceServiceProvider>();
 
