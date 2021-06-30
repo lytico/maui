@@ -37,14 +37,17 @@ using FlyoutPageRenderer = Microsoft.Maui.Controls.Compatibility.Platform.iOS.Ph
 using RadioButtonRenderer = Microsoft.Maui.Controls.Compatibility.Platform.iOS.Platform.DefaultRenderer;
 using DefaultRenderer = Microsoft.Maui.Controls.Compatibility.Platform.iOS.Platform.DefaultRenderer;
 #elif GTK
+using Microsoft.Maui.Graphics.Native.Gtk;
 using Microsoft.Maui.Controls.Compatibility.Platform.Gtk;
 using ScrollViewHandler = Microsoft.Maui.Handlers.ScrollView.ScrollViewHandler;
 #endif
 
 namespace Microsoft.Maui.Controls.Hosting
 {
+
 	public static class AppHostBuilderExtensions
 	{
+
 		public static IAppHostBuilder UseMauiApp<TApp>(this IAppHostBuilder builder)
 			where TApp : class, IApplication
 		{
@@ -199,17 +202,23 @@ namespace Microsoft.Maui.Controls.Hosting
 							}
 						}
 					}));
+#elif GTK
+
+				events.AddGtk(gtk => gtk
+				   .OnLaunching((app, args) => {
+						GraphicsPlatform.RegisterGlobalService(NativeGraphicsService.Instance);
+					 }
+				));
 #endif
 			});
 
 			builder
-				.ConfigureMauiHandlers(handlers =>
+			   .ConfigureMauiHandlers(handlers =>
 				{
 					handlers.AddMauiControlsHandlers();
 					DependencyService.SetToInitialized();
 
 #if __ANDROID__ || __IOS__ || WINDOWS || MACCATALYST
-
 					handlers.TryAddCompatibilityRenderer(typeof(BoxView), typeof(BoxRenderer));
 					handlers.TryAddCompatibilityRenderer(typeof(Entry), typeof(EntryRenderer));
 					handlers.TryAddCompatibilityRenderer(typeof(Editor), typeof(EditorRenderer));
@@ -298,13 +307,14 @@ namespace Microsoft.Maui.Controls.Hosting
 
 #endif
 				})
-				.ConfigureServices<MauiCompatBuilder>();
+			   .ConfigureServices<MauiCompatBuilder>();
 
 			return builder;
 		}
 
 		class MauiCompatBuilder : IMauiServiceBuilder
 		{
+
 			public void Configure(HostBuilderContext context, IServiceProvider services)
 			{
 #if __ANDROID__ || __IOS__ || WINDOWS || MACCATALYST || GTK
@@ -331,8 +341,7 @@ namespace Microsoft.Maui.Controls.Hosting
 			}
 
 			public void ConfigureServices(HostBuilderContext context, IServiceCollection services)
-			{
-			}
+			{ }
 
 #if WINDOWS
 			static void AddLibraryResources(string key, string uri)
@@ -378,6 +387,9 @@ namespace Microsoft.Maui.Controls.Hosting
 				}
 			}
 #endif
+
 		}
+
 	}
+
 }
