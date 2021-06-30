@@ -102,6 +102,8 @@ namespace Microsoft.Maui
 			   .ConfigureUsing(startup)
 			   .Build();
 
+			Services?.InvokeLifecycleEvents<GtkLifecycle.OnLaunching>(del => del(this, args));
+
 			Services = host.Services;
 			Application = Services.GetRequiredService<IApplication>();
 

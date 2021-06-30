@@ -9,6 +9,8 @@ namespace Microsoft.Maui.LifecycleEvents
 
 		public delegate void OnStartup(Gtk.Application application, EventArgs args);
 
+		public delegate void OnLaunching(MauiGtkApplication application, EventArgs args);
+
 		public delegate void OnLaunched(Gtk.Application application, EventArgs args);
 
 		public delegate void OnOpened(Gtk.Application application, OpenedArgs args);
