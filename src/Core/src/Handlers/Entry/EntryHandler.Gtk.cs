@@ -119,7 +119,13 @@ namespace Microsoft.Maui.Handlers
 			if (handler.NativeView is { } nativeView)
 				nativeView.Alignment = entry.HorizontalTextAlignment.ToXyAlign();
 		}
+		
+		[MissingMapper]
+		public static void MapVerticalTextAlignment(EntryHandler handler, IEntry entry)
+		{
 
+		}
+		
 		[MissingMapper]
 		public static void MapIsTextPredictionEnabled(EntryHandler handler, IEntry entry) { }
 

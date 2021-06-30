@@ -99,6 +99,11 @@ namespace Microsoft.Maui
 
 		public static void UpdateOpacity(this Widget nativeView, IView view) { }
 
+		public static void UpdateClip(this WrapperView nativeView, IView view)
+		{
+			nativeView.Clip = view.Clip;
+		}
+
 	}
 
 }
