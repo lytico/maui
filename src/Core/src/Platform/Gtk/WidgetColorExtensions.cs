@@ -9,7 +9,7 @@ namespace Microsoft.Maui
 	public static class WidgetColorExtensions
 	{
 
-		public static void SetBackgroundColor(this Gtk.Widget widget, Graphics.Color color)
+		public static void SetBackgroundColor(this Gtk.Widget widget, Graphics.Color? color)
 		{
 			if (color == null)
 				return;
@@ -24,12 +24,9 @@ namespace Microsoft.Maui
 
 		public static void SetBackgroundColor(this Gtk.Widget widget, Gtk.StateFlags state, Graphics.Color color)
 		{
-			var gdkRgba = color.ToGdkRgba();
+			var nativeColor = color.ToGdkRgba();
 
-#pragma warning disable 612
-			// widget.OverrideBackgroundColor(state, color.ToGdkRgba());
-#pragma warning restore 612
-			widget.SetColor(gdkRgba, "background-color");
+			widget.SetColor(nativeColor, "background-color");
 		}
 
 		public static Graphics.Color GetBackgroundColor(this Gtk.Widget widget)
@@ -106,16 +103,12 @@ namespace Microsoft.Maui
 			if (color == null)
 				return;
 
-			var gdkRgba = color.ToGdkRgba();
+			var nativeColor = color.ToGdkRgba();
 
-			if (gdkRgba.Equals(widget.StyleContext.GetColor(state)))
+			if (nativeColor.Equals(widget.StyleContext.GetColor(state)))
 				return;
 
-#pragma warning disable 612
-			// widget.OverrideColor(state,gdkRgba);
-#pragma warning restore 612
-			widget.SetColor(gdkRgba, "color");
-			gdkRgba = widget.StyleContext.GetColor(state);
+			widget.SetColor(nativeColor, "color");
 		}
 
 		public static void SetForegroundColor(this Gtk.Widget widget, Color? color)

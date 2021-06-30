@@ -3,6 +3,7 @@ using System;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Maui.Controls.Compatibility;
+
 #if __ANDROID__
 using Microsoft.Maui.Controls.Compatibility.Platform.Android;
 using Microsoft.Maui.Controls.Compatibility.Platform.Android.AppCompat;
@@ -18,6 +19,7 @@ using Deserializer = Microsoft.Maui.Controls.Compatibility.Platform.UWP.WindowsS
 using ResourcesProvider = Microsoft.Maui.Controls.Compatibility.Platform.UWP.WindowsResourcesProvider;
 using StreamImagesourceHandler = Microsoft.Maui.Controls.Compatibility.Platform.UWP.StreamImageSourceHandler;
 using ImageLoaderSourceHandler = Microsoft.Maui.Controls.Compatibility.Platform.UWP.UriImageSourceHandler;
+
 #elif __IOS__
 using Microsoft.Maui.Controls.Compatibility.Platform.iOS;
 using WebViewRenderer = Microsoft.Maui.Controls.Compatibility.Platform.iOS.WkWebViewRenderer;
@@ -29,16 +31,15 @@ using RadioButtonRenderer = Microsoft.Maui.Controls.Compatibility.Platform.iOS.P
 using Microsoft.Maui.Controls.Compatibility.Platform.Gtk;
 using ScrollViewHandler = Microsoft.Maui.Handlers.ScrollView.ScrollViewHandler;
 #endif
+
 using Microsoft.Maui.Hosting;
 using Microsoft.Maui.Controls.Shapes;
 using Microsoft.Maui.LifecycleEvents;
 
 namespace Microsoft.Maui.Controls.Hosting
 {
-
 	public static class AppHostBuilderExtensions
 	{
-
 		public static IAppHostBuilder UseMauiApp<TApp>(this IAppHostBuilder builder)
 			where TApp : class, IApplication
 		{
@@ -48,7 +49,6 @@ namespace Microsoft.Maui.Controls.Hosting
 			});
 
 			builder.SetupDefaults();
-
 			return builder;
 		}
 
@@ -61,7 +61,6 @@ namespace Microsoft.Maui.Controls.Hosting
 			});
 
 			builder.SetupDefaults();
-
 			return builder;
 		}
 
@@ -159,12 +158,13 @@ namespace Microsoft.Maui.Controls.Hosting
 			});
 
 			builder
-			   .ConfigureMauiHandlers(handlers =>
+				.ConfigureMauiHandlers(handlers =>
 				{
 					handlers.AddMauiControlsHandlers();
 					DependencyService.SetToInitialized();
 
 #if __ANDROID__ || __IOS__ || WINDOWS || MACCATALYST
+
 					Forms.RenderersRegistered();
 					handlers.TryAddCompatibilityRenderer(typeof(BoxView), typeof(BoxRenderer));
 					handlers.TryAddCompatibilityRenderer(typeof(Entry), typeof(EntryRenderer));
@@ -246,14 +246,14 @@ namespace Microsoft.Maui.Controls.Hosting
 
 #endif
 				})
-			   .ConfigureServices<MauiCompatBuilder>();
+				.ConfigureServices<MauiCompatBuilder>();
+
 
 			return builder;
 		}
 
 		class MauiCompatBuilder : IMauiServiceBuilder
 		{
-
 			public void Configure(HostBuilderContext context, IServiceProvider services)
 			{
 #if __ANDROID__ || __IOS__ || WINDOWS || MACCATALYST || GTK
@@ -272,9 +272,6 @@ namespace Microsoft.Maui.Controls.Hosting
 				}
 #endif
 			}
-
 		}
-
 	}
-
 }
