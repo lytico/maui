@@ -146,7 +146,7 @@ namespace Microsoft.Maui
 			return Gtk.StateFlags.Normal;
 		}
 
-		public static Gdk.Color ColorFor(this Gtk.StyleContext ctx, string postfix, Gtk.StateType state)
+		public static Color ColorFor(this Gtk.StyleContext ctx, string postfix, Gtk.StateType state)
 		{
 			var prefix = string.Empty;
 			// see: https://developer.gnome.org/gtk3/stable/gtk-migrating-GtkStyleContext-css.html
@@ -180,27 +180,27 @@ namespace Microsoft.Maui
 
 			if (ctx.LookupColor($"{prefix}{postfix}_color", out var col))
 			{
-				return col.ToGdkColor();
+				return col.ToColor();
 			}
 
 			ctx.LookupColor("base_color", out col);
 
-			return col.ToGdkColor();
+			return col.ToColor();
 		}
 
-		public static Gdk.Color Background(this Gtk.Style it, Gtk.StateType state)
+		public static Color Background(this Gtk.Style it, Gtk.StateType state)
 		{
 
 			return it.Context.ColorFor("bg", state);
 		}
 
-		public static Gdk.Color Foreground(this Gtk.Style it, Gtk.StateType state)
+		public static Color Foreground(this Gtk.Style it, Gtk.StateType state)
 		{
 			return it.Context.ColorFor("fg", state);
 
 		}
 
-		public static Gdk.Color Base(this Gtk.Style it, Gtk.StateType state)
+		public static Color Base(this Gtk.Style it, Gtk.StateType state)
 		{
 			return it.Context.ColorFor("", state);
 		}
