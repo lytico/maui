@@ -102,9 +102,9 @@ namespace Microsoft.Maui
 			   .ConfigureUsing(startup)
 			   .Build();
 
-			Services?.InvokeLifecycleEvents<GtkLifecycle.OnLaunching>(del => del(this, args));
-
 			Services = host.Services;
+			Services.InvokeLifecycleEvents<GtkLifecycle.OnLaunching>(del => del(this, args));
+
 			Application = Services.GetRequiredService<IApplication>();
 
 			var mauiContext = new MauiContext(Services);
