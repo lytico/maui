@@ -49,7 +49,11 @@ namespace Microsoft.Maui
 
 			string Stops(GradientStop[] sorted)
 			{
+#if NET48
+				var max = sorted[sorted.Length-1].Offset;
+#else
 				var max = sorted[^1].Offset;
+#endif				
 				max = 100 / (max == 0 ? 1 : max);
 				var stops = string.Join(",", sorted.Select(s => $"{s.Color.ToGdkRgba().ToString()} {s.Offset * max}%"));
 
