@@ -7,7 +7,6 @@ using Microsoft.Maui.Controls.Shapes;
 using Microsoft.Maui.Graphics;
 using Microsoft.Maui.Hosting;
 using Microsoft.Maui.LifecycleEvents;
-
 #if __ANDROID__
 using Microsoft.Maui.Controls.Compatibility.Platform.Android;
 using Microsoft.Maui.Controls.Compatibility.Platform.Android.AppCompat;
@@ -39,7 +38,9 @@ using DefaultRenderer = Microsoft.Maui.Controls.Compatibility.Platform.iOS.Platf
 #elif GTK
 using Microsoft.Maui.Graphics.Native.Gtk;
 using Microsoft.Maui.Controls.Compatibility.Platform.Gtk;
+using Microsoft.Maui.Controls.Handlers;
 using ScrollViewHandler = Microsoft.Maui.Handlers.ScrollView.ScrollViewHandler;
+
 #endif
 
 namespace Microsoft.Maui.Controls.Hosting
@@ -205,10 +206,12 @@ namespace Microsoft.Maui.Controls.Hosting
 #elif GTK
 
 				events.AddGtk(gtk => gtk
-				   .OnLaunching((app, args) => {
-						GraphicsPlatform.RegisterGlobalService(NativeGraphicsService.Instance);
-					 }
-				));
+				   .OnLaunching((app, args) =>
+						{
+							Forms.Init(args.ActivationState);
+							GraphicsPlatform.RegisterGlobalService(NativeGraphicsService.Instance);
+						}
+					));
 #endif
 			});
 
@@ -301,7 +304,16 @@ namespace Microsoft.Maui.Controls.Hosting
 					Internals.Registrar.RegisterEffect("Xamarin", "ShadowEffect", typeof(ShadowEffect));
 #endif
 #if GTK
+					DependencyService.Register<Xaml.ResourcesLoader>();
+					DependencyService.Register<NativeBindingService>();
+					DependencyService.Register<NativeValueConverterService>();
+					DependencyService.Register<Deserializer>();
+					DependencyService.Register<ResourcesProvider>();
+					DependencyService.Register<Xaml.ValueConverterProvider>();
+					
 					handlers.AddHandler<ScrollView, ScrollViewHandler>();
+					handlers.AddHandler<NavigationPage, NavigationPageHandler>();
+
 					DependencyService.Register<NativeBindingService>();
 					DependencyService.Register<NativeValueConverterService>();
 
