@@ -124,6 +124,7 @@ namespace Maui.Controls.Sample
 				})
 				.ConfigureEssentials(essentials =>
 				{
+#if ! GTK
 					essentials
 						.UseVersionTracking()
 						.UseMapServiceToken("YOUR-KEY-HERE")
@@ -133,6 +134,7 @@ namespace Maui.Controls.Sample
 						{
 							Debug.WriteLine($"You seem to have arrived from a special place: {appAction.Title} ({appAction.Id})");
 						});
+#endif
 				})
 				.ConfigureLifecycleEvents(events =>
 				{
