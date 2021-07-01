@@ -40,7 +40,7 @@ namespace Microsoft.Maui
 				default:
 					if (css != null)
 					{
-						nativeView.SetStyleImage(css, "background-image");
+						nativeView.SetStyleValue(css, "background-image");
 					}
 					else
 					{

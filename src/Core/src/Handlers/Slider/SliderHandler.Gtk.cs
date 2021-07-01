@@ -87,7 +87,11 @@ namespace Microsoft.Maui.Handlers
             if (img is IFileImageSource fis)
             {
                 var css = $"url('{fis.File}')";
-                nativeView.SetStyleImage(css, "background-image", "contents > trough > slider");
+                nativeView.SetStyleValue(css, "background-image", "contents > trough > slider");
+                // nativeView.SetStyleImage("center","background-position", "contents > trough > slider");
+                nativeView.SetStyleValue("contain","background-size", "contents > trough > slider");
+            
+            
                 return;
             }
 
@@ -100,7 +104,7 @@ namespace Microsoft.Maui.Handlers
 
 					var css = p.CssImage();
 					// not working:
-					nativeView.SetStyleImage(css, "background-image", "contents > trough > slider");
+					nativeView.SetStyleValue(css, "background-image", "contents > trough > slider");
 
 				})
 			   .FireAndForget(handler);

@@ -85,18 +85,18 @@ namespace Microsoft.Maui
 
 		}
 
-		public static void SetStyleImageNode(this Gtk.Widget widget, string cssImage, string mainNode, string attr, string? subNode = null)
+		public static void SetStyleValueNode(this Gtk.Widget widget, string value, string mainNode, string attr, string? subNode = null)
 		{
 			using var p = new Gtk.CssProvider();
 
 			subNode = subNode != null ? $" > {subNode} " : subNode;
 
-			p.LoadFromData($"{mainNode}{subNode}{{{attr}:{cssImage}}}");
+			p.LoadFromData($"{mainNode}{subNode}{{{attr}:{value}}}");
 			widget.StyleContext.AddProvider(p, Gtk.StyleProviderPriority.User);
 		}
 
-		public static void SetStyleImage(this Gtk.Widget widget, string cssImage, string attr, string? subNode = null)
-			=> widget.SetStyleImageNode(cssImage, widget.CssMainNode(), attr, subNode);
+		public static void SetStyleValue(this Gtk.Widget widget, string value, string attr, string? subNode = null)
+			=> widget.SetStyleValueNode(value, widget.CssMainNode(), attr, subNode);
 
 	}
 
