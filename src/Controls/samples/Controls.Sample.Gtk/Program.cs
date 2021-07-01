@@ -1,4 +1,6 @@
-﻿using System;
+﻿#define UseSimpleSample
+
+using System;
 using System.Threading.Tasks;
 using GLib;
 using Maui.SimpleSampleApp;
@@ -21,7 +23,7 @@ namespace Controls.Sample.Gtk
 #else
 				new MauiGtkApplication<Maui.Controls.Sample.Startup>();
 #endif
-				app.Run();
+			app.Run();
 
 		}
 
