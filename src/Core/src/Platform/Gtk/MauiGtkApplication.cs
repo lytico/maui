@@ -103,13 +103,15 @@ namespace Microsoft.Maui
 			   .Build();
 
 			Services = host.Services;
-			Services.InvokeLifecycleEvents<GtkLifecycle.OnLaunching>(del => del(this, args));
+			
+			var mauiContext = new MauiContext(Services);
+			var activationState = new ActivationState(mauiContext);
+			
+			Services.InvokeLifecycleEvents<GtkLifecycle.OnLaunching>(del => del(this, new ActivationEventArgs(activationState)));
 
 			Application = Services.GetRequiredService<IApplication>();
 
-			var mauiContext = new MauiContext(Services);
 
-			var activationState = new ActivationState(mauiContext);
 			var window = Application.CreateWindow(activationState);
 
 			var content = window.View;
@@ -125,7 +127,7 @@ namespace Microsoft.Maui
 
 			MainWindow.Present();
 
-			Services?.InvokeLifecycleEvents<GtkLifecycle.OnLaunched>(del => del(CurrentGtkApplication, args));
+			Services?.InvokeLifecycleEvents<GtkLifecycle.OnLaunched>(del => del(CurrentGtkApplication, new ActivationEventArgs(activationState)));
 		}
 
 		void StartupMainWindow()
