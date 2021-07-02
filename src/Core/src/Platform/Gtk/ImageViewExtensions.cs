@@ -1,8 +1,12 @@
 ﻿#nullable enable
 using System;
+using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
 using Gtk;
+using Microsoft.Maui.Graphics;
+using Microsoft.Maui.Graphics.Native.Gtk;
+using Action = System.Action;
 
 namespace Microsoft.Maui
 {
@@ -130,6 +134,18 @@ namespace Microsoft.Maui
 
 			return null;
 
+		}
+
+		public static string? TempFileFor(this Gdk.Pixbuf? p, ImageFormat format = ImageFormat.Png)
+		{
+			if (p == null)
+				return default;
+
+			var tmpfile = Path.GetTempFileName();
+
+			p.Save(tmpfile, format.ToImageExtension());
+
+			return tmpfile;
 		}
 
 	}

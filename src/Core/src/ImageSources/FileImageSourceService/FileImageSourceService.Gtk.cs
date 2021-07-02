@@ -41,7 +41,7 @@ namespace Microsoft.Maui
 
 					if (res != null)
 					{
-						return new(assembly, file);
+						return new(assembly, res);
 					}
 				}
 
@@ -59,12 +59,18 @@ namespace Microsoft.Maui
 					image = TryLoadFile(Path.Combine(imageDirectory, filename));
 				}
 
-				image ??= TryLoadResource(filename);
+				var isResource = false;
+
+				if (image == null)
+				{
+					image = TryLoadResource(filename);
+					isResource = true;
+				}
 
 				if (image == null)
 					throw new InvalidOperationException("Unable to load image file.");
 
-				var result = new ImageSourceServiceResult(image, () => image.Dispose());
+				var result = new ImageSourceServiceResult(image, () => image.Dispose()) { IsResource = isResource };
 
 				return FromResult(result);
 			}

@@ -1,5 +1,6 @@
 using System;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using Microsoft.Maui.Graphics;
 using Microsoft.Maui.Graphics.Native.Gtk;
 using Pango;
@@ -29,12 +30,12 @@ namespace Microsoft.Maui
 			return mainNode;
 		}
 
-        /// <summary>
-        /// seems that CssParser doesn't support base64:
-        /// https://github.com/GNOME/gtk/blob/gtk-3-22/gtk/gtkcssparser.c
-        /// _gtk_css_parser_read_url
-        /// </summary>
-        public static string CssImage(this Gdk.Pixbuf nativeImage)
+		/// <summary>
+		/// seems that CssParser doesn't support base64:
+		/// https://github.com/GNOME/gtk/blob/gtk-3-22/gtk/gtkcssparser.c
+		/// _gtk_css_parser_read_url
+		/// </summary>
+		public static string CssImage(this Gdk.Pixbuf nativeImage)
 		{
 			var puf = nativeImage.SaveToBuffer(ImageFormat.Png.ToImageExtension());
 
@@ -53,7 +54,7 @@ namespace Microsoft.Maui
 				var max = sorted[sorted.Length-1].Offset;
 #else
 				var max = sorted[^1].Offset;
-#endif				
+#endif
 				max = 100 / (max == 0 ? 1 : max);
 				var stops = string.Join(",", sorted.Select(s => $"{s.Color.ToGdkRgba().ToString()} {s.Offset * max}%"));
 
@@ -85,6 +86,18 @@ namespace Microsoft.Maui
 
 		}
 
+		[MethodImpl(MethodImplOptions.NoOptimization | MethodImplOptions.NoInlining)]
+		public static void Realize(Gtk.CssProvider p)
+		{
+			var l = p.ToString().Length;
+
+			if (l != 0)
+			{
+				// ReSharper disable once EmptyStatement
+				;
+			}
+		}
+
 		public static void SetStyleValueNode(this Gtk.Widget widget, string value, string mainNode, string attr, string? subNode = null)
 		{
 			using var p = new Gtk.CssProvider();
@@ -93,6 +106,8 @@ namespace Microsoft.Maui
 
 			p.LoadFromData($"{mainNode}{subNode}{{{attr}:{value}}}");
 			widget.StyleContext.AddProvider(p, Gtk.StyleProviderPriority.User);
+			if (value.StartsWith("url")) 
+				Realize(p);
 		}
 
 		public static void SetStyleValue(this Gtk.Widget widget, string value, string attr, string? subNode = null)
