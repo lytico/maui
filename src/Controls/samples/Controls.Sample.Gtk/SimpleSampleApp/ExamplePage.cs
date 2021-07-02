@@ -348,7 +348,9 @@ namespace Maui.SimpleSampleApp
 				{
 					new(Colors.Aqua, 0),
 					new(Colors.Green, 10),
-				})
+				}),
+				Padding = new Thickness(30),
+				Margin = new Thickness(10),
 			};
 
 			verticalStack.Add(labelG);
