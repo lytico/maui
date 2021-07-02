@@ -69,7 +69,7 @@ namespace Microsoft.Maui.Handlers
 			if (handler.NativeView is not { } nativeView)
 				return;
 
-			// this don't work cause slider is an icon
+			// this don't work cause slider is an image
 			nativeView.SetColor(slider.ThumbColor, "color", "contents > trough > slider");
 
 		}
