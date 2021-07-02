@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using Microsoft.Maui;
 using Microsoft.Maui.Controls;
@@ -7,6 +8,7 @@ using Microsoft.Maui.Controls.Shapes;
 using Microsoft.Maui.Graphics;
 using Debug = System.Diagnostics.Debug;
 using GradientStop = Microsoft.Maui.Graphics.GradientStop;
+using IImage = Microsoft.Maui.Graphics.IImage;
 
 namespace Maui.SimpleSampleApp
 {
@@ -320,18 +322,37 @@ namespace Maui.SimpleSampleApp
 			};
 
 			verticalStack.Add(underlineLabel);
+			IImage image = default;
+
+			using (var stream = File.OpenRead("dotnet_bot.png"))
+			{
+				image = GraphicsPlatform.CurrentService.LoadImageFromStream(stream);
+			}
+
+			var paint = image.AsPaint();
+
+			var labelImage = new Label
+			{
+				Text = "this has backgroudImage",
+				Background = paint
+			};
+			// Background is null cause there is no ImageBrush
+
+			if (labelImage.Background != null)
+				verticalStack.Add(labelImage);
 
 			var labelG = new Label
 			{
 				Text = "this has gradient",
 				Background = new RadialGradientBrush(new GradientStopCollection
 				{
-					new (Colors.Aqua, 0),
-					new (Colors.Green, 10),
+					new(Colors.Aqua, 0),
+					new(Colors.Green, 10),
 				})
 			};
+
 			verticalStack.Add(labelG);
-			
+
 			verticalStack.Add(new ActivityIndicator());
 
 			verticalStack.Add(new ActivityIndicator
@@ -605,7 +626,6 @@ namespace Maui.SimpleSampleApp
 			label.Margin = new Thickness(15, 10, 20, 15);
 
 			verticalStack.Add(label);
-
 
 			var button = new Button()
 			{
