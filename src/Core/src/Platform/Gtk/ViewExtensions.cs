@@ -21,7 +21,15 @@ namespace Microsoft.Maui
 				color = paint.ToColor();
 			}
 
-			var css = view.Background.CssImage();
+			var css = view.Background.ToCss();
+			var pxDispose = false;
+			var px = css == null ? view.Background?.ToPixbuf(out pxDispose) : default;
+			var tempFile = px?.TempFileFor();
+
+			if (tempFile != null)
+			{
+				css = $"url('{tempFile}')";
+			}
 
 			if (color == null && css == null)
 				return;
@@ -50,6 +58,10 @@ namespace Microsoft.Maui
 					break;
 			}
 
+			tempFile?.Dispose();
+
+			if (pxDispose)
+				px?.Dispose();
 		}
 
 		public static void UpdateForeground(this Widget nativeView, Paint? paint)

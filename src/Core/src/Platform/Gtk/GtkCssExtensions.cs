@@ -42,50 +42,6 @@ namespace Microsoft.Maui
 			return $"url('data:image/png;base64,{Convert.ToBase64String(puf)}')";
 		}
 
-		[PortHandler("implement drawing of other paints than GradientPaint")]
-		public static string? CssImage(this Paint? paint)
-		{
-			if (paint.IsNullOrEmpty())
-				return null;
-
-			string Stops(GradientStop[] sorted)
-			{
-#if NET48
-				var max = sorted[sorted.Length-1].Offset;
-#else
-				var max = sorted[^1].Offset;
-#endif
-				max = 100 / (max == 0 ? 1 : max);
-				var stops = string.Join(",", sorted.Select(s => $"{s.Color.ToGdkRgba().ToString()} {s.Offset * max}%"));
-
-				return stops;
-			}
-
-			switch (paint)
-			{
-				case LinearGradientPaint lg:
-				{
-					var stops = Stops(lg.GetSortedStops());
-					var css = $"linear-gradient( to right, {stops})";
-
-					return css;
-				}
-				case RadialGradientPaint rg:
-				{
-					var stops = Stops(rg.GetSortedStops());
-					var css = $"radial-gradient({stops})";
-
-					return css;
-				}
-
-				default:
-					break;
-			}
-
-			return null;
-
-		}
-
 		[MethodImpl(MethodImplOptions.NoOptimization | MethodImplOptions.NoInlining)]
 		public static void Realize(Gtk.CssProvider p)
 		{
@@ -100,13 +56,17 @@ namespace Microsoft.Maui
 
 		public static void SetStyleValueNode(this Gtk.Widget widget, string value, string mainNode, string attr, string? subNode = null)
 		{
+			if (string.IsNullOrEmpty(value))
+				return;
+
 			using var p = new Gtk.CssProvider();
 
 			subNode = subNode != null ? $" > {subNode} " : subNode;
 
 			p.LoadFromData($"{mainNode}{subNode}{{{attr}:{value}}}");
 			widget.StyleContext.AddProvider(p, Gtk.StyleProviderPriority.User);
-			if (value.StartsWith("url")) 
+
+			if (value.StartsWith("url"))
 				Realize(p);
 		}
 

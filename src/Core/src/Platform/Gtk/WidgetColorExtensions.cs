@@ -76,12 +76,7 @@ namespace Microsoft.Maui
 
 		public static void SetStyleColor(this Gtk.Widget widget, Gdk.RGBA color, string mainNode, string attr, string? subNode = null)
 		{
-			using var p = new Gtk.CssProvider();
-
-			subNode = subNode != null ? $" > {subNode} " : subNode;
-
-			p.LoadFromData($"{mainNode}{subNode}{{{attr}:{color.ToString()}}}");
-			widget.StyleContext.AddProvider(p, Gtk.StyleProviderPriority.User);
+			widget.SetStyleValueNode(color.ToString(), mainNode, attr, subNode);
 		}
 
 		public static void SetColor(this Gtk.Widget widget, Color? color, string attr, string? subNode = null)
