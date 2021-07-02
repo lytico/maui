@@ -69,13 +69,23 @@ namespace Microsoft.Maui.Handlers
 			if (handler.NativeView is not { } nativeView)
 				return;
 
-			// this don't work cause slider is an image
-			nativeView.SetColor(slider.ThumbColor, "color", "contents > trough > slider");
+			nativeView.SetColor(slider.ThumbColor, "background-color", "contents > trough > slider");
 
+		}
+
+		static void SetImage(Widget w, string? image)
+		{
+			if (string.IsNullOrEmpty(image))
+				return;
+
+			w.SetStyleValue($"url('{image}')", "background-image", "contents > trough > slider");
+			// nativeView.SetStyleImage("center","background-position", "contents > trough > slider");
+			w.SetStyleValue("contain", "background-size", "contents > trough > slider");
 		}
 
 		public static void MapThumbImageSource(SliderHandler handler, ISlider slider)
 		{
+
 			if (handler.NativeView is not { } nativeView)
 				return;
 
@@ -84,17 +94,9 @@ namespace Microsoft.Maui.Handlers
 			if (img == null)
 				return;
 
-			void SetImage(Widget w, string image)
-			{
-				w.SetStyleValue(image, "background-image", "contents > trough > slider");
-				// nativeView.SetStyleImage("center","background-position", "contents > trough > slider");
-				w.SetStyleValue("contain", "background-size", "contents > trough > slider");
-			}
-
 			if (img is IFileImageSource fis && File.Exists(fis.File))
 			{
-				var css = $"url('{fis.File}')";
-				SetImage(nativeView, css);
+				SetImage(nativeView, fis.File);
 
 				return;
 			}
@@ -105,15 +107,9 @@ namespace Microsoft.Maui.Handlers
 				{
 
 					// var css = p.CssImage(); //not working, so workaround is saving a tmp file:
-					var tmpfile = p?.TempFileFor();
+					using var tmpfile = p?.TempFileFor();
 
-					if (tmpfile == null)
-						return;
-
-					var css = $"url('{tmpfile}')";
-					SetImage(nativeView, css);
-					var fi = new FileInfo(tmpfile);
-					fi.Delete();
+					SetImage(nativeView, tmpfile?.Name);
 
 				})
 			   .FireAndForget(handler);
