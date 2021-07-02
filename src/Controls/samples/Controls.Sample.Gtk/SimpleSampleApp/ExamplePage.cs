@@ -532,7 +532,7 @@ namespace Maui.SimpleSampleApp
 			verticalStack.Add(new Slider
 			{
 				ThumbColor = Colors.Aqua,
-				ThumbImageSource = "dotnet_bot.png"
+				ThumbImageSource = "rainbow_heart.png"
 			});
 
 			verticalStack.Add(new Stepper());

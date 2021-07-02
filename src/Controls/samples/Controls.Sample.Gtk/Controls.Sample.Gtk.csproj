@@ -23,9 +23,6 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <None Remove="animated_heart.png" />
-    <Content Include="rainbow_heart.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
+    <EmbeddedResource Include="rainbow_heart.png" />
   </ItemGroup>
 </Project>
