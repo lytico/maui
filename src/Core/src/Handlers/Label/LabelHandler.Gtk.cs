@@ -53,6 +53,8 @@ namespace Microsoft.Maui.Handlers
 
 				SharedTextLayout.TextFlow = TextFlow.ClipBounds;
 				SharedTextLayout.HorizontalAlignment = virtualView.HorizontalTextAlignment.GetHorizontalAlignment();
+				SharedTextLayout.VerticalAlignment = virtualView.VerticalTextAlignment.GetVerticalAlignment();
+
 				SharedTextLayout.LineBreakMode = virtualView.LineBreakMode.GetLineBreakMode();
 
 				var heightForWidth = !heightConstrained;
@@ -114,14 +116,15 @@ namespace Microsoft.Maui.Handlers
 
 		public static void MapHorizontalTextAlignment(LabelHandler handler, ILabel label)
 		{
-			handler.NativeView?.UpdateTextAlignment(label);
+			handler.NativeView?.UpdateHorizontalTextAlignment(label);
 		}
 
-		[MissingMapper]
 		public static void MapVerticalTextAlignment(LabelHandler handler, ILabel label)
 		{
+			handler.NativeView?.UpdateVerticalTextAlignment(label);
+
 		}
-		
+
 		public static void MapLineBreakMode(LabelHandler handler, ILabel label)
 		{
 			handler.NativeView?.UpdateLineBreakMode(label);
