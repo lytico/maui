@@ -29,8 +29,10 @@ namespace Microsoft.Maui.Handlers
 			handler.NativeView?.UpdateTextColor(entry);
 		}
 
-		[MissingMapper]
-		public static void MapIsPassword(IViewHandler handler, IEntry entry) { }
+		public static void MapIsPassword(EntryHandler handler, IEntry entry) 
+		{
+			handler.NativeView?.UpdateIsPassword(entry);
+		}
 
 		[MissingMapper]
 		public static void MapHorizontalTextAlignment(IViewHandler handler, IEntry entry) { }
