@@ -151,7 +151,6 @@ namespace Microsoft.Maui.Controls.Hosting
 				   .OnLaunching((app, args) =>
 						{
 							Forms.Init(args.ActivationState);
-							GraphicsPlatform.RegisterGlobalService(NativeGraphicsService.Instance);
 						}
 					));
 #endif
@@ -306,9 +305,10 @@ namespace Microsoft.Maui.Controls.Hosting
 #elif WINDOWS
 				// TODO: Implement GetPathBounds in Microsoft.Maui.Graphics
 				//services.AddSingleton<IGraphicsService>(W2DGraphicsService.Instance);
+#elif GTK
+				services.AddSingleton<IGraphicsService>(NativeGraphicsService.Instance);
 #endif
 			}
-			{ }
 
 #if WINDOWS
 			static void AddLibraryResources(string key, string uri)

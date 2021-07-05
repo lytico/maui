@@ -14,6 +14,8 @@ namespace Microsoft.Maui
 		UIKit.UIWindow? Window { get; }
 #elif WINDOWS
 		UI.Xaml.Window? Window { get; }
+#elif GTK
+		Gtk.Window? Window { get;}
 #endif
 	}
 }

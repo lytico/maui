@@ -15,16 +15,15 @@ namespace Microsoft.Maui
 			var handler = view.Handler;
 
 			if (handler == null)
-			{
-				handler = context.Handlers.GetHandler(view.GetType());
 
-				if (handler == null)
-					throw new Exception($"Handler not found for view {view}");
+				handler = context.Handlers.GetHandler(view.GetType()) as IViewHandler;
 
-				handler.SetMauiContext(context);
+			if (handler == null)
+				throw new Exception($"Handler not found for view {view}");
 
-				view.Handler = handler;
-			}
+			handler.SetMauiContext(context);
+
+			view.Handler = handler;
 
 			handler.SetVirtualView(view);
 

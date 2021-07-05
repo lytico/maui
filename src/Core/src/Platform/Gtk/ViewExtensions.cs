@@ -116,6 +116,9 @@ namespace Microsoft.Maui
 			nativeView.Clip = view.Clip;
 		}
 
+		public static void UpdateClip(this Widget nativeView, IView view)
+		{
+		}
 	}
 
 }

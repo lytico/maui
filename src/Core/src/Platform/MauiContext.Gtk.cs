@@ -5,5 +5,8 @@ namespace Microsoft.Maui
 {
 	public partial class MauiContext : IMauiContext
 	{
+		
+		public Gtk.Window? Window { get; private set; }
+
 	}
 }
