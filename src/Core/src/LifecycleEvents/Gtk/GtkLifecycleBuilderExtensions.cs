@@ -15,6 +15,9 @@ namespace Microsoft.Maui.LifecycleEvents
 		public static IGtkLifecycleBuilder OnVisibilityChanged(this IGtkLifecycleBuilder lifecycle, GtkLifecycle.OnVisibilityChanged del) => lifecycle.OnEvent(del);
 
 		public static IGtkLifecycleBuilder OnShown(this IGtkLifecycleBuilder lifecycle, GtkLifecycle.OnShown del) => lifecycle.OnEvent(del);
+		
+		internal static IGtkLifecycleBuilder OnMauiContextCreated(this IGtkLifecycleBuilder lifecycle, GtkLifecycle.OnMauiContextCreated del) => lifecycle.OnEvent(del);
+
 
 	}
 

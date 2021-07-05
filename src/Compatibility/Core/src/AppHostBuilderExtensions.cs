@@ -148,9 +148,10 @@ namespace Microsoft.Maui.Controls.Hosting
 #elif GTK
 
 				events.AddGtk(gtk => gtk
-				   .OnLaunching((app, args) =>
+					.OnMauiContextCreated((mauiContext) =>
 						{
-							Forms.Init(args.ActivationState);
+							var state = new ActivationState(mauiContext);
+							Forms.Init(state);
 						}
 					));
 #endif

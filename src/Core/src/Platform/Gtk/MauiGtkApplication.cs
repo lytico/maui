@@ -103,14 +103,15 @@ namespace Microsoft.Maui
 			   .Build();
 
 			Services = host.Services;
-			
+
 			var mauiContext = new MauiContext(Services);
+			Services.InvokeLifecycleEvents<GtkLifecycle.OnMauiContextCreated>(del => del(mauiContext));
+
 			var activationState = new ActivationState(mauiContext);
-			
+
 			Services.InvokeLifecycleEvents<GtkLifecycle.OnLaunching>(del => del(this, new ActivationEventArgs(activationState)));
 
 			Application = Services.GetRequiredService<IApplication>();
-
 
 			var window = Application.CreateWindow(activationState);
 
