@@ -399,12 +399,10 @@ namespace Maui.SimpleSampleApp
 
 			verticalStack.Add(horizontalStack);
 
-			verticalStack.Add(new Button { Text = "CharacterSpacing" });
-
 			verticalStack.Add(new Button
 			{
-				CharacterSpacing = 8,
-				Text = "CharacterSpacing"
+				CharacterSpacing = 4,
+				Text = "CharacterSpacing 4"
 			});
 
 			var checkbox = new CheckBox();
@@ -542,13 +540,19 @@ namespace Maui.SimpleSampleApp
 				ProgressColor = Colors.Purple
 			});
 
-			var searchBar = new SearchBar();
-			searchBar.CharacterSpacing = 4;
-			searchBar.Text = "A search query";
+			var searchBar = new SearchBar
+			{
+				CharacterSpacing = 4,
+				Text = "A search query"
+			};
+
 			verticalStack.Add(searchBar);
 
-			var placeholderSearchBar = new SearchBar();
-			placeholderSearchBar.Placeholder = "Placeholder";
+			var placeholderSearchBar = new SearchBar
+			{
+				Placeholder = "Placeholder",
+				BackgroundColor = Colors.Plum
+			};
 			verticalStack.Add(placeholderSearchBar);
 
 			var monkeyList = new List<string>
@@ -568,7 +572,8 @@ namespace Maui.SimpleSampleApp
 				FontFamily = "Dokdo",
 				TextColor = Colors.Chartreuse,
 				BackgroundColor = Colors.Yellow,
-				HorizontalTextAlignment = TextAlignment.Center
+				HorizontalTextAlignment = TextAlignment.Center,
+				CharacterSpacing = 2,
 			};
 
 			picker.ItemsSource = monkeyList;
