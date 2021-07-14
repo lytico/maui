@@ -263,16 +263,16 @@ To track ongoing progress, filter on the [handlers label](https://github.com/xam
 
 | API | Android | iOS / Mac Catalyst | Windows | Gtk |
 | ----|:-------:|:------------------:|:-------:|:----:|
-| CharacterSpacing  | ✅  | ✅  | ✅  |  ⚠️   | 
+| CharacterSpacing  | ✅  | ✅  | ✅  | ✅  | 
 | FontAttributes  | ✅  | ✅  | ✅  | ✅  | 
 | FontFamily  | ✅  | ✅  | ✅  | ✅  | 
 | FontSize  | ✅  | ✅  | ✅  | ✅  | 
-| HorizontalTextAlignment  | ✅  | ✅  | ✅  |   ⚠️   | 
+| HorizontalTextAlignment  | ✅  | ✅  | ✅  | ✅  | 
 | ItemDisplayBinding  | ✅  | ✅  | ✅  |   ✅   | 
 | Items  | ✅  | ✅  | ✅  | ✅
 | ItemsSource  | ✅  | ✅  | ✅  | ✅
 | SelectedIndex  | ✅  | ✅  | ✅  | ✅
-| SelectedIndexChanged  | ✅  | ✅  | ✅  |   ⚠️  | 
+| SelectedIndexChanged  | ✅  | ✅  | ✅  | ✅ | 
 | SelectedItem  | ✅  | ✅  | ⚠️  | ✅
 | TextColor  | ✅  | ✅  | ⏳  | ✅
 | Title  | ✅  | ✅  | ✅  | ⚠️ 
