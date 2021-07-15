@@ -198,8 +198,8 @@ namespace Microsoft.Maui.Controls.Hosting
 					handlers.TryAddCompatibilityRenderer(typeof(ActivityIndicator), typeof(ActivityIndicatorRenderer));
 					handlers.TryAddCompatibilityRenderer(typeof(Frame), typeof(FrameRenderer));
 					handlers.TryAddCompatibilityRenderer(typeof(CheckBox), typeof(CheckBoxRenderer));
-#if !WINDOWS
 					handlers.TryAddCompatibilityRenderer(typeof(TabbedPage), typeof(TabbedPageRenderer));
+#if !WINDOWS
 					handlers.TryAddCompatibilityRenderer(typeof(Shell), typeof(ShellRenderer));
 					handlers.TryAddCompatibilityRenderer(typeof(OpenGLView), typeof(OpenGLViewRenderer));
 #else
@@ -292,7 +292,7 @@ namespace Microsoft.Maui.Controls.Hosting
 					AddLibraryResources("MicrosoftMauiControlsIncluded", "ms-appx:///Microsoft.Maui.Controls/Platform/Windows/Styles/Resources.xbf");
 
 					// Microsoft.Maui.Controls.Compatibility
-					AddLibraryResources("MicrosoftMauiControlsCompatibilityIncluded", "ms-appx:///Microsoft.Maui.Controls.Compatibility/WinUI/Resources.xbf");
+					AddLibraryResources("MicrosoftMauiControlsCompatibilityIncluded", "ms-appx:///Microsoft.Maui.Controls.Compatibility/Windows/Resources.xbf");
 				}
 #endif
 			}
@@ -304,10 +304,10 @@ namespace Microsoft.Maui.Controls.Hosting
 #elif __ANDROID__
 				services.AddSingleton<IGraphicsService>(NativeGraphicsService.Instance);
 #elif WINDOWS
-				// TODO: Implement GetPathBounds in Microsoft.Maui.Graphics
-				//services.AddSingleton<IGraphicsService>(W2DGraphicsService.Instance);
+                services.AddSingleton<IGraphicsService>(W2DGraphicsService.Instance);
 #elif GTK
 				services.AddSingleton<IGraphicsService>(NativeGraphicsService.Instance);
+				services.AddSingleton<IGraphicsService>(W2DGraphicsService.Instance);
 #endif
 			}
 
