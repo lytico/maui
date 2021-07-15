@@ -307,7 +307,6 @@ namespace Microsoft.Maui.Controls.Hosting
                 services.AddSingleton<IGraphicsService>(W2DGraphicsService.Instance);
 #elif GTK
 				services.AddSingleton<IGraphicsService>(NativeGraphicsService.Instance);
-				services.AddSingleton<IGraphicsService>(W2DGraphicsService.Instance);
 #endif
 			}
 
