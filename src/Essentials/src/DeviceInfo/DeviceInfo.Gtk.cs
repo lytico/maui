@@ -1,7 +1,9 @@
 namespace Microsoft.Maui.Essentials
 {
+
 	public static partial class DeviceInfo
 	{
+
 		static string GetModel() => throw ExceptionUtils.NotSupportedOrImplementedException;
 
 		static string GetManufacturer() => throw ExceptionUtils.NotSupportedOrImplementedException;
@@ -10,10 +12,14 @@ namespace Microsoft.Maui.Essentials
 
 		static string GetVersionString() => throw ExceptionUtils.NotSupportedOrImplementedException;
 
-		static DevicePlatform GetPlatform() => DevicePlatform.Unknown;
+		public static DevicePlatform Gtk { get; } = DevicePlatform.Create(nameof(Gtk));
 
-		static DeviceIdiom GetIdiom() => DeviceIdiom.Unknown;
+		static DevicePlatform GetPlatform() => Gtk;
+
+		static DeviceIdiom GetIdiom() => DeviceIdiom.Desktop;
 
 		static DeviceType GetDeviceType() => DeviceType.Unknown;
+
 	}
+
 }
