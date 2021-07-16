@@ -23,6 +23,10 @@
     <Compile Include="**\*.netstandard.cs" />
     <Compile Include="**\*.netstandard.*.cs" />
   </ItemGroup>
+  <ItemGroup Condition="'$(BuildForGtk)' == 'true'">
+    <Compile Include="**\*.Gtk.cs" />
+    <Compile Include="**\*.Gtk.*.cs" />
+  </ItemGroup>
   <ItemGroup Condition=" $(TargetFramework.StartsWith('uap10.0')) ">
     <PackageReference Include="Microsoft.NETCore.UniversalWindowsPlatform" Version="6.2.9" PrivateAssets="all" />
     <Compile Include="**\*.uwp.cs" />
