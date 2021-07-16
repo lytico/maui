@@ -24,6 +24,7 @@
     <Compile Include="**\*.netstandard.*.cs" />
   </ItemGroup>
   <ItemGroup Condition="'$(BuildForGtk)' == 'true'">
+    <PackageReference Include="GtkSharp" Version="3.24.24.64" />
     <Compile Include="**\*.Gtk.cs" />
     <Compile Include="**\*.Gtk.*.cs" />
   </ItemGroup>
