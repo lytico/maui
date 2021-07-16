@@ -12,7 +12,7 @@ namespace Microsoft.Maui.Essentials
 
 		static string GetVersionString() => throw ExceptionUtils.NotSupportedOrImplementedException;
 
-		public static DevicePlatform Gtk { get; } = DevicePlatform.Create(nameof(Gtk));
+		static DevicePlatform Gtk { get; } = DevicePlatform.Create(nameof(Gtk));
 
 		static DevicePlatform GetPlatform() => Gtk;
 
