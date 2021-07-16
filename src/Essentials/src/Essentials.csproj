@@ -23,11 +23,6 @@
     <Compile Include="**\*.netstandard.cs" />
     <Compile Include="**\*.netstandard.*.cs" />
   </ItemGroup>
-  <ItemGroup Condition="'$(BuildForGtk)' == 'true'">
-    <PackageReference Include="GtkSharp" Version="3.24.24.64" />
-    <Compile Include="**\*.Gtk.cs" />
-    <Compile Include="**\*.Gtk.*.cs" />
-  </ItemGroup>
   <ItemGroup Condition=" $(TargetFramework.StartsWith('uap10.0')) ">
     <PackageReference Include="Microsoft.NETCore.UniversalWindowsPlatform" Version="6.2.9" PrivateAssets="all" />
     <Compile Include="**\*.uwp.cs" />
@@ -73,5 +68,10 @@
     <Reference Include="System.Numerics" />
     <Reference Include="System.Numerics.Vectors" />
     <Reference Include="OpenTK" />
+  </ItemGroup>
+  <ItemGroup Condition="'$(BuildForGtk)' == 'true'">
+    <PackageReference Include="GtkSharp" Version="3.24.24.64" />
+    <Compile Include="**\*.Gtk.cs" />
+    <Compile Include="**\*.Gtk.*.cs" />
   </ItemGroup>
 </Project>
