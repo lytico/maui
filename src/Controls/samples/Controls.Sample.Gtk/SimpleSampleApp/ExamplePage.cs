@@ -8,6 +8,7 @@ using Microsoft.Maui.Controls.Shapes;
 using Microsoft.Maui.Graphics;
 using Debug = System.Diagnostics.Debug;
 using IImage = Microsoft.Maui.Graphics.IImage;
+using ScrollView = Microsoft.Maui.Controls.ScrollView;
 
 namespace Maui.SimpleSampleApp
 {
@@ -633,35 +634,35 @@ namespace Maui.SimpleSampleApp
 
 		void SetupCompatibilityLayout()
 		{
-			var verticalStack = new StackLayout()
+			var verticalStack = new VerticalStackLayout()
 			{
 				Spacing = 5,
 				BackgroundColor = Colors.AntiqueWhite
 			};
-
-			var horizontalStack = new StackLayout()
+			
+			var horizontalStack = new HorizontalStackLayout()
 			{
-				Orientation = StackOrientation.Horizontal,
+			
 				Spacing = 2,
 				BackgroundColor = Colors.CornflowerBlue
 			};
-
+			
 			var label = new Label
 			{
 				Text = "This will disappear in ~5 seconds",
 				BackgroundColor = Colors.Fuchsia
 			};
-
+			
 			label.Margin = new Thickness(15, 10, 20, 15);
-
+			
 			verticalStack.Add(label);
-
+			
 			var button = new Button()
 			{
 				Text = _viewModel.Text,
 				WidthRequest = 200
 			};
-
+			
 			var button2 = new Button()
 			{
 				TextColor = Colors.Green,
@@ -669,35 +670,35 @@ namespace Maui.SimpleSampleApp
 				BackgroundColor = Colors.Purple,
 				Margin = new Thickness(12)
 			};
-
+			
 			horizontalStack.Add(button);
 			horizontalStack.Add(button2);
 			horizontalStack.Add(new Label { Text = "And these buttons are in a HorizontalStackLayout" });
-
+			
 			verticalStack.Add(horizontalStack);
 			verticalStack.Add(new Slider());
 			verticalStack.Add(new Switch());
 			verticalStack.Add(new Switch() { OnColor = Colors.Green });
 			verticalStack.Add(new Switch() { ThumbColor = Colors.Yellow });
-
+			
 			verticalStack.Add(new Switch()
 			{
 				OnColor = Colors.Green,
 				ThumbColor = Colors.Yellow
 			});
-
+			
 			verticalStack.Add(new GraphicsView
 			{
 				Drawable = new TestDrawable(),
 				HeightRequest = 50,
 				WidthRequest = 200
 			});
-
+			
 			verticalStack.Add(new DatePicker());
 			verticalStack.Add(new TimePicker());
-
+			
 			verticalStack.Add(new Image() { Source = "dotnet_bot.png" });
-
+			
 			Content = verticalStack;
 		}
 

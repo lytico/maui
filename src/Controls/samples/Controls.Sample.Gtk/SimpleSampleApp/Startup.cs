@@ -90,7 +90,6 @@ namespace Maui.SimpleSampleApp
 					   .OnActivated((a, b) => LogEvent(nameof(GtkLifecycle.OnApplicationActivated)))
 					   .OnClosed((a, b) => LogEvent(nameof(GtkLifecycle.OnHidden)))
 					   .OnLaunched((a, b) => LogEvent(nameof(GtkLifecycle.OnLaunched)))
-					   .OnVisibilityChanged((a, b) => LogEvent(nameof(GtkLifecycle.OnVisibilityChanged)))
 					   .OnShown((a, b) =>
 						{
 							LogEvent(nameof(GtkLifecycle.OnShown));
