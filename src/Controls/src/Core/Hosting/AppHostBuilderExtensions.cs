@@ -12,7 +12,7 @@ namespace Microsoft.Maui.Controls.Hosting
 	{
 		static readonly Dictionary<Type, Type> DefaultMauiControlHandlers = new Dictionary<Type, Type>
 		{
-#if WINDOWS
+#if WINDOWS || __ANDROID__
 			{ typeof(Shell), typeof(ShellHandler) },
 #endif
 			{ typeof(ActivityIndicator), typeof(ActivityIndicatorHandler) },
@@ -27,6 +27,7 @@ namespace Microsoft.Maui.Controls.Hosting
 			{ typeof(Layout2.Layout), typeof(LayoutHandler) },
 			{ typeof(Picker), typeof(PickerHandler) },
 			{ typeof(ProgressBar), typeof(ProgressBarHandler) },
+			{ typeof(ScrollView), typeof(ScrollViewHandler) },
 			{ typeof(SearchBar), typeof(SearchBarHandler) },
 			{ typeof(Slider), typeof(SliderHandler) },
 			{ typeof(Stepper), typeof(StepperHandler) },

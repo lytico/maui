@@ -1,5 +1,4 @@
 using System;
-using System.Linq;
 using NativeView = UIKit.UIView;
 
 namespace Microsoft.Maui.Handlers
@@ -34,11 +33,14 @@ namespace Microsoft.Maui.Handlers
 			NativeView.CrossPlatformMeasure = VirtualView.Measure;
 			NativeView.CrossPlatformArrange = VirtualView.Arrange;
 
-			//Cleanup the old view when reused
-			var oldChildren = NativeView.Subviews.ToList();
-			oldChildren.ForEach(x => x.RemoveFromSuperview());
+			// Remove any previous children 
+			var oldChildren = NativeView.Subviews;
+			foreach (var child in oldChildren)
+			{
+				child.RemoveFromSuperview();
+			}
 
-			foreach (var child in VirtualView.Children)
+			foreach (var child in VirtualView)
 			{
 				NativeView.AddSubview(child.ToNative(MauiContext));
 			}
