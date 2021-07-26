@@ -118,6 +118,12 @@ namespace Microsoft.Maui
 				return;
 
 			nativeView.TooltipText = semantics.Hint;
+
+			if (nativeView.Accessible is { } accessible and not Atk.NoOpObject)
+			{
+				accessible.Description = semantics.Description;
+			}
+
 		}
 
 		public static void UpdateOpacity(this Widget nativeView, IView view)
