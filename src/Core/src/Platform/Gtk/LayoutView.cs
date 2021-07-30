@@ -150,11 +150,11 @@ namespace Microsoft.Maui
 
 		protected void ArrangeAllocation(Rectangle allocation)
 		{
-			if (VirtualView is not { LayoutManager: { } layoutManager } virtualView)
+			if (VirtualView is not { } virtualView)
 				return;
 
 			virtualView.InvalidateArrange();
-			layoutManager.ArrangeChildren(allocation);
+			virtualView.Arrange(allocation);
 
 		}
 
@@ -216,11 +216,11 @@ namespace Microsoft.Maui
 		public SizeRequest Measure(double widthConstraint, double heightConstraint, SizeRequestMode mode)
 		{
 
-			if (VirtualView is not { LayoutManager: { } layoutManager } virtualView)
+			if (VirtualView is not { } virtualView)
 				return Size.Zero;
 
 			virtualView.InvalidateMeasure();
-			var size1 = layoutManager.Measure(widthConstraint, heightConstraint);
+			var size1 = virtualView.Measure(widthConstraint, heightConstraint);
 			sr++;
 
 			return new SizeRequest(size1, size1);
