@@ -39,12 +39,10 @@ namespace Microsoft.Maui.Handlers
 			handler.NativeView?.UpdateTextColor(button.TextColor);
 		}
 
-		[MissingMapper]
 		public static void MapCharacterSpacing(ButtonHandler handler, IButton button)
 		{
 			if (handler.NativeView.Child is Label nativeView)
 			{
-				// no effect
 				nativeView.Attributes = nativeView.Attributes.AttrListFor(button.CharacterSpacing);
 			}
 		}
