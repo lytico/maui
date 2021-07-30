@@ -35,9 +35,8 @@ namespace Maui.SimpleSampleApp
 
 			// SetupMauiLayoutLayouts();
 
-			SetupMauiLayoutSimple();
-			// SetupMauiLayout();
-			// SetupCompatibilityLayout();
+			// SetupMauiLayoutSimple();
+			SetupMauiLayout();
 		}
 
 		void SetupMauiLayoutLayouts()
@@ -642,75 +641,6 @@ namespace Maui.SimpleSampleApp
 			verticalStack.Add(new Image() { Source = "dotnet_bot.png" });
 
 			Content = new ScrollView { Content = verticalStack };
-		}
-
-		void SetupCompatibilityLayout()
-		{
-			var verticalStack = new VerticalStackLayout()
-			{
-				Spacing = 5,
-				BackgroundColor = Colors.AntiqueWhite
-			};
-
-			var horizontalStack = new HorizontalStackLayout()
-			{
-				Spacing = 2,
-				BackgroundColor = Colors.CornflowerBlue
-			};
-
-			var label = new Label
-			{
-				Text = "This will disappear in ~5 seconds",
-				BackgroundColor = Colors.Fuchsia
-			};
-
-			label.Margin = new Thickness(15, 10, 20, 15);
-
-			verticalStack.Add(label);
-
-			var button = new Button()
-			{
-				Text = _viewModel.Text,
-				WidthRequest = 200
-			};
-
-			var button2 = new Button()
-			{
-				TextColor = Colors.Green,
-				Text = "Hello I'm a button",
-				BackgroundColor = Colors.Purple,
-				Margin = new Thickness(12)
-			};
-
-			horizontalStack.Add(button);
-			horizontalStack.Add(button2);
-			horizontalStack.Add(new Label { Text = "And these buttons are in a HorizontalStackLayout" });
-
-			verticalStack.Add(horizontalStack);
-			verticalStack.Add(new Slider());
-			verticalStack.Add(new Switch());
-			verticalStack.Add(new Switch() { OnColor = Colors.Green });
-			verticalStack.Add(new Switch() { ThumbColor = Colors.Yellow });
-
-			verticalStack.Add(new Switch()
-			{
-				OnColor = Colors.Green,
-				ThumbColor = Colors.Yellow
-			});
-
-			verticalStack.Add(new GraphicsView
-			{
-				Drawable = new TestDrawable(),
-				HeightRequest = 50,
-				WidthRequest = 200
-			});
-
-			verticalStack.Add(new DatePicker());
-			verticalStack.Add(new TimePicker());
-
-			verticalStack.Add(new Image() { Source = "dotnet_bot.png" });
-
-			Content = verticalStack;
 		}
 
 		public IView View { get => (IView)Content; set => Content = (View)value; }
