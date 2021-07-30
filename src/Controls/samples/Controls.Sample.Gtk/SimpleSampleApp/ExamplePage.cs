@@ -35,8 +35,8 @@ namespace Maui.SimpleSampleApp
 
 			// SetupMauiLayoutLayouts();
 
-			// SetupMauiLayoutSimple();
-			SetupMauiLayout();
+			SetupMauiLayoutSimple();
+			// SetupMauiLayout();
 			// SetupCompatibilityLayout();
 		}
 
@@ -116,16 +116,6 @@ namespace Maui.SimpleSampleApp
 				BackgroundColor = Colors.WhiteSmoke,
 			};
 
-			var button = new Button
-			{
-				Padding = new Thickness(10),
-				Text = "Change the label!",
-				BackgroundColor = Colors.Red,
-				TextColor = Colors.Yellow,
-			};
-
-			verticalStack.Add(button);
-
 			var label = new Label
 			{
 				Text = "a label",
@@ -134,19 +124,6 @@ namespace Maui.SimpleSampleApp
 			};
 
 			verticalStack.Add(label);
-
-			const string ltext = "changed";
-
-			button.Clicked += (s, e) =>
-			{
-				label.Text = label.Text == ltext ? $"{ltext} again" : ltext;
-
-				if (s is Button sender)
-				{
-					label.TextColor = sender.BackgroundColor;
-					label.BackgroundColor = sender.TextColor;
-				}
-			};
 
 			var label1 = new Label
 			{
@@ -163,13 +140,49 @@ namespace Maui.SimpleSampleApp
 			verticalStack.Add(label1);
 
 			var entry = new Entry { Placeholder = "write something" };
+			const string ltext = "changed";
+			verticalStack.Add(entry);
+
+			var button = new Button
+			{
+				Padding = new Thickness(10),
+				Text = "Change the label!",
+				BackgroundColor = Colors.Red,
+				TextColor = Colors.Yellow,
+				CharacterSpacing = 2
+			};
+
+			verticalStack.Add(button);
+
+			button.Clicked += (s, e) =>
+			{
+				label.Text = label.Text == ltext ? $"{ltext} again" : ltext;
+
+				if (s is Button sender)
+				{
+					label.TextColor = sender.BackgroundColor;
+					label.BackgroundColor = sender.TextColor;
+				}
+			};
 
 			button.Clicked += (s, e) =>
 			{
 				entry.Text = string.IsNullOrEmpty(entry.Text) ? "entry text" : null;
 			};
 
-			verticalStack.Add(entry);
+			var button2 = new Button
+			{
+				Padding = new Thickness(10),
+				Text = "Change the button!",
+				BackgroundColor = Colors.Green,
+				TextColor = Colors.Yellow,
+			};
+
+			button2.Clicked += (sender, args) =>
+			{
+				button.CharacterSpacing = button.CharacterSpacing > 1 ? 1 : 2;
+			};
+			verticalStack.Add(button2);
 
 			var activityIndicator = new ActivityIndicator { Color = Colors.Chartreuse };
 
@@ -386,8 +399,6 @@ namespace Maui.SimpleSampleApp
 				Margin = new Thickness(12),
 			};
 
-
-
 			horizontalStack.Add(button);
 			horizontalStack.Add(button2);
 
@@ -514,7 +525,7 @@ namespace Maui.SimpleSampleApp
 
 				spacingEntry.CharacterSpacing = spacingEntry.CharacterSpacing == 10 ? 5 : 10;
 			};
-			
+
 			verticalStack.Add(new Entry
 			{
 				Keyboard = Keyboard.Numeric,
@@ -554,6 +565,7 @@ namespace Maui.SimpleSampleApp
 				Placeholder = "Placeholder",
 				BackgroundColor = Colors.Plum
 			};
+
 			verticalStack.Add(placeholderSearchBar);
 
 			var monkeyList = new List<string>
@@ -639,30 +651,29 @@ namespace Maui.SimpleSampleApp
 				Spacing = 5,
 				BackgroundColor = Colors.AntiqueWhite
 			};
-			
+
 			var horizontalStack = new HorizontalStackLayout()
 			{
-			
 				Spacing = 2,
 				BackgroundColor = Colors.CornflowerBlue
 			};
-			
+
 			var label = new Label
 			{
 				Text = "This will disappear in ~5 seconds",
 				BackgroundColor = Colors.Fuchsia
 			};
-			
+
 			label.Margin = new Thickness(15, 10, 20, 15);
-			
+
 			verticalStack.Add(label);
-			
+
 			var button = new Button()
 			{
 				Text = _viewModel.Text,
 				WidthRequest = 200
 			};
-			
+
 			var button2 = new Button()
 			{
 				TextColor = Colors.Green,
@@ -670,35 +681,35 @@ namespace Maui.SimpleSampleApp
 				BackgroundColor = Colors.Purple,
 				Margin = new Thickness(12)
 			};
-			
+
 			horizontalStack.Add(button);
 			horizontalStack.Add(button2);
 			horizontalStack.Add(new Label { Text = "And these buttons are in a HorizontalStackLayout" });
-			
+
 			verticalStack.Add(horizontalStack);
 			verticalStack.Add(new Slider());
 			verticalStack.Add(new Switch());
 			verticalStack.Add(new Switch() { OnColor = Colors.Green });
 			verticalStack.Add(new Switch() { ThumbColor = Colors.Yellow });
-			
+
 			verticalStack.Add(new Switch()
 			{
 				OnColor = Colors.Green,
 				ThumbColor = Colors.Yellow
 			});
-			
+
 			verticalStack.Add(new GraphicsView
 			{
 				Drawable = new TestDrawable(),
 				HeightRequest = 50,
 				WidthRequest = 200
 			});
-			
+
 			verticalStack.Add(new DatePicker());
 			verticalStack.Add(new TimePicker());
-			
+
 			verticalStack.Add(new Image() { Source = "dotnet_bot.png" });
-			
+
 			Content = verticalStack;
 		}
 
