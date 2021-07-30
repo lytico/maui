@@ -42,7 +42,7 @@ namespace Maui.SimpleSampleApp
 
 		void SetupMauiLayoutLayouts()
 		{
-			void Fill(Microsoft.Maui.Controls.Layout2.Layout l, string m, int count, Color bkCol)
+			void Fill(Layout l, string m, int count, Color bkCol)
 			{
 				var i = 0;
 
@@ -706,7 +706,7 @@ namespace Maui.SimpleSampleApp
 
 		IView CreateSampleGrid()
 		{
-			var layout = new Microsoft.Maui.Controls.Layout2.GridLayout()
+			var layout = new GridLayout()
 			{
 				ColumnSpacing = 5,
 				RowSpacing = 8
