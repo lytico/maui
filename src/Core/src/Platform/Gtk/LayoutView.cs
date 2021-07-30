@@ -153,7 +153,6 @@ namespace Microsoft.Maui
 			if (VirtualView is not { LayoutManager: { } layoutManager } virtualView)
 				return;
 
-			virtualView.InvalidateArrange();
 			layoutManager.ArrangeChildren(allocation);
 
 		}
@@ -219,7 +218,6 @@ namespace Microsoft.Maui
 			if (VirtualView is not { LayoutManager: { } layoutManager } virtualView)
 				return Size.Zero;
 
-			virtualView.InvalidateMeasure();
 			var size1 = layoutManager.Measure(widthConstraint, heightConstraint);
 			sr++;
 
