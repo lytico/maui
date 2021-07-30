@@ -174,8 +174,6 @@ namespace Microsoft.Maui.Controls.Hosting
 					DependencyService.Register<ResourcesProvider>();
 					DependencyService.Register<Xaml.ValueConverterProvider>();
 					
-					handlers.AddHandler<NavigationPage, NavigationPageHandler>();
-
 					DependencyService.Register<NativeBindingService>();
 					DependencyService.Register<NativeValueConverterService>();
 
