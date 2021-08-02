@@ -5,7 +5,7 @@ using Microsoft.Maui.Graphics;
 namespace Microsoft.Maui.Handlers
 {
 
-	// https://developer.gnome.org/gtk3/stable/GtkTextView.html 
+	// https://docs.gtk.org/gtk3/class.TextView.html 
 	
 	public partial class EditorHandler : ViewHandler<IEditor, TextView>
 	{
@@ -81,7 +81,7 @@ namespace Microsoft.Maui.Handlers
 		[MissingMapper]
 		public static void MapCharacterSpacing(EditorHandler handler, IEditor editor)
 		{
-			// see: https://developer.gnome.org/gtk3/stable/GtkTextTag.html#GtkTextTag--letter-spacing
+			// see: https://docs.gtk.org/gtk3/property.TextTag.letter-spacing.html
 		}
 
 		[MissingMapper]
