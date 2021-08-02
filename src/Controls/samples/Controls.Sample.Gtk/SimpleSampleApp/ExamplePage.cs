@@ -107,7 +107,7 @@ namespace Maui.SimpleSampleApp
 
 		}
 
-		void SetupMauiLayoutSimple()
+		void SetupMauiLayoutButtonSpacing()
 		{
 			var verticalStack = new VerticalStackLayout()
 			{
@@ -231,10 +231,10 @@ namespace Maui.SimpleSampleApp
 			{
 				Text = "End-aligned text",
 				BackgroundColor = Colors.Fuchsia,
-				HorizontalTextAlignment = TextAlignment.End
+				HorizontalTextAlignment = TextAlignment.End,
+				Margin = new Thickness(15, 10, 20, 15)
 			};
 
-			label.Margin = new Thickness(15, 10, 20, 15);
 
 			SemanticProperties.SetHint(label, "Hint Text");
 			SemanticProperties.SetDescription(label, "Description Text");
@@ -586,9 +586,9 @@ namespace Maui.SimpleSampleApp
 				BackgroundColor = Colors.Yellow,
 				HorizontalTextAlignment = TextAlignment.Center,
 				CharacterSpacing = 2,
+				ItemsSource = monkeyList,
 			};
 
-			picker.ItemsSource = monkeyList;
 			verticalStack.Add(picker);
 
 			verticalStack.Add(new Slider
@@ -619,7 +619,7 @@ namespace Maui.SimpleSampleApp
 
 			verticalStack.Add(new GraphicsView
 			{
-				Drawable = new TestDrawable(),
+				Drawable = new TextDrawable(),
 				HeightRequest = 50,
 				WidthRequest = 200
 			});
@@ -794,7 +794,7 @@ namespace Maui.SimpleSampleApp
 
 	}
 
-	class TestDrawable : IDrawable
+	class TextDrawable : IDrawable
 	{
 
 		public void Draw(ICanvas canvas, RectangleF dirtyRect)
