@@ -61,7 +61,7 @@ namespace Maui.SimpleSampleApp
 					// else if (UseSemanticsPage)
 					// 	services.AddTransient<IPage, SemanticsPage>();
 					// else
-					services.AddTransient<IPage, ExamplePage>();
+					services.AddTransient<IView, ExamplePage>();
 
 					services.AddTransient<IWindow, Window>();
 				})
