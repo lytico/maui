@@ -148,12 +148,12 @@ namespace Microsoft.Maui.Native
 			}
 		}
 
-		protected void ArrangeAllocation(Rectangle allocation)
+		protected void ArrangeAllocation(Size size)
 		{
 			if (VirtualView is not { LayoutManager: { } layoutManager } virtualView)
 				return;
 
-			layoutManager.ArrangeChildren(allocation);
+			layoutManager.ArrangeChildren(size);
 
 		}
 
@@ -175,7 +175,7 @@ namespace Microsoft.Maui.Native
 				if (RestrictToMesuredAllocation)
 					mAllocation.Size = MesuredAllocation.Value;
 
-				ArrangeAllocation(mAllocation);
+				ArrangeAllocation(mAllocation.Size);
 				AllocateChildren(mAllocation);
 			}
 			finally
