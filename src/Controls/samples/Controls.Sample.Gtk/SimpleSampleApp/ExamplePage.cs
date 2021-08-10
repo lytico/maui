@@ -36,6 +36,7 @@ namespace Maui.SimpleSampleApp
 
 			// SetupMauiLayoutSimple();
 			SetupMauiLayout();
+			// SetupMauiLayoutDrawables();
 		}
 
 		void SetupMauiLayoutLayouts()
@@ -104,6 +105,11 @@ namespace Maui.SimpleSampleApp
 			verticalStack1.Add(verticalStack3);
 			Content = verticalStack1;
 
+		}
+
+		void SetupMauiLayoutDrawables()
+		{
+			Content = CreateShapes();
 		}
 
 		void SetupMauiLayoutButtonSpacing()
@@ -644,7 +650,7 @@ namespace Maui.SimpleSampleApp
 
 		public IView View { get => (IView)Content; set => Content = (View)value; }
 
-		IView CreateSampleGrid()
+		View CreateSampleGrid()
 		{
 			var layout = new GridLayout()
 			{
@@ -704,7 +710,7 @@ namespace Maui.SimpleSampleApp
 			return layout;
 		}
 
-		IView CreateShapes()
+		View CreateShapes()
 		{
 			var ellipse = new Ellipse
 			{
