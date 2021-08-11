@@ -7,6 +7,8 @@ using Rectangle = Microsoft.Maui.Graphics.Rectangle;
 using Size = Microsoft.Maui.Graphics.Size;
 using Point = Microsoft.Maui.Graphics.Point;
 
+#pragma warning disable 162
+
 namespace Microsoft.Maui.Native
 {
 
@@ -206,6 +208,8 @@ namespace Microsoft.Maui.Native
 				IsReallocating = false;
 				IsSizeAllocating = false;
 				MeasuredArrange = null;
+				MeasuredSizeH = null;
+				MeasuredSizeV = null;
 			}
 
 		}
@@ -237,7 +241,7 @@ namespace Microsoft.Maui.Native
 
 		int sr = 0;
 
-		public SizeRequest Measure(double widthConstraint, double heightConstraint, SizeRequestMode mode)
+		public SizeRequest Measure(double widthConstraint, double heightConstraint, SizeRequestMode mode = SizeRequestMode.ConstantSize)
 		{
 
 			if (VirtualView is not { LayoutManager: { } layoutManager } virtualView)
@@ -249,116 +253,69 @@ namespace Microsoft.Maui.Native
 			return new SizeRequest(size1, size1);
 		}
 
-		// public Size GetDesiredSize(double widthConstraint, double heightConstraint)
-		// {
-		// 	var size = Size.Zero;
-		//
-		// 	if (MeasuredArrange.HasValue)
-		// 		return MeasuredArrange.Value;
-		//
-		// 	// var size2 = WidgetExtensions.GetDesiredSize(this, widthConstraint, heightConstraint);
-		//
-		// 	size = Measure(widthConstraint, heightConstraint, SizeRequestMode.ConstantSize);
-		//
-		// 	// if (size != size2)
-		// 	// {
-		// 	// 	;
-		// 	// }
-		//
-		// 	return size;
-		// }
-
 		int ToSize(double it) => double.IsPositiveInfinity(it) ? 0 : (int)it;
 
-		protected override SizeRequestMode OnGetRequestMode()
+		Size? MeasuredSizeH { get; set; }
+
+		Size? MeasuredSizeV { get; set; }
+
+		protected override void OnGetPreferredWidthForHeight(int height, out int minimumWidth, out int naturalWidth)
 		{
-			return SizeRequestMode.WidthForHeight;
+			base.OnGetPreferredWidthForHeight(height, out minimumWidth, out naturalWidth);
 		}
 
-		protected override void OnGetPreferredHeight(out int minimumHeight, out int naturalHeight)
+		protected override void OnGetPreferredHeightForWidth(int width, out int minimumHeight, out int naturalHeight)
 		{
-			SizeRequest size;
-
-			if (MeasuredArrange.HasValue)
-				size = MeasuredArrange.Value;
-			else
-			{
-
-				switch (RequestMode)
-				{
-					case SizeRequestMode.HeightForWidth:
-
-						OnGetPreferredWidth(out var minimumWidth, out var naturalWidth);
-						size = Measure(minimumWidth, double.PositiveInfinity, RequestMode);
-
-						break;
-					case SizeRequestMode.WidthForHeight:
-						size = Measure(double.PositiveInfinity, double.PositiveInfinity, RequestMode);
-
-						break;
-					default:
-						size = Measure(double.PositiveInfinity, double.PositiveInfinity, RequestMode);
-
-						break;
-				}
-			}
-
-			minimumHeight = Math.Max(HeightRequest, ToSize(size.Minimum.Height));
-			naturalHeight = Math.Max(HeightRequest, ToSize(size.Request.Height));
-		}
-
-		protected override void OnGetPreferredWidth(out int minimumWidth, out int naturalWidth)
-		{
-			base.OnGetPreferredWidth(out minimumWidth, out naturalWidth);
-			SizeRequest size;
-
-			if (MeasuredArrange.HasValue)
-				size = MeasuredArrange.Value;
-			else
-			{
-
-				switch (RequestMode)
-				{
-					case SizeRequestMode.HeightForWidth:
-
-						size = Measure(0, double.PositiveInfinity, RequestMode);
-
-						break;
-					case SizeRequestMode.WidthForHeight:
-
-						GetPreferredHeight(out var minimumHeight, out var naturalHeight);
-						size = Measure(0, minimumHeight, RequestMode);
-
-						break;
-					default:
-
-						size = Measure(double.PositiveInfinity, double.PositiveInfinity, RequestMode);
-
-						break;
-				}
-			}
-
-			minimumWidth = Math.Max(WidthRequest, ToSize(size.Minimum.Width));
-			naturalWidth = Math.Max(WidthRequest, ToSize(size.Request.Width));
-
+			base.OnGetPreferredHeightForWidth(width, out minimumHeight, out naturalHeight);
 		}
 
 		protected override void OnAdjustSizeRequest(Orientation orientation, out int minimumSize, out int naturalSize)
 		{
 			base.OnAdjustSizeRequest(orientation, out minimumSize, out naturalSize);
 
-			if (!MeasuredArrange.HasValue)
-				return;
+			// if (MeasuredArrange.HasValue)
+			// {
+			// 	minimumSize = orientation == Orientation.Horizontal ? naturalSize = (int)MeasuredArrange.Value.Width : naturalSize = (int)MeasuredArrange.Value.Height;
+			// }
+
+			double constraint = minimumSize;
 
 			if (orientation == Orientation.Horizontal)
 			{
-				minimumSize = (int)MeasuredArrange.Value.Width;
-			}
-			else
-			{
-				minimumSize = (int)MeasuredArrange.Value.Height;
+				if (RequestMode is SizeRequestMode.WidthForHeight or SizeRequestMode.ConstantSize)
+				{
+					if (MeasuredSizeV is { Width : > 0 } size)
+						constraint = size.Width;
+
+					constraint = constraint == 0 ? double.PositiveInfinity : constraint;
+				}
+				else
+				{
+					;
+				}
+
+				MeasuredSizeH = Measure(constraint, double.PositiveInfinity);
+				minimumSize = naturalSize = (int)MeasuredSizeH.Value.Width;
 			}
 
+			if (orientation == Orientation.Vertical)
+			{
+				if (RequestMode is SizeRequestMode.HeightForWidth or SizeRequestMode.ConstantSize)
+				{
+					if (MeasuredSizeH is { Height: > 0 } size)
+						constraint = size.Height;
+
+					constraint = constraint == 0 ? double.PositiveInfinity : constraint;
+
+				}
+				else
+				{
+					;
+				}
+
+				MeasuredSizeV = Measure(double.PositiveInfinity, constraint);
+				minimumSize = naturalSize = (int)MeasuredSizeV.Value.Height;
+			}
 		}
 
 		public void Arrange(Rectangle rect)
