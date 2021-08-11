@@ -194,6 +194,7 @@ namespace Microsoft.Maui.Native
 			MeasuredSizeV = null;
 			_minimumWidth = null;
 			MeasuredMinimum = null;
+			_measureCache = null!;
 		}
 
 		protected override void OnSizeAllocated(Gdk.Rectangle allocation)
@@ -269,16 +270,28 @@ namespace Microsoft.Maui.Native
 
 		int sr = 0;
 
+		Dictionary<(double width, double height, SizeRequestMode mode), SizeRequest> _measureCache = null!;
+
 		public SizeRequest Measure(double widthConstraint, double heightConstraint, SizeRequestMode mode = SizeRequestMode.ConstantSize)
 		{
 
 			if (VirtualView is not { LayoutManager: { } layoutManager } virtualView)
 				return Size.Zero;
 
-			var size1 = layoutManager.Measure(widthConstraint, heightConstraint);
+			_measureCache ??= new();
+			var key = (widthConstraint, heightConstraint, mode);
+
+			if (_measureCache.TryGetValue(key, out var size1))
+				return size1;
+
+			size1 = layoutManager.Measure(widthConstraint, heightConstraint);
 			sr++;
 
-			return new SizeRequest(size1, size1);
+			var res = new SizeRequest(size1, size1);
+
+			_measureCache[key] = res;
+
+			return res;
 		}
 
 		int ToSize(double it) => double.IsPositiveInfinity(it) ? 0 : (int)it;
