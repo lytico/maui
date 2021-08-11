@@ -186,6 +186,7 @@ namespace Maui.SimpleSampleApp
 			{
 				button.CharacterSpacing = button.CharacterSpacing > 1 ? 1 : 2;
 			};
+
 			verticalStack.Add(button2);
 
 			var activityIndicator = new ActivityIndicator { Color = Colors.Chartreuse };
@@ -239,7 +240,6 @@ namespace Maui.SimpleSampleApp
 				HorizontalTextAlignment = TextAlignment.End,
 				Margin = new Thickness(15, 10, 20, 15)
 			};
-
 
 			SemanticProperties.SetHint(label, "Hint Text");
 			SemanticProperties.SetDescription(label, "Description Text");
@@ -435,7 +435,7 @@ namespace Maui.SimpleSampleApp
 				Color = Colors.Aquamarine
 			});
 
-			if (false)
+			if (true)
 #pragma warning disable 162
 			{
 				verticalStack.Add(new Editor());
@@ -649,7 +649,11 @@ namespace Maui.SimpleSampleApp
 
 			verticalStack.Add(new Image() { Source = "dotnet_bot.png" });
 
-			Content = new ScrollView { Content = verticalStack };
+			Content = new ScrollView
+			{
+				Content = verticalStack,
+				Orientation = ScrollOrientation.Both
+			};
 		}
 
 		public IView View { get => (IView)Content; set => Content = (View)value; }
@@ -681,7 +685,6 @@ namespace Maui.SimpleSampleApp
 				Text = "Bottom Left",
 				BackgroundColor = Colors.Lavender,
 				VerticalTextAlignment = TextAlignment.End
-
 			};
 
 			layout.Add(bottomLeft);
