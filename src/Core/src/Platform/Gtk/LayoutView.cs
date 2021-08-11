@@ -27,6 +27,8 @@ namespace Microsoft.Maui.Native
 			cr.Rectangle(0, 0, Allocation.Width, Allocation.Height);
 			cr.Stroke();
 
+			cr.MoveTo(0, Allocation.Height - 12);
+			cr.ShowText($"{sr} | {Allocation.Size} | {MeasuredArrange}");
 			cr.Restore();
 
 			return r;
@@ -161,16 +163,22 @@ namespace Microsoft.Maui.Native
 
 		protected override void OnSizeAllocated(Gdk.Rectangle allocation)
 		{
-			base.OnSizeAllocated(allocation);
+
+			if (IsSizeAllocating)
+				return;
 
 			if (VirtualView is not { } virtualView)
+			{
+				base.OnSizeAllocated(allocation);
+
 				return;
+			}
 
 			try
 			{
 				IsReallocating = true;
 
-				MesuredAllocation = MeasuredArrange ?? Measure(allocation.Width, allocation.Height, SizeRequestMode.ConstantSize);
+				MesuredAllocation = MeasuredArrange ??= Measure(allocation.Width, allocation.Height, SizeRequestMode.ConstantSize);
 
 				var mAllocation = allocation.ToRectangle();
 
@@ -179,17 +187,24 @@ namespace Microsoft.Maui.Native
 
 				ArrangeAllocation(mAllocation.Size);
 				AllocateChildren(mAllocation);
+				IsSizeAllocating = true;
 
 				if (virtualView.Frame != mAllocation)
 				{
+					IsSizeAllocating = true;
+
 					// TODO: virtualview Frame has wrong size?
+					Arrange(mAllocation);
 				}
+
+				base.OnSizeAllocated(allocation);
 
 			}
 			finally
 			{
 				IsReallocating = false;
 				IsSizeAllocating = false;
+				MeasuredArrange = null;
 			}
 
 		}
@@ -233,7 +248,31 @@ namespace Microsoft.Maui.Native
 			return new SizeRequest(size1, size1);
 		}
 
+		// public Size GetDesiredSize(double widthConstraint, double heightConstraint)
+		// {
+		// 	var size = Size.Zero;
+		//
+		// 	if (MeasuredArrange.HasValue)
+		// 		return MeasuredArrange.Value;
+		//
+		// 	// var size2 = WidgetExtensions.GetDesiredSize(this, widthConstraint, heightConstraint);
+		//
+		// 	size = Measure(widthConstraint, heightConstraint, SizeRequestMode.ConstantSize);
+		//
+		// 	// if (size != size2)
+		// 	// {
+		// 	// 	;
+		// 	// }
+		//
+		// 	return size;
+		// }
+
 		int ToSize(double it) => double.IsPositiveInfinity(it) ? 0 : (int)it;
+
+		protected override SizeRequestMode OnGetRequestMode()
+		{
+			return SizeRequestMode.WidthForHeight;
+		}
 
 		protected override void OnGetPreferredHeight(out int minimumHeight, out int naturalHeight)
 		{
@@ -253,8 +292,7 @@ namespace Microsoft.Maui.Native
 
 						break;
 					case SizeRequestMode.WidthForHeight:
-
-						size = Measure(double.PositiveInfinity, 0, RequestMode);
+						size = Measure(double.PositiveInfinity, double.PositiveInfinity, RequestMode);
 
 						break;
 					default:
@@ -270,6 +308,7 @@ namespace Microsoft.Maui.Native
 
 		protected override void OnGetPreferredWidth(out int minimumWidth, out int naturalWidth)
 		{
+			base.OnGetPreferredWidth(out minimumWidth, out naturalWidth);
 			SizeRequest size;
 
 			if (MeasuredArrange.HasValue)
@@ -329,6 +368,9 @@ namespace Microsoft.Maui.Native
 
 			if (IsSizeAllocating)
 			{
+				MeasuredArrange = rect.Size;
+				SizeAllocate(rect.ToNative());
+
 				return;
 			}
 

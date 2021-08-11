@@ -321,8 +321,6 @@ namespace Maui.SimpleSampleApp
 			verticalStack.Add(visibleClearButtonEntry);
 			verticalStack.Add(hiddenClearButtonEntry);
 
-			verticalStack.Add(new Editor { Placeholder = "This is an editor placeholder." });
-
 			var paddingButton = new Button
 			{
 				Padding = new Thickness(40),
@@ -437,33 +435,39 @@ namespace Maui.SimpleSampleApp
 				Color = Colors.Aquamarine
 			});
 
-			verticalStack.Add(new Editor());
-			verticalStack.Add(new Editor { Text = "Editor" });
-
-			verticalStack.Add(new Editor
+			if (false)
+#pragma warning disable 162
 			{
-				Text = "Lorem ipsum dolor sit amet",
-				MaxLength = 10
-			});
+				verticalStack.Add(new Editor());
+				verticalStack.Add(new Editor { Placeholder = "This is an editor placeholder." });
+				verticalStack.Add(new Editor { Text = "Editor" });
 
-			verticalStack.Add(new Editor
-			{
-				Text = "Predictive Text Off",
-				IsTextPredictionEnabled = false
-			});
+				verticalStack.Add(new Editor
+				{
+					Text = "Lorem ipsum dolor sit amet",
+					MaxLength = 10
+				});
 
-			verticalStack.Add(new Editor
-			{
-				Text = "Lorem ipsum dolor sit amet",
-				FontSize = 10,
-				FontFamily = "dokdo_regular"
-			});
+				verticalStack.Add(new Editor
+				{
+					Text = "Predictive Text Off",
+					IsTextPredictionEnabled = false
+				});
 
-			verticalStack.Add(new Editor
-			{
-				Text = "ReadOnly Editor",
-				IsReadOnly = true
-			});
+				verticalStack.Add(new Editor
+				{
+					Text = "Lorem ipsum dolor sit amet",
+					FontSize = 10,
+					FontFamily = "dokdo_regular"
+				});
+
+				verticalStack.Add(new Editor
+				{
+					Text = "ReadOnly Editor",
+					IsReadOnly = true
+				});
+			}
+#pragma warning restore 162
 
 			var entry = new Entry();
 
@@ -676,6 +680,8 @@ namespace Maui.SimpleSampleApp
 			{
 				Text = "Bottom Left",
 				BackgroundColor = Colors.Lavender,
+				VerticalTextAlignment = TextAlignment.End
+
 			};
 
 			layout.Add(bottomLeft);

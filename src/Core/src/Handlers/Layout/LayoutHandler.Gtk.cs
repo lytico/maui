@@ -47,6 +47,14 @@ namespace Microsoft.Maui.Handlers
 			NativeView.QueueResize();
 		}
 
+		public override Size GetDesiredSize(double widthConstraint, double heightConstraint)
+		{
+			if (NativeView is not { } nativeView)
+				return Size.Zero;
+
+			return nativeView.GetDesiredSize(widthConstraint, heightConstraint);
+		}
+
 		public void Add(IView child)
 		{
 			_ = NativeView ?? throw new InvalidOperationException($"{nameof(NativeView)} should have been set by base class.");
