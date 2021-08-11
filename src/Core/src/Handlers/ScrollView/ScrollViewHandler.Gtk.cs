@@ -234,24 +234,24 @@ namespace Microsoft.Maui.Handlers
 			switch (view.Orientation)
 			{
 				case ScrollOrientation.Both:
-					// nativeView.PropagateNaturalWidth = true;
-					// nativeView.PropagateNaturalHeight = true;
+					nativeView.PropagateNaturalWidth = true;
+					nativeView.PropagateNaturalHeight = true;
 					nativeView.SetPolicy(PolicyType.Automatic, PolicyType.Automatic);
 					nativeView.HScrollbar.Visible = true;
 					nativeView.VScrollbar.Visible = true;
 
 					break;
 				case ScrollOrientation.Horizontal:
-					// nativeView.PropagateNaturalWidth = true;
-					// nativeView.PropagateNaturalHeight = false;
+					nativeView.PropagateNaturalWidth = true;
+					nativeView.PropagateNaturalHeight = false;
 					nativeView.SetPolicy(PolicyType.Automatic, PolicyType.Never);
 					nativeView.HScrollbar.Visible = true;
 					nativeView.VScrollbar.Visible = false;
 
 					break;
 				case ScrollOrientation.Vertical:
-					// nativeView.PropagateNaturalHeight = true;
-					// nativeView.PropagateNaturalWidth = false;
+					nativeView.PropagateNaturalHeight = true;
+					nativeView.PropagateNaturalWidth = false;
 					nativeView.SetPolicy(PolicyType.Never, PolicyType.Automatic);
 					nativeView.HScrollbar.Visible = false;
 					nativeView.VScrollbar.Visible = true;
@@ -259,8 +259,8 @@ namespace Microsoft.Maui.Handlers
 					break;
 
 				case ScrollOrientation.Neither:
-					// nativeView.PropagateNaturalWidth = false;
-					// nativeView.PropagateNaturalHeight = false;
+					nativeView.PropagateNaturalWidth = false;
+					nativeView.PropagateNaturalHeight = false;
 					nativeView.SetPolicy(PolicyType.Never, PolicyType.Never);
 					nativeView.HScrollbar.Visible = false;
 					nativeView.VScrollbar.Visible = false;
