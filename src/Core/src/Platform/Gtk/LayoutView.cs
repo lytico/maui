@@ -7,8 +7,6 @@ using Rectangle = Microsoft.Maui.Graphics.Rectangle;
 using Size = Microsoft.Maui.Graphics.Size;
 using Point = Microsoft.Maui.Graphics.Point;
 
-#pragma warning disable 162
-
 namespace Microsoft.Maui.Native
 {
 
