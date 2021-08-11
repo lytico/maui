@@ -42,18 +42,6 @@ namespace Microsoft.Maui.Native
 
 		public ILayout? VirtualView => CrossPlatformVirtualView?.Invoke();
 
-		protected bool IsReallocating;
-
-		protected bool IsSizeAllocating;
-
-		protected Size? MeasuredArrange { get; set; }
-
-		protected Size? MesuredAllocation { get; set; }
-
-		public bool RestrictToMesuredAllocation { get; set; } = true;
-
-		public bool RestrictToMeasuredArrange { get; set; } = true;
-
 		Dictionary<IView, Widget> _children = new();
 
 		public LayoutView()
@@ -164,6 +152,50 @@ namespace Microsoft.Maui.Native
 
 		}
 
+		public bool RestrictToMesuredAllocation { get; set; } = true;
+
+		public bool RestrictToMeasuredArrange { get; set; } = true;
+
+		protected bool IsReallocating;
+
+		protected bool IsSizeAllocating;
+
+		protected Size? MeasuredArrange { get; set; }
+
+		protected Size? MesuredAllocation { get; set; }
+
+		Size? MeasuredSizeH { get; set; }
+
+		Size? MeasuredSizeV { get; set; }
+
+		Size? _minimumWidth = null;
+
+		Size MinimumWidth
+		{
+			get
+			{
+				if (VirtualView is not { } virtualView)
+					return Size.Zero;
+
+				return _minimumWidth ??= new Size(virtualView.Max(c => c.DesiredSize.Width), virtualView.Sum(c => c.DesiredSize.Height));
+
+			}
+
+		}
+
+		Size? MeasuredMinimum { get; set; }
+
+		void ClearMeasured()
+		{
+			IsReallocating = false;
+			IsSizeAllocating = false;
+			MeasuredArrange = null;
+			MeasuredSizeH = null;
+			MeasuredSizeV = null;
+			_minimumWidth = null;
+			MeasuredMinimum = null;
+		}
+
 		protected override void OnSizeAllocated(Gdk.Rectangle allocation)
 		{
 
@@ -205,11 +237,7 @@ namespace Microsoft.Maui.Native
 			}
 			finally
 			{
-				IsReallocating = false;
-				IsSizeAllocating = false;
-				MeasuredArrange = null;
-				MeasuredSizeH = null;
-				MeasuredSizeV = null;
+				ClearMeasured();
 			}
 
 		}
@@ -255,28 +283,24 @@ namespace Microsoft.Maui.Native
 
 		int ToSize(double it) => double.IsPositiveInfinity(it) ? 0 : (int)it;
 
-		Size? MeasuredSizeH { get; set; }
-
-		Size? MeasuredSizeV { get; set; }
-
-		protected override void OnGetPreferredWidthForHeight(int height, out int minimumWidth, out int naturalWidth)
-		{
-			base.OnGetPreferredWidthForHeight(height, out minimumWidth, out naturalWidth);
-		}
-
-		protected override void OnGetPreferredHeightForWidth(int width, out int minimumHeight, out int naturalHeight)
-		{
-			base.OnGetPreferredHeightForWidth(width, out minimumHeight, out naturalHeight);
-		}
-
 		protected override void OnAdjustSizeRequest(Orientation orientation, out int minimumSize, out int naturalSize)
 		{
 			base.OnAdjustSizeRequest(orientation, out minimumSize, out naturalSize);
 
-			// if (MeasuredArrange.HasValue)
-			// {
-			// 	minimumSize = orientation == Orientation.Horizontal ? naturalSize = (int)MeasuredArrange.Value.Width : naturalSize = (int)MeasuredArrange.Value.Height;
-			// }
+			if (IsSizeAllocating)
+			{
+				return;
+			}
+
+			if (VirtualView is not { LayoutManager: { } layoutManager } virtualView)
+				return;
+
+			if (MesuredAllocation.HasValue && RestrictToMesuredAllocation)
+			{
+				minimumSize = orientation == Orientation.Horizontal ? naturalSize = (int)MesuredAllocation.Value.Width : naturalSize = (int)MesuredAllocation.Value.Height;
+
+				return;
+			}
 
 			double constraint = minimumSize;
 
@@ -284,7 +308,7 @@ namespace Microsoft.Maui.Native
 			{
 				if (RequestMode is SizeRequestMode.WidthForHeight or SizeRequestMode.ConstantSize)
 				{
-					if (MeasuredSizeV is { Width : > 0 } size)
+					if (MeasuredSizeV is { Width : > 0 } size && (constraint == 0))
 						constraint = size.Width;
 
 					constraint = constraint == 0 ? double.PositiveInfinity : constraint;
@@ -295,15 +319,33 @@ namespace Microsoft.Maui.Native
 				}
 
 				MeasuredSizeH = Measure(constraint, double.PositiveInfinity);
-				minimumSize = naturalSize = (int)MeasuredSizeH.Value.Width;
+
+				constraint = MeasuredSizeH.Value.Width;
+
+				if (constraint == 0)
+				{
+					MeasuredMinimum = MeasuredSizeH = Measure(MinimumWidth.Width, double.PositiveInfinity);
+					constraint = MeasuredSizeH.Value.Width;
+
+				}
+
+				minimumSize = naturalSize = (int)constraint;
 			}
 
 			if (orientation == Orientation.Vertical)
 			{
+				var widthContraint = double.PositiveInfinity;
+
 				if (RequestMode is SizeRequestMode.HeightForWidth or SizeRequestMode.ConstantSize)
 				{
-					if (MeasuredSizeH is { Height: > 0 } size)
-						constraint = size.Height;
+					if (MeasuredSizeH is { } size && constraint == 0)
+					{
+						if (size.Height > 0)
+							constraint = size.Height;
+
+						if (size.Width > 0)
+							widthContraint = size.Width;
+					}
 
 					constraint = constraint == 0 ? double.PositiveInfinity : constraint;
 
@@ -313,7 +355,7 @@ namespace Microsoft.Maui.Native
 					;
 				}
 
-				MeasuredSizeV = Measure(double.PositiveInfinity, constraint);
+				MeasuredSizeV = Measure(widthContraint, constraint);
 				minimumSize = naturalSize = (int)MeasuredSizeV.Value.Height;
 			}
 		}
