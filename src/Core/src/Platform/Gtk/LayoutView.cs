@@ -283,6 +283,15 @@ namespace Microsoft.Maui.Native
 
 		int ToSize(double it) => double.IsPositiveInfinity(it) ? 0 : (int)it;
 
+		void NegotiateMinimum()
+		{
+			if (MeasuredMinimum != null)
+				return;
+
+			Measure(0, double.PositiveInfinity);
+			MeasuredMinimum = MeasuredSizeH = Measure(MinimumWidth.Width, double.PositiveInfinity);
+		}
+
 		protected override void OnAdjustSizeRequest(Orientation orientation, out int minimumSize, out int naturalSize)
 		{
 			base.OnAdjustSizeRequest(orientation, out minimumSize, out naturalSize);
@@ -295,12 +304,14 @@ namespace Microsoft.Maui.Native
 			if (VirtualView is not { LayoutManager: { } layoutManager } virtualView)
 				return;
 
-			if (MesuredAllocation.HasValue && RestrictToMesuredAllocation)
-			{
-				minimumSize = orientation == Orientation.Horizontal ? naturalSize = (int)MesuredAllocation.Value.Width : naturalSize = (int)MesuredAllocation.Value.Height;
+			// if (MesuredAllocation.HasValue && RestrictToMesuredAllocation)
+			// {
+			// 	minimumSize = orientation == Orientation.Horizontal ? naturalSize = (int)MesuredAllocation.Value.Width : naturalSize = (int)MesuredAllocation.Value.Height;
+			//
+			// 	return;
+			// }
 
-				return;
-			}
+			NegotiateMinimum();
 
 			double constraint = minimumSize;
 
@@ -318,18 +329,12 @@ namespace Microsoft.Maui.Native
 					;
 				}
 
-				MeasuredSizeH = Measure(constraint, double.PositiveInfinity);
+				MeasuredSizeH = constraint != 0 ? Measure(constraint, double.PositiveInfinity) : MeasuredMinimum!;
 
 				constraint = MeasuredSizeH.Value.Width;
 
-				if (constraint == 0)
-				{
-					MeasuredMinimum = MeasuredSizeH = Measure(MinimumWidth.Width, double.PositiveInfinity);
-					constraint = MeasuredSizeH.Value.Width;
-
-				}
-
-				minimumSize = naturalSize = (int)constraint;
+				minimumSize = (int)MeasuredMinimum!.Value.Width;
+				naturalSize = (int)constraint;
 			}
 
 			if (orientation == Orientation.Vertical)
@@ -355,8 +360,13 @@ namespace Microsoft.Maui.Native
 					;
 				}
 
-				MeasuredSizeV = Measure(widthContraint, constraint);
-				minimumSize = naturalSize = (int)MeasuredSizeV.Value.Height;
+				MeasuredSizeV = constraint != 0 ? Measure(widthContraint, constraint) : MeasuredMinimum!;
+
+				constraint = MeasuredSizeV.Value.Height;
+
+				minimumSize = (int)MeasuredMinimum!.Value.Height;
+				naturalSize = (int)constraint;
+
 			}
 		}
 
