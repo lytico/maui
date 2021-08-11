@@ -5,6 +5,7 @@ using Gtk;
 using Microsoft.Maui.Graphics.Native.Gtk;
 using Rectangle = Microsoft.Maui.Graphics.Rectangle;
 using Size = Microsoft.Maui.Graphics.Size;
+using Point = Microsoft.Maui.Graphics.Point;
 
 namespace Microsoft.Maui.Native
 {
@@ -152,12 +153,12 @@ namespace Microsoft.Maui.Native
 			}
 		}
 
-		protected void ArrangeAllocation(Size size)
+		protected void ArrangeAllocation(Rectangle allocation)
 		{
 			if (VirtualView is not { LayoutManager: { } layoutManager } virtualView)
 				return;
 
-			layoutManager.ArrangeChildren(size);
+			layoutManager.ArrangeChildren(allocation);
 
 		}
 
@@ -185,7 +186,7 @@ namespace Microsoft.Maui.Native
 				if (RestrictToMesuredAllocation)
 					mAllocation.Size = MesuredAllocation.Value;
 
-				ArrangeAllocation(mAllocation.Size);
+				ArrangeAllocation(new Rectangle(Point.Zero, mAllocation.Size));
 				AllocateChildren(mAllocation);
 				IsSizeAllocating = true;
 
