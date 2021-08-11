@@ -270,9 +270,9 @@ namespace Microsoft.Maui.Native
 
 		int sr = 0;
 
-		Dictionary<(double width, double height, SizeRequestMode mode), SizeRequest> _measureCache = null!;
+		Dictionary<(double width, double height, SizeRequestMode mode), Size> _measureCache = null!;
 
-		public SizeRequest Measure(double widthConstraint, double heightConstraint, SizeRequestMode mode = SizeRequestMode.ConstantSize)
+		public Size Measure(double widthConstraint, double heightConstraint, SizeRequestMode mode = SizeRequestMode.ConstantSize)
 		{
 
 			if (VirtualView is not { LayoutManager: { } layoutManager } virtualView)
@@ -287,8 +287,7 @@ namespace Microsoft.Maui.Native
 			size1 = layoutManager.Measure(widthConstraint, heightConstraint);
 			sr++;
 
-			var res = new SizeRequest(size1, size1);
-
+			var res = size1;
 			_measureCache[key] = res;
 
 			return res;
