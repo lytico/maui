@@ -251,7 +251,6 @@ namespace Microsoft.Maui.Native
 
 				ArrangeAllocation(new Rectangle(Point.Zero, mAllocation.Size));
 				AllocateChildren(mAllocation);
-				IsSizeAllocating = true;
 
 				if (virtualView.Frame != mAllocation)
 				{
