@@ -298,7 +298,7 @@ namespace Microsoft.Maui.Native
 			var key = (widthConstraint, heightConstraint, mode);
 
 			Size cached = Size.Zero;
-			
+
 			bool cacheHit = CanBeCached() && MeasureCache.TryGetValue(key, out cached);
 
 			if (cacheHit)
@@ -333,16 +333,6 @@ namespace Microsoft.Maui.Native
 			if (MeasuredMinimum != null)
 				return MeasuredMinimum.Value;
 
-			// try cache MeasuredMinimum: fails
-
-			// var key = (MinimumWidth.Width, MinimumWidth.Height, SizeRequestMode.ConstantSize);
-			//
-			// if (MeasureCache.TryGetValue(key, out var cached))
-			// {
-			// 	MeasuredMinimum = MeasuredSizeH = cached;
-			// 	return;
-			// }
-
 			if (VirtualView is not { } virtualView)
 				return Size.Zero;
 
@@ -351,6 +341,17 @@ namespace Microsoft.Maui.Native
 			Measure(0, double.PositiveInfinity);
 
 			var desiredMinimum = virtualView.Aggregate(new Size(), (s, c) => new Size(Math.Max(s.Width, c.DesiredSize.Width), s.Height + c.DesiredSize.Height));
+
+			// try cache MeasuredMinimum: fails
+
+			// var key = (desiredMinimum.Width, desiredMinimum.Height, SizeRequestMode.ConstantSize);
+			//
+			// if (MeasureCache.TryGetValue(key, out var cached))
+			// {
+			// 	MeasuredMinimum = cached;
+			//
+			// 	return cached;
+			// }
 
 			MeasuredMinimum = Measure(desiredMinimum.Width, double.PositiveInfinity);
 
@@ -403,6 +404,8 @@ namespace Microsoft.Maui.Native
 
 				if (RequestMode is SizeRequestMode.HeightForWidth or SizeRequestMode.ConstantSize)
 				{
+					MeasuredSizeH ??= measuredMinimum;
+
 					if (MeasuredSizeH is { } size && constraint == 0)
 					{
 						if (size.Height > 0)
