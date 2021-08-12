@@ -1,4 +1,4 @@
-﻿#define TRACE_ALLOCATION_
+﻿#define TRACE_ALLOCATION
 
 using System;
 using System.Collections.Concurrent;
@@ -269,8 +269,9 @@ namespace Microsoft.Maui.Native
 			{
 				try
 				{
-					ClearMeasured();
+					LastAllocation = Allocation.ToRectangle();
 					Measure(Allocation.Width, Allocation.Height);
+
 				}
 				catch
 				{
@@ -307,7 +308,7 @@ namespace Microsoft.Maui.Native
 #if TRACE_ALLOCATION
 				if (!_checkCacheHitFailed)
 #endif
-				return cached;
+					return cached;
 
 			}
 
@@ -342,20 +343,7 @@ namespace Microsoft.Maui.Native
 
 			var desiredMinimum = virtualView.Aggregate(new Size(), (s, c) => new Size(Math.Max(s.Width, c.DesiredSize.Width), s.Height + c.DesiredSize.Height));
 
-			// try cache MeasuredMinimum: fails
-
-			// var key = (desiredMinimum.Width, desiredMinimum.Height, SizeRequestMode.ConstantSize);
-			//
-			// if (MeasureCache.TryGetValue(key, out var cached))
-			// {
-			// 	MeasuredMinimum = cached;
-			//
-			// 	return cached;
-			// }
-
 			MeasuredMinimum = Measure(desiredMinimum.Width, double.PositiveInfinity);
-
-			// MeasureCache[key] = MeasuredMinimum.Value;
 
 			return MeasuredMinimum.Value;
 		}
@@ -439,14 +427,15 @@ namespace Microsoft.Maui.Native
 			if (rect.IsEmpty)
 				return;
 
+			if (rect == Allocation.ToRectangle()) return;
+
 			if (IsSizeAllocating)
 			{
+
 				SizeAllocate(rect.ToNative());
 
 				return;
 			}
-
-			if (rect == Allocation.ToRectangle()) return;
 
 			var measuredArrange = Measure(rect.Width, rect.Height);
 			var alloc = new Rectangle(rect.Location, RestrictToMeasuredArrange ? measuredArrange : rect.Size);
