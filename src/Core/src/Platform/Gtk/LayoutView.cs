@@ -202,19 +202,17 @@ namespace Microsoft.Maui.Native
 
 		}
 
-		Size? MeasuredMinimum { get; set; }
+		protected Size? MeasuredMinimum { get; set; }
 
-		Gdk.Rectangle LastAllocation { get; set; }
+		protected Rectangle LastAllocation { get; set; }
 
 		protected void ClearMeasured(bool clearCache = true)
 		{
-			if (clearCache)
+			if (clearCache && !MeasureCache.IsEmpty)
 			{
 				MeasureCache.Clear();
 			}
 
-			IsReallocating = false;
-			IsSizeAllocating = false;
 			MeasuredArrange = null;
 			MeasuredSizeH = null;
 			MeasuredSizeV = null;
@@ -242,14 +240,14 @@ namespace Microsoft.Maui.Native
 			{
 				IsReallocating = true;
 
-				if (!LastAllocation.IsEmpty && !allocation.IsEmpty && LastAllocation == allocation)
-					clearCache = false;
-
-				LastAllocation = allocation;
-
-				MesuredAllocation = MeasuredArrange ??= Measure(allocation.Width, allocation.Height);
-
 				var mAllocation = allocation.ToRectangle();
+
+				clearCache = LastAllocation.IsEmpty || mAllocation.IsEmpty || LastAllocation != mAllocation;
+				ClearMeasured(clearCache);
+
+				LastAllocation = mAllocation;
+
+				MesuredAllocation = Measure(allocation.Width, allocation.Height);
 
 				if (RestrictToMesuredAllocation)
 					mAllocation.Size = MesuredAllocation.Value;
@@ -270,7 +268,8 @@ namespace Microsoft.Maui.Native
 			}
 			finally
 			{
-				ClearMeasured(clearCache);
+				IsReallocating = false;
+				IsSizeAllocating = false;
 			}
 
 		}
@@ -305,7 +304,7 @@ namespace Microsoft.Maui.Native
 		int _measureCount = 0;
 #endif
 
-		protected IDictionary<(double width, double height, SizeRequestMode mode), Size> MeasureCache { get; } = new ConcurrentDictionary<(double width, double height, SizeRequestMode mode), Size>();
+		protected ConcurrentDictionary<(double width, double height, SizeRequestMode mode), Size> MeasureCache { get; } = new();
 
 		public Size Measure(double widthConstraint, double heightConstraint, SizeRequestMode mode = SizeRequestMode.ConstantSize)
 		{
