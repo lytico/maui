@@ -1,4 +1,6 @@
-﻿using System;
+﻿#define TRACE_ALLOCATION_
+
+using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -23,7 +25,7 @@ namespace Microsoft.Maui.Native
 			stc.RenderBackground(cr, 0, 0, Allocation.Width, Allocation.Height);
 
 			var r = base.OnDrawn(cr);
-#if DEBUG
+#if TRACE_ALLOCATION
 
 			cr.Save();
 			cr.SetSourceColor(Graphics.Colors.Red.ToCairoColor());
@@ -33,10 +35,9 @@ namespace Microsoft.Maui.Native
 			cr.MoveTo(0, Allocation.Height - 12);
 			cr.ShowText($"{_measureCount} | {Allocation.Size}");
 			cr.Restore();
-
+#endif
 			return r;
 		}
-#endif
 
 		public Func<ILayout>? CrossPlatformVirtualView { get; set; }
 
@@ -280,7 +281,7 @@ namespace Microsoft.Maui.Native
 			base.OnRealized();
 		}
 
-#if DEBUG
+#if TRACE_ALLOCATION
 		int _measureCount = 0;
 		bool _checkCacheHitFailed = false;
 #endif
@@ -303,17 +304,16 @@ namespace Microsoft.Maui.Native
 
 			if (cacheHit)
 			{
-#if DEBUG
+#if TRACE_ALLOCATION
 				if (!_checkCacheHitFailed)
 #endif
-					return cached;
+				return cached;
 
 			}
 
 			var measured = layoutManager.Measure(widthConstraint, heightConstraint);
 
-#if DEBUG
-
+#if TRACE_ALLOCATION
 			if (_checkCacheHitFailed && cacheHit && measured != cached)
 			{
 				Debug.WriteLine($"{cached} =! {measured}");
