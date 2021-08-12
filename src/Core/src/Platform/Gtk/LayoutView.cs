@@ -233,8 +233,8 @@ namespace Microsoft.Maui.Native
 			{
 				IsReallocating = true;
 
-				if (!LastAllocation.IsEmpty && LastAllocation == allocation)
-					clearCache = false;
+				// if (!LastAllocation.IsEmpty && !allocation.IsEmpty && LastAllocation == allocation)
+				// 	clearCache = false;
 
 				LastAllocation = allocation;
 
