@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using Gtk;
@@ -202,6 +203,11 @@ namespace Microsoft.Maui.Native
 
 		void ClearMeasured(bool clearCache = true)
 		{
+			if (clearCache)
+			{
+				MeasureCache.Clear();
+			}
+
 			IsReallocating = false;
 			IsSizeAllocating = false;
 			MeasuredArrange = null;
@@ -210,8 +216,6 @@ namespace Microsoft.Maui.Native
 			_minimumWidth = null;
 			MeasuredMinimum = null;
 
-			if (clearCache)
-				_measureCache = null!;
 		}
 
 		protected override void OnSizeAllocated(Gdk.Rectangle allocation)
@@ -233,12 +237,12 @@ namespace Microsoft.Maui.Native
 			{
 				IsReallocating = true;
 
-				// if (!LastAllocation.IsEmpty && !allocation.IsEmpty && LastAllocation == allocation)
-				// 	clearCache = false;
+				if (!LastAllocation.IsEmpty && !allocation.IsEmpty && LastAllocation == allocation)
+					clearCache = false;
 
 				LastAllocation = allocation;
 
-				MesuredAllocation = Measure(allocation.Width, allocation.Height, SizeRequestMode.ConstantSize);
+				MesuredAllocation = MeasuredArrange ??= Measure(allocation.Width, allocation.Height, SizeRequestMode.ConstantSize);
 
 				var mAllocation = allocation.ToRectangle();
 
@@ -294,7 +298,7 @@ namespace Microsoft.Maui.Native
 
 		int sr = 0;
 
-		Dictionary<(double width, double height, SizeRequestMode mode), Size> _measureCache = null!;
+		protected IDictionary<(double width, double height, SizeRequestMode mode), Size> MeasureCache { get;} = new ConcurrentDictionary<(double width, double height, SizeRequestMode mode), Size>();
 
 		public Size Measure(double widthConstraint, double heightConstraint, SizeRequestMode mode = SizeRequestMode.ConstantSize)
 		{
@@ -302,17 +306,16 @@ namespace Microsoft.Maui.Native
 			if (VirtualView is not { LayoutManager: { } layoutManager } virtualView)
 				return Size.Zero;
 
-			_measureCache ??= new();
 			var key = (widthConstraint, heightConstraint, mode);
 
-			if (_measureCache.TryGetValue(key, out var size1))
+			if (MeasureCache.TryGetValue(key, out var size1))
 				return size1;
 
 			size1 = layoutManager.Measure(widthConstraint, heightConstraint);
 			sr++;
 
 			var res = size1;
-			_measureCache[key] = res;
+			MeasureCache[key] = res;
 
 			return res;
 		}
