@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using Gtk;
 using Microsoft.Maui.Graphics.Native.Gtk;
@@ -30,7 +31,7 @@ namespace Microsoft.Maui.Native
 			cr.Stroke();
 
 			cr.MoveTo(0, Allocation.Height - 12);
-			cr.ShowText($"{_measureCount} | {Allocation.Size} | {MeasuredArrange}");
+			cr.ShowText($"{_measureCount} | {Allocation.Size}");
 			cr.Restore();
 
 			return r;
@@ -179,10 +180,6 @@ namespace Microsoft.Maui.Native
 
 		protected bool IsSizeAllocating;
 
-		protected Size? MeasuredArrange { get; set; }
-
-		protected Size? MesuredAllocation { get; set; }
-
 		protected Size? MeasuredSizeH { get; set; }
 
 		protected Size? MeasuredSizeV { get; set; }
@@ -213,7 +210,6 @@ namespace Microsoft.Maui.Native
 				MeasureCache.Clear();
 			}
 
-			MeasuredArrange = null;
 			MeasuredSizeH = null;
 			MeasuredSizeV = null;
 			_minimumWidth = null;
@@ -247,10 +243,10 @@ namespace Microsoft.Maui.Native
 
 				LastAllocation = mAllocation;
 
-				MesuredAllocation = Measure(allocation.Width, allocation.Height);
+				var mesuredAllocation = Measure(allocation.Width, allocation.Height);
 
 				if (RestrictToMesuredAllocation)
-					mAllocation.Size = MesuredAllocation.Value;
+					mAllocation.Size = mesuredAllocation;
 
 				ArrangeAllocation(new Rectangle(Point.Zero, mAllocation.Size));
 				AllocateChildren(mAllocation);
@@ -259,7 +255,6 @@ namespace Microsoft.Maui.Native
 				{
 					IsSizeAllocating = true;
 
-					// TODO: virtualview Frame has wrong size?
 					Arrange(mAllocation);
 				}
 
@@ -289,7 +284,8 @@ namespace Microsoft.Maui.Native
 			{
 				try
 				{
-					MesuredAllocation ??= Measure(Allocation.Width, Allocation.Height);
+					ClearMeasured();
+					Measure(Allocation.Width, Allocation.Height);
 				}
 				catch
 				{
@@ -302,6 +298,7 @@ namespace Microsoft.Maui.Native
 
 #if DEBUG
 		int _measureCount = 0;
+		bool _checkCacheHitFailed = false;
 #endif
 
 		protected ConcurrentDictionary<(double width, double height, SizeRequestMode mode), Size> MeasureCache { get; } = new();
@@ -309,24 +306,43 @@ namespace Microsoft.Maui.Native
 		public Size Measure(double widthConstraint, double heightConstraint, SizeRequestMode mode = SizeRequestMode.ConstantSize)
 		{
 
+			bool CanBeCached()
+			{
+				return !double.IsPositiveInfinity(widthConstraint) && !double.IsPositiveInfinity(heightConstraint);
+			}
+
 			if (VirtualView is not { LayoutManager: { } layoutManager } virtualView)
 				return Size.Zero;
 
 			var key = (widthConstraint, heightConstraint, mode);
 
-			if (MeasureCache.TryGetValue(key, out var size1))
-				return size1;
+			bool cacheHit = MeasureCache.TryGetValue(key, out var cached);
 
-			size1 = layoutManager.Measure(widthConstraint, heightConstraint);
+			if (cacheHit)
+			{
+#if DEBUG
+				if (!_checkCacheHitFailed)
+#endif
+					return cached;
+
+			}
+
+			var measured = layoutManager.Measure(widthConstraint, double.IsNegativeInfinity(heightConstraint) ? double.PositiveInfinity : heightConstraint);
 
 #if DEBUG
+
+			if (_checkCacheHitFailed && cacheHit && measured != cached)
+			{
+				Debug.WriteLine($"{cacheHit} =! {measured}");
+			}
+
 			_measureCount++;
 #endif
 
-			var res = size1;
-			MeasureCache[key] = res;
+			if (CanBeCached())
+				MeasureCache[key] = measured;
 
-			return res;
+			return measured;
 		}
 
 		protected int ToSize(double it) => double.IsPositiveInfinity(it) ? 0 : (int)it;
@@ -419,19 +435,17 @@ namespace Microsoft.Maui.Native
 
 			if (IsSizeAllocating)
 			{
-				MeasuredArrange = rect.Size;
 				SizeAllocate(rect.ToNative());
 
 				return;
 			}
 
-			if (rect != Allocation.ToRectangle() || MeasuredArrange == null)
-			{
-				MeasuredArrange = Measure(rect.Width, rect.Height);
-				var alloc = new Rectangle(rect.Location, RestrictToMeasuredArrange ? MeasuredArrange.Value : rect.Size);
-				SizeAllocate(alloc.ToNative());
-				QueueAllocate();
-			}
+			if (rect == Allocation.ToRectangle()) return;
+
+			var measuredArrange = Measure(rect.Width, rect.Height);
+			var alloc = new Rectangle(rect.Location, RestrictToMeasuredArrange ? measuredArrange : rect.Size);
+			SizeAllocate(alloc.ToNative());
+			QueueAllocate();
 		}
 
 	}
