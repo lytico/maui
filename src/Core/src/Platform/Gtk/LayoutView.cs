@@ -93,6 +93,8 @@ namespace Microsoft.Maui.Native
 
 		public void ClearChildren()
 		{
+			ClearMeasured();
+
 			foreach (var c in Children)
 			{
 				Remove(c);
@@ -124,6 +126,7 @@ namespace Microsoft.Maui.Native
 			var replace = _children[index];
 			_children[index] = (view, widget);
 			Remove(replace.widget);
+			Add(widget);
 
 		}
 
