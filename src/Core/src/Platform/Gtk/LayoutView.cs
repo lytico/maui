@@ -30,7 +30,7 @@ namespace Microsoft.Maui.Native
 			cr.Stroke();
 
 			cr.MoveTo(0, Allocation.Height - 12);
-			cr.ShowText($"{sr} | {Allocation.Size} | {MeasuredArrange}");
+			cr.ShowText($"{_measureCount} | {Allocation.Size} | {MeasuredArrange}");
 			cr.Restore();
 
 			return r;
@@ -130,11 +130,13 @@ namespace Microsoft.Maui.Native
 		protected override void OnAdded(Widget widget)
 		{
 			widget.Parent = this;
+			ClearMeasured();
 		}
 
 		protected override void OnRemoved(Widget widget)
 		{
 			widget.Unparent();
+			ClearMeasured();
 			QueueResize();
 		}
 
@@ -166,9 +168,9 @@ namespace Microsoft.Maui.Native
 
 		}
 
-		public bool RestrictToMesuredAllocation { get; set; } = true;
+		protected bool RestrictToMesuredAllocation { get; set; } = true;
 
-		public bool RestrictToMeasuredArrange { get; set; } = true;
+		protected bool RestrictToMeasuredArrange { get; set; } = true;
 
 		protected bool IsReallocating;
 
@@ -178,13 +180,13 @@ namespace Microsoft.Maui.Native
 
 		protected Size? MesuredAllocation { get; set; }
 
-		Size? MeasuredSizeH { get; set; }
+		protected Size? MeasuredSizeH { get; set; }
 
-		Size? MeasuredSizeV { get; set; }
+		protected Size? MeasuredSizeV { get; set; }
 
-		Size? _minimumWidth = null;
+		protected Size? _minimumWidth = null;
 
-		Size MinimumWidth
+		protected Size MinimumWidth
 		{
 			get
 			{
@@ -201,7 +203,7 @@ namespace Microsoft.Maui.Native
 
 		Gdk.Rectangle LastAllocation { get; set; }
 
-		void ClearMeasured(bool clearCache = true)
+		protected void ClearMeasured(bool clearCache = true)
 		{
 			if (clearCache)
 			{
@@ -242,7 +244,7 @@ namespace Microsoft.Maui.Native
 
 				LastAllocation = allocation;
 
-				MesuredAllocation = MeasuredArrange ??= Measure(allocation.Width, allocation.Height, SizeRequestMode.ConstantSize);
+				MesuredAllocation = MeasuredArrange ??= Measure(allocation.Width, allocation.Height);
 
 				var mAllocation = allocation.ToRectangle();
 
@@ -274,6 +276,7 @@ namespace Microsoft.Maui.Native
 		{
 			// force reallocation on next realization, since allocation may be lost
 			IsReallocating = false;
+			ClearMeasured();
 			base.OnUnrealized();
 		}
 
@@ -284,7 +287,7 @@ namespace Microsoft.Maui.Native
 			{
 				try
 				{
-					MesuredAllocation ??= Measure(Allocation.Width, Allocation.Height, SizeRequestMode.ConstantSize);
+					MesuredAllocation ??= Measure(Allocation.Width, Allocation.Height);
 				}
 				catch
 				{
@@ -295,9 +298,11 @@ namespace Microsoft.Maui.Native
 			base.OnRealized();
 		}
 
-		int sr = 0;
+#if DEBUG
+		int _measureCount = 0;
+#endif
 
-		protected IDictionary<(double width, double height, SizeRequestMode mode), Size> MeasureCache { get;} = new ConcurrentDictionary<(double width, double height, SizeRequestMode mode), Size>();
+		protected IDictionary<(double width, double height, SizeRequestMode mode), Size> MeasureCache { get; } = new ConcurrentDictionary<(double width, double height, SizeRequestMode mode), Size>();
 
 		public Size Measure(double widthConstraint, double heightConstraint, SizeRequestMode mode = SizeRequestMode.ConstantSize)
 		{
@@ -311,7 +316,10 @@ namespace Microsoft.Maui.Native
 				return size1;
 
 			size1 = layoutManager.Measure(widthConstraint, heightConstraint);
-			sr++;
+
+#if DEBUG
+			_measureCount++;
+#endif
 
 			var res = size1;
 			MeasureCache[key] = res;
@@ -319,9 +327,9 @@ namespace Microsoft.Maui.Native
 			return res;
 		}
 
-		int ToSize(double it) => double.IsPositiveInfinity(it) ? 0 : (int)it;
+		protected int ToSize(double it) => double.IsPositiveInfinity(it) ? 0 : (int)it;
 
-		void NegotiateMinimum()
+		protected void NegotiateMinimum()
 		{
 			if (MeasuredMinimum != null)
 				return;
@@ -341,13 +349,6 @@ namespace Microsoft.Maui.Native
 
 			if (VirtualView is not { LayoutManager: { } layoutManager } virtualView)
 				return;
-
-			// if (MesuredAllocation.HasValue && RestrictToMesuredAllocation)
-			// {
-			// 	minimumSize = orientation == Orientation.Horizontal ? naturalSize = (int)MesuredAllocation.Value.Width : naturalSize = (int)MesuredAllocation.Value.Height;
-			//
-			// 	return;
-			// }
 
 			NegotiateMinimum();
 
@@ -424,7 +425,7 @@ namespace Microsoft.Maui.Native
 
 			if (rect != Allocation.ToRectangle() || MeasuredArrange == null)
 			{
-				MeasuredArrange = Measure(rect.Width, rect.Height, SizeRequestMode.ConstantSize);
+				MeasuredArrange = Measure(rect.Width, rect.Height);
 				var alloc = new Rectangle(rect.Location, RestrictToMeasuredArrange ? MeasuredArrange.Value : rect.Size);
 				SizeAllocate(alloc.ToNative());
 				QueueAllocate();
