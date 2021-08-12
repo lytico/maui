@@ -198,7 +198,9 @@ namespace Microsoft.Maui.Native
 
 		Size? MeasuredMinimum { get; set; }
 
-		void ClearMeasured()
+		Gdk.Rectangle LastAllocation { get; set; }
+
+		void ClearMeasured(bool clearCache = true)
 		{
 			IsReallocating = false;
 			IsSizeAllocating = false;
@@ -207,7 +209,9 @@ namespace Microsoft.Maui.Native
 			MeasuredSizeV = null;
 			_minimumWidth = null;
 			MeasuredMinimum = null;
-			_measureCache = null!;
+
+			if (clearCache)
+				_measureCache = null!;
 		}
 
 		protected override void OnSizeAllocated(Gdk.Rectangle allocation)
@@ -223,11 +227,18 @@ namespace Microsoft.Maui.Native
 				return;
 			}
 
+			var clearCache = true;
+
 			try
 			{
 				IsReallocating = true;
 
-				MesuredAllocation = MeasuredArrange ??= Measure(allocation.Width, allocation.Height, SizeRequestMode.ConstantSize);
+				if (!LastAllocation.IsEmpty && LastAllocation == allocation)
+					clearCache = false;
+
+				LastAllocation = allocation;
+
+				MesuredAllocation = Measure(allocation.Width, allocation.Height, SizeRequestMode.ConstantSize);
 
 				var mAllocation = allocation.ToRectangle();
 
@@ -251,7 +262,7 @@ namespace Microsoft.Maui.Native
 			}
 			finally
 			{
-				ClearMeasured();
+				ClearMeasured(clearCache);
 			}
 
 		}
