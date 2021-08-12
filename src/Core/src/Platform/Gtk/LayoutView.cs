@@ -184,21 +184,6 @@ namespace Microsoft.Maui.Native
 
 		protected Size? MeasuredSizeV { get; set; }
 
-		protected Size? _minimumWidth = null;
-
-		protected Size MinimumWidth
-		{
-			get
-			{
-				if (VirtualView is not { } virtualView)
-					return Size.Zero;
-
-				return _minimumWidth ??= new Size(virtualView.Max(c => c.DesiredSize.Width), virtualView.Sum(c => c.DesiredSize.Height));
-
-			}
-
-		}
-
 		protected Size? MeasuredMinimum { get; set; }
 
 		protected Rectangle LastAllocation { get; set; }
@@ -212,7 +197,6 @@ namespace Microsoft.Maui.Native
 
 			MeasuredSizeH = null;
 			MeasuredSizeV = null;
-			_minimumWidth = null;
 			MeasuredMinimum = null;
 
 		}
@@ -306,17 +290,16 @@ namespace Microsoft.Maui.Native
 		public Size Measure(double widthConstraint, double heightConstraint, SizeRequestMode mode = SizeRequestMode.ConstantSize)
 		{
 
-			bool CanBeCached()
-			{
-				return !double.IsPositiveInfinity(widthConstraint) && !double.IsPositiveInfinity(heightConstraint);
-			}
+			bool CanBeCached() => !double.IsPositiveInfinity(widthConstraint) && !double.IsPositiveInfinity(heightConstraint);
 
 			if (VirtualView is not { LayoutManager: { } layoutManager } virtualView)
 				return Size.Zero;
 
 			var key = (widthConstraint, heightConstraint, mode);
 
-			bool cacheHit = MeasureCache.TryGetValue(key, out var cached);
+			Size cached = Size.Zero;
+			
+			bool cacheHit = CanBeCached() && MeasureCache.TryGetValue(key, out cached);
 
 			if (cacheHit)
 			{
@@ -327,13 +310,13 @@ namespace Microsoft.Maui.Native
 
 			}
 
-			var measured = layoutManager.Measure(widthConstraint, double.IsNegativeInfinity(heightConstraint) ? double.PositiveInfinity : heightConstraint);
+			var measured = layoutManager.Measure(widthConstraint, heightConstraint);
 
 #if DEBUG
 
 			if (_checkCacheHitFailed && cacheHit && measured != cached)
 			{
-				Debug.WriteLine($"{cacheHit} =! {measured}");
+				Debug.WriteLine($"{cached} =! {measured}");
 			}
 
 			_measureCount++;
@@ -345,15 +328,35 @@ namespace Microsoft.Maui.Native
 			return measured;
 		}
 
-		protected int ToSize(double it) => double.IsPositiveInfinity(it) ? 0 : (int)it;
-
-		protected void NegotiateMinimum()
+		protected Size MeasureMinimum()
 		{
 			if (MeasuredMinimum != null)
-				return;
+				return MeasuredMinimum.Value;
+
+			// try cache MeasuredMinimum: fails
+
+			// var key = (MinimumWidth.Width, MinimumWidth.Height, SizeRequestMode.ConstantSize);
+			//
+			// if (MeasureCache.TryGetValue(key, out var cached))
+			// {
+			// 	MeasuredMinimum = MeasuredSizeH = cached;
+			// 	return;
+			// }
+
+			if (VirtualView is not { } virtualView)
+				return Size.Zero;
+
+			// ensure all children have DesiredSize:
 
 			Measure(0, double.PositiveInfinity);
-			MeasuredMinimum = MeasuredSizeH = Measure(MinimumWidth.Width, double.PositiveInfinity);
+
+			var desiredMinimum = virtualView.Aggregate(new Size(), (s, c) => new Size(Math.Max(s.Width, c.DesiredSize.Width), s.Height + c.DesiredSize.Height));
+
+			MeasuredMinimum = Measure(desiredMinimum.Width, double.PositiveInfinity);
+
+			// MeasureCache[key] = MeasuredMinimum.Value;
+
+			return MeasuredMinimum.Value;
 		}
 
 		protected override void OnAdjustSizeRequest(Orientation orientation, out int minimumSize, out int naturalSize)
@@ -368,7 +371,7 @@ namespace Microsoft.Maui.Native
 			if (VirtualView is not { LayoutManager: { } layoutManager } virtualView)
 				return;
 
-			NegotiateMinimum();
+			var measuredMinimum = MeasureMinimum();
 
 			double constraint = minimumSize;
 
@@ -386,11 +389,11 @@ namespace Microsoft.Maui.Native
 					;
 				}
 
-				MeasuredSizeH = constraint != 0 ? Measure(constraint, double.PositiveInfinity) : MeasuredMinimum!;
+				MeasuredSizeH = constraint != 0 ? Measure(constraint, double.PositiveInfinity) : measuredMinimum;
 
 				constraint = MeasuredSizeH.Value.Width;
 
-				minimumSize = (int)MeasuredMinimum!.Value.Width;
+				minimumSize = (int)measuredMinimum.Width;
 				naturalSize = (int)constraint;
 			}
 
@@ -417,11 +420,11 @@ namespace Microsoft.Maui.Native
 					;
 				}
 
-				MeasuredSizeV = constraint != 0 ? Measure(widthContraint, constraint) : MeasuredMinimum!;
+				MeasuredSizeV = constraint != 0 ? Measure(widthContraint, constraint) : measuredMinimum;
 
 				constraint = MeasuredSizeV.Value.Height;
 
-				minimumSize = (int)MeasuredMinimum!.Value.Height;
+				minimumSize = (int)measuredMinimum.Height;
 				naturalSize = (int)constraint;
 
 			}
@@ -447,6 +450,8 @@ namespace Microsoft.Maui.Native
 			SizeAllocate(alloc.ToNative());
 			QueueAllocate();
 		}
+
+		protected int ToSize(double it) => double.IsPositiveInfinity(it) ? 0 : (int)it;
 
 	}
 
