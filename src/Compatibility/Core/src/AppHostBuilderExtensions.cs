@@ -192,6 +192,10 @@ namespace Microsoft.Maui.Controls.Hosting
 					DependencyService.Register<NativeValueConverterService>();
 
 #endif
+
+					// Update the mappings for ILabel/Label to work specifically for Controls
+					Label.RemapForControls();
+					
 				})
 				.ConfigureServices<MauiCompatBuilder>();
 
@@ -235,7 +239,7 @@ namespace Microsoft.Maui.Controls.Hosting
 #elif __ANDROID__
 				services.AddSingleton<IGraphicsService>(NativeGraphicsService.Instance);
 #elif WINDOWS
-                services.AddSingleton<IGraphicsService>(W2DGraphicsService.Instance);
+				services.AddSingleton<IGraphicsService>(W2DGraphicsService.Instance);
 #elif GTK
 				services.AddSingleton<IGraphicsService>(NativeGraphicsService.Instance);
 #endif
