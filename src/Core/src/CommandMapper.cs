@@ -40,7 +40,7 @@ namespace Microsoft.Maui
 				return null;
 		}
 
-		internal void Invoke(IElementHandler viewHandler, IElement? virtualView, string property, object? args)
+		public void Invoke(IElementHandler viewHandler, IElement? virtualView, string property, object? args)
 		{
 			if (virtualView == null)
 				return;
