@@ -1,0 +1,31 @@
+@using Microsoft.AspNetCore.Components.Rendering
+@namespace Microsoft.Maui.Razor.Components
+
+<span>@Text</span>
+
+@code {
+
+    [Parameter]
+#pragma warning disable 8618
+        public string Text { get; set; }
+#pragma warning restore 8618
+
+    public virtual void RenderParameters(RenderTreeBuilder builder, ref int seq) {
+        builder.AddAttribute(seq++, $"{nameof(Text)}", Text);
+
+    }
+
+    public void SetText(string text)  => Text = text;
+    
+    protected override void OnParametersSet() {
+        base.OnParametersSet();
+    }
+
+    public virtual void Render(RenderTreeBuilder builder) {
+        var seq = 0;
+        builder.OpenComponent(seq++, GetType());
+        RenderParameters(builder, ref seq);
+        builder.CloseComponent();
+    }
+
+}

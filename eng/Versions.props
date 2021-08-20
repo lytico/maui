@@ -20,11 +20,11 @@
     <MicrosoftExtensionsLoggingDebugPackageVersion>6.0.0-rc.1.21406.5</MicrosoftExtensionsLoggingDebugPackageVersion>
     <MicrosoftExtensionsFileProvidersAbstractionsPackageVersion>6.0.0-rc.1.21406.5</MicrosoftExtensionsFileProvidersAbstractionsPackageVersion>
     <MicrosoftExtensionsFileProvidersEmbeddedPackageVersion>6.0.0-rc.1.21403.6</MicrosoftExtensionsFileProvidersEmbeddedPackageVersion>
-    <MicrosoftAspNetCoreAuthorizationPackageVersion>6.0.0-rc.1.21413.12</MicrosoftAspNetCoreAuthorizationPackageVersion>
-    <MicrosoftAspNetCoreComponentsWebViewPackageVersion>6.0.0-rc.1.21413.12</MicrosoftAspNetCoreComponentsWebViewPackageVersion>
-    <MicrosoftAspNetCoreComponentsWebPackageVersion>6.0.0-rc.1.21413.12</MicrosoftAspNetCoreComponentsWebPackageVersion>
-    <MicrosoftJSInteropPackageVersion>6.0.0-rc.1.21413.12</MicrosoftJSInteropPackageVersion>
-    <MicrosoftAspNetCoreAppRuntimewinx64Version>6.0.0-rc.1.21413.12</MicrosoftAspNetCoreAppRuntimewinx64Version>
+    <MicrosoftAspNetCoreAuthorizationPackageVersion>5.0.8</MicrosoftAspNetCoreAuthorizationPackageVersion>
+    <MicrosoftAspNetCoreComponentsWebViewPackageVersion>5.0.8</MicrosoftAspNetCoreComponentsWebViewPackageVersion>
+    <MicrosoftAspNetCoreComponentsWebPackageVersion>5.0.8</MicrosoftAspNetCoreComponentsWebPackageVersion>
+    <MicrosoftJSInteropPackageVersion>5.0.8</MicrosoftJSInteropPackageVersion>
+    <MicrosoftAspNetCoreAppRuntimewinx64Version>5.0.8</MicrosoftAspNetCoreAppRuntimewinx64Version>
     <MicrosoftWindowsDesktopAppRuntimewinx64Version>6.0.0-rc.1.21414.3</MicrosoftWindowsDesktopAppRuntimewinx64Version>
     <SystemCodeDomPackageVersion>6.0.0-rc.1.21406.5</SystemCodeDomPackageVersion>
   </PropertyGroup>
