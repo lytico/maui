@@ -13,7 +13,7 @@ namespace Microsoft.Maui.Handlers
 {
 	public partial class WindowHandler
 	{
-		public static PropertyMapper<IWindow, WindowHandler> WindowMapper = new(ElementHandler.ElementMapper)
+		public static IPropertyMapper<IWindow, WindowHandler> WindowMapper = new PropertyMapper<IWindow, WindowHandler>(ElementHandler.ElementMapper)
 		{
 			[nameof(IWindow.Title)] = MapTitle,
 			[nameof(IWindow.Content)] = MapContent,
@@ -24,7 +24,7 @@ namespace Microsoft.Maui.Handlers
 		{
 		}
 
-		public WindowHandler(PropertyMapper? mapper = null)
+		public WindowHandler(IPropertyMapper? mapper = null)
 			: base(mapper ?? WindowMapper)
 		{
 		}

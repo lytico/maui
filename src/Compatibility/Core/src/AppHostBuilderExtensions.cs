@@ -1,6 +1,7 @@
 #nullable enable
 using System;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Maui.Controls.Compatibility;
 using Microsoft.Maui.Controls.Shapes;
@@ -45,49 +46,38 @@ using Microsoft.Maui.Controls.Handlers;
 
 namespace Microsoft.Maui.Controls.Hosting
 {
-	public static partial class AppHostBuilderExtensions
+	public static class MauiAppBuilderExtensions
 	{
-		public static IAppHostBuilder UseMauiApp<TApp>(this IAppHostBuilder builder)
+		public static MauiAppBuilder UseMauiApp<TApp>(this MauiAppBuilder builder)
 			where TApp : class, IApplication
 		{
-			builder.ConfigureServices((context, collection) =>
-			{
-				collection.AddSingleton<IApplication, TApp>();
-			});
-
+			builder.Services.TryAddSingleton<IApplication, TApp>();
 			builder.SetupDefaults();
-
 			return builder;
 		}
 
-		public static IAppHostBuilder UseMauiApp<TApp>(this IAppHostBuilder builder, Func<IServiceProvider, TApp> implementationFactory)
+		public static MauiAppBuilder UseMauiApp<TApp>(this MauiAppBuilder builder, Func<IServiceProvider, TApp> implementationFactory)
 			where TApp : class, IApplication
 		{
-			builder.ConfigureServices((context, collection) =>
-			{
-				collection.AddSingleton<IApplication>(implementationFactory);
-			});
-
+			builder.Services.TryAddSingleton<IApplication>(implementationFactory);
 			builder.SetupDefaults();
-
 			return builder;
 		}
 
-
-		static IAppHostBuilder ConfigureImageSourceHandlers(this IAppHostBuilder builder)
+		static MauiAppBuilder ConfigureImageSourceHandlers(this MauiAppBuilder builder)
 		{
 			builder.ConfigureImageSources(services =>
 			{
-				 services.AddService<FileImageSource>(svcs => new FileImageSourceService(svcs.GetService<IImageSourceServiceConfiguration>(), svcs.CreateLogger<FileImageSourceService>()));
-				 services.AddService<FontImageSource>(svcs => new FontImageSourceService(svcs.GetRequiredService<IFontManager>(), svcs.CreateLogger<FontImageSourceService>()));
-				 services.AddService<StreamImageSource>(svcs => new StreamImageSourceService(svcs.CreateLogger<StreamImageSourceService>()));
-				 services.AddService<UriImageSource>(svcs => new UriImageSourceService(svcs.CreateLogger<UriImageSourceService>()));
-			 });
+				services.AddService<FileImageSource>(svcs => new FileImageSourceService(svcs.GetService<IImageSourceServiceConfiguration>(), svcs.CreateLogger<FileImageSourceService>()));
+				services.AddService<FontImageSource>(svcs => new FontImageSourceService(svcs.GetRequiredService<IFontManager>(), svcs.CreateLogger<FontImageSourceService>()));
+				services.AddService<StreamImageSource>(svcs => new StreamImageSourceService(svcs.CreateLogger<StreamImageSourceService>()));
+				services.AddService<UriImageSource>(svcs => new UriImageSourceService(svcs.CreateLogger<UriImageSourceService>()));
+			});
 
 			return builder;
 		}
 
-		static IAppHostBuilder SetupDefaults(this IAppHostBuilder builder)
+		static MauiAppBuilder SetupDefaults(this MauiAppBuilder builder)
 		{
 			builder.ConfigureCompatibilityLifecycleEvents();
 			builder.ConfigureImageSourceHandlers();
@@ -154,10 +144,6 @@ namespace Microsoft.Maui.Controls.Hosting
 
 					// This is for Layouts that currently don't work when assigned to LayoutHandler
 					handlers.TryAddCompatibilityRenderer(typeof(ContentView), typeof(DefaultRenderer));
-#if __IOS__
-					handlers.TryAddCompatibilityRenderer(typeof(AbsoluteLayout), typeof(DefaultRenderer));
-#endif
-
 
 					DependencyService.Register<Xaml.ResourcesLoader>();
 					DependencyService.Register<NativeBindingService>();
@@ -193,18 +179,34 @@ namespace Microsoft.Maui.Controls.Hosting
 
 #endif
 
-					// Update the mappings for ILabel/Label to work specifically for Controls
+					// Update the mappings for IView/View to work specifically for Controls
+					VisualElement.RemapForControls();
 					Label.RemapForControls();
-					
-				})
-				.ConfigureServices<MauiCompatBuilder>();
+					Button.RemapForControls();
+				});
+
+			builder.AddMauiCompat();
 
 			return builder;
 		}
 
-		class MauiCompatBuilder : IMauiServiceBuilder
+		private static MauiAppBuilder AddMauiCompat(this MauiAppBuilder builder)
 		{
-			public void Configure(HostBuilderContext context, IServiceProvider services)
+#if __IOS__ || MACCATALYST
+			builder.Services.TryAddSingleton<IGraphicsService>(NativeGraphicsService.Instance);
+#elif __ANDROID__
+			builder.Services.TryAddSingleton<IGraphicsService>(NativeGraphicsService.Instance);
+#elif WINDOWS
+			builder.Services.TryAddSingleton<IGraphicsService>(W2DGraphicsService.Instance);
+#endif
+
+			builder.Services.TryAddEnumerable(ServiceDescriptor.Transient<IMauiInitializeService, MauiCompatInitializer>());
+			return builder;
+		}
+
+		class MauiCompatInitializer : IMauiInitializeService
+		{
+			public void Initialize(IServiceProvider services)
 			{
 #if __ANDROID__ || __IOS__ || WINDOWS || MACCATALYST || GTK
 				CompatServiceProvider.SetServiceProvider(services);
@@ -229,19 +231,6 @@ namespace Microsoft.Maui.Controls.Hosting
 					// Microsoft.Maui.Controls.Compatibility
 					AddLibraryResources("MicrosoftMauiControlsCompatibilityIncluded", "ms-appx:///Microsoft.Maui.Controls.Compatibility/Windows/Resources.xbf");
 				}
-#endif
-			}
-
-			public void ConfigureServices(HostBuilderContext context, IServiceCollection services)
-			{
-#if __IOS__ || MACCATALYST
-				services.AddSingleton<IGraphicsService>(NativeGraphicsService.Instance);
-#elif __ANDROID__
-				services.AddSingleton<IGraphicsService>(NativeGraphicsService.Instance);
-#elif WINDOWS
-				services.AddSingleton<IGraphicsService>(W2DGraphicsService.Instance);
-#elif GTK
-				services.AddSingleton<IGraphicsService>(NativeGraphicsService.Instance);
 #endif
 			}
 
