@@ -13,7 +13,7 @@ namespace Microsoft.Maui
 		{
 			// https://docs.gtk.org/gtk3/method.Label.set_use_markup.html
 
-			if (type == TextType.Text)
+			if (type == TextType.Html)
 			{
 				nativeLabel.Markup = HtmlToPangoMarkup(label.Text);
 			}
