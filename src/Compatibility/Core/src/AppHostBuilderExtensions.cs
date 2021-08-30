@@ -198,6 +198,8 @@ namespace Microsoft.Maui.Controls.Hosting
 			builder.Services.TryAddSingleton<IGraphicsService>(NativeGraphicsService.Instance);
 #elif WINDOWS
 			builder.Services.TryAddSingleton<IGraphicsService>(W2DGraphicsService.Instance);
+#elif GTK
+			builder.Services.TryAddSingleton<IGraphicsService>(NativeGraphicsService.Instance);
 #endif
 
 			builder.Services.TryAddEnumerable(ServiceDescriptor.Transient<IMauiInitializeService, MauiCompatInitializer>());
