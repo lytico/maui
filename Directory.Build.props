@@ -1,5 +1,8 @@
 <Project>
   <Import Project="eng\Versions.props" />
+  <PropertyGroup>
+<!--    <AndroidSdkDirectory></AndroidSdkDirectory>-->
+  </PropertyGroup>
 
   <PropertyGroup>
     <_MauiDotNetVersion Condition="'$(_MauiDotNetVersion)' == ''">6.0</_MauiDotNetVersion>
@@ -43,7 +46,7 @@
 
   <PropertyGroup>
     <!-- the real TFMs -->
-    <MauiPlatforms>net$(_MauiDotNetVersion)-ios;net$(_MauiDotNetVersion)-maccatalyst;net$(_MauiDotNetVersion)-android</MauiPlatforms>
+    <MauiPlatforms>net$(_MauiDotNetVersion)-android</MauiPlatforms>
     <WindowsMauiPlatforms Condition="'$(WindowsMauiPlatforms)' == ''">net$(_MauiDotNetVersion)-windows$(WindowsTargetFrameworkVersion);net$(_MauiDotNetVersion)-windows$(Windows2TargetFrameworkVersion)</WindowsMauiPlatforms>
     <MauiPlatforms Condition="'$(IncludeWindowsTargetFrameworks)' == 'true'">$(MauiPlatforms);$(WindowsMauiPlatforms)</MauiPlatforms>
     <MauiPlatforms Condition="'$(IncludeTizenTargetFrameworks)' == 'true'">$(MauiPlatforms);net$(_MauiDotNetVersion)-tizen</MauiPlatforms>
