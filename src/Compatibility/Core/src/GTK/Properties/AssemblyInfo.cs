@@ -1,3 +1,4 @@
+using Microsoft.Maui.Controls;
 using Microsoft.Maui.Controls.Compatibility;
 using Microsoft.Maui.Controls.Compatibility.Platform.GTK;
 using Microsoft.Maui.Controls.Compatibility.Platform.GTK.Cells;
@@ -14,17 +15,17 @@ using Microsoft.Maui.Controls.Compatibility.Platform.GTK.Renderers;
 [assembly: ExportRenderer(typeof(ActivityIndicator), typeof(ActivityIndicatorRenderer))]
 [assembly: ExportRenderer(typeof(BoxView), typeof(BoxViewRenderer))]
 [assembly: ExportRenderer(typeof(Button), typeof(ButtonRenderer))]
-[assembly: ExportRenderer(typeof(CarouselPage), typeof(CarouselPageRenderer))]
+//[assembly: ExportRenderer(typeof(CarouselPage), typeof(CarouselPageRenderer))]
 [assembly: ExportRenderer(typeof(DatePicker), typeof(DatePickerRenderer))]
 [assembly: ExportRenderer(typeof(Editor), typeof(EditorRenderer))]
 [assembly: ExportRenderer(typeof(Entry), typeof(EntryRenderer))]
 [assembly: ExportRenderer(typeof(Frame), typeof(FrameRenderer))]
 [assembly: ExportRenderer(typeof(Image), typeof(ImageRenderer))]
 [assembly: ExportRenderer(typeof(Label), typeof(LabelRenderer))]
-[assembly: ExportRenderer(typeof(Layout), typeof(LayoutRenderer))]
+//[assembly: ExportRenderer(typeof(Layout), typeof(LayoutRenderer))]
 [assembly: ExportRenderer(typeof(ListView), typeof(ListViewRenderer))]
 #pragma warning disable CS0618 // Type or member is obsolete
-[assembly: ExportRenderer(typeof(MasterDetailPage), typeof(MasterDetailPageRenderer))]
+//[assembly: ExportRenderer(typeof(MasterDetailPage), typeof(MasterDetailPageRenderer))]
 #pragma warning restore CS0618 // Type or member is obsolete
 [assembly: ExportRenderer(typeof(FlyoutPage), typeof(FlyoutPageRenderer))]
 [assembly: ExportRenderer(typeof(NavigationPage), typeof(NavigationPageRenderer))]
@@ -43,8 +44,8 @@ using Microsoft.Maui.Controls.Compatibility.Platform.GTK.Renderers;
 [assembly: ExportRenderer(typeof(WebView), typeof(WebViewRenderer))]
 
 [assembly: ExportCell(typeof(Cell), typeof(CellRenderer))]
-[assembly: ExportCell(typeof(Microsoft.Maui.Controls.Compatibility.EntryCell), typeof(EntryCellRenderer))]
-[assembly: ExportCell(typeof(Microsoft.Maui.Controls.Compatibility.TextCell), typeof(TextCellRenderer))]
-[assembly: ExportCell(typeof(Microsoft.Maui.Controls.Compatibility.ImageCell), typeof(ImageCellRenderer))]
-[assembly: ExportCell(typeof(Microsoft.Maui.Controls.Compatibility.SwitchCell), typeof(SwitchCellRenderer))]
-[assembly: ExportCell(typeof(Microsoft.Maui.Controls.Compatibility.ViewCell), typeof(ViewCellRenderer))]
+//[assembly: ExportCell(typeof(Microsoft.Maui.Controls.Compatibility.EntryCell), typeof(EntryCellRenderer))]
+//[assembly: ExportCell(typeof(Microsoft.Maui.Controls.Compatibility.TextCell), typeof(TextCellRenderer))]
+//[assembly: ExportCell(typeof(Microsoft.Maui.Controls.Compatibility.ImageCell), typeof(ImageCellRenderer))]
+//[assembly: ExportCell(typeof(Microsoft.Maui.Controls.Compatibility.SwitchCell), typeof(SwitchCellRenderer))]
+//[assembly: ExportCell(typeof(Microsoft.Maui.Controls.Compatibility.ViewCell), typeof(ViewCellRenderer))]
