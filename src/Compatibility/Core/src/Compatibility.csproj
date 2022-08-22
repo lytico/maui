@@ -31,7 +31,6 @@
     <None Remove="GTK\**" />
     <None Remove="MacOS\**" />
     <None Remove="WPF\**" />
-    <Content Remove="GTK\**" />
     <Content Remove="MacOS\**" />
     <Content Remove="WPF\**" />
     <Page Remove="**\WPF\**\*.xaml" />

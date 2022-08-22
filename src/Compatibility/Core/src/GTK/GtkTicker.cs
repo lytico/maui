@@ -1,4 +1,5 @@
-using Microsoft.Maui.Controls.Compatibility.Internals;
+using Microsoft.Maui.Animations;
+using Microsoft.Maui.Controls.Internals;
 
 namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK
 {
@@ -6,19 +7,31 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK
 	{
 		private uint _timerId;
 
-		protected override void DisableTimer()
+		public override void Stop()
 		{
+			base.Stop();
 			GLib.Source.Remove(_timerId);
 		}
 
-		protected override void EnableTimer()
+		public override void Start()
 		{
+			base.Start();
 			_timerId = GLib.Timeout.Add(15, new GLib.TimeoutHandler(OnSendSignals));
 		}
 
+		//protected override void DisableTimer()
+		//{
+		//	GLib.Source.Remove(_timerId);
+		//}
+
+		//protected override void EnableTimer()
+		//{
+		//	_timerId = GLib.Timeout.Add(15, new GLib.TimeoutHandler(OnSendSignals));
+		//}
+
 		private bool OnSendSignals()
 		{
-			SendSignals();
+			// SendSignals();
 
 			return true;
 		}

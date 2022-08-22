@@ -25,11 +25,11 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK.Controls
 	public class WebView : EventBox, IWebView
 	{
 		private GTKPlatform _platform;
-		private WebViewWindows _webViewWindows;
-		private WebViewLinux _webViewLinux;
+		private WebViewWindows? _webViewWindows;
+		private WebViewLinux? _webViewLinux;
 
-		public event EventHandler LoadStarted;
-		public event EventHandler LoadFinished;
+		public event EventHandler? LoadStarted;
+		public event EventHandler? LoadFinished;
 
 		public string Uri
 		{
@@ -37,10 +37,16 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK.Controls
 			{
 				if (_platform == GTKPlatform.Windows)
 				{
+					if (_webViewWindows == null || _webViewWindows.WebBrowser == null)
+						return string.Empty;
+
 					return _webViewWindows.WebBrowser.Url != null ? _webViewWindows.WebBrowser.Url.ToString() : string.Empty;
 				}
 				else
 				{
+					if (_webViewLinux == null || _webViewLinux.WebView == null)
+						return string.Empty;
+
 					return _webViewLinux.WebView.Uri;
 				}
 			}
@@ -48,11 +54,13 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK.Controls
 			{
 				if (_platform == GTKPlatform.Windows)
 				{
-					_webViewWindows.WebBrowser.Url = new Uri(value);
+					if (_webViewWindows != null && _webViewWindows.WebBrowser != null)
+						_webViewWindows.WebBrowser.Url = new Uri(value);
 				}
 				else
 				{
-					_webViewLinux.WebView.LoadUri(value);
+					if (_webViewLinux != null && _webViewLinux.WebView != null)
+						_webViewLinux.WebView.LoadUri(value);
 				}
 			}
 		}
@@ -70,6 +78,9 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK.Controls
 			{
 				_webViewWindows = new WebViewWindows();
 
+				if (_webViewWindows == null || _webViewWindows.WebBrowser == null)
+					return;
+
 				_webViewWindows.WebBrowser.Navigating += (sender, args) =>
 				{
 					LoadStarted?.Invoke(this, args);
@@ -86,28 +97,37 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK.Controls
 			{
 				_webViewLinux = new WebViewLinux();
 
-				_webViewLinux.WebView.LoadStarted += (sender, args) =>
+				if (_webViewLinux != null && _webViewLinux.WebView != null)
 				{
-					LoadStarted?.Invoke(this, args);
-				};
+					_webViewLinux.WebView.LoadStarted += (sender, args) =>
+					{
+						LoadStarted?.Invoke(this, args);
+					};
 
-				_webViewLinux.WebView.LoadFinished += (sender, args) =>
-				{
-					LoadFinished?.Invoke(this, args);
-				};
+					_webViewLinux.WebView.LoadFinished += (sender, args) =>
+					{
+						LoadFinished?.Invoke(this, args);
+					};
 
-				Add(_webViewLinux);
+					Add(_webViewLinux);
+				}
 			}
 		}
 
-		public void Navigate(string uri)
+		public void Navigate(string? uri)
 		{
 			if (_platform == GTKPlatform.Windows)
 			{
+				if (_webViewWindows == null || uri == null)
+					return;
+
 				_webViewWindows.Navigate(uri);
 			}
 			else
 			{
+				if (_webViewLinux == null || uri == null)
+					return;
+
 				_webViewLinux.Navigate(uri);
 			}
 		}
@@ -116,10 +136,16 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK.Controls
 		{
 			if (_platform == GTKPlatform.Windows)
 			{
+				if (_webViewWindows == null)
+					return;
+
 				_webViewWindows.LoadHTML(html, baseUrl);
 			}
 			else
 			{
+				if (_webViewLinux == null)
+					return;
+
 				_webViewLinux.LoadHTML(html, baseUrl);
 			}
 		}
@@ -128,10 +154,16 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK.Controls
 		{
 			if (_platform == GTKPlatform.Windows)
 			{
+				if (_webViewWindows == null || _webViewWindows.WebBrowser == null)
+					return false;
+
 				return _webViewWindows.WebBrowser.CanGoBack;
 			}
 			else
 			{
+				if (_webViewLinux == null || _webViewLinux.WebView == null)
+					return false;
+
 				return _webViewLinux.WebView.CanGoBack();
 			}
 		}
@@ -140,10 +172,16 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK.Controls
 		{
 			if (_platform == GTKPlatform.Windows)
 			{
+				if (_webViewWindows == null || _webViewWindows.WebBrowser == null)
+					return;
+
 				_webViewWindows.WebBrowser.GoBack();
 			}
 			else
 			{
+				if (_webViewLinux == null || _webViewLinux.WebView == null)
+					return;
+
 				_webViewLinux.WebView.GoBack();
 			}
 		}
@@ -152,10 +190,16 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK.Controls
 		{
 			if (_platform == GTKPlatform.Windows)
 			{
+				if (_webViewWindows == null || _webViewWindows.WebBrowser == null)
+					return false;
+
 				return _webViewWindows.WebBrowser.CanGoForward;
 			}
 			else
 			{
+				if (_webViewLinux == null || _webViewLinux.WebView == null)
+					return false;
+
 				return _webViewLinux.WebView.CanGoForward();
 			}
 		}
@@ -164,10 +208,16 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK.Controls
 		{
 			if (_platform == GTKPlatform.Windows)
 			{
+				if (_webViewWindows == null || _webViewWindows.WebBrowser == null)
+					return;
+
 				_webViewWindows.WebBrowser.GoForward();
 			}
 			else
 			{
+				if (_webViewLinux == null || _webViewLinux.WebView == null)
+					return;
+
 				_webViewLinux.WebView.GoForward();
 			}
 		}
@@ -176,10 +226,16 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK.Controls
 		{
 			if (_platform == GTKPlatform.Windows)
 			{
+				if (_webViewWindows == null || _webViewWindows.WebBrowser == null)
+					return;
+
 				_webViewWindows.WebBrowser.Refresh();
 			}
 			else
 			{
+				if (_webViewLinux == null || _webViewLinux.WebView == null)
+					return;
+
 				_webViewLinux.WebView.Reload();
 			}
 		}
@@ -188,11 +244,17 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK.Controls
 		{
 			if (_platform == GTKPlatform.Windows)
 			{
+				if (_webViewWindows == null || _webViewWindows.WebBrowser == null)
+					return;
+
 				_webViewWindows.WebBrowser.DocumentText = script;
 				_webViewWindows.WebBrowser.Document.InvokeScript(script);
 			}
 			else
 			{
+				if (_webViewLinux == null || _webViewLinux.WebView == null)
+					return;
+
 				_webViewLinux.WebView.ExecuteScript(script);
 			}
 		}
@@ -203,7 +265,7 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK.Controls
 		[DllImport("libgdk-win32-2.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
 		private static extern IntPtr gdk_win32_drawable_get_handle(IntPtr d);
 
-		private WebBrowser _browser = null;
+		private WebBrowser? _browser = null;
 
 		/// <summary>
 		/// Imported unmanaged function for setting the parent of a window.
@@ -217,16 +279,19 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK.Controls
 			BuildWebView();
 		}
 
-		public WebBrowser WebBrowser
+		public WebBrowser? WebBrowser
 		{
 			get { return _browser; }
 		}
 
 		public void Navigate(string uri)
 		{
-			Uri uriResult;
+			Uri? uriResult;
 			bool result = Uri.TryCreate(uri, UriKind.Absolute, out uriResult)
 				&& (uriResult.Scheme == Uri.UriSchemeHttp || uriResult.Scheme == Uri.UriSchemeHttps);
+
+			if (_browser == null)
+				return;
 
 			if (result)
 			{
@@ -234,14 +299,20 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK.Controls
 			}
 			else
 			{
-				string appPath = System.IO.Path.GetDirectoryName(Assembly.GetExecutingAssembly().GetName().CodeBase);
-				string filePath = System.IO.Path.Combine(appPath, uri);
-				_browser.Url = new Uri(filePath);
+				string? appPath = System.IO.Path.GetDirectoryName(Assembly.GetExecutingAssembly().GetName().CodeBase);
+				if (appPath != null)
+				{
+					string filePath = System.IO.Path.Combine(appPath, uri);
+					_browser.Url = new Uri(filePath);
+				}
 			}
 		}
 
 		public void LoadHTML(string html, string baseUrl)
 		{
+			if (_browser == null)
+				return;
+
 			_browser.DocumentText = html;
 			_browser.Update();
 		}
@@ -252,6 +323,9 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK.Controls
 
 			if (IsRealized)
 			{
+				if (_browser == null)
+					return;
+
 				_browser.Bounds =
 					new System.Drawing.Rectangle(allocation.X, allocation.Y, allocation.Width, allocation.Height);
 			}
@@ -261,7 +335,7 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK.Controls
 		{
 			CreateWebView();
 
-			var browserHandle = _browser.Handle;
+			var browserHandle = _browser?.Handle;
 
 			ScrolledWindow scroll = new ScrolledWindow
 			{
@@ -279,7 +353,8 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK.Controls
 				windowHandle = gdk_win32_drawable_get_handle(test);
 
 				// Embedding Windows Browser control into a gtk widget.
-				SetParent(browserHandle, windowHandle);
+				if (browserHandle != null)
+					SetParent(browserHandle.GetValueOrDefault(), windowHandle);
 			};
 
 			scroll.Add(drawingArea);
@@ -298,27 +373,27 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK.Controls
 
 	public class WebViewLinux : EventBox
 	{
-		private VBox _vbox = null;
-		private WebKit.WebView _webview = null;
+		private VBox? _vbox = null;
+		private WebKit.WebView? _webview = null;
 
 		public WebViewLinux()
 		{
 			BuildWebView();
 		}
 
-		public WebKit.WebView WebView
+		public WebKit.WebView? WebView
 		{
 			get { return _webview; }
 		}
 
 		public void Navigate(string uri)
 		{
-			_webview.Open(uri);
+			_webview?.Open(uri);
 		}
 
 		public void LoadHTML(string html, string baseUrl)
 		{
-			_webview.LoadHtmlString(html, baseUrl);
+			_webview?.LoadHtmlString(html, baseUrl);
 		}
 
 		private void BuildWebView()

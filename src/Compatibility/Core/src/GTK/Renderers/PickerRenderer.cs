@@ -1,12 +1,12 @@
 using System.ComponentModel;
 using System.Linq;
 using Gtk;
-using Microsoft.Maui.Controls.Compatibility.Internals;
+using Microsoft.Maui.Controls.Internals;
 using Microsoft.Maui.Controls.Compatibility.Platform.GTK.Extensions;
 
 namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK.Renderers
 {
-	public class PickerRenderer : ViewRenderer<Picker, ComboBox>
+	public class PickerRenderer : ViewRenderer<Picker, Gtk.ComboBox>
 	{
 		private bool _disposed;
 
@@ -17,7 +17,7 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK.Renderers
 				if (Control == null)
 				{
 					// Use Gtk.ComboBox, a widget used to choose from a list of items.
-					ComboBox comboBox = new ComboBox();
+					Gtk.ComboBox comboBox = new Gtk.ComboBox();
 					CellRendererText text = new CellRendererText();
 					comboBox.PackStart(text, true);
 					comboBox.AddAttribute(text, "text", 0);
@@ -188,12 +188,12 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK.Renderers
 			ElementController?.SetValueFromRenderer(VisualElement.IsFocusedPropertyKey, false);
 		}
 
-		private void OnChanged(object sender, System.EventArgs e)
+		private void OnChanged(object? sender, System.EventArgs e)
 		{
 			ElementController?.SetValueFromRenderer(Picker.SelectedIndexProperty, Control.Active);
 		}
 
-		private void OnCollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+		private void OnCollectionChanged(object? sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
 		{
 			UpdateItemsSource();
 		}

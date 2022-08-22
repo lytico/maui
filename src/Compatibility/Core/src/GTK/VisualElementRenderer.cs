@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using Gtk;
+// using GTK.Primitives;
 using Microsoft.Maui.Controls.Compatibility.Platform.GTK.Extensions;
 using Container = Microsoft.Maui.Controls.Compatibility.Platform.GTK.GtkFormsContainer;
 using Control = Gtk.Widget;
@@ -13,11 +14,11 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK
 		where TNativeElement : Control
 	{
 		private bool _disposed;
-		private readonly PropertyChangedEventHandler _propertyChangedHandler;
+		private readonly PropertyChangedEventHandler _propertyChangedHandler = null!;
 		private readonly List<EventHandler<VisualElementChangedEventArgs>> _elementChangedHandlers = new List<EventHandler<VisualElementChangedEventArgs>>();
-		private VisualElementTracker<TElement, TNativeElement> _tracker;
-		private string _defaultAccessibilityLabel;
-		private string _defaultAccessibilityHint;
+		private VisualElementTracker<TElement, TNativeElement> _tracker = null!;
+		private string _defaultAccessibilityLabel = null!;
+		private string _defaultAccessibilityHint = null!;
 
 		protected VisualElementRenderer()
 		{
@@ -48,11 +49,11 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK
 			}
 		}
 
-		public TNativeElement Control { get; set; }
+		public TNativeElement Control { get; set; } = null!;
 
 		Control IVisualNativeElementRenderer.Control => Control;
 
-		public TElement Element { get; set; }
+		public TElement Element { get; set; } = null!;
 
 		public Container Container => this;
 
@@ -76,7 +77,7 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK
 			remove { _elementChangedHandlers.Remove(value); }
 		}
 
-		public event EventHandler<ElementChangedEventArgs<TElement>> ElementChanged;
+		public event EventHandler<ElementChangedEventArgs<TElement>> ElementChanged = null!;
 
 		void IEffectControlProvider.RegisterEffect(Effect effect)
 		{
@@ -112,16 +113,17 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK
 				}
 			}
 
-			OnElementChanged(new ElementChangedEventArgs<TElement>(oldElement, element));
+			if (oldElement != null && element != null)
+				OnElementChanged(new ElementChangedEventArgs<TElement>(oldElement, element));
 
 			SetAccessibilityLabel();
 			SetAccessibilityHint();
 		}
 
-		public void SetElementSize(Size size)
+		public void SetElementSize(Graphics.Size size)
 		{
 			Layout.LayoutChildIntoBoundingRegion(Element,
-				new Rectangle(Element.X, Element.Y, size.Width, size.Height));
+				new Graphics.Rect(Element.X, Element.Y, size.Width, size.Height));
 		}
 
 		public virtual SizeRequest GetDesiredSize(double widthConstraint, double heightConstraint)
@@ -150,7 +152,7 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK
 			base.OnSizeAllocated(allocation);
 
 			double width, height, translationX, translationY;
-			Rectangle bounds = Element.Bounds;
+			Graphics.Rect bounds = Element.Bounds;
 
 			translationX = Element.TranslationX;
 			translationY = Element.TranslationY;
@@ -186,8 +188,10 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK
 
 		protected virtual void OnRegisterEffect(PlatformEffect effect)
 		{
-			effect.SetContainer(this);
-			effect.SetControl(Container);
+			effect.Container = this;
+			effect.Control = Container;
+			//effect.SetContainer(this);
+			//effect.SetControl(Container);
 		}
 
 		protected virtual void OnElementChanged(ElementChangedEventArgs<TElement> e)
@@ -199,9 +203,10 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK
 			ElementChanged?.Invoke(this, e);
 		}
 
-		protected virtual void SetNativeControl(TNativeElement view)
+		protected virtual void SetNativeControl(TNativeElement? view)
 		{
-			Control = view;
+			if (view != null)
+				Control = view;
 
 			UpdateBackgroundColor();
 			UpdateIsVisible();
@@ -216,10 +221,10 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK
 			_disposed = true;
 
 			Tracker?.Dispose();
-			Tracker = null;
+			Tracker = null!;
 		}
 
-		protected virtual void OnElementPropertyChanged(object sender, PropertyChangedEventArgs e)
+		protected virtual void OnElementPropertyChanged(object? sender, PropertyChangedEventArgs e)
 		{
 			if (e.PropertyName == VisualElement.IsVisibleProperty.PropertyName)
 				UpdateIsVisible();
@@ -278,7 +283,7 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK
 			UpdateSensitive();
 		}
 
-		internal virtual void OnElementFocusChangeRequested(object sender, VisualElement.FocusRequestArgs args)
+		internal virtual void OnElementFocusChangeRequested(object? sender, VisualElement.FocusRequestArgs args)
 		{
 			var control = Control as Control;
 
@@ -310,7 +315,7 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK
 			Control.Sensitive = Element.IsEnabled;
 		}
 
-		private void OnTrackerUpdated(object sender, EventArgs e)
+		private void OnTrackerUpdated(object? sender, EventArgs e)
 		{
 			UpdateNativeControl();
 		}

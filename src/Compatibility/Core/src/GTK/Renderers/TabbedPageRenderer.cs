@@ -2,10 +2,10 @@ using System;
 using System.Collections.Specialized;
 using System.ComponentModel;
 using Gtk;
-using Microsoft.Maui.Controls.Compatibility.Internals;
+using Microsoft.Maui.Controls.Internals;
 using Microsoft.Maui.Controls.Compatibility.Platform.GTK.Controls;
 using Microsoft.Maui.Controls.Compatibility.Platform.GTK.Extensions;
-using Microsoft.Maui.Controls.Compatibility.PlatformConfiguration.GTKSpecific;
+using Microsoft.Maui.Controls.PlatformConfiguration.GTKSpecific;
 
 namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK.Renderers
 {
@@ -20,9 +20,12 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK.Renderers
 
 			if (e.OldElement != null)
 			{
-				Page.ChildAdded -= OnPageAdded;
-				Page.ChildRemoved -= OnPageRemoved;
-				Page.PagesChanged -= OnPagesChanged;
+				if (Page != null)
+				{
+					Page.ChildAdded -= OnPageAdded;
+					Page.ChildRemoved -= OnPageRemoved;
+					Page.PagesChanged -= OnPagesChanged;
+				}
 			}
 
 			if (e.NewElement != null)
@@ -45,12 +48,15 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK.Renderers
 
 		void Init()
 		{
-			OnPagesChanged(Page.Children,
-				  new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Reset));
+			if (Page != null)
+			{
+				OnPagesChanged(Page.Children,
+					new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Reset));
 
-			Page.ChildAdded += OnPageAdded;
-			Page.ChildRemoved += OnPageRemoved;
-			Page.PagesChanged += OnPagesChanged;
+				Page.ChildAdded += OnPageAdded;
+				Page.ChildRemoved += OnPageRemoved;
+				Page.PagesChanged += OnPagesChanged;
+			}
 
 			UpdateCurrentPage();
 			UpdateBarBackgroundColor();
@@ -59,7 +65,7 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK.Renderers
 			UpdateBackgroundImage();
 		}
 
-		protected override void OnElementPropertyChanged(object sender, PropertyChangedEventArgs e)
+		protected override void OnElementPropertyChanged(object? sender, PropertyChangedEventArgs e)
 		{
 			base.OnElementPropertyChanged(sender, e);
 
@@ -87,14 +93,18 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK.Renderers
 
 		protected override void UpdateBackgroundImage()
 		{
-			Widget?.SetBackgroundImage(Page.BackgroundImageSource);
+			if (Page != null)
+				Widget?.SetBackgroundImage(Page.BackgroundImageSource);
 		}
 
 		protected override void Dispose(bool disposing)
 		{
-			Page.PagesChanged -= OnPagesChanged;
-			Page.ChildAdded -= OnPageAdded;
-			Page.ChildRemoved -= OnPageRemoved;
+			if (Page != null)
+			{
+				Page.PagesChanged -= OnPagesChanged;
+				Page.ChildAdded -= OnPageAdded;
+				Page.ChildRemoved -= OnPageRemoved;
+			}
 
 			if (Widget != null)
 			{
@@ -104,8 +114,11 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK.Renderers
 			base.Dispose(disposing);
 		}
 
-		void OnPagesChanged(object sender, NotifyCollectionChangedEventArgs e)
+		void OnPagesChanged(object? sender, NotifyCollectionChangedEventArgs e)
 		{
+			if (Widget == null)
+				return;
+
 			Widget.NoteBook.SwitchPage -= OnNotebookPageSwitched;
 
 			if (e.Action == NotifyCollectionChangedAction.Reset)
@@ -119,14 +132,16 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK.Renderers
 			Widget.NoteBook.SwitchPage += OnNotebookPageSwitched;
 		}
 
-		void OnPageAdded(object sender, ElementEventArgs e)
+		void OnPageAdded(object? sender, ElementEventArgs e)
 		{
-			InsertPage(e.Element as Page, Page.Children.IndexOf(e.Element));
+			if (e != null && e.Element is Page page && Page != null)
+				InsertPage(page, Page.Children.IndexOf(e.Element));
 		}
 
-		void OnPageRemoved(object sender, ElementEventArgs e)
+		void OnPageRemoved(object? sender, ElementEventArgs e)
 		{
-			RemovePage(e.Element as Page);
+			if (e != null && e.Element is Page page)
+				RemovePage(page);
 		}
 
 		void InsertPage(Page page, int index)
@@ -139,13 +154,19 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK.Renderers
 				Platform.SetRenderer(page, pageRenderer);
 			}
 
-			Widget.InsertPage(
-				pageRenderer.Container,
-				page.Title,
-				page.IconImageSource?.ToPixbuf(new Size(DefaultIconWidth, DefaultIconHeight)),
-				index);
+			if (Widget != null && page.IconImageSource != null)
+			{
+				var icon = page.IconImageSource.ToPixbuf(new Gdk.Size(DefaultIconWidth, DefaultIconHeight));
 
-			Widget.ShowAll();
+				if (icon != null)
+					Widget.InsertPage(
+						pageRenderer.Container,
+						page.Title,
+						icon,
+						index);
+
+				Widget.ShowAll();
+			}
 
 			page.PropertyChanged += OnPagePropertyChanged;
 		}
@@ -156,7 +177,7 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK.Renderers
 
 			var pageRenderer = Platform.GetRenderer(page);
 
-			if (pageRenderer != null)
+			if (pageRenderer != null && Widget != null)
 			{
 				Widget.RemovePage(pageRenderer.Container);
 			}
@@ -166,32 +187,40 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK.Renderers
 
 		void ResetPages()
 		{
+			if (Page == null)
+				return;
+
 			foreach (var page in Page.Children)
 				RemovePage(page);
 
-			Widget.RemoveAllPages();
+			if (Widget != null)
+				Widget.RemoveAllPages();
 
 			var i = 0;
 			foreach (var page in Page.Children)
 				InsertPage(page, i++);
 		}
 
-		void OnPagePropertyChanged(object sender, PropertyChangedEventArgs e)
+		void OnPagePropertyChanged(object? sender, PropertyChangedEventArgs e)
 		{
-			if (e.PropertyName == Microsoft.Maui.Controls.Compatibility.Page.TitleProperty.PropertyName)
+			if (sender == null || Widget == null)
+				return;
+
+			if (e.PropertyName == Microsoft.Maui.Controls.Page.TitleProperty.PropertyName)
 			{
 				var page = (Page)sender;
 				var index = TabbedPage.GetIndex(page);
 
 				Widget.SetTabLabelText(index, page.Title);
 			}
-			else if (e.PropertyName == Microsoft.Maui.Controls.Compatibility.Page.IconImageSourceProperty.PropertyName)
+			else if (e.PropertyName == Microsoft.Maui.Controls.Page.IconImageSourceProperty.PropertyName)
 			{
 				var page = (Page)sender;
 				var index = TabbedPage.GetIndex(page);
 				var icon = page.IconImageSource;
 
-				Widget.SetTabIcon(index, icon.ToPixbuf());
+				if (icon != null)
+					Widget.SetTabIcon(index, icon.ToPixbuf());
 			}
 			else if (e.PropertyName == TabbedPage.BarBackgroundColorProperty.PropertyName)
 				UpdateBarBackgroundColor();
@@ -201,6 +230,9 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK.Renderers
 
 		void UpdateCurrentPage()
 		{
+			if (Page == null)
+				return;
+
 			Page page = Page.CurrentPage;
 
 			if (page == null)
@@ -218,23 +250,27 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK.Renderers
 				selectedIndex++;
 			}
 
+			if (Widget == null)
+				return;
+
 			Widget.NoteBook.CurrentPage = selectedIndex;
 			Widget.NoteBook.ShowAll();
 		}
 
 		void UpdateChildrenOrderIndex()
 		{
-			for (var i = 0; i < Page.Children.Count; i++)
-			{
-				var page = PageController.InternalChildren[i];
+			if (Page != null && Page.Children != null && PageController != null)
+				for (var i = 0; i < Page.Children.Count; i++)
+				{
+					var page = PageController.InternalChildren[i];
 
-				TabbedPage.SetIndex(page as Page, i);
-			}
+					TabbedPage.SetIndex(page as Page, i);
+				}
 		}
 
 		void UpdateBarBackgroundColor()
 		{
-			if (Element == null || Page.BarBackgroundColor.IsDefault)
+			if (Element == null || Page == null || Widget == null || Page.BarBackgroundColor.IsDefault())
 				return;
 
 			var barBackgroundColor = Page.BarBackgroundColor.ToGtkColor();
@@ -247,7 +283,7 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK.Renderers
 
 		void UpdateBarTextColor()
 		{
-			if (Element == null || Page.BarTextColor.IsDefault)
+			if (Element == null || Page == null || Widget == null || Page.BarBackgroundColor.IsDefault())
 				return;
 
 			var barTextColor = Page.BarTextColor.ToGtkColor();
@@ -260,6 +296,9 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK.Renderers
 
 		void UpdateTabPos() // Platform-Specific Functionality
 		{
+			if (Element == null || Page == null || Widget == null)
+				return;
+
 			var tabposition = Page.OnThisPlatform().GetTabPosition();
 
 			switch (tabposition)
@@ -275,12 +314,15 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK.Renderers
 
 		void OnNotebookPageSwitched(object o, SwitchPageArgs args)
 		{
+			if (Element == null || Page == null || Page.Children == null || Widget == null)
+				return;
+
 			var currentPageIndex = (int)args.PageNum;
-			VisualElement currentSelectedChild = Page.Children.Count > currentPageIndex
+			VisualElement? currentSelectedChild = Page.Children.Count > currentPageIndex
 				? Page.Children[currentPageIndex]
 				: null;
 
-			if (currentSelectedChild != null)
+			if (currentSelectedChild != null && ElementController != null)
 			{
 				ElementController.SetValueFromRenderer(TabbedPage.SelectedItemProperty, currentSelectedChild.BindingContext);
 

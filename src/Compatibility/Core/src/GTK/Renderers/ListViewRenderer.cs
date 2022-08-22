@@ -4,7 +4,7 @@ using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Linq;
 using OpenTK.Input;
-using Microsoft.Maui.Controls.Compatibility.Internals;
+using Microsoft.Maui.Controls.Internals;
 using Microsoft.Maui.Controls.Compatibility.Platform.GTK.Cells;
 using Microsoft.Maui.Controls.Compatibility.Platform.GTK.Extensions;
 
@@ -13,10 +13,10 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK.Renderers
 	public class ListViewRenderer : ViewRenderer<ListView, Controls.ListView>
 	{
 		private bool _disposed;
-		private Controls.ListView _listView;
-		private IVisualElementRenderer _headerRenderer;
-		private IVisualElementRenderer _footerRenderer;
-		private List<CellBase> _cells;
+		private Controls.ListView? _listView;
+		private IVisualElementRenderer? _headerRenderer;
+		private IVisualElementRenderer? _footerRenderer;
+		private List<CellBase>? _cells;
 		private Gdk.Rectangle _lastAllocation = Gdk.Rectangle.Zero;
 
 		public ListViewRenderer()
@@ -174,17 +174,19 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK.Renderers
 			{
 				_lastAllocation = allocation;
 
-				foreach (var cell in _cells)
-				{
-					cell.WidthRequest = _lastAllocation.Width;
-					cell.QueueDraw();
-				}
+				if (_cells != null)
+					foreach (var cell in _cells)
+					{
+						cell.WidthRequest = _lastAllocation.Width;
+						cell.QueueDraw();
+					}
 			}
 		}
 
 		private void UpdateItems()
 		{
-			_cells.Clear();
+			if (_cells != null)
+				_cells.Clear();
 
 			var items = TemplatedItemsView.TemplatedItems;
 
@@ -204,10 +206,12 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK.Renderers
 			{
 				var cell = GetCell(item);
 
-				_cells.Add(cell);
+				if (_cells != null)
+					_cells.Add(cell);
 			}
 
-			_listView.Items = _cells;
+			if (_listView != null)
+				_listView.Items = _cells;
 		}
 
 		private void UpdateHeader()
@@ -223,13 +227,17 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK.Renderers
 					// This will force measure to invalidate, which we haven't hooked up to yet because we are smarter!
 					Platform.SetRenderer(headerView, _headerRenderer);
 
-					var window = FormsWindow.MainWindow;
-					int winWidth, winHeight;
-					window.GetSize(out winWidth, out winHeight);
+					//var window = FormsWindow.MainWindow;
+					//int winWidth, winHeight;
 
-					HeaderMeasure(headerView, winWidth);
+					var headerSize = _headerRenderer.GetDesiredSize(10000, 10000);
+				
+					//((Gtk.Window)window.).GetSize(out winWidth, out winHeight);
 
-					_listView.Header = _headerRenderer.Container;
+					HeaderMeasure(headerView, headerSize.Minimum.Width);
+
+					if (_listView != null)
+						_listView.Header = _headerRenderer.Container;
 					headerView.MeasureInvalidated += OnHeaderMeasureInvalidated;
 				}
 				else
@@ -243,7 +251,8 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK.Renderers
 
 		private void ClearHeader()
 		{
-			_listView.Header = null;
+			if (_listView != null)
+				_listView.Header = null;
 
 			if (_headerRenderer == null)
 				return;
@@ -253,13 +262,18 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK.Renderers
 			_headerRenderer = null;
 		}
 
-		private void OnHeaderMeasureInvalidated(object sender, EventArgs eventArgs)
+		private void OnHeaderMeasureInvalidated(object? sender, EventArgs eventArgs)
 		{
+			if (sender == null)
+				return;
+
 			double width = _lastAllocation.Width;
 			var headerView = (VisualElement)sender;
 
 			HeaderMeasure(headerView, width);
-			_listView.Header = _headerRenderer.Container;
+
+			if (_listView != null && _headerRenderer != null)
+				_listView.Header = _headerRenderer.Container;
 		}
 
 		private void HeaderMeasure(VisualElement footerView, double width)
@@ -268,7 +282,7 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK.Renderers
 				return;
 
 			var request = footerView.Measure(width, double.PositiveInfinity, MeasureFlags.IncludeMargins);
-			Layout.LayoutChildIntoBoundingRegion(footerView, new Rectangle(0, 0, width, request.Request.Height));
+			Layout.LayoutChildIntoBoundingRegion(footerView, new Graphics.Rect(0, 0, (int)width, (int)request.Request.Height));
 		}
 
 		private void UpdateFooter()
@@ -283,13 +297,20 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK.Renderers
 					_footerRenderer = Platform.CreateRenderer(footerView);
 					Platform.SetRenderer(footerView, _footerRenderer);
 
-					var window = FormsWindow.MainWindow;
-					int winWidth, winHeight;
-					window.GetSize(out winWidth, out winHeight);
+					//var window = FormsWindow.MainWindow;
+					//int winWidth, winHeight;
+					//window.GetSize(out winWidth, out winHeight);
 
-					FooterMeasure(footerView, winWidth);
+					var headerSize = _footerRenderer.GetDesiredSize(10000, 10000);
 
-					_listView.Footer = _footerRenderer.Container;
+					//((Gtk.Window)window.).GetSize(out winWidth, out winHeight);
+
+					FooterMeasure(footerView, headerSize.Minimum.Width);
+
+					//FooterMeasure(footerView, winWidth);
+
+					if (_listView != null)
+						_listView.Footer = _footerRenderer.Container;
 					footerView.MeasureInvalidated += OnFooterMeasureInvalidated;
 				}
 				else
@@ -303,6 +324,9 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK.Renderers
 
 		private void ClearFooter()
 		{
+			if (_listView == null)
+				return;
+
 			_listView.Footer = null;
 
 			if (_footerRenderer == null)
@@ -313,13 +337,18 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK.Renderers
 			_footerRenderer = null;
 		}
 
-		private void OnFooterMeasureInvalidated(object sender, EventArgs eventArgs)
+		private void OnFooterMeasureInvalidated(object? sender, EventArgs eventArgs)
 		{
+			if (sender == null)
+				return;
+
 			double width = _lastAllocation.Width;
 			var footerView = (VisualElement)sender;
 
 			FooterMeasure(footerView, width);
-			_listView.Footer = _footerRenderer.Container;
+
+			if (_listView != null && _footerRenderer != null)
+				_listView.Footer = _footerRenderer.Container;
 		}
 
 		private void FooterMeasure(VisualElement footerView, double width)
@@ -328,16 +357,19 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK.Renderers
 				return;
 
 			var request = footerView.Measure(width, double.PositiveInfinity, MeasureFlags.IncludeMargins);
-			Layout.LayoutChildIntoBoundingRegion(footerView, new Rectangle(0, 0, width, request.Request.Height));
+			Layout.LayoutChildIntoBoundingRegion(footerView, new Graphics.Rect(0, 0, width, request.Request.Height));
 		}
 
 		private void UpdateRowHeight()
 		{
+			if (_cells == null)
+				return;
+
 			var rowHeight = Element.RowHeight;
 
 			foreach (var cell in _cells)
 			{
-				var formsCell = GetXamarinFormsCell(cell);
+				var formsCell = GetMAUIFormsCell(cell);
 
 				if (formsCell != null)
 				{
@@ -359,13 +391,13 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK.Renderers
 			}
 		}
 
-		private Cell GetXamarinFormsCell(Gtk.Container cell)
+		private Cell? GetMAUIFormsCell(Gtk.Container cell)
 		{
 			try
 			{
 				var formsCell = cell
-				   .GetType()
-				   .GetProperty("Cell")
+				   .GetType()?
+				   .GetProperty("Cell")?
 				   .GetValue(cell, null) as Cell;
 
 				return formsCell;
@@ -457,6 +489,9 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK.Renderers
 
 			if (grouping)
 			{
+				if (_cells == null || _listView == null)
+					return;
+
 				_cells.Clear();
 
 				int index = 0;
@@ -503,9 +538,9 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK.Renderers
 		{
 			return new Cells.TextCell(
 				string.Empty,
-				Color.Black.ToGtkColor(),
+				Graphics.Colors.Black.ToGtkColor(),
 				string.Empty,
-				Color.Black.ToGtkColor());
+				Graphics.Colors.Black.ToGtkColor());
 		}
 
 		private CellBase GetCell(Cell cell)
@@ -518,12 +553,12 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK.Renderers
 			return realCell;
 		}
 
-		private void OnCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+		private void OnCollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
 		{
 			UpdateSource();
 		}
 
-		private void OnGroupedCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+		private void OnGroupedCollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
 		{
 			UpdateSource();
 		}
@@ -538,7 +573,7 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK.Renderers
 				UpdateItems();
 		}
 
-		private void OnRefresh(object sender, EventArgs args)
+		private void OnRefresh(object? sender, EventArgs args)
 		{
 			if (Element == null)
 			{
@@ -553,7 +588,7 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK.Renderers
 			}
 		}
 
-		private void OnElementScrollToRequested(object sender, ScrollToRequestedEventArgs e)
+		private void OnElementScrollToRequested(object? sender, ScrollToRequestedEventArgs e)
 		{
 			Cell cell;
 			int position = 0;
@@ -583,15 +618,16 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK.Renderers
 				cell = templatedItems[position];
 			}
 
-			foreach (var item in Control.Items)
-			{
-				height += item.Allocation.Height;
-
-				if (((CellBase)item).Cell == cell)
+			if (Control.Items != null)
+				foreach (var item in Control.Items)
 				{
-					break;
+					height += item.Allocation.Height;
+
+					if (((CellBase)item).Cell == cell)
+					{
+						break;
+					}
 				}
-			}
 
 			var cellHeight = (int)cell.RenderHeight;
 			var y = 0;
@@ -602,19 +638,22 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK.Renderers
 				return;
 			}
 
-			var listHeight = _listView.Allocation.Height;
+			if (_listView != null)
+			{
+				var listHeight = _listView.Allocation.Height;
 
-			if (e.Position == ScrollToPosition.Start)
-				y = height;
-			if (e.Position == ScrollToPosition.Center)
-				y = height - listHeight / 2;
-			else if (e.Position == ScrollToPosition.End)
-				y = height - listHeight + cellHeight;
+				if (e.Position == ScrollToPosition.Start)
+					y = height;
+				if (e.Position == ScrollToPosition.Center)
+					y = height - listHeight / 2;
+				else if (e.Position == ScrollToPosition.End)
+					y = height - listHeight + cellHeight;
 
-			Control.Vadjustment.Value = y;
+				Control.Vadjustment.Value = y;
+			}
 		}
 
-		private void OnItemTapped(object sender, Controls.ItemTappedEventArgs args)
+		private void OnItemTapped(object? sender, Controls.ItemTappedEventArgs args)
 		{
 			if (Element == null)
 				return;
@@ -624,7 +663,7 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK.Renderers
 
 			if (index > -1)
 			{
-				Element.NotifyRowTapped(index, cell: null, isContextmenuRequested: args.MouseButton == MouseButton.Right);
+				Element.NotifyRowTapped(index, cell: null, isContextmenuRequested: args.MouseButton == OpenTK.Windowing.GraphicsLibraryFramework.MouseButton.Right);
 			}
 		}
 	}

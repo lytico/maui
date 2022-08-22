@@ -1,10 +1,12 @@
+// using Gtk.Primitives;
+
 namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK.Extensions
 {
 	public static class GtkRectangleExtensions
 	{
-		public static Size ToSize(this Gdk.Rectangle rect)
+		public static Graphics.Size ToSize(this Gdk.Rectangle rect)
 		{
-			return new Size(rect.Width, rect.Height);
+			return new Graphics.Size(rect.Width, rect.Height);
 		}
 	}
 }

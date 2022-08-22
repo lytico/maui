@@ -2,9 +2,12 @@ using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using Gtk;
-using Microsoft.Maui.Controls.Compatibility.Internals;
+// using GTK.Primitives;
+using Microsoft.Maui.Controls.Internals;
 using Microsoft.Maui.Controls.Compatibility.Platform.GTK.Extensions;
 using Container = Microsoft.Maui.Controls.Compatibility.Platform.GTK.GtkFormsContainer;
+using System.Windows.Forms;
+using System.Xml.Linq;
 
 namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK.Renderers
 {
@@ -24,29 +27,37 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK.Renderers
 			_propertyChangedHandler = OnElementPropertyChanged;
 		}
 
-		public Controls.Page Control { get; protected set; }
+		public Controls.Page Control { get; protected set; } = null!;
 
-		public TWidget Widget { get; protected set; }
+		public TWidget? Widget { get; protected set; }
 
-		public VisualElement Element { get; protected set; }
+		public VisualElement Element { get; protected set; } = null!;
 
-		public TPage Page => Element as TPage;
+		public TPage? Page => Element as TPage;
 
 		public bool Disposed { get { return _disposed; } }
 
 		public Container Container => this;
 
-		public event EventHandler<VisualElementChangedEventArgs> ElementChanged;
+		public event EventHandler<VisualElementChangedEventArgs>? ElementChanged;
 
-		protected IElementController ElementController => Element as IElementController;
+		protected IElementController? ElementController => Element as IElementController;
 
-		protected IPageController PageController => Element as IPageController;
+		protected IPageController? PageController => Element as IPageController;
 
 		void IEffectControlProvider.RegisterEffect(Effect effect)
 		{
 			var platformEffect = effect as PlatformEffect;
-			if (platformEffect != null)
-				platformEffect.SetContainer(Container);
+			//if (platformEffect != null)
+			//	platformEffect.SetContainer(Container);
+
+			if (platformEffect == null || Container == null || Control == null || Control.Content == null)
+			{
+				return;
+			}
+
+			platformEffect.Container = Container;
+			platformEffect.Control = Control.Content;
 		}
 
 		public virtual void SetElement(VisualElement element)
@@ -59,17 +70,17 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK.Renderers
 			EffectUtilities.RegisterEffectControlProvider(this, oldElement, element);
 		}
 
-		public virtual void SetElementSize(Size newSize)
+		public virtual void SetElementSize(Graphics.Size newSize)
 		{
 			if (Element == null)
 				return;
 
-			var elementSize = new Size(Element.Bounds.Width, Element.Bounds.Height);
+			var elementSize = new Graphics.Size(Element.Bounds.Width, Element.Bounds.Height);
 
 			if (elementSize == newSize)
 				return;
 
-			var bounds = new Rectangle(Element.X, Element.Y, newSize.Width, newSize.Height);
+			var bounds = new Graphics.Rect(Element.X, Element.Y, newSize.Width, newSize.Height);
 
 			Element.Layout(bounds);
 		}
@@ -87,14 +98,15 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK.Renderers
 			{
 				if (_appeared)
 				{
-					ReadOnlyCollection<Element> children = ((IElementController)Element).LogicalChildren;
+					ReadOnlyCollection<Element> children = (ReadOnlyCollection<Element>)((IElementController)Element).Descendants();
 					for (var i = 0; i < children.Count; i++)
 					{
 						var visualChild = children[i] as VisualElement;
 						visualChild?.Cleanup();
 					}
 
-					Page.SendDisappearing();
+					if (Page != null)
+						Page.SendDisappearing();
 				}
 
 				_appeared = false;
@@ -117,7 +129,8 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK.Renderers
 
 			_appeared = true;
 
-			PageController.SendAppearing();
+			if (PageController != null)
+				PageController.SendAppearing();
 		}
 
 		protected override void OnSizeAllocated(Gdk.Rectangle allocation)
@@ -152,8 +165,8 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK.Renderers
 				Platform.SetRenderer(Element, null);
 
 				Control.Destroy();
-				Control = null;
-				Element = null;
+				Control = null!;
+				Element = null!;
 			}
 		}
 
@@ -180,19 +193,21 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK.Renderers
 
 		protected virtual void UpdateBackgroundColor()
 		{
-			Control.SetBackgroundColor(Element.BackgroundColor);
+			if (Element != null)
+				Control.SetBackgroundColor(Element.BackgroundColor);
 		}
 
 		protected virtual void UpdateBackgroundImage()
 		{
-			Control.SetBackgroundImage(Page.BackgroundImageSource);
+			if (Page != null)
+				Control.SetBackgroundImage(Page.BackgroundImageSource);
 		}
 
-		protected virtual void OnElementPropertyChanged(object sender, PropertyChangedEventArgs e)
+		protected virtual void OnElementPropertyChanged(object? sender, PropertyChangedEventArgs e)
 		{
 			if (e.PropertyName == VisualElement.BackgroundColorProperty.PropertyName)
 				UpdateBackgroundColor();
-			else if (e.PropertyName == Microsoft.Maui.Controls.Compatibility.Page.BackgroundImageSourceProperty.PropertyName)
+			else if (e.PropertyName == Microsoft.Maui.Controls.Page.BackgroundImageSourceProperty.PropertyName)
 				UpdateBackgroundImage();
 		}
 
@@ -218,10 +233,13 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK.Renderers
 		private bool HasAncestorNavigationPage(TPage page)
 		{
 			bool hasParentNavigation = false;
-			TPage parent;
+			TPage? parent = null;
 			TPage current = page;
 
-			while ((parent = current.Parent as TPage) != null)
+			if (current != null)
+				parent = current.Parent as TPage;
+
+			while (parent != null)
 			{
 				hasParentNavigation = parent is NavigationPage;
 
@@ -229,6 +247,9 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK.Renderers
 
 				if (hasParentNavigation)
 					break;
+
+				if (current != null)
+					parent = current.Parent as TPage;
 			}
 			var hasAncestorNavigationPage = hasParentNavigation && NavigationPage.GetHasNavigationBar(current);
 			return hasAncestorNavigationPage;

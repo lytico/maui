@@ -6,12 +6,12 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK.Controls
 {
 	public class BoxView : GtkFormsContainer
 	{
-		private Color _color;
+		private Graphics.Color? _color;
 		private int _height;
 		private int _width;
 		private int _topLeftRadius, _topRightRadius, _bottomLeftRadius, _bottomRightRadius;
 
-		public void UpdateColor(Color color)
+		public void UpdateColor(Graphics.Color color)
 		{
 			_color = color;
 			QueueDraw();
@@ -19,7 +19,7 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK.Controls
 
 		public void ResetColor()
 		{
-			UpdateColor(Color.Default);
+			UpdateColor(Graphics.Colors.White);
 		}
 
 		public void UpdateSize(int height, int width)
@@ -40,7 +40,7 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK.Controls
 
 		protected override void Draw(Gdk.Rectangle area, Context cr)
 		{
-			if (_color.IsDefaultOrTransparent())
+			if (_color == null || _color.IsDefaultOrTransparent())
 			{
 				return;
 			}
@@ -57,7 +57,7 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK.Controls
 			cr.Arc(x + _bottomLeftRadius, y + height - _bottomLeftRadius, _bottomLeftRadius, Math.PI * .5, Math.PI);
 			cr.Arc(x + _topLeftRadius, y + _topLeftRadius, _topLeftRadius, Math.PI, Math.PI * 1.5);
 
-			cr.SetSourceRGBA(_color.R, _color.G, _color.B, _color.A);
+			cr.SetSourceRGBA(_color.Red, _color.Green, _color.Blue, _color.Alpha);
 
 			cr.Fill();
 		}

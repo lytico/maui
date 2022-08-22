@@ -10,7 +10,7 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK.Controls
 		private const int Lines = 8;
 		private bool _running;
 		private int _current;
-		private Color _color;
+		private Graphics.Color _color = null!;
 
 		public ActivityIndicator()
 		{
@@ -31,7 +31,7 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK.Controls
 			QueueDraw();
 		}
 
-		public void UpdateColor(Color color)
+		public void UpdateColor(Graphics.Color color)
 		{
 			_color = color;
 		}
@@ -70,7 +70,7 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK.Controls
 				double inset = 0.5 * radius;
 
 				cr.Save();
-				cr.SetSourceRGBA(_color.R, _color.G, _color.B, move);
+				cr.SetSourceRGBA(_color.Red, _color.Green, _color.Blue, move);
 				cr.LineWidth *= 2;
 				cr.MoveTo(move + x + (radius - inset) * Math.Cos(i * Math.PI / half),
 						  move + y + (radius - inset) * Math.Sin(i * Math.PI / half));

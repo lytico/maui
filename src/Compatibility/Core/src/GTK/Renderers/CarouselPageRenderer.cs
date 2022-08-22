@@ -4,31 +4,31 @@ using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Linq;
 using Gtk;
-using Microsoft.Maui.Controls.Compatibility.Internals;
+using Microsoft.Maui.Controls.Internals;
 using Microsoft.Maui.Controls.Compatibility.Platform.GTK.Controls;
 using Microsoft.Maui.Controls.Compatibility.Platform.GTK.Extensions;
 
 namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK.Renderers
 {
-	public class CarouselPageRenderer : AbstractPageRenderer<Carousel, CarouselPage>
+	internal class CarouselPageRenderer : AbstractPageRenderer<Carousel, CarouselPage>
 	{
-		private List<PageContainer> _pages;
-		private int _selectedIndex;
+		private List<PageContainer>? _pages;
+		//private int _selectedIndex;
 
-		public int SelectedIndex
-		{
-			get { return _selectedIndex; }
-			set
-			{
-				if (_selectedIndex == value)
-					return;
+		//public int SelectedIndex
+		//{
+		//	get { return _selectedIndex; }
+		//	set
+		//	{
+		//		if (_selectedIndex == value)
+		//			return;
 
-				_selectedIndex = value;
+		//		_selectedIndex = value;
 
-				if (Page != null)
-					Page.CurrentPage = (ContentPage)Element.LogicalChildren[(int)SelectedIndex];
-			}
-		}
+		//		if (Page != null)
+		//			Page.CurrentPage = (ContentPage)Element.LogicalChildren[(int)SelectedIndex];
+		//	}
+		//}
 
 		protected override void Dispose(bool disposing)
 		{
@@ -52,7 +52,7 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK.Renderers
 		{
 			base.OnElementChanged(e);
 
-			if (e.OldElement != null)
+			if (e.OldElement != null && Page != null)
 			{
 				Page.PagesChanged -= OnPagesChanged;
 			}
@@ -78,7 +78,7 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK.Renderers
 			}
 		}
 
-		protected override void OnElementPropertyChanged(object sender, PropertyChangedEventArgs e)
+		protected override void OnElementPropertyChanged(object? sender, PropertyChangedEventArgs e)
 		{
 			base.OnElementPropertyChanged(sender, e);
 
@@ -95,7 +95,7 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK.Renderers
 
 		protected override void UpdateBackgroundColor()
 		{
-			if (Element.BackgroundColor.IsDefault)
+			if (Element.BackgroundColor.IsDefault())
 			{
 				return;
 			}
@@ -106,6 +106,9 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK.Renderers
 
 		protected override void UpdateBackgroundImage()
 		{
+			if (Page == null)
+				return;
+
 			Widget?.SetBackgroundImage(Page.BackgroundImageSource);
 		}
 
@@ -115,50 +118,72 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK.Renderers
 			UpdateBackgroundColor();
 			UpdateBackgroundImage();
 
-			Page.PagesChanged += OnPagesChanged;
+			if (Page != null)
+				Page.PagesChanged += OnPagesChanged;
 		}
 
-		private void OnPagesChanged(object sender, NotifyCollectionChangedEventArgs e)
+		private void OnPagesChanged(object? sender, NotifyCollectionChangedEventArgs e)
 		{
 			switch (e.Action)
 			{
 				case NotifyCollectionChangedAction.Add:
 
 					int index = e.NewStartingIndex;
-					for (int i = 0; i < e.NewItems.Count; i++)
+					if (e.NewItems != null)
 					{
-						var page = e.NewItems[i] as Page;
-						Widget.AddPage(index, page);
-						_pages.Add(new PageContainer(page, i));
-						index++;
+						for (int i = 0; i < e.NewItems.Count; i++)
+						{
+							var page = e.NewItems[i] as Page;
+							if (page != null && Widget != null && _pages != null)
+							{
+								Widget.AddPage(index, page);
+								_pages.Add(new PageContainer(page, i));
+								index++;
+							}
+						}
 					}
 
 					var newPages = new List<object>();
-					foreach (var pc in _pages)
-					{
-						newPages.Add(pc.Page);
-					}
+					if (_pages != null)
+						foreach (var pc in _pages)
+						{
+							if (pc.Page != null)
+								newPages.Add(pc.Page);
+						}
 
-					e.Apply(Page.Children, newPages);
+					if (Page != null)
+						e.Apply(Page.Children, newPages);
 
 					break;
 				case NotifyCollectionChangedAction.Remove:
 
-					for (int i = 0; i < e.OldItems.Count; i++)
-					{
-						var page = e.OldItems[i];
-						Widget.RemovePage(page);
-						var pageContainer = _pages.FirstOrDefault(p => p.Page == page);
-						_pages.Remove(pageContainer);
-					}
+					if (e.OldItems != null)
+						for (int i = 0; i < e.OldItems.Count; i++)
+						{
+							var page = e.OldItems[i];
+							if (page != null && Widget != null)
+							{
+								Widget.RemovePage(page);
+								if (_pages != null)
+								{
+									var pageContainer = _pages.FirstOrDefault(p => p.Page == page);
+									if (pageContainer != null)
+										_pages.Remove(pageContainer);
+								}
+							}
+						}
 
 					var oldPages = new List<object>();
-					foreach (var pc in _pages)
-					{
-						oldPages.Add(pc.Page);
-					}
+					if (_pages != null)
+						foreach (var pc in _pages)
+						{
+							if (pc.Page != null)
+								oldPages.Add(pc.Page);
+						}
 
-					e.Apply(Page.Children, oldPages);
+					if (Page != null)
+						e.Apply(Page.Children, oldPages);
+
 					UpdateCurrentPage();
 					break;
 				case NotifyCollectionChangedAction.Reset:
@@ -170,6 +195,9 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK.Renderers
 
 		private void UpdateCurrentPage()
 		{
+			if (Page == null)
+				return;
+
 			ContentPage current = Page.CurrentPage;
 
 			if (current != null)
@@ -179,27 +207,29 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK.Renderers
 				if (index < 0)
 					index = 0;
 
-				SelectedIndex = index;
-				Widget?.SetCurrentPage(SelectedIndex);
+				// SelectedIndex = index;
+				Widget?.SetCurrentPage(index);
 			}
 		}
 
 		private void UpdateSource()
 		{
-			Widget.SelectedIndexChanged -= OnSelectedIndexChanged;
+			if (Widget != null)
+				Widget.SelectedIndexChanged -= OnSelectedIndexChanged;
 
 			_pages = new List<PageContainer>();
 
-			for (var i = 0; i < Element.LogicalChildren.Count; i++)
-			{
-				Element element = Element.LogicalChildren[i];
-				var child = element as ContentPage;
-
-				if (child != null)
+			if (Element.AllChildren != null)
+				for (var i = 0; i < Element.AllChildren.Count(); i++)
 				{
-					_pages.Add(new PageContainer(child, i));
+					Element element = Element.AllChildren.ElementAt(i);
+					var child = element as ContentPage;
+
+					if (child != null)
+					{
+						_pages.Add(new PageContainer(child, i));
+					}
 				}
-			}
 
 			if (Widget != null)
 			{
@@ -208,11 +238,15 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK.Renderers
 
 			UpdateCurrentPage();
 
-			Widget.SelectedIndexChanged += OnSelectedIndexChanged;
+			if (Widget != null)
+				Widget.SelectedIndexChanged += OnSelectedIndexChanged;
 		}
 
 		private void OnSelectedIndexChanged(object sender, CarouselEventArgs args)
 		{
+			if (Widget == null)
+				return;
+
 			var selectedIndex = args.SelectedIndex;
 			var widgetPage = Widget.Pages[selectedIndex];
 			var page = widgetPage.Page as ContentPage;

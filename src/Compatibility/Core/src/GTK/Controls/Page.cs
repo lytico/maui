@@ -8,12 +8,12 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK.Controls
 	public class Page : Table
 	{
 		private Gdk.Rectangle _lastAllocation = Gdk.Rectangle.Zero;
-		private GtkFormsContainer _headerContainer;
-		private GtkFormsContainer _contentContainerWrapper;
-		private Fixed _contentContainer;
-		private HBox _toolbar;
-		private GtkFormsContainer _content;
-		private ImageControl _image;
+		private GtkFormsContainer _headerContainer = null!;
+		private GtkFormsContainer _contentContainerWrapper = null!;
+		private Fixed _contentContainer = null!;
+		private HBox _toolbar = null!;
+		private GtkFormsContainer _content = null!;
+		private ImageControl _image = null!;
 		private Gdk.Color _defaultBackgroundColor;
 
 		public HBox Toolbar
@@ -51,19 +51,25 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK.Controls
 			BuildPage();
 		}
 
-		public void SetToolbarColor(Color backgroundColor)
+		public void SetToolbarColor(Graphics.Color backgroundColor)
 		{
 			_headerContainer.SetBackgroundColor(backgroundColor);
 		}
 
-		public void SetBackgroundColor(Color backgroundColor)
+		public void SetBackgroundColor(Graphics.Color backgroundColor)
 		{
 			_contentContainerWrapper.SetBackgroundColor(backgroundColor);
 		}
 
 		public async void SetBackgroundImage(ImageSource imageSource)
 		{
-			_image.Pixbuf = await imageSource.GetNativeImageAsync();
+			Pixbuf? pixbuf = null;
+
+			if (imageSource != null)
+				pixbuf = await imageSource.GetNativeImageAsync();
+
+			if (pixbuf != null)
+				_image.Pixbuf = pixbuf;
 		}
 
 		public override void Destroy()
@@ -72,13 +78,13 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK.Controls
 			if (_contentContainerWrapper != null)
 			{
 				_contentContainerWrapper.SizeAllocated -= OnContentContainerWrapperSizeAllocated;
-				_contentContainerWrapper = null;
+				_contentContainerWrapper = null!;
 			}
-			_contentContainer = null;
-			_image = null;
-			_toolbar = null;
-			_content = null;
-			_headerContainer = null;
+			_contentContainer = null!;
+			_image = null!;
+			_toolbar = null!;
+			_content = null!;
+			_headerContainer = null!;
 		}
 
 		private void BuildPage()

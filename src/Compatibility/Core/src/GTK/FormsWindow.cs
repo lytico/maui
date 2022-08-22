@@ -5,13 +5,13 @@ using Gtk;
 
 namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK
 {
-	public class FormsWindow : Window
+	public class FormsWindow : Gtk.Window
 	{
-		private Application _application;
+		private Application _application = null!;
 		private Gdk.Size _lastSize;
 
 		public FormsWindow()
-			: base(WindowType.Toplevel)
+			: base((IntPtr)Gdk.WindowType.Toplevel)
 		{
 			SetDefaultSize(800, 600);
 			SetSizeRequest(400, 400);
@@ -26,7 +26,7 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK
 		}
 
 		public static int MainThreadID { get; set; }
-		public static Window MainWindow { get; set; }
+		public static Gtk.Window MainWindow { get; set; } = null!;
 
 		public void LoadApplication(Application application)
 		{
@@ -75,7 +75,7 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK
 			return true;
 		}
 
-		private void ApplicationOnPropertyChanged(object sender, PropertyChangedEventArgs args)
+		private void ApplicationOnPropertyChanged(object? sender, PropertyChangedEventArgs args)
 		{
 			if (args.PropertyName == nameof(Application.MainPage))
 			{
@@ -90,8 +90,12 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK
 			if (_lastSize != newSize)
 			{
 				_lastSize = newSize;
-				var pageRenderer = Platform.GetRenderer(_application.MainPage);
-				pageRenderer?.SetElementSize(new Size(newSize.Width, newSize.Height));
+				var element = _application.MainPage;
+				if (element != null)
+				{
+					var pageRenderer = Platform.GetRenderer(element);
+					pageRenderer?.SetElementSize(new Graphics.Size(newSize.Width, newSize.Height));
+				}
 			}
 
 			return base.OnConfigureEvent(evnt);

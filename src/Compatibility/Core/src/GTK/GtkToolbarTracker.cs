@@ -5,29 +5,30 @@ using System.Linq;
 using System.Threading.Tasks;
 using Gdk;
 using Gtk;
-using Microsoft.Maui.Controls.Compatibility.Internals;
+using Microsoft.Maui.Controls;
 using Microsoft.Maui.Controls.Compatibility.Platform.GTK.Controls;
 using Microsoft.Maui.Controls.Compatibility.Platform.GTK.Extensions;
 using Microsoft.Maui.Controls.Compatibility.Platform.GTK.Renderers;
 
 namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK
 {
+	[System.Obsolete("This renderer is obsolete please try to use the corresponding handler/mapper")]
 	public class GtkToolbarTracker
 	{
 		private readonly string _defaultBackButtonTitle = "Back";
 
 		private readonly ToolbarTracker _toolbarTracker;
-		private HBox _toolbar;
-		private HBox _toolbarNavigationSection;
-		private Alignment _toolbarTitleSectionWrapper;
-		private HBox _toolbarTitleSection;
-		private HBox _toolbarSection;
-		private Gtk.Label _toolbarTitle;
-		private ImageControl _toolbarIcon;
-		private NavigationPage _navigation;
-		private string _backButton;
+		private HBox? _toolbar;
+		private HBox? _toolbarNavigationSection;
+		private Alignment? _toolbarTitleSectionWrapper;
+		private HBox? _toolbarTitleSection;
+		private HBox? _toolbarSection;
+		private Gtk.Label? _toolbarTitle;
+		private ImageControl? _toolbarIcon;
+		private NavigationPage? _navigation;
+		private string? _backButton;
 
-		private FlyoutPage _parentFlyoutPage;
+		private FlyoutPage? _parentFlyoutPage;
 
 		public GtkToolbarTracker()
 		{

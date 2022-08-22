@@ -14,7 +14,7 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK.Cells
 
 		private EventHandler _onForceUpdateSizeRequested;
 
-		public virtual CellBase GetCell(Cell item, Gtk.Container reusableView, Controls.ListView listView)
+		public virtual CellBase GetCell(Cell item, Gtk.Container? reusableView, Controls.ListView? listView)
 		{
 			Cell = item;
 

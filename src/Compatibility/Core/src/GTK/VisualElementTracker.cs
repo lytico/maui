@@ -5,7 +5,7 @@ using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Linq;
 using Gtk;
-using Microsoft.Maui.Controls.Compatibility.Internals;
+using Microsoft.Maui.Controls.Internals;
 using Microsoft.Maui.Controls.Compatibility.Platform.GTK.Extensions;
 
 namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK
@@ -13,14 +13,14 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK
 	public class VisualElementTracker<TElement, TNativeElement> : IDisposable where TElement : VisualElement where TNativeElement : Widget
 	{
 		private bool _isDisposed;
-		private TNativeElement _control;
-		private TElement _element;
-		private GtkFormsContainer _container;
+		private TNativeElement _control = null!;
+		private TElement _element = null!;
+		private GtkFormsContainer _container = null!;
 		private bool _invalidateArrangeNeeded;
 
-		private readonly NotifyCollectionChangedEventHandler _collectionChangedHandler;
+		private readonly NotifyCollectionChangedEventHandler _collectionChangedHandler = null!;
 
-		public event EventHandler Updated;
+		public event EventHandler Updated = null!;
 
 		public VisualElementTracker()
 		{
@@ -171,10 +171,10 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK
 			}
 
 			Container.Destroy();
-			Container = null;
+			Container = null!;
 		}
 
-		protected virtual void OnPropertyChanged(object sender, PropertyChangedEventArgs e)
+		protected virtual void OnPropertyChanged(object? sender, PropertyChangedEventArgs e)
 		{
 			if (Element.Batched)
 			{
@@ -219,7 +219,7 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK
 			}
 		}
 
-		private void ModelGestureRecognizersOnCollectionChanged(object sender, NotifyCollectionChangedEventArgs notifyCollectionChangedEventArgs)
+		private void ModelGestureRecognizersOnCollectionChanged(object? sender, NotifyCollectionChangedEventArgs notifyCollectionChangedEventArgs)
 		{
 			UpdatingGestureRecognizers();
 		}
@@ -229,7 +229,7 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK
 			Updated?.Invoke(this, EventArgs.Empty);
 		}
 
-		private void OnRedrawNeeded(object sender, EventArgs e)
+		private void OnRedrawNeeded(object? sender, EventArgs e)
 		{
 			UpdateNativeControl();
 		}
@@ -237,36 +237,40 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK
 		private void UpdatingGestureRecognizers()
 		{
 			var view = Element as View;
-			IList<IGestureRecognizer> gestures = view?.GestureRecognizers;
-
-			if (_container == null || gestures == null)
-				return;
-
-			_container.ButtonPressEvent -= OnContainerButtonPressEvent;
-
-			if (gestures.GetGesturesFor<TapGestureRecognizer>().Any() || gestures.GetGesturesFor<ClickGestureRecognizer>().Any())
+			if (view != null)
 			{
-				_container.ButtonPressEvent += OnContainerButtonPressEvent;
-			}
-			else
-			{
-				if (_control != null && PreventGestureBubbling)
+				IList<IGestureRecognizer> gestures = view.GestureRecognizers;
+
+				if (_container == null || gestures == null)
+					return;
+
+				_container.ButtonPressEvent -= OnContainerButtonPressEvent;
+
+				if (gestures.GetGesturesFor<TapGestureRecognizer>().Any() || gestures.GetGesturesFor<ClickGestureRecognizer>().Any())
 				{
-					_control.ButtonPressEvent += OnControlButtonPressEvent;
+					_container.ButtonPressEvent += OnContainerButtonPressEvent;
 				}
+				else
+				{
+					if (_control != null && PreventGestureBubbling)
+					{
+						_control.ButtonPressEvent += OnControlButtonPressEvent;
+					}
+				}
+
+				bool hasPinchGesture = gestures.GetGesturesFor<PinchGestureRecognizer>().GetEnumerator().MoveNext();
+				bool hasPanGesture = gestures.GetGesturesFor<PanGestureRecognizer>().GetEnumerator().MoveNext();
+
+				if (!hasPinchGesture && !hasPanGesture)
+					return;
 			}
-
-			bool hasPinchGesture = gestures.GetGesturesFor<PinchGestureRecognizer>().GetEnumerator().MoveNext();
-			bool hasPanGesture = gestures.GetGesturesFor<PanGestureRecognizer>().GetEnumerator().MoveNext();
-
-			if (!hasPinchGesture && !hasPanGesture)
-				return;
 		}
 
 		private void MaybeInvalidate()
 		{
-			if (Element.IsInNativeLayout)
-				return;
+			// TODO:
+			//if (Element.IsInNativeLayout)
+			//	return;
 
 			var parent = Container.Parent;
 			parent?.QueueDraw();
@@ -337,7 +341,7 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK
 
 		}
 
-		private void OnContainerButtonPressEvent(object o, ButtonPressEventArgs args)
+		private void OnContainerButtonPressEvent(object? o, ButtonPressEventArgs args)
 		{
 			var button = args.Event.Button;
 			if (button != 1 && button != 3)
@@ -394,7 +398,7 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK
 			}
 		}
 
-		private void OnControlButtonPressEvent(object o, ButtonPressEventArgs args)
+		private void OnControlButtonPressEvent(object? o, ButtonPressEventArgs args)
 		{
 			args.RetVal = true;
 		}

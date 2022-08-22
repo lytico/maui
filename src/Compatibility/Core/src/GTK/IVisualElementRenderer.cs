@@ -1,4 +1,5 @@
 using System;
+// using GTK.Primitives;
 using Container = Microsoft.Maui.Controls.Compatibility.Platform.GTK.GtkFormsContainer;
 
 namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK
@@ -17,6 +18,6 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK
 
 		SizeRequest GetDesiredSize(double widthConstraint, double heightConstraint);
 
-		void SetElementSize(Size size);
+		void SetElementSize(Graphics.Size size);
 	}
 }

@@ -10,15 +10,15 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK
 	/// </summary>
 	public class GtkFormsContainer : Gtk.EventBox
 	{
-		Color _backgroundColor;
+		Graphics.Color? _backgroundColor;
 
 		public GtkFormsContainer()
 		{
 			VisibleWindow = false;
-			BackgroundColor = Color.Transparent;
+			BackgroundColor = Graphics.Colors.Transparent;
 		}
 
-		Color BackgroundColor
+		Graphics.Color? BackgroundColor
 		{
 			get => _backgroundColor;
 			set
@@ -28,7 +28,7 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK
 			}
 		}
 
-		public void SetBackgroundColor(Color color)
+		public void SetBackgroundColor(Graphics.Color color)
 		{
 			BackgroundColor = color;
 		}
@@ -54,7 +54,8 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK
 				cr.Rectangle(clipBox.X, clipBox.Y, clipBox.Width, clipBox.Height);
 				cr.Clip();
 				cr.Save();
-				cr.SetSourceRGBA(BackgroundColor.R, BackgroundColor.G, BackgroundColor.B, BackgroundColor.A);
+				if (BackgroundColor != null)
+					cr.SetSourceRGBA(BackgroundColor.Red, BackgroundColor.Green, BackgroundColor.Blue, BackgroundColor.Alpha);
 				cr.Operator = Operator.Over;
 				cr.Paint();
 				cr.Restore();

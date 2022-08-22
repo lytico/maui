@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Gtk;
+// using GTK.Primitives;
 
 namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK.Extensions
 {
@@ -31,7 +32,7 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK.Extensions
 
 			if (widthFits && heightFits) // Enough space with given constraints
 			{
-				return new SizeRequest(new Size(desiredSize.Width, desiredSize.Height));
+				return new SizeRequest(new Graphics.Size(desiredSize.Width, desiredSize.Height));
 			}
 
 			if (!widthFits)
@@ -45,7 +46,7 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK.Extensions
 				heightFits = heightConstraint >= desiredSize.Height;
 			}
 
-			var size = new Size(desiredSize.Width, heightFits ? desiredSize.Height : (int)heightConstraint);
+			var size = new Graphics.Size(desiredSize.Width, heightFits ? desiredSize.Height : (int)heightConstraint);
 
 			return new SizeRequest(size);
 		}
@@ -55,6 +56,9 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK.Extensions
 			if (self.Parent is Fixed)
 			{
 				var container = self.Parent as Fixed;
+				if (container == null)
+					return;
+
 				var calcX = (int)Math.Round(x);
 				var calcY = (int)Math.Round(y);
 
@@ -121,10 +125,10 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK.Extensions
 			return self.Children.Contains(child);
 		}
 
-		public static Size GetMaxChildDesiredSize(this Widget self, double widthConstraint, double heightConstraint)
+		public static Graphics.Size GetMaxChildDesiredSize(this Widget self, double widthConstraint, double heightConstraint)
 		{
 			var container = self as Container;
-			var childReq = Size.Zero;
+			var childReq = Graphics.Size.Zero;
 
 			if (container != null)
 			{
@@ -180,10 +184,8 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK.Extensions
 			Console.WriteLine(string.Format("{0} Size: {1}", new String('\t', level), widget.Allocation.Size));
 			Console.WriteLine(string.Format("{0} Location: {1}", new String('\t', level), widget.Allocation.Location));
 
-			if (widget is Container)
+			if (widget is Container container)
 			{
-				var container = widget as Container;
-
 				foreach (Widget child in container.Children)
 				{
 					PrintTree(child);

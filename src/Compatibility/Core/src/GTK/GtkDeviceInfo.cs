@@ -1,31 +1,33 @@
-using Microsoft.Maui.Controls.Compatibility.Internals;
+// using GTK.Primitives;
+using Microsoft.Maui.Controls.Internals;
+using Microsoft.Maui.Devices;
 
 namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK
 {
-	public class GtkDeviceInfo : DeviceInfo
-	{
-		public override Size PixelScreenSize
-		{
-			get
-			{
-				return new Size(800, 600);
-			}
-		}
+	//public class GtkDeviceInfo : DeviceInfo
+	//{
+	//	public override Size PixelScreenSize
+	//	{
+	//		get
+	//		{
+	//			return new Size(800, 600);
+	//		}
+	//	}
 
-		public override Size ScaledScreenSize
-		{
-			get
-			{
-				return new Size(800, 600);
-			}
-		}
+	//	public override Size ScaledScreenSize
+	//	{
+	//		get
+	//		{
+	//			return new Size(800, 600);
+	//		}
+	//	}
 
-		public override double ScalingFactor
-		{
-			get
-			{
-				return 1.0d;
-			}
-		}
-	}
+	//	public override double ScalingFactor
+	//	{
+	//		get
+	//		{
+	//			return 1.0d;
+	//		}
+	//	}
+	//}
 }

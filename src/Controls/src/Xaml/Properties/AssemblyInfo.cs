@@ -11,6 +11,7 @@ using Microsoft.Maui.Controls.Internals;
 [assembly: InternalsVisibleTo("Microsoft.Maui.Controls.HotReload.UnitTests")]
 [assembly: InternalsVisibleTo("Microsoft.Maui.Controls.SourceGen")]
 [assembly: InternalsVisibleTo("Microsoft.Maui.Controls.Compatibility")]
+[assembly: InternalsVisibleTo("Microsoft.Maui.Controls.Compatibility.GTK")]
 [assembly: InternalsVisibleTo("CommunityToolkit.Maui")]
 [assembly: InternalsVisibleTo("CommunityToolkit.Maui.Core")]
 [assembly: InternalsVisibleTo("CommunityToolkit.Maui.UnitTests")]

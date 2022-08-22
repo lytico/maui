@@ -1,6 +1,6 @@
 using System;
 using Gtk;
-using static Microsoft.Maui.Controls.Compatibility.Button;
+using static Microsoft.Maui.Controls.Button;
 
 namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK.Extensions
 {

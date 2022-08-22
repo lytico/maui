@@ -2,7 +2,8 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 using Gdk;
-using Microsoft.Maui.Controls.Compatibility.Internals;
+// using GTK.Primitives;
+using Microsoft.Maui.Controls.Internals;
 using Microsoft.Maui.Controls.Compatibility.Platform.GTK.Renderers;
 using IOPath = System.IO.Path;
 
@@ -10,21 +11,21 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK.Extensions
 {
 	public static class ImageExtensions
 	{
-		public static Pixbuf ToPixbuf(this ImageSource imagesource)
+		public static Pixbuf? ToPixbuf(this ImageSource imagesource)
 		{
 			return ToPixbufAux(imagesource, null);
 		}
 
-		public static Pixbuf ToPixbuf(this ImageSource imagesource, Size size)
+		public static Pixbuf? ToPixbuf(this ImageSource imagesource, Gdk.Size size)
 		{
 			return ToPixbufAux(imagesource, size);
 		}
 
-		private static Pixbuf ToPixbufAux(this ImageSource imagesource, Size? size)
+		private static Pixbuf? ToPixbufAux(this ImageSource imagesource, Gdk.Size? size)
 		{
 			try
 			{
-				Pixbuf image = null;
+				Pixbuf? image = null;
 
 				var filesource = imagesource as FileImageSource;
 
@@ -50,7 +51,7 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK.Extensions
 			}
 		}
 
-		internal static async Task<Pixbuf> GetNativeImageAsync(this ImageSource imageSource, CancellationToken cancellationToken = default(CancellationToken))
+		internal static async Task<Pixbuf?> GetNativeImageAsync(this ImageSource imageSource, CancellationToken cancellationToken = default(CancellationToken))
 		{
 			if (imageSource == null || imageSource.IsEmpty)
 				return null;
@@ -65,22 +66,25 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK.Extensions
 			}
 			catch (OperationCanceledException)
 			{
-				Log.Warning("Image loading", "Image load cancelled");
+				System.Diagnostics.Debug.WriteLine("Image loading Image load cancelled");
+				// Log.Warning("Image loading", "Image load cancelled");
 			}
 			catch (Exception ex)
 			{
-				Log.Warning("Image loading", $"Image load failed: {ex}");
+				System.Diagnostics.Debug.WriteLine("Image loading Image load cancelled " + ex);
+				// Log.Warning("Image loading", $"Image load failed: {ex}");
 			}
 
 			return null;
 		}
 
-		internal static Task ApplyNativeImageAsync(this IVisualElementRenderer renderer, BindableProperty imageSourceProperty, Action<Pixbuf> onSet, Action<bool> onLoading = null, CancellationToken cancellationToken = default(CancellationToken))
+		internal static Task ApplyNativeImageAsync(this IVisualElementRenderer renderer, BindableProperty imageSourceProperty, Action<Pixbuf> onSet, Action<bool>? onLoading = null, CancellationToken cancellationToken = default(CancellationToken))
 		{
-			return renderer.ApplyNativeImageAsync(null, imageSourceProperty, onSet, onLoading, cancellationToken);
+			throw new ArgumentNullException(nameof(renderer));
+			// return renderer.ApplyNativeImageAsync(null, imageSourceProperty, onSet, onLoading, cancellationToken);
 		}
 
-		internal static async Task ApplyNativeImageAsync(this IVisualElementRenderer renderer, BindableObject bindable, BindableProperty imageSourceProperty, Action<Pixbuf> onSet, Action<bool> onLoading = null, CancellationToken cancellationToken = default(CancellationToken))
+		internal static async Task ApplyNativeImageAsync(this IVisualElementRenderer renderer, BindableObject bindable, BindableProperty imageSourceProperty, Action<Pixbuf?> onSet, Action<bool>? onLoading = null, CancellationToken cancellationToken = default(CancellationToken))
 		{
 			_ = renderer ?? throw new ArgumentNullException(nameof(renderer));
 			_ = imageSourceProperty ?? throw new ArgumentNullException(nameof(imageSourceProperty));
@@ -134,7 +138,7 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK.Extensions
 			}
 		}
 
-		internal static async Task ApplyNativeImageAsync(this BindableObject bindable, BindableProperty imageSourceProperty, Action<Pixbuf> onSet, Action<bool> onLoading = null, CancellationToken cancellationToken = default(CancellationToken))
+		internal static async Task ApplyNativeImageAsync(this BindableObject bindable, BindableProperty imageSourceProperty, Action<Pixbuf?> onSet, Action<bool>? onLoading = null, CancellationToken cancellationToken = default(CancellationToken))
 		{
 			_ = bindable ?? throw new ArgumentNullException(nameof(bindable));
 			_ = imageSourceProperty ?? throw new ArgumentNullException(nameof(imageSourceProperty));

@@ -39,7 +39,7 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK.Controls
 			}
 		}
 
-		public void SetTabIcon(int tabIndex, Pixbuf pixbuf)
+		public void SetTabIcon(int tabIndex, Pixbuf? pixbuf)
 		{
 			var page = _noteBook.GetNthPage(tabIndex);
 			var tabbedPageHeader = _noteBook.GetTabLabel(page) as TabbedPageHeader;

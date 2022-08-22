@@ -1,6 +1,6 @@
 using System.Linq;
 using Gtk;
-using Microsoft.Maui.Controls.Compatibility.Internals;
+using Microsoft.Maui.Controls.Internals;
 using Microsoft.Maui.Controls.Compatibility.Platform.GTK.Extensions;
 
 namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK.Helpers
@@ -10,7 +10,7 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK.Helpers
 		public static void ShowAlert(PlatformRenderer platformRender, AlertArguments arguments)
 		{
 			MessageDialog messageDialog = new MessageDialog(
-					platformRender.Toplevel as Window,
+					platformRender.Toplevel as Gtk.Window,
 					DialogFlags.DestroyWithParent,
 					MessageType.Other,
 					GetAlertButtons(arguments),
@@ -37,7 +37,7 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK.Helpers
 		public static void ShowActionSheet(PlatformRenderer platformRender, ActionSheetArguments arguments)
 		{
 			MessageDialog messageDialog = new MessageDialog(
-			   platformRender.Toplevel as Window,
+			   platformRender.Toplevel as Gtk.Window,
 			   DialogFlags.DestroyWithParent,
 			   MessageType.Other,
 			   ButtonsType.Cancel,
@@ -112,7 +112,10 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK.Helpers
 				var destructionButton =
 					messageDialog.AddButton(destruction, ResponseType.Reject) as Gtk.Button;
 
-				var destructionColor = Color.Red.ToGtkColor();
+				if (destructionButton == null)
+					return;
+
+				var destructionColor = Graphics.Colors.Red.ToGtkColor();
 				destructionButton.Child.ModifyFg(StateType.Normal, destructionColor);
 				destructionButton.Child.ModifyFg(StateType.Prelight, destructionColor);
 				destructionButton.Child.ModifyFg(StateType.Active, destructionColor);

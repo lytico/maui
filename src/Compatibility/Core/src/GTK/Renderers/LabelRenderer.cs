@@ -23,7 +23,7 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK.Renderers
 			if (!_perfectSizeValid)
 			{
 				_perfectSize = GetPerfectSize();
-				_perfectSize.Minimum = new Size(Math.Min(10, _perfectSize.Request.Width), _perfectSize.Request.Height);
+				_perfectSize.Minimum = new Graphics.Size((double)Math.Min(10, _perfectSize.Request.Width), (double)_perfectSize.Request.Height);
 				_perfectSizeValid = true;
 			}
 
@@ -35,13 +35,13 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK.Renderers
 
 			var result = GetPerfectSize((int)widthConstraint);
 			var tinyWidth = Math.Min(10, result.Request.Width);
-			result.Minimum = new Size(tinyWidth, result.Request.Height);
+			result.Minimum = new Graphics.Size(tinyWidth, result.Request.Height);
 
 			if (widthFits || Element.LineBreakMode == LineBreakMode.NoWrap)
 			{
 				return new SizeRequest(
-					new Size(result.Request.Width, _perfectSize.Request.Height),
-					new Size(result.Minimum.Width, _perfectSize.Request.Height));
+					new Graphics.Size(result.Request.Width, _perfectSize.Request.Height),
+					new Graphics.Size(result.Minimum.Width, _perfectSize.Request.Height));
 			}
 
 			bool containerIsNotInfinitelyWide = !double.IsInfinity(widthConstraint);
@@ -54,7 +54,7 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK.Renderers
 				if (textExceedsContainer || textCouldHaveWrapped)
 				{
 					var expandedWidth = Math.Max(tinyWidth, widthConstraint);
-					result.Request = new Size(expandedWidth, result.Request.Height);
+					result.Request = new Graphics.Size(expandedWidth, result.Request.Height);
 				}
 			}
 
@@ -103,7 +103,12 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK.Renderers
 
 		protected override void SetAccessibilityLabel()
 		{
-			var elemValue = (string)Element?.GetValue(AutomationProperties.NameProperty);
+			string? elemValue = null;
+
+			if (Element != null)
+			{
+				elemValue = (string)Element.GetValue(AutomationProperties.NameProperty);
+			}
 
 			if (string.IsNullOrWhiteSpace(elemValue)
 				&& Control?.Accessible.Description == Control?.Text)
@@ -151,9 +156,18 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK.Renderers
 			if (Control == null)
 				return;
 
-			var textColor = Element.TextColor != Color.Default ? Element.TextColor : Color.Black;
+			Gdk.Color textColor;
 
-			Control.ModifyFg(StateType.Normal, textColor.ToGtkColor());
+			if (Element.TextColor.Equals(Element.TextColor.GetDefault()))
+			{
+				textColor = Element.TextColor.GetBlack();
+			}
+			else
+			{
+				textColor = Element.TextColor.GetBlack();
+			}
+
+			Control.ModifyFg(StateType.Normal, textColor);
 		}
 
 		private void UpdateTextAlignment()
@@ -212,7 +226,7 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK.Renderers
 			Control.Layout.Width = Pango.Units.FromPixels(widthConstraint);
 			Control.Layout.GetPixelSize(out w, out h);
 
-			return new SizeRequest(new Size(w, h));
+			return new SizeRequest(new Graphics.Size(w, h));
 		}
 	}
 }

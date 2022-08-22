@@ -10,15 +10,15 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK
 	public abstract class ViewRenderer<TView, TNativeView> : VisualElementRenderer<TView, TNativeView>
 		where TView : View where TNativeView : NativeView
 	{
-		private string _defaultAccessibilityLabel;
-		private string _defaultAccessibilityHint;
+		private string? _defaultAccessibilityLabel;
+		private string? _defaultAccessibilityHint;
 
 		protected override void Dispose(bool disposing)
 		{
 			if (Control != null)
 			{
 				Control.Destroy();
-				Control = null;
+				Control = null!;
 			}
 			base.Dispose(disposing);
 		}
@@ -33,7 +33,7 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK
 			}
 		}
 
-		protected override void SetNativeControl(TNativeView view)
+		protected override void SetNativeControl(TNativeView? view)
 		{
 			base.SetNativeControl(view);
 

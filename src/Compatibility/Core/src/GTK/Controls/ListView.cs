@@ -5,9 +5,10 @@ using System.Linq;
 using GLib;
 using Gtk;
 using OpenTK.Input;
-using Microsoft.Maui.Controls.Compatibility.Internals;
+using Microsoft.Maui.Controls.Internals;
 using Microsoft.Maui.Controls.Compatibility.Platform.GTK.Cells;
 using Microsoft.Maui.Controls.Compatibility.Platform.GTK.Extensions;
+using OpenTK.Windowing.GraphicsLibraryFramework;
 
 namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK.Controls
 {
@@ -41,9 +42,9 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK.Controls
 
 	public class SelectedItemEventArgs : EventArgs
 	{
-		private object _selectedItem;
+		private object? _selectedItem;
 
-		public object SelectedItem
+		public object? SelectedItem
 		{
 			get
 			{
@@ -51,7 +52,7 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK.Controls
 			}
 		}
 
-		public SelectedItemEventArgs(object selectedItem)
+		public SelectedItemEventArgs(object? selectedItem)
 		{
 			_selectedItem = selectedItem;
 		}
@@ -62,7 +63,7 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK.Controls
 		public ListViewSeparator()
 		{
 			HeightRequest = 1;
-			ModifyBg(StateType.Normal, Color.Gray.ToGtkColor());    // Default Color: Gray
+			ModifyBg(StateType.Normal, Graphics.Colors.Gray.ToGtkColor());    // Default Color: Gray
 			VisibleWindow = false;
 		}
 	}
@@ -79,45 +80,45 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK.Controls
 	{
 		public State LoadState;
 		public uint LoadId;
-		public ListStore ListStore;
+		public ListStore? ListStore;
 		public int NumItems;
 		public int NumLoaded;
-		public List Items;
+		public List? Items;
 	}
 
 	public class ListView : ScrolledWindow
 	{
 		private const int RefreshHeight = 48;
 
-		private VBox _root;
-		private EventBox _headerContainer;
-		private Widget _header;
-		private VBox _list;
-		private EventBox _footerContainer;
-		private Widget _footer;
-		private Viewport _viewPort;
-		private IEnumerable<Widget> _cells;
-		private List<ListViewSeparator> _separators;
-		private object _selectedItem;
-		private Table _refreshHeader;
-		private ImageButton _refreshButton;
-		private Gtk.Label _refreshLabel;
+		private VBox? _root;
+		private EventBox? _headerContainer;
+		private Widget? _header;
+		private VBox? _list;
+		private EventBox? _footerContainer;
+		private Widget? _footer;
+		private Viewport? _viewPort;
+		private IEnumerable<Widget>? _cells;
+		private List<ListViewSeparator>? _separators;
+		private object? _selectedItem;
+		private Table? _refreshHeader;
+		private ImageButton? _refreshButton;
+		private Gtk.Label? _refreshLabel;
 		private bool _isPullToRequestEnabled;
 		private bool _refreshing;
-		private IdleData _data;
-		private ListStore _store = null;
-		private List _items;
-		private CellBase _selectedCell;
+		private IdleData? _data;
+		private ListStore? _store = null;
+		private List? _items;
+		private CellBase? _selectedCell;
 		private Gdk.Color _selectionColor;
 
 		public delegate void ItemTappedEventHandler(object sender, ItemTappedEventArgs args);
-		public event ItemTappedEventHandler OnItemTapped = null;
+		public event ItemTappedEventHandler? OnItemTapped = null;
 
 		public delegate void SelectedItemEventHandler(object sender, SelectedItemEventArgs args);
-		public event SelectedItemEventHandler OnSelectedItemChanged = null;
+		public event SelectedItemEventHandler? OnSelectedItemChanged = null;
 
 		public delegate void RefreshEventHandler(object sender, EventArgs args);
-		public event RefreshEventHandler OnRefresh = null;
+		public event RefreshEventHandler? OnRefresh = null;
 
 		public ListView()
 		{
@@ -143,9 +144,9 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK.Controls
 			base.Destroy();
 		}
 
-		public static Gdk.Color DefaultSelectionColor = Color.FromArgb("#3498DB").ToGtkColor();
+		public static Gdk.Color DefaultSelectionColor = Graphics.Color.FromArgb("#3498DB").ToGtkColor();
 
-		public Widget Header
+		public Widget? Header
 		{
 			get
 			{
@@ -161,7 +162,7 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK.Controls
 			}
 		}
 
-		public IEnumerable<Widget> Items
+		public IEnumerable<Widget>? Items
 		{
 			get
 			{
@@ -175,7 +176,7 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK.Controls
 			}
 		}
 
-		public Widget Footer
+		public Widget? Footer
 		{
 			get
 			{
@@ -191,7 +192,7 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK.Controls
 			}
 		}
 
-		public object SelectedItem
+		public object? SelectedItem
 		{
 			get { return _selectedItem; }
 			set
@@ -231,25 +232,31 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK.Controls
 
 		public void SetBackgroundColor(Gdk.Color backgroundColor)
 		{
-			if (_root != null)
+			if (_root == null)
+				return;
+
+			_root.ModifyBg(StateType.Normal, backgroundColor);
+			if (_viewPort != null)
 			{
-				_root.ModifyBg(StateType.Normal, backgroundColor);
 				_viewPort.ModifyBg(StateType.Normal, backgroundColor);
+			}
 
-				if (_headerContainer != null && !_headerContainer.Children.Any())
-				{
-					_headerContainer.ModifyBg(StateType.Normal, backgroundColor);
-				}
+			if (_headerContainer != null && !_headerContainer.Children.Any())
+			{
+				_headerContainer.ModifyBg(StateType.Normal, backgroundColor);
+			}
 
-				if (_footerContainer != null && !_footerContainer.Children.Any())
-				{
-					_footerContainer.ModifyBg(StateType.Normal, backgroundColor);
-				}
+			if (_footerContainer != null && !_footerContainer.Children.Any())
+			{
+				_footerContainer.ModifyBg(StateType.Normal, backgroundColor);
 			}
 		}
 
 		public void SetSeparatorColor(Gdk.Color separatorColor)
 		{
+			if (_separators == null)
+				return;
+
 			foreach (var separator in _separators)
 			{
 				separator.ModifyBg(StateType.Normal, separatorColor);
@@ -259,6 +266,9 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK.Controls
 
 		public void SetSeparatorVisibility(bool visible)
 		{
+			if (_separators == null)
+				return;
+
 			foreach (var separator in _separators)
 			{
 				separator.HeightRequest = visible ? 1 : 0;
@@ -269,10 +279,8 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK.Controls
 		{
 			IsPullToRequestEnabled = isPullToRequestEnabled;
 
-			if (_refreshHeader == null)
-			{
+			if (_refreshHeader == null || _root == null)
 				return;
-			}
 
 			if (IsPullToRequestEnabled)
 			{
@@ -290,6 +298,13 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK.Controls
 		{
 			Refreshing = refreshing;
 
+			if (_refreshHeader == null
+				|| _refreshButton == null
+				|| _refreshLabel == null)
+			{
+				return;
+			}
+
 			if (Refreshing)
 			{
 				_refreshHeader.Attach(_refreshLabel, 0, 1, 0, 1);
@@ -306,9 +321,7 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK.Controls
 		public void SetSeletedItem(object selectedItem)
 		{
 			if (selectedItem == null)
-			{
 				return;
-			}
 
 			SelectedItem = selectedItem;
 		}
@@ -372,7 +385,7 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK.Controls
 			ShowAll();
 		}
 
-		private void RefreshHeader(Widget newHeader)
+		private void RefreshHeader(Widget? newHeader)
 		{
 			if (_headerContainer != null)
 			{
@@ -387,12 +400,15 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK.Controls
 			if (newHeader != null)
 			{
 				_header = newHeader;
-				_headerContainer.Add(_header);
+				if (_headerContainer != null)
+				{
+					_headerContainer.Add(_header);
+				}
 				_header.ShowAll();
 			}
 		}
 
-		private void RefreshFooter(Widget newFooter)
+		private void RefreshFooter(Widget? newFooter)
 		{
 			if (_footerContainer != null)
 			{
@@ -407,7 +423,10 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK.Controls
 			if (newFooter != null)
 			{
 				_footer = newFooter;
-				_footerContainer.Add(_footer);
+				if (_footerContainer != null)
+				{
+					_footerContainer.Add(_footer);
+				}
 				_footer.ShowAll();
 			}
 		}
@@ -426,9 +445,15 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK.Controls
 
 		private bool LoadItems()
 		{
+			if (_data == null)
+				return true;
+
 			IdleData id = _data;
-			CellBase obj;
+			CellBase? obj;
 			TreeIter iter;
+
+			if (id.Items == null)
+				return true;
 
 			// Make sure we're in the right state 
 			var isLoading = (id.LoadState == Controls.State.Started) ||
@@ -458,11 +483,15 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK.Controls
 			// Get the item in the list at pos n_loaded 
 			obj = id.Items[id.NumLoaded] as CellBase;
 
-			// Append the row to the store
-			iter = id.ListStore.AppendValues(obj);
+			if (id.ListStore != null)
+			{
+				// Append the row to the store
+				iter = id.ListStore.AppendValues(obj);
 
-			// Fill in the row at position n_loaded
-			id.ListStore.SetValue(iter, 0, obj);
+				// Fill in the row at position n_loaded
+				id.ListStore.SetValue(iter, 0, obj);
+			}
+
 
 			id.NumLoaded += 1;
 
@@ -487,8 +516,11 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK.Controls
 			}
 		}
 
-		private void UpdateItem(CellBase cell)
+		private void UpdateItem(CellBase? cell)
 		{
+			if (cell == null)
+				return;
+
 			cell.ButtonPressEvent += (sender, args) =>
 			{
 				var gtkCell = sender as CellBase;
@@ -505,20 +537,30 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK.Controls
 
 			cell.VisibleWindow = false;
 
-			_list.PackStart(cell, false, false, 0);
+			if (_list != null)
+				_list.PackStart(cell, false, false, 0);
+
 			cell.ShowAll();
 
 			var separator = new ListViewSeparator();
-			_separators.Add(separator);
-			_list.PackStart(separator, false, false, 0);
+			if (_separators != null)
+				_separators.Add(separator);
+
+			if (_list != null)
+				_list.PackStart(separator, false, false, 0);
+
 			separator.ShowAll();
 		}
 
 		private void CleanupLoadItems()
 		{
+			if (_data == null)
+				return;
+
 			Debug.Assert(_data.LoadState == Controls.State.Completed);
 
-			_list.ShowAll();
+			if (_list != null)
+				_list.ShowAll();
 
 			if (_data.ListStore == null)
 				Debug.WriteLine("Something was wrong!");
@@ -528,10 +570,11 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK.Controls
 		{
 			_store = new ListStore(typeof(CellBase));
 
-			foreach (var cell in _cells)
-			{
-				items.Append(cell);
-			}
+			if (_cells != null)
+				foreach (var cell in _cells)
+				{
+					items.Append(cell);
+				}
 
 			ClearList();
 			LazyLoadItems(items);
@@ -542,35 +585,37 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK.Controls
 			_selectedCell = null;
 
 			if (_list != null)
-			{
 				foreach (var child in _list.Children)
 				{
 					_list.RemoveFromContainer(child);
 				}
-			}
 
 			if (_separators != null)
-			{
 				_separators.Clear();
-			}
 		}
 
-		private void UpdateSelectedItem(object value)
+		private void UpdateSelectedItem(object? value)
 		{
 			_selectedItem = value;
 
-			CellBase cell = _list.Children.OfType<CellBase>().FirstOrDefault(c => c.Item == value);
-			MarkCellAsSelected(cell);
+			if (_list != null && _list.Children != null)
+			{
+				CellBase? cell = _list.Children.OfType<CellBase>().FirstOrDefault(c => c.Item == value);
+				MarkCellAsSelected(cell);
+			}
 
 			OnSelectedItemChanged?.Invoke(this, new SelectedItemEventArgs(_selectedItem));
 		}
 
-		private void MarkCellAsSelected(CellBase cell)
+		private void MarkCellAsSelected(CellBase? cell)
 		{
 			if (cell == null)
 				return;
 
 			if (cell.Cell.GetIsGroupHeader<ItemsView<Cell>, Cell>())
+				return;
+
+			if (_list == null)
 				return;
 
 			foreach (var childCell in _list.Children.OfType<CellBase>())

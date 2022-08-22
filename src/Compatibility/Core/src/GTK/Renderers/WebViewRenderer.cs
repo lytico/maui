@@ -1,7 +1,7 @@
 using System;
 using System.ComponentModel;
 using System.Threading.Tasks;
-using Microsoft.Maui.Controls.Compatibility.Internals;
+using Microsoft.Maui.Controls.Internals;
 
 namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK.Renderers
 {
@@ -17,11 +17,20 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK.Renderers
 		void IEffectControlProvider.RegisterEffect(Effect effect)
 		{
 			var platformEffect = effect as PlatformEffect;
-			if (platformEffect != null)
-				platformEffect.SetContainer(Container);
+			//if (platformEffect != null)
+			//	platformEffect.SetContainer(Container);
+
+			if (platformEffect == null || Container == null || Control == null)
+			{
+				return;
+			}
+
+			platformEffect.Container = this;
+			//platformEffect.Control = Control;
+			platformEffect.Control = Container;
 		}
 
-		void IWebViewDelegate.LoadHtml(string html, string baseUrl)
+		void IWebViewDelegate.LoadHtml(string? html, string? baseUrl)
 		{
 			try
 			{
@@ -35,18 +44,19 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK.Renderers
 					}
 				}
 
-				if (Control != null)
+				if (Control != null && html != null)
 				{
 					Control.LoadHTML(html, baseUrl ?? string.Empty);
 				}
 			}
 			catch (Exception ex)
 			{
-				Log.Warning("WebView load string", $"WebView load string failed: {ex}");
+				System.Diagnostics.Debug.WriteLine("WebView load string", $"WebView load string failed: {ex}");
+				// Log.Warning("WebView load string", $"WebView load string failed: {ex}");
 			}
 		}
 
-		void IWebViewDelegate.LoadUrl(string url)
+		void IWebViewDelegate.LoadUrl(string? url)
 		{
 			try
 			{
@@ -67,7 +77,8 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK.Renderers
 			}
 			catch (Exception ex)
 			{
-				Log.Warning("WebView load url", $"WebView load url failed: {ex}");
+				System.Diagnostics.Debug.WriteLine("WebView load url", $"WebView load url failed: {ex}");
+				// Log.Warning("WebView load url", $"WebView load url failed: {ex}");
 			}
 		}
 
@@ -87,7 +98,8 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK.Renderers
 					}
 					catch (Exception ex)
 					{
-						Log.Warning("WebView loading", $"WebView load failed: {ex}");
+						System.Diagnostics.Debug.WriteLine("WebView loading", $"WebView load failed: {ex}");
+						// Log.Warning("WebView loading", $"WebView load failed: {ex}");
 					}
 
 					SetNativeControl(Control);
@@ -111,7 +123,7 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK.Renderers
 			EffectUtilities.RegisterEffectControlProvider(this, e.OldElement, e.NewElement);
 		}
 
-		protected override void OnElementPropertyChanged(object sender, PropertyChangedEventArgs e)
+		protected override void OnElementPropertyChanged(object? sender, PropertyChangedEventArgs e)
 		{
 			base.OnElementPropertyChanged(sender, e);
 
@@ -162,7 +174,7 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK.Renderers
 			}
 		}
 
-		private void OnLoadStarted(object sender, EventArgs e)
+		private void OnLoadStarted(object? sender, EventArgs e)
 		{
 			var uri = Control.Uri;
 
@@ -170,14 +182,14 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK.Renderers
 			{
 				var args = new WebNavigatingEventArgs(_lastEvent, new UrlWebViewSource { Url = uri }, uri);
 
-				Element.SendNavigating(args);
+				// TODO: Element.SendNavigating(args);
 
 				if (args.Cancel)
 					_lastEvent = WebNavigationEvent.NewPage;
 			}
 		}
 
-		private void OnLoadFinished(object o, EventArgs args)
+		private void OnLoadFinished(object? o, EventArgs args)
 		{
 			if (Control == null)
 			{
@@ -199,21 +211,23 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK.Renderers
 			UpdateCanGoBackForward();
 		}
 
-		private void OnEvalRequested(object sender, EvalRequested eventArg)
+		private void OnEvalRequested(object? sender, EvalRequested eventArg)
 		{
 			if (Control != null)
 			{
-				Control.ExecuteScript(eventArg?.Script);
+				var script = eventArg?.Script;
+				if (script != null)
+					Control.ExecuteScript(script);
 			}
 		}
 
 		Task<string> OnEvaluateJavaScriptRequested(string script)
 		{
 			Control?.ExecuteScript(script);
-			return null;
+			return null!;
 		}
 
-		private void OnGoBackRequested(object sender, EventArgs eventArgs)
+		private void OnGoBackRequested(object? sender, EventArgs eventArgs)
 		{
 			if (Control == null)
 			{
@@ -229,7 +243,7 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK.Renderers
 			UpdateCanGoBackForward();
 		}
 
-		private void OnGoForwardRequested(object sender, EventArgs eventArgs)
+		private void OnGoForwardRequested(object? sender, EventArgs eventArgs)
 		{
 			if (Control == null)
 			{
@@ -245,7 +259,7 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK.Renderers
 			UpdateCanGoBackForward();
 		}
 
-		void OnReloadRequested(object sender, EventArgs eventArgs)
+		void OnReloadRequested(object? sender, EventArgs eventArgs)
 		{
 			Control.Reload();
 		}

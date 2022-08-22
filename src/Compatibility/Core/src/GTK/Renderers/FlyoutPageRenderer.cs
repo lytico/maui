@@ -2,7 +2,7 @@ using System;
 using System.ComponentModel;
 using System.Threading.Tasks;
 using Gtk;
-using Microsoft.Maui.Controls.Compatibility.Internals;
+using Microsoft.Maui.Controls.Internals;
 using Microsoft.Maui.Controls.Compatibility.Platform.GTK.Controls;
 using Microsoft.Maui.Controls.Compatibility.Platform.GTK.Extensions;
 
@@ -10,36 +10,40 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK.Renderers
 {
 	public class FlyoutPageRenderer : AbstractPageRenderer<Controls.FlyoutPage, FlyoutPage>
 	{
-		Page _currentFlyout;
-		Page _currentDetail;
+		Page? _currentFlyout;
+		Page? _currentDetail;
 
 		public FlyoutPageRenderer()
 		{
-			MessagingCenter.Subscribe(this, Forms.BarTextColor, (NavigationPage sender, Color color) =>
+			MessagingCenter.Subscribe(this, Forms.BarTextColor, (NavigationPage? sender, Graphics.Color color) =>
 			{
 				var barTextColor = color;
 
 				if (barTextColor == null || barTextColor.IsDefaultOrTransparent())
 				{
-					Widget.UpdateBarTextColor(null);
+					if (Widget != null)
+						Widget.UpdateBarTextColor(null);
 				}
 				else
 				{
-					Widget.UpdateBarTextColor(color.ToGtkColor());
+					if (Widget != null)
+						Widget.UpdateBarTextColor(color.ToGtkColor());
 				}
 			});
 
-			MessagingCenter.Subscribe(this, Forms.BarBackgroundColor, (NavigationPage sender, Color color) =>
+			MessagingCenter.Subscribe(this, Forms.BarBackgroundColor, (NavigationPage? sender, Graphics.Color color) =>
 			{
 				var barBackgroundColor = color;
 
 				if (barBackgroundColor == null || barBackgroundColor.IsDefaultOrTransparent())
 				{
-					Widget.UpdateBarBackgroundColor(null);
+					if (Widget != null)
+						Widget.UpdateBarBackgroundColor(null);
 				}
 				else
 				{
-					Widget.UpdateBarBackgroundColor(color.ToGtkColor());
+					if (Widget != null)
+						Widget.UpdateBarBackgroundColor(color.ToGtkColor());
 				}
 			});
 		}
@@ -99,11 +103,13 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK.Renderers
 			Control?.Content?.SetSize(allocation.Width, allocation.Height);
 		}
 
-		protected override void OnElementPropertyChanged(object sender, PropertyChangedEventArgs e)
+		protected override void OnElementPropertyChanged(object? sender, PropertyChangedEventArgs e)
 		{
 			base.OnElementPropertyChanged(sender, e);
 
-			if (e.PropertyName.Equals(nameof(FlyoutPage.Flyout)) || e.PropertyName.Equals(nameof(FlyoutPage.Detail)))
+
+			if (!string.IsNullOrEmpty(e.PropertyName) && (e.PropertyName.Equals(nameof(FlyoutPage.Flyout), StringComparison.Ordinal) 
+				|| e.PropertyName.Equals(nameof(FlyoutPage.Detail), StringComparison.Ordinal)))
 			{
 				UpdateFlyoutPage();
 				UpdateFlyoutLayoutBehavior();
@@ -115,9 +121,9 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK.Renderers
 				UpdateFlyoutLayoutBehavior();
 		}
 
-		private async void HandleFlyoutPropertyChanged(object sender, PropertyChangedEventArgs e)
+		private async void HandleFlyoutPropertyChanged(object? sender, PropertyChangedEventArgs e)
 		{
-			if (e.PropertyName == Microsoft.Maui.Controls.Compatibility.Page.IconImageSourceProperty.PropertyName)
+			if (e.PropertyName == Microsoft.Maui.Controls.Page.IconImageSourceProperty.PropertyName)
 				await UpdateHamburguerIconAsync();
 		}
 
@@ -126,7 +132,7 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK.Renderers
 			Gtk.Application.Invoke(async delegate
 			{
 				await UpdateHamburguerIconAsync();
-				if (Page.Flyout != _currentFlyout)
+				if (Page != null && Page.Flyout != _currentFlyout)
 				{
 					if (_currentFlyout != null)
 					{
@@ -134,16 +140,24 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK.Renderers
 					}
 					if (Platform.GetRenderer(Page.Flyout) == null)
 						Platform.SetRenderer(Page.Flyout, Platform.CreateRenderer(Page.Flyout));
-					Widget.Flyout = Platform.GetRenderer(Page.Flyout).Container;
-					Widget.FlyoutTitle = Page.Flyout?.Title ?? string.Empty;
-					Page.Flyout.PropertyChanged += HandleFlyoutPropertyChanged;
-					_currentFlyout = Page.Flyout;
+					if (Widget != null)
+					{
+						Widget.Flyout = Platform.GetRenderer(Page.Flyout).Container;
+						Widget.FlyoutTitle = Page.Flyout?.Title ?? string.Empty;
+						if (Page.Flyout != null)
+							Page.Flyout.PropertyChanged += HandleFlyoutPropertyChanged;
+
+						_currentFlyout = Page.Flyout;
+					}
 				}
-				if (Page.Detail != _currentDetail)
+				if (Page != null && Page.Detail != _currentDetail)
 				{
 					if (Platform.GetRenderer(Page.Detail) == null)
 						Platform.SetRenderer(Page.Detail, Platform.CreateRenderer(Page.Detail));
-					Widget.Detail = Platform.GetRenderer(Page.Detail).Container;
+
+					if (Widget != null)
+						Widget.Detail = Platform.GetRenderer(Page.Detail).Container;
+
 					_currentDetail = Page.Detail;
 				}
 				UpdateBarTextColor();
@@ -153,11 +167,15 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK.Renderers
 
 		private void UpdateIsPresented()
 		{
-			Widget.IsPresented = Page.IsPresented;
+			if (Widget != null && Page != null)
+				Widget.IsPresented = Page.IsPresented;
 		}
 
 		private void UpdateFlyoutLayoutBehavior()
 		{
+			if (Page == null || Widget == null)
+				return;
+
 			if (Page.Detail is NavigationPage)
 			{
 				Widget.FlyoutLayoutBehaviorType = GetFlyoutLayoutBehavior(Page.FlyoutLayoutBehavior);
@@ -174,6 +192,9 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK.Renderers
 
 		private void UpdateBarTextColor()
 		{
+			if (Page == null || Widget == null)
+				return;
+
 			var navigationPage = Page.Detail as NavigationPage;
 
 			if (navigationPage != null)
@@ -186,6 +207,9 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK.Renderers
 
 		private void UpdateBarBackgroundColor()
 		{
+			if (Page == null || Widget == null)
+				return;
+
 			var navigationPage = Page.Detail as NavigationPage;
 
 			if (navigationPage != null)
@@ -197,9 +221,13 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK.Renderers
 
 		private Task UpdateHamburguerIconAsync()
 		{
-			return Page.Flyout.ApplyNativeImageAsync(Microsoft.Maui.Controls.Compatibility.Page.IconImageSourceProperty, image =>
+			if (Page == null || Widget == null)
+				return Task.FromResult(0);
+
+			return Page.Flyout.ApplyNativeImageAsync(Microsoft.Maui.Controls.Page.IconImageSourceProperty, image =>
 			{
-				Widget.UpdateHamburguerIcon(image);
+				if (image != null)
+					Widget.UpdateHamburguerIcon(image);
 
 				if (Page.Detail is NavigationPage navigationPage)
 				{
@@ -226,9 +254,10 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK.Renderers
 			}
 		}
 
-		private void OnIsPresentedChanged(object sender, EventArgs e)
+		private void OnIsPresentedChanged(object? sender, EventArgs e)
 		{
-			ElementController.SetValueFromRenderer(FlyoutPage.IsPresentedProperty, Widget.IsPresented);
+			if (ElementController != null && Widget != null)
+				ElementController.SetValueFromRenderer(FlyoutPage.IsPresentedProperty, Widget.IsPresented);
 		}
 	}
 

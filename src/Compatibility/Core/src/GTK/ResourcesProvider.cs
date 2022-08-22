@@ -1,7 +1,8 @@
-using Microsoft.Maui.Controls.Compatibility.Internals;
+using Microsoft.Maui.Controls.Internals;
 
 namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK
 {
+	[Obsolete]
 	internal class ResourcesProvider : ISystemResourcesProvider
 	{
 		private const string TitleStyleKey = "HeaderLabelStyle";

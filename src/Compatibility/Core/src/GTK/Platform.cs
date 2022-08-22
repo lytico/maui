@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Gtk;
-using Microsoft.Maui.Controls.Compatibility.Internals;
+// using GTK.Primitives;
+using Microsoft.Maui.Controls.Internals;
 using Microsoft.Maui.Controls.Compatibility.Platform.GTK.Helpers;
 using Microsoft.Maui.Controls.Compatibility.Platform.GTK.Renderers;
 
@@ -27,7 +28,7 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK
 
 		internal PlatformRenderer PlatformRenderer => _renderer;
 
-		Page Page { get; set; }
+		Page? Page { get; set; }
 
 		IReadOnlyList<Page> INavigation.ModalStack
 		{
@@ -43,15 +44,20 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK
 		{
 			_renderer = new PlatformRenderer(this);
 			_modals = new List<Page>();
-			Application.Current.NavigationProxy.Inner = this;
 
-			MessagingCenter.Subscribe(this, Page.AlertSignalName, (Page sender, AlertArguments arguments) => DialogHelper.ShowAlert(PlatformRenderer, arguments));
-			MessagingCenter.Subscribe(this, Page.ActionSheetSignalName, (Page sender, ActionSheetArguments arguments) => DialogHelper.ShowActionSheet(PlatformRenderer, arguments));
+			if (Application.Current != null && Application.Current.NavigationProxy != null)
+				Application.Current.NavigationProxy.Inner = this;
+
+			MessagingCenter.Subscribe(this, Page.AlertSignalName, (Page? sender, AlertArguments arguments) => DialogHelper.ShowAlert(PlatformRenderer, arguments));
+			MessagingCenter.Subscribe(this, Page.ActionSheetSignalName, (Page? sender, ActionSheetArguments arguments) => DialogHelper.ShowActionSheet(PlatformRenderer, arguments));
 		}
 
-		internal static void DisposeModelAndChildrenRenderers(Element view)
+		internal static void DisposeModelAndChildrenRenderers(Element? view)
 		{
 			IVisualElementRenderer renderer;
+
+			if (view == null)
+				return;
 
 			foreach (VisualElement child in view.Descendants())
 				DisposeModelAndChildrenRenderers(child);
@@ -67,7 +73,7 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK
 			var renderView = GetRenderer(view);
 
 			if (renderView == null || renderView.Container == null)
-				return new SizeRequest(Size.Zero);
+				return new SizeRequest(Graphics.Size.Zero);
 
 			return renderView.GetDesiredSize(widthConstraint, heightConstraint);
 		}
@@ -77,7 +83,7 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK
 			return (IVisualElementRenderer)element.GetValue(RendererProperty);
 		}
 
-		public static void SetRenderer(VisualElement element, IVisualElementRenderer value)
+		public static void SetRenderer(VisualElement? element, IVisualElementRenderer? value)
 		{
 			if (element != null)
 			{
@@ -124,7 +130,8 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK
 
 			AddChild(Page);
 
-			Application.Current.NavigationProxy.Inner = this;
+			if (Application.Current != null && Application.Current.NavigationProxy != null)
+				Application.Current.NavigationProxy.Inner = this;
 		}
 
 		private void AddChild(Page mainPage)
@@ -141,7 +148,7 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK
 			}
 		}
 
-		private void HandleChildRemoved(object sender, ElementEventArgs e)
+		private void HandleChildRemoved(object? sender, ElementEventArgs e)
 		{
 			var view = e.Element;
 			DisposeModelAndChildrenRenderers(view);
@@ -177,7 +184,7 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK
 
 			var pageControl = PlatformRenderer.Child as IPageControl;
 
-			Device.BeginInvokeOnMainThread(() =>
+			ApplicationModel.MainThread.BeginInvokeOnMainThread(() =>
 			{
 				if (pageControl != null)
 				{
@@ -248,7 +255,7 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK
 
 			var pageControl = PlatformRenderer.Child as IPageControl;
 
-			Device.BeginInvokeOnMainThread(() =>
+			ApplicationModel.MainThread.BeginInvokeOnMainThread(() =>
 			{
 				if (pageControl != null)
 				{
@@ -271,7 +278,9 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK
 				}
 			});
 
-			return Task.FromResult<object>(null);
+			//return Task.FromResult<object>(null);
+
+			return Task.FromResult(0);
 		}
 
 		void INavigation.RemovePage(Page page)

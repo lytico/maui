@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
-using Microsoft.Maui.Controls.Compatibility.Internals;
+using Microsoft.Maui.Controls.Internals;
 using Microsoft.Maui.Controls.Compatibility.Platform.GTK;
 
 namespace Microsoft.Maui.Controls.Compatibility
@@ -17,18 +17,19 @@ namespace Microsoft.Maui.Controls.Compatibility
 
 		public static bool IsInitialized { get; private set; }
 
+		[Obsolete]
 		public static void Init(IEnumerable<Assembly> rendererAssemblies = null)
 		{
 			if (IsInitialized)
 				return;
 
-			Log.Listeners.Add(new DelegateLogListener((c, m) => Debug.WriteLine(LogFormat, c, m)));
+			// Log.Listeners.Add(new DelegateLogListener((c, m) => Debug.WriteLine(LogFormat, c, m)));
 
 			Registrar.ExtraAssemblies = rendererAssemblies?.ToArray();
 
-			Device.PlatformServices = new GtkPlatformServices();
-			Device.Info = new GtkDeviceInfo();
-			Color.SetAccent(Color.FromArgb("#3498DB"));
+			// Device.PlatformServices = new GtkPlatformServices();
+			// Device.Info = new GtkDeviceInfo();
+			// Color.SetAccent(Color.FromArgb("#3498DB"));
 			ExpressionSearch.Default = new GtkExpressionSearch();
 
 			Registrar.RegisterAll(new[]

@@ -1,6 +1,6 @@
 using System.ComponentModel;
 using Microsoft.Maui.Controls.Compatibility.Platform.GTK.Extensions;
-using Microsoft.Maui.Controls.Compatibility.PlatformConfiguration.GTKSpecific;
+using Microsoft.Maui.Controls.PlatformConfiguration.GTKSpecific;
 
 namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK.Renderers
 {
@@ -50,7 +50,7 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK.Renderers
 			Control.SetBackgroundColor(Element.BackgroundColor);
 		}
 
-		private void SetColor(Color color)
+		private void SetColor(Graphics.Color color)
 		{
 			if (Element == null || Control == null)
 				return;

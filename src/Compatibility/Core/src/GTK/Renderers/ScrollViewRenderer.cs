@@ -1,14 +1,15 @@
 using System;
 using System.ComponentModel;
 using Gtk;
+// using GTK.Primitives;
 using Microsoft.Maui.Controls.Compatibility.Platform.GTK.Extensions;
 
 namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK.Renderers
 {
 	public class ScrollViewRenderer : ViewRenderer<ScrollView, ScrolledWindow>
 	{
-		private VisualElement _currentView;
-		private Viewport _viewPort;
+		private VisualElement? _currentView;
+		private Viewport? _viewPort;
 
 		protected IScrollViewController Controller
 		{
@@ -118,7 +119,7 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK.Renderers
 			base.UpdateBackgroundColor();
 		}
 
-		private void OnScrollEvent(object o, EventArgs args)
+		private void OnScrollEvent(object? o, EventArgs args)
 		{
 			Controller.SetScrolledPosition(Control.Hadjustment.Value, Control.Vadjustment.Value);
 		}
@@ -132,7 +133,7 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK.Renderers
 
 			_currentView = Element.Content;
 
-			IVisualElementRenderer renderer = null;
+			IVisualElementRenderer? renderer = null;
 
 			if (_currentView != null)
 			{
@@ -143,7 +144,8 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK.Renderers
 			if (renderer != null)
 			{
 				var content = renderer.Container;
-				_viewPort.Add(content);
+				if (_viewPort != null)
+					_viewPort.Add(content);
 			}
 		}
 
@@ -171,7 +173,7 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK.Renderers
 			}
 		}
 
-		private void OnScrollToRequested(object sender, ScrollToRequestedEventArgs e)
+		private void OnScrollToRequested(object? sender, ScrollToRequestedEventArgs e)
 		{
 			double x = e.ScrollX, y = e.ScrollY;
 
@@ -179,7 +181,7 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK.Renderers
 
 			if (mode == ScrollToMode.Element)
 			{
-				Point pos = Controller.GetScrollPositionForElement((VisualElement)e.Element, e.Position);
+				Graphics.Point pos = Controller.GetScrollPositionForElement((VisualElement)e.Element, e.Position);
 				x = pos.X;
 				y = pos.Y;
 				mode = ScrollToMode.Position;
