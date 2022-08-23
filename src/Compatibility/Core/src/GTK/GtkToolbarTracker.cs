@@ -18,15 +18,15 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK
 		private readonly string _defaultBackButtonTitle = "Back";
 
 		private readonly ToolbarTracker _toolbarTracker;
-		private HBox? _toolbar;
-		private HBox? _toolbarNavigationSection;
-		private Alignment? _toolbarTitleSectionWrapper;
-		private HBox? _toolbarTitleSection;
-		private HBox? _toolbarSection;
-		private Gtk.Label? _toolbarTitle;
-		private ImageControl? _toolbarIcon;
-		private NavigationPage? _navigation;
-		private string? _backButton;
+		private HBox _toolbar = null!;
+		private HBox _toolbarNavigationSection = null!;
+		private Alignment _toolbarTitleSectionWrapper = null!;
+		private HBox _toolbarTitleSection = null!;
+		private HBox _toolbarSection = null!;
+		private Gtk.Label _toolbarTitle = null!;
+		private ImageControl _toolbarIcon = null!;
+		private NavigationPage _navigation = null!;
+		private string _backButton = null!;
 
 		private FlyoutPage? _parentFlyoutPage;
 
@@ -64,11 +64,11 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK
 			}
 		}
 
-		public void TryHide(NavigationPage navPage = null)
+		public void TryHide(NavigationPage navPage = null!)
 		{
 			if (navPage == null || navPage == _navigation)
 			{
-				Navigation = null;
+				Navigation = null!;
 			}
 		}
 
@@ -126,7 +126,7 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK
 			return toolbar;
 		}
 
-		private void ToolbarTrackerOnCollectionChanged(object sender, EventArgs eventArgs)
+		private void ToolbarTrackerOnCollectionChanged(object? sender, EventArgs eventArgs)
 		{
 			UpdateToolbarItems();
 		}
@@ -140,13 +140,16 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK
 			UpdateItems(currentPage.ToolbarItems);
 		}
 
-		private void NavigationPagePropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+		private void NavigationPagePropertyChanged(object? sender, System.ComponentModel.PropertyChangedEventArgs e)
 		{
-			if (e.PropertyName.Equals(NavigationPage.BarTextColorProperty.PropertyName) ||
-				e.PropertyName.Equals(NavigationPage.BarBackgroundColorProperty.PropertyName) ||
-				e.PropertyName.Equals(NavigationPage.HasNavigationBarProperty.PropertyName) ||
-				e.PropertyName.Equals(Page.TitleProperty.PropertyName) ||
-				e.PropertyName.Equals(Page.IconImageSourceProperty.PropertyName))
+			if (e.PropertyName == null)
+				return;
+
+			if (e.PropertyName.Equals(NavigationPage.BarTextColorProperty.PropertyName, StringComparison.Ordinal) ||
+				e.PropertyName.Equals(NavigationPage.BarBackgroundColorProperty.PropertyName, StringComparison.Ordinal) ||
+				e.PropertyName.Equals(NavigationPage.HasNavigationBarProperty.PropertyName, StringComparison.Ordinal) ||
+				e.PropertyName.Equals(Page.TitleProperty.PropertyName, StringComparison.Ordinal) ||
+				e.PropertyName.Equals(Page.IconImageSourceProperty.PropertyName, StringComparison.Ordinal))
 				UpdateToolBar();
 		}
 
@@ -167,7 +170,7 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK
 
 		private void UpdateBarTextColor()
 		{
-			if (Navigation != null && Navigation.BarTextColor != Color.Default)
+			if (Navigation != null && Navigation.BarTextColor != Graphics.Colors.White)
 			{
 				var textColor = Navigation.BarTextColor.ToGtkColor();
 
@@ -264,7 +267,8 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK
 			if (_navigation == null)
 				return true;
 
-			return _navigation.StackDepth <= 1;
+			return false;
+			//return _navigation.StackDepth <= 1;
 		}
 
 		private void UpdateNavigationItems()
@@ -318,7 +322,8 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK
 
 		private string GetPreviousPageTitle()
 		{
-			if (_navigation == null || _navigation.StackDepth <= 1)
+			// if (_navigation == null || _navigation.StackDepth <= 1)
+			if (_navigation == null)
 				return string.Empty;
 
 			return _navigation.Peek(1).Title ?? _defaultBackButtonTitle;
@@ -326,7 +331,7 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK
 
 		private async Task NavigateBackFromBackButton()
 		{
-			var popAsyncInner = _navigation?.PopAsyncInner(true, true);
+			var popAsyncInner = _navigation?.PopAsyncInner(true, true, true);
 
 			if (popAsyncInner != null)
 				await popAsyncInner;
@@ -354,7 +359,7 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK
 				if (_toolbar != null)
 					_toolbar.Visible = false;
 
-				_toolbar = null;
+				_toolbar = null!;
 
 				return;
 			}
@@ -398,10 +403,10 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK
 
 		internal void ResetToolBar()
 		{
-			_toolbar = null;
+			_toolbar = null!;
 		}
 
-		private void OnToolbarItemPropertyChanged(object sender, PropertyChangedEventArgs e)
+		private void OnToolbarItemPropertyChanged(object? sender, PropertyChangedEventArgs e)
 		{
 			if (e.PropertyName == MenuItem.IsEnabledProperty.PropertyName)
 				UpdateToolbarItems();
@@ -435,7 +440,7 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK
 			public static ToolButton CreateToolButton(ToolbarItem item)
 			{
 				var pixBuf = item.IconImageSource.ToPixbuf();
-				Gtk.Image icon = pixBuf != null ? new Gtk.Image(pixBuf) : null;
+				Gtk.Image icon = pixBuf != null! ? new Gtk.Image(pixBuf) : null!;
 				ToolButton button = new ToolButton(icon, item.Text);
 				ApplyDefaultDimensions(button);
 				button.TooltipText = item.Text ?? string.Empty;

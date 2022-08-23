@@ -10,7 +10,7 @@ using Microsoft.Maui.Controls.Compatibility.Platform.GTK.Renderers;
 [assembly: ExportImageSourceHandler(typeof(UriImageSource), typeof(UriImageSourceHandler))]
 [assembly: ExportImageSourceHandler(typeof(FontImageSource), typeof(FontImageSourceHandler))]
 
-[assembly: Microsoft.Maui.Controls.Dependency(typeof(ResourcesProvider))]
+// [assembly: Microsoft.Maui.Controls.Dependency(typeof(ResourcesProvider))]
 // [assembly: Dependency(typeof(GtkSerializer))]
 
 [assembly: ExportRenderer(typeof(ActivityIndicator), typeof(ActivityIndicatorRenderer))]

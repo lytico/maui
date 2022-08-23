@@ -10,8 +10,8 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK.Renderers
 {
 	public class FlyoutPageRenderer : AbstractPageRenderer<Controls.FlyoutPage, FlyoutPage>
 	{
-		Page? _currentFlyout;
-		Page? _currentDetail;
+		Page _currentFlyout = null!;
+		Page _currentDetail = null!;
 
 		public FlyoutPageRenderer()
 		{
@@ -147,7 +147,8 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK.Renderers
 						if (Page.Flyout != null)
 							Page.Flyout.PropertyChanged += HandleFlyoutPropertyChanged;
 
-						_currentFlyout = Page.Flyout;
+						if (Page != null && Page.Flyout != null)
+							_currentFlyout = Page.Flyout;
 					}
 				}
 				if (Page != null && Page.Detail != _currentDetail)

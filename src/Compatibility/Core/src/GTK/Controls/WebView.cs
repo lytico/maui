@@ -25,11 +25,11 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK.Controls
 	public class WebView : EventBox, IWebView
 	{
 		private GTKPlatform _platform;
-		private WebViewWindows? _webViewWindows;
-		private WebViewLinux? _webViewLinux;
+		private WebViewWindows _webViewWindows = null!;
+		private WebViewLinux _webViewLinux = null!;
 
-		public event EventHandler? LoadStarted;
-		public event EventHandler? LoadFinished;
+		public event EventHandler LoadStarted = null!;
+		public event EventHandler LoadFinished = null!;
 
 		public string Uri
 		{
@@ -114,7 +114,7 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK.Controls
 			}
 		}
 
-		public void Navigate(string? uri)
+		public void Navigate(string uri)
 		{
 			if (_platform == GTKPlatform.Windows)
 			{
@@ -265,7 +265,7 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK.Controls
 		[DllImport("libgdk-win32-2.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
 		private static extern IntPtr gdk_win32_drawable_get_handle(IntPtr d);
 
-		private WebBrowser? _browser = null;
+		private WebBrowser _browser = null!;
 
 		/// <summary>
 		/// Imported unmanaged function for setting the parent of a window.
@@ -373,8 +373,8 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK.Controls
 
 	public class WebViewLinux : EventBox
 	{
-		private VBox? _vbox = null;
-		private WebKit.WebView? _webview = null;
+		private VBox _vbox = null!;
+		private WebKit.WebView _webview = null!;
 
 		public WebViewLinux()
 		{

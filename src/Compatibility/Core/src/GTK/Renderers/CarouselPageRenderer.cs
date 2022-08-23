@@ -12,23 +12,7 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK.Renderers
 {
 	internal class CarouselPageRenderer : AbstractPageRenderer<Carousel, CarouselPage>
 	{
-		private List<PageContainer>? _pages;
-		//private int _selectedIndex;
-
-		//public int SelectedIndex
-		//{
-		//	get { return _selectedIndex; }
-		//	set
-		//	{
-		//		if (_selectedIndex == value)
-		//			return;
-
-		//		_selectedIndex = value;
-
-		//		if (Page != null)
-		//			Page.CurrentPage = (ContentPage)Element.LogicalChildren[(int)SelectedIndex];
-		//	}
-		//}
+		private List<PageContainer> _pages = null!;
 
 		protected override void Dispose(bool disposing)
 		{

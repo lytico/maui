@@ -13,10 +13,10 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK.Renderers
 	public class ListViewRenderer : ViewRenderer<ListView, Controls.ListView>
 	{
 		private bool _disposed;
-		private Controls.ListView? _listView;
-		private IVisualElementRenderer? _headerRenderer;
-		private IVisualElementRenderer? _footerRenderer;
-		private List<CellBase>? _cells;
+		private Controls.ListView _listView = null!;
+		private IVisualElementRenderer _headerRenderer = null!;
+		private IVisualElementRenderer _footerRenderer = null!;
+		private List<CellBase> _cells = null!;
 		private Gdk.Rectangle _lastAllocation = Gdk.Rectangle.Zero;
 
 		public ListViewRenderer()
@@ -74,7 +74,7 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK.Renderers
 			base.OnElementChanged(e);
 		}
 
-		protected override void OnElementPropertyChanged(object sender, PropertyChangedEventArgs e)
+		protected override void OnElementPropertyChanged(object? sender, PropertyChangedEventArgs e)
 		{
 			base.OnElementPropertyChanged(sender, e);
 
@@ -108,7 +108,7 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK.Renderers
 			{
 				_disposed = true;
 
-				_cells = null;
+				_cells = null!;
 
 				if (Element != null)
 				{
@@ -120,7 +120,7 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK.Renderers
 				if (_headerRenderer != null)
 				{
 					Platform.DisposeModelAndChildrenRenderers(_headerRenderer.Element);
-					_headerRenderer = null;
+					_headerRenderer = null!;
 				}
 
 				var headerView = ListView?.HeaderElement as VisualElement;
@@ -132,13 +132,13 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK.Renderers
 					_listView.OnItemTapped -= OnItemTapped;
 					_listView.OnRefresh -= OnRefresh;
 					_listView.Destroy();
-					_listView = null;
+					_listView = null!;
 				}
 
 				if (_footerRenderer != null)
 				{
 					Platform.DisposeModelAndChildrenRenderers(_footerRenderer.Element);
-					_footerRenderer = null;
+					_footerRenderer = null!;
 				}
 
 				var footerView = ListView?.FooterElement as VisualElement;
@@ -210,7 +210,7 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK.Renderers
 					_cells.Add(cell);
 			}
 
-			if (_listView != null)
+			if (_listView != null && _cells != null)
 				_listView.Items = _cells;
 		}
 
@@ -252,14 +252,14 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK.Renderers
 		private void ClearHeader()
 		{
 			if (_listView != null)
-				_listView.Header = null;
+				_listView.Header = null!;
 
 			if (_headerRenderer == null)
 				return;
 
 			Platform.DisposeModelAndChildrenRenderers(_headerRenderer.Element);
 			_headerRenderer.Element.MeasureInvalidated -= OnHeaderMeasureInvalidated;
-			_headerRenderer = null;
+			_headerRenderer = null!;
 		}
 
 		private void OnHeaderMeasureInvalidated(object? sender, EventArgs eventArgs)
@@ -327,14 +327,14 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK.Renderers
 			if (_listView == null)
 				return;
 
-			_listView.Footer = null;
+			_listView.Footer = null!;
 
 			if (_footerRenderer == null)
 				return;
 
 			Platform.DisposeModelAndChildrenRenderers(_footerRenderer.Element);
 			_footerRenderer.Element.MeasureInvalidated -= OnFooterMeasureInvalidated;
-			_footerRenderer = null;
+			_footerRenderer = null!;
 		}
 
 		private void OnFooterMeasureInvalidated(object? sender, EventArgs eventArgs)

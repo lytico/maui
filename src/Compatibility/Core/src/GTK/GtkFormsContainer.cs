@@ -10,7 +10,7 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK
 	/// </summary>
 	public class GtkFormsContainer : Gtk.EventBox
 	{
-		Graphics.Color? _backgroundColor;
+		Graphics.Color _backgroundColor = null!;
 
 		public GtkFormsContainer()
 		{
@@ -18,7 +18,7 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK
 			BackgroundColor = Graphics.Colors.Transparent;
 		}
 
-		Graphics.Color? BackgroundColor
+		Graphics.Color BackgroundColor
 		{
 			get => _backgroundColor;
 			set

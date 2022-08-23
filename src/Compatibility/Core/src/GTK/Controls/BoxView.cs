@@ -6,7 +6,7 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK.Controls
 {
 	public class BoxView : GtkFormsContainer
 	{
-		private Graphics.Color? _color;
+		private Graphics.Color _color = null!;
 		private int _height;
 		private int _width;
 		private int _topLeftRadius, _topRightRadius, _bottomLeftRadius, _bottomRightRadius;

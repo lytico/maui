@@ -80,7 +80,7 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK.Controls
 	{
 		public State LoadState;
 		public uint LoadId;
-		public ListStore? ListStore;
+		public ListStore ListStore = null!;
 		public int NumItems;
 		public int NumLoaded;
 		public List? Items;
@@ -90,25 +90,25 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK.Controls
 	{
 		private const int RefreshHeight = 48;
 
-		private VBox? _root;
-		private EventBox? _headerContainer;
-		private Widget? _header;
-		private VBox? _list;
-		private EventBox? _footerContainer;
-		private Widget? _footer;
-		private Viewport? _viewPort;
-		private IEnumerable<Widget>? _cells;
-		private List<ListViewSeparator>? _separators;
-		private object? _selectedItem;
-		private Table? _refreshHeader;
-		private ImageButton? _refreshButton;
-		private Gtk.Label? _refreshLabel;
+		private VBox _root = null!;
+		private EventBox _headerContainer = null!;
+		private Widget _header = null!;
+		private VBox _list = null!;
+		private EventBox _footerContainer = null!;
+		private Widget _footer = null!;
+		private Viewport _viewPort = null!;
+		private IEnumerable<Widget> _cells = null!;
+		private List<ListViewSeparator> _separators = null!;
+		private object _selectedItem = null!;
+		private Table _refreshHeader = null!;
+		private ImageButton _refreshButton = null!;
+		private Gtk.Label _refreshLabel = null!;
 		private bool _isPullToRequestEnabled;
 		private bool _refreshing;
-		private IdleData? _data;
-		private ListStore? _store = null;
-		private List? _items;
-		private CellBase? _selectedCell;
+		private IdleData _data = null!;
+		private ListStore _store = null!;
+		private List _items = null!;
+		private CellBase _selectedCell = null!;
 		private Gdk.Color _selectionColor;
 
 		public delegate void ItemTappedEventHandler(object sender, ItemTappedEventArgs args);
@@ -130,23 +130,23 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK.Controls
 		public override void Destroy()
 		{
 			_store?.Dispose();
-			_store = null;
-			_root = null;
-			_refreshButton = null;
-			_refreshLabel = null;
-			_headerContainer = null;
-			_header = null;
-			_list = null;
-			_footerContainer = null;
-			_footer = null;
-			_viewPort = null;
-			_refreshHeader = null;
+			_store = null!;
+			_root = null!;
+			_refreshButton = null!;
+			_refreshLabel = null!;
+			_headerContainer = null!;
+			_header = null!;
+			_list = null!;
+			_footerContainer = null!;
+			_footer = null!;
+			_viewPort = null!;
+			_refreshHeader = null!;
 			base.Destroy();
 		}
 
 		public static Gdk.Color DefaultSelectionColor = Graphics.Color.FromArgb("#3498DB").ToGtkColor();
 
-		public Widget? Header
+		public Widget Header
 		{
 			get
 			{
@@ -162,7 +162,7 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK.Controls
 			}
 		}
 
-		public IEnumerable<Widget>? Items
+		public IEnumerable<Widget> Items
 		{
 			get
 			{
@@ -176,7 +176,7 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK.Controls
 			}
 		}
 
-		public Widget? Footer
+		public Widget Footer
 		{
 			get
 			{
@@ -192,7 +192,7 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK.Controls
 			}
 		}
 
-		public object? SelectedItem
+		public object SelectedItem
 		{
 			get { return _selectedItem; }
 			set
@@ -582,7 +582,7 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK.Controls
 
 		private void ClearList()
 		{
-			_selectedCell = null;
+			_selectedCell = null!;
 
 			if (_list != null)
 				foreach (var child in _list.Children)
@@ -594,20 +594,21 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK.Controls
 				_separators.Clear();
 		}
 
-		private void UpdateSelectedItem(object? value)
+		private void UpdateSelectedItem(object value)
 		{
 			_selectedItem = value;
 
 			if (_list != null && _list.Children != null)
 			{
 				CellBase? cell = _list.Children.OfType<CellBase>().FirstOrDefault(c => c.Item == value);
-				MarkCellAsSelected(cell);
+				if (cell != null)
+					MarkCellAsSelected(cell);
 			}
 
 			OnSelectedItemChanged?.Invoke(this, new SelectedItemEventArgs(_selectedItem));
 		}
 
-		private void MarkCellAsSelected(CellBase? cell)
+		private void MarkCellAsSelected(CellBase cell)
 		{
 			if (cell == null)
 				return;

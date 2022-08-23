@@ -9,8 +9,8 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK
 {
 	internal class GtkExpressionSearch : ExpressionVisitor, IExpressionSearch
 	{
-		private List<object>? _results;
-		private Type? _targetType;
+		private List<object> _results = null!;
+		private Type _targetType = null!;
 
 		public List<T?> FindObjects<T>(Expression expression) where T : class
 		{

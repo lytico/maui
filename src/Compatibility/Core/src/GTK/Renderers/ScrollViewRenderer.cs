@@ -8,8 +8,8 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK.Renderers
 {
 	public class ScrollViewRenderer : ViewRenderer<ScrollView, ScrolledWindow>
 	{
-		private VisualElement? _currentView;
-		private Viewport? _viewPort;
+		private VisualElement _currentView = null!;
+		private Viewport _viewPort = null!;
 
 		protected IScrollViewController Controller
 		{
@@ -60,7 +60,7 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK.Renderers
 			}
 		}
 
-		protected override void OnElementPropertyChanged(object sender, PropertyChangedEventArgs e)
+		protected override void OnElementPropertyChanged(object? sender, PropertyChangedEventArgs e)
 		{
 			base.OnElementPropertyChanged(sender, e);
 
@@ -91,7 +91,7 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK.Renderers
 			if (_viewPort != null)
 			{
 				_viewPort.Destroy();
-				_viewPort = null;
+				_viewPort = null!;
 			}
 
 			base.Dispose(disposing);

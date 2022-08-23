@@ -29,7 +29,7 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK.Renderers
 
 		public Controls.Page Control { get; protected set; } = null!;
 
-		public TWidget? Widget { get; protected set; }
+		public TWidget Widget { get; protected set; } = null!;
 
 		public VisualElement Element { get; protected set; } = null!;
 

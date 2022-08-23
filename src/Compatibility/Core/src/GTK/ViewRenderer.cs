@@ -10,8 +10,8 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK
 	public abstract class ViewRenderer<TView, TNativeView> : VisualElementRenderer<TView, TNativeView>
 		where TView : View where TNativeView : NativeView
 	{
-		private string? _defaultAccessibilityLabel;
-		private string? _defaultAccessibilityHint;
+		private string _defaultAccessibilityLabel = null!;
+		private string _defaultAccessibilityHint = null!;
 
 		protected override void Dispose(bool disposing)
 		{
