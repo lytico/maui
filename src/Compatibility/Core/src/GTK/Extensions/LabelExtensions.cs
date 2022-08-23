@@ -51,13 +51,13 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK.Extensions
 			builder.AppendFormat(" font=\"{0}\"", fontDescription.ToString());
 
 			// BackgroundColor => 
-			if (!span.BackgroundColor.IsDefault)
+			if (!span.BackgroundColor.IsDefault())
 			{
 				builder.AppendFormat(" bgcolor=\"{0}\"", span.BackgroundColor.ToRgbaColor());
 			}
 
 			// ForegroundColor => 
-			if (!span.TextColor.IsDefault)
+			if (!span.TextColor.IsDefault())
 			{
 				builder.AppendFormat(" fgcolor=\"{0}\"", span.TextColor.ToRgbaColor());
 			}

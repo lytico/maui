@@ -20,7 +20,7 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK.Renderers
 			var widthFits = widthConstraint >= req.Width;
 			var heightFits = heightConstraint >= req.Height;
 
-			var size = new Size(widthFits ? req.Width : (int)widthConstraint,
+			var size = new Graphics.Size(widthFits ? req.Width : (int)widthConstraint,
 				heightFits ? req.Height : (int)heightConstraint);
 
 			return new SizeRequest(size);
@@ -49,9 +49,12 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK.Renderers
 					var btn = new GtkImageButton();
 					SetNativeControl(btn);
 
-					Control.Clicked += OnButtonClicked;
-					Control.ButtonPressEvent += OnButtonPressEvent;
-					Control.ButtonReleaseEvent += OnButtonReleaseEvent;
+					if (Control != null)
+					{
+						Control.Clicked += OnButtonClicked;
+						Control.ButtonPressEvent += OnButtonPressEvent;
+						Control.ButtonReleaseEvent += OnButtonReleaseEvent;
+					}
 				}
 
 				UpdateBackgroundColor();
@@ -64,14 +67,14 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK.Renderers
 			base.OnElementChanged(e);
 		}
 
-		protected override void OnElementPropertyChanged(object sender, PropertyChangedEventArgs e)
+		protected override void OnElementPropertyChanged(object? sender, PropertyChangedEventArgs e)
 		{
 			base.OnElementPropertyChanged(sender, e);
 
 			if (e.PropertyName == Button.TextProperty.PropertyName)
 				UpdateText();
-			else if (e.PropertyName == Button.FontProperty.PropertyName)
-				UpdateText();
+			//else if (e.PropertyName == Button.FontProperty.PropertyName)
+			//	UpdateText();
 			else if (e.PropertyName == Button.TextTransformProperty.PropertyName)
 				UpdateText();
 			else if (e.PropertyName == VisualElement.BackgroundColorProperty.PropertyName)
@@ -91,11 +94,11 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK.Renderers
 			if (Element == null)
 				return;
 
-			if (Element.BackgroundColor.IsDefault)
+			if (Element.BackgroundColor.IsDefault())
 			{
 				Control.ResetBackgroundColor();
 			}
-			else if (Element.BackgroundColor != Color.Transparent)
+			else if (Element.BackgroundColor != Graphics.Colors.Transparent)
 			{
 				Control.SetBackgroundColor(Element.BackgroundColor.ToGtkColor());
 			}
@@ -107,11 +110,14 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK.Renderers
 
 		protected override void SetAccessibilityLabel()
 		{
-			var elemValue = (string)Element?.GetValue(AutomationProperties.NameProperty);
+			if (Element != null)
+			{
+				var elemValue = (string)Element.GetValue(AutomationProperties.NameProperty);
 
-			if (string.IsNullOrWhiteSpace(elemValue)
-				&& Control?.Accessible.Description == Control?.LabelWidget.Text)
-				return;
+				if (string.IsNullOrWhiteSpace(elemValue)
+					&& Control?.Accessible.Description == Control?.LabelWidget.Text)
+					return;
+			}
 
 			base.SetAccessibilityLabel();
 		}
@@ -126,7 +132,7 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK.Renderers
 			((IButtonController)Element)?.SendReleased();
 		}
 
-		private void OnButtonClicked(object sender, EventArgs e)
+		private void OnButtonClicked(object? sender, EventArgs e)
 		{
 			((IButtonController)Element)?.SendClicked();
 		}
@@ -160,11 +166,11 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK.Renderers
 
 			Control.SetBorderWidth(borderWidth);
 
-			if (Element.BorderColor.IsDefault)
+			if (Element.BorderColor.IsDefault())
 			{
 				Control.ResetBorderColor();
 			}
-			else if (Element.BorderColor != Color.Transparent)
+			else if (Element.BorderColor != Graphics.Colors.Transparent)
 			{
 				Control.SetBorderColor(Element.BorderColor.ToGtkColor());
 			}

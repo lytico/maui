@@ -206,7 +206,7 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK.Renderers
 			{
 				var cell = GetCell(item);
 
-				if (_cells != null)
+				if (_cells != null && cell != null)
 					_cells.Add(cell);
 			}
 
@@ -502,13 +502,23 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK.Renderers
 					if (group.Count != 0)
 					{
 						if (HasHeader(group))
-							_cells.Add(GetCell(group.HeaderContent));
+						{
+							var hCell = GetCell(group.HeaderContent);
+							if (hCell != null)
+							{
+								_cells.Add(hCell);
+							}
+						}
 						else
+						{
 							_cells.Add(CreateEmptyHeader());
+						}
 
 						foreach (var item in group.ToList())
 						{
-							_cells.Add(GetCell(item as Cell));
+							var cellItem = GetCell(item as Cell);
+							if (cellItem != null)
+								_cells.Add(cellItem);
 						}
 					}
 
@@ -543,7 +553,7 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK.Renderers
 				Graphics.Colors.Black.ToGtkColor());
 		}
 
-		private CellBase GetCell(Cell cell)
+		private CellBase? GetCell(Cell cell)
 		{
 			var renderer =
 				(Cells.CellRenderer)Registrar.Registered.GetHandlerForObject<IRegisterable>(cell);

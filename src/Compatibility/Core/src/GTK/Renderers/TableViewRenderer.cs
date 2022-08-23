@@ -9,7 +9,7 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK.Renderers
 		private const int DefaultRowHeight = 44;
 
 		private bool _disposed;
-		private Controls.TableView _tableView;
+		private Controls.TableView _tableView = null!;
 
 		protected override void UpdateBackgroundColor()
 		{
@@ -63,7 +63,7 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK.Renderers
 			base.OnElementChanged(e);
 		}
 
-		protected override void OnElementPropertyChanged(object sender, PropertyChangedEventArgs e)
+		protected override void OnElementPropertyChanged(object? sender, PropertyChangedEventArgs e)
 		{
 			base.OnElementPropertyChanged(sender, e);
 
@@ -111,7 +111,7 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK.Renderers
 
 		void UpdateBackgroundView()
 		{
-			if (Element.BackgroundColor.IsDefault)
+			if (Element.BackgroundColor.IsDefault())
 			{
 				return;
 			}
@@ -120,7 +120,7 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK.Renderers
 			Control.SetBackgroundColor(backgroundColor);
 		}
 
-		void OnItemTapped(object sender, Controls.ItemTappedEventArgs args)
+		void OnItemTapped(object? sender, Controls.ItemTappedEventArgs args)
 		{
 			if (Element == null)
 				return;
@@ -134,7 +134,7 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK.Renderers
 			}
 		}
 
-		void OnModelChanged(object sender, EventArgs e)
+		void OnModelChanged(object? sender, EventArgs e)
 		{
 			SetSource();
 		}

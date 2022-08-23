@@ -5,8 +5,8 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK.Renderers
 {
 	public class LayoutRenderer : ViewRenderer<Layout, Fixed>
 	{
-		private Fixed _fixed;
-		private LayoutElementPackager _packager;
+		private Fixed _fixed = null!;
+		private LayoutElementPackager _packager = null!;
 
 		protected override void OnElementChanged(ElementChangedEventArgs<Layout> e)
 		{
@@ -55,7 +55,7 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK.Renderers
 			base.Dispose(disposing);
 		}
 
-		private void LayoutChanged(object sender, System.EventArgs e)
+		private void LayoutChanged(object? sender, System.EventArgs e)
 		{
 			QueueResize();
 		}

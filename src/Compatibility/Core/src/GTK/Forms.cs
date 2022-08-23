@@ -18,7 +18,7 @@ namespace Microsoft.Maui.Controls.Compatibility
 		public static bool IsInitialized { get; private set; }
 
 		[Obsolete]
-		public static void Init(IEnumerable<Assembly> rendererAssemblies = null)
+		public static void Init(IEnumerable<Assembly> rendererAssemblies = null!)
 		{
 			if (IsInitialized)
 				return;

@@ -26,11 +26,14 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK.Renderers
 			base.OnElementChanged(e);
 		}
 
-		protected override void OnElementPropertyChanged(object sender, PropertyChangedEventArgs e)
+		protected override void OnElementPropertyChanged(object? sender, PropertyChangedEventArgs e)
 		{
 			base.OnElementPropertyChanged(sender, e);
 
-			if (e.PropertyName.Equals("Content", System.StringComparison.InvariantCultureIgnoreCase))
+			if (e.PropertyName == null)
+				return;
+
+			if (e.PropertyName.Equals("Content", System.StringComparison.Ordinal))
 			{
 				PackChild();
 			}
@@ -42,12 +45,12 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK.Renderers
 
 		private void SetupLayer()
 		{
-			if (Element.BackgroundColor == Color.Default)
+			if (Element.BackgroundColor == Graphics.Colors.White)
 				Control.ResetBackgroundColor();
 			else
 				Control.SetBackgroundColor(Element.BackgroundColor);
 
-			if (Element.BorderColor == Color.Default)
+			if (Element.BorderColor == Graphics.Colors.White)
 				Control.ResetBorderColor();
 			else
 				Control.SetBorderColor(Element.BorderColor);

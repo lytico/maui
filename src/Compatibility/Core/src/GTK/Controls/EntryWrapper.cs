@@ -107,7 +107,7 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK.Controls
 			}
 		}
 
-		private void PlaceHolderContainerPressed(object o, ButtonPressEventArgs args)
+		private void PlaceHolderContainerPressed(object? o, ButtonPressEventArgs args)
 		{
 			if (Sensitive)
 			{
@@ -117,12 +117,12 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK.Controls
 			}
 		}
 
-		private void EntryFocusedOut(object o, FocusOutEventArgs args)
+		private void EntryFocusedOut(object? o, FocusOutEventArgs args)
 		{
 			ShowPlaceholderIfNeeded();
 		}
 
-		private void EntryChanged(object sender, EventArgs e)
+		private void EntryChanged(object? sender, EventArgs e)
 		{
 			ShowPlaceholderIfNeeded();
 		}

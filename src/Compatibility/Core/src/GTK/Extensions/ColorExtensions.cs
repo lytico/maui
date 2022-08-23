@@ -11,6 +11,11 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK.Extensions
 			return gtkColor;
 		}
 
+		internal static Graphics.Color ToMAUIColor(this Gdk.Color color, ushort opacity = 255)
+		{
+			return new Graphics.Color(color.Red, color.Green, color.Blue, opacity);
+		}
+
 		//internal static Microsoft.Maui.Controls.Compatibility.Color ToXFColor(this Gdk.Color color, double opacity = 255)
 		//{
 		//	return new Color(color.Red, color.Green, color.Blue, opacity);

@@ -6,8 +6,8 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK.Controls
 {
 	public class NotebookWrapper : GtkFormsContainer
 	{
-		private Notebook _noteBook;
-		private Pixbuf _backgroundPixbuf;
+		private Notebook _noteBook = null!;
+		private Pixbuf _backgroundPixbuf = null!;
 
 		public NotebookWrapper()
 		{
@@ -98,7 +98,14 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK.Controls
 
 		public async void SetBackgroundImage(ImageSource imageSource)
 		{
-			_backgroundPixbuf = await imageSource.GetNativeImageAsync();
+			if (imageSource == null)
+				return;
+
+			var nativeImage = await imageSource.GetNativeImageAsync();
+			if (nativeImage == null)
+				return;
+
+			_backgroundPixbuf = nativeImage;
 
 			for (int i = 0; i < _noteBook.NPages; i++)
 			{
@@ -128,7 +135,7 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK.Controls
 	internal class NotebookPageWrapper : Fixed
 	{
 		private Gdk.Rectangle _lastAllocation = Gdk.Rectangle.Zero;
-		private ImageControl _image;
+		private ImageControl _image = null!;
 		private Widget _widget;
 
 		public NotebookPageWrapper(Widget widget)

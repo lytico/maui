@@ -23,13 +23,13 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK.Controls
 
 	public class TimePickerWindow : Gtk.Window
 	{
-		private Gtk.HBox _timeBox;
-		private Gtk.Label _labelHour;
-		private Gtk.SpinButton _txtHour;
-		private Gtk.Label _labelMin;
-		private Gtk.SpinButton _txtMin;
-		private Gtk.Label _labelSec;
-		private Gtk.SpinButton _txtSec;
+		private Gtk.HBox _timeBox = null!;
+		private Gtk.Label _labelHour = null!;
+		private Gtk.SpinButton _txtHour = null!;
+		private Gtk.Label _labelMin = null!;
+		private Gtk.SpinButton _txtMin = null!;
+		private Gtk.Label _labelSec = null!;
+		private Gtk.SpinButton _txtSec = null!;
 
 		public TimePickerWindow()
 			: base(Gtk.WindowType.Popup)
@@ -57,7 +57,7 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK.Controls
 
 		public delegate void TimeEventHandler(object sender, TimeEventArgs args);
 
-		public event TimeEventHandler OnTimeChanged;
+		public event TimeEventHandler OnTimeChanged = null!;
 
 		protected override bool OnExposeEvent(Gdk.EventExpose args)
 		{
@@ -184,7 +184,7 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK.Controls
 			OnTimeChanged?.Invoke(this, new TimeEventArgs(CurrentTime));
 		}
 
-		protected virtual void OnTxtHourValueChanged(object sender, EventArgs e)
+		protected virtual void OnTxtHourValueChanged(object? sender, EventArgs e)
 		{
 			if (_txtHour.Value == 24)
 				_txtHour.Value = 0;
@@ -192,7 +192,7 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK.Controls
 			RefreshTime();
 		}
 
-		protected virtual void OnTxtMinValueChanged(object sender, EventArgs e)
+		protected virtual void OnTxtMinValueChanged(object? sender, EventArgs e)
 		{
 			if (_txtMin.Value == 60)
 				_txtMin.Value = 0;
@@ -200,7 +200,7 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK.Controls
 			RefreshTime();
 		}
 
-		protected virtual void OnTxtSecValueChanged(object sender, EventArgs e)
+		protected virtual void OnTxtSecValueChanged(object? sender, EventArgs e)
 		{
 			if (_txtSec.Value == 60)
 				_txtSec.Value = 0;
@@ -228,14 +228,14 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK.Controls
 	{
 		private const string DefaultTimeFormat = @"hh\:mm\:ss";
 
-		private CustomComboBox _comboBox;
+		private CustomComboBox _comboBox = null!;
 		private Gdk.Color _color;
 		private TimeSpan _currentTime;
-		private string _timeFormat;
+		private string _timeFormat = null!;
 
-		public event EventHandler TimeChanged;
-		public event EventHandler GotFocus;
-		public event EventHandler LostFocus;
+		public event EventHandler TimeChanged = null!;
+		public event EventHandler GotFocus = null!;
+		public event EventHandler LostFocus = null!;
 
 		public TimePicker()
 		{
@@ -243,10 +243,13 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK.Controls
 
 			CurrentTime = new TimeSpan(DateTime.Now.Ticks);
 
-			TextColor = _comboBox.Entry.Style.Text(Gtk.StateType.Normal);
+			if (_comboBox != null)
+			{
+				TextColor = _comboBox.Entry.Style.Text(Gtk.StateType.Normal);
 
-			_comboBox.Entry.Changed += new EventHandler(OnTxtTimeChanged);
-			_comboBox.PopupButton.Clicked += new EventHandler(OnBtnShowTimePickerClicked);
+				_comboBox.Entry.Changed += new EventHandler(OnTxtTimeChanged);
+				_comboBox.PopupButton.Clicked += new EventHandler(OnBtnShowTimePickerClicked);
+			}
 		}
 
 		public TimeSpan CurrentTime
@@ -309,14 +312,14 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK.Controls
 			}
 		}
 
-		protected virtual void OnTxtTimeChanged(object sender, EventArgs e)
+		protected virtual void OnTxtTimeChanged(object? sender, EventArgs e)
 		{
 			_comboBox.Entry.ModifyText(Gtk.StateType.Normal, TextColor);
 
 			TimeChanged?.Invoke(this, e);
 		}
 
-		protected virtual void OnBtnShowTimePickerClicked(object sender, EventArgs e)
+		protected virtual void OnBtnShowTimePickerClicked(object? sender, EventArgs e)
 		{
 			ShowTimePickerWindow();
 		}
@@ -362,7 +365,7 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK.Controls
 				: DateTime.Today.Date.Add(_currentTime).ToString(_timeFormat);
 		}
 
-		private void OnPickerClosed(object sender, EventArgs e)
+		private void OnPickerClosed(object? sender, EventArgs e)
 		{
 			var window = sender as TimePickerWindow;
 

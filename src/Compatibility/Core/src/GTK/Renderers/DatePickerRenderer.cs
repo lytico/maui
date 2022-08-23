@@ -44,7 +44,7 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK.Renderers
 			base.OnElementChanged(e);
 		}
 
-		protected override void OnElementPropertyChanged(object sender, PropertyChangedEventArgs e)
+		protected override void OnElementPropertyChanged(object? sender, PropertyChangedEventArgs e)
 		{
 			base.OnElementPropertyChanged(sender, e);
 
@@ -77,7 +77,7 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK.Renderers
 			base.Dispose(disposing);
 		}
 
-		internal override void OnElementFocusChangeRequested(object sender, VisualElement.FocusRequestArgs args)
+		internal override void OnElementFocusChangeRequested(object? sender, VisualElement.FocusRequestArgs args)
 		{
 			if (Control == null)
 				return;
@@ -122,17 +122,17 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK.Renderers
 			Control.Sensitive = Element.IsEnabled;
 		}
 
-		private void GotFocus(object sender, EventArgs e)
+		private void GotFocus(object? sender, EventArgs e)
 		{
 			ElementController.SetValueFromRenderer(VisualElement.IsFocusedPropertyKey, true);
 		}
 
-		private void LostFocus(object sender, EventArgs e)
+		private void LostFocus(object? sender, EventArgs e)
 		{
 			ElementController.SetValueFromRenderer(VisualElement.IsFocusedPropertyKey, false);
 		}
 
-		private void OnDateChanged(object sender, EventArgs e)
+		private void OnDateChanged(object? sender, EventArgs e)
 		{
 			ElementController?.SetValueFromRenderer(DatePicker.DateProperty, Control.CurrentDate.Date);
 		}

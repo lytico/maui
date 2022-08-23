@@ -22,10 +22,10 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK.Controls
 		}
 	}
 
-	public partial class DatePickerWindow : Window
+	public partial class DatePickerWindow : Gtk.Window
 	{
-		VBox _datebox;
-		RangeCalendar _calendar;
+		VBox _datebox = null!;
+		RangeCalendar _calendar = null!;
 
 		public DatePickerWindow()
 			: base(WindowType.Popup)
@@ -76,7 +76,7 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK.Controls
 
 		public delegate void DateEventHandler(object sender, DateEventArgs args);
 
-		public event DateEventHandler OnDateTimeChanged;
+		public event DateEventHandler OnDateTimeChanged = null!;
 
 		protected override bool OnExposeEvent(Gdk.EventExpose args)
 		{
@@ -90,22 +90,22 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK.Controls
 			return false;
 		}
 
-		protected virtual void OnButtonPressEvent(object o, ButtonPressEventArgs args)
+		protected virtual void OnButtonPressEvent(object? o, ButtonPressEventArgs args)
 		{
 			Close();
 		}
 
-		protected virtual void OnCalendarButtonPressEvent(object o, ButtonPressEventArgs args)
+		protected virtual void OnCalendarButtonPressEvent(object? o, ButtonPressEventArgs args)
 		{
 			args.RetVal = true;
 		}
 
-		protected virtual void OnCalendarDaySelected(object sender, EventArgs e)
+		protected virtual void OnCalendarDaySelected(object? sender, EventArgs e)
 		{
 			OnDateTimeChanged?.Invoke(this, new DateEventArgs(SelectedDate));
 		}
 
-		protected virtual void OnCalendarDaySelectedDoubleClick(object sender, EventArgs e)
+		protected virtual void OnCalendarDaySelectedDoubleClick(object? sender, EventArgs e)
 		{
 			OnDateTimeChanged?.Invoke(this, new DateEventArgs(SelectedDate));
 			Close();
@@ -225,16 +225,16 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK.Controls
 
 	public partial class DatePicker : EventBox
 	{
-		CustomComboBox _comboBox;
+		CustomComboBox _comboBox = null!;
 		Gdk.Color _color;
 		DateTime _currentDate;
 		DateTime _minDate;
 		DateTime _maxDate;
-		string _dateFormat;
+		string _dateFormat = null!;
 
-		public event EventHandler DateChanged;
-		public event EventHandler GotFocus;
-		public event EventHandler LostFocus;
+		public event EventHandler DateChanged = null!;
+		public event EventHandler GotFocus = null!;
+		public event EventHandler LostFocus = null!;
 
 		public DatePicker()
 		{
@@ -242,14 +242,17 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK.Controls
 
 			CurrentDate = DateTime.Now;
 
-			TextColor = _comboBox.Entry.Style.Text(StateType.Normal);
+			if (_comboBox != null)
+			{
+				TextColor = _comboBox.Entry.Style.Text(StateType.Normal);
 
-			_comboBox.Entry.CanDefault = false;
-			_comboBox.Entry.CanFocus = false;
-			_comboBox.Entry.IsEditable = false;
-			_comboBox.Entry.State = StateType.Normal;
-			_comboBox.Entry.FocusGrabbed += new EventHandler(OnEntryFocused);
-			_comboBox.PopupButton.Clicked += new EventHandler(OnBtnShowCalendarClicked);
+				_comboBox.Entry.CanDefault = false;
+				_comboBox.Entry.CanFocus = false;
+				_comboBox.Entry.IsEditable = false;
+				_comboBox.Entry.State = StateType.Normal;
+				_comboBox.Entry.FocusGrabbed += new EventHandler(OnEntryFocused);
+				_comboBox.PopupButton.Clicked += new EventHandler(OnBtnShowCalendarClicked);
+			}
 		}
 
 		public DateTime CurrentDate
@@ -327,7 +330,7 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK.Controls
 
 		public void ClosePicker()
 		{
-			var windows = Window.ListToplevels();
+			var windows = Gtk.Window.ListToplevels();
 			var window = windows.FirstOrDefault(w => w.GetType() == typeof(DatePickerWindow));
 
 			if (window != null)
@@ -391,18 +394,18 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK.Controls
 			_comboBox.Entry.Text = _currentDate.ToString(string.IsNullOrEmpty(_dateFormat) ? "D" : _dateFormat);
 		}
 
-		void OnBtnShowCalendarClicked(object sender, EventArgs e)
+		void OnBtnShowCalendarClicked(object? sender, EventArgs e)
 		{
 			ShowPickerWindow();
 		}
 
-		void OnEntryFocused(object sender, EventArgs e)
+		void OnEntryFocused(object? sender, EventArgs e)
 		{
 			ShowPickerWindow();
 			GotFocus?.Invoke(this, EventArgs.Empty);
 		}
 
-		void OnPickerClosed(object sender, EventArgs e)
+		void OnPickerClosed(object? sender, EventArgs e)
 		{
 			var window = sender as DatePickerWindow;
 

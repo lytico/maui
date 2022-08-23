@@ -5,9 +5,9 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK.Controls
 	// CustomCombobox, Gtk.Entry + Gtk.Button
 	public class CustomComboBox : Gtk.HBox
 	{
-		private Gtk.Entry _entry;
-		private Gtk.Button _button;
-		private Gtk.Arrow _arrow;
+		private Gtk.Entry _entry = null!;
+		private Gtk.Button _button = null!;
+		private Gtk.Arrow _arrow = null!;
 		private Gdk.Color _color;
 
 		public CustomComboBox()
@@ -43,8 +43,8 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK.Controls
 
 		public void SetBackgroundColor(Gdk.Color color)
 		{
-			ModifyBg(Gtk.StateType.Normal, Microsoft.Maui.Controls.Compatibility.Color.Red.ToGtkColor());
-			Entry.ModifyBase(Gtk.StateType.Normal, Microsoft.Maui.Controls.Compatibility.Color.Blue.ToGtkColor());
+			ModifyBg(Gtk.StateType.Normal, Graphics.Colors.Red.ToGtkColor());
+			Entry.ModifyBase(Gtk.StateType.Normal, Graphics.Colors.Blue.ToGtkColor());
 		}
 
 		private void BuildCustomComboBox()

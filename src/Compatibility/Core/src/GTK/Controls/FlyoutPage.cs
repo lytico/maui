@@ -27,7 +27,7 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK.Controls
 		private Widget _flyout;
 		private Widget _detail;
 		private FlyoutLayoutBehaviorType _flyoutBehaviorType;
-		private static Pixbuf _hamburgerPixBuf;
+		private static Pixbuf _hamburgerPixBuf = null!;
 		private bool _displayTitle;
 		private bool _animationsEnabled;
 
@@ -153,7 +153,7 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK.Controls
 				}
 				catch
 				{
-					return null;
+					return null!;
 				}
 			}
 			set
@@ -188,7 +188,7 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK.Controls
 			}
 		}
 
-		public event EventHandler IsPresentedChanged;
+		public event EventHandler IsPresentedChanged = null!;
 
 		protected override void OnSizeAllocated(Gdk.Rectangle allocation)
 		{
@@ -306,7 +306,7 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK.Controls
 			}
 		}
 
-		private void OnHamburgerClicked(object sender, EventArgs e)
+		private void OnHamburgerClicked(object? sender, EventArgs e)
 		{
 			IsPresented = !IsPresented;
 		}
@@ -338,7 +338,8 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK.Controls
 				}
 				catch (Exception ex)
 				{
-					Internals.Log.Warning("FlyoutPage HamburguerIcon", "Could not load hamburguer icon: {0}", ex);
+					System.Diagnostics.Debug.WriteLine("FlyoutPage HamburguerIcon Could not load hamburguer icon:" + ex);
+					// Internals.Log.Warning("FlyoutPage HamburguerIcon", "Could not load hamburguer icon: {0}", ex);
 				}
 
 				_hamburguerButton = new ToolButton(_hamburguerIcon, string.Empty);
@@ -415,9 +416,9 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK.Controls
 				}
 			}
 
-			public event EventHandler HamburguerClicked;
+			public event EventHandler HamburguerClicked = null!;
 
-			private void OnHamburguerButtonClicked(object sender, EventArgs e)
+			private void OnHamburguerButtonClicked(object? sender, EventArgs e)
 			{
 				HamburguerClicked?.Invoke(this, EventArgs.Empty);
 			}

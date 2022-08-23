@@ -9,11 +9,11 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK.Cells
 {
 	public abstract class CellBase : EventBox
 	{
-		private Cell _cell;
+		private Cell _cell = null!;
 		private int _desiredHeight;
-		private IList<MenuItem> _contextActions;
+		private IList<MenuItem> _contextActions = null!;
 
-		public Action<object, PropertyChangedEventArgs> PropertyChanged;
+		public Action<object, PropertyChangedEventArgs> PropertyChanged = null!;
 
 		protected CellBase()
 		{
@@ -29,18 +29,18 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK.Cells
 					return;
 
 				if (_cell != null)
-					Device.BeginInvokeOnMainThread(_cell.SendDisappearing);
+					ApplicationModel.MainThread.BeginInvokeOnMainThread(_cell.SendDisappearing);
 
 				_cell = value;
 				UpdateCell();
 				_contextActions = Cell.ContextActions;
 
 				if (_cell != null)
-					Device.BeginInvokeOnMainThread(_cell.SendAppearing);
+					ApplicationModel.MainThread.BeginInvokeOnMainThread(_cell.SendAppearing);
 			}
 		}
 
-		public object Item => Cell?.BindingContext;
+		public object? Item => Cell?.BindingContext;
 
 		protected bool ParentHasUnevenRows
 		{
@@ -81,7 +81,7 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK.Cells
 			}
 		}
 
-		public void HandlePropertyChanged(object sender, PropertyChangedEventArgs e)
+		public void HandlePropertyChanged(object? sender, PropertyChangedEventArgs e)
 		{
 			PropertyChanged?.Invoke(this, e);
 		}

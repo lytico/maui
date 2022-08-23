@@ -12,7 +12,6 @@ using Microsoft.Maui.Controls.Compatibility.Platform.GTK.Renderers;
 
 namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK
 {
-	[System.Obsolete("This renderer is obsolete please try to use the corresponding handler/mapper")]
 	public class GtkToolbarTracker
 	{
 		private readonly string _defaultBackButtonTitle = "Back";

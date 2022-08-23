@@ -8,8 +8,8 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK.Cells
 		VBox _root;
 		Gtk.Label _textLabel;
 		Gtk.Label _detailLabel;
-		string _text;
-		string _detail;
+		string _text = null!;
+		string _detail = null!;
 		Gdk.Color _textColor;
 		Gdk.Color _detailColor;
 		bool _isGroupHeader;

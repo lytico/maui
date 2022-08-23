@@ -55,7 +55,7 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK.Renderers
 			base.OnElementChanged(e);
 		}
 
-		protected override void OnElementPropertyChanged(object sender, PropertyChangedEventArgs e)
+		protected override void OnElementPropertyChanged(object? sender, PropertyChangedEventArgs e)
 		{
 			base.OnElementPropertyChanged(sender, e);
 
@@ -129,7 +129,7 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK.Renderers
 			}
 		}
 
-		private void TextViewBufferChanged(object sender, EventArgs e)
+		private void TextViewBufferChanged(object? sender, EventArgs e)
 		{
 			TextBuffer buffer = Control.TextView.Buffer;
 
@@ -150,7 +150,7 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK.Renderers
 			EditorController.SendCompleted();
 		}
 
-		private static void AdjustMinimumHeight(TextView textView, FontDescription font = null)
+		private static void AdjustMinimumHeight(TextView textView, FontDescription font = null!)
 		{
 			var fDescr = font != null ? font : textView.Style.FontDescription;
 			var metrics = textView.PangoContext.GetMetrics(font, Language.Default);

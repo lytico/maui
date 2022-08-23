@@ -177,7 +177,7 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK.Controls
 			}
 		}
 
-		private void EntryChanged(object sender, EventArgs e)
+		private void EntryChanged(object? sender, EventArgs e)
 		{
 			if (!string.IsNullOrEmpty(_entryWrapper.Entry.Text))
 			{
@@ -189,7 +189,7 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK.Controls
 			}
 		}
 
-		private void CancelButtonClicked(object sender, EventArgs e)
+		private void CancelButtonClicked(object? sender, EventArgs e)
 		{
 			_entryWrapper.Entry.Text = string.Empty;
 		}

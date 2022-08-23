@@ -40,8 +40,8 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK
 
 		private static bool CheckWindowsGtk()
 		{
-			string location = null;
-			Version version = null;
+			string? location = null;
+			Version? version = null;
 			Version minVersion = new Version(2, 12, 22);
 
 			using (var key = Microsoft.Win32.Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Xamarin\GtkSharp\InstallFolder"))

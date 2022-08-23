@@ -59,7 +59,7 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK.Renderers
 			base.OnElementChanged(e);
 		}
 
-		protected override void OnElementPropertyChanged(object sender, PropertyChangedEventArgs e)
+		protected override void OnElementPropertyChanged(object? sender, PropertyChangedEventArgs e)
 		{
 			base.OnElementPropertyChanged(sender, e);
 
@@ -71,7 +71,7 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK.Renderers
 				UpdateFormat();
 		}
 
-		internal override void OnElementFocusChangeRequested(object sender, VisualElement.FocusRequestArgs args)
+		internal override void OnElementFocusChangeRequested(object? sender, VisualElement.FocusRequestArgs args)
 		{
 			if (Control == null)
 				return;
@@ -105,17 +105,17 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK.Renderers
 			Control.TimeFormat = Element.Format;
 		}
 
-		private void GotFocus(object sender, EventArgs e)
+		private void GotFocus(object? sender, EventArgs e)
 		{
 			ElementController.SetValueFromRenderer(VisualElement.IsFocusedPropertyKey, true);
 		}
 
-		private void LostFocus(object sender, EventArgs e)
+		private void LostFocus(object? sender, EventArgs e)
 		{
 			ElementController.SetValueFromRenderer(VisualElement.IsFocusedPropertyKey, false);
 		}
 
-		private void OnTimeChanged(object sender, EventArgs e)
+		private void OnTimeChanged(object? sender, EventArgs e)
 		{
 			var currentTime = (DateTime.Today + Control.CurrentTime);
 

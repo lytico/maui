@@ -525,7 +525,7 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK.Controls
 			{
 				var gtkCell = sender as CellBase;
 
-				if (gtkCell != null && gtkCell.Cell != null)
+				if (gtkCell != null && gtkCell.Cell != null && gtkCell.Item != null)
 				{
 					SelectedItem = gtkCell.Item;
 

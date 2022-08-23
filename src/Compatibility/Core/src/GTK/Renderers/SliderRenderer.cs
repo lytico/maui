@@ -40,7 +40,8 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK.Renderers
 						// Do not show a label in order to mimic the rest of the Microsoft.Maui.Controls.Compatibility backends
 						DrawValue = false
 					});
-					Control.ValueChanged += OnControlValueChanged;
+					if (Control != null)
+						Control.ValueChanged += OnControlValueChanged;
 				}
 
 				UpdateMaximum();
@@ -51,7 +52,7 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK.Renderers
 			base.OnElementChanged(e);
 		}
 
-		protected override void OnElementPropertyChanged(object sender, PropertyChangedEventArgs e)
+		protected override void OnElementPropertyChanged(object? sender, PropertyChangedEventArgs e)
 		{
 			base.OnElementPropertyChanged(sender, e);
 
@@ -63,7 +64,7 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK.Renderers
 				UpdateValue();
 		}
 
-		private void OnControlValueChanged(object sender, EventArgs eventArgs)
+		private void OnControlValueChanged(object? sender, EventArgs eventArgs)
 		{
 			ElementController.SetValueFromRenderer(Slider.ValueProperty, Control.Value);
 		}

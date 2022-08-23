@@ -5,7 +5,7 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK.Cells
 {
 	internal class SwitchCell : CellBase
 	{
-		private string _text;
+		private string _text = null!;
 		private bool _on;
 		private HBox _root;
 		private HBox _labelBox;
@@ -48,7 +48,7 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK.Cells
 			set { _on = value; UpdateOn(_on); }
 		}
 
-		public EventHandler<bool> Toggled;
+		public EventHandler<bool>? Toggled;
 
 		private void UpdateText(string text)
 		{
@@ -66,7 +66,7 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK.Cells
 			}
 		}
 
-		private void OnCheckButtonToggled(object sender, EventArgs e)
+		private void OnCheckButtonToggled(object? sender, EventArgs e)
 		{
 			Toggled?.Invoke(this, _checkButton.Active);
 		}

@@ -6,8 +6,8 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK.Controls
 {
 	public class ImageControl : Gtk.HBox, IDesiredSizeProvider
 	{
-		private Gtk.Image _image;
-		private Pixbuf _original;
+		private Gtk.Image _image = null!;
+		private Pixbuf _original = null!;
 		private ImageAspect _aspect;
 
 		private double _scaleX;
@@ -184,7 +184,7 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK.Controls
 			var srcWidth = _original.Width;
 			var srcHeight = _original.Height;
 
-			Pixbuf newPixBuf = null;
+			Pixbuf newPixBuf = null!;
 
 			// Differents modes in which the image will be scaled to fit the display area.
 			switch (Aspect)

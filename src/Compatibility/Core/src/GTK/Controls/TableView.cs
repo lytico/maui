@@ -9,12 +9,12 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK.Controls
 {
 	public class TableView : ScrolledWindow
 	{
-		private VBox _root;
-		private TableRoot _source;
-		private List<Container> _cells;
+		private VBox _root = null!;
+		private TableRoot _source = null!;
+		private List<Container> _cells = null!;
 
 		public delegate void ItemTappedEventHandler(object sender, ItemTappedEventArgs args);
-		public event ItemTappedEventHandler OnItemTapped = null;
+		public event ItemTappedEventHandler OnItemTapped = null!;
 
 		public TableView()
 		{
@@ -71,21 +71,26 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK.Controls
 			return height;
 		}
 
-		Cell GetXamarinFormsCell(Container cell)
+		Cell? GetXamarinFormsCell(Container cell)
 		{
 			try
 			{
-				var formsCell = cell
-				   .GetType()
-				   .GetProperty("Cell")
-				   .GetValue(cell, null) as Cell;
+				if (cell != null)
+				{
+					var formsCell = cell
+					   .GetType()?
+					   .GetProperty("Cell")?
+					   .GetValue(cell, null) as Cell;
 
-				return formsCell;
+					return formsCell;
+				}
 			}
 			catch
 			{
 				return null;
 			}
+
+			return null!;
 		}
 
 		void BuildTableView()
@@ -159,7 +164,7 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK.Controls
 						HeightRequest = 1
 					};
 
-					separator.ModifyBg(StateType.Normal, Color.Black.ToGtkColor());
+					separator.ModifyBg(StateType.Normal, Graphics.Colors.Black.ToGtkColor());
 					_root.PackStart(separator, false, false, 0);
 
 					// Cells
@@ -181,7 +186,7 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK.Controls
 								{
 									var selectedCell = gtkCell.Cell;
 
-									OnItemTapped?.Invoke(this, new ItemTappedEventArgs(selectedCell, (MouseButton)args.Event.Button - 1));
+									OnItemTapped?.Invoke(this, new ItemTappedEventArgs(selectedCell, (OpenTK.Windowing.GraphicsLibraryFramework.MouseButton)args.Event.Button - 1));
 								}
 							};
 							_cells.Add(nativeCell);

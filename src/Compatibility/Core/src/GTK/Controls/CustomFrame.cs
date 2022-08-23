@@ -6,10 +6,10 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK.Controls
 {
 	public class CustomFrame : Gtk.Frame
 	{
-		private Color _defaultBorderColor;
-		private Color _defaultBackgroundColor;
-		private Color? _borderColor;
-		private Color? _backgroundColor;
+		private Graphics.Color _defaultBorderColor;
+		private Graphics.Color _defaultBackgroundColor;
+		private Graphics.Color? _borderColor;
+		private Graphics.Color? _backgroundColor;
 
 		private uint _borderWidth;
 		private bool _hasShadow;
@@ -23,11 +23,11 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK.Controls
 			_borderWidth = 0;
 			_hasShadow = false;
 			_shadowWidth = 2;
-			_defaultBackgroundColor = Style.Backgrounds[(int)StateType.Normal].ToXFColor();
-			_defaultBorderColor = Style.BaseColors[(int)StateType.Active].ToXFColor();
+			_defaultBackgroundColor = Style.Backgrounds[(int)StateType.Normal].ToMAUIColor();
+			_defaultBorderColor = Style.BaseColors[(int)StateType.Active].ToMAUIColor();
 		}
 
-		public void SetBackgroundColor(Color? color)
+		public void SetBackgroundColor(Graphics.Color? color)
 		{
 			_backgroundColor = color;
 			QueueDraw();
@@ -45,7 +45,7 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK.Controls
 			QueueDraw();
 		}
 
-		public void SetBorderColor(Color? color)
+		public void SetBorderColor(Graphics.Color? color)
 		{
 			_borderColor = color;
 			QueueDraw();
@@ -82,27 +82,27 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK.Controls
 				// Draw Shadow
 				if (_hasShadow)
 				{
-					var color = Color.Black;
-					cr.SetSourceRGBA(color.R, color.G, color.B, color.A);
+					var color = Graphics.Colors.Black;
+					cr.SetSourceRGBA(color.Red, color.Green, color.Blue, color.Alpha);
 					cr.Rectangle(Allocation.Left + _shadowWidth, Allocation.Top + _shadowWidth, Allocation.Width + _shadowWidth, Allocation.Height + _shadowWidth);
 					cr.Fill();
 				}
 
 				// Draw BackgroundColor
-				if (_backgroundColor.HasValue)
+				if (_backgroundColor != null)
 				{
-					var color = _backgroundColor.Value;
-					cr.SetSourceRGBA(color.R, color.G, color.B, color.A);
+					var color = _backgroundColor;
+					cr.SetSourceRGBA(color.Red, color.Green, color.Blue, color.Alpha);
 					cr.Rectangle(Allocation.Left, Allocation.Top, Allocation.Width, Allocation.Height);
 					cr.FillPreserve();
 				}
 
 				// Draw BorderColor
-				if (_borderColor.HasValue)
+				if (_borderColor != null)
 				{
 					cr.LineWidth = _borderWidth;
-					var color = _borderColor.Value;
-					cr.SetSourceRGBA(color.R, color.G, color.B, color.A);
+					var color = _borderColor;
+					cr.SetSourceRGBA(color.Red, color.Green, color.Blue, color.Alpha);
 					cr.Rectangle(Allocation.Left, Allocation.Top, Allocation.Width, Allocation.Height);
 					cr.StrokePreserve();
 				}

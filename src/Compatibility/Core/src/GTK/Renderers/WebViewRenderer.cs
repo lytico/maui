@@ -70,7 +70,7 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK.Renderers
 					}
 				}
 
-				if (Control != null)
+				if (Control != null && url != null)
 				{
 					Control.Navigate(url);
 				}

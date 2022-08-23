@@ -5,7 +5,7 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK.Cells
 {
 	internal class ViewCell : CellBase
 	{
-		private WeakReference<IVisualElementRenderer> _rendererRef;
+		private WeakReference<IVisualElementRenderer> _rendererRef = null!;
 		private Gdk.Rectangle _lastAllocation;
 
 		protected override void OnSizeAllocated(Gdk.Rectangle allocation)
@@ -16,35 +16,38 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK.Cells
 			{
 				_lastAllocation = allocation;
 
-				var viewCell = Cell as Microsoft.Maui.Controls.Compatibility.ViewCell;
-				var view = viewCell.View;
-
-				if (view == null)
+				var viewCell = Cell as Microsoft.Maui.Controls.ViewCell;
+				if (viewCell != null)
 				{
-					return;
-				}
+					var view = viewCell.View;
 
-				double width = allocation.Width;
-				double height = DesiredHeight > 0
-								? DesiredHeight
-								: Cell.RenderHeight > 0
-									? Cell.RenderHeight
-									: GetHeightMeasure(viewCell, allocation);
+					if (view == null)
+					{
+						return;
+					}
 
-				Layout.LayoutChildIntoBoundingRegion(view, new Rectangle(0, 0, width, height));
+					double width = allocation.Width;
+					double height = DesiredHeight > 0
+									? DesiredHeight
+									: Cell.RenderHeight > 0
+										? Cell.RenderHeight
+										: GetHeightMeasure(viewCell, allocation);
 
-				if (_rendererRef == null)
-					return;
+					Layout.LayoutChildIntoBoundingRegion(view, new Graphics.Rect(0, 0, width, height));
 
-				IVisualElementRenderer renderer;
-				if (_rendererRef.TryGetTarget(out renderer))
-				{
-					renderer.Container.WidthRequest = (int)width;
+					if (_rendererRef == null)
+						return;
+
+					IVisualElementRenderer? renderer;
+					if (_rendererRef.TryGetTarget(out renderer))
+					{
+						renderer.Container.WidthRequest = (int)width;
+					}
 				}
 			}
 		}
 
-		private double GetHeightMeasure(Microsoft.Maui.Controls.Compatibility.ViewCell viewCell, Gdk.Rectangle allocation)
+		private double GetHeightMeasure(Microsoft.Maui.Controls.ViewCell viewCell, Gdk.Rectangle allocation)
 		{
 			var request = viewCell.View.Measure(allocation.Width, double.PositiveInfinity, MeasureFlags.IncludeMargins);
 
@@ -53,10 +56,10 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK.Cells
 
 		public override void Destroy()
 		{
-			IVisualElementRenderer renderer;
+			IVisualElementRenderer? renderer;
 			if (_rendererRef != null && _rendererRef.TryGetTarget(out renderer) && renderer.Element != null)
 			{
-				_rendererRef = null;
+				_rendererRef = null!;
 			}
 
 			base.Destroy();
@@ -64,14 +67,15 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK.Cells
 
 		protected override void UpdateCell()
 		{
-			var viewCell = Cell as Microsoft.Maui.Controls.Compatibility.ViewCell;
+			var viewCell = Cell as Microsoft.Maui.Controls.ViewCell;
 
 			if (viewCell != null)
-				Device.BeginInvokeOnMainThread(viewCell.SendDisappearing);
+			{
+				ApplicationModel.MainThread.BeginInvokeOnMainThread(viewCell.SendDisappearing);
+				ApplicationModel.MainThread.BeginInvokeOnMainThread(viewCell.SendAppearing);
+			}
 
-			Device.BeginInvokeOnMainThread(viewCell.SendAppearing);
-
-			IVisualElementRenderer renderer;
+			IVisualElementRenderer? renderer;
 			if (_rendererRef == null || !_rendererRef.TryGetTarget(out renderer))
 				renderer = GetNewRenderer();
 			else
@@ -79,33 +83,42 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK.Cells
 				if (renderer.Element != null && renderer == Platform.GetRenderer(renderer.Element))
 					renderer.Element.ClearValue(Platform.RendererProperty);
 
-				var type = Internals.Registrar.Registered.GetHandlerType(viewCell.View.GetType());
-				if (renderer.GetType() == type || (renderer is DefaultRenderer && type == null))
-					renderer.SetElement(viewCell.View);
-				else
+				if (viewCell != null)
 				{
-					renderer = GetNewRenderer();
+					var type = Internals.Registrar.Registered.GetHandlerType(viewCell.View.GetType());
+					if (renderer.GetType() == type || (renderer is DefaultRenderer && type == null))
+						renderer.SetElement(viewCell.View);
+					else
+					{
+						renderer = GetNewRenderer();
+					}
 				}
 			}
 
-			Platform.SetRenderer(viewCell.View, renderer);
+			if (viewCell != null)
+				Platform.SetRenderer(viewCell.View, renderer);
 		}
 
 		private IVisualElementRenderer GetNewRenderer()
 		{
-			var viewCell = Cell as Microsoft.Maui.Controls.Compatibility.ViewCell;
+			var viewCell = Cell as Microsoft.Maui.Controls.ViewCell;
 
-			if (viewCell.View == null)
+			if (viewCell != null && viewCell.View == null)
 			{
-				return null;
+				return null!;
 			}
 
-			var newRenderer = Platform.CreateRenderer(viewCell.View);
+			if (viewCell != null)
+			{
+				var newRenderer = Platform.CreateRenderer(viewCell.View);
 
-			_rendererRef = new WeakReference<IVisualElementRenderer>(newRenderer);
-			Add(newRenderer.Container);
+				_rendererRef = new WeakReference<IVisualElementRenderer>(newRenderer);
+				Add(newRenderer.Container);
 
-			return newRenderer;
+				return newRenderer;
+			}
+
+			return null!;
 		}
 	}
 }

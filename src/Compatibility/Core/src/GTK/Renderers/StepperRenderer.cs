@@ -34,20 +34,22 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK.Renderers
 				}
 
 				// Detach change event until new element properties are initialized
-				Control.ValueChanged -= OnValueChanged;
+				if (Control != null)
+					Control.ValueChanged -= OnValueChanged;
 
 				UpdateMinimum();
 				UpdateMaximum();
 				UpdateValue();
 				UpdateIncrement();
 
-				Control.ValueChanged += OnValueChanged;
+				if (Control != null)
+					Control.ValueChanged += OnValueChanged;
 			}
 
 			base.OnElementChanged(e);
 		}
 
-		protected override void OnElementPropertyChanged(object sender, PropertyChangedEventArgs e)
+		protected override void OnElementPropertyChanged(object? sender, PropertyChangedEventArgs e)
 		{
 			base.OnElementPropertyChanged(sender, e);
 
@@ -71,7 +73,7 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK.Renderers
 			}
 		}
 
-		private void OnValueChanged(object sender, EventArgs e)
+		private void OnValueChanged(object? sender, EventArgs e)
 		{
 			ElementController.SetValueFromRenderer(Stepper.ValueProperty, Control.Value);
 		}

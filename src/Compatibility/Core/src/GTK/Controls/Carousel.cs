@@ -42,18 +42,18 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK.Controls
 	public class Carousel : Fixed
 	{
 		private Gdk.Rectangle _lastAllocation = Gdk.Rectangle.Zero;
-		private IList _itemsSource;
+		private IList _itemsSource = null!;
 		private int _selectedIndex;
-		private EventBox _wrapperBox;
-		private Table _root;
-		private ImageControl _image;
-		private List<CarouselPage> _pages;
+		private EventBox _wrapperBox = null!;
+		private Table _root = null!;
+		private ImageControl _image = null!;
+		private List<CarouselPage> _pages = null!;
 		private double _initialPos;
 		private bool _animated;
 
 		public delegate void EventHandler(object sender, CarouselEventArgs args);
 
-		public event EventHandler SelectedIndexChanged;
+		public event EventHandler SelectedIndexChanged = null!;
 
 		public Carousel()
 		{
@@ -123,7 +123,7 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK.Controls
 
 		public void AddPage(int index, object element)
 		{
-			var page = element as Microsoft.Maui.Controls.Compatibility.Page;
+			var page = element as Microsoft.Maui.Controls.Page;
 
 			if (page != null)
 			{
@@ -139,7 +139,7 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK.Controls
 
 		public void RemovePage(object element)
 		{
-			var page = element as Microsoft.Maui.Controls.Compatibility.Page;
+			var page = element as Microsoft.Maui.Controls.Page;
 
 			if (page != null)
 			{
@@ -176,7 +176,12 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK.Controls
 
 		public async void SetBackgroundImage(ImageSource imageSource)
 		{
-			_image.Pixbuf = await imageSource.GetNativeImageAsync();
+			if (imageSource != null)
+			{ 
+				var pixbuf = await imageSource.GetNativeImageAsync();
+				if (pixbuf != null)
+					_image.Pixbuf = pixbuf;
+			}
 		}
 
 		protected override void OnSizeAllocated(Gdk.Rectangle allocation)
@@ -285,7 +290,7 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK.Controls
 			SetCurrentPage(SelectedIndex);
 		}
 
-		private void OnChildPageShown(object sender, EventArgs e)
+		private void OnChildPageShown(object? sender, EventArgs e)
 		{
 			SetCurrentPage(SelectedIndex);
 		}

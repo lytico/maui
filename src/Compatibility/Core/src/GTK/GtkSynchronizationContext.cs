@@ -6,7 +6,7 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK
 {
 	public class GtkSynchronizationContext : SynchronizationContext
 	{
-		public override void Post(SendOrPostCallback d, object state)
+		public override void Post(SendOrPostCallback d, object? state)
 		{
 			Gtk.Application.Invoke((s, e) =>
 			{
@@ -14,7 +14,7 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK
 			});
 		}
 
-		public override void Send(SendOrPostCallback d, object state)
+		public override void Send(SendOrPostCallback d, object? state)
 		{
 			if (System.Threading.Thread.CurrentThread.ManagedThreadId == FormsWindow.MainThreadID)
 			{
@@ -23,7 +23,7 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK
 			else
 			{
 				var evt = new ManualResetEvent(false);
-				Exception exception = null;
+				Exception exception = null!;
 
 				Gtk.Application.Invoke((s, e) =>
 				{

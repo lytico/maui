@@ -16,10 +16,13 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK.Renderers
 					// Custom control using a Gtk.Entry with some ImageButtons.
 					SetNativeControl(new SearchEntry());
 
-					Control.SearchTextChanged += SearchTextChanged;
-					Control.SearchButtonClicked += SearchButtonClicked;
-					Control.Entry.Focused += SearchFocused;
-					Control.Entry.FocusOutEvent += SearchFocusOutEvent;
+					if (Control != null)
+					{
+						Control.SearchTextChanged += SearchTextChanged;
+						Control.SearchButtonClicked += SearchButtonClicked;
+						Control.Entry.Focused += SearchFocused;
+						Control.Entry.FocusOutEvent += SearchFocusOutEvent;
+					}
 				}
 
 				UpdateText();
@@ -33,7 +36,7 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK.Renderers
 			base.OnElementChanged(e);
 		}
 
-		protected override void OnElementPropertyChanged(object sender, PropertyChangedEventArgs e)
+		protected override void OnElementPropertyChanged(object? sender, PropertyChangedEventArgs e)
 		{
 			base.OnElementPropertyChanged(sender, e);
 
@@ -120,22 +123,22 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK.Renderers
 			Control.SetAlignment(Element.HorizontalTextAlignment.ToNativeValue());
 		}
 
-		private void SearchTextChanged(object sender, EventArgs e)
+		private void SearchTextChanged(object? sender, EventArgs e)
 		{
 			ElementController.SetValueFromRenderer(SearchBar.TextProperty, Control.SearchText);
 		}
 
-		private void SearchButtonClicked(object sender, EventArgs e)
+		private void SearchButtonClicked(object? sender, EventArgs e)
 		{
 			Element.OnSearchButtonPressed();
 		}
 
-		private void SearchFocused(object o, Gtk.FocusedArgs args)
+		private void SearchFocused(object? o, Gtk.FocusedArgs args)
 		{
 			ElementController?.SetValueFromRenderer(VisualElement.IsFocusedPropertyKey, true);
 		}
 
-		private void SearchFocusOutEvent(object o, Gtk.FocusOutEventArgs args)
+		private void SearchFocusOutEvent(object? o, Gtk.FocusOutEventArgs args)
 		{
 			ElementController?.SetValueFromRenderer(VisualElement.IsFocusedPropertyKey, false);
 		}

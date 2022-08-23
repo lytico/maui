@@ -9,8 +9,8 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK.Animations
 		private const double AnimationInterval = 1000 / 60.0;
 
 		private TimeSpan _totalTime;
-		private Task _animTask;
-		private Timer _timer;
+		private Task _animTask = null!;
+		private System.Timers.Timer _timer;
 		private DateTime _startTime;
 		private bool _isEased;
 		private double _elapsed;
@@ -21,14 +21,14 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK.Animations
 			_totalTime = time;
 			_isEased = isEased;
 
-			_timer = new Timer();
+			_timer = new System.Timers.Timer();
 			_timer.Interval = AnimationInterval;
 			_timer.Elapsed += OnTimerElapsed;
 		}
 
 		protected abstract void AnimationStep(double lerp);
 
-		private void OnTimerElapsed(object sender, ElapsedEventArgs e)
+		private void OnTimerElapsed(object? sender, ElapsedEventArgs e)
 		{
 			_elapsed = (e.SignalTime - _startTime).TotalMilliseconds;
 
@@ -81,7 +81,7 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK.Animations
 				AnimationStep(1);
 			}
 
-			_animTask = null;
+			_animTask = null!;
 		}
 	}
 }

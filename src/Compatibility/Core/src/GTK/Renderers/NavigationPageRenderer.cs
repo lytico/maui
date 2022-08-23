@@ -20,10 +20,10 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK.Renderers
 
 		private Stack<NavigationChildPage> _currentStack;
 
-		INavigationPageController NavigationController => Element as INavigationPageController;
+		INavigationPageController? NavigationController => Element as INavigationPageController;
 
 		private GtkToolbarTracker _toolbarTracker;
-		private Page _currentPage;
+		private Page _currentPage = null!;
 		private Gdk.Rectangle _lastAllocation;
 
 		public NavigationPageRenderer()
@@ -62,17 +62,17 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK.Renderers
 					NavigationController.InsertPageBeforeRequested -= OnInsertPageBeforeRequested;
 				}
 
-				_toolbarTracker = null;
+				_toolbarTracker = null!;
 
 				if (_currentPage != null)
 				{
 					_currentPage.PropertyChanged -= OnCurrentPagePropertyChanged;
-					_currentPage = null;
+					_currentPage = null!;
 				}
 				if (_currentStack != null)
 				{
 					_currentStack.ForEach(s => s.Dispose());
-					_currentStack = null;
+					_currentStack = null!;
 				}
 			}
 
@@ -86,7 +86,8 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK.Renderers
 
 			_appeared = true;
 
-			PageController.SendAppearing();
+			if (PageController != null)
+				PageController.SendAppearing();
 
 			base.OnShown();
 		}
@@ -96,7 +97,8 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK.Renderers
 			if (!_appeared)
 				return;
 
-			_toolbarTracker.TryHide(Page);
+			if (Page != null)
+				_toolbarTracker.TryHide(Page);
 			_appeared = false;
 
 			PageController?.SendDisappearing();
@@ -129,11 +131,14 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK.Renderers
 
 			if (e.OldElement != null)
 			{
-				NavigationController.PushRequested -= OnPushRequested;
-				NavigationController.PopRequested -= OnPopRequested;
-				NavigationController.PopToRootRequested -= OnPopToRootRequested;
-				NavigationController.RemovePageRequested -= OnRemovedPageRequested;
-				NavigationController.InsertPageBeforeRequested -= OnInsertPageBeforeRequested;
+				if (NavigationController != null)
+				{
+					NavigationController.PushRequested -= OnPushRequested;
+					NavigationController.PopRequested -= OnPopRequested;
+					NavigationController.PopToRootRequested -= OnPopToRootRequested;
+					NavigationController.RemovePageRequested -= OnRemovedPageRequested;
+					NavigationController.InsertPageBeforeRequested -= OnInsertPageBeforeRequested;
+				}
 			}
 
 			if (e.NewElement != null)
@@ -158,7 +163,7 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK.Renderers
 
 			if (Widget?.Parent is EventBox parent)
 			{
-				if (Page.CurrentPage?.Parent is Page parentPage && parentPage.BackgroundImageSource != null)
+				if (Page != null && Page.CurrentPage?.Parent is Page parentPage && parentPage.BackgroundImageSource != null)
 				{
 					parent.VisibleWindow = parentPage.BackgroundImageSource.IsEmpty;
 				}
@@ -195,7 +200,7 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK.Renderers
 			Container.IsFocus = true;
 		}
 
-		protected override void OnElementPropertyChanged(object sender, PropertyChangedEventArgs e)
+		protected override void OnElementPropertyChanged(object? sender, PropertyChangedEventArgs e)
 		{
 			base.OnElementPropertyChanged(sender, e);
 
@@ -218,24 +223,32 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK.Renderers
 		{
 			ConfigurePageRenderer();
 
-			if (Page.CurrentPage == null)
+			if (Page != null && Page.CurrentPage == null)
 				throw new InvalidOperationException(
 					"NavigationPage must have a root Page before being used. Either call PushAsync with a valid Page, or pass a Page to the constructor before usage.");
 
-			_toolbarTracker.Navigation = Page;
-			_currentPage = Page.CurrentPage;
+			if (Page != null)
+			{
+				_toolbarTracker.Navigation = Page;
+				_currentPage = Page.CurrentPage;
+			}
+
 			UpdateCurrentPage();
 
-			NavigationController.PushRequested += OnPushRequested;
-			NavigationController.PopRequested += OnPopRequested;
-			NavigationController.PopToRootRequested += OnPopToRootRequested;
-			NavigationController.RemovePageRequested += OnRemovedPageRequested;
-			NavigationController.InsertPageBeforeRequested += OnInsertPageBeforeRequested;
+			if (NavigationController != null)
+			{
+				NavigationController.PushRequested += OnPushRequested;
+				NavigationController.PopRequested += OnPopRequested;
+				NavigationController.PopToRootRequested += OnPopToRootRequested;
+				NavigationController.RemovePageRequested += OnRemovedPageRequested;
+				NavigationController.InsertPageBeforeRequested += OnInsertPageBeforeRequested;
+			}
 
 			UpdateBarBackgroundColor();
 			UpdateBarTextColor();
 
-			NavigationController.Pages.ForEach(async p => await PushPageAsync(p, false));
+			if (NavigationController != null)
+				NavigationController.Pages.ForEach(async p => await PushPageAsync(p, false));
 
 			UpdateBackgroundColor();
 			UpdateBackButtonIcon();
@@ -248,7 +261,8 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK.Renderers
 				_currentPage.PropertyChanged -= OnCurrentPagePropertyChanged;
 			}
 
-			_currentPage = Page.CurrentPage;
+			if (Page != null)
+				_currentPage = Page.CurrentPage;
 
 			if (_currentPage != null)
 			{
@@ -263,11 +277,11 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK.Renderers
 			UpdateIcon();
 		}
 
-		private void OnCurrentPagePropertyChanged(object sender, PropertyChangedEventArgs e)
+		private void OnCurrentPagePropertyChanged(object? sender, PropertyChangedEventArgs e)
 		{
-			if (e.PropertyName == Microsoft.Maui.Controls.Compatibility.Page.TitleProperty.PropertyName)
+			if (e.PropertyName == Microsoft.Maui.Controls.Page.TitleProperty.PropertyName)
 				UpdateTitle();
-			else if (e.PropertyName == Microsoft.Maui.Controls.Compatibility.Page.IconImageSourceProperty.PropertyName)
+			else if (e.PropertyName == Microsoft.Maui.Controls.Page.IconImageSourceProperty.PropertyName)
 				UpdateIcon();
 		}
 
@@ -281,28 +295,28 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK.Renderers
 			_toolbarTracker.UpdateIcon();
 		}
 
-		private void OnPushRequested(object sender, NavigationRequestedEventArgs e)
+		private void OnPushRequested(object? sender, NavigationRequestedEventArgs e)
 		{
 			e.Task = PushPageAsync(e.Page, e.Animated);
 		}
 
-		private void OnPopRequested(object sender, NavigationRequestedEventArgs e)
+		private void OnPopRequested(object? sender, NavigationRequestedEventArgs e)
 		{
 			e.Task = PopViewAsync(e.Page, e.Animated);
 		}
 
-		private void OnPopToRootRequested(object sender, NavigationRequestedEventArgs e)
+		private void OnPopToRootRequested(object? sender, NavigationRequestedEventArgs e)
 		{
 			e.Task = PopToRootAsync(e.Page, e.Animated);
 		}
 
-		private async void OnRemovedPageRequested(object sender, NavigationRequestedEventArgs e)
+		private async void OnRemovedPageRequested(object? sender, NavigationRequestedEventArgs e)
 		{
 			await RemovePageAsync(e.Page, true, true);
 			UpdateToolBar();
 		}
 
-		private void OnInsertPageBeforeRequested(object sender, NavigationRequestedEventArgs e)
+		private void OnInsertPageBeforeRequested(object? sender, NavigationRequestedEventArgs e)
 		{
 			InsertPageBefore(e.Page, e.BeforePage);
 		}
@@ -312,7 +326,7 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK.Renderers
 			if (page == null)
 				throw new ArgumentNullException(nameof(page));
 
-			Page oldPage = null;
+			Page oldPage = null!;
 			if (_currentStack.Count >= 1)
 				oldPage = _currentStack.Peek().Page;
 
@@ -397,6 +411,8 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK.Renderers
 				throw new ArgumentNullException(nameof(before));
 			if (page == null)
 				throw new ArgumentNullException(nameof(page));
+			if (PageController == null)
+				return;
 
 			int index = PageController.InternalChildren.IndexOf(before);
 
@@ -533,9 +549,13 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK.Renderers
 
 		private void UpdateBackButtonIcon()
 		{
-			var backButton = Page.OnThisPlatform().GetBackButtonIcon();
+			if (Page == null)
+				return;
 
-			_toolbarTracker.UpdateBackButton(backButton);
+			// TODO
+			//var backButton = Page.OnThisPlatform().GetBackButtonIcon();
+
+			//_toolbarTracker.UpdateBackButton(backButton);
 			UpdateToolBar();
 		}
 

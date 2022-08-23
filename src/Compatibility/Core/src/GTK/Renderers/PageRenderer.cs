@@ -4,7 +4,7 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK.Renderers
 {
 	public class PageRenderer : AbstractPageRenderer<Controls.Page, Page>
 	{
-		private PageElementPackager _packager;
+		private PageElementPackager _packager = null!;
 
 		protected override void Dispose(bool disposing)
 		{
@@ -13,7 +13,7 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK.Renderers
 			if (_packager != null)
 			{
 				_packager.Dispose();
-				_packager = null;
+				_packager = null!;
 			}
 		}
 

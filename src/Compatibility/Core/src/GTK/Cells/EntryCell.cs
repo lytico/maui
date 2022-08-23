@@ -6,10 +6,10 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK.Cells
 {
 	internal class EntryCell : CellBase
 	{
-		string _label;
+		string _label = null!;
 		Gdk.Color _textColor;
-		string _text;
-		string _placeholder;
+		string _text = null!;
+		string _placeholder = null!;
 		VBox _root;
 		Gtk.Label _textLabel;
 		EntryWrapper _entryWrapper;
@@ -64,8 +64,8 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK.Cells
 			set { _placeholder = value; UpdatePlaceholder(_placeholder); }
 		}
 
-		public event EventHandler<string> TextChanged;
-		public event EventHandler EditingDone;
+		public event EventHandler<string> TextChanged = null!;
+		public event EventHandler EditingDone = null!;
 
 		void UpdateLabel(string label)
 		{
@@ -99,12 +99,12 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK.Cells
 			}
 		}
 
-		void OnEntryChanged(object sender, EventArgs e)
+		void OnEntryChanged(object? sender, EventArgs e)
 		{
 			TextChanged?.Invoke(this, _entryWrapper.Entry.Text);
 		}
 
-		void OnEditingDone(object sender, EventArgs e)
+		void OnEditingDone(object? sender, EventArgs e)
 		{
 			EditingDone?.Invoke(this, EventArgs.Empty);
 		}

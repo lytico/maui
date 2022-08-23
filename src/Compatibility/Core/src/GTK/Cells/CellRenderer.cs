@@ -10,11 +10,11 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK.Cells
 			BindableProperty.CreateAttached("RealCell", typeof(Gtk.Container),
 				typeof(Cell), null);
 
-		protected Cell Cell { get; private set; }
+		protected Cell Cell { get; private set; } = null!;
 
-		private EventHandler _onForceUpdateSizeRequested;
+		private EventHandler _onForceUpdateSizeRequested = null!;
 
-		public virtual CellBase GetCell(Cell item, Gtk.Container? reusableView, Controls.ListView? listView)
+		public virtual CellBase? GetCell(Cell item, Gtk.Container? reusableView, Controls.ListView? listView)
 		{
 			Cell = item;
 
@@ -61,11 +61,11 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK.Cells
 
 		protected void UpdateBackground(Gtk.Container tableViewCell, Cell cell)
 		{
-			var bgColor = Color.White.ToGtkColor();
+			var bgColor = Graphics.Colors.White.ToGtkColor();
 			var element = cell.RealParent as VisualElement;
 
 			if (element != null)
-				bgColor = element.BackgroundColor == Color.Default ? bgColor : element.BackgroundColor.ToGtkColor();
+				bgColor = element.BackgroundColor == Graphics.Colors.White ? bgColor : element.BackgroundColor.ToGtkColor();
 
 			UpdateBackgroundChild(cell, bgColor);
 
@@ -78,7 +78,7 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK.Cells
 			nativeCell.QueueDraw();
 		}
 
-		protected void UpdateHeight(CellBase cell)
+		protected void UpdateHeight(CellBase? cell)
 		{
 			if (cell?.Cell != null)
 			{
@@ -98,7 +98,7 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK.Cells
 			cell.ForceUpdateSizeRequested += _onForceUpdateSizeRequested;
 		}
 
-		private static void UpdateIsEnabled(CellBase cell)
+		private static void UpdateIsEnabled(CellBase? cell)
 		{
 			if (cell?.Cell != null)
 			{

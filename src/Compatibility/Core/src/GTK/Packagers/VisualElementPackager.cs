@@ -8,7 +8,7 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK.Packagers
 	{
 		private bool _isDisposed;
 
-		private VisualElement _element;
+		private VisualElement _element = null!;
 
 		protected IElementController ElementController => Renderer.Element as IElementController;
 
@@ -22,7 +22,7 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK.Packagers
 			Renderer = renderer;
 			renderer.ElementChanged += OnRendererElementChanged;
 
-			SetElement(null, Renderer.Element);
+			SetElement(null!, Renderer.Element);
 		}
 
 		public void Dispose()
@@ -48,11 +48,11 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK.Packagers
 
 			if (disposing)
 			{
-				SetElement(_element, null);
+				SetElement(_element, null!);
 				if (Renderer != null)
 				{
 					Renderer.ElementChanged -= OnRendererElementChanged;
-					Renderer = null;
+					Renderer = null!;
 				}
 			}
 
@@ -94,7 +94,7 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK.Packagers
 				newElement.ChildrenReordered += OnChildReordered;
 			}
 		}
-		private void OnRendererElementChanged(object sender, VisualElementChangedEventArgs args)
+		private void OnRendererElementChanged(object? sender, VisualElementChangedEventArgs args)
 		{
 			if (args.NewElement == _element)
 				return;
@@ -102,21 +102,21 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK.Packagers
 			SetElement(_element, args.NewElement);
 		}
 
-		private void OnChildAdded(object sender, ElementEventArgs e)
+		private void OnChildAdded(object? sender, ElementEventArgs e)
 		{
 			var view = e.Element as VisualElement;
 			if (view != null)
 				OnChildAdded(view);
 		}
 
-		private void OnChildRemoved(object sender, ElementEventArgs e)
+		private void OnChildRemoved(object? sender, ElementEventArgs e)
 		{
 			var view = e.Element as VisualElement;
 			if (view != null)
 				OnChildRemoved(view);
 		}
 
-		private void OnChildReordered(object sender, EventArgs e)
+		private void OnChildReordered(object? sender, EventArgs e)
 		{
 			// TODO
 		}

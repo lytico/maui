@@ -22,7 +22,7 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK.Renderers
 			UpdateBackgroundColor();
 		}
 
-		protected override void OnElementPropertyChanged(object sender, PropertyChangedEventArgs e)
+		protected override void OnElementPropertyChanged(object? sender, PropertyChangedEventArgs e)
 		{
 			base.OnElementPropertyChanged(sender, e);
 
@@ -45,7 +45,7 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK.Renderers
 		{
 			var backgroundColor = Element.BackgroundColor;
 
-			if (backgroundColor == null || backgroundColor.IsDefault)
+			if (backgroundColor == null || backgroundColor.IsDefault())
 				return;
 
 			Control.ModifyBg(Gtk.StateType.Normal, backgroundColor.ToGtkColor());

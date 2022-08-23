@@ -10,9 +10,9 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK.Cells
 		Gtk.Image _imageControl;
 		Gtk.Label _textLabel;
 		Gtk.Label _detailLabel;
-		Gdk.Pixbuf _image;
-		string _text;
-		string _detail;
+		Gdk.Pixbuf _image = null!;
+		string _text = null!;
+		string _detail = null!;
 		Gdk.Color _textColor;
 		Gdk.Color _detailColor;
 

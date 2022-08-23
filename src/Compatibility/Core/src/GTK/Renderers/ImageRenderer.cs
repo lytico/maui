@@ -28,7 +28,7 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK.Renderers
 				if (Control != null)
 				{
 					Control.Dispose();
-					Control = null;
+					Control = null!;
 				}
 			}
 
@@ -58,7 +58,7 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK.Renderers
 			base.OnElementChanged(e);
 		}
 
-		protected override void OnElementPropertyChanged(object sender, PropertyChangedEventArgs e)
+		protected override void OnElementPropertyChanged(object? sender, PropertyChangedEventArgs e)
 		{
 			base.OnElementPropertyChanged(sender, e);
 
@@ -85,7 +85,7 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK.Renderers
 			Control.SetSizeRequest(allocation.Width, allocation.Height);
 		}
 
-		async void SetImage(Image oldElement = null)
+		async void SetImage(Image oldElement = null!)
 		{
 			var source = Element.Source;
 
@@ -99,20 +99,23 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK.Renderers
 					&& ((FileImageSource)oldSource).File == ((FileImageSource)source).File)
 					return;
 
-				Control.Pixbuf = null;
+				Control.Pixbuf = null!;
 			}
 
 			((IImageController)Element).SetIsLoading(true);
 
 			var image = await source.GetNativeImageAsync();
 
-			var imageView = Control;
-			if (imageView != null)
-				imageView.Pixbuf = image;
+			if (image != null)
+			{
+				var imageView = Control;
+				if (imageView != null)
+					imageView.Pixbuf = image;
+			}
 
 			if (!_isDisposed)
 			{
-				((IVisualElementController)Element).NativeSizeChanged();
+				// ((IVisualElementController)Element).NativeSizeChanged();
 				((IImageController)Element).SetIsLoading(false);
 			}
 		}
@@ -176,7 +179,7 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK.Renderers
 			CancellationToken cancelationToken = default(CancellationToken),
 			float scale = 1f)
 		{
-			Pixbuf image = null;
+			Pixbuf image = null!;
 			var filesource = imagesource as FileImageSource;
 
 			if (filesource != null)
@@ -201,11 +204,11 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK.Renderers
 	{
 		public async Task<Pixbuf> LoadImageAsync(ImageSource imagesource, CancellationToken cancelationToken = default(CancellationToken), float scale = 1)
 		{
-			Pixbuf image = null;
+			Pixbuf image = null!;
 
 			var streamsource = imagesource as StreamImageSource;
 			if (streamsource?.Stream == null)
-				return null;
+				return null!;
 			using (var streamImage = await ((IStreamImageSource)streamsource)
 				.GetStreamAsync(cancelationToken).ConfigureAwait(false))
 			{
@@ -217,86 +220,86 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK.Renderers
 		}
 	}
 
-	public sealed class UriImageSourceHandler : IImageSourceHandler
-	{
-		public async Task<Pixbuf> LoadImageAsync(
-			ImageSource imagesource,
-			CancellationToken cancelationToken = default(CancellationToken),
-			float scale = 1)
-		{
-			Pixbuf image = null;
+	//public sealed class UriImageSourceHandler : IImageSourceHandler
+	//{
+	//	public async Task<Pixbuf> LoadImageAsync(
+	//		ImageSource imagesource,
+	//		CancellationToken cancelationToken = default(CancellationToken),
+	//		float scale = 1)
+	//	{
+	//		Pixbuf image = null!;
 
-			var imageLoader = imagesource as UriImageSource;
+	//		var imageLoader = imagesource as UriImageSource;
 
-			if (imageLoader?.Uri == null)
-				return null;
+	//		if (imageLoader?.Uri == null)
+	//			return null!;
 
-			using (Stream streamImage = await imageLoader.GetStreamAsync(cancelationToken))
-			{
-				if (streamImage == null || !streamImage.CanRead)
-				{
-					return null;
-				}
+	//		using (Stream streamImage = await imageLoader.GetStreamAsync(cancelationToken))
+	//		{
+	//			if (streamImage == null || !streamImage.CanRead)
+	//			{
+	//				return null!;
+	//			}
 
-				image = new Pixbuf(streamImage);
-			}
+	//			image = new Pixbuf(streamImage);
+	//		}
 
-			return image;
-		}
-	}
+	//		return image;
+	//	}
+	// }
 
 
-	public sealed class FontImageSourceHandler : IImageSourceHandler
-	{
-		public Task<Pixbuf> LoadImageAsync(ImageSource imageSource,
-			CancellationToken cancellationToken = new CancellationToken(), float scale = 1)
-		{
-			if (!(imageSource is FontImageSource fontImageSource))
-				return null;
+	//public sealed class FontImageSourceHandler : IImageSourceHandler
+	//{
+	//	public Task<Pixbuf> LoadImageAsync(ImageSource imageSource,
+	//		CancellationToken cancellationToken = new CancellationToken(), float scale = 1)
+	//	{
+	//		if (!(imageSource is FontImageSource fontImageSource))
+	//			return null;
 
-			Pixbuf pixbuf;
-			using (var bmp = new Bitmap((int)fontImageSource.Size, (int)fontImageSource.Size))
-			{
-				using (var g = Graphics.FromImage(bmp))
-				{
-					var fontFamily = GetFontFamily(fontImageSource);
-					var font = new DrawingFont(fontFamily, (int)fontImageSource.Size * .5f);
-					var fontColor = fontImageSource.Color != Color.Default
-						? fontImageSource.Color
-						: Color.White;
-					g.DrawString(fontImageSource.Glyph, font, new SolidBrush(fontColor), 0, 0);
-				}
+	//		Pixbuf pixbuf;
+	//		using (var bmp = new Bitmap((int)fontImageSource.Size, (int)fontImageSource.Size))
+	//		{
+	//			using (var g = Graphics.FromImage(bmp))
+	//			{
+	//				var fontFamily = GetFontFamily(fontImageSource);
+	//				var font = new DrawingFont(fontFamily, (int)fontImageSource.Size * .5f);
+	//				var fontColor = fontImageSource.Color != Color.Default
+	//					? fontImageSource.Color
+	//					: Color.White;
+	//				g.DrawString(fontImageSource.Glyph, font, new SolidBrush(fontColor), 0, 0);
+	//			}
 
-				using (var stream = new MemoryStream())
-				{
-					bmp.Save(stream, ImageFormat.Jpeg);
-					pixbuf = new Pixbuf(stream.ToArray());
-				}
-			}
+	//			using (var stream = new MemoryStream())
+	//			{
+	//				bmp.Save(stream, ImageFormat.Jpeg);
+	//				pixbuf = new Pixbuf(stream.ToArray());
+	//			}
+	//		}
 
-			return Task.FromResult(pixbuf);
-		}
+	//		return Task.FromResult(pixbuf);
+	//	}
 
-		static FontFamily GetFontFamily(FontImageSource fontImageSource)
-		{
-			var privateFontCollection = new PrivateFontCollection();
-			FontFamily fontFamily;
-			if (fontImageSource.FontFamily.Contains("#"))
-			{
-				var fontPathAndFamily = fontImageSource.FontFamily.Split('#');
-				privateFontCollection.AddFontFile(fontPathAndFamily[0]);
-				fontFamily = fontPathAndFamily.Length > 1 ?
-					privateFontCollection.Families.FirstOrDefault(f => f.Name.Equals(fontPathAndFamily[1], StringComparison.InvariantCultureIgnoreCase)) ?? privateFontCollection.Families[0] :
-					privateFontCollection.Families[0];
-			}
-			else
-			{
-				privateFontCollection.AddFontFile(fontImageSource.FontFamily);
-				fontFamily = privateFontCollection.Families[0];
-			}
+	//	static FontFamily GetFontFamily(FontImageSource fontImageSource)
+	//	{
+	//		var privateFontCollection = new PrivateFontCollection();
+	//		FontFamily fontFamily;
+	//		if (fontImageSource.FontFamily.Contains("#"))
+	//		{
+	//			var fontPathAndFamily = fontImageSource.FontFamily.Split('#');
+	//			privateFontCollection.AddFontFile(fontPathAndFamily[0]);
+	//			fontFamily = fontPathAndFamily.Length > 1 ?
+	//				privateFontCollection.Families.FirstOrDefault(f => f.Name.Equals(fontPathAndFamily[1], StringComparison.InvariantCultureIgnoreCase)) ?? privateFontCollection.Families[0] :
+	//				privateFontCollection.Families[0];
+	//		}
+	//		else
+	//		{
+	//			privateFontCollection.AddFontFile(fontImageSource.FontFamily);
+	//			fontFamily = privateFontCollection.Families[0];
+	//		}
 
-			return fontFamily;
-		}
-	}
+	//		return fontFamily;
+	//	}
+	//}
 }
 

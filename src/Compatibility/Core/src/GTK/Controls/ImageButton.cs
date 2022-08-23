@@ -8,7 +8,7 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK.Controls
 	public sealed class ImageButton : Gtk.Button
 	{
 		private Alignment _container;
-		private Box _imageAndLabelContainer;
+		private Box _imageAndLabelContainer = null!;
 
 		private Gdk.Color _defaultBorderColor;
 		private Gdk.Color _defaultBackgroundColor;
@@ -100,10 +100,10 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK.Controls
 		public override void Destroy()
 		{
 			base.Destroy();
-			_label = null;
-			_image = null;
-			_imageAndLabelContainer = null;
-			_container = null;
+			_label = null!;
+			_image = null!;
+			_imageAndLabelContainer = null!;
+			_container = null!;
 		}
 
 		protected override bool OnExposeEvent(EventExpose evnt)
@@ -143,7 +143,7 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK.Controls
 				_imageAndLabelContainer.RemoveFromContainer(_image);
 				_imageAndLabelContainer.RemoveFromContainer(_label);
 				_container.RemoveFromContainer(_imageAndLabelContainer);
-				_imageAndLabelContainer = null;
+				_imageAndLabelContainer = null!;
 			}
 
 			switch (ImagePosition)

@@ -6,7 +6,7 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK.Helpers
 	{
 		private static uint CURRENT_TIME = 0;
 
-		public static void GrabWindow(Window window)
+		public static void GrabWindow(Gtk.Window window)
 		{
 			window.GrabFocus();
 
@@ -35,7 +35,7 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK.Helpers
 			}
 		}
 
-		public static void RemoveGrab(Window window)
+		public static void RemoveGrab(Gtk.Window window)
 		{
 			Grab.Remove(window);
 			Gdk.Pointer.Ungrab(CURRENT_TIME);

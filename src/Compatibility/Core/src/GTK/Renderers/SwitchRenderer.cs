@@ -20,19 +20,21 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK.Renderers
 					SetNativeControl(new Gtk.CheckButton());
 				}
 
-				Control.Toggled -= OnCheckButtonToggled;
+				if (Control != null)
+					Control.Toggled -= OnCheckButtonToggled;
 
 				UpdateState();
 				UpdateBackgroundColor();
 				e.NewElement.Toggled += OnElementToggled;
 
-				Control.Toggled += OnCheckButtonToggled;
+				if (Control != null)
+					Control.Toggled += OnCheckButtonToggled;
 			}
 
 			base.OnElementChanged(e);
 		}
 
-		protected override void OnElementPropertyChanged(object sender, PropertyChangedEventArgs e)
+		protected override void OnElementPropertyChanged(object? sender, PropertyChangedEventArgs e)
 		{
 			base.OnElementPropertyChanged(sender, e);
 
@@ -61,7 +63,7 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK.Renderers
 			base.Dispose(disposing);
 		}
 
-		private void OnElementToggled(object sender, EventArgs e)
+		private void OnElementToggled(object? sender, EventArgs e)
 		{
 			UpdateState();
 		}
@@ -71,7 +73,7 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK.Renderers
 			Control.Active = Element.IsToggled ? true : false;
 		}
 
-		private void OnCheckButtonToggled(object sender, EventArgs e)
+		private void OnCheckButtonToggled(object? sender, EventArgs e)
 		{
 			ElementController.SetValueFromRenderer(Switch.IsToggledProperty, Control.Active);
 		}

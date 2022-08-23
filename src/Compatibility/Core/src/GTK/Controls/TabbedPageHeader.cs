@@ -8,7 +8,7 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK.Controls
 		private Gtk.Label _label;
 		private Gtk.Image _image;
 
-		public TabbedPageHeader(string title, Pixbuf icon = null)
+		public TabbedPageHeader(string title, Pixbuf icon = null!)
 		{
 			Spacing = 0;
 

@@ -41,7 +41,7 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK.Renderers
 			base.OnElementChanged(e);
 		}
 
-		protected override void OnElementPropertyChanged(object sender, PropertyChangedEventArgs e)
+		protected override void OnElementPropertyChanged(object? sender, PropertyChangedEventArgs e)
 		{
 			if (e.PropertyName == Entry.TextProperty.PropertyName ||
 				e.PropertyName == Entry.TextTransformProperty.PropertyName)
@@ -93,7 +93,7 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK.Renderers
 			}
 			else
 			{
-				Control.SetBackgroundColor(Color.Transparent.ToGtkColor());
+				Control.SetBackgroundColor(Graphics.Colors.Transparent.ToGtkColor());
 			}
 		}
 
@@ -134,23 +134,23 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.GTK.Renderers
 			Control.SetPlaceholderTextColor(Element.PlaceholderColor.ToGtkColor());
 		}
 
-		private void OnChanged(object sender, System.EventArgs e)
+		private void OnChanged(object? sender, System.EventArgs e)
 		{
 			ElementController.SetValueFromRenderer(Entry.TextProperty, Control.Entry.Text);
 		}
 
-		private void OnFocused(object o, FocusedArgs args)
+		private void OnFocused(object? o, FocusedArgs args)
 		{
 			ElementController.SetValueFromRenderer(VisualElement.IsFocusedPropertyKey, true);
 		}
 
-		private void OnEditingDone(object sender, System.EventArgs e)
+		private void OnEditingDone(object? sender, System.EventArgs e)
 		{
 			ElementController.SetValueFromRenderer(VisualElement.IsFocusedPropertyKey, false);
 			EntryController?.SendCompleted();
 		}
 
-		private void OnKeyReleased(object o, KeyReleaseEventArgs args)
+		private void OnKeyReleased(object? o, KeyReleaseEventArgs args)
 		{
 			if (args.Event.Key == Gdk.Key.Return)
 			{
