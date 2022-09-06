@@ -14,11 +14,11 @@ namespace Microsoft.Maui.Handlers
 			handler.PlatformView?.UpdateIsRunning(activityIndicator);
 		}
 
-		
+
 		public static void MapColor(IActivityIndicatorHandler handler, IActivityIndicator activityIndicator)
 		{
 			handler.PlatformView?.SetForegroundColor(activityIndicator.Color);
-			
+
 		}
 	}
 }

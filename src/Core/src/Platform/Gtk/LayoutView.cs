@@ -79,7 +79,7 @@ namespace Microsoft.Maui.Platform
 
 			var focusChain = _children
 			   .Select(c => c.widget)
-				// .OrderBy(kvp => orientation == Orientation.Horizontal ? kvp.Value.Rect.X : kvp.Value.Rect.Y)
+			   // .OrderBy(kvp => orientation == Orientation.Horizontal ? kvp.Value.Rect.X : kvp.Value.Rect.Y)
 			   .ToArray();
 
 			FocusChain = focusChain;
@@ -294,7 +294,7 @@ namespace Microsoft.Maui.Platform
 
 			bool CanBeCached() => !double.IsPositiveInfinity(widthConstraint) && !double.IsPositiveInfinity(heightConstraint);
 
-			if (VirtualView is not {  } virtualView)
+			if (VirtualView is not { } virtualView)
 				return Size.Zero;
 
 			var key = (widthConstraint, heightConstraint, mode);
@@ -368,7 +368,7 @@ namespace Microsoft.Maui.Platform
 			{
 				if (RequestMode is SizeRequestMode.WidthForHeight or SizeRequestMode.ConstantSize)
 				{
-					if (MeasuredSizeV is { Width : > 0 } size && (constraint == 0))
+					if (MeasuredSizeV is { Width: > 0 } size && (constraint == 0))
 						constraint = size.Width;
 
 					constraint = constraint == 0 ? double.PositiveInfinity : constraint;
@@ -427,7 +427,8 @@ namespace Microsoft.Maui.Platform
 			if (rect.IsEmpty)
 				return;
 
-			if (rect == Allocation.ToRect()) return;
+			if (rect == Allocation.ToRect())
+				return;
 
 			if (IsSizeAllocating)
 			{

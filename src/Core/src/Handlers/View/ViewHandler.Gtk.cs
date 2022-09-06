@@ -36,7 +36,7 @@
 
 		[MissingMapper]
 		public static void MapAnchorY(IViewHandler handler, IView view) { }
-		
+
 		[MissingMapper]
 		public virtual bool NeedsContainer => false;
 

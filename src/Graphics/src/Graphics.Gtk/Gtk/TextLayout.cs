@@ -10,69 +10,83 @@ namespace Microsoft.Maui.Graphics.Platform.Gtk;
 /// https://developer.gnome.org/pango/1.46/pango-Layout-Objects.html
 /// https://developer.gnome.org/gdk3/stable/gdk3-Pango-Interaction.html
 /// </summary>
-public class TextLayout : IDisposable {
+public class TextLayout : IDisposable
+{
 
 	private Context _context;
 
-	public TextLayout(Context context) {
+	public TextLayout(Context context)
+	{
 
 		_context = context;
 	}
 
 	public Context Context => _context;
 
-	public string FontFamily {
-		get {
-			if (string.IsNullOrEmpty (_fontFamily)) {
-				_fontFamily = Gdk.PangoHelper.ContextGet ().FontDescription.Family;
+	public string FontFamily
+	{
+		get
+		{
+			if (string.IsNullOrEmpty(_fontFamily))
+			{
+				_fontFamily = Gdk.PangoHelper.ContextGet().FontDescription.Family;
 			}
 
 			return _fontFamily;
 		}
-		set {
-			if (string.Equals (_fontFamily, value))
+		set
+		{
+			if (string.Equals(_fontFamily, value))
 				return;
 			_fontFamily = value;
-			FontDescriptionChanged ();
+			FontDescriptionChanged();
 		}
 	}
 
-	public Pango.Weight Weight {
+	public Pango.Weight Weight
+	{
 		get => _weight;
-		set {
+		set
+		{
 			if (_weight == value)
 				return;
 
 			_weight = value;
-			FontDescriptionChanged ();
+			FontDescriptionChanged();
 		}
 	}
 
-	public Pango.Style Style {
+	public Pango.Style Style
+	{
 		get => _style;
-		set {
+		set
+		{
 			if (_style == value)
 				return;
 
 			_style = value;
-			FontDescriptionChanged ();
+			FontDescriptionChanged();
 		}
 	}
 
-	public int PangoFontSize {
-		get {
-			if (_pangoFontSize == -1) {
-				_pangoFontSize = Gdk.PangoHelper.ContextGet ().FontDescription.Size;
+	public int PangoFontSize
+	{
+		get
+		{
+			if (_pangoFontSize == -1)
+			{
+				_pangoFontSize = Gdk.PangoHelper.ContextGet().FontDescription.Size;
 			}
 
 			return _pangoFontSize;
 		}
-		set {
+		set
+		{
 			if (_pangoFontSize == value)
 				return;
 
 			_pangoFontSize = value;
-			FontDescriptionChanged ();
+			FontDescriptionChanged();
 		}
 	}
 
@@ -97,15 +111,18 @@ public class TextLayout : IDisposable {
 
 	public Action<TextLayout> AfterDrawn { get; set; }
 
-	public void SetLayout(Pango.Layout value) {
+	public void SetLayout(Pango.Layout value)
+	{
 		_layout = value;
 		_layoutOwned = false;
 	}
 
 	private Pango.FontDescription? _fontDescription;
 
-	void FontDescriptionChanged () {
-		if (_fontDescriptionOwned && _fontDescription is {}) {
+	void FontDescriptionChanged()
+	{
+		if (_fontDescriptionOwned && _fontDescription is { })
+		{
 			_fontDescription.Family = FontFamily;
 			_fontDescription.Weight = Weight;
 			_fontDescription.Style = Style;
@@ -119,10 +136,14 @@ public class TextLayout : IDisposable {
 	private Style _style = Pango.Style.Normal;
 	private int _pangoFontSize = -1;
 
-	public Pango.FontDescription FontDescription {
-		get {
-			if (_fontDescription == null) {
-				_fontDescription = new Pango.FontDescription {
+	public Pango.FontDescription FontDescription
+	{
+		get
+		{
+			if (_fontDescription == null)
+			{
+				_fontDescription = new Pango.FontDescription
+				{
 					Family = FontFamily,
 					Weight = Weight,
 					Style = Style,
@@ -134,21 +155,25 @@ public class TextLayout : IDisposable {
 
 			return _fontDescription;
 		}
-		set {
-			if (Equals (_fontDescription, value))
+		set
+		{
+			if (Equals(_fontDescription, value))
 				return;
 			_fontDescription = value;
 			_fontDescriptionOwned = false;
 		}
 	}
 
-	public Pango.Layout GetLayout() {
-		if (_layout == null) {
+	public Pango.Layout GetLayout()
+	{
+		if (_layout == null)
+		{
 			_layout = Pango.CairoHelper.CreateLayout(Context);
 			_layoutOwned = true;
 		}
 
-		if (_layout.FontDescription != FontDescription) {
+		if (_layout.FontDescription != FontDescription)
+		{
 			_layout.FontDescription = FontDescription;
 		}
 
@@ -162,24 +187,32 @@ public class TextLayout : IDisposable {
 		return _layout;
 	}
 
-	public void Dispose() {
-		if (_fontDescriptionOwned) {
+	public void Dispose()
+	{
+		if (_fontDescriptionOwned)
+		{
 			_fontDescription?.Dispose();
 		}
 
-		if (_layoutOwned) {
+		if (_layoutOwned)
+		{
 			_layout?.Dispose();
 		}
 	}
 
-	public (int width, int height) GetPixelSize(string text, double desiredSize = -1d) {
+	public (int width, int height) GetPixelSize(string text, double desiredSize = -1d)
+	{
 
 		var layout = GetLayout();
 
-		if (desiredSize > 0) {
-			if (HeightForWidth) {
+		if (desiredSize > 0)
+		{
+			if (HeightForWidth)
+			{
 				layout.Width = desiredSize.ScaledToPango();
-			} else {
+			}
+			else
+			{
 				layout.Height = desiredSize.ScaledToPango();
 			}
 		}
@@ -190,7 +223,8 @@ public class TextLayout : IDisposable {
 		return (textWidth, textHeight);
 	}
 
-	private void Draw() {
+	private void Draw()
+	{
 		if (_layout == null)
 			return;
 
@@ -204,35 +238,40 @@ public class TextLayout : IDisposable {
 		Pango.CairoHelper.ShowLayout(Context, _layout);
 	}
 
-	private float GetX(float x, int width) => HorizontalAlignment switch {
+	private float GetX(float x, int width) => HorizontalAlignment switch
+	{
 		HorizontalAlignment.Left => x,
 		HorizontalAlignment.Right => x - width,
 		HorizontalAlignment.Center => x - width / 2f,
 		_ => x
 	};
 
-	private float GetY(float y, int height) => VerticalAlignment switch {
+	private float GetY(float y, int height) => VerticalAlignment switch
+	{
 		VerticalAlignment.Top => y,
 		VerticalAlignment.Center => y - height,
 		VerticalAlignment.Bottom => y - height / 2f,
 		_ => y
 	};
 
-	private float GetDx(int width) => HorizontalAlignment switch {
+	private float GetDx(int width) => HorizontalAlignment switch
+	{
 		HorizontalAlignment.Left => 0,
 		HorizontalAlignment.Center => width / 2f,
 		HorizontalAlignment.Right => width,
 		_ => 0
 	};
 
-	private float GetDy(int height) => VerticalAlignment switch {
+	private float GetDy(int height) => VerticalAlignment switch
+	{
 		VerticalAlignment.Top => 0,
 		VerticalAlignment.Center => height / 2f,
 		VerticalAlignment.Bottom => height,
 		_ => 0
 	};
 
-	public void DrawString(string value, float x, float y) {
+	public void DrawString(string value, float x, float y)
+	{
 
 		Context.Save();
 
@@ -240,7 +279,8 @@ public class TextLayout : IDisposable {
 		layout.SetText(value);
 		layout.GetPixelSize(out var textWidth, out var textHeight);
 
-		if (layout.IsWrapped || layout.IsEllipsized) {
+		if (layout.IsWrapped || layout.IsEllipsized)
+		{
 			if (HeightForWidth)
 				layout.Width = textWidth.ScaledToPango();
 			else
@@ -255,7 +295,8 @@ public class TextLayout : IDisposable {
 
 	}
 
-	public void DrawString(string value, float x, float y, float width, float height) {
+	public void DrawString(string value, float x, float y, float width, float height)
+	{
 
 		Context.Save();
 		Context.Translate(x, y);
@@ -263,25 +304,32 @@ public class TextLayout : IDisposable {
 		var layout = GetLayout();
 		layout.SetText(value);
 
-		if (HeightForWidth) {
+		if (HeightForWidth)
+		{
 			layout.Width = width.ScaledToPango();
 
-			if (TextFlow == TextFlow.ClipBounds) {
+			if (TextFlow == TextFlow.ClipBounds)
+			{
 				layout.Height = height.ScaledToPango();
 			}
-		} else {
+		}
+		else
+		{
 			layout.Height = height.ScaledToPango();
 
-			if (TextFlow == TextFlow.ClipBounds) {
+			if (TextFlow == TextFlow.ClipBounds)
+			{
 				layout.Width = width.ScaledToPango();
 			}
 		}
 
-		if (TextFlow == TextFlow.ClipBounds && !layout.IsEllipsized) {
+		if (TextFlow == TextFlow.ClipBounds && !layout.IsEllipsized)
+		{
 			layout.Ellipsize = Pango.EllipsizeMode.End;
 		}
 
-		if (!layout.IsWrapped || !layout.IsEllipsized) {
+		if (!layout.IsWrapped || !layout.IsEllipsized)
+		{
 			layout.Wrap = Pango.WrapMode.Char;
 		}
 
@@ -290,16 +338,17 @@ public class TextLayout : IDisposable {
 		var mX = HeightForWidth ?
 			0 :
 			TextFlow == TextFlow.ClipBounds ?
-				Math.Max(0, GetDx((int) width - logicalRect.Width - logicalRect.X)) :
-				GetDx((int) width - logicalRect.Width - inkRect.X);
+				Math.Max(0, GetDx((int)width - logicalRect.Width - logicalRect.X)) :
+				GetDx((int)width - logicalRect.Width - inkRect.X);
 
 		var mY = !HeightForWidth ?
 			0 :
 			TextFlow == TextFlow.ClipBounds ?
-				Math.Max(0, GetDy((int) height - inkRect.Height - inkRect.Y)) :
-				GetDy((int) height - inkRect.Height - inkRect.Y);
+				Math.Max(0, GetDy((int)height - inkRect.Height - inkRect.Y)) :
+				GetDy((int)height - inkRect.Height - inkRect.Y);
 
-		if (mY + inkRect.Height > height && TextFlow == TextFlow.ClipBounds && !HeightForWidth) {
+		if (mY + inkRect.Height > height && TextFlow == TextFlow.ClipBounds && !HeightForWidth)
+		{
 			mY = 0;
 		}
 
@@ -316,7 +365,8 @@ public class TextLayout : IDisposable {
 	/// <summary>
 	/// future use for
 	/// </summary>
-	private void ClampToContext() {
+	private void ClampToContext()
+	{
 		if (_layout == null || _context == null)
 			return;
 
@@ -326,8 +376,10 @@ public class TextLayout : IDisposable {
 		var maxW = ctxSize.Width.ScaledToPango();
 		var maxH = ctxSize.Height.ScaledToPango();
 
-		while (logicalRect.Width > maxW) {
-			if (!_layout.IsWrapped) {
+		while (logicalRect.Width > maxW)
+		{
+			if (!_layout.IsWrapped)
+			{
 				_layout.Wrap = Pango.WrapMode.Char;
 			}
 
@@ -336,8 +388,10 @@ public class TextLayout : IDisposable {
 			maxW -= 1.ScaledToPango();
 		}
 
-		while (logicalRect.Height > maxH) {
-			if (!_layout.IsWrapped) {
+		while (logicalRect.Height > maxH)
+		{
+			if (!_layout.IsWrapped)
+			{
 				_layout.Wrap = Pango.WrapMode.Char;
 			}
 
@@ -353,7 +407,8 @@ public class TextLayout : IDisposable {
 	/// <summary>
 	/// Get the distance in pixels between the top of the layout bounds and the first line's baseline
 	/// </summary>
-	public double GetBaseline() {
+	public double GetBaseline()
+	{
 		// Just get the first line
 		using var iter = GetLayout().Iter;
 
@@ -363,7 +418,8 @@ public class TextLayout : IDisposable {
 	/// <summary>
 	/// Get the distance in pixels between the top of the layout bounds and the first line's meanline (usually equivalent to the baseline minus half of the x-height)
 	/// </summary>
-	public double GetMeanline() {
+	public double GetMeanline()
+	{
 		var baseline = 0;
 
 		var layout = GetLayout();

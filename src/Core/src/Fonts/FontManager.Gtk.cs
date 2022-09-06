@@ -119,11 +119,11 @@ namespace Microsoft.Maui
 
 			return styles.ToArray();
 		}
-		
-		internal static bool AddFontFile (string fontPath)
+
+		internal static bool AddFontFile(string fontPath)
 		{
 			// Try to add font file to the current fontconfig configuration
-			var result = FcConfigAppFontAddFile (System.IntPtr.Zero, fontPath);
+			var result = FcConfigAppFontAddFile(System.IntPtr.Zero, fontPath);
 
 			if (result)
 			{

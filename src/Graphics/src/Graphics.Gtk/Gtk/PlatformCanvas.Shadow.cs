@@ -1,10 +1,13 @@
 namespace Microsoft.Maui.Graphics.Platform.Gtk;
 
-public partial class PlatformCanvas {
+public partial class PlatformCanvas
+{
 
-	public void DrawShadow(bool fill) {
+	public void DrawShadow(bool fill)
+	{
 
-		if (CurrentState.Shadow != default) {
+		if (CurrentState.Shadow != default)
+		{
 
 			using var path = Context.CopyPath();
 
@@ -27,7 +30,8 @@ public partial class PlatformCanvas {
 
 			if (true)
 				shadowCtx.PaintWithAlpha(0.3);
-			else {
+			else
+			{
 				shadowCtx.LineWidth = 10;
 				shadowCtx.Stroke();
 			}

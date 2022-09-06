@@ -18,7 +18,7 @@ namespace Microsoft.Maui
 		}
 		public static void UpdateIncrement(this SpinButton nativeSlider, IStepper slider)
 		{
-			nativeSlider.SetIncrements(slider.Interval,1);
+			nativeSlider.SetIncrements(slider.Interval, 1);
 		}
 	}
 }
