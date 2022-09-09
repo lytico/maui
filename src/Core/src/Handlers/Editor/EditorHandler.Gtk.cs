@@ -51,7 +51,8 @@ namespace Microsoft.Maui.Handlers
 			if (PlatformView is not { } nativeView || VirtualView is not { } virtualView)
 				return;
 
-			if (sender != nativeView.Buffer) return;
+			if (sender != nativeView.Buffer)
+				return;
 
 			var text = nativeView.Buffer.Text;
 

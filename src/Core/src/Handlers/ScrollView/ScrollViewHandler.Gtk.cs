@@ -72,7 +72,8 @@ namespace Microsoft.Maui.Handlers
 
 		protected virtual void ConnectButtonEvents(Widget? widget)
 		{
-			if (widget == null) return;
+			if (widget == null)
+				return;
 
 			widget.Events |= Gdk.EventMask.ButtonPressMask | Gdk.EventMask.ButtonReleaseMask | Gdk.EventMask.ScrollMask | EventMask.SmoothScrollMask;
 			widget.ButtonPressEvent += OnNativeViewButtonPressEvent;
@@ -83,7 +84,8 @@ namespace Microsoft.Maui.Handlers
 
 		protected virtual void DisconnectButtonEvents(Widget? widget)
 		{
-			if (widget == null) return;
+			if (widget == null)
+				return;
 
 			widget.ButtonPressEvent -= OnNativeViewButtonPressEvent;
 			widget.ButtonReleaseEvent -= OnNativeViewButtonReleaseEvent;

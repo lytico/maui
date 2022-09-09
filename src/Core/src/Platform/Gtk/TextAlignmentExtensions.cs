@@ -4,10 +4,10 @@ namespace Microsoft.Maui
 {
 	public static class TextAlignmentExtensions
 	{
-		
+
 		// https://docs.gtk.org/gtk3/property.Widget.halign
 		// How to distribute horizontal space if widget gets extra space, see GtkAlign
-		
+
 		internal static Align ToGtkAlign(this TextAlignment alignment)
 		{
 			switch (alignment)
@@ -20,7 +20,7 @@ namespace Microsoft.Maui
 					return Align.Center;
 			}
 		}
-		
+
 		public static Justification ToJustification(this TextAlignment alignment)
 		{
 			switch (alignment)
@@ -33,7 +33,7 @@ namespace Microsoft.Maui
 					return Justification.Center;
 			}
 		}
-		
+
 		/// <summary>
 		/// https://docs.gtk.org/gtk3/method.Label.set_xalign.html
 		/// The xalign property determines the horizontal aligment of the label text inside the labels size allocation.

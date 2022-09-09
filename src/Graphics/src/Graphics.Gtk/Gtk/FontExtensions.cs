@@ -62,7 +62,7 @@ public static class FontExtensions
 		=> (int)it;
 
 	public static Pango.FontDescription ToFontDescription(this IFont it)
-		=> it is not {} || string.IsNullOrEmpty(it?.Name)
+		=> it is not { } || string.IsNullOrEmpty(it?.Name)
 			? SystemFontDescription
 			: new Pango.FontDescription
 			{

@@ -150,7 +150,10 @@ namespace Maui.SimpleSampleApp
 
 			var button2 = new Button
 			{
-				Padding = new Thickness(10), Text = "Change the button!", BackgroundColor = Colors.Green, TextColor = Colors.Yellow,
+				Padding = new Thickness(10),
+				Text = "Change the button!",
+				BackgroundColor = Colors.Green,
+				TextColor = Colors.Yellow,
 			};
 
 			button2.Clicked += (sender, args) =>
@@ -247,7 +250,10 @@ namespace Maui.SimpleSampleApp
 
 			var labelG = new Label
 			{
-				Text = "this has gradient", Background = new RadialGradientBrush(new GradientStopCollection { new(Colors.Aqua, 0), new(Colors.Green, 10), }), Padding = new Thickness(30), Margin = new Thickness(10),
+				Text = "this has gradient",
+				Background = new RadialGradientBrush(new GradientStopCollection { new(Colors.Aqua, 0), new(Colors.Green, 10), }),
+				Padding = new Thickness(30),
+				Margin = new Thickness(10),
 			};
 
 			verticalStack.Add(labelG);
@@ -269,7 +275,10 @@ namespace Maui.SimpleSampleApp
 
 			var button2 = new Button()
 			{
-				TextColor = Colors.Green, Text = "Hello I'm a button", BackgroundColor = Colors.Purple, Margin = new Thickness(12),
+				TextColor = Colors.Green,
+				Text = "Hello I'm a button",
+				BackgroundColor = Colors.Purple,
+				Margin = new Thickness(12),
 			};
 
 			horizontalStack.Add(button);
