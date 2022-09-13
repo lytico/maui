@@ -93,6 +93,7 @@ installed:
 * `maui-macos`
 * `maui-windows`
 * `maui-tizen`
+* `maui-gtk`
 
 `maui-android` simply extends the `android` workload, adding the
 Android-specific platform implementation for MAUI.

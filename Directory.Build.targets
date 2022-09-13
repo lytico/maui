@@ -37,6 +37,10 @@
     <SupportedOSPlatformVersion>6.5</SupportedOSPlatformVersion>
     <TargetPlatformMinVersion>6.5</TargetPlatformMinVersion>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(_MauiTargetPlatformIsGtk)' == 'True'">
+    <SupportedOSPlatformVersion>2.0</SupportedOSPlatformVersion>
+    <TargetPlatformMinVersion>2.0</TargetPlatformMinVersion>
+  </PropertyGroup>
 
   <!-- 
     NOTE: The Contains('-windows10') is a bit of a hack 

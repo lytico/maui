@@ -85,6 +85,7 @@
         <_ResizetizerPlatformIstvOS Condition="'$(_ResizetizerPlatformIdentifier)' == 'tvos'">True</_ResizetizerPlatformIstvOS>
         <_ResizetizerPlatformIsWindows Condition="$(_ResizetizerPlatformIdentifier.Contains('windows')) == 'True'">True</_ResizetizerPlatformIsWindows>
         <_ResizetizerPlatformIsTizen Condition="'$(_ResizetizerPlatformIdentifier)' == 'tizen'">True</_ResizetizerPlatformIsTizen>
+        <_ResizetizerPlatformIsGtk Condition="'$(_ResizetizerPlatformIdentifier)' == 'gtk'">True</_ResizetizerPlatformIsGtk>
 
         <ResizetizerIncludeSelfProject Condition="'$(ResizetizerIncludeSelfProject)' == ''">False</ResizetizerIncludeSelfProject>
 
@@ -98,9 +99,10 @@
         <_ResizetizerIsWPFApp Condition="'$(IsApplication)' == 'True' And '$(NuGetRuntimeIdentifier)' == 'win' And '$(_ResizetizerPlatformIsWindows)' == 'True'">True</_ResizetizerIsWPFApp>
         <_ResizetizerIsWindowsAppSdk Condition="('$(ProjectReunionWinUI)'=='True' Or '$(WindowsAppSDKWinUI)'=='True') And '$(_ResizetizerPlatformIsWindows)' == 'True' And ('$(OutputType)' == 'WinExe' Or '$(OutputType)' == 'Exe')">True</_ResizetizerIsWindowsAppSdk>
         <_ResizetizerIsTizenApp Condition="'$(_ResizetizerPlatformIsTizen)' == 'True' And ( '$(OutputType)' == 'Exe' )">True</_ResizetizerIsTizenApp>
+        <_ResizetizerIsGtkApp Condition="'$(_ResizetizerPlatformIsGtk)' == 'True' And ( '$(OutputType)' == 'Exe' )">True</_ResizetizerIsGtkApp>
     </PropertyGroup>
 
-    <PropertyGroup Condition="'$(_ResizetizerIsAndroidApp)' == 'True' Or '$(_ResizetizerIsiOSApp)' == 'True' Or '$(_ResizetizerIsWPFApp)' == 'True' Or '$(_ResizetizerIsWindowsAppSdk)' == 'True' Or '$(_ResizetizerIsTizenApp)' == 'True'">
+    <PropertyGroup Condition="'$(_ResizetizerIsAndroidApp)' == 'True' Or '$(_ResizetizerIsiOSApp)' == 'True' Or '$(_ResizetizerIsWPFApp)' == 'True' Or '$(_ResizetizerIsWindowsAppSdk)' == 'True' Or '$(_ResizetizerIsTizenApp)' == 'True' Or '$(_ResizetizerIsGtkApp)' == 'True'">
         <_ResizetizerIsCompatibleApp>True</_ResizetizerIsCompatibleApp>
 
         <ResizetizeDependsOnTargets>
@@ -216,6 +218,21 @@
             $(ProcessMauiFontsAfterTargets);
             ResizetizeCollectItems;
         </ProcessMauiFontsAfterTargets>
+    </PropertyGroup>
+
+    <!-- GTK -->
+    <PropertyGroup Condition="'$(_ResizetizerIsGtkApp)' == 'True'">
+        <ResizetizerPlatformType>wpf</ResizetizerPlatformType>
+
+        <ResizetizeBeforeTargets>
+            $(ResizetizeBeforeTargets);
+            FileClassification;
+        </ResizetizeBeforeTargets>
+
+        <ProcessMauiFontsBeforeTargets>
+            $(ProcessMauiFontsBeforeTargets);
+            FileClassification;
+        </ProcessMauiFontsBeforeTargets>
     </PropertyGroup>
 
     <!-- Finds absolute paths to any MauiImage in this project -->

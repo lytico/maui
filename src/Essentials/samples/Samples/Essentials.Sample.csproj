@@ -45,6 +45,45 @@
     <MauiAsset Include="Resources\Raw\**" LogicalName="%(RecursiveDir)%(Filename)%(Extension)" />
   </ItemGroup>
 
+  <ItemGroup>
+    <MauiImage Remove="Resources\Images\appiconfgSplashScreen.png" />
+    <MauiImage Remove="Resources\Images\appiconStoreLogo.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="Resources\Images\appiconfgSplashScreen.png" />
+    <None Remove="Resources\Images\appiconLargeTile.png" />
+    <None Remove="Resources\Images\appiconLogo.png" />
+    <None Remove="Resources\Images\appiconMediumTile.png" />
+    <None Remove="Resources\Images\appiconSmallTile.png" />
+    <None Remove="Resources\Images\appiconStoreLogo.png" />
+    <None Remove="Resources\Images\appiconWideTile.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\Images\appiconfgSplashScreen.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\Images\appiconLargeTile.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\Images\appiconStoreLogo.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\Images\appiconLogo.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\Images\appiconMediumTile.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\Images\appiconSmallTile.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\Images\appiconWideTile.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </EmbeddedResource>
+  </ItemGroup>
+
   <Import Project="$(MauiSrcDirectory)Maui.InTree.props" Condition=" '$(UseMaui)' != 'true' " />
 
 </Project>

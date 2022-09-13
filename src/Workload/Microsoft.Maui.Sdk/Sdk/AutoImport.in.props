@@ -153,4 +153,26 @@
     </Page>
   </ItemGroup>
 
+  <!-- Windows -->
+  <ItemGroup Condition=" '$(EnableDefaultMauiItems)' == 'true' and '$(SingleProject)' == 'true' and '$(TargetPlatformIdentifier)' == 'windows' and '$(GtkProjectFolder)' != '' and $([MSBuild]::VersionEquals($(TargetFrameworkVersion), '@MAUI_DOTNET_VERSION@')) ">
+    <ApplicationDefinition
+        Condition="Exists('$(GtkProjectFolder)App.xaml')"
+        Include="$(GtkProjectFolder)App.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+    </ApplicationDefinition>
+    <ApplicationDefinition
+        Condition="Exists('$(GtkProjectFolder)\Application.xaml')"
+        Include="$(GtkProjectFolder)Application.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+    </ApplicationDefinition>
+    <Page
+        Include="$(GtkProjectFolder)**/*.xaml"
+        Exclude="$(_SingleProjectWindowsExcludes);@(ApplicationDefinition)">
+      <Generator>MSBuild:Compile</Generator>
+      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+    </Page>
+  </ItemGroup>
+
 </Project>
