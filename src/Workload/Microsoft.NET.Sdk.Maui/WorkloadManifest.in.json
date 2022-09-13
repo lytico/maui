@@ -119,17 +119,6 @@
           "Microsoft.Maui.Essentials.Ref.tizen",
           "Microsoft.Maui.Essentials.Runtime.tizen"
       ]
-    },
-    "maui-gtk": {
-      "description": ".NET MAUI SDK for GTK",
-      "packs": [
-          "Microsoft.Maui.Core.Ref.gtk",
-          "Microsoft.Maui.Core.Runtime.gtk",
-          "Microsoft.Maui.Controls.Ref.gtk",
-          "Microsoft.Maui.Controls.Runtime.gtk",
-          "Microsoft.Maui.Essentials.Ref.gtk",
-          "Microsoft.Maui.Essentials.Runtime.gtk"
-      ]
     }
   },
   "packs": {

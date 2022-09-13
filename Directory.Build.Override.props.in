@@ -5,7 +5,6 @@
     -->
     <_IncludeWindows></_IncludeWindows>
     <_IncludeTizen></_IncludeTizen> 
-    <_IncludeGtk></_IncludeGtk> 
     <_IncludeAndroid></_IncludeAndroid> 
     <_IncludeIos></_IncludeIos> 
     <_IncludeMacCatalyst></_IncludeMacCatalyst> 
@@ -17,7 +16,6 @@
     <IncludeAndroidTargetFrameworks Condition="'$(_SpecificPlatformRequested)' == 'true' AND '$(_IncludeAndroid)' != 'true'">false</IncludeAndroidTargetFrameworks> 
     <IncludeWindowsTargetFrameworks Condition="'$(_SpecificPlatformRequested)' == 'true' AND '$(_IncludeWindows)' != 'true'">false</IncludeWindowsTargetFrameworks> 
     <IncludeTizenTargetFrameworks Condition="'$(_SpecificPlatformRequested)' == 'true' AND '$(_IncludeTizen)' != 'true'">false</IncludeTizenTargetFrameworks> 
-    <IncludeGtkTargetFrameworks Condition="'$(_SpecificPlatformRequested)' == 'true' AND '$(_IncludeGtk)' != 'true'">false</IncludeGtkTargetFrameworks> 
     <IncludeIosFrameworks Condition="'$(_SpecificPlatformRequested)' == 'true' AND '$(_IncludeIos)' != 'true'">false</IncludeIosFrameworks> 
     <IncludeMacCatalystTargetFrameworks Condition="'$(_SpecificPlatformRequested)' == 'true' AND '$(_IncludeMacCatalyst)' != 'true'">false</IncludeMacCatalystTargetFrameworks> 
   </PropertyGroup>

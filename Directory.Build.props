@@ -15,7 +15,6 @@
     <_MauiTargetPlatformIstvOS Condition="'$(_MauiTargetPlatformIdentifier)' == 'tvos'">True</_MauiTargetPlatformIstvOS>
     <_MauiTargetPlatformIsWindows Condition="$(_MauiTargetPlatformIdentifier.Contains('windows')) == 'True'">True</_MauiTargetPlatformIsWindows>
     <_MauiTargetPlatformIsTizen Condition="'$(_MauiTargetPlatformIdentifier)' == 'tizen'">True</_MauiTargetPlatformIsTizen>
-    <_MauiTargetPlatformIsGtk Condition="'$(_MauiTargetPlatformIdentifier)' == 'gtk'">True</_MauiTargetPlatformIsGtk>
   </PropertyGroup>
 
   <!-- Try determine which .NET workloads are installed -->
@@ -64,7 +63,6 @@
     <WindowsTargetFrameworkVersion>10.0.19041</WindowsTargetFrameworkVersion>
     <Windows2TargetFrameworkVersion>10.0.20348</Windows2TargetFrameworkVersion>
     <TizenTargetFrameworkVersion>6.5</TizenTargetFrameworkVersion>
-    <GTKTargetFrameworkVersion>2.0</GTKTargetFrameworkVersion>
   </PropertyGroup>
 
   <Import Condition="Exists('Directory.Build.Override.props')" Project="Directory.Build.Override.props" />
@@ -73,7 +71,6 @@
     <!-- the real TFMs -->
     <WindowsMauiPlatforms Condition="'$(WindowsMauiPlatforms)' == ''">net$(_MauiDotNetVersion)-windows$(WindowsTargetFrameworkVersion);net$(_MauiDotNetVersion)-windows$(Windows2TargetFrameworkVersion)</WindowsMauiPlatforms>
 
-    <MauiPlatforms>net$(_MauiDotNetVersion)-gtk;$(MauiPlatforms)</MauiPlatforms>
     <MauiPlatforms Condition="'$(IncludeTizenTargetFrameworks)' == 'true'">net$(_MauiDotNetVersion)-tizen;$(MauiPlatforms)</MauiPlatforms>
     <MauiPlatforms Condition="'$(IncludeWindowsTargetFrameworks)' == 'true'">$(WindowsMauiPlatforms);$(MauiPlatforms)</MauiPlatforms>
     <MauiPlatforms Condition="'$(IncludeAndroidTargetFrameworks)' != 'false'">net$(_MauiDotNetVersion)-android;$(MauiPlatforms)</MauiPlatforms>

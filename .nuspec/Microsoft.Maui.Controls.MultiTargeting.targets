@@ -65,12 +65,6 @@
     <Compile Remove="**\Tizen\**\*.cs" />
     <None Include="**\Tizen\**\*.cs" Exclude="$(DefaultItemExcludes);$(DefaultExcludesInProjectFolder)" />
   </ItemGroup>
-  <ItemGroup Condition="'$(_MauiTargetPlatformIsGtk)' != 'True'">
-    <Compile Remove="**\*.Gtk.cs" />
-    <None Include="**\*.Gtk.cs" Exclude="$(DefaultItemExcludes);$(DefaultExcludesInProjectFolder)" />
-    <Compile Remove="**\GTK\**\*.cs" />
-    <None Include="**\GTK\**\*.cs" Exclude="$(DefaultItemExcludes);$(DefaultExcludesInProjectFolder)" />
-  </ItemGroup>
   <ItemGroup>
     <Compile Remove="bin\**;obj\**" />
     <None Remove="bin\**;obj\**" />
@@ -110,11 +104,6 @@
   <!-- Tizen -->
   <PropertyGroup Condition=" '$(_MauiTargetPlatformIsTizen)' == 'True' ">
     <DefineConstants>$(DefineConstants);TIZEN</DefineConstants>
-  </PropertyGroup>
-
-  <!-- GTK -->
-  <PropertyGroup Condition=" '$(_MauiTargetPlatformIsGtk)' == 'True' ">
-    <DefineConstants>$(DefineConstants);__GTK__</DefineConstants>
   </PropertyGroup>
 
   <!-- Windows -->
