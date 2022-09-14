@@ -48,9 +48,10 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\..\..\Controls\src\Core\Controls.Core-GTK.csproj" />
-    <ProjectReference Include="..\..\..\..\Controls\src\Xaml\Controls.Xaml.csproj" />
-    <ProjectReference Include="..\..\..\..\Essentials\src\Essentials.csproj" />
-    <ProjectReference Include="..\..\..\..\Graphics\src\Graphics\Graphics.csproj" />
+    <ProjectReference Include="..\..\..\..\Controls\src\Xaml\Controls.Xaml-GTK.csproj" />
+    <ProjectReference Include="..\..\..\..\Core\src\Core-GTK.csproj" />
+    <ProjectReference Include="..\..\..\..\Essentials\src\Essentials-GTK.csproj" />
+    <ProjectReference Include="..\..\..\..\Graphics\src\Graphics\Graphics-GTK.csproj" />
   </ItemGroup>
 
   <ItemGroup>

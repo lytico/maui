@@ -12,9 +12,6 @@
   </PropertyGroup>
   <Import Project="$(MauiNuSpecDirectory)Microsoft.Maui.Controls.MultiTargeting.targets" />
   <ItemGroup>
-    <ProjectReference Include="..\..\Graphics\src\Graphics\Graphics.csproj" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="..\..\..\LICENSE" PackagePath="" Pack="true" />
     <None Include="..\..\..\Assets\xamarin.essentials_128x128.png" PackagePath="icon.png" Pack="true" />
     <None Include="nugetreadme.txt" PackagePath="readme.txt" Pack="true" />
@@ -60,6 +57,9 @@
   <ItemGroup Condition=" '$(TargetPlatformIdentifier)' == 'tizen' ">
     <Compile Include="**\*.tizen.cs" Exclude="$(DefaultItemExcludes);$(DefaultExcludesInProjectFolder)" />
     <Compile Include="**\*.tizen.*.cs" Exclude="$(DefaultItemExcludes);$(DefaultExcludesInProjectFolder)" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Graphics\src\Graphics\Graphics-GTK.csproj" />
   </ItemGroup>
   <!-- <ItemGroup Condition=" '$(TargetPlatformIdentifier)' == 'macos' ">
     <Compile Include="**\*.macos.cs" Exclude="$(DefaultItemExcludes);$(DefaultExcludesInProjectFolder)" />
