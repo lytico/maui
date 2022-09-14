@@ -1,0 +1,48 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<TargetFrameworks>netstandard2.1;netstandard2.0;$(_MauiDotNetTfm);$(MauiPlatforms)</TargetFrameworks>
+		<AssemblyName>Microsoft.Maui.Controls.Xaml</AssemblyName>
+		<RootNamespace>Microsoft.Maui.Controls.Xaml</RootNamespace>
+		<IsPackable>false</IsPackable>
+		<_MauiDesignDllBuild Condition=" '$(OS)' != 'Unix' ">True</_MauiDesignDllBuild>
+		<NoWarn>$(NoWarn);CA2200;CS1591;RS0041</NoWarn>
+		<PackageId>Microsoft.Maui.Controls.Xaml</PackageId>
+		<GenerateDocumentationFile>true</GenerateDocumentationFile>
+	</PropertyGroup>
+
+	<PropertyGroup Condition="$(TargetFramework.Contains('-windows')) == true ">
+		<NoWarn>$(NoWarn);CA1416</NoWarn>
+		<DefineConstants>$(DefineConstants);WINDOWS</DefineConstants>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\Core\Controls.Core.csproj" />
+		<ProjectReference Include="..\..\..\Core\src\Core.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Microsoft.Extensions.Configuration" />
+	</ItemGroup>
+
+	<PropertyGroup Condition=" '$(_MauiDesignDllBuild)' == 'True'">
+	<TargetsForTfmSpecificBuildOutput>
+		$(TargetsForTfmSpecificBuildOutput);
+		_MauiPackXamlDesignAssemblies
+	</TargetsForTfmSpecificBuildOutput>
+	</PropertyGroup>
+
+	<Target Name="_MauiPackXamlDesignAssemblies">
+		<ItemGroup>
+			<BuildOutputInPackage Include="..\Xaml.Design\bin\$(Configuration)\net472\Microsoft.Maui.Controls.Xaml.DesignTools.dll">
+				<TargetPath>Design\Microsoft.Maui.Controls.Xaml.DesignTools.dll</TargetPath>
+			</BuildOutputInPackage>
+			<BuildOutputInPackage Include="..\Xaml.Design\bin\$(Configuration)\net472\Microsoft.Maui.Controls.Xaml.DesignTools.pdb">
+				<TargetPath>Design\Microsoft.Maui.Controls.Xaml.DesignTools.pdb</TargetPath>
+			</BuildOutputInPackage>
+		</ItemGroup>
+	</Target>
+
+	<Import Project="$(MauiSrcDirectory)PublicAPI.targets" />
+
+</Project>
