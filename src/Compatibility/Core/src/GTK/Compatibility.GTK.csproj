@@ -4,12 +4,13 @@
     <!-- Use TargetFrameworks (plural) instead of TargetFramework (singular) here even though there is only one target
       framework. This is to work around an issue with the Microsoft.Web.WebView2 package:
       https://github.com/MicrosoftEdge/WebView2Feedback/issues/710 -->
-    <TargetFrameworks>$(_MauiDotNetTfm)-windows</TargetFrameworks>
-    <SupportedOSPlatformVersion>7.0</SupportedOSPlatformVersion>
+    <TargetFramework>$(_MauiDotNetTfm)-windows10.0.19041.0</TargetFramework>
     <Description>Build GTK applications.</Description>
-    <UseWindowsForms>true</UseWindowsForms>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
+	<Platforms>AnyCPU;x86</Platforms>
+	<UseWindowsForms>true</UseWindowsForms>
+	<RuntimeIdentifiers>win10-x86</RuntimeIdentifiers>
     <AssemblyName>Microsoft.Maui.Controls.Compatibility.GTK</AssemblyName>
     <RootNamespace>Microsoft.Maui.Controls.Compatibility.GTK</RootNamespace>
   </PropertyGroup>
