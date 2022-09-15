@@ -9,6 +9,8 @@
     <GitInfoReportImportance>high</GitInfoReportImportance>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <NoWarn>$(NoWarn);CS1591;RS0041;RS0026;RS0027;RS0022</NoWarn>
+    <RunAnalyzersDuringBuild>False</RunAnalyzersDuringBuild>
+    <RunAnalyzersDuringLiveAnalysis>False</RunAnalyzersDuringLiveAnalysis>
   </PropertyGroup>
 
   <Import Project="$(MauiNuSpecDirectory)Microsoft.Maui.Controls.MultiTargeting.targets" />
@@ -17,10 +19,6 @@
     <Compile Remove="Internals\Legacy\**" />
     <EmbeddedResource Remove="Internals\Legacy\**" />
     <None Remove="Internals\Legacy\**" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\..\..\Core\src\Core.csproj" />
   </ItemGroup>
 
   <ItemGroup>
@@ -33,6 +31,10 @@
   <ItemGroup Condition=" '$(TargetPlatformIdentifier)' == 'android' ">
     <AndroidResource Include="Compatibility\Android\Resources\layout\flyoutcontent.axml" />
     <AndroidResource Include="Compatibility\Android\Resources\layout\shellcontent.axml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\Core\src\Core-GTK.csproj" />
   </ItemGroup>
 
   <PropertyGroup Condition=" '$(_MauiDesignDllBuild)' == 'True'">

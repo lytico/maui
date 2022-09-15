@@ -7,6 +7,8 @@
     <IsPackable>false</IsPackable>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <NoWarn>$(NoWarn);CS1591;RS0041;RS0026;RS0027</NoWarn>
+    <RunAnalyzersDuringBuild>False</RunAnalyzersDuringBuild>
+    <RunAnalyzersDuringLiveAnalysis>False</RunAnalyzersDuringLiveAnalysis>
   </PropertyGroup>
   <Import Project="$(MauiNuSpecDirectory)Microsoft.Maui.Controls.MultiTargeting.targets" />
   <ItemGroup>
@@ -19,7 +21,7 @@
   <ItemGroup Condition="$(TargetFramework.Contains('-windows'))">
     <PackageReference Include="Microsoft.WindowsAppSDK" />
     <PackageReference Include="Microsoft.Graphics.Win2D" />
-    <ProjectReference Include="..\..\Graphics\src\Graphics.Win2D\Graphics.Win2D.csproj" />
+    <ProjectReference Include="..\..\Graphics\src\Graphics.Win2D\Graphics.Win2D-GTK.csproj" />
   </ItemGroup>
   <ItemGroup Condition="$(TargetFramework.Contains('-android'))">
     <PackageReference Include="Xamarin.Android.Glide" />
