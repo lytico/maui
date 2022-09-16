@@ -1,7 +1,11 @@
 ﻿#nullable enable
 #if __IOS__ || MACCATALYST || MONOANDROID || WINDOWS || TIZEN
+#if __GTK__
+using PlatformView = System.Object;
+#else
 #define PLATFORM
 using PlatformView = Microsoft.Maui.Platform.PlatformTouchGraphicsView;
+#endif
 #else
 using PlatformView = System.Object;
 #endif

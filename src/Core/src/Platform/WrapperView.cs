@@ -8,7 +8,7 @@ namespace Microsoft.Maui.Platform
 		IShadow? _shadow;
 		IBorderStroke? _border;
 
-#if WINDOWS
+#if WINDOWS && !__GTK__
 		public new IShape? Clip
 #else
 		public IShape? Clip
@@ -22,7 +22,7 @@ namespace Microsoft.Maui.Platform
 			}
 		}
 
-#if WINDOWS
+#if WINDOWS && !__GTK__
 		public new IShadow? Shadow
 #else
 		public IShadow? Shadow

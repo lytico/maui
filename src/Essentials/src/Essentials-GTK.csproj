@@ -1,6 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFrameworks>netstandard2.1;netstandard2.0;$(_MauiDotNetTfm);$(MauiPlatforms)</TargetFrameworks>
+    <TargetFrameworks>$(WindowsMauiPlatforms)</TargetFrameworks>
     <AssemblyName>Microsoft.Maui.Essentials</AssemblyName>
     <RootNamespace>Microsoft.Maui.Essentials</RootNamespace>
     <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
@@ -18,52 +18,13 @@
     <Compile Include="**\*.shared.cs" Exclude="$(DefaultItemExcludes);$(DefaultExcludesInProjectFolder)" />
     <Compile Include="**\*.shared.*.cs" Exclude="$(DefaultItemExcludes);$(DefaultExcludesInProjectFolder)" />
   </ItemGroup>
-  <ItemGroup Condition=" $(TargetFramework.StartsWith('netstandard')) ">
-    <PackageReference Include="System.Numerics.Vectors" />
-  </ItemGroup>
-  <ItemGroup Condition=" '$(TargetFramework)' == '$(_MauiDotNetTfm)' OR $(TargetFramework.StartsWith('netstandard'))">
-    <Compile Include="**\*.netstandard.cs" Exclude="$(DefaultItemExcludes);$(DefaultExcludesInProjectFolder)" />
-    <Compile Include="**\*.netstandard.*.cs" Exclude="$(DefaultItemExcludes);$(DefaultExcludesInProjectFolder)" />
-  </ItemGroup>
   <ItemGroup Condition=" $(TargetFramework.Contains('-windows')) ">
     <Compile Include="**\*.uwp.cs" Exclude="$(DefaultItemExcludes);$(DefaultExcludesInProjectFolder)" />
     <Compile Include="**\*.uwp.*.cs" Exclude="$(DefaultItemExcludes);$(DefaultExcludesInProjectFolder)" />
     <PackageReference Include="Microsoft.WindowsAppSDK" />
   </ItemGroup>
-  <ItemGroup Condition=" '$(TargetPlatformIdentifier)' == 'android' ">
-    <Compile Include="**\*.android.cs" Exclude="$(DefaultItemExcludes);$(DefaultExcludesInProjectFolder)" />
-    <Compile Include="**\*.android.*.cs" Exclude="$(DefaultItemExcludes);$(DefaultExcludesInProjectFolder)" />
-    <AndroidResource Include="Resources\xml\*.xml" />
-    <PackageReference Include="Xamarin.AndroidX.Browser" />
-    <PackageReference Include="Xamarin.AndroidX.Security.SecurityCrypto" />
-    <PackageReference Include="Xamarin.Google.Crypto.Tink.Android" />
-  </ItemGroup>
-  <ItemGroup Condition=" '$(TargetPlatformIdentifier)' == 'ios' Or '$(TargetPlatformIdentifier)' == 'maccatalyst' ">
-    <Compile Include="**\*.ios.cs" Exclude="$(DefaultItemExcludes);$(DefaultExcludesInProjectFolder)" />
-    <Compile Include="**\*.ios.*.cs" Exclude="$(DefaultItemExcludes);$(DefaultExcludesInProjectFolder)" />
-  </ItemGroup>
-  <ItemGroup Condition=" '$(TargetPlatformIdentifier)' == 'maccatalyst' ">
-    <Compile Include="**\*.maccatalyst.cs" Exclude="$(DefaultItemExcludes);$(DefaultExcludesInProjectFolder)" />
-    <Compile Include="**\*.maccatalyst.*.cs" Exclude="$(DefaultItemExcludes);$(DefaultExcludesInProjectFolder)" />
-  </ItemGroup>
-  <ItemGroup Condition=" '$(TargetPlatformIdentifier)' == 'tvos' ">
-    <Compile Include="**\*.tvos.cs" Exclude="$(DefaultItemExcludes);$(DefaultExcludesInProjectFolder)" />
-    <Compile Include="**\*.tvos.*.cs" Exclude="$(DefaultItemExcludes);$(DefaultExcludesInProjectFolder)" />
-  </ItemGroup>
-  <!-- <ItemGroup Condition=" '$(TargetPlatformIdentifier)' == 'watchos' ">
-    <Compile Include="**\*.watchos.cs" Exclude="$(DefaultItemExcludes);$(DefaultExcludesInProjectFolder)" />
-    <Compile Include="**\*.watchos.*.cs" Exclude="$(DefaultItemExcludes);$(DefaultExcludesInProjectFolder)" />
-  </ItemGroup> -->
-  <ItemGroup Condition=" '$(TargetPlatformIdentifier)' == 'tizen' ">
-    <Compile Include="**\*.tizen.cs" Exclude="$(DefaultItemExcludes);$(DefaultExcludesInProjectFolder)" />
-    <Compile Include="**\*.tizen.*.cs" Exclude="$(DefaultItemExcludes);$(DefaultExcludesInProjectFolder)" />
-  </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Graphics\src\Graphics\Graphics-GTK.csproj" />
   </ItemGroup>
-  <!-- <ItemGroup Condition=" '$(TargetPlatformIdentifier)' == 'macos' ">
-    <Compile Include="**\*.macos.cs" Exclude="$(DefaultItemExcludes);$(DefaultExcludesInProjectFolder)" />
-    <Compile Include="**\*.macos.*.cs" Exclude="$(DefaultItemExcludes);$(DefaultExcludesInProjectFolder)" />
-  </ItemGroup> -->
   <Import Project="$(MauiSrcDirectory)PublicAPI.targets" />
 </Project>

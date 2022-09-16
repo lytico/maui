@@ -5,7 +5,7 @@ using System.Linq;
 using GLib;
 using Gtk;
 using OpenTK.Input;
-using Microsoft.Maui.Controls.Internals;
+//using Microsoft.Maui.Controls.Internals;
 using Microsoft.Maui.Controls.Compatibility.Platform.GTK.Cells;
 using Microsoft.Maui.Controls.Compatibility.Platform.GTK.Extensions;
 using OpenTK.Windowing.GraphicsLibraryFramework;

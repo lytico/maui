@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>netstandard2.1;netstandard2.0;$(_MauiDotNetTfm);$(MauiGraphicsPlatforms)</TargetFrameworks>
+    <TargetFrameworks>$(WindowsMauiPlatforms)</TargetFrameworks>
     <!-- Optional: Publish the repository URL in the built .nupkg (in the NuSpec <Repository> element) -->
     <PublishRepositoryUrl>true</PublishRepositoryUrl>
     <!-- Optional: Build symbol package (.snupkg) to distribute the PDB containing Source Link -->
@@ -14,7 +14,44 @@
     <NoWarn>$(NoWarn);CA1307;CA1309</NoWarn>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net6.0-windows10.0.19041|AnyCPU'">
+    <DefineConstants>$(DefineConstants)TRACE;__GTK__</DefineConstants>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net6.0-windows10.0.19041|AnyCPU'">
+    <DefineConstants>$(DefineConstants)TRACE;__GTK__</DefineConstants>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net6.0-windows10.0.20348|AnyCPU'">
+    <DefineConstants>$(DefineConstants)TRACE;__GTK__</DefineConstants>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net6.0-windows10.0.20348|AnyCPU'">
+    <DefineConstants>$(DefineConstants)TRACE;__GTK__</DefineConstants>
+  </PropertyGroup>
+
   <Import Project="$(MauiNuSpecDirectory)Microsoft.Maui.Controls.MultiTargeting.targets" />
+
+  <ItemGroup Condition=" '$(_MauiTargetPlatformIsWindows)' == 'True' ">
+    <Compile Remove="**\*.Windows.cs" />
+    <None Include="**\*.Windows.cs" Exclude="$(DefaultItemExcludes);$(DefaultExcludesInProjectFolder)" />
+    <Compile Remove="**\Windows\**\*.cs" />
+    <None Include="**\Windows\**\*.cs" Exclude="$(DefaultItemExcludes);$(DefaultExcludesInProjectFolder)" />
+    <Compile Remove="**\*.uwp.cs" />
+    <None Include="**\*.uwp.cs" Exclude="$(DefaultItemExcludes);$(DefaultExcludesInProjectFolder)" />
+    <MauiXaml Remove="**\*.Windows.xaml" />
+    <None Include="**\*.Windows.xaml" Exclude="$(DefaultItemExcludes);$(DefaultExcludesInProjectFolder)" />
+    <Compile Remove="**\*.Windows.xaml.cs" />
+    <None Include="**\*.Windows.xaml.cs" Exclude="$(DefaultItemExcludes);$(DefaultExcludesInProjectFolder)" />
+    <MauiXaml Remove="**\Windows\**\*.xaml" />
+    <None Include="**\Windows\**\*.xaml" Exclude="$(DefaultItemExcludes);$(DefaultExcludesInProjectFolder)" />
+    <Compile Remove="**\Windows\**\*.xaml.cs" />
+    <None Include="**\Windows\**\*.xaml.cs" Exclude="$(DefaultItemExcludes);$(DefaultExcludesInProjectFolder)" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Include="..\..\src-GTK\Platforms\GTK\PlatformGraphicsView.cs" Link="Platforms\GTK\PlatformGraphicsView.cs" />
+  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Microsoft.NETCore.Platforms" Version="1.1.0" />
@@ -22,6 +59,37 @@
     <PackageReference Include="System.Memory" Version="4.5.5" Condition="'$(TargetFramework)' == 'netstandard2.0'" />
     <PackageReference Include="System.Numerics.Vectors" Version="4.5.0" Condition="$(TargetFramework.StartsWith('netstandard'))" />
     <PackageReference Include="System.Runtime.CompilerServices.Unsafe" Version="4.5.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="atk-sharp">
+      <HintPath>C:\Program Files (x86)\GtkSharp\2.12\lib\gtk-sharp-2.0\atk-sharp.dll</HintPath>
+    </Reference>
+    <Reference Include="gdk-sharp">
+      <HintPath>C:\Program Files (x86)\GtkSharp\2.12\lib\gtk-sharp-2.0\gdk-sharp.dll</HintPath>
+    </Reference>
+    <Reference Include="glade-sharp">
+      <HintPath>C:\Program Files (x86)\GtkSharp\2.12\lib\gtk-sharp-2.0\glade-sharp.dll</HintPath>
+    </Reference>
+    <Reference Include="glib-sharp">
+      <HintPath>C:\Program Files (x86)\GtkSharp\2.12\lib\gtk-sharp-2.0\glib-sharp.dll</HintPath>
+    </Reference>
+    <Reference Include="gtk-dotnet">
+      <HintPath>C:\Program Files (x86)\GtkSharp\2.12\lib\gtk-sharp-2.0\gtk-dotnet.dll</HintPath>
+    </Reference>
+    <Reference Include="gtk-sharp">
+      <HintPath>C:\Program Files (x86)\GtkSharp\2.12\lib\gtk-sharp-2.0\gtk-sharp.dll</HintPath>
+    </Reference>
+    <Reference Include="Mono.Cairo">
+      <HintPath>C:\Program Files (x86)\GtkSharp\2.12\lib\Mono.Cairo\Mono.Cairo.dll</HintPath>
+    </Reference>
+    <Reference Include="pango-sharp">
+      <HintPath>C:\Program Files (x86)\GtkSharp\2.12\lib\gtk-sharp-2.0\pango-sharp.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Platforms\GTK\" />
   </ItemGroup>
 
   <Import Project="..\..\..\Workload\Shared\LibraryPacks.targets" />

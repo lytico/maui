@@ -32,6 +32,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="ExportCellAttribute.cs" />
+    <Compile Remove="ExportImageSourceHandlerAttribute.cs" />
+    <Compile Remove="ExportRendererAttribute.cs" />
+    <Compile Remove="Forms.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="OpenTK" Version="4.7.4" />
     <PackageReference Include="OpenTK.Compute" Version="4.7.4" />
     <PackageReference Include="OpenTK.Core" Version="4.7.4" />
@@ -47,10 +54,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\..\Controls\src\Core\Controls.Core-GTK.csproj" />
-    <ProjectReference Include="..\..\..\..\Controls\src\Xaml\Controls.Xaml-GTK.csproj" />
-    <ProjectReference Include="..\..\..\..\Core\src\Core-GTK.csproj" />
-    <ProjectReference Include="..\..\..\..\Essentials\src\Essentials-GTK.csproj" />
     <ProjectReference Include="..\..\..\..\Graphics\src\Graphics\Graphics-GTK.csproj" />
   </ItemGroup>
 
@@ -86,6 +89,13 @@
 
   <ItemGroup>
     <Folder Include="Resources\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="ExportCellAttribute.cs" />
+    <None Include="ExportImageSourceHandlerAttribute.cs" />
+    <None Include="ExportRendererAttribute.cs" />
+    <None Include="Forms.cs" />
   </ItemGroup>
 
 </Project>

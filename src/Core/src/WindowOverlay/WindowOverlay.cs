@@ -8,7 +8,11 @@ using PlatformView = UIKit.UIView;
 #elif __ANDROID__
 using PlatformView = Android.Views.View;
 #elif WINDOWS
+#if __GTK__
+using PlatformView = Gtk.EventBox;
+#else
 using PlatformView = Microsoft.UI.Xaml.FrameworkElement;
+#endif
 #elif TIZEN
 using PlatformView = ElmSharp.EvasObject;
 #elif (NETSTANDARD || !PLATFORM)

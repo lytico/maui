@@ -11,10 +11,17 @@ using BasePlatformType = Android.Content.Context;
 using PlatformWindow = Android.App.Activity;
 using PlatformApplication = Android.App.Application;
 #elif WINDOWS
+#if __GTK__
+using PlatformView = Gtk.EventBox;
+using BasePlatformType = System.Object;
+using PlatformWindow = Gdk.Window;
+using PlatformApplication = Gtk.Application;
+#else
 using PlatformView = Microsoft.UI.Xaml.FrameworkElement;
 using BasePlatformType = WinRT.IWinRTObject;
 using PlatformWindow = Microsoft.UI.Xaml.Window;
 using PlatformApplication = Microsoft.UI.Xaml.Application;
+#endif
 #elif TIZEN
 using PlatformView = ElmSharp.EvasObject;
 using BasePlatformType = System.Object;
@@ -166,9 +173,15 @@ namespace Microsoft.Maui.Platform
 			SetHandler(platformWindow, window, context);
 
 #if WINDOWS || IOS || ANDROID
+#if __GTK__
 		internal static IWindow GetWindow(this IElement element) =>
 			element.Handler?.MauiContext?.GetPlatformWindow()?.GetWindow() ??
 			throw new InvalidOperationException("IWindow not found");
+#else
+		internal static IWindow GetWindow(this IElement element) =>
+			element.Handler?.MauiContext?.GetPlatformWindow()?.GetWindow() ??
+			throw new InvalidOperationException("IWindow not found");
+#endif
 #endif
 
 		internal static T? FindParentOfType<T>(this IElement element, bool includeThis = false)

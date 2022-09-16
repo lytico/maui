@@ -3,7 +3,11 @@ using PlatformView = Microsoft.Maui.Platform.LayoutView;
 #elif MONOANDROID
 using PlatformView = Microsoft.Maui.Platform.LayoutViewGroup;
 #elif WINDOWS
+#if __GTK__
+using PlatformView = Microsoft.Maui.Platform.LayoutViewGroup;
+#else
 using PlatformView = Microsoft.Maui.Platform.LayoutPanel;
+#endif
 #elif TIZEN
 using PlatformView = Microsoft.Maui.Platform.LayoutCanvas;
 #elif (NETSTANDARD || !PLATFORM) || (NET6_0_OR_GREATER && !IOS && !ANDROID && !TIZEN)

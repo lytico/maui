@@ -1,6 +1,6 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFrameworks>netstandard2.1;netstandard2.0;$(_MauiDotNetTfm);$(MauiPlatforms)</TargetFrameworks>
+    <TargetFrameworks>$(WindowsMauiPlatforms)</TargetFrameworks>
     <RootNamespace>Microsoft.Maui.Controls</RootNamespace>
     <AssemblyName>Microsoft.Maui.Controls</AssemblyName>
     <Nullable>disable</Nullable>
@@ -26,11 +26,6 @@
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" />
     <PackageReference Include="Microsoft.Extensions.Logging" />
     <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" />
-  </ItemGroup>
-
-  <ItemGroup Condition=" '$(TargetPlatformIdentifier)' == 'android' ">
-    <AndroidResource Include="Compatibility\Android\Resources\layout\flyoutcontent.axml" />
-    <AndroidResource Include="Compatibility\Android\Resources\layout\shellcontent.axml" />
   </ItemGroup>
 
   <ItemGroup>

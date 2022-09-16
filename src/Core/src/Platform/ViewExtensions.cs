@@ -15,8 +15,13 @@ using ParentView = UIKit.UIView;
 using PlatformView = Android.Views.View;
 using ParentView = Android.Views.IViewParent;
 #elif WINDOWS
+#if __GTK__
+using PlatformView = Gtk.Fixed;
+using ParentView = Gtk.Fixed;
+#else
 using PlatformView = Microsoft.UI.Xaml.FrameworkElement;
 using ParentView = Microsoft.UI.Xaml.DependencyObject;
+#endif
 #elif TIZEN
 using PlatformView = ElmSharp.EvasObject;
 using ParentView = ElmSharp.EvasObject;
@@ -78,7 +83,7 @@ namespace Microsoft.Maui.Platform
 			return default;
 		}
 
-#if WINDOWS || ANDROID
+#if (WINDOWS || ANDROID) && !__GTK__
 		internal static T? GetParentOfType<T>(this PlatformView view)
 			where T : class
 		{
