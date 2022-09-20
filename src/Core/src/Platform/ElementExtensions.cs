@@ -12,7 +12,7 @@ using PlatformWindow = Android.App.Activity;
 using PlatformApplication = Android.App.Application;
 #elif WINDOWS
 #if __GTK__
-using PlatformView = Gtk.EventBox;
+using PlatformView = Gtk.ScrolledWindow;
 using BasePlatformType = System.Object;
 using PlatformWindow = Gdk.Window;
 using PlatformApplication = Gtk.Application;
@@ -173,11 +173,7 @@ namespace Microsoft.Maui.Platform
 			SetHandler(platformWindow, window, context);
 
 #if WINDOWS || IOS || ANDROID
-#if __GTK__
-		internal static IWindow GetWindow(this IElement element) =>
-			element.Handler?.MauiContext?.GetPlatformWindow()?.GetWindow() ??
-			throw new InvalidOperationException("IWindow not found");
-#else
+#if !__GTK__
 		internal static IWindow GetWindow(this IElement element) =>
 			element.Handler?.MauiContext?.GetPlatformWindow()?.GetWindow() ??
 			throw new InvalidOperationException("IWindow not found");

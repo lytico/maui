@@ -13,7 +13,7 @@
 
 	<PropertyGroup Condition="$(TargetFramework.Contains('-windows')) == true ">
 		<NoWarn>$(NoWarn);CA1416</NoWarn>
-		<DefineConstants>$(DefineConstants);WINDOWS</DefineConstants>
+		<DefineConstants>$(DefineConstants);WINDOWS;__GTK__</DefineConstants>
 	</PropertyGroup>
 
 	<ItemGroup>

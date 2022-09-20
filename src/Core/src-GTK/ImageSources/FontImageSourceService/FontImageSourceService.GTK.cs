@@ -1,21 +1,35 @@
 ﻿#nullable enable
 using System;
+using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
-using Microsoft.UI.Xaml.Media;
+using Gdk;
 
 namespace Microsoft.Maui
 {
 	public partial class FontImageSourceService
 	{
-		public override Task<IImageSourceServiceResult<ImageSource>?> GetImageSourceAsync(IImageSource imageSource, float scale = 1, CancellationToken cancellationToken = default)
+		public override Pixbuf? GetImageSourceAsync(IImageSource imageSource, float scale = 1, CancellationToken cancellationToken = default)
 		{
-			return Task.FromResult<IImageSourceServiceResult<ImageSource>?>(null);
-		}
+			Pixbuf? image = null;
+			var fileImageSource = (IFileImageSource)imageSource;
 
-		public Task<IImageSourceServiceResult<Gtk.Image>?> GetImageAsync(IFontImageSource imageSource, Gtk.Image image, CancellationToken cancellationToken = default)
-		{
-			return Task.FromResult<IImageSourceServiceResult<Gtk.Image>?>(null);
+			if (fileImageSource != null)
+			{
+				var file = fileImageSource.File;
+				if (!string.IsNullOrEmpty(file))
+				{
+					var imagePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, file);
+
+					if (File.Exists(imagePath))
+					{
+						GLib.Idle.Add(delegate
+						{ { image = new Pixbuf(imagePath); }; return false; });
+					}
+				}
+			}
+
+			return image;
 		}
 	}
 }

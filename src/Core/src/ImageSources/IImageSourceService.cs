@@ -27,10 +27,17 @@ namespace Microsoft.Maui
 			Tizen.UIExtensions.ElmSharp.Image image,
 			CancellationToken cancellationToken = default);
 #elif WINDOWS
+#if __GTK__
+		Gdk.Pixbuf? GetImageSourceAsync(
+			IImageSource imageSource,
+			float scale = 1,
+			CancellationToken cancellationToken = default);
+#else
 		Task<IImageSourceServiceResult<UI.Xaml.Media.ImageSource>?> GetImageSourceAsync(
 			IImageSource imageSource,
 			float scale = 1,
 			CancellationToken cancellationToken = default);
+#endif
 #endif
 	}
 

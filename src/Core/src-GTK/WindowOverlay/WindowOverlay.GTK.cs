@@ -8,7 +8,7 @@ namespace Microsoft.Maui
 	public partial class WindowOverlay
 	{
 		PlatformGraphicsView? _graphicsView;
-		ViewGroup? _nativeLayer;
+		Gtk.EventBox? _nativeLayer;
 
 		public virtual bool Initialize()
 		{
@@ -30,30 +30,30 @@ namespace Microsoft.Maui
 				return false;
 
 
-			if (handler.PlatformView is not Activity activity)
-				return false;
+			//if (handler.PlatformView is not Gtk.EventBox activity)
+			//	return false;
 
-			_nativeActivity = activity;
-			_nativeLayer = rootManager.RootView as ViewGroup;
+			//_nativeActivity = activity;
+			_nativeLayer = rootManager.RootView as Gtk.EventBox;
 
-			if (_nativeLayer?.Context == null)
-				return false;
+			//if (_nativeLayer?.Context == null)
+			//	return false;
 
-			if (_nativeActivity?.WindowManager?.DefaultDisplay == null)
-				return false;
+			//if (_nativeActivity?.WindowManager?.DefaultDisplay == null)
+			//	return false;
 
-			var measuredHeight = _nativeLayer.MeasuredHeight;
+			// var measuredHeight = _nativeLayer.MeasuredHeight;
 
-			if (_nativeActivity.Window != null)
-				_nativeActivity.Window.DecorView.LayoutChange += DecorViewLayoutChange;
+			//if (_nativeActivity.Window != null)
+			//	_nativeActivity.Window.DecorView.LayoutChange += DecorViewLayoutChange;
 
-			_graphicsView = new PlatformGraphicsView(_nativeLayer.Context, this);
+			_graphicsView = new PlatformGraphicsView();
 			if (_graphicsView == null)
 				return false;
 
-			_graphicsView.Touch += TouchLayerTouch;
-			_nativeLayer.AddView(_graphicsView, 0, new CoordinatorLayout.LayoutParams(CoordinatorLayout.LayoutParams.MatchParent, CoordinatorLayout.LayoutParams.MatchParent));
-			_graphicsView.BringToFront();
+			//_graphicsView.Touch += TouchLayerTouch;
+			//_nativeLayer.AddView(_graphicsView, 0, new CoordinatorLayout.LayoutParams(CoordinatorLayout.LayoutParams.MatchParent, CoordinatorLayout.LayoutParams.MatchParent));
+			//_graphicsView.BringToFront();
 
 			IsPlatformViewInitialized = true;
 			return IsPlatformViewInitialized;
@@ -62,7 +62,7 @@ namespace Microsoft.Maui
 		/// <inheritdoc/>
 		public void Invalidate()
 		{
-			_graphicsView?.Invalidate();
+			//_graphicsView?.Invalidate();
 		}
 
 		/// <summary>
@@ -70,41 +70,41 @@ namespace Microsoft.Maui
 		/// </summary>
 		void DeinitializePlatformDependencies()
 		{
-			if (_nativeActivity?.Window != null)
-				_nativeActivity.Window.DecorView.LayoutChange -= DecorViewLayoutChange;
+			//if (_nativeActivity?.Window != null)
+			//	_nativeActivity.Window.DecorView.LayoutChange -= DecorViewLayoutChange;
 
-			_nativeLayer?.RemoveView(_graphicsView);
+			_nativeLayer?.Remove(_graphicsView);
 
 			_graphicsView = null;
 			IsPlatformViewInitialized = false;
 		}
 
-		void TouchLayerTouch(object? sender, View.TouchEventArgs e)
-		{
-			if (e?.Event == null)
-				return;
+		//void TouchLayerTouch(object? sender, View.TouchEventArgs e)
+		//{
+		//	if (e?.Event == null)
+		//		return;
 
-			if (e.Event.Action != MotionEventActions.Down && e.Event.ButtonState != MotionEventButtonState.Primary)
-				return;
+		//	if (e.Event.Action != MotionEventActions.Down && e.Event.ButtonState != MotionEventButtonState.Primary)
+		//		return;
 
-			var x = this._nativeLayer?.Context.FromPixels(e.Event.RawX) ?? 0;
-			var y = this._nativeLayer?.Context.FromPixels(e.Event.RawY) ?? 0;
+		//	var x = this._nativeLayer?.Context.FromPixels(e.Event.RawX) ?? 0;
+		//	var y = this._nativeLayer?.Context.FromPixels(e.Event.RawY) ?? 0;
 
-			var point = new Point(x, y);
+		//	var point = new Point(x, y);
 
-			e.Handled = false;
-			if (DisableUITouchEventPassthrough)
-				e.Handled = true;
-			else if (EnableDrawableTouchHandling)
-				e.Handled = _windowElements.Any(n => n.Contains(point));
+		//	e.Handled = false;
+		//	if (DisableUITouchEventPassthrough)
+		//		e.Handled = true;
+		//	else if (EnableDrawableTouchHandling)
+		//		e.Handled = _windowElements.Any(n => n.Contains(point));
 
-			OnTappedInternal(point);
-		}
+		//	OnTappedInternal(point);
+		//}
 
-		void DecorViewLayoutChange(object? sender, View.LayoutChangeEventArgs e)
-		{
-			HandleUIChange();
-			Invalidate();
-		}
+		//void DecorViewLayoutChange(object? sender, View.LayoutChangeEventArgs e)
+		//{
+		//	HandleUIChange();
+		//	Invalidate();
+		//}
 	}
 }

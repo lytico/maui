@@ -5,7 +5,11 @@ using PlatformView = UIKit.UIWindow;
 #elif MONOANDROID
 using PlatformView = Android.App.Activity;
 #elif WINDOWS
+#if __GTK__
+using PlatformView = Gtk.EventBox;
+#else
 using PlatformView = Microsoft.UI.Xaml.Window;
+#endif
 #elif TIZEN
 using PlatformView = ElmSharp.Window;
 #endif
@@ -18,6 +22,8 @@ namespace Microsoft.Maui.Handlers
 		{
 			[nameof(IWindow.Title)] = MapTitle,
 			[nameof(IWindow.Content)] = MapContent,
+#if __GTK__
+#else
 #if ANDROID || WINDOWS
 			[nameof(IToolbarElement.Toolbar)] = MapToolbar,
 #endif
@@ -26,6 +32,7 @@ namespace Microsoft.Maui.Handlers
 #endif
 #if WINDOWS
 			[nameof(IWindow.FlowDirection)] = MapFlowDirection,
+#endif
 #endif
 		};
 

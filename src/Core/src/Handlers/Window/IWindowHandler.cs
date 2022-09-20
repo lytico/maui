@@ -3,7 +3,11 @@ using PlatformView = UIKit.UIWindow;
 #elif MONOANDROID
 using PlatformView = Android.App.Activity;
 #elif WINDOWS
+#if __GTK__
+using PlatformView = Gtk.EventBox;
+#else
 using PlatformView = Microsoft.UI.Xaml.Window;
+#endif
 #elif TIZEN
 using PlatformView = ElmSharp.Window;
 #elif (NETSTANDARD || !PLATFORM) || (NET6_0_OR_GREATER && !IOS && !ANDROID && !TIZEN)

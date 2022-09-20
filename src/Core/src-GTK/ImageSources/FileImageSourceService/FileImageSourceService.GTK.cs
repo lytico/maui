@@ -1,13 +1,14 @@
 ﻿#nullable enable
 using System;
-using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
+using System.IO;
 using Gdk;
+using Microsoft.UI.Xaml.Media;
 
 namespace Microsoft.Maui
 {
-	public partial class StreamImageSourceService
+	public partial class FileImageSourceService
 	{
 		public override Pixbuf? GetImageSourceAsync(IImageSource imageSource, float scale = 1, CancellationToken cancellationToken = default)
 		{

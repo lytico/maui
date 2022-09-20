@@ -5,7 +5,7 @@ using System.Text;
 using PlatformView = UIKit.UIMenuElement;
 #elif MONOANDROID
 using PlatformView = Android.Views.View;
-#elif WINDOWS
+#elif WINDOWS && !__GTK__
 using PlatformView = Microsoft.UI.Xaml.Controls.MenuFlyoutItem;
 #elif TIZEN
 using PlatformView = ElmSharp.EvasObject;

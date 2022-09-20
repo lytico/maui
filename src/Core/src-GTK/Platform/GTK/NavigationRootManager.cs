@@ -53,131 +53,131 @@ namespace Microsoft.Maui.Platform
 
 		public virtual void Connect(Gtk.Widget platformView)
 		{
-			if (_rootView.Content != null)
-			{
-				// We need to make sure to clear out the root view content 
-				// before creating the new view.
-				// Otherwise the new view might try to act on the old content.
-				// It might have code in the handler that retrieves this class.
-				_rootView.Content = null;
-			}
+			//if (_rootView.Content != null)
+			//{
+			//	// We need to make sure to clear out the root view content 
+			//	// before creating the new view.
+			//	// Otherwise the new view might try to act on the old content.
+			//	// It might have code in the handler that retrieves this class.
+			//	_rootView.Content = null;
+			//}
 
-			NavigationView rootNavigationView;
-			if (platformView is NavigationView nv)
-			{
-				rootNavigationView = nv;
-				_rootView.Content = platformView;
-			}
-			else
-			{
-				if (_rootView.Content is RootNavigationView navView)
-				{
-					rootNavigationView = navView;
-				}
-				else
-				{
-					rootNavigationView = new RootNavigationView();
-				}
+			//NavigationView rootNavigationView;
+			//if (platformView is NavigationView nv)
+			//{
+			//	rootNavigationView = nv;
+			//	_rootView.Content = platformView;
+			//}
+			//else
+			//{
+			//	if (_rootView.Content is RootNavigationView navView)
+			//	{
+			//		rootNavigationView = navView;
+			//	}
+			//	else
+			//	{
+			//		rootNavigationView = new RootNavigationView();
+			//	}
 
-				rootNavigationView.Content = platformView;
-				_rootView.Content = rootNavigationView;
-			}
+			//	rootNavigationView.Content = platformView;
+			//	_rootView.Content = rootNavigationView;
+			//}
 
-			if (_disconnected)
-			{
-				_isActiveRootManager = true;
-				_platformWindow.Activated += OnWindowActivated;
-			}
+			//if (_disconnected)
+			//{
+			//	_isActiveRootManager = true;
+			//	_platformWindow.Activated += OnWindowActivated;
+			//}
 
 			_disconnected = false;
 		}
 
 		public virtual void Disconnect()
 		{
-			_platformWindow.Activated -= OnWindowActivated;
-			_rootView.Content = null;
+			//_platformWindow.Activated -= OnWindowActivated;
+			//_rootView.Content = null;
 			_disconnected = true;
 		}
 
 		internal void UpdateAppTitleBar(bool isActive)
 		{
-			if (_rootView.AppTitleBarContentControl != null &&
-				_platformWindow.ExtendsContentIntoTitleBar)
-			{
-				if (isActive)
-				{
-					_rootView.Visibility = UI.Xaml.Visibility.Visible;
-					SetTitleBar(_rootView.AppTitleBarContentControl);
+			//if (_rootView.AppTitleBarContentControl != null &&
+			//	_platformWindow.ExtendsContentIntoTitleBar)
+			//{
+			//	if (isActive)
+			//	{
+			//		_rootView.Visibility = UI.Xaml.Visibility.Visible;
+			//		SetTitleBar(_rootView.AppTitleBarContentControl);
 
-					SetWindowTitle(_platformWindow.GetWindow()?.Title);
-				}
-				else
-				{
-					_rootView.Visibility = UI.Xaml.Visibility.Collapsed;
-				}
-			}
-			else
-			{
-				SetTitleBar(null);
-			}
+			//		SetWindowTitle(_platformWindow.GetWindow()?.Title);
+			//	}
+			//	else
+			//	{
+			//		_rootView.Visibility = UI.Xaml.Visibility.Collapsed;
+			//	}
+			//}
+			//else
+			//{
+			//	SetTitleBar(null);
+			//}
 
-			if (!_isActiveRootManager && isActive)
-			{
-				_platformWindow.Activated += OnWindowActivated;
-			}
-			else if (!isActive)
-			{
-				_platformWindow.Activated -= OnWindowActivated;
-			}
+			//if (!_isActiveRootManager && isActive)
+			//{
+			//	_platformWindow.Activated += OnWindowActivated;
+			//}
+			//else if (!isActive)
+			//{
+			//	_platformWindow.Activated -= OnWindowActivated;
+			//}
 
 			_isActiveRootManager = isActive;
 		}
 
-		void SetTitleBar(UIElement? titleBar)
-		{
-			if (_platformWindow is MauiWinUIWindow mauiWindow)
-				mauiWindow.MauiCustomTitleBar = titleBar;
-			else
-				_platformWindow.SetTitleBar(titleBar);
-		}
+		//void SetTitleBar(UIElement? titleBar)
+		//{
+		//	if (_platformWindow is MauiWinUIWindow mauiWindow)
+		//		mauiWindow.MauiCustomTitleBar = titleBar;
+		//	else
+		//		_platformWindow.SetTitleBar(titleBar);
+		//}
 
-		internal void SetWindowTitle(string? title)
-		{
-			_rootView.SetWindowTitle(title);
-		}
+		//internal void SetWindowTitle(string? title)
+		//{
+		//	_rootView.SetWindowTitle(title);
+		//}
 
-		internal void SetMenuBar(MenuBar? menuBar)
-		{
-			_rootView.MenuBar = menuBar;
-		}
+		//internal void SetMenuBar(MenuBar? menuBar)
+		//{
+		//	_rootView.MenuBar = menuBar;
+		//}
 
-		internal void SetToolbar(FrameworkElement? toolBar)
-		{
-			_rootView.Toolbar = toolBar as MauiToolbar;
-		}
+		//internal void SetToolbar(FrameworkElement? toolBar)
+		//{
+		//	_rootView.Toolbar = toolBar as MauiToolbar;
+		//}
 
-		void OnWindowActivated(object sender, WindowActivatedEventArgs e)
-		{
-			if (!_isActiveRootManager)
-			{
-				_platformWindow.Activated -= OnWindowActivated;
-			}
+		//void OnWindowActivated(object sender, WindowActivatedEventArgs e)
+		//{
+		//	if (!_isActiveRootManager)
+		//	{
+		//		_platformWindow.Activated -= OnWindowActivated;
+		//	}
 
-			if (_rootView.AppTitle == null)
-				return;
+		//	if (_rootView.AppTitle == null)
+		//		return;
 
-			SolidColorBrush defaultForegroundBrush = (SolidColorBrush)Application.Current.Resources["TextFillColorPrimaryBrush"];
-			SolidColorBrush inactiveForegroundBrush = (SolidColorBrush)Application.Current.Resources["TextFillColorDisabledBrush"];
+		//	SolidColorBrush defaultForegroundBrush = (SolidColorBrush)Application.Current.Resources["TextFillColorPrimaryBrush"];
+		//	SolidColorBrush inactiveForegroundBrush = (SolidColorBrush)Application.Current.Resources["TextFillColorDisabledBrush"];
 
-			if (e.WindowActivationState == WindowActivationState.Deactivated)
-			{
-				_rootView.AppTitle.Foreground = inactiveForegroundBrush;
-			}
-			else
-			{
-				_rootView.AppTitle.Foreground = defaultForegroundBrush;
-				SetWindowTitle(_platformWindow.GetWindow()?.Title);
-			}
-		}
+		//	if (e.WindowActivationState == WindowActivationState.Deactivated)
+		//	{
+		//		_rootView.AppTitle.Foreground = inactiveForegroundBrush;
+		//	}
+		//	else
+		//	{
+		//		_rootView.AppTitle.Foreground = defaultForegroundBrush;
+		//		SetWindowTitle(_platformWindow.GetWindow()?.Title);
+		//	}
+		//}
 	}
 }

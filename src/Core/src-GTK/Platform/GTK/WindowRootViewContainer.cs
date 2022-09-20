@@ -1,82 +1,50 @@
 using System;
 using Microsoft.Maui.Graphics.Win2D;
-using Microsoft.UI.Xaml;
-using Microsoft.UI.Xaml.Controls;
-using Windows.Foundation;
 
 namespace Microsoft.Maui.Platform
 {
-	internal class WindowRootViewContainer : Panel
+	internal class WindowRootViewContainer : Gtk.EventBox
 	{
-		FrameworkElement? _topPage;
-		protected override Size MeasureOverride(Size availableSize)
+		// Gtk.Fixed? _topPage;
+
+		internal void AddPage(Gtk.Widget pageView)
 		{
-			var width = availableSize.Width;
-			var height = availableSize.Height;
+			Add(pageView);
+			//if (!Children.Contains(pageView))
+			//{
+			//	int indexOFTopPage = 0;
+			//	if (_topPage != null)
+			//		indexOFTopPage = Children.IndexOf(_topPage) + 1;
 
-			if (double.IsInfinity(width))
-				width = XamlRoot.Size.Width;
-
-			if (double.IsInfinity(height))
-				height = XamlRoot.Size.Height;
-
-			var size = new Size(width, height);
-
-			// measure the children to fit the container exactly
-			foreach (var child in Children)
-			{
-				child.Measure(size);
-			}
-
-			return size;
+			//	Children.Insert(indexOFTopPage, pageView);
+			//	_topPage = pageView;
+			//}
 		}
 
-		protected override Size ArrangeOverride(Size finalSize)
+		internal void RemovePage(Gtk.Widget pageView)
 		{
-			foreach (var child in Children)
-			{
-				child.Arrange(new Rect(new Point(0, 0), finalSize));
-			}
+			Remove(pageView);
+			//int indexOFTopPage = -1;
+			//if (_topPage != null)
+			//	indexOFTopPage = Children.IndexOf(_topPage) - 1;
 
-			return finalSize;
+			//Children.Remove(pageView);
+
+			//if (indexOFTopPage >= 0)
+			//	_topPage = (FrameworkElement)Children[indexOFTopPage];
+			//else
+			//	_topPage = null;
 		}
 
-		internal void AddPage(FrameworkElement pageView)
-		{
-			if (!Children.Contains(pageView))
-			{
-				int indexOFTopPage = 0;
-				if (_topPage != null)
-					indexOFTopPage = Children.IndexOf(_topPage) + 1;
+		//internal void AddOverlay(FrameworkElement overlayView)
+		//{
+		//	if (!Children.Contains(overlayView))
+		//		Children.Add(overlayView);
+		//}
 
-				Children.Insert(indexOFTopPage, pageView);
-				_topPage = pageView;
-			}
-		}
-
-		internal void RemovePage(FrameworkElement pageView)
-		{
-			int indexOFTopPage = -1;
-			if (_topPage != null)
-				indexOFTopPage = Children.IndexOf(_topPage) - 1;
-
-			Children.Remove(pageView);
-
-			if (indexOFTopPage >= 0)
-				_topPage = (FrameworkElement)Children[indexOFTopPage];
-			else
-				_topPage = null;
-		}
-
-		internal void AddOverlay(FrameworkElement overlayView)
-		{
-			if (!Children.Contains(overlayView))
-				Children.Add(overlayView);
-		}
-
-		internal void RemoveOverlay(FrameworkElement overlayView)
-		{
-			Children.Remove(overlayView);
-		}
+		//internal void RemoveOverlay(FrameworkElement overlayView)
+		//{
+		//	Children.Remove(overlayView);
+		//}
 	}
 }

@@ -7,7 +7,11 @@ using PlatformView = UIKit.IUIApplicationDelegate;
 #elif MONOANDROID
 using PlatformView = Android.App.Application;
 #elif WINDOWS
+#if __GTK__
+using PlatformView = Gtk.Application;
+#else
 using PlatformView = Microsoft.UI.Xaml.Application;
+#endif
 #elif TIZEN
 using PlatformView = Tizen.Applications.CoreApplication;
 #endif

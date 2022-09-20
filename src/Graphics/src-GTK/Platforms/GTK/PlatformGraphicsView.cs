@@ -2,11 +2,11 @@ namespace Microsoft.Maui.Graphics.Platform
 {
 	public class PlatformGraphicsView : Gtk.EventBox
 	{
-		private int _width, _height;
+		// private int _width, _height;
 		// private readonly PlatformCanvas _canvas;
-		private readonly ScalingCanvas _scalingCanvas;
+		// private readonly ScalingCanvas _scalingCanvas;
 		private IDrawable _drawable;
-		private readonly float _scale = 1;
+		// private readonly float _scale = 1;
 		private Color _backgroundColor;
 
 		public PlatformGraphicsView() : base()

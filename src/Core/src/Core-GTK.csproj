@@ -40,11 +40,23 @@
     <None Include="**\Windows\**\*.xaml.cs" Exclude="$(DefaultItemExcludes);$(DefaultExcludesInProjectFolder)" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Remove="Handlers\FlyoutView\FlyoutViewHandler.cs" />
+    <Compile Remove="Handlers\MenuFlyoutItem\MenuFlyoutItemHandler.cs" />
+    <Compile Remove="Handlers\MenuFlyoutSeparator\MenuFlyoutSeparatorHandler.cs" />
+    <Compile Remove="Handlers\MenuFlyoutSubItem\MenuFlyoutSubItemHandler.cs" />
+  </ItemGroup>
+  <ItemGroup>
     <Compile Include="..\src-GTK\Animations\PlatformTicker.GTK.cs" Link="Animations\PlatformTicker.GTK.cs" />
     <Compile Include="..\src-GTK\Dispatching\Dispatcher.GTK.cs" Link="Dispatching\Dispatcher.GTK.cs" />
     <Compile Include="..\src-GTK\Fonts\EmbeddedFontLoader.GTK.cs" Link="Fonts\EmbeddedFontLoader.GTK.cs" />
+    <Compile Include="..\src-GTK\Handlers\ActivityIndicator\ActivityIndicatorHandler.GTK.cs" Link="Handlers\ActivityIndicator\ActivityIndicatorHandler.GTK.cs" />
+    <Compile Include="..\src-GTK\Handlers\Application\ApplicationHandler.GTK.cs" Link="Handlers\Application\ApplicationHandler.GTK.cs" />
     <Compile Include="..\src-GTK\Handlers\ContentView\ContentViewHandler.GTK.cs" Link="Handlers\ContentView\ContentViewHandler.GTK.cs" />
+    <Compile Include="..\src-GTK\Handlers\GraphicsView\GraphicsViewHandler.GTK.cs" Link="Handlers\GraphicsView\GraphicsViewHandler.GTK.cs" />
     <Compile Include="..\src-GTK\Handlers\IViewHandler.GTK.cs" Link="Handlers\IViewHandler.GTK.cs" />
+    <Compile Include="..\src-GTK\Handlers\View\ViewHandler.GTK.cs" Link="Handlers\View\ViewHandler.GTK.cs" />
+    <Compile Include="..\src-GTK\Handlers\Window\WindowHandler.GTK.cs" Link="Handlers\Window\WindowHandler.GTK.cs" />
+    <Compile Include="..\src-GTK\ImageSources\FileImageSourceService\FileImageSourceService.GTK.cs" Link="ImageSources\FileImageSourceService\FileImageSourceService.GTK.cs" />
     <Compile Include="..\src-GTK\ImageSources\FontImageSourceService\FontImageSourceService.GTK.cs" Link="ImageSources\FontImageSourceService\FontImageSourceService.GTK.cs" />
     <Compile Include="..\src-GTK\ImageSources\StreamingImageSourceService\StreamImageSourceService.GTK.cs" Link="ImageSources\StreamImageSourceService\StreamImageSourceService.GTK.cs" />
     <Compile Include="..\src-GTK\ImageSources\UriImageSourceService\UriImageSourceService.GTK.cs" Link="ImageSources\UriImageSourceService\UriImageSourceService.GTK.cs" />
@@ -57,12 +69,19 @@
     <Compile Include="..\src-GTK\Platform\GTK\MauiPageControl.cs" Link="Platform\GTK\MauiPageControl.cs" />
     <Compile Include="..\src-GTK\Platform\GTK\MauiStepper.cs" Link="Platform\GTK\MauiStepper.cs" />
     <Compile Include="..\src-GTK\Platform\GTK\NavigationRootManager.cs" Link="Platform\GTK\NavigationRootManager.cs" />
+    <Compile Include="..\src-GTK\Platform\GTK\PlatformTouchGraphicsView.cs" Link="Platform\GTK\PlatformTouchGraphicsView.cs" />
     <Compile Include="..\src-GTK\Platform\GTK\RootNavigationView.cs" Link="Platform\GTK\RootNavigationView.cs" />
     <Compile Include="..\src-GTK\Platform\GTK\ViewExtensions.cs" Link="Platform\GTK\ViewExtensions.cs" />
     <Compile Include="..\src-GTK\Platform\GTK\WindowRootView.cs" Link="Platform\GTK\WindowRootView.cs" />
     <Compile Include="..\src-GTK\Platform\GTK\WindowRootViewContainer.cs" Link="Platform\GTK\WindowRootViewContainer.cs" />
     <Compile Include="..\src-GTK\VisualDiagnostics\VisualDiagnosticsOverlay.GTK.cs" Link="VisualDiagnostics\VisualDiagnosticsOverlay.GTK.cs" />
     <Compile Include="..\src-GTK\WindowOverlay\WindowOverlay.GTK.cs" Link="WindowOverlay\WindowOverlay.GTK.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Handlers\FlyoutView\FlyoutViewHandler.cs" />
+    <None Include="Handlers\MenuFlyoutItem\MenuFlyoutItemHandler.cs" />
+    <None Include="Handlers\MenuFlyoutSeparator\MenuFlyoutSeparatorHandler.cs" />
+    <None Include="Handlers\MenuFlyoutSubItem\MenuFlyoutSubItemHandler.cs" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.Extensions.Configuration" />

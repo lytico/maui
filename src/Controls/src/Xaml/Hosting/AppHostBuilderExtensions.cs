@@ -91,9 +91,11 @@ namespace Microsoft.Maui.Controls.Hosting
 
 #pragma warning disable CA1416 //  'MenuBarHandler', MenuFlyoutSubItemHandler, MenuFlyoutSubItemHandler, MenuBarItemHandler is only supported on: 'ios' 13.0 and later
 			handlersCollection.AddHandler<MenuBar, MenuBarHandler>();
+#if !__GTK__
 			handlersCollection.AddHandler<MenuFlyoutSubItem, MenuFlyoutSubItemHandler>();
 			handlersCollection.AddHandler<MenuFlyoutSeparator, MenuFlyoutSeparatorHandler>();
 			handlersCollection.AddHandler<MenuFlyoutItem, MenuFlyoutItemHandler>();
+#endif
 			handlersCollection.AddHandler<MenuBarItem, MenuBarItemHandler>();
 #pragma warning restore CA1416
 
@@ -126,7 +128,9 @@ namespace Microsoft.Maui.Controls.Hosting
 #if WINDOWS || ANDROID
 			handlersCollection.AddHandler<NavigationPage, NavigationViewHandler>();
 			handlersCollection.AddHandler<Toolbar, ToolbarHandler>();
+#if !__GTK__
 			handlersCollection.AddHandler<FlyoutPage, FlyoutViewHandler>();
+#endif
 			handlersCollection.AddHandler<TabbedPage, TabbedViewHandler>();
 #endif
 
