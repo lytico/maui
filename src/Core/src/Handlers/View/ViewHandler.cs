@@ -5,7 +5,7 @@ using PlatformView = UIKit.UIView;
 using PlatformView = Android.Views.View;
 #elif WINDOWS
 #if __GTK__
-using PlatformView = Gtk.EventBox;
+using PlatformView = Gtk.Widget;
 #else
 using PlatformView = Microsoft.UI.Xaml.FrameworkElement;
 #endif

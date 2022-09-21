@@ -78,6 +78,25 @@ namespace Microsoft.Maui.Handlers
 		{
 		}
 
+		protected override void ConnectHandler(ActivityIndicator platformView)
+		{
+			base.ConnectHandler(platformView);
+		}
+
+		protected override void DisconnectHandler(ActivityIndicator platformView)
+		{
+		}
+
+		private protected override void OnConnectHandler(Widget platformView)
+		{
+			base.OnConnectHandler(platformView);
+		}
+
+		private protected override void OnDisconnectHandler(Widget platformView)
+		{
+			base.OnDisconnectHandler(platformView);
+		}
+
 		//private protected override void OnConnectHandler(EventBox platformView)
 		//{
 		//}

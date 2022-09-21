@@ -51,10 +51,17 @@
     <Compile Include="..\src-GTK\Fonts\EmbeddedFontLoader.GTK.cs" Link="Fonts\EmbeddedFontLoader.GTK.cs" />
     <Compile Include="..\src-GTK\Handlers\ActivityIndicator\ActivityIndicatorHandler.GTK.cs" Link="Handlers\ActivityIndicator\ActivityIndicatorHandler.GTK.cs" />
     <Compile Include="..\src-GTK\Handlers\Application\ApplicationHandler.GTK.cs" Link="Handlers\Application\ApplicationHandler.GTK.cs" />
+    <Compile Include="..\src-GTK\Handlers\Border\BorderHandler.GTK.cs" Link="Handlers\Border\BorderHandler.GTK.cs" />
+    <Compile Include="..\src-GTK\Handlers\Button\ButtonHandler.GTK.cs" Link="Handlers\Button\ButtonHandler.GTK.cs" />
+    <Compile Include="..\src-GTK\Handlers\CheckBox\CheckBoxHandler.GTK.cs" Link="Handlers\CheckBox\CheckBoxHandler.GTK.cs" />
     <Compile Include="..\src-GTK\Handlers\ContentView\ContentViewHandler.GTK.cs" Link="Handlers\ContentView\ContentViewHandler.GTK.cs" />
+    <Compile Include="..\src-GTK\Handlers\DatePicker\DatePickerHandler.GTK.cs" Link="Handlers\DatePicker\DatePickerHandler.GTK.cs" />
     <Compile Include="..\src-GTK\Handlers\GraphicsView\GraphicsViewHandler.GTK.cs" Link="Handlers\GraphicsView\GraphicsViewHandler.GTK.cs" />
     <Compile Include="..\src-GTK\Handlers\IViewHandler.GTK.cs" Link="Handlers\IViewHandler.GTK.cs" />
+    <Compile Include="..\src-GTK\Handlers\Label\LabelHandler.GTK.cs" Link="Handlers\Label\LabelHandler.GTK.cs" />
+    <Compile Include="..\src-GTK\Handlers\ViewHandlerExtensions.GTK.cs" Link="Handlers\ViewHandlerExtensions.GTK.cs" />
     <Compile Include="..\src-GTK\Handlers\View\ViewHandler.GTK.cs" Link="Handlers\View\ViewHandler.GTK.cs" />
+    <Compile Include="..\src-GTK\Handlers\View\ViewHandlerOfT.GTK.cs" Link="Handlers\View\ViewHandlerOfT.GTK.cs" />
     <Compile Include="..\src-GTK\Handlers\Window\WindowHandler.GTK.cs" Link="Handlers\Window\WindowHandler.GTK.cs" />
     <Compile Include="..\src-GTK\ImageSources\FileImageSourceService\FileImageSourceService.GTK.cs" Link="ImageSources\FileImageSourceService\FileImageSourceService.GTK.cs" />
     <Compile Include="..\src-GTK\ImageSources\FontImageSourceService\FontImageSourceService.GTK.cs" Link="ImageSources\FontImageSourceService\FontImageSourceService.GTK.cs" />
@@ -62,7 +69,12 @@
     <Compile Include="..\src-GTK\ImageSources\UriImageSourceService\UriImageSourceService.GTK.cs" Link="ImageSources\UriImageSourceService\UriImageSourceService.GTK.cs" />
     <Compile Include="..\src-GTK\Platform\GTK\ActivityIndicator.cs" Link="Platform\GTK\ActivityIndicator.cs" />
     <Compile Include="..\src-GTK\Platform\GTK\ContentViewGroup.cs" Link="Platform\GTK\ContentViewGroup.cs" />
+    <Compile Include="..\src-GTK\Platform\GTK\CustomComboBox.cs" Link="Platform\GTK\CustomComboBox.cs" />
+    <Compile Include="..\src-GTK\Platform\GTK\DatePicker.cs" Link="Platform\GTK\DatePicker.cs" />
     <Compile Include="..\src-GTK\Platform\GTK\GtkFormsContainer.cs" Link="Platform\GTK\GtkFormsContainer.cs" />
+    <Compile Include="..\src-GTK\Platform\GTK\IDesiredSizeProvider.cs" Link="Platform\GTK\IDesiredSizeProvider.cs" />
+    <Compile Include="..\src-GTK\Platform\GTK\ImageButton.cs" Link="Platform\GTK\ImageButton.cs" />
+    <Compile Include="..\src-GTK\Platform\GTK\ImageControl.cs" Link="Platform\GTK\ImageControl.cs" />
     <Compile Include="..\src-GTK\Platform\GTK\LayoutViewGroup.cs" Link="Platform\GTK\LayoutViewGroup.cs" />
     <Compile Include="..\src-GTK\Platform\GTK\MauiContextExtensions.cs" Link="Platform\GTK\MauiContextExtensions.cs" />
     <Compile Include="..\src-GTK\Platform\GTK\MauiNavigationView.cs" Link="Platform\GTK\MauiNavigationView.cs" />
@@ -71,7 +83,9 @@
     <Compile Include="..\src-GTK\Platform\GTK\NavigationRootManager.cs" Link="Platform\GTK\NavigationRootManager.cs" />
     <Compile Include="..\src-GTK\Platform\GTK\PlatformTouchGraphicsView.cs" Link="Platform\GTK\PlatformTouchGraphicsView.cs" />
     <Compile Include="..\src-GTK\Platform\GTK\RootNavigationView.cs" Link="Platform\GTK\RootNavigationView.cs" />
+    <Compile Include="..\src-GTK\Platform\GTK\TextViewExtensions.cs" Link="Platform\GTK\TextViewExtensions.cs" />
     <Compile Include="..\src-GTK\Platform\GTK\ViewExtensions.cs" Link="Platform\GTK\ViewExtensions.cs" />
+    <Compile Include="..\src-GTK\Platform\GTK\WidgetExtensions.cs" Link="Platform\GTK\WidgetExtensions.cs" />
     <Compile Include="..\src-GTK\Platform\GTK\WindowRootView.cs" Link="Platform\GTK\WindowRootView.cs" />
     <Compile Include="..\src-GTK\Platform\GTK\WindowRootViewContainer.cs" Link="Platform\GTK\WindowRootViewContainer.cs" />
     <Compile Include="..\src-GTK\VisualDiagnostics\VisualDiagnosticsOverlay.GTK.cs" Link="VisualDiagnostics\VisualDiagnosticsOverlay.GTK.cs" />

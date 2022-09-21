@@ -4,7 +4,11 @@ using PlatformView = Microsoft.Maui.Platform.ContentView;
 #elif __ANDROID__
 using PlatformView = Microsoft.Maui.Platform.ContentViewGroup;
 #elif WINDOWS
+#if __GTK__
+using PlatformView = Gtk.EventBox;
+#else
 using PlatformView = Microsoft.Maui.Platform.ContentViewGroup;
+#endif
 #elif TIZEN
 using PlatformView = Microsoft.Maui.Platform.BorderView;
 #elif (NETSTANDARD || !PLATFORM)

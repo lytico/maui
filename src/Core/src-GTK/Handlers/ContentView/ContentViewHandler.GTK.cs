@@ -31,14 +31,14 @@ namespace Microsoft.Maui.Handlers
 
 		static void UpdateContent(IContentViewHandler handler)
 		{
-			_ = handler.PlatformView ?? throw new InvalidOperationException($"{nameof(PlatformView)} should have been set by base class.");
-			_ = handler.MauiContext ?? throw new InvalidOperationException($"{nameof(MauiContext)} should have been set by base class.");
-			_ = handler.VirtualView ?? throw new InvalidOperationException($"{nameof(VirtualView)} should have been set by base class.");
+			//_ = handler.PlatformView ?? throw new InvalidOperationException($"{nameof(PlatformView)} should have been set by base class.");
+			//_ = handler.MauiContext ?? throw new InvalidOperationException($"{nameof(MauiContext)} should have been set by base class.");
+			//_ = handler.VirtualView ?? throw new InvalidOperationException($"{nameof(VirtualView)} should have been set by base class.");
 
-			handler.PlatformView.RemoveAllViews();
+			//handler.PlatformView.RemoveAllViews();
 
-			if (handler.VirtualView.PresentedContent is IView view)
-				handler.PlatformView.AddView(view.ToPlatform(handler.MauiContext));
+			//if (handler.VirtualView.PresentedContent is IView view)
+			//	handler.PlatformView.AddView(view.ToPlatform(handler.MauiContext));
 		}
 
 		public static void MapContent(IContentViewHandler handler, IContentView page)
@@ -60,6 +60,19 @@ namespace Microsoft.Maui.Handlers
 			}
 
 			base.DisconnectHandler(platformView);
+		}
+
+		// 1>D:\Source\maui\src\Core\src\Handlers\ContentView\ContentViewHandler.cs(20,23,20,41): error CS0534: 'ContentViewHandler' does not implement inherited abstract member 'ViewHandler.RemoveContainer()'
+		// 1>D:\Source\maui\src\Core\src\Handlers\ContentView\ContentViewHandler.cs(20,23,20,41): error CS0534: 'ContentViewHandler' does not implement inherited abstract member 'ViewHandler.SetupContainer()'
+
+		protected override void RemoveContainer()
+		{
+
+		}
+
+		protected override void SetupContainer()
+		{
+
 		}
 	}
 }
