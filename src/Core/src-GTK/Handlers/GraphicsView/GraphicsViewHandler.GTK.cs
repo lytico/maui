@@ -2,9 +2,9 @@
 
 namespace Microsoft.Maui.Handlers
 {
-	public partial class GraphicsViewHandler : ViewHandler<IGraphicsView, PlatformTouchGraphicsView>
+	public partial class GraphicsViewHandler : ViewHandler<IGraphicsView, Gtk.Widget>
 	{
-		protected override PlatformTouchGraphicsView CreatePlatformView() => new();
+		protected override Gtk.Widget CreatePlatformView() => new Gtk.Widget();
 
 		public static void MapDrawable(IGraphicsViewHandler handler, IGraphicsView graphicsView)
 		{
@@ -20,6 +20,14 @@ namespace Microsoft.Maui.Handlers
 		public static void MapInvalidate(IGraphicsViewHandler handler, IGraphicsView graphicsView, object? arg)
 		{
 			//handler.PlatformView?.Invalidate();
+		}
+
+		protected override void SetupContainer()
+		{
+		}
+
+		protected override void RemoveContainer()
+		{
 		}
 	}
 }

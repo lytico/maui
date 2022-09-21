@@ -56,6 +56,8 @@
     <Compile Include="..\src-GTK\Handlers\CheckBox\CheckBoxHandler.GTK.cs" Link="Handlers\CheckBox\CheckBoxHandler.GTK.cs" />
     <Compile Include="..\src-GTK\Handlers\ContentView\ContentViewHandler.GTK.cs" Link="Handlers\ContentView\ContentViewHandler.GTK.cs" />
     <Compile Include="..\src-GTK\Handlers\DatePicker\DatePickerHandler.GTK.cs" Link="Handlers\DatePicker\DatePickerHandler.GTK.cs" />
+    <Compile Include="..\src-GTK\Handlers\Editor\EditorHandler.GTK.cs" Link="Handlers\Editor\EditorHandler.GTK.cs" />
+    <Compile Include="..\src-GTK\Handlers\Entry\EntryHandler.GTK.cs" Link="Handlers\Entry\EntryHandler.GTK.cs" />
     <Compile Include="..\src-GTK\Handlers\GraphicsView\GraphicsViewHandler.GTK.cs" Link="Handlers\GraphicsView\GraphicsViewHandler.GTK.cs" />
     <Compile Include="..\src-GTK\Handlers\IViewHandler.GTK.cs" Link="Handlers\IViewHandler.GTK.cs" />
     <Compile Include="..\src-GTK\Handlers\Label\LabelHandler.GTK.cs" Link="Handlers\Label\LabelHandler.GTK.cs" />
@@ -71,6 +73,7 @@
     <Compile Include="..\src-GTK\Platform\GTK\ContentViewGroup.cs" Link="Platform\GTK\ContentViewGroup.cs" />
     <Compile Include="..\src-GTK\Platform\GTK\CustomComboBox.cs" Link="Platform\GTK\CustomComboBox.cs" />
     <Compile Include="..\src-GTK\Platform\GTK\DatePicker.cs" Link="Platform\GTK\DatePicker.cs" />
+    <Compile Include="..\src-GTK\Platform\GTK\EntryWrapper.cs" Link="Platform\GTK\EntryWrapper.cs" />
     <Compile Include="..\src-GTK\Platform\GTK\GtkFormsContainer.cs" Link="Platform\GTK\GtkFormsContainer.cs" />
     <Compile Include="..\src-GTK\Platform\GTK\IDesiredSizeProvider.cs" Link="Platform\GTK\IDesiredSizeProvider.cs" />
     <Compile Include="..\src-GTK\Platform\GTK\ImageButton.cs" Link="Platform\GTK\ImageButton.cs" />
@@ -83,6 +86,7 @@
     <Compile Include="..\src-GTK\Platform\GTK\NavigationRootManager.cs" Link="Platform\GTK\NavigationRootManager.cs" />
     <Compile Include="..\src-GTK\Platform\GTK\PlatformTouchGraphicsView.cs" Link="Platform\GTK\PlatformTouchGraphicsView.cs" />
     <Compile Include="..\src-GTK\Platform\GTK\RootNavigationView.cs" Link="Platform\GTK\RootNavigationView.cs" />
+    <Compile Include="..\src-GTK\Platform\GTK\ScrolledTextView.cs" Link="Platform\GTK\ScrolledTextView.cs" />
     <Compile Include="..\src-GTK\Platform\GTK\TextViewExtensions.cs" Link="Platform\GTK\TextViewExtensions.cs" />
     <Compile Include="..\src-GTK\Platform\GTK\ViewExtensions.cs" Link="Platform\GTK\ViewExtensions.cs" />
     <Compile Include="..\src-GTK\Platform\GTK\WidgetExtensions.cs" Link="Platform\GTK\WidgetExtensions.cs" />

@@ -1,7 +1,7 @@
 ﻿#nullable enable
 #if __IOS__ || MACCATALYST || MONOANDROID || WINDOWS || TIZEN
 #if __GTK__
-using PlatformView = System.Object;
+using PlatformView = Gtk.Widget;
 #else
 #define PLATFORM
 using PlatformView = Microsoft.Maui.Platform.PlatformTouchGraphicsView;
@@ -40,14 +40,14 @@ namespace Microsoft.Maui.Handlers
 
 		protected override void ConnectHandler(PlatformView platformView)
 		{
-#if PLATFORM
+#if PLATFORM && !__GTK__
 			platformView.Connect(VirtualView);
 #endif
 			base.ConnectHandler(platformView);
 		}
 		protected override void DisconnectHandler(PlatformView platformView)
 		{
-#if PLATFORM
+#if PLATFORM && !__GTK__
 			platformView.Disconnect();
 #endif
 			base.DisconnectHandler(platformView);
