@@ -4,7 +4,11 @@ using PlatformView = Microsoft.Maui.Platform.MauiSearchBar;
 #elif MONOANDROID
 using PlatformView = AndroidX.AppCompat.Widget.SearchView;
 #elif WINDOWS
+#if __GTK__
+using PlatformView = Microsoft.Maui.Platform.SearchEntry;
+#else
 using PlatformView = Microsoft.UI.Xaml.Controls.AutoSuggestBox;
+#endif
 #elif TIZEN
 using PlatformView = Tizen.UIExtensions.ElmSharp.SearchBar;
 #elif (NETSTANDARD || !PLATFORM) || (NET6_0_OR_GREATER && !IOS && !ANDROID && !TIZEN)

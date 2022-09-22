@@ -5,7 +5,7 @@ using PlatformView = Microsoft.Maui.Platform.MauiCheckBox;
 using PlatformView = AndroidX.AppCompat.Widget.AppCompatCheckBox;
 #elif WINDOWS
 #if __GTK__
-using PlatformView = Gtk.CheckButton;
+using PlatformView = Microsoft.Maui.Platform.CustomAltView;
 #else
 using PlatformView = Microsoft.UI.Xaml.Controls.CheckBox;
 #endif
@@ -17,7 +17,11 @@ using PlatformView = System.Object;
 
 namespace Microsoft.Maui.Handlers
 {
+#if __GTK__
+	public partial interface ICheckBoxHandler : IAltViewHandler
+#else
 	public partial interface ICheckBoxHandler : IViewHandler
+#endif
 	{
 		new ICheckBox VirtualView { get; }
 		new PlatformView PlatformView { get; }

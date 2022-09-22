@@ -1,6 +1,6 @@
 ﻿#nullable enable
 using System;
-using PlatformView = Gtk.Widget;
+using PlatformView = Microsoft.Maui.Platform.CustomView;
 
 namespace Microsoft.Maui.Handlers
 {

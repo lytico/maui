@@ -6,7 +6,11 @@ using PlatformView = UIKit.UIView;
 #elif MONOANDROID
 using PlatformView = Android.Views.View;
 #elif WINDOWS
+#if __GTK__
+using PlatformView = Microsoft.Maui.Platform.CustomAltView;
+#else
 using PlatformView = Microsoft.UI.Xaml.FrameworkElement;
+#endif
 #elif TIZEN
 using PlatformView = ElmSharp.EvasObject;
 #elif (NETSTANDARD || !PLATFORM) || (NET6_0_OR_GREATER && !IOS && !ANDROID && !TIZEN)
@@ -15,7 +19,11 @@ using PlatformView = System.Object;
 
 namespace Microsoft.Maui.Handlers
 {
+#if __GTK__
+	public partial class TabbedViewHandler : AltViewHandler<ITabbedView, PlatformView>, ITabbedViewHandler
+#else
 	public partial class TabbedViewHandler : ViewHandler<ITabbedView, PlatformView>, ITabbedViewHandler
+#endif
 	{
 		public static IPropertyMapper<ITabbedView, ITabbedViewHandler> Mapper = new PropertyMapper<ITabbedView, ITabbedViewHandler>(ViewHandler.ViewMapper);
 

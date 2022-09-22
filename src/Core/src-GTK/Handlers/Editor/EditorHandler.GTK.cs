@@ -4,7 +4,7 @@ namespace Microsoft.Maui.Handlers
 {
 	// TODO: NET7 issoto - Change the TPlatformView generic type to MauiAppCompatEditText
 	// This type adds support to the SelectionChanged event
-	public partial class EditorHandler : ViewHandler<IEditor, ScrolledTextView>
+	public partial class EditorHandler : AltViewHandler<IEditor, ScrolledTextView>
 	{
 		bool _set;
 
@@ -112,16 +112,6 @@ namespace Microsoft.Maui.Handlers
 
 		public static void MapSelectionLength(IEditorHandler handler, ITextInput editor) { }
 		// handler.PlatformView?.UpdateSelectionLength(editor);
-
-		protected override void RemoveContainer()
-		{
-
-		}
-
-		protected override void SetupContainer()
-		{
-
-		}
 
 		//void OnPlatformViewAttachedToWindow(object? sender, ViewAttachedToWindowEventArgs e)
 		//{

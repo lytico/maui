@@ -4,8 +4,9 @@ using Gdk;
 
 namespace Microsoft.Maui.Platform
 {
-	public class ImageControl : Gtk.HBox, IDesiredSizeProvider
+	public class ImageControl : CustomAltView, IDesiredSizeProvider
 	{
+		private Gtk.HBox _hBox = null!;
 		private Gtk.Image _image = null!;
 		private Pixbuf _original = null!;
 		private ImageAspect _aspect;
@@ -20,6 +21,7 @@ namespace Microsoft.Maui.Platform
 
 		public ImageControl()
 		{
+			_hBox = new Gtk.HBox();
 			_aspect = ImageAspect.AspectFill;
 			_scaleX = 1.0;
 			_scaleY = 1.0;
@@ -146,8 +148,10 @@ namespace Microsoft.Maui.Platform
 			CanFocus = true;
 
 			_image = new Gtk.Image();
+			
+			_hBox.PackStart(_image, true, true, 0);
 
-			PackStart(_image, true, true, 0);
+			Add(_hBox);
 		}
 
 		private static Pixbuf GetAspectFitPixBuf(Pixbuf original, Gdk.Rectangle allocation)

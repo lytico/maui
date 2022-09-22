@@ -5,12 +5,8 @@ namespace Microsoft.Maui.Handlers
 {
 	// TODO: NET7 issoto - Change the TPlatformView generic type to MauiAppCompatEditText
 	// This type adds support to the SelectionChanged event
-	public partial class EntryHandler : ViewHandler<IEntry, EntryWrapper>
+	public partial class EntryHandler : AltViewHandler<IEntry, EntryWrapper>
 	{
-		// Drawable? _clearButtonDrawable;
-		bool _clearButtonVisible;
-		bool _set;
-
 		protected override EntryWrapper CreatePlatformView()
 		{
 			var nativeEntry = new EntryWrapper();
@@ -29,7 +25,7 @@ namespace Microsoft.Maui.Handlers
 			//if (!_set && PlatformView is EntryWrapper editText)
 			//	editText.SelectionChanged += OnSelectionChanged;
 
-			_set = true;
+			//_set = true;
 		}
 
 		// TODO: NET7 issoto - Change the return type to MauiAppCompatEditText
@@ -44,7 +40,7 @@ namespace Microsoft.Maui.Handlers
 		// TODO: NET7 issoto - Change the return type to MauiAppCompatEditText
 		protected override void DisconnectHandler(EntryWrapper platformView)
 		{
-			_clearButtonDrawable = null;
+			//_clearButtonDrawable = null;
 			//platformView.TextChanged -= OnTextChanged;
 			//platformView.FocusChange -= OnFocusedChange;
 			//platformView.Touch -= OnTouch;
@@ -54,7 +50,7 @@ namespace Microsoft.Maui.Handlers
 			//if (_set && platformView is EntryWrapper editText)
 			//	editText.SelectionChanged -= OnSelectionChanged;
 
-			_set = false;
+			//_set = false;
 		}
 
 		public static void MapBackground(IEntryHandler handler, IEntry entry) { }
@@ -115,16 +111,6 @@ namespace Microsoft.Maui.Handlers
 		{
 			//if (handler is EntryHandler platformHandler)
 			//	handler.PlatformView?.UpdateClearButtonVisibility(entry, platformHandler.GetClearButtonDrawable);
-		}
-
-		protected override void RemoveContainer()
-		{
-
-		}
-
-		protected override void SetupContainer()
-		{
-
 		}
 
 		//void OnTextChanged(object? sender, TextChangedEventArgs e)

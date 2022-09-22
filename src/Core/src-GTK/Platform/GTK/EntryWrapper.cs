@@ -5,7 +5,7 @@ using Pango;
 namespace Microsoft.Maui.Platform
 {
 	// Created a custom control to allow combining Gtk.Entry and Gtk.Label to have placeholder text.
-	public class EntryWrapper : EventBox
+	public class EntryWrapper : CustomAltView
 	{
 		private Table _table;
 		private Gtk.Entry _entry;

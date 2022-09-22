@@ -3,7 +3,7 @@ using Microsoft.Maui.Graphics;
 
 namespace Microsoft.Maui.Handlers
 {
-	public partial class ButtonHandler : ViewHandler<IButton, ImageButton>
+	public partial class ButtonHandler : AltViewHandler<IButton, ImageButton>
 	{
 		public readonly static Thickness DefaultPadding = new Thickness(16, 8.5);
 
@@ -98,16 +98,6 @@ namespace Microsoft.Maui.Handlers
 		public static Task MapImageSourceAsync(IButtonHandler handler, IImage image)
 		{
 			return handler.ImageSourceLoader.UpdateImageSourceAsync();
-		}
-
-		protected override void RemoveContainer()
-		{
-
-		}
-
-		protected override void SetupContainer()
-		{
-
 		}
 
 		//void OnSetImageSource(Drawable? obj)

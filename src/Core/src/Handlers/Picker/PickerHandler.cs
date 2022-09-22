@@ -3,7 +3,11 @@ using PlatformView = Microsoft.Maui.Platform.MauiPicker;
 #elif MONOANDROID
 using PlatformView = Microsoft.Maui.Platform.MauiPicker;
 #elif WINDOWS
+#if __GTK__
+using PlatformView = Microsoft.Maui.Platform.CustomAltView;
+#else
 using PlatformView = Microsoft.UI.Xaml.Controls.ComboBox;
+#endif
 #elif TIZEN
 using PlatformView = Tizen.UIExtensions.ElmSharp.Entry;
 #elif (NETSTANDARD || !PLATFORM) || (NET6_0_OR_GREATER && !IOS && !ANDROID && !TIZEN)

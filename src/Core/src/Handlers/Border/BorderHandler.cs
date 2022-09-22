@@ -5,7 +5,7 @@ using PlatformView = Microsoft.Maui.Platform.ContentView;
 using PlatformView = Microsoft.Maui.Platform.ContentViewGroup;
 #elif WINDOWS
 #if __GTK__
-using PlatformView = Gtk.EventBox;
+using PlatformView = Microsoft.Maui.Platform.CustomBorder;
 #else
 using PlatformView = Microsoft.Maui.Platform.ContentPanel;
 #endif

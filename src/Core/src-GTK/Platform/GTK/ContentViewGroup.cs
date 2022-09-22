@@ -4,12 +4,15 @@ using Microsoft.UI.Xaml.Controls;
 
 namespace Microsoft.Maui.Platform
 {
-	public class ContentViewGroup : Fixed
+	public class ContentViewGroup : CustomAltView
 	{
+		Fixed _fixed;
 		IBorderStroke? _clip;
 
 		public ContentViewGroup()
 		{
+			_fixed = new Fixed();
+			Add(_fixed);
 		}
 
 		protected override bool OnExposeEvent(EventExpose evnt)

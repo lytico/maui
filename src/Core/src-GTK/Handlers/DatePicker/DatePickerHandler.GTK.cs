@@ -3,7 +3,7 @@ using Microsoft.Maui.Devices;
 
 namespace Microsoft.Maui.Handlers
 {
-	public partial class DatePickerHandler : ViewHandler<IDatePicker, DatePicker>
+	public partial class DatePickerHandler : AltViewHandler<IDatePicker, DatePicker>
 	{
 		//DatePickerDialog? _dialog;
 
@@ -115,16 +115,6 @@ namespace Microsoft.Maui.Handlers
 		{
 			//if (handler is DatePickerHandler platformHandler)
 				//handler.PlatformView?.UpdateTextColor(datePicker);
-		}
-
-		protected override void RemoveContainer()
-		{
-
-		}
-
-		protected override void SetupContainer()
-		{
-
 		}
 
 		//void ShowPickerDialog()

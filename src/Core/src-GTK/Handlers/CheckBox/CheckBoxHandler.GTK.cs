@@ -1,20 +1,23 @@
 ﻿namespace Microsoft.Maui.Handlers
 {
-	public partial class CheckBoxHandler : ViewHandler<ICheckBox, Gtk.CheckButton>
+	public partial class CheckBoxHandler : AltViewHandler<ICheckBox, CustomAltView>
 	{
-		protected override Gtk.CheckButton CreatePlatformView()
+		protected override CustomAltView CreatePlatformView()
 		{
+			var plat = new CustomAltView();
 			var platformCheckBox = new Gtk.CheckButton();
 
-			return platformCheckBox;
+			plat.Add(platformCheckBox);
+
+			return plat;
 		}
 
-		protected override void ConnectHandler(Gtk.CheckButton platformView)
+		protected override void ConnectHandler(CustomAltView platformView)
 		{
 			//platformView.CheckedChange += OnCheckedChange;
 		}
 
-		protected override void DisconnectHandler(Gtk.CheckButton platformView)
+		protected override void DisconnectHandler(CustomAltView platformView)
 		{
 			//platformView.CheckedChange -= OnCheckedChange;
 		}
@@ -40,15 +43,5 @@
 		//	if (VirtualView != null)
 		//		VirtualView.IsChecked = e.IsChecked;
 		//}
-
-		protected override void RemoveContainer()
-		{
-
-		}
-
-		protected override void SetupContainer()
-		{
-
-		}
 	}
 }

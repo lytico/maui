@@ -3,9 +3,15 @@ using Microsoft.Maui.Graphics;
 
 namespace Microsoft.Maui.Handlers
 {
-	public partial class LabelHandler : ViewHandler<ILabel, Gtk.Label>
+	public partial class LabelHandler : AltViewHandler<ILabel, CustomAltView>
 	{
-		protected override Gtk.Label CreatePlatformView() => new Gtk.Label();
+		protected override CustomAltView CreatePlatformView()
+		{
+			var plat = new CustomAltView();
+			plat.Add(new Gtk.Label());
+
+			return plat;
+		}
 
 		public override bool NeedsContainer =>
 			VirtualView?.Background != null ||
@@ -104,19 +110,10 @@ namespace Microsoft.Maui.Handlers
 			//handler.PlatformView?.UpdateHorizontalTextAlignment(label);
 		}
 
-		protected override void SetupContainer()
-		{
-			// throw new NotImplementedException();
-		}
-
-		protected override void RemoveContainer()
-		{
-			// throw new NotImplementedException();
-		}
-
 		public override Size GetDesiredSize(double widthConstraint, double heightConstraint)
 		{
 			// throw new NotImplementedException();
+			return new Size(widthConstraint, heightConstraint);
 		}
 	}
 }

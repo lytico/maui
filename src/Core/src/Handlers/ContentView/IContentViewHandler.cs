@@ -4,7 +4,7 @@ using PlatformView = Microsoft.Maui.Platform.ContentView;
 using PlatformView = Microsoft.Maui.Platform.ContentViewGroup;
 #elif WINDOWS
 #if __GTK__
-using PlatformView = Gtk.EventBox;
+using PlatformView = Microsoft.Maui.Platform.ContentViewGroup;
 #else
 using PlatformView = Microsoft.Maui.Platform.ContentPanel;
 #endif
@@ -16,7 +16,11 @@ using PlatformView = System.Object;
 
 namespace Microsoft.Maui.Handlers
 {
+#if __GTK__
+	public partial interface IContentViewHandler : IAltViewHandler
+#else
 	public partial interface IContentViewHandler : IViewHandler
+#endif
 	{
 		new IContentView VirtualView { get; }
 		new PlatformView PlatformView { get; }

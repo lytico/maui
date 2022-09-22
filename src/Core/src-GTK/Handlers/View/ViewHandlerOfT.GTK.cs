@@ -13,8 +13,8 @@ namespace Microsoft.Maui.Handlers
 		public override Size GetDesiredSize(double widthConstraint, double heightConstraint) =>
 			this.GetDesiredSizeFromHandler(widthConstraint, heightConstraint);
 
-		//protected override void SetupContainer()
-		//{
+		protected override void SetupContainer()
+		{
 		//	if (PlatformView == null || ContainerView != null)
 		//		return;
 
@@ -30,10 +30,10 @@ namespace Microsoft.Maui.Handlers
 		//		oldParent?.AddView(ContainerView, idx);
 		//	else
 		//		oldParent?.AddView(ContainerView);
-		//}
+		}
 
-		//protected override void RemoveContainer()
-		//{
+		protected override void RemoveContainer()
+		{
 		//	if (Context == null || PlatformView == null || ContainerView == null || PlatformView.Parent != ContainerView)
 		//		return;
 
@@ -49,6 +49,6 @@ namespace Microsoft.Maui.Handlers
 		//		oldParent?.AddView(PlatformView, idx);
 		//	else
 		//		oldParent?.AddView(PlatformView);
-		//}
+		}
 	}
 }

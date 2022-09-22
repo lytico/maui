@@ -3,7 +3,11 @@ using PlatformView = UIKit.UIMenu;
 #elif MONOANDROID
 using PlatformView = Android.Views.View;
 #elif WINDOWS
+#if __GTK__
+using PlatformView = Gtk.EventBox;
+#else
 using PlatformView = Microsoft.UI.Xaml.Controls.MenuBarItem;
+#endif
 #elif TIZEN
 using PlatformView = ElmSharp.EvasObject;
 #elif (NETSTANDARD || !PLATFORM) || (NET6_0_OR_GREATER && !IOS && !ANDROID && !TIZEN)

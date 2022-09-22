@@ -2,7 +2,7 @@
 
 namespace Microsoft.Maui.Platform
 {
-	public class ScrolledTextView : EventBox
+	public class ScrolledTextView : CustomAltView
 	{
 		private Table _table;
 		private ScrolledWindow _scrolledWindow;

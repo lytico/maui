@@ -5,7 +5,7 @@ using Gtk;
 
 namespace Microsoft.Maui.Handlers
 {
-	public partial class ActivityIndicatorHandler : ViewHandler<IActivityIndicator, ActivityIndicator>
+	public partial class ActivityIndicatorHandler : AltViewHandler<IActivityIndicator, ActivityIndicator>
 	{
 		//public override bool NeedsContainer =>
 		//	VirtualView?.Background != null ||
@@ -27,17 +27,17 @@ namespace Microsoft.Maui.Handlers
 		{
 			if (activityIndicator.IsRunning)
 			{
-				handler.PlatformView?.Start();
+				((ActivityIndicator)handler.PlatformView)?.Start();
 			}
 			else
 			{
-				handler.PlatformView?.Stop();
+				((ActivityIndicator)handler.PlatformView)?.Stop();
 			}
 		}
 
 		public static void MapColor(IActivityIndicatorHandler handler, IActivityIndicator activityIndicator)
 		{
-			handler.PlatformView?.UpdateColor(activityIndicator.Color);
+			((ActivityIndicator)handler.PlatformView)?.UpdateColor(activityIndicator.Color);
 		}
 
 		public static void MapWidth(IActivityIndicatorHandler handler, IActivityIndicator activityIndicator)
@@ -70,14 +70,6 @@ namespace Microsoft.Maui.Handlers
 		{
 		}
 
-		protected override void RemoveContainer()
-		{
-		}
-
-		protected override void SetupContainer()
-		{
-		}
-
 		protected override void ConnectHandler(ActivityIndicator platformView)
 		{
 			base.ConnectHandler(platformView);
@@ -85,14 +77,15 @@ namespace Microsoft.Maui.Handlers
 
 		protected override void DisconnectHandler(ActivityIndicator platformView)
 		{
+			base.DisconnectHandler(platformView);
 		}
 
-		private protected override void OnConnectHandler(Widget platformView)
+		private protected override void OnConnectHandler(CustomAltView platformView)
 		{
 			base.OnConnectHandler(platformView);
 		}
 
-		private protected override void OnDisconnectHandler(Widget platformView)
+		private protected override void OnDisconnectHandler(CustomAltView platformView)
 		{
 			base.OnDisconnectHandler(platformView);
 		}

@@ -7,10 +7,16 @@ using PlatformImage = Android.Graphics.Drawables.Drawable;
 using PlatformImageView = Android.Widget.ImageView;
 using PlatformView = Google.Android.Material.ImageView.ShapeableImageView;
 #elif WINDOWS
+#if __GTK__
+using PlatformImage = Gdk.Pixbuf;
+using PlatformImageView = Microsoft.Maui.Platform.ImageControl;
+using PlatformView = Microsoft.Maui.Platform.ImageButton;
+#else
 using System;
 using PlatformImage = Microsoft.UI.Xaml.Media.ImageSource;
 using PlatformImageView = Microsoft.UI.Xaml.Controls.Image;
 using PlatformView = Microsoft.UI.Xaml.Controls.Button;
+#endif
 #elif TIZEN
 using PlatformImage = Tizen.UIExtensions.ElmSharp.Image;
 using PlatformImageView = Tizen.UIExtensions.ElmSharp.Image;

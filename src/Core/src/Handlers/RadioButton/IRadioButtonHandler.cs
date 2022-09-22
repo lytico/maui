@@ -3,7 +3,11 @@ using PlatformView = Microsoft.Maui.Platform.ContentView;
 #elif MONOANDROID
 using PlatformView = Android.Views.View;
 #elif WINDOWS
+#if __GTK__
+using PlatformView = Microsoft.Maui.Platform.RadioButton;
+#else
 using PlatformView = Microsoft.UI.Xaml.Controls.RadioButton;
+#endif
 #elif TIZEN
 using PlatformView = Microsoft.Maui.Platform.MauiRadioButton;
 #elif (NETSTANDARD || !PLATFORM) || (NET6_0_OR_GREATER && !IOS && !ANDROID && !TIZEN)
@@ -12,7 +16,11 @@ using PlatformView = System.Object;
 
 namespace Microsoft.Maui.Handlers
 {
+#if __GTK__
+	public partial interface IRadioButtonHandler : IAltViewHandler
+#else
 	public partial interface IRadioButtonHandler : IViewHandler
+#endif
 	{
 		new IRadioButton VirtualView { get; }
 		new PlatformView PlatformView { get; }

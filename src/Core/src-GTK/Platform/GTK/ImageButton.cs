@@ -4,7 +4,7 @@ using Gtk;
 
 namespace Microsoft.Maui.Platform
 {
-	public sealed class ImageButton : Gtk.Button
+	public sealed class ImageButton : CustomAltView
 	{
 		private Alignment _container;
 		private Box _imageAndLabelContainer = null!;
@@ -14,6 +14,7 @@ namespace Microsoft.Maui.Platform
 		private Gdk.Color? _borderColor;
 		private Gdk.Color? _backgroundColor;
 
+		private Gtk.Button _button;
 		private Gtk.Image _image;
 		private Gtk.Label _label;
 		private uint _imageSpacing = 0;
@@ -24,13 +25,17 @@ namespace Microsoft.Maui.Platform
 			_defaultBackgroundColor = Style.Backgrounds[(int)StateType.Normal];
 			_defaultBorderColor = Style.BaseColors[(int)StateType.Active];
 
-			Relief = ReliefStyle.None;
+			_button = new Gtk.Button();
+
+			_button.Relief = ReliefStyle.None;
 
 			_image = new Gtk.Image();
 			_label = new Gtk.Label();
 			_container = new Alignment(0.5f, 0.5f, 0, 0);
 
-			Add(_container);
+			_button.Add(_container);
+
+			Add(_button);
 
 			RecreateContainer();
 		}
@@ -38,6 +43,8 @@ namespace Microsoft.Maui.Platform
 		public Gtk.Label LabelWidget => _label;
 
 		public Gtk.Image ImageWidget => _image;
+
+		public Gtk.Button ButtonWidget => _button;
 
 		public uint ImageSpacing
 		{
@@ -92,7 +99,7 @@ namespace Microsoft.Maui.Platform
 
 		public void SetImagePosition(PositionType position)
 		{
-			ImagePosition = position;
+			_button.ImagePosition = position;
 			RecreateContainer();
 		}
 
@@ -145,7 +152,7 @@ namespace Microsoft.Maui.Platform
 				_imageAndLabelContainer = null!;
 			}
 
-			switch (ImagePosition)
+			switch (_button.ImagePosition)
 			{
 				case PositionType.Left:
 					_imageAndLabelContainer = new HBox();

@@ -4,7 +4,11 @@ using PlatformView = UIKit.UISwitch;
 #elif MONOANDROID
 using PlatformView = AndroidX.AppCompat.Widget.SwitchCompat;
 #elif WINDOWS
+#if __GTK__
+using PlatformView = Microsoft.Maui.Platform.SwitchControl;
+#else
 using PlatformView = Microsoft.UI.Xaml.Controls.ToggleSwitch;
+#endif
 #elif TIZEN
 using PlatformView = ElmSharp.Check;
 #elif (NETSTANDARD || !PLATFORM) || (NET6_0_OR_GREATER && !IOS && !ANDROID && !TIZEN)

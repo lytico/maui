@@ -9,9 +9,17 @@ using System.Collections.Generic;
 
 namespace Microsoft.Maui.Platform
 {
-	public class MauiPageControl : Gtk.Fixed
+	public class MauiPageControl : CustomAltView
 	{
 		const int DefaultPadding = 4;
+
+		public MauiPageControl()
+		{
+			FixedWidget = new Gtk.Fixed();
+			Add(FixedWidget);
+		}
+
+		public Gtk.Fixed FixedWidget { get; set; } = null!;
 
 		//Drawable? _currentPageShape;
 		//Drawable? _pageShape;
@@ -165,13 +173,13 @@ namespace Microsoft.Maui.Platform
 		void RemoveViews(int startAt)
 		{
 			List<Gtk.Widget> childList = new List<Gtk.Widget>();
-			foreach (var child in Children)
+			foreach (var child in FixedWidget.Children)
 			{
 				childList.Add(child);
 			}
 			foreach (var child in childList)
 			{
-				Remove(child);
+				FixedWidget.Remove(child);
 			}
 		}
 

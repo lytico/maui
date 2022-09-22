@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Microsoft.Maui.Handlers
 {
-	public partial class ContentViewHandler : ViewHandler<IContentView, ContentViewGroup>
+	public partial class ContentViewHandler : AltViewHandler<IContentView, ContentViewGroup>
 	{
 		protected override ContentViewGroup CreatePlatformView()
 		{
@@ -60,19 +60,6 @@ namespace Microsoft.Maui.Handlers
 			}
 
 			base.DisconnectHandler(platformView);
-		}
-
-		// 1>D:\Source\maui\src\Core\src\Handlers\ContentView\ContentViewHandler.cs(20,23,20,41): error CS0534: 'ContentViewHandler' does not implement inherited abstract member 'ViewHandler.RemoveContainer()'
-		// 1>D:\Source\maui\src\Core\src\Handlers\ContentView\ContentViewHandler.cs(20,23,20,41): error CS0534: 'ContentViewHandler' does not implement inherited abstract member 'ViewHandler.SetupContainer()'
-
-		protected override void RemoveContainer()
-		{
-
-		}
-
-		protected override void SetupContainer()
-		{
-
 		}
 	}
 }

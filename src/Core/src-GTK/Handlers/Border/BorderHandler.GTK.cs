@@ -2,16 +2,16 @@
 
 namespace Microsoft.Maui.Handlers
 {
-	public partial class BorderHandler : ViewHandler<IBorderView, Gtk.Fixed>
+	public partial class BorderHandler : AltViewHandler<IBorderView, CustomBorder>
 	{
-		protected override Gtk.Fixed CreatePlatformView()
+		protected override CustomBorder CreatePlatformView()
 		{
 			if (VirtualView == null)
 			{
 				throw new InvalidOperationException($"{nameof(VirtualView)} must be set to create a ContentViewGroup");
 			}
 
-			var viewGroup = new Gtk.Fixed();
+			var viewGroup = new CustomBorder();
 			//{
 			//	CrossPlatformMeasure = VirtualView.CrossPlatformMeasure,
 			//	CrossPlatformArrange = VirtualView.CrossPlatformArrange
@@ -70,15 +70,5 @@ namespace Microsoft.Maui.Handlers
 
 		//	base.DisconnectHandler(platformView);
 		//}
-
-		protected override void RemoveContainer()
-		{
-
-		}
-
-		protected override void SetupContainer()
-		{
-
-		}
 	}
 }

@@ -44,6 +44,13 @@
     <Compile Remove="Handlers\MenuFlyoutItem\MenuFlyoutItemHandler.cs" />
     <Compile Remove="Handlers\MenuFlyoutSeparator\MenuFlyoutSeparatorHandler.cs" />
     <Compile Remove="Handlers\MenuFlyoutSubItem\MenuFlyoutSubItemHandler.cs" />
+    <Compile Remove="Handlers\RefreshView\RefreshViewHandler.cs" />
+    <Compile Remove="Handlers\ShapeView\ShapeViewHandler.cs" />
+    <Compile Remove="Handlers\SwipeItemMenuItem\SwipeItemMenuItemHandler.cs" />
+    <Compile Remove="Handlers\SwipeItemView\SwipeItemViewHandler.cs" />
+    <Compile Remove="Handlers\SwipeView\SwipeViewHandler.cs" />
+    <Compile Remove="Handlers\Toolbar\ToolbarHandler.cs" />
+    <Compile Remove="Handlers\WebView\WebViewHandler.cs" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="..\src-GTK\Animations\PlatformTicker.GTK.cs" Link="Animations\PlatformTicker.GTK.cs" />
@@ -59,9 +66,32 @@
     <Compile Include="..\src-GTK\Handlers\Editor\EditorHandler.GTK.cs" Link="Handlers\Editor\EditorHandler.GTK.cs" />
     <Compile Include="..\src-GTK\Handlers\Entry\EntryHandler.GTK.cs" Link="Handlers\Entry\EntryHandler.GTK.cs" />
     <Compile Include="..\src-GTK\Handlers\GraphicsView\GraphicsViewHandler.GTK.cs" Link="Handlers\GraphicsView\GraphicsViewHandler.GTK.cs" />
+    <Compile Include="..\src-GTK\Handlers\IAltViewHandler.cs" Link="Handlers\IAltViewHandler.cs" />
+    <Compile Include="..\src-GTK\Handlers\IAltViewHandler.GTK.cs" Link="Handlers\IAltViewHandler.GTK.cs" />
+    <Compile Include="..\src-GTK\Handlers\ImageButton\ImageButtonHandler.GTK.cs" Link="Handlers\ImageButton\ImageButtonHandler.GTK.cs" />
+    <Compile Include="..\src-GTK\Handlers\Image\ImageHandler.GTK.cs" Link="Handlers\Image\ImageHandler.GTK.cs" />
+    <Compile Include="..\src-GTK\Handlers\IndicatorView\IndicatorViewHandler.GTK.cs" Link="Handlers\IndicatorView\IndicatorViewHandler.GTK.cs" />
     <Compile Include="..\src-GTK\Handlers\IViewHandler.GTK.cs" Link="Handlers\IViewHandler.GTK.cs" />
     <Compile Include="..\src-GTK\Handlers\Label\LabelHandler.GTK.cs" Link="Handlers\Label\LabelHandler.GTK.cs" />
+    <Compile Include="..\src-GTK\Handlers\Layout\LayoutHandler.GTK.cs" Link="Handlers\Layout\LayoutHandler.GTK.cs" />
+    <Compile Include="..\src-GTK\Handlers\MenuBarItem\MenuBarItemHandler.GTK.cs" Link="Handlers\MenuBarItem\MenuBarItemHandler.GTK.cs" />
+    <Compile Include="..\src-GTK\Handlers\MenuBar\MenuBarHandler.GTK.cs" Link="Handlers\MenuBar\MenuBarHandler.GTK.cs" />
+    <Compile Include="..\src-GTK\Handlers\NavigationPage\NavigationViewHandler.GTK.cs" Link="Handlers\NavigationPage\NavigationViewHandler.GTK.cs" />
+    <Compile Include="..\src-GTK\Handlers\Page\PageHandler.GTK.cs" Link="Handlers\Page\PageHandler.GTK.cs" />
+    <Compile Include="..\src-GTK\Handlers\Picker\PickerHandler.GTK.cs" Link="Handlers\Picker\PickerHandler.GTK.cs" />
+    <Compile Include="..\src-GTK\Handlers\ProgressBar\ProgressBarHandler.GTK.cs" Link="Handlers\ProgressBar\ProgressBarHandler.GTK.cs" />
+    <Compile Include="..\src-GTK\Handlers\RadioBurtton\RadioButtonHandler.GTK.cs" Link="Handlers\RadioButton\RadioButtonHandler.GTK.cs" />
+    <Compile Include="..\src-GTK\Handlers\ScrollView\ScrollViewHandler.GTK.cs" Link="Handlers\ScrollView\ScrollViewHandler.GTK.cs" />
+    <Compile Include="..\src-GTK\Handlers\SearchBar\SearchBarHandler.GTK.cs" Link="Handlers\SearchBar\SearchBarHandler.GTK.cs" />
+    <Compile Include="..\src-GTK\Handlers\Slider\SliderHandler.GTK.cs" Link="Handlers\Slider\SliderHandler.GTK.cs" />
+    <Compile Include="..\src-GTK\Handlers\Stepper\StepperHandler.GTK.cs" Link="Handlers\Stepper\StepperHandler.GTK.cs" />
+    <Compile Include="..\src-GTK\Handlers\Switch\SwitchHandler.GTK.cs" Link="Handlers\Switch\SwitchHandler.GTK.cs" />
+    <Compile Include="..\src-GTK\Handlers\TimePicker\TimePickerHandler.GTK.cs" Link="Handlers\TimePicker\TimePickerHandler.GTK.cs" />
     <Compile Include="..\src-GTK\Handlers\ViewHandlerExtensions.GTK.cs" Link="Handlers\ViewHandlerExtensions.GTK.cs" />
+    <Compile Include="..\src-GTK\Handlers\View\AltViewHandler.cs" Link="Handlers\View\AltViewHandler.cs" />
+    <Compile Include="..\src-GTK\Handlers\View\AltViewHandler.GTK.cs" Link="Handlers\View\AltViewHandler.GTK.cs" />
+    <Compile Include="..\src-GTK\Handlers\View\AltViewHandlerOfT.cs" Link="Handlers\View\AltViewHandlerOfT.cs" />
+    <Compile Include="..\src-GTK\Handlers\View\AltViewHandlerOfT.GTK.cs" Link="Handlers\View\AltViewHandlerOfT.GTK.cs" />
     <Compile Include="..\src-GTK\Handlers\View\ViewHandler.GTK.cs" Link="Handlers\View\ViewHandler.GTK.cs" />
     <Compile Include="..\src-GTK\Handlers\View\ViewHandlerOfT.GTK.cs" Link="Handlers\View\ViewHandlerOfT.GTK.cs" />
     <Compile Include="..\src-GTK\Handlers\Window\WindowHandler.GTK.cs" Link="Handlers\Window\WindowHandler.GTK.cs" />
@@ -71,7 +101,11 @@
     <Compile Include="..\src-GTK\ImageSources\UriImageSourceService\UriImageSourceService.GTK.cs" Link="ImageSources\UriImageSourceService\UriImageSourceService.GTK.cs" />
     <Compile Include="..\src-GTK\Platform\GTK\ActivityIndicator.cs" Link="Platform\GTK\ActivityIndicator.cs" />
     <Compile Include="..\src-GTK\Platform\GTK\ContentViewGroup.cs" Link="Platform\GTK\ContentViewGroup.cs" />
+    <Compile Include="..\src-GTK\Platform\GTK\CustomAltView.cs" Link="Platform\GTK\CustomAltView.cs" />
+    <Compile Include="..\src-GTK\Platform\GTK\CustomBorder.cs" Link="Platform\GTK\CustomBorder.cs" />
     <Compile Include="..\src-GTK\Platform\GTK\CustomComboBox.cs" Link="Platform\GTK\CustomComboBox.cs" />
+    <Compile Include="..\src-GTK\Platform\GTK\CustomSlider.cs" Link="Platform\GTK\CustomSlider.cs" />
+    <Compile Include="..\src-GTK\Platform\GTK\CustomView.cs" Link="Platform\GTK\CustomView.cs" />
     <Compile Include="..\src-GTK\Platform\GTK\DatePicker.cs" Link="Platform\GTK\DatePicker.cs" />
     <Compile Include="..\src-GTK\Platform\GTK\EntryWrapper.cs" Link="Platform\GTK\EntryWrapper.cs" />
     <Compile Include="..\src-GTK\Platform\GTK\GtkFormsContainer.cs" Link="Platform\GTK\GtkFormsContainer.cs" />
@@ -85,9 +119,14 @@
     <Compile Include="..\src-GTK\Platform\GTK\MauiStepper.cs" Link="Platform\GTK\MauiStepper.cs" />
     <Compile Include="..\src-GTK\Platform\GTK\NavigationRootManager.cs" Link="Platform\GTK\NavigationRootManager.cs" />
     <Compile Include="..\src-GTK\Platform\GTK\PlatformTouchGraphicsView.cs" Link="Platform\GTK\PlatformTouchGraphicsView.cs" />
+    <Compile Include="..\src-GTK\Platform\GTK\RadioButton.cs" Link="Platform\GTK\RadioButton.cs" />
     <Compile Include="..\src-GTK\Platform\GTK\RootNavigationView.cs" Link="Platform\GTK\RootNavigationView.cs" />
     <Compile Include="..\src-GTK\Platform\GTK\ScrolledTextView.cs" Link="Platform\GTK\ScrolledTextView.cs" />
+    <Compile Include="..\src-GTK\Platform\GTK\SearchEntry.cs" Link="Platform\GTK\SearchEntry.cs" />
+    <Compile Include="..\src-GTK\Platform\GTK\StepperControl.cs" Link="Platform\GTK\StepperControl.cs" />
+    <Compile Include="..\src-GTK\Platform\GTK\SwitchControl.cs" Link="Platform\GTK\SwitchControl.cs" />
     <Compile Include="..\src-GTK\Platform\GTK\TextViewExtensions.cs" Link="Platform\GTK\TextViewExtensions.cs" />
+    <Compile Include="..\src-GTK\Platform\GTK\TimePicker.cs" Link="Platform\GTK\TimePicker.cs" />
     <Compile Include="..\src-GTK\Platform\GTK\ViewExtensions.cs" Link="Platform\GTK\ViewExtensions.cs" />
     <Compile Include="..\src-GTK\Platform\GTK\WidgetExtensions.cs" Link="Platform\GTK\WidgetExtensions.cs" />
     <Compile Include="..\src-GTK\Platform\GTK\WindowRootView.cs" Link="Platform\GTK\WindowRootView.cs" />
@@ -100,6 +139,13 @@
     <None Include="Handlers\MenuFlyoutItem\MenuFlyoutItemHandler.cs" />
     <None Include="Handlers\MenuFlyoutSeparator\MenuFlyoutSeparatorHandler.cs" />
     <None Include="Handlers\MenuFlyoutSubItem\MenuFlyoutSubItemHandler.cs" />
+    <None Include="Handlers\RefreshView\RefreshViewHandler.cs" />
+    <None Include="Handlers\ShapeView\ShapeViewHandler.cs" />
+    <None Include="Handlers\SwipeItemMenuItem\SwipeItemMenuItemHandler.cs" />
+    <None Include="Handlers\SwipeItemView\SwipeItemViewHandler.cs" />
+    <None Include="Handlers\SwipeView\SwipeViewHandler.cs" />
+    <None Include="Handlers\Toolbar\ToolbarHandler.cs" />
+    <None Include="Handlers\WebView\WebViewHandler.cs" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.Extensions.Configuration" />

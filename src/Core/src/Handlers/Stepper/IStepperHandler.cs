@@ -4,7 +4,7 @@ using PlatformView = UIKit.UIStepper;
 using PlatformView = Microsoft.Maui.Platform.MauiStepper;
 #elif WINDOWS
 #if __GTK__
-using PlatformView = Microsoft.Maui.Platform.MauiStepper;
+using PlatformView = Microsoft.Maui.Platform.StepperControl;
 #else
 using PlatformView = Microsoft.Maui.Platform.MauiStepper;
 #endif
@@ -14,7 +14,11 @@ using PlatformView = System.Object;
 
 namespace Microsoft.Maui.Handlers
 {
+#if __GTK__
+	public partial interface IStepperHandler : IAltViewHandler
+#else
 	public partial interface IStepperHandler : IViewHandler
+#endif
 	{
 		new IStepper VirtualView { get; }
 		new PlatformView PlatformView { get; }

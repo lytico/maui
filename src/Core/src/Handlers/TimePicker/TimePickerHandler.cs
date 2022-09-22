@@ -5,7 +5,11 @@ using PlatformView = UIKit.UIDatePicker;
 #elif ANDROID
 using PlatformView = Microsoft.Maui.Platform.MauiTimePicker;
 #elif WINDOWS
+#if __GTK__
+using PlatformView = Microsoft.Maui.Platform.TimePicker;
+#else
 using PlatformView = Microsoft.UI.Xaml.Controls.TimePicker;
+#endif
 #elif TIZEN
 using PlatformView = Tizen.UIExtensions.ElmSharp.Entry;
 #elif (NETSTANDARD || !PLATFORM) || (NET6_0_OR_GREATER && !IOS && !ANDROID && !TIZEN)
