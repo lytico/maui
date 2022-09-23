@@ -9,7 +9,7 @@ using Microsoft.Maui.Graphics;
 
 namespace Microsoft.Maui.Controls.Handlers.Compatibility
 {
-#if WINDOWS
+#if WINDOWS && !__GTK__
 	class ViewHandlerDelegator<TElement, TNativeElement>
 		where TElement : VisualElement
 		where TNativeElement : Microsoft.UI.Xaml.FrameworkElement
@@ -66,7 +66,7 @@ namespace Microsoft.Maui.Controls.Handlers.Compatibility
 		}
 
 		public Size GetDesiredSize(double widthConstraint, double heightConstraint, Size? minimumSize = null) =>
-#if WINDOWS
+#if WINDOWS && !__GTK__
 			VisualElementRenderer<TElement, TNativeElement>.GetDesiredSize(_viewHandler, widthConstraint, heightConstraint, minimumSize);
 #else
 			VisualElementRenderer<TElement>.GetDesiredSize(_viewHandler, widthConstraint, heightConstraint, minimumSize);
@@ -80,7 +80,7 @@ namespace Microsoft.Maui.Controls.Handlers.Compatibility
 			Action<ElementChangedEventArgs<TElement>> onElementChanged,
 			bool autoPackage)
 		{
-#if WINDOWS
+#if WINDOWS && !__GTK__
 			VisualElementRenderer<TElement, TNativeElement>.SetVirtualView(view, _viewHandler, onElementChanged, ref _element, ref _mapper, _defaultMapper, autoPackage);
 #else
 			VisualElementRenderer<TElement>.SetVirtualView(view, _viewHandler, onElementChanged, ref _element, ref _mapper, _defaultMapper, autoPackage);

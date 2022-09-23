@@ -1,4 +1,4 @@
-﻿#if WINDOWS
+﻿#if WINDOWS && !__GTK__
 using System;
 using System.Collections.Generic;
 using System.Text;

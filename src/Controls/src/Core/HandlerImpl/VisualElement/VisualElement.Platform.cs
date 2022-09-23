@@ -22,6 +22,7 @@ namespace Microsoft.Maui.Controls
 			_loadedUnloadedToken?.Dispose();
 			_loadedUnloadedToken = null;
 
+#if !__GTK__
 			// Window and this VisualElement both have a handler to work with
 			if (Window?.Handler?.PlatformView != null &&
 				Handler?.PlatformView is PlatformView view)
@@ -53,6 +54,7 @@ namespace Microsoft.Maui.Controls
 					OnUnloadedCore();
 				}
 			}
+#endif
 		}
 	}
 }

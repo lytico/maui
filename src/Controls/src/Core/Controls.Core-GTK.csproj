@@ -14,11 +14,168 @@
   </PropertyGroup>
 
   <Import Project="$(MauiNuSpecDirectory)Microsoft.Maui.Controls.MultiTargeting.targets" />
+  <ItemGroup Condition=" '$(_MauiTargetPlatformIsWindows)' == 'True' ">
+    <Compile Remove="**\*.Windows.cs" />
+    <None Include="**\*.Windows.cs" Exclude="$(DefaultItemExcludes);$(DefaultExcludesInProjectFolder)" />
+    <Compile Remove="**\AndroidSpecific\**\*.cs" />
+    <None Include="**\AndroidSpecific\**\*.cs" Exclude="$(DefaultItemExcludes);$(DefaultExcludesInProjectFolder)" />
+    <Compile Remove="**\iOSSpecific\**\*.cs" />
+    <None Include="**\iOSSpecific\**\*.cs" Exclude="$(DefaultItemExcludes);$(DefaultExcludesInProjectFolder)" />
+    <Compile Remove="**\macOSSpecific\**\*.cs" />
+    <None Include="**\macOSSpecific\**\*.cs" Exclude="$(DefaultItemExcludes);$(DefaultExcludesInProjectFolder)" />
+    <Compile Remove="**\TizenSpecific\**\*.cs" />
+    <None Include="**\TizenSpecific\**\*.cs" Exclude="$(DefaultItemExcludes);$(DefaultExcludesInProjectFolder)" />
+    <Compile Remove="**\WindowsSpecific\**\*.cs" />
+    <None Include="**\WindowsSpecific\**\*.cs" Exclude="$(DefaultItemExcludes);$(DefaultExcludesInProjectFolder)" />
+    <Compile Remove="**\Windows\**\*.cs" />
+    <None Include="**\Windows\**\*.cs" Exclude="$(DefaultItemExcludes);$(DefaultExcludesInProjectFolder)" />
+    <Compile Remove="**\*.uwp.cs" />
+    <None Include="**\*.uwp.cs" Exclude="$(DefaultItemExcludes);$(DefaultExcludesInProjectFolder)" />
+    <MauiXaml Remove="**\*.Windows.xaml" />
+    <None Include="**\*.Windows.xaml" Exclude="$(DefaultItemExcludes);$(DefaultExcludesInProjectFolder)" />
+    <Compile Remove="**\*.Windows.xaml.cs" />
+    <None Include="**\*.Windows.xaml.cs" Exclude="$(DefaultItemExcludes);$(DefaultExcludesInProjectFolder)" />
+    <MauiXaml Remove="**\Windows\**\*.xaml" />
+    <None Include="**\Windows\**\*.xaml" Exclude="$(DefaultItemExcludes);$(DefaultExcludesInProjectFolder)" />
+    <Compile Remove="**\Windows\**\*.xaml.cs" />
+    <None Include="**\Windows\**\*.xaml.cs" Exclude="$(DefaultItemExcludes);$(DefaultExcludesInProjectFolder)" />
+  </ItemGroup>
 
   <ItemGroup>
     <Compile Remove="Internals\Legacy\**" />
     <EmbeddedResource Remove="Internals\Legacy\**" />
     <None Remove="Internals\Legacy\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Remove="DragAndDrop\DragGestureRecognizer.cs" />
+    <Compile Remove="DragAndDrop\DropGestureRecognizer.cs" />
+    <Compile Remove="FlyoutPage.cs" />
+    <Compile Remove="HandlerImpl\FlyoutPage\FlyoutPage.cs" />
+    <Compile Remove="HandlerImpl\FlyoutPage\FlyoutPage.Impl.cs" />
+    <Compile Remove="HandlerImpl\MenuItem.Impl.cs" />
+    <Compile Remove="HandlerImpl\RefreshView\RefreshView.cs" />
+    <Compile Remove="HandlerImpl\Shape\Shape.cs" />
+    <Compile Remove="HandlerImpl\SwipeItem.Impl.cs" />
+    <Compile Remove="HandlerImpl\SwipeItemView.Impl.cs" />
+    <Compile Remove="HandlerImpl\SwipeView.Impl.cs" />
+    <Compile Remove="HandlerImpl\TabbedPage\TabbedPage.cs" />
+    <Compile Remove="HandlerImpl\Toolbar\Toolbar.cs" />
+    <Compile Remove="HandlerImpl\View\View.Impl.cs" />
+    <Compile Remove="HandlerImpl\WebView\WebView.cs" />
+    <Compile Remove="Handlers\Items\CarouselViewHandler.cs" />
+    <Compile Remove="Handlers\Items\CollectionViewHandler.cs" />
+    <Compile Remove="Handlers\Items\GroupableItemsViewHandler.cs" />
+    <Compile Remove="Handlers\Items\ItemsViewHandler.cs" />
+    <Compile Remove="Handlers\Items\ReorderableItemsViewHandler.cs" />
+    <Compile Remove="Handlers\Items\SelectableItemsViewHandler.cs" />
+    <Compile Remove="Handlers\Items\StructuredItemsViewHandler.cs" />
+    <Compile Remove="Handlers\Shapes\Line\LineHandler.cs" />
+    <Compile Remove="Handlers\Shapes\Path\PathHandler.cs" />
+    <Compile Remove="Handlers\Shapes\Polygon\PolygonHandler.cs" />
+    <Compile Remove="Handlers\Shapes\Polyline\PolylineHandler.cs" />
+    <Compile Remove="Handlers\Shapes\Rectangle\RectangleHandler.cs" />
+    <Compile Remove="Handlers\Shapes\RoundRectangle\RoundRectangleHandler.cs" />
+    <Compile Remove="MenuBarTracker.cs" />
+    <Compile Remove="MenuFlyoutItem.cs" />
+    <Compile Remove="MenuFlyoutSeparator.cs" />
+    <Compile Remove="MenuFlyoutSubItem.cs" />
+    <Compile Remove="MenuItem.cs" />
+    <Compile Remove="MenuItemTracker.cs" />
+    <Compile Remove="NavigationPageToolbar.cs" />
+    <Compile Remove="ShellToolbar.cs" />
+    <Compile Remove="Shell\MenuItemCollection.cs" />
+    <Compile Remove="Shell\MenuShellItem.cs" />
+    <Compile Remove="SwipeItem.cs" />
+    <Compile Remove="SwipeItems.cs" />
+    <Compile Remove="SwipeItemView.cs" />
+    <Compile Remove="SwipeView.cs" />
+    <Compile Remove="Toolbar.cs" />
+    <Compile Remove="ToolbarItem.cs" />
+    <Compile Remove="ToolbarItemEventArgs.cs" />
+    <Compile Remove="ToolbarItemOrder.cs" />
+    <Compile Remove="ToolbarTracker.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="Compatibility\Handlers\ListView\Windows\ListViewStyles.xaml" />
+    <None Remove="Compatibility\Handlers\ListView\Windows\ListViewStyles.xaml" />
+    <None Remove="Platform\Windows\CollectionView\ItemsViewStyles.xaml" />
+    <None Remove="Platform\Windows\CollectionView\ItemsViewStyles.xaml" />
+    <None Remove="Platform\Windows\Styles\MauiControlsPageControlStyle.xaml" />
+    <None Remove="Platform\Windows\Styles\MauiControlsPageControlStyle.xaml" />
+    <None Remove="Platform\Windows\Styles\RadioButtonControlStyle.xaml" />
+    <None Remove="Platform\Windows\Styles\RadioButtonControlStyle.xaml" />
+    <None Remove="Platform\Windows\Styles\Resources.xaml" />
+    <None Remove="Platform\Windows\Styles\Resources.xaml" />
+    <None Remove="Platform\Windows\Styles\ShellStyles.xaml" />
+    <None Remove="Platform\Windows\Styles\ShellStyles.xaml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Page Remove="Compatibility\Handlers\ListView\Windows\ListViewStyles.xaml" />
+    <Page Remove="Platform\Windows\CollectionView\ItemsViewStyles.xaml" />
+    <Page Remove="Platform\Windows\Styles\MauiControlsPageControlStyle.xaml" />
+    <Page Remove="Platform\Windows\Styles\RadioButtonControlStyle.xaml" />
+    <Page Remove="Platform\Windows\Styles\Resources.xaml" />
+    <Page Remove="Platform\Windows\Styles\ShellStyles.xaml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Include="..\..\src-GTK\Compatibility\Handlers\GTK\FrameRenderer.cs" Link="Compatibility\Handlers\GTK\FrameRenderer.cs" />
+    <Compile Include="..\..\src-GTK\Compatibility\Handlers\GTK\ViewRenderer.cs" Link="Compatibility\Handlers\GTK\ViewRenderer.cs" />
+    <Compile Include="..\..\src-GTK\Compatibility\Handlers\GTK\VisualElementRenderer.cs" Link="Compatibility\Handlers\GTK\VisualElementRenderer.cs" />
+    <Compile Include="..\..\src-GTK\HandlerImpl\Element\Element.GTK.cs" Link="HandlerImpl\Element\Element.GTK.cs" />
+    <Compile Include="..\..\src-GTK\Platform\AlertManager\AlertManager.GTK.cs" Link="Platform\AlertManager\AlertManager.GTK.cs" />
+    <Compile Include="..\..\src-GTK\Platform\GTK\AutomationPropertiesProvider.cs" Link="Platform\GTK\AutomationPropertiesProvider.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="DragAndDrop\DragGestureRecognizer.cs" />
+    <None Include="DragAndDrop\DropGestureRecognizer.cs" />
+    <None Include="FlyoutPage.cs" />
+    <None Include="HandlerImpl\FlyoutPage\FlyoutPage.cs" />
+    <None Include="HandlerImpl\FlyoutPage\FlyoutPage.Impl.cs" />
+    <None Include="HandlerImpl\MenuItem.Impl.cs" />
+    <None Include="HandlerImpl\Shape\Shape.cs" />
+    <None Include="HandlerImpl\SwipeItem.Impl.cs" />
+    <None Include="HandlerImpl\SwipeItemView.Impl.cs" />
+    <None Include="HandlerImpl\SwipeView.Impl.cs" />
+    <None Include="HandlerImpl\Toolbar\Toolbar.cs" />
+    <None Include="HandlerImpl\View\View.Impl.cs" />
+    <None Include="HandlerImpl\WebView\WebView.cs" />
+    <None Include="Handlers\Items\CarouselViewHandler.cs" />
+    <None Include="Handlers\Items\CollectionViewHandler.cs" />
+    <None Include="Handlers\Items\GroupableItemsViewHandler.cs" />
+    <None Include="Handlers\Items\ItemsViewHandler.cs" />
+    <None Include="Handlers\Items\ReorderableItemsViewHandler.cs" />
+    <None Include="Handlers\Items\SelectableItemsViewHandler.cs" />
+    <None Include="Handlers\Items\StructuredItemsViewHandler.cs" />
+    <None Include="Handlers\Shapes\Line\LineHandler.cs" />
+    <None Include="Handlers\Shapes\Path\PathHandler.cs" />
+    <None Include="Handlers\Shapes\Polygon\PolygonHandler.cs" />
+    <None Include="Handlers\Shapes\Polyline\PolylineHandler.cs" />
+    <None Include="Handlers\Shapes\Rectangle\RectangleHandler.cs" />
+    <None Include="Handlers\Shapes\RoundRectangle\RoundRectangleHandler.cs" />
+    <None Include="MenuBarTracker.cs" />
+    <None Include="MenuFlyoutItem.cs" />
+    <None Include="MenuFlyoutSeparator.cs" />
+    <None Include="MenuFlyoutSubItem.cs" />
+    <None Include="MenuItem.cs" />
+    <None Include="MenuItemTracker.cs" />
+    <None Include="NavigationPageToolbar.cs" />
+    <None Include="ShellToolbar.cs" />
+    <None Include="Shell\MenuItemCollection.cs" />
+    <None Include="Shell\MenuShellItem.cs" />
+    <None Include="SwipeItem.cs" />
+    <None Include="SwipeItems.cs" />
+    <None Include="SwipeItemView.cs" />
+    <None Include="SwipeView.cs" />
+    <None Include="Toolbar.cs" />
+    <None Include="ToolbarItem.cs" />
+    <None Include="ToolbarItemEventArgs.cs" />
+    <None Include="ToolbarItemOrder.cs" />
+    <None Include="ToolbarTracker.cs" />
   </ItemGroup>
 
   <ItemGroup>
@@ -39,6 +196,22 @@
     </TargetsForTfmSpecificBuildOutput>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net6.0-windows10.0.19041|AnyCPU'">
+    <DefineConstants>$(DefineConstants);WINDOWS;__GTK__</DefineConstants>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net6.0-windows10.0.19041|AnyCPU'">
+    <DefineConstants>$(DefineConstants);WINDOWS;__GTK__</DefineConstants>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net6.0-windows10.0.20348|AnyCPU'">
+    <DefineConstants>$(DefineConstants);WINDOWS;__GTK__</DefineConstants>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net6.0-windows10.0.20348|AnyCPU'">
+    <DefineConstants>$(DefineConstants);WINDOWS;__GTK__</DefineConstants>
+  </PropertyGroup>
+
   <Target Name="_MauiPackXamlDesignAssemblies">
     <ItemGroup>
       <BuildOutputInPackage Include="..\Core.Design\bin\$(Configuration)\net472\Microsoft.Maui.Controls.DesignTools.dll">
@@ -49,6 +222,48 @@
       </BuildOutputInPackage>
     </ItemGroup>
   </Target>
+  
+  <ItemGroup>
+    <Reference Include="atk-sharp">
+      <HintPath>C:\Program Files (x86)\GtkSharp\2.12\lib\gtk-sharp-2.0\atk-sharp.dll</HintPath>
+    </Reference>
+    <Reference Include="gdk-sharp">
+      <HintPath>C:\Program Files (x86)\GtkSharp\2.12\lib\gtk-sharp-2.0\gdk-sharp.dll</HintPath>
+    </Reference>
+    <Reference Include="glade-sharp">
+      <HintPath>C:\Program Files (x86)\GtkSharp\2.12\lib\gtk-sharp-2.0\glade-sharp.dll</HintPath>
+    </Reference>
+    <Reference Include="glib-sharp">
+      <HintPath>C:\Program Files (x86)\GtkSharp\2.12\lib\gtk-sharp-2.0\glib-sharp.dll</HintPath>
+    </Reference>
+    <Reference Include="gtk-dotnet">
+      <HintPath>C:\Program Files (x86)\GtkSharp\2.12\lib\gtk-sharp-2.0\gtk-dotnet.dll</HintPath>
+    </Reference>
+    <Reference Include="gtk-sharp">
+      <HintPath>C:\Program Files (x86)\GtkSharp\2.12\lib\gtk-sharp-2.0\gtk-sharp.dll</HintPath>
+    </Reference>
+    <Reference Include="Mono.Cairo">
+      <HintPath>C:\Program Files (x86)\GtkSharp\2.12\lib\Mono.Cairo\Mono.Cairo.dll</HintPath>
+    </Reference>
+    <Reference Include="pango-sharp">
+      <HintPath>C:\Program Files (x86)\GtkSharp\2.12\lib\gtk-sharp-2.0\pango-sharp.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  
+  <ItemGroup>
+    <Folder Include="Compatibility\Handlers\GTK\" />
+    <Folder Include="Compatibility\Handlers\ListView\GTK\" />
+    <Folder Include="Platform\GTK\" />
+    <Folder Include="Platform\Windows\Styles\" />
+  </ItemGroup>
+  
+  <ItemGroup>
+    <None Include="HandlerImpl\RefreshView\RefreshView.cs" />
+  </ItemGroup>
+  
+  <ItemGroup>
+    <None Include="HandlerImpl\TabbedPage\TabbedPage.cs" />
+  </ItemGroup>
 
   <Import Project="$(MauiSrcDirectory)PublicAPI.targets" />
 

@@ -7,14 +7,16 @@
 			{
 #if ANDROID
 				[PlatformConfiguration.AndroidSpecific.Entry.ImeOptionsProperty.PropertyName] = MapImeOptions,
-#elif WINDOWS
+#elif WINDOWS && !__GTK__
 				[PlatformConfiguration.WindowsSpecific.InputView.DetectReadingOrderFromContentProperty.PropertyName] = MapDetectReadingOrderFromContent,
 #elif IOS
 				[PlatformConfiguration.iOSSpecific.Entry.CursorColorProperty.PropertyName] = MapCursorColor,
 				[PlatformConfiguration.iOSSpecific.Entry.AdjustsFontSizeToFitWidthProperty.PropertyName] = MapAdjustsFontSizeToFitWidth,
 #endif
+#if !__GTK__
 				[nameof(Text)] = MapText,
 				[nameof(TextTransform)] = MapText,
+#endif
 			};
 
 		internal static new void RemapForControls()

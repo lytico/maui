@@ -12,7 +12,11 @@ using Microsoft.Maui.Controls.Platform;
 namespace Microsoft.Maui.Controls
 {
 	[ContentProperty(nameof(Page))]
+#if __GTK__
+	public partial class Window : NavigableElement, IWindow, IVisualTreeElement, IFlowDirectionController, IWindowController
+#else
 	public partial class Window : NavigableElement, IWindow, IVisualTreeElement, IToolbarElement, IMenuBarElement, IFlowDirectionController, IWindowController
+#endif
 	{
 		public static readonly BindableProperty TitleProperty = BindableProperty.Create(
 			nameof(Title), typeof(string), typeof(Window), default(string?));
@@ -28,10 +32,13 @@ namespace Microsoft.Maui.Controls
 		HashSet<IWindowOverlay> _overlays = new HashSet<IWindowOverlay>();
 		ReadOnlyCollection<Element>? _logicalChildren;
 		List<IVisualTreeElement> _visualChildren;
+#if !__GTK__
 		Toolbar? _toolbar;
 		MenuBarTracker _menuBarTracker;
+#endif
 		bool _isActivated;
 
+#if !__GTK__
 		IToolbar? IToolbarElement.Toolbar => Toolbar;
 		internal Toolbar? Toolbar
 		{
@@ -46,6 +53,7 @@ namespace Microsoft.Maui.Controls
 				Handler?.UpdateValue(nameof(IToolbarElement.Toolbar));
 			}
 		}
+#endif
 
 		public IReadOnlyCollection<IWindowOverlay> Overlays => _overlays.ToList().AsReadOnly();
 
@@ -61,7 +69,9 @@ namespace Microsoft.Maui.Controls
 #pragma warning disable CA1416 // TODO: VisualDiagnosticsOverlay is supported on android 23.0 and above
 			VisualDiagnosticsOverlay = new VisualDiagnosticsOverlay(this);
 #pragma warning restore CA1416
+#if !__GTK__
 			_menuBarTracker = new MenuBarTracker(this, "MenuBar");
+#endif
 		}
 
 		public Window(Page page)
@@ -70,7 +80,9 @@ namespace Microsoft.Maui.Controls
 			Page = page;
 		}
 
+#if !__GTK__
 		IMenuBar? IMenuBarElement.MenuBar => _menuBarTracker.MenuBar;
+#endif
 
 		public string? Title
 		{
@@ -439,6 +451,7 @@ namespace Microsoft.Maui.Controls
 			if (oldValue is Page oldPage)
 				oldPage.SendDisappearing();
 
+#if !__GTK__
 			if (newValue is IToolbarElement toolbarElement &&
 				toolbarElement.Toolbar is Toolbar tb &&
 				newValue is not Shell)
@@ -449,6 +462,7 @@ namespace Microsoft.Maui.Controls
 			{
 				window.Toolbar = null;
 			}
+#endif
 		}
 
 		static void OnPageChanged(BindableObject bindable, object oldValue, object newValue)
@@ -472,7 +486,9 @@ namespace Microsoft.Maui.Controls
 			{
 				window.InternalChildren.Add(newPage);
 				newPage.NavigationProxy.Inner = window.NavigationProxy;
+#if !__GTK__
 				window._menuBarTracker.Target = newPage;
+#endif
 			}
 
 			window.ModalNavigationManager.SettingNewPage();
@@ -552,7 +568,11 @@ namespace Microsoft.Maui.Controls
 					nextPage = _owner.ModalNavigationManager.ModalStack[_owner.ModalNavigationManager.ModalStack.Count - 2];
 				}
 
+#if __GTK__
+				Page result = await _owner.ModalNavigationManager.PopModalAsync();
+#else
 				Page result = await _owner.ModalNavigationManager.PopModalAsync(animated);
+#endif
 				result.Parent = null;
 				_owner.OnModalPopped(result);
 
@@ -571,14 +591,22 @@ namespace Microsoft.Maui.Controls
 				if (modal.NavigationProxy.ModalStack.Count == 0)
 				{
 					modal.NavigationProxy.Inner = this;
+#if __GTK__
+					await _owner.ModalNavigationManager.PushModalAsync(modal);
+#else
 					await _owner.ModalNavigationManager.PushModalAsync(modal, animated);
+#endif
 					_owner.Page?.SendNavigatedFrom(new NavigatedFromEventArgs(modal));
 					modal.SendNavigatedTo(new NavigatedToEventArgs(_owner.Page));
 				}
 				else
 				{
 					var previousModalPage = modal.NavigationProxy.ModalStack[modal.NavigationProxy.ModalStack.Count - 1];
+#if __GTK__
+					await _owner.ModalNavigationManager.PushModalAsync(modal);
+#else
 					await _owner.ModalNavigationManager.PushModalAsync(modal, animated);
+#endif
 					modal.NavigationProxy.Inner = this;
 					previousModalPage.SendNavigatedFrom(new NavigatedFromEventArgs(modal));
 					modal.SendNavigatedTo(new NavigatedToEventArgs(previousModalPage));

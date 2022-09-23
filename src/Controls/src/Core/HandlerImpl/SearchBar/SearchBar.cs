@@ -5,13 +5,15 @@
 		public static IPropertyMapper<ISearchBar, SearchBarHandler> ControlsSearchBarMapper =
 			new PropertyMapper<SearchBar, SearchBarHandler>(SearchBarHandler.Mapper)
 			{
-#if WINDOWS
+#if WINDOWS && !__GTK__
 				[PlatformConfiguration.WindowsSpecific.SearchBar.IsSpellCheckEnabledProperty.PropertyName] = MapIsSpellCheckEnabled,
 #elif IOS
 				[PlatformConfiguration.iOSSpecific.SearchBar.SearchBarStyleProperty.PropertyName] = MapSearchBarStyle,
 #endif
+#if !__GTK__
 				[nameof(Text)] = MapText,
 				[nameof(TextTransform)] = MapText,
+#endif
 			};
 
 		internal static new void RemapForControls()

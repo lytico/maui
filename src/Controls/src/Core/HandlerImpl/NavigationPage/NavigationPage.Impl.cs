@@ -13,7 +13,11 @@ using Microsoft.Maui.Layouts;
 namespace Microsoft.Maui.Controls
 {
 	/// <include file="../../../../docs/Microsoft.Maui.Controls/NavigationPage.xml" path="Type[@FullName='Microsoft.Maui.Controls.NavigationPage']/Docs" />
+#if __GTK__
+	public partial class NavigationPage : IStackNavigationView
+#else
 	public partial class NavigationPage : IStackNavigationView, IToolbarElement
+#endif
 	{
 		// If the user is making overlapping navigation requests this is used to fire once all navigation 
 		// events have been processed
@@ -107,8 +111,10 @@ namespace Microsoft.Maui.Controls
 
 		internal IToolbar FindMyToolbar()
 		{
+#if !__GTK__
 			if (this.Toolbar != null)
 				return Toolbar;
+#endif
 
 			var rootPage = this.FindParentWith(x => (x is IWindow te || Navigation.ModalStack.Contains(x)), true);
 			if (this.FindParentWith(x => (x is IToolbarElement te && te.Toolbar != null), false) is IToolbarElement te)
@@ -126,6 +132,7 @@ namespace Microsoft.Maui.Controls
 		void OnAppearing(object sender, EventArgs e)
 		{
 			// Update the Container level Toolbar with my Toolbar information
+#if !__GTK__
 			if (FindMyToolbar() is not NavigationPageToolbar)
 			{
 				// If the root is a flyoutpage then we set the toolbar on the flyout page
@@ -137,9 +144,9 @@ namespace Microsoft.Maui.Controls
 				}
 				// Is the root a modal page?
 				else
-				{
-					// Is the root the window or is this part of a modal stack
-					var rootPage = this.FindParentWith(x => (x is IWindow te || Navigation.ModalStack.Contains(x)), true);
+			{
+				// Is the root the window or is this part of a modal stack
+				var rootPage = this.FindParentWith(x => (x is IWindow te || Navigation.ModalStack.Contains(x)), true);
 
 					if (rootPage is Window w)
 					{
@@ -153,6 +160,7 @@ namespace Microsoft.Maui.Controls
 					}
 				}
 			}
+#endif
 		}
 
 		async Task SendHandlerUpdateAsync(
@@ -226,6 +234,7 @@ namespace Microsoft.Maui.Controls
 		{
 			base.OnHandlerChangedCore();
 
+#if !__GTK__
 			if (Handler == null && FindMyToolbar() is IToolbar tb)
 			{
 				tb.Handler = null;
@@ -234,6 +243,7 @@ namespace Microsoft.Maui.Controls
 				else if (tb.Parent is Page p)
 					p.Toolbar = null;
 			}
+#endif
 
 			if (Navigation is MauiNavigationImpl && InternalChildren.Count > 0)
 			{

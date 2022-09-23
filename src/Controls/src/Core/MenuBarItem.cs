@@ -14,7 +14,7 @@ namespace Microsoft.Maui.Controls
 			typeof(MenuBarItem), true);
 
 
-		static readonly BindableProperty PriorityProperty = BindableProperty.Create(nameof(Priority), typeof(int), typeof(ToolbarItem), 0);
+		static readonly BindableProperty PriorityProperty = BindableProperty.Create(nameof(Priority), typeof(int), typeof(MenuBarItem), 0);
 
 		public int Priority
 		{

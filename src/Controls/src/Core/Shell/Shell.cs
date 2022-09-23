@@ -321,6 +321,7 @@ namespace Microsoft.Maui.Controls
 
 		internal static BindableObject GetBindableObjectWithFlyoutItemTemplate(BindableObject bo)
 		{
+#if !__GTK__
 			if (bo is IMenuItemController)
 			{
 				if (bo is MenuItem mi && mi.Parent != null && mi.Parent.IsSet(MenuItemTemplateProperty))
@@ -328,6 +329,7 @@ namespace Microsoft.Maui.Controls
 				else if (bo is MenuShellItem msi && msi.MenuItem != null && msi.MenuItem.IsSet(MenuItemTemplateProperty))
 					return msi.MenuItem;
 			}
+#endif
 
 			return bo;
 		}
@@ -410,9 +412,11 @@ namespace Microsoft.Maui.Controls
 			if (pivot is ShellContent || pivot is ShellSection || pivot is ContentPage)
 			{
 				appearance = appearance ?? GetAppearanceForPivot(pivot);
+#if !__GTK__
 				Toolbar.BarTextColor = appearance?.TitleColor ?? DefaultTitleColor;
 				Toolbar.BarBackground = appearance?.BackgroundColor ?? DefaultBackgroundColor;
 				Toolbar.IconColor = appearance?.ForegroundColor ?? DefaultForegroundColor;
+#endif
 			}
 		}
 
@@ -434,8 +438,10 @@ namespace Microsoft.Maui.Controls
 		}
 #else
 		static Color DefaultBackgroundColor => null;
+#if !__GTK__
 		static readonly Color DefaultForegroundColor = null;
 		static readonly Color DefaultTitleColor = null;
+#endif
 #endif
 
 
@@ -511,9 +517,11 @@ namespace Microsoft.Maui.Controls
 
 			switch (element)
 			{
+#if !__GTK__
 				case MenuShellItem menuShellItem:
 					((IMenuItemController)menuShellItem.MenuItem).Activate();
 					break;
+#endif
 				case ShellItem i:
 					shellItem = i;
 					break;
@@ -526,9 +534,11 @@ namespace Microsoft.Maui.Controls
 					shellSection = c.Parent as ShellSection;
 					shellContent = c;
 					break;
+#if !__GTK__
 				case MenuItem m:
 					((IMenuItemController)m).Activate();
 					break;
+#endif
 			}
 
 			if (shellItem == null || !shellItem.IsEnabled)
@@ -809,7 +819,9 @@ namespace Microsoft.Maui.Controls
 		/// <include file="../../../docs/Microsoft.Maui.Controls/Shell.xml" path="//Member[@MemberName='.ctor']/Docs" />
 		public Shell()
 		{
+#if !__GTK__
 			Toolbar = new ShellToolbar(this);
+#endif
 
 			_navigationManager = new ShellNavigationManager(this);
 			_navigationManager.Navigated += (_, args) => SendNavigated(args);
@@ -1169,7 +1181,11 @@ namespace Microsoft.Maui.Controls
 			}
 		}
 
+#if __GTK__
+		bool ValidDefaultShellItem(Element child) => true;
+#else
 		bool ValidDefaultShellItem(Element child) => !(child is MenuShellItem);
+#endif
 
 		void SendNavigated(ShellNavigatedEventArgs args)
 		{
@@ -1576,7 +1592,7 @@ namespace Microsoft.Maui.Controls
 			// we don't want this behavior with shell
 		}
 
-		#region Shell Flyout Content
+#region Shell Flyout Content
 
 
 		/// <include file="../../../docs/Microsoft.Maui.Controls/Shell.xml" path="//Member[@MemberName='FlyoutContentProperty']/Docs" />
@@ -1640,7 +1656,7 @@ namespace Microsoft.Maui.Controls
 			var shell = (Shell)bindable;
 			shell.OnFlyoutContentTemplateChanged((DataTemplate)oldValue, (DataTemplate)newValue);
 		}
-		#endregion
+#endregion
 
 		class NavigationImpl : NavigationProxy
 		{

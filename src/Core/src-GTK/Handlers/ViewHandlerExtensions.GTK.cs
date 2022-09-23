@@ -1,7 +1,7 @@
 ﻿using System;
 using Microsoft.Maui.Graphics;
 using Microsoft.Maui.Platform;
-using PlatformView = Gtk.EventBox;
+using PlatformView = Microsoft.Maui.Platform.MauiView;
 
 namespace Microsoft.Maui
 {

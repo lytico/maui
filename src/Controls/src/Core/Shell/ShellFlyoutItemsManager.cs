@@ -8,7 +8,9 @@ namespace Microsoft.Maui.Controls
 	internal class ShellFlyoutItemsManager
 	{
 		readonly Shell _shell;
+#if !__GTK__
 		List<List<Element>> _lastGeneratedFlyoutItems;
+#endif
 		public event EventHandler FlyoutItemsChanged;
 		IShellController ShellController => _shell;
 		ReadOnlyObservableCollectionWithSource<IReadOnlyList<Element>> _flyoutItemsReadonly;
@@ -23,6 +25,7 @@ namespace Microsoft.Maui.Controls
 
 		void SyncFlyoutItemsToReadOnlyCollection()
 		{
+#if !__GTK__
 			var flyoutItems = _flyoutItemsReadonly.List;
 
 			// sync the number of groups
@@ -68,6 +71,7 @@ namespace Microsoft.Maui.Controls
 					}
 				}
 			}
+#endif
 		}
 
 		public void CheckIfFlyoutItemsChanged()
@@ -81,14 +85,19 @@ namespace Microsoft.Maui.Controls
 
 		public List<List<Element>> GenerateFlyoutGrouping()
 		{
+#if !__GTK__
 			if (_lastGeneratedFlyoutItems == null)
 				UpdateFlyoutGroupings();
 
 			return _lastGeneratedFlyoutItems;
+#else
+			return null;
+#endif
 		}
 
 		bool UpdateFlyoutGroupings()
 		{
+#if !__GTK__
 			// The idea here is to create grouping such that the Flyout would
 			// render correctly if it renderered each item in the groups in order
 			// but put a line between the groups. This is needed because our grouping can
@@ -229,6 +238,9 @@ namespace Microsoft.Maui.Controls
 					currentGroup = new List<Element>();
 				}
 			}
+#else
+			return true;
+#endif
 		}
 
 		class ReadOnlyObservableCollectionWithSource<T> : ReadOnlyObservableCollection<T>

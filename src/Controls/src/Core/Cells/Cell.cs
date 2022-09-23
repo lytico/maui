@@ -17,8 +17,10 @@ namespace Microsoft.Maui.Controls
 		/// <include file="../../../docs/Microsoft.Maui.Controls/Cell.xml" path="//Member[@MemberName='IsEnabledProperty']/Docs" />
 		public static readonly BindableProperty IsEnabledProperty = BindableProperty.Create("IsEnabled", typeof(bool), typeof(Cell), true, propertyChanged: OnIsEnabledPropertyChanged);
 
+#if !__GTK__
 		ObservableCollection<MenuItem> _contextActions;
 		List<MenuItem> _currentContextActions;
+#endif
 		readonly Lazy<ElementConfiguration> _elementConfiguration;
 
 		double _height = -1;
@@ -82,7 +84,8 @@ namespace Microsoft.Maui.Controls
 			}
 		}
 
-		/// <include file="../../../docs/Microsoft.Maui.Controls/Cell.xml" path="//Member[@MemberName='ContextActions']/Docs" />
+#if !__GTK__        
+		/// <include file="../../../docs/Microsoft.Maui.Controls/Cell.xml" path="//Member[@MemberName='ContextActions']/Docs" />                                                                                                                             
 		public IList<MenuItem> ContextActions
 		{
 			get
@@ -96,11 +99,16 @@ namespace Microsoft.Maui.Controls
 				return _contextActions;
 			}
 		}
+#endif
 
 		/// <include file="../../../docs/Microsoft.Maui.Controls/Cell.xml" path="//Member[@MemberName='HasContextActions']/Docs" />
 		public bool HasContextActions
 		{
+#if __GTK__
+			get { return IsEnabled; }
+#else
 			get { return _contextActions != null && _contextActions.Count > 0 && IsEnabled; }
+#endif
 		}
 
 		/// <include file="../../../docs/Microsoft.Maui.Controls/Cell.xml" path="//Member[@MemberName='IsContextActionsLegacyModeEnabled']/Docs" />
@@ -181,11 +189,13 @@ namespace Microsoft.Maui.Controls
 		{
 			base.OnBindingContextChanged();
 
+#if !__GTK__
 			if (HasContextActions)
 			{
 				for (var i = 0; i < _contextActions.Count; i++)
 					SetInheritedBindingContext(_contextActions[i], BindingContext);
 			}
+#endif
 		}
 
 		protected virtual void OnDisappearing()
@@ -249,6 +259,7 @@ namespace Microsoft.Maui.Controls
 
 		void OnContextActionsChanged(object sender, NotifyCollectionChangedEventArgs e)
 		{
+#if !__GTK__
 			for (var i = 0; i < _contextActions.Count; i++)
 			{
 				SetInheritedBindingContext(_contextActions[i], BindingContext);
@@ -267,6 +278,7 @@ namespace Microsoft.Maui.Controls
 			_currentContextActions = new List<MenuItem>(_contextActions);
 
 			OnPropertyChanged("HasContextActions");
+#endif
 		}
 
 		async void OnForceUpdateSizeRequested()
@@ -316,13 +328,15 @@ namespace Microsoft.Maui.Controls
 		{
 			var children = new List<Maui.IVisualTreeElement>(LogicalChildrenInternal);
 
+#if !__GTK__
 			if (_contextActions != null)
 				children.AddRange(_contextActions);
+#endif
 
 			return children;
 		}
 
-		#region Nested IElementConfiguration<Cell> Implementation
+#region Nested IElementConfiguration<Cell> Implementation
 		// This creates a nested class to keep track of IElementConfiguration<Cell> because adding 
 		// IElementConfiguration<Cell> to the Cell itself tanks performance on UWP ListViews
 		// Issue has been logged with UWP
@@ -353,7 +367,7 @@ namespace Microsoft.Maui.Controls
 
 			internal PlatformConfigurationRegistry<Cell> Registry => _platformConfigurationRegistry.Value;
 		}
-		#endregion
+#endregion
 
 	}
 }

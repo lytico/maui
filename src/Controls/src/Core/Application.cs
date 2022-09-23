@@ -190,7 +190,7 @@ namespace Microsoft.Maui.Controls
 
 		static Color? GetAccentColor()
 		{
-#if WINDOWS
+#if WINDOWS && !__GTK__
 			if (UI.Xaml.Application.Current.Resources.TryGetValue("SystemColorControlAccentBrush", out object accent) &&
 				accent is UI.Xaml.Media.SolidColorBrush scb)
 			{

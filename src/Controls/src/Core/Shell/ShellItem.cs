@@ -238,7 +238,9 @@ namespace Microsoft.Maui.Controls
 
 		public static implicit operator ShellItem(TemplatedPage page) => (ShellSection)(ShellContent)page;
 
+#if !__GTK__
 		public static implicit operator ShellItem(MenuItem menuItem) => new MenuShellItem(menuItem);
+#endif
 
 		/// <include file="../../../docs/Microsoft.Maui.Controls/ShellItem.xml" path="//Member[@MemberName='On']/Docs" />
 		public IPlatformElementConfiguration<T, ShellItem> On<T>() where T : IConfigPlatform

@@ -7,13 +7,19 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Maui.Controls.Internals;
+#if !__GTK__
 using Microsoft.Maui.Controls.PlatformConfiguration.iOSSpecific;
+#endif
 using Microsoft.Maui.Graphics;
 
 namespace Microsoft.Maui.Controls
 {
 	/// <include file="../../docs/Microsoft.Maui.Controls/Page.xml" path="Type[@FullName='Microsoft.Maui.Controls.Page']/Docs" />
+#if __GTK__
+	public partial class Page : VisualElement, ILayout, IPageController, IElementConfiguration<Page>, IPaddingElement
+#else
 	public partial class Page : VisualElement, ILayout, IPageController, IElementConfiguration<Page>, IPaddingElement, ISafeAreaView
+#endif
 	{
 		/// <include file="../../docs/Microsoft.Maui.Controls/Page.xml" path="//Member[@MemberName='BusySetSignalName']/Docs" />
 		public const string BusySetSignalName = "Microsoft.Maui.Controls.BusySet";
@@ -63,9 +69,11 @@ namespace Microsoft.Maui.Controls
 		/// <include file="../../docs/Microsoft.Maui.Controls/Page.xml" path="//Member[@MemberName='.ctor']/Docs" />
 		public Page()
 		{
+#if !__GTK__
 			var toolbarItems = new ObservableCollection<ToolbarItem>();
 			toolbarItems.CollectionChanged += OnToolbarItemsCollectionChanged;
 			ToolbarItems = toolbarItems;
+#endif
 
 			var menuBarItems = new ObservableCollection<MenuBarItem>();
 			menuBarItems.CollectionChanged += OnToolbarItemsCollectionChanged;
@@ -125,8 +133,10 @@ namespace Microsoft.Maui.Controls
 			set { SetValue(TitleProperty, value); }
 		}
 
-		/// <include file="../../docs/Microsoft.Maui.Controls/Page.xml" path="//Member[@MemberName='ToolbarItems']/Docs" />
+#if !__GTK__        
+		/// <include file="../../docs/Microsoft.Maui.Controls/Page.xml" path="//Member[@MemberName='ToolbarItems']/Docs" />                                                                                                                           
 		public IList<ToolbarItem> ToolbarItems { get; internal set; }
+#endif
 
 		public IList<MenuBarItem> MenuBarItems { get; internal set; }
 
@@ -175,7 +185,9 @@ namespace Microsoft.Maui.Controls
 		internal override IReadOnlyList<Element> LogicalChildrenInternal =>
 			_logicalChildren ?? (_logicalChildren = new ReadOnlyCollection<Element>(InternalChildren));
 
+#if !__GTK__
 		bool ISafeAreaView.IgnoreSafeArea => !On<PlatformConfiguration.iOS>().UsingSafeArea();
+#endif
 
 		public event EventHandler LayoutChanged;
 
@@ -339,10 +351,12 @@ namespace Microsoft.Maui.Controls
 		protected override void OnBindingContextChanged()
 		{
 			base.OnBindingContextChanged();
+#if !__GTK__
 			foreach (ToolbarItem toolbarItem in ToolbarItems)
 			{
 				SetInheritedBindingContext(toolbarItem, BindingContext);
 			}
+#endif
 
 			foreach (MenuBarItem menubarItem in MenuBarItems)
 			{

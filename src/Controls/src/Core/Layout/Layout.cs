@@ -305,8 +305,10 @@ namespace Microsoft.Maui.Controls
 
 		public static IPropertyMapper<IView, IViewHandler> ControlsLayoutMapper = new PropertyMapper<Layout, LayoutHandler>(ControlsVisualElementMapper)
 		{
+#if !__GTK__
 			[nameof(CascadeInputTransparent)] = MapInputTransparent,
 			[nameof(IView.InputTransparent)] = MapInputTransparent,
+#endif
 		};
 
 		void UpdateDescendantInputTransparent()

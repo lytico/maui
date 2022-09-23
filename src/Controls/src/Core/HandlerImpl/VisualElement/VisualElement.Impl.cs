@@ -342,7 +342,7 @@ namespace Microsoft.Maui.Controls
 		{
 			get
 			{
-#if PLATFORM
+#if PLATFORM && !__GTK__
 				bool isLoaded = (Handler as IPlatformViewHandler)?.PlatformView?.IsLoaded() == true;
 #else
 				bool isLoaded = Window != null;

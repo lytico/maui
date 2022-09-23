@@ -8,11 +8,13 @@ namespace Microsoft.Maui.Controls
 		/// <include file="../../../../docs/Microsoft.Maui.Controls/Label.xml" path="//Member[@MemberName='ControlsLabelMapper']/Docs" />
 		public static IPropertyMapper<ILabel, LabelHandler> ControlsLabelMapper = new PropertyMapper<Label, LabelHandler>(LabelHandler.Mapper)
 		{
+#if !__GTK__
 			[nameof(TextType)] = MapTextType,
 			[nameof(Text)] = MapText,
 			[nameof(FormattedText)] = MapText,
 			[nameof(TextTransform)] = MapText,
-#if WINDOWS
+#endif
+#if WINDOWS && !__GTK__
 			[PlatformConfiguration.WindowsSpecific.InputView.DetectReadingOrderFromContentProperty.PropertyName] = MapDetectReadingOrderFromContent,
 #endif
 #if ANDROID
@@ -25,8 +27,10 @@ namespace Microsoft.Maui.Controls
 			[nameof(ILabel.Font)] = MapFont,
 			[nameof(TextColor)] = MapTextColor,
 #endif
+#if !__GTK__
 			[nameof(Label.LineBreakMode)] = MapLineBreakMode,
 			[nameof(Label.MaxLines)] = MapMaxLines,
+#endif
 		};
 
 		internal static new void RemapForControls()

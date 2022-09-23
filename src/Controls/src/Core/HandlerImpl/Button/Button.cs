@@ -18,13 +18,15 @@ namespace Microsoft.Maui.Controls
 #if __IOS__
 			[nameof(Padding)] = MapPadding,
 #endif
-#if WINDOWS
+#if WINDOWS && !__GTK__
 			[nameof(IText.Text)] = MapText,
 			[nameof(ImageSource)] = MapImageSource,
 #endif
+#if !__GTK__
 			[nameof(TextTransform)] = MapText,
 			[nameof(Text)] = MapText,
 			[nameof(Button.LineBreakMode)] = MapLineBreakMode,
+#endif
 		};
 
 		internal new static void RemapForControls()
@@ -35,7 +37,9 @@ namespace Microsoft.Maui.Controls
 		/// <include file="../../../../docs/Microsoft.Maui.Controls/Button.xml" path="//Member[@MemberName='MapContentLayout']/Docs" />
 		public static void MapContentLayout(ButtonHandler handler, Button button)
 		{
+#if !__GTK__
 			handler.PlatformView.UpdateContentLayout(button);
+#endif
 		}
 	}
 }

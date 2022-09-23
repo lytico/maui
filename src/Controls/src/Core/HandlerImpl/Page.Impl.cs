@@ -5,7 +5,11 @@ using Microsoft.Maui.Graphics;
 namespace Microsoft.Maui.Controls
 {
 	/// <include file="../../../docs/Microsoft.Maui.Controls/Page.xml" path="Type[@FullName='Microsoft.Maui.Controls.Page']/Docs" />
+#if __GTK__
+	public partial class Page : IView, ITitledElement
+#else
 	public partial class Page : IView, ITitledElement, IToolbarElement
+#endif
 	{
 		internal bool HasNavigatedTo { get; private set; }
 
@@ -24,6 +28,7 @@ namespace Microsoft.Maui.Controls
 			}
 		}
 
+#if !__GTK__
 		Toolbar _toolbar;
 		IToolbar IToolbarElement.Toolbar
 		{
@@ -39,6 +44,7 @@ namespace Microsoft.Maui.Controls
 				Handler?.UpdateValue(nameof(IToolbarElement.Toolbar));
 			}
 		}
+#endif
 
 		internal void SendNavigatedTo(NavigatedToEventArgs args)
 		{

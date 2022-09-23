@@ -12,12 +12,14 @@ namespace Microsoft.Maui.Controls
 	[ContentProperty(nameof(Content))]
 	public class ShellContent : BaseShellItem, IShellContentController, IVisualTreeElement
 	{
+#if !__GTK__
 		static readonly BindablePropertyKey MenuItemsPropertyKey =
 			BindableProperty.CreateReadOnly(nameof(MenuItems), typeof(MenuItemCollection), typeof(ShellContent), null,
 				defaultValueCreator: bo => new MenuItemCollection());
 
 		/// <include file="../../../docs/Microsoft.Maui.Controls/ShellContent.xml" path="//Member[@MemberName='MenuItemsProperty']/Docs" />
 		public static readonly BindableProperty MenuItemsProperty = MenuItemsPropertyKey.BindableProperty;
+#endif
 
 		/// <include file="../../../docs/Microsoft.Maui.Controls/ShellContent.xml" path="//Member[@MemberName='ContentProperty']/Docs" />
 		public static readonly BindableProperty ContentProperty =
@@ -30,8 +32,11 @@ namespace Microsoft.Maui.Controls
 		internal static readonly BindableProperty QueryAttributesProperty =
 			BindableProperty.CreateAttached("QueryAttributes", typeof(ShellRouteParameters), typeof(ShellContent), defaultValue: null, propertyChanged: OnQueryAttributesPropertyChanged);
 
+#if !__GTK__
 		/// <include file="../../../docs/Microsoft.Maui.Controls/ShellContent.xml" path="//Member[@MemberName='MenuItems']/Docs" />
+
 		public MenuItemCollection MenuItems => (MenuItemCollection)GetValue(MenuItemsProperty);
+#endif
 
 		/// <include file="../../../docs/Microsoft.Maui.Controls/ShellContent.xml" path="//Member[@MemberName='Content']/Docs" />
 		public object Content
@@ -87,8 +92,10 @@ namespace Microsoft.Maui.Controls
 			if (result is TabbedPage)
 				throw new NotSupportedException($"Shell is currently not compatible with TabbedPage. Please use TabBar, Tab or switch to using NavigationPage for your {Application.Current}.MainPage");
 
+#if !__GTK__
 			if (result is FlyoutPage)
 				throw new NotSupportedException("Shell is currently not compatible with FlyoutPage.");
+#endif
 
 			if (result is NavigationPage)
 				throw new NotSupportedException("Shell is currently not compatible with NavigationPage. Shell has Navigation built in and doesn't require a NavigationPage.");
@@ -108,7 +115,9 @@ namespace Microsoft.Maui.Controls
 		ReadOnlyCollection<Element> _logicalChildrenReadOnly;
 
 		/// <include file="../../../docs/Microsoft.Maui.Controls/ShellContent.xml" path="//Member[@MemberName='.ctor']/Docs" />
+#if !__GTK__
 		public ShellContent() => ((INotifyCollectionChanged)MenuItems).CollectionChanged += MenuItemsCollectionChanged;
+#endif
 
 		internal bool IsVisibleContent => Parent is ShellSection shellSection && shellSection.IsVisibleSection && shellSection.CurrentItem == this;
 		internal override IReadOnlyList<Element> LogicalChildrenInternal => _logicalChildrenReadOnly ?? (_logicalChildrenReadOnly = new ReadOnlyCollection<Element>(_logicalChildren));

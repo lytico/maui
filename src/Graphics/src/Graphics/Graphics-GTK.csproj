@@ -31,6 +31,22 @@
   </PropertyGroup>
 
   <Import Project="$(MauiNuSpecDirectory)Microsoft.Maui.Controls.MultiTargeting.targets" />
+  <ItemGroup Condition=" '$(_MauiTargetPlatformIsWindows)' == 'True' ">
+    <Compile Remove="**\*.Windows.cs" />
+    <None Include="**\*.Windows.cs" Exclude="$(DefaultItemExcludes);$(DefaultExcludesInProjectFolder)" />
+    <Compile Remove="**\Windows\**\*.cs" />
+    <None Include="**\Windows\**\*.cs" Exclude="$(DefaultItemExcludes);$(DefaultExcludesInProjectFolder)" />
+    <Compile Remove="**\*.uwp.cs" />
+    <None Include="**\*.uwp.cs" Exclude="$(DefaultItemExcludes);$(DefaultExcludesInProjectFolder)" />
+    <MauiXaml Remove="**\*.Windows.xaml" />
+    <None Include="**\*.Windows.xaml" Exclude="$(DefaultItemExcludes);$(DefaultExcludesInProjectFolder)" />
+    <Compile Remove="**\*.Windows.xaml.cs" />
+    <None Include="**\*.Windows.xaml.cs" Exclude="$(DefaultItemExcludes);$(DefaultExcludesInProjectFolder)" />
+    <MauiXaml Remove="**\Windows\**\*.xaml" />
+    <None Include="**\Windows\**\*.xaml" Exclude="$(DefaultItemExcludes);$(DefaultExcludesInProjectFolder)" />
+    <Compile Remove="**\Windows\**\*.xaml.cs" />
+    <None Include="**\Windows\**\*.xaml.cs" Exclude="$(DefaultItemExcludes);$(DefaultExcludesInProjectFolder)" />
+  </ItemGroup>
 
   <ItemGroup Condition=" '$(_MauiTargetPlatformIsWindows)' == 'True' ">
     <Compile Remove="**\*.Windows.cs" />

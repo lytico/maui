@@ -8,7 +8,11 @@ using System.Text;
 using Microsoft.Maui.Controls.Platform;
 using Microsoft.Maui.Graphics;
 #if WINDOWS
+#if __GTK__
+using PlatformView = Microsoft.Maui.Platform.MauiView;
+#else
 using PlatformView = Microsoft.UI.Xaml.FrameworkElement;
+#endif
 #elif ANDROID
 using PlatformView = Android.Views.View;
 #elif IOS
@@ -17,7 +21,7 @@ using PlatformView = UIKit.UIView;
 
 namespace Microsoft.Maui.Controls.Handlers.Compatibility
 {
-#if WINDOWS
+#if WINDOWS && !__GTK__
 	public abstract partial class VisualElementRenderer<TElement, TPlatformElement> : IPlatformViewHandler
 		where TElement : VisualElement
 		where TPlatformElement : PlatformView
@@ -33,7 +37,7 @@ namespace Microsoft.Maui.Controls.Handlers.Compatibility
 			[nameof(IView.IsEnabled)] = MapIsEnabled,
 			[nameof(VisualElement.BackgroundColor)] = MapBackgroundColor,
 			[AutomationProperties.IsInAccessibleTreeProperty.PropertyName] = MapAutomationPropertiesIsInAccessibleTree,
-#if WINDOWS
+#if WINDOWS && !__GTK__
 			[AutomationProperties.NameProperty.PropertyName] = MapAutomationPropertiesName,
 			[AutomationProperties.HelpTextProperty.PropertyName] = MapAutomationPropertiesHelpText,
 			[AutomationProperties.LabeledByProperty.PropertyName] = MapAutomationPropertiesLabeledBy,
@@ -192,7 +196,7 @@ namespace Microsoft.Maui.Controls.Handlers.Compatibility
 				ViewHandler.MapIsEnabled(this, Element);
 		}
 
-#if WINDOWS
+#if WINDOWS && !__GTK__
 		protected virtual void SetAutomationPropertiesAccessibilityView()
 #else
 		protected virtual void SetImportantForAccessibility()
@@ -308,7 +312,7 @@ namespace Microsoft.Maui.Controls.Handlers.Compatibility
 
 		public static void MapAutomationPropertiesIsInAccessibleTree(IPlatformViewHandler handler, TElement view)
 		{
-#if WINDOWS
+#if WINDOWS && !__GTK__
 			if (handler is VisualElementRenderer<TElement, TPlatformElement> ver)
 				ver.SetAutomationPropertiesAccessibilityView();
 #else
@@ -319,7 +323,7 @@ namespace Microsoft.Maui.Controls.Handlers.Compatibility
 
 		public static void MapAutomationId(IPlatformViewHandler handler, TElement view)
 		{
-#if WINDOWS
+#if WINDOWS && !__GTK__
 			if (handler is VisualElementRenderer<TElement, TPlatformElement> ver)
 #else
 			if (handler is VisualElementRenderer<TElement> ver)
@@ -329,7 +333,7 @@ namespace Microsoft.Maui.Controls.Handlers.Compatibility
 
 		public static void MapBackgroundColor(IPlatformViewHandler handler, TElement view)
 		{
-#if WINDOWS
+#if WINDOWS && !__GTK__
 			if (handler is VisualElementRenderer<TElement, TPlatformElement> ver)
 #else
 			if (handler is VisualElementRenderer<TElement> ver)
@@ -343,7 +347,7 @@ namespace Microsoft.Maui.Controls.Handlers.Compatibility
 
 		public static void MapBackground(IPlatformViewHandler handler, TElement view)
 		{
-#if WINDOWS
+#if WINDOWS && !__GTK__
 			if (handler is VisualElementRenderer<TElement, TPlatformElement> ver)
 #else
 			if (handler is VisualElementRenderer<TElement> ver)
@@ -357,7 +361,7 @@ namespace Microsoft.Maui.Controls.Handlers.Compatibility
 
 		public static void MapIsEnabled(IPlatformViewHandler handler, TElement view)
 		{
-#if WINDOWS
+#if WINDOWS && !__GTK__
 			if (handler is VisualElementRenderer<TElement, TPlatformElement> ver)
 #else
 			if (handler is VisualElementRenderer<TElement> ver)

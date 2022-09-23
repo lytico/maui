@@ -193,9 +193,11 @@ namespace Microsoft.Maui.Controls
 
 		static void OnTitlePropertyChanged(BindableObject bindable, object oldValue, object newValue)
 		{
+#if !__GTK__
 			var shellItem = (BaseShellItem)bindable;
 			if (shellItem.FindParentOfType<Shell>()?.Toolbar is ShellToolbar st)
 				st.UpdateTitle();
+#endif
 		}
 
 		static void OnIconChanged(BindableObject bindable, object oldValue, object newValue)

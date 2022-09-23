@@ -8,7 +8,9 @@ namespace Microsoft.Maui.Controls
 {
 	internal class NavigationPageToolbar : Toolbar, IToolbar
 	{
+#if !__GTK__
 		ToolbarTracker _toolbarTracker = new ToolbarTracker();
+#endif
 		NavigationPage _currentNavigationPage;
 		Page _currentPage;
 		bool _hasAppeared;
@@ -28,11 +30,15 @@ namespace Microsoft.Maui.Controls
 
 		public NavigationPageToolbar(Maui.IElement parent, Page rootPage) : base(parent)
 		{
+#if !__GTK__
 			_toolbarTracker.CollectionChanged += (_, __) => ToolbarItems = _toolbarTracker.ToolbarItems;
+#endif
 			_rootPage = rootPage;
+#if !__GTK__
 			_toolbarTracker.PageAppearing += OnPageAppearing;
 			_toolbarTracker.PagePropertyChanged += OnPagePropertyChanged;
 			_toolbarTracker.Target = _rootPage;
+#endif
 		}
 
 		void OnPagePropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
@@ -147,9 +153,11 @@ namespace Microsoft.Maui.Controls
 
 			// Set this before BackButtonVisible triggers an update to the handler
 			// This way all useful information is present
+#if !__GTK__
 			if (Parent is FlyoutPage && !anyPagesPushed.Value)
 				_drawerToggleVisible = true;
 			else
+#endif
 				_drawerToggleVisible = false;
 
 			// Once we have better logic inside core to handle backbutton visiblity this
@@ -197,14 +205,18 @@ namespace Microsoft.Maui.Controls
 			if (stack.Count > 1)
 				previousPage = stack[stack.Count - 1];
 
+#if !__GTK__
 			ToolbarItems = _toolbarTracker.ToolbarItems;
+#endif
 			IsVisible = NavigationPage.GetHasNavigationBar(currentPage) && _hasAppeared;
 
 			UpdateBackButton();
 
+#if !__GTK__
 			if (navigationPage.IsSet(PlatformConfiguration.AndroidSpecific.AppCompat.NavigationPage.BarHeightProperty))
 				BarHeight = PlatformConfiguration.AndroidSpecific.AppCompat.NavigationPage.GetBarHeight(navigationPage);
 			else
+#endif
 				BarHeight = null;
 
 			if (previousPage != null)
@@ -240,7 +252,9 @@ namespace Microsoft.Maui.Controls
 			IconColor = GetIconColor();
 			Title = GetTitle();
 			TitleView = GetTitleView();
+#if !__GTK__
 			DynamicOverflowEnabled = PlatformConfiguration.WindowsSpecific.Page.GetToolbarDynamicOverflowEnabled(_currentPage);
+#endif
 		}
 
 		void OnPropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
@@ -255,13 +269,19 @@ namespace Microsoft.Maui.Controls
 				NavigationPage.TitleViewProperty,
 				NavigationPage.IconColorProperty) ||
 				e.IsOneOf(Page.TitleProperty,
+#if !__GTK__
 				PlatformConfiguration.AndroidSpecific.AppCompat.NavigationPage.BarHeightProperty,
+#endif
 				NavigationPage.BarBackgroundColorProperty,
 				NavigationPage.BarBackgroundProperty,
+#if __GTK__
+				NavigationPage.BarTextColorProperty))
+#else
 				NavigationPage.BarTextColorProperty) ||
 				e.IsOneOf(
 					PlatformConfiguration.WindowsSpecific.Page.ToolbarDynamicOverflowEnabledProperty,
 					PlatformConfiguration.WindowsSpecific.Page.ToolbarPlacementProperty))
+#endif
 			{
 				ApplyChanges(_currentNavigationPage);
 			}

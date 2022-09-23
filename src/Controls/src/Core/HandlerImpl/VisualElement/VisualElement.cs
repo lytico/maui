@@ -9,7 +9,7 @@ namespace Microsoft.Maui.Controls
 		public static IPropertyMapper<IView, IViewHandler> ControlsVisualElementMapper =
 			new PropertyMapper<IView, IViewHandler>(Element.ControlsElementMapper)
 			{
-#if WINDOWS
+#if WINDOWS && !__GTK__
 				[PlatformConfiguration.WindowsSpecific.VisualElement.AccessKeyHorizontalOffsetProperty.PropertyName] = MapAccessKeyHorizontalOffset,
 				[PlatformConfiguration.WindowsSpecific.VisualElement.AccessKeyPlacementProperty.PropertyName] = MapAccessKeyPlacement,
 				[PlatformConfiguration.WindowsSpecific.VisualElement.AccessKeyProperty.PropertyName] = MapAccessKey,
