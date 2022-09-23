@@ -122,7 +122,17 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Include="..\..\src-GTK\Compatibility\GTK\ResourcesProvider.cs" Link="Compatibility\GTK\ResourcesProvider.cs" />
+    <Compile Include="..\..\src-GTK\Compatibility\Handlers\GTK\BaseCellView.cs" Link="Compatibility\Handlers\GTK\BaseCellView.cs" />
+    <Compile Include="..\..\src-GTK\Compatibility\Handlers\GTK\CellRenderer.cs" Link="Compatibility\Handlers\GTK\CellRenderer.cs" />
+    <Compile Include="..\..\src-GTK\Compatibility\Handlers\GTK\EntryCellRenderer.cs" Link="Compatibility\Handlers\GTK\EntryCellRenderer.cs" />
+    <Compile Include="..\..\src-GTK\Compatibility\Handlers\GTK\EntryCellView.cs" Link="Compatibility\Handlers\GTK\EntryCellView.cs" />
     <Compile Include="..\..\src-GTK\Compatibility\Handlers\GTK\FrameRenderer.cs" Link="Compatibility\Handlers\GTK\FrameRenderer.cs" />
+    <Compile Include="..\..\src-GTK\Compatibility\Handlers\GTK\ImageCellRenderer.cs" Link="Compatibility\Handlers\GTK\ImageCellRenderer.cs" />
+    <Compile Include="..\..\src-GTK\Compatibility\Handlers\GTK\SwitchCellRenderer.cs" Link="Compatibility\Handlers\GTK\SwitchCellRenderer.cs" />
+    <Compile Include="..\..\src-GTK\Compatibility\Handlers\GTK\SwitchCellView.cs" Link="Compatibility\Handlers\GTK\SwitchCellView.cs" />
+    <Compile Include="..\..\src-GTK\Compatibility\Handlers\GTK\TextCellRenderer.cs" Link="Compatibility\Handlers\GTK\TextCellRenderer.cs" />
+    <Compile Include="..\..\src-GTK\Compatibility\Handlers\GTK\ViewCellRenderer.cs" Link="Compatibility\Handlers\GTK\ViewCellRenderer.cs" />
     <Compile Include="..\..\src-GTK\Compatibility\Handlers\GTK\ViewRenderer.cs" Link="Compatibility\Handlers\GTK\ViewRenderer.cs" />
     <Compile Include="..\..\src-GTK\Compatibility\Handlers\GTK\VisualElementRenderer.cs" Link="Compatibility\Handlers\GTK\VisualElementRenderer.cs" />
     <Compile Include="..\..\src-GTK\HandlerImpl\Element\Element.GTK.cs" Link="HandlerImpl\Element\Element.GTK.cs" />
@@ -253,6 +263,7 @@
   <ItemGroup>
     <Folder Include="Compatibility\Handlers\GTK\" />
     <Folder Include="Compatibility\Handlers\ListView\GTK\" />
+    <Folder Include="Compatibility\GTK\" />
     <Folder Include="Platform\GTK\" />
     <Folder Include="Platform\Windows\Styles\" />
   </ItemGroup>

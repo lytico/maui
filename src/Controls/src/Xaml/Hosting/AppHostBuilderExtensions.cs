@@ -3,7 +3,9 @@ using System.Diagnostics.CodeAnalysis;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Maui.Controls.Handlers;
+#if !__GTK__
 using Microsoft.Maui.Controls.Handlers.Items;
+#endif
 using Microsoft.Maui.Controls.Shapes;
 using Microsoft.Maui.Dispatching;
 using Microsoft.Maui.Handlers;
@@ -15,8 +17,12 @@ using Microsoft.Maui.Platform;
 using Microsoft.Maui.Controls.Handlers.Compatibility;
 using Microsoft.Maui.Controls.Compatibility.Platform.Android;
 #elif WINDOWS
+#if __GTK__
+using ResourcesProvider = Microsoft.Maui.Controls.Compatibility.Platform.GTK.ResourcesProvider;
+#else
 using ResourcesProvider = Microsoft.Maui.Controls.Compatibility.Platform.UWP.WindowsResourcesProvider;
 using Microsoft.Maui.Controls.Compatibility.Platform.UWP;
+#endif
 #elif IOS || MACCATALYST
 using Microsoft.Maui.Controls.Compatibility.Platform.iOS;
 using Microsoft.Maui.Controls.Handlers.Compatibility;
@@ -48,11 +54,15 @@ namespace Microsoft.Maui.Controls.Hosting
 
 		public static IMauiHandlersCollection AddMauiControlsHandlers(this IMauiHandlersCollection handlersCollection)
 		{
+#if !__GTK__
 			handlersCollection.AddHandler<CollectionView, CollectionViewHandler>();
 			handlersCollection.AddHandler<CarouselView, CarouselViewHandler>();
+#endif
 			handlersCollection.AddHandler<Application, ApplicationHandler>();
 			handlersCollection.AddHandler<ActivityIndicator, ActivityIndicatorHandler>();
+#if !__GTK__
 			handlersCollection.AddHandler<BoxView, ShapeViewHandler>();
+#endif
 			handlersCollection.AddHandler<Button, ButtonHandler>();
 			handlersCollection.AddHandler<CheckBox, CheckBoxHandler>();
 			handlersCollection.AddHandler<DatePicker, DatePickerHandler>();
@@ -71,9 +81,12 @@ namespace Microsoft.Maui.Controls.Hosting
 			handlersCollection.AddHandler<Switch, SwitchHandler>();
 			handlersCollection.AddHandler<TimePicker, TimePickerHandler>();
 			handlersCollection.AddHandler<Page, PageHandler>();
+#if !__GTK__
 			handlersCollection.AddHandler<WebView, WebViewHandler>();
+#endif
 			handlersCollection.AddHandler<Border, BorderHandler>();
 			handlersCollection.AddHandler<IContentView, ContentViewHandler>();
+#if !__GTK__
 			handlersCollection.AddHandler<Shapes.Ellipse, ShapeViewHandler>();
 			handlersCollection.AddHandler<Shapes.Line, LineHandler>();
 			handlersCollection.AddHandler<Shapes.Path, PathHandler>();
@@ -81,13 +94,16 @@ namespace Microsoft.Maui.Controls.Hosting
 			handlersCollection.AddHandler<Shapes.Polyline, PolylineHandler>();
 			handlersCollection.AddHandler<Shapes.Rectangle, RectangleHandler>();
 			handlersCollection.AddHandler<Shapes.RoundRectangle, RoundRectangleHandler>();
+#endif
 			handlersCollection.AddHandler<Window, WindowHandler>();
 			handlersCollection.AddHandler<ImageButton, ImageButtonHandler>();
 			handlersCollection.AddHandler<IndicatorView, IndicatorViewHandler>();
 			handlersCollection.AddHandler<RadioButton, RadioButtonHandler>();
+#if !__GTK__
 			handlersCollection.AddHandler<RefreshView, RefreshViewHandler>();
 			handlersCollection.AddHandler<SwipeItem, SwipeItemMenuItemHandler>();
 			handlersCollection.AddHandler<SwipeView, SwipeViewHandler>();
+#endif
 
 #pragma warning disable CA1416 //  'MenuBarHandler', MenuFlyoutSubItemHandler, MenuFlyoutSubItemHandler, MenuBarItemHandler is only supported on: 'ios' 13.0 and later
 			handlersCollection.AddHandler<MenuBar, MenuBarHandler>();
@@ -100,14 +116,18 @@ namespace Microsoft.Maui.Controls.Hosting
 #pragma warning restore CA1416
 
 #if WINDOWS || ANDROID || IOS || MACCATALYST
+#if !__GTK__
 			handlersCollection.AddHandler(typeof(ListView), typeof(Handlers.Compatibility.ListViewRenderer));
+#endif
 			handlersCollection.AddHandler(typeof(Cell), typeof(Handlers.Compatibility.CellRenderer));
 			handlersCollection.AddHandler(typeof(ImageCell), typeof(Handlers.Compatibility.ImageCellRenderer));
 			handlersCollection.AddHandler(typeof(EntryCell), typeof(Handlers.Compatibility.EntryCellRenderer));
 			handlersCollection.AddHandler(typeof(TextCell), typeof(Handlers.Compatibility.TextCellRenderer));
 			handlersCollection.AddHandler(typeof(ViewCell), typeof(Handlers.Compatibility.ViewCellRenderer));
 			handlersCollection.AddHandler(typeof(SwitchCell), typeof(Handlers.Compatibility.SwitchCellRenderer));
+#if !__GTK__
 			handlersCollection.AddHandler(typeof(TableView), typeof(Handlers.Compatibility.TableViewRenderer));
+#endif
 			handlersCollection.AddHandler(typeof(Frame), typeof(Handlers.Compatibility.FrameRenderer));
 #endif
 
@@ -127,18 +147,20 @@ namespace Microsoft.Maui.Controls.Hosting
 #endif
 #if WINDOWS || ANDROID
 			handlersCollection.AddHandler<NavigationPage, NavigationViewHandler>();
-			handlersCollection.AddHandler<Toolbar, ToolbarHandler>();
 #if !__GTK__
+			handlersCollection.AddHandler<Toolbar, ToolbarHandler>();
 			handlersCollection.AddHandler<FlyoutPage, FlyoutViewHandler>();
 #endif
 			handlersCollection.AddHandler<TabbedPage, TabbedViewHandler>();
 #endif
 
 #if WINDOWS
+#if !__GTK__
 			handlersCollection.AddHandler<ShellItem, ShellItemHandler>();
 			handlersCollection.AddHandler<ShellSection, ShellSectionHandler>();
 			handlersCollection.AddHandler<ShellContent, ShellContentHandler>();
 			handlersCollection.AddHandler<Shell, ShellHandler>();
+#endif
 #endif
 			return handlersCollection;
 		}
@@ -150,11 +172,15 @@ namespace Microsoft.Maui.Controls.Hosting
 			DependencyService.SetToInitialized();
 			DependencyService.Register<Xaml.ResourcesLoader>();
 			DependencyService.Register<Xaml.ValueConverterProvider>();
+#if !__GTK__
 			DependencyService.Register<PlatformSizeService>();
+#endif
 
 #pragma warning disable CS0612, CA1416 // Type or member is obsolete, 'ResourcesProvider' is unsupported on: 'iOS' 14.0 and later
 			DependencyService.Register<ResourcesProvider>();
+#if !__GTK__
 			DependencyService.Register<FontNamedSizeService>();
+#endif
 #pragma warning restore CS0612, CA1416 // Type or member is obsolete
 #endif
 
@@ -177,7 +203,7 @@ namespace Microsoft.Maui.Controls.Hosting
 		{
 			public void Initialize(IServiceProvider services)
 			{
-#if WINDOWS
+#if WINDOWS && !__GTK__
 				var dispatcher =
 					services.GetService<IDispatcher>() ??
 					MauiWinUIApplication.Current.Services.GetRequiredService<IDispatcher>();
@@ -220,8 +246,10 @@ namespace Microsoft.Maui.Controls.Hosting
 			CheckBox.RemapForControls();
 			DatePicker.RemapForControls();
 			RadioButton.RemapForControls();
+#if !__GTK__
 			FlyoutPage.RemapForControls();
 			Toolbar.RemapForControls();
+#endif
 			Window.RemapForControls();
 			Editor.RemapForControls();
 			Entry.RemapForControls();
