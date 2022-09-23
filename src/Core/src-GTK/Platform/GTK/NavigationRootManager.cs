@@ -6,7 +6,7 @@ namespace Microsoft.Maui.Platform
 	{
 		Gdk.Window _platformWindow;
 		WindowRootView _rootView;
-		bool _disconnected = true;
+		//bool _disconnected = true;
 		bool _isActiveRootManager;
 
 		public NavigationRootManager(Gdk.Window platformWindow)
@@ -14,8 +14,8 @@ namespace Microsoft.Maui.Platform
 			_platformWindow = platformWindow;
 			_rootView = new WindowRootView();
 			//_rootView.BackRequested += OnBackRequested;
-			_rootView.OnApplyTemplateFinished += OnApplyTemplateFinished;
-			_rootView.OnAppTitleBarChanged += OnAppTitleBarChanged;
+			//_rootView.OnApplyTemplateFinished += OnApplyTemplateFinished;
+			//_rootView.OnAppTitleBarChanged += OnAppTitleBarChanged;
 		}
 
 		//void OnBackRequested(NavigationView sender, NavigationViewBackRequestedEventArgs args)
@@ -89,14 +89,14 @@ namespace Microsoft.Maui.Platform
 			//	_platformWindow.Activated += OnWindowActivated;
 			//}
 
-			_disconnected = false;
+			//_disconnected = false;
 		}
 
 		public virtual void Disconnect()
 		{
 			//_platformWindow.Activated -= OnWindowActivated;
 			//_rootView.Content = null;
-			_disconnected = true;
+			//_disconnected = true;
 		}
 
 		internal void UpdateAppTitleBar(bool isActive)

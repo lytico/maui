@@ -16,8 +16,8 @@ using PlatformView = Android.Views.View;
 using ParentView = Android.Views.IViewParent;
 #elif WINDOWS
 #if __GTK__
-using PlatformView = Gtk.Fixed;
-using ParentView = Gtk.Fixed;
+using PlatformView = Gtk.EventBox;
+using ParentView = Gtk.EventBox;
 #else
 using PlatformView = Microsoft.UI.Xaml.FrameworkElement;
 using ParentView = Microsoft.UI.Xaml.DependencyObject;

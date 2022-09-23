@@ -53,6 +53,25 @@
     <Compile Remove="Handlers\WebView\WebViewHandler.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Remove="Platform\Windows\Styles\MauiComboBoxStyle.xaml" />
+    <None Remove="Platform\Windows\Styles\MauiComboBoxStyle.xaml" />
+    <None Remove="Platform\Windows\Styles\MauiSliderStyle.xaml" />
+    <None Remove="Platform\Windows\Styles\MauiSliderStyle.xaml" />
+    <None Remove="Platform\Windows\Styles\MauiStepperStyle.xaml" />
+    <None Remove="Platform\Windows\Styles\MauiStepperStyle.xaml" />
+    <None Remove="Platform\Windows\Styles\Resources.xaml" />
+    <None Remove="Platform\Windows\Styles\Resources.xaml" />
+    <None Remove="Platform\Windows\Styles\WindowRootViewStyle.xaml" />
+    <None Remove="Platform\Windows\Styles\WindowRootViewStyle.xaml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Page Remove="Platform\Windows\Styles\MauiComboBoxStyle.xaml" />
+    <Page Remove="Platform\Windows\Styles\MauiSliderStyle.xaml" />
+    <Page Remove="Platform\Windows\Styles\MauiStepperStyle.xaml" />
+    <Page Remove="Platform\Windows\Styles\Resources.xaml" />
+    <Page Remove="Platform\Windows\Styles\WindowRootViewStyle.xaml" />
+  </ItemGroup>
+  <ItemGroup>
     <Compile Include="..\src-GTK\Animations\PlatformTicker.GTK.cs" Link="Animations\PlatformTicker.GTK.cs" />
     <Compile Include="..\src-GTK\Dispatching\Dispatcher.GTK.cs" Link="Dispatching\Dispatcher.GTK.cs" />
     <Compile Include="..\src-GTK\Fonts\EmbeddedFontLoader.GTK.cs" Link="Fonts\EmbeddedFontLoader.GTK.cs" />
@@ -105,10 +124,12 @@
     <Compile Include="..\src-GTK\Platform\GTK\EntryWrapper.cs" Link="Platform\GTK\EntryWrapper.cs" />
     <Compile Include="..\src-GTK\Platform\GTK\GtkFormsContainer.cs" Link="Platform\GTK\GtkFormsContainer.cs" />
     <Compile Include="..\src-GTK\Platform\GTK\IDesiredSizeProvider.cs" Link="Platform\GTK\IDesiredSizeProvider.cs" />
+    <Compile Include="..\src-GTK\Platform\GTK\ImageSourcePartExtensions.cs" Link="Platform\GTK\ImageSourcePartExtensions.cs" />
     <Compile Include="..\src-GTK\Platform\GTK\LayoutViewGroup.cs" Link="Platform\GTK\LayoutViewGroup.cs" />
     <Compile Include="..\src-GTK\Platform\GTK\MauiBorder.cs" Link="Platform\GTK\MauiBorder.cs" />
     <Compile Include="..\src-GTK\Platform\GTK\MauiComboBox.cs" Link="Platform\GTK\MauiComboBox.cs" />
     <Compile Include="..\src-GTK\Platform\GTK\MauiContextExtensions.cs" Link="Platform\GTK\MauiContextExtensions.cs" />
+    <Compile Include="..\src-GTK\Platform\GTK\MauiGTKApplication.cs" Link="Platform\GTK\MauiGTKApplication.cs" />
     <Compile Include="..\src-GTK\Platform\GTK\MauiImage.cs" Link="Platform\GTK\MauiImage.cs" />
     <Compile Include="..\src-GTK\Platform\GTK\MauiImageButton.cs" Link="Platform\GTK\MauiImageButton.cs" />
     <Compile Include="..\src-GTK\Platform\GTK\MauiNavigationView.cs" Link="Platform\GTK\MauiNavigationView.cs" />
@@ -189,6 +210,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="LifecycleEvents\GTK\" />
+    <Folder Include="Platform\Windows\Styles\" />
   </ItemGroup>
   <Import Project="$(MauiSrcDirectory)PublicAPI.targets" />
 </Project>

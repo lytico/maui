@@ -1,6 +1,5 @@
 ﻿using System;
 using Microsoft.Extensions.DependencyInjection;
-using Windows.ApplicationModel.Resources.Core;
 
 namespace Microsoft.Maui.Platform
 {
@@ -17,7 +16,7 @@ namespace Microsoft.Maui.Platform
 
 		public static IServiceProvider GetApplicationServices(this IMauiContext mauiContext)
 		{
-			return MauiWinUIApplication.Current.Services
+			return MauiGTKApplication.Current.Services
 				?? throw new InvalidOperationException("Unable to find Application Services");
 		}
 

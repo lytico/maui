@@ -6,8 +6,13 @@ using Microsoft.Maui.Hosting;
 using Microsoft.Maui.ApplicationModel;
 
 #if WINDOWS
+#if __GTK__
+using NativeApplication = Gtk.Application;
+using NativeWindow = Gdk.Window;
+#else
 using NativeApplication = Microsoft.UI.Xaml.Application;
 using NativeWindow = Microsoft.UI.Xaml.Window;
+#endif
 #elif __IOS__ || __MACCATALYST__
 using NativeApplication = UIKit.IUIApplicationDelegate;
 using NativeWindow = UIKit.UIWindow;

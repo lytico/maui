@@ -10,7 +10,7 @@ namespace Microsoft.Maui
 	/// </summary>
 	public partial class VisualDiagnosticsOverlay
 	{
-		readonly Dictionary<IScrollView, Gtk.ScrolledWindow> _scrollViews = new();
+		readonly Dictionary<IScrollView, MauiView> _scrollViews = new();
 
 		[SupportedOSPlatform("android23.0")]
 		public void AddScrollableElementHandler(IScrollView scrollBar)

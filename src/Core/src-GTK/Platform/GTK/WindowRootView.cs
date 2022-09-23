@@ -9,16 +9,16 @@ namespace Microsoft.Maui.Platform
 		//	= DependencyProperty.Register(nameof(AppTitleBarTemplate), typeof(object), typeof(WindowRootView),
 		//		new PropertyMetadata(null, OnAppTitleBarTemplateChanged));
 
-		double _appTitleBarHeight;
-		internal event EventHandler? OnAppTitleBarChanged;
-		internal event EventHandler? OnApplyTemplateFinished;
-		internal event EventHandler? ContentChanged;
-		string? _windowTitle;
-		// MauiToolbar? _toolbar;
-		// MenuBar? _menuBar;
-		// FrameworkElement? _appTitleBar;
-		bool _hasTitleBarImage = false;
-		//public event TypedEventHandler<NavigationView, NavigationViewBackRequestedEventArgs>? BackRequested;
+		//double _appTitleBarHeight;
+		//internal event EventHandler? OnAppTitleBarChanged;
+		//internal event EventHandler? OnApplyTemplateFinished;
+		//internal event EventHandler? ContentChanged;
+		//string? _windowTitle;
+		//// MauiToolbar? _toolbar;
+		//// MenuBar? _menuBar;
+		//// FrameworkElement? _appTitleBar;
+		//bool _hasTitleBarImage = false;
+		////public event TypedEventHandler<NavigationView, NavigationViewBackRequestedEventArgs>? BackRequested;
 
 		public WindowRootView()
 		{

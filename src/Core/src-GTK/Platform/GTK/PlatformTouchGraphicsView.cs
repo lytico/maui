@@ -9,10 +9,10 @@ namespace Microsoft.Maui.Platform
 	public class PlatformTouchGraphicsView : PlatformGraphicsView
 	{
 		IGraphicsView? _graphicsView;
-		RectF _bounds;
+		//RectF _bounds;
 		bool _dragStarted;
 		PointF[] _lastMovedViewPoints = new PointF[0];
-		float _scale = 1;
+		//float _scale = 1;
 		bool _pressedContained = false;
 
 		//protected override void OnLayout(bool changed, int left, int top, int right, int bottom)
@@ -82,7 +82,7 @@ namespace Microsoft.Maui.Platform
 
 			_lastMovedViewPoints = points;
 			_dragStarted = true;
-			_pressedContained = _bounds.ContainsAny(points);
+			//_pressedContained = _bounds.ContainsAny(points);
 			_graphicsView?.DragInteraction(points);
 		}
 

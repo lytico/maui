@@ -5,7 +5,7 @@ using Microsoft.Maui.ApplicationModel;
 using Microsoft.Maui.Graphics;
 using Microsoft.Maui.Primitives;
 using GColor = Gdk.Color;
-using GView = Gtk.Fixed;
+using GView = Gtk.EventBox;
 
 namespace Microsoft.Maui.Platform
 {
@@ -363,74 +363,70 @@ namespace Microsoft.Maui.Platform
 		//		(int)platformView.Context.ToPixels(platformView.Height));
 		//}
 
-		//internal static Matrix4x4 GetViewTransform(this IView view)
-		//{
-		//	var platformView = view?.ToPlatform();
-		//	if (platformView == null)
-		//		return new Matrix4x4();
-		//	return platformView.GetViewTransform();
-		//}
+		internal static Matrix4x4 GetViewTransform(this IView view)
+		{
+			var platformView = view?.ToPlatform();
+			//if (platformView == null)
+				return new Matrix4x4();
+			//return platformView.GetViewTransform();
+		}
 
-		//internal static Matrix4x4 GetViewTransform(this View view)
-		//{
-		//	if (view?.Matrix == null)
-		//		return new Matrix4x4();
+		internal static Matrix4x4 GetViewTransform(this GView view)
+		{
+			//if (view?.Matrix == null)
+				return new Matrix4x4();
 
-		//	var m = new float[16];
-		//	var v = new float[16];
-		//	var r = new float[16];
+			//var m = new float[16];
+			//var v = new float[16];
+			//var r = new float[16];
 
-		//	GL.Matrix.SetIdentityM(r, 0);
-		//	GL.Matrix.SetIdentityM(v, 0);
-		//	GL.Matrix.SetIdentityM(m, 0);
+			//GL.Matrix.SetIdentityM(r, 0);
+			//GL.Matrix.SetIdentityM(v, 0);
+			//GL.Matrix.SetIdentityM(m, 0);
 
-		//	GL.Matrix.TranslateM(v, 0, view.Left, view.Top, 0);
-		//	GL.Matrix.TranslateM(v, 0, view.PivotX, view.PivotY, 0);
-		//	GL.Matrix.TranslateM(v, 0, view.TranslationX, view.TranslationY, 0);
-		//	GL.Matrix.ScaleM(v, 0, view.ScaleX, view.ScaleY, 1);
-		//	GL.Matrix.RotateM(v, 0, view.RotationX, 1, 0, 0);
-		//	GL.Matrix.RotateM(v, 0, view.RotationY, 0, 1, 0);
-		//	GL.Matrix.RotateM(m, 0, view.Rotation, 0, 0, 1);
+			//GL.Matrix.TranslateM(v, 0, view.Left, view.Top, 0);
+			//GL.Matrix.TranslateM(v, 0, view.PivotX, view.PivotY, 0);
+			//GL.Matrix.TranslateM(v, 0, view.TranslationX, view.TranslationY, 0);
+			//GL.Matrix.ScaleM(v, 0, view.ScaleX, view.ScaleY, 1);
+			//GL.Matrix.RotateM(v, 0, view.RotationX, 1, 0, 0);
+			//GL.Matrix.RotateM(v, 0, view.RotationY, 0, 1, 0);
+			//GL.Matrix.RotateM(m, 0, view.Rotation, 0, 0, 1);
 
-		//	GL.Matrix.MultiplyMM(r, 0, v, 0, m, 0);
-		//	GL.Matrix.TranslateM(m, 0, r, 0, -view.PivotX, -view.PivotY, 0);
-		//	return new Matrix4x4
-		//	{
-		//		M11 = m[0],
-		//		M12 = m[1],
-		//		M13 = m[2],
-		//		M14 = m[3],
-		//		M21 = m[4],
-		//		M22 = m[5],
-		//		M23 = m[6],
-		//		M24 = m[7],
-		//		M31 = m[8],
-		//		M32 = m[9],
-		//		M33 = m[10],
-		//		M34 = m[11],
-		//		Translation = new Vector3(m[12], m[13], m[14]),
-		//		M44 = m[15]
-		//	};
-		//}
+			//GL.Matrix.MultiplyMM(r, 0, v, 0, m, 0);
+			//GL.Matrix.TranslateM(m, 0, r, 0, -view.PivotX, -view.PivotY, 0);
+			//return new Matrix4x4
+			//{
+			//	M11 = m[0],
+			//	M12 = m[1],
+			//	M13 = m[2],
+			//	M14 = m[3],
+			//	M21 = m[4],
+			//	M22 = m[5],
+			//	M23 = m[6],
+			//	M24 = m[7],
+			//	M31 = m[8],
+			//	M32 = m[9],
+			//	M33 = m[10],
+			//	M34 = m[11],
+			//	Translation = new Vector3(m[12], m[13], m[14]),
+			//	M44 = m[15]
+			//};
+		}
 
-		//internal static Graphics.Rect GetBoundingBox(this IView view)
-		//	=> view.ToPlatform().GetBoundingBox();
+		internal static Graphics.Rect GetBoundingBox(this IView view)
+		{
+			return new Graphics.Rect(view.AnchorX, view.AnchorY, view.Width, view.Height);
 
-		//internal static Graphics.Rect GetBoundingBox(this View? platformView)
-		//{
-		//	if (platformView?.Context == null)
-		//		return new Rect();
+		}
 
-		//	var context = platformView.Context;
-		//	var rect = new Android.Graphics.Rect();
-		//	platformView.GetGlobalVisibleRect(rect);
-
-		//	return new Rect(
-		//		context.FromPixels(rect.ExactCenterX() - (rect.Width() / 2)),
-		//		context.FromPixels(rect.ExactCenterY() - (rect.Height() / 2)),
-		//		context.FromPixels((float)rect.Width()),
-		//		context.FromPixels((float)rect.Height()));
-		//}
+		internal static Graphics.Rect GetBoundingBox(this GView? platformView)
+		{
+			return new Rect(
+				platformView.GetBoundingBox().X,
+				platformView.GetBoundingBox().Y,
+				platformView.GetBoundingBox().Width,
+				platformView.GetBoundingBox().Height);
+		}
 
 		//internal static bool IsLoaded(this View frameworkElement) =>
 		//	frameworkElement.IsAttachedToWindow;
@@ -501,9 +497,9 @@ namespace Microsoft.Maui.Platform
 		//	return disposable;
 		//}
 
-		internal static Gtk.Fixed? GetParent(this GView? view)
+		internal static Gtk.EventBox? GetParent(this GView? view)
 		{
-			return view?.GetAncestor(GLib.GType.Invalid) as Gtk.Fixed;
+			return view?.GetAncestor(GLib.GType.Invalid) as Gtk.EventBox;
 		}
 
 		//internal static IViewParent? GetParent(this IViewParent? view)
