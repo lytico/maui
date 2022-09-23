@@ -3,14 +3,14 @@ using Gtk;
 
 namespace Microsoft.Maui.Handlers
 {
-	public partial class NavigationViewHandler : AltViewHandler<IStackNavigationView, CustomAltView>
+	public partial class NavigationViewHandler : ViewHandler<IStackNavigationView, CustomView>
 	{
 		//StackNavigationManager? _stackNavigationManager;
 		//internal StackNavigationManager? StackNavigationManager => _stackNavigationManager;
 
-		protected override CustomAltView CreatePlatformView()
+		protected override CustomView CreatePlatformView()
 		{
-			return new CustomAltView();
+			return new CustomView();
 		}
 
 		public override Graphics.Size GetDesiredSize(double widthConstraint, double heightConstraint)
@@ -23,12 +23,12 @@ namespace Microsoft.Maui.Handlers
 			base.PlatformArrange(frame);
 		}
 
-		protected override void ConnectHandler(CustomAltView platformView)
+		protected override void ConnectHandler(CustomView platformView)
 		{
 			base.ConnectHandler(platformView);
 		}
 
-		protected override void DisconnectHandler(CustomAltView platformView)
+		protected override void DisconnectHandler(CustomView platformView)
 		{
 			base.DisconnectHandler(platformView);
 		}

@@ -14,11 +14,7 @@ using PlatformView = System.Object;
 
 namespace Microsoft.Maui.Handlers
 {
-#if __GTK__
-	public partial interface IStepperHandler : IAltViewHandler
-#else
 	public partial interface IStepperHandler : IViewHandler
-#endif
 	{
 		new IStepper VirtualView { get; }
 		new PlatformView PlatformView { get; }

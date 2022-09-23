@@ -3,7 +3,7 @@ using Microsoft.Maui.Graphics;
 
 namespace Microsoft.Maui.Handlers
 {
-	public partial class ButtonHandler : AltViewHandler<IButton, ImageButton>
+	public partial class ButtonHandler : ViewHandler<IButton, ImageButton>
 	{
 		public readonly static Thickness DefaultPadding = new Thickness(16, 8.5);
 

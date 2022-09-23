@@ -3,7 +3,7 @@ using Microsoft.Maui.Graphics;
 
 namespace Microsoft.Maui.Handlers
 {
-	public partial class SwitchHandler : AltViewHandler<ISwitch, SwitchControl>
+	public partial class SwitchHandler : ViewHandler<ISwitch, SwitchControl>
 	{
 		protected override SwitchControl CreatePlatformView()
 		{

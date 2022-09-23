@@ -8,7 +8,7 @@ namespace Microsoft.Maui.Platform
 	/// <summary>
 	/// A generic container to embed visual elements.
 	/// </summary>
-	public class GtkFormsContainer : CustomAltView
+	public class GtkFormsContainer : CustomView
 	{
 		Graphics.Color _backgroundColor = null!;
 

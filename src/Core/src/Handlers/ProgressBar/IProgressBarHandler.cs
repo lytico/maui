@@ -4,7 +4,7 @@ using PlatformView = UIKit.UIProgressView;
 using PlatformView = Android.Widget.ProgressBar;
 #elif WINDOWS
 #if __GTK__
-using PlatformView = Microsoft.Maui.Platform.CustomAltView;
+using PlatformView = Microsoft.Maui.Platform.CustomView;
 #else
 using PlatformView = Microsoft.UI.Xaml.Controls.ProgressBar;
 #endif
@@ -14,11 +14,7 @@ using PlatformView = System.Object;
 
 namespace Microsoft.Maui.Handlers
 {
-#if __GTK__
-	public partial interface IProgressBarHandler : IAltViewHandler
-#else
 	public partial interface IProgressBarHandler : IViewHandler
-#endif
 	{
 		new IProgress VirtualView { get; }
 		new PlatformView PlatformView { get; }

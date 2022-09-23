@@ -4,7 +4,7 @@ using PlatformView = Microsoft.Maui.Platform.MauiLabel;
 using PlatformView = AndroidX.AppCompat.Widget.AppCompatTextView;
 #elif WINDOWS
 #if __GTK__
-using PlatformView = Microsoft.Maui.Platform.CustomAltView;
+using PlatformView = Microsoft.Maui.Platform.CustomView;
 #else
 using PlatformView = Microsoft.UI.Xaml.Controls.TextBlock;
 #endif
@@ -16,11 +16,7 @@ using PlatformView = System.Object;
 
 namespace Microsoft.Maui.Handlers
 {
-#if __GTK__
-	public partial interface ILabelHandler : IAltViewHandler
-#else
 	public partial interface ILabelHandler : IViewHandler
-#endif
 	{
 		new ILabel VirtualView { get; }
 		new PlatformView PlatformView { get; }

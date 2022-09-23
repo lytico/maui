@@ -5,7 +5,7 @@ using Gtk;
 
 namespace Microsoft.Maui.Handlers
 {
-	public partial class ActivityIndicatorHandler : AltViewHandler<IActivityIndicator, ActivityIndicator>
+	public partial class ActivityIndicatorHandler : ViewHandler<IActivityIndicator, ActivityIndicator>
 	{
 		//public override bool NeedsContainer =>
 		//	VirtualView?.Background != null ||
@@ -80,12 +80,12 @@ namespace Microsoft.Maui.Handlers
 			base.DisconnectHandler(platformView);
 		}
 
-		private protected override void OnConnectHandler(CustomAltView platformView)
+		private protected override void OnConnectHandler(CustomView platformView)
 		{
 			base.OnConnectHandler(platformView);
 		}
 
-		private protected override void OnDisconnectHandler(CustomAltView platformView)
+		private protected override void OnDisconnectHandler(CustomView platformView)
 		{
 			base.OnDisconnectHandler(platformView);
 		}

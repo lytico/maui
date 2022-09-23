@@ -2,7 +2,7 @@ using System;
 
 namespace Microsoft.Maui.Handlers
 {
-	public partial class SliderHandler : AltViewHandler<ISlider, CustomSlider>
+	public partial class SliderHandler : ViewHandler<ISlider, CustomSlider>
 	{
 		protected override CustomSlider CreatePlatformView()
 		{

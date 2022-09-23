@@ -2,7 +2,7 @@
 
 namespace Microsoft.Maui.Handlers
 {
-	public partial class TimePickerHandler : AltViewHandler<ITimePicker, TimePicker>
+	public partial class TimePickerHandler : ViewHandler<ITimePicker, TimePicker>
 	{
 		TimePicker? _timePicker;
 

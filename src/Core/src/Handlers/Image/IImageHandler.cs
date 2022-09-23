@@ -16,11 +16,7 @@ using PlatformView = System.Object;
 
 namespace Microsoft.Maui.Handlers
 {
-#if __GTK__
-	public partial interface IImageHandler : IAltViewHandler
-#else
 	public partial interface IImageHandler : IViewHandler
-#endif
 	{
 		new IImage VirtualView { get; }
 		ImageSourcePartLoader SourceLoader { get; }

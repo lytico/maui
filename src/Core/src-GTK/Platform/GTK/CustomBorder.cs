@@ -5,7 +5,7 @@ using Windows.ApplicationModel.VoiceCommands;
 
 namespace Microsoft.Maui.Platform
 {
-	public class CustomBorder : CustomAltView// Fixed
+	public class CustomBorder : CustomView// Fixed
 	{
 		Fixed _fixed = null!;
 

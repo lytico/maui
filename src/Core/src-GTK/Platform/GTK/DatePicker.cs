@@ -252,7 +252,7 @@ namespace Microsoft.Maui.Platform
 		}
 	}
 
-	public partial class DatePicker : CustomAltView
+	public partial class DatePicker : CustomView
 	{
 		CustomComboBox _comboBox = null!;
 		Gdk.Color _color;

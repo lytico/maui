@@ -1,6 +1,6 @@
 ﻿namespace Microsoft.Maui.Handlers
 {
-	public partial class SearchBarHandler : AltViewHandler<ISearchBar, SearchEntry>
+	public partial class SearchBarHandler : ViewHandler<ISearchBar, SearchEntry>
 	{
 		Gtk.Entry? _editText;
 

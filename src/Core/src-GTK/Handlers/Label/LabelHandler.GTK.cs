@@ -3,11 +3,11 @@ using Microsoft.Maui.Graphics;
 
 namespace Microsoft.Maui.Handlers
 {
-	public partial class LabelHandler : AltViewHandler<ILabel, CustomAltView>
+	public partial class LabelHandler : ViewHandler<ILabel, CustomView>
 	{
-		protected override CustomAltView CreatePlatformView()
+		protected override CustomView CreatePlatformView()
 		{
-			var plat = new CustomAltView();
+			var plat = new CustomView();
 			plat.Add(new Gtk.Label());
 
 			return plat;

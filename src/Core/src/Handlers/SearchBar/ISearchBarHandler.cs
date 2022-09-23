@@ -23,11 +23,7 @@ using QueryEditor = System.Object;
 
 namespace Microsoft.Maui.Handlers
 {
-#if __GTK__
-	public partial interface ISearchBarHandler : IAltViewHandler
-#else
 	public partial interface ISearchBarHandler : IViewHandler
-#endif
 	{
 		new ISearchBar VirtualView { get; }
 		new PlatformView PlatformView { get; }

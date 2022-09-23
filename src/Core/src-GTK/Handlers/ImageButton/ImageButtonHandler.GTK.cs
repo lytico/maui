@@ -2,7 +2,7 @@
 
 namespace Microsoft.Maui.Handlers
 {
-	public partial class ImageButtonHandler : AltViewHandler<IImageButton, ImageButton>
+	public partial class ImageButtonHandler : ViewHandler<IImageButton, ImageButton>
 	{
 		protected override ImageButton CreatePlatformView()
 		{

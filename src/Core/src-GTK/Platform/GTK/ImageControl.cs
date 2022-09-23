@@ -4,7 +4,7 @@ using Gdk;
 
 namespace Microsoft.Maui.Platform
 {
-	public class ImageControl : CustomAltView, IDesiredSizeProvider
+	public class ImageControl : CustomView, IDesiredSizeProvider
 	{
 		private Gtk.HBox _hBox = null!;
 		private Gtk.Image _image = null!;

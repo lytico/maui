@@ -4,7 +4,7 @@ using Gtk;
 
 namespace Microsoft.Maui.Platform
 {
-	public sealed class ImageButton : CustomAltView
+	public sealed class ImageButton : CustomView
 	{
 		private Alignment _container;
 		private Box _imageAndLabelContainer = null!;

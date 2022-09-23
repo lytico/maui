@@ -6,7 +6,7 @@ using Windows.ApplicationModel.VoiceCommands;
 
 namespace Microsoft.Maui.Platform
 {
-	public class CustomView : Widget
+	public class CustomView : EventBox
 	{
 		public CustomView()
 		{

@@ -4,7 +4,7 @@ using Pango;
 
 namespace Microsoft.Maui.Platform
 {
-	public class SearchEntry : CustomAltView
+	public class SearchEntry : CustomView
 	{
 		private HBox _container;
 		private EntryWrapper _entryWrapper;

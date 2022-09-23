@@ -3,7 +3,7 @@ using Microsoft.Maui.Devices;
 
 namespace Microsoft.Maui.Handlers
 {
-	public partial class DatePickerHandler : AltViewHandler<IDatePicker, DatePicker>
+	public partial class DatePickerHandler : ViewHandler<IDatePicker, DatePicker>
 	{
 		//DatePickerDialog? _dialog;
 

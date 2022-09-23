@@ -56,6 +56,7 @@
     <Compile Include="..\src-GTK\Animations\PlatformTicker.GTK.cs" Link="Animations\PlatformTicker.GTK.cs" />
     <Compile Include="..\src-GTK\Dispatching\Dispatcher.GTK.cs" Link="Dispatching\Dispatcher.GTK.cs" />
     <Compile Include="..\src-GTK\Fonts\EmbeddedFontLoader.GTK.cs" Link="Fonts\EmbeddedFontLoader.GTK.cs" />
+    <Compile Include="..\src-GTK\Fonts\FontRegistrar.GTK.cs" Link="Fonts\FontRegistrar.GTK.cs" />
     <Compile Include="..\src-GTK\Handlers\ActivityIndicator\ActivityIndicatorHandler.GTK.cs" Link="Handlers\ActivityIndicator\ActivityIndicatorHandler.GTK.cs" />
     <Compile Include="..\src-GTK\Handlers\Application\ApplicationHandler.GTK.cs" Link="Handlers\Application\ApplicationHandler.GTK.cs" />
     <Compile Include="..\src-GTK\Handlers\Border\BorderHandler.GTK.cs" Link="Handlers\Border\BorderHandler.GTK.cs" />
@@ -66,8 +67,6 @@
     <Compile Include="..\src-GTK\Handlers\Editor\EditorHandler.GTK.cs" Link="Handlers\Editor\EditorHandler.GTK.cs" />
     <Compile Include="..\src-GTK\Handlers\Entry\EntryHandler.GTK.cs" Link="Handlers\Entry\EntryHandler.GTK.cs" />
     <Compile Include="..\src-GTK\Handlers\GraphicsView\GraphicsViewHandler.GTK.cs" Link="Handlers\GraphicsView\GraphicsViewHandler.GTK.cs" />
-    <Compile Include="..\src-GTK\Handlers\IAltViewHandler.cs" Link="Handlers\IAltViewHandler.cs" />
-    <Compile Include="..\src-GTK\Handlers\IAltViewHandler.GTK.cs" Link="Handlers\IAltViewHandler.GTK.cs" />
     <Compile Include="..\src-GTK\Handlers\ImageButton\ImageButtonHandler.GTK.cs" Link="Handlers\ImageButton\ImageButtonHandler.GTK.cs" />
     <Compile Include="..\src-GTK\Handlers\Image\ImageHandler.GTK.cs" Link="Handlers\Image\ImageHandler.GTK.cs" />
     <Compile Include="..\src-GTK\Handlers\IndicatorView\IndicatorViewHandler.GTK.cs" Link="Handlers\IndicatorView\IndicatorViewHandler.GTK.cs" />
@@ -88,10 +87,6 @@
     <Compile Include="..\src-GTK\Handlers\Switch\SwitchHandler.GTK.cs" Link="Handlers\Switch\SwitchHandler.GTK.cs" />
     <Compile Include="..\src-GTK\Handlers\TimePicker\TimePickerHandler.GTK.cs" Link="Handlers\TimePicker\TimePickerHandler.GTK.cs" />
     <Compile Include="..\src-GTK\Handlers\ViewHandlerExtensions.GTK.cs" Link="Handlers\ViewHandlerExtensions.GTK.cs" />
-    <Compile Include="..\src-GTK\Handlers\View\AltViewHandler.cs" Link="Handlers\View\AltViewHandler.cs" />
-    <Compile Include="..\src-GTK\Handlers\View\AltViewHandler.GTK.cs" Link="Handlers\View\AltViewHandler.GTK.cs" />
-    <Compile Include="..\src-GTK\Handlers\View\AltViewHandlerOfT.cs" Link="Handlers\View\AltViewHandlerOfT.cs" />
-    <Compile Include="..\src-GTK\Handlers\View\AltViewHandlerOfT.GTK.cs" Link="Handlers\View\AltViewHandlerOfT.GTK.cs" />
     <Compile Include="..\src-GTK\Handlers\View\ViewHandler.GTK.cs" Link="Handlers\View\ViewHandler.GTK.cs" />
     <Compile Include="..\src-GTK\Handlers\View\ViewHandlerOfT.GTK.cs" Link="Handlers\View\ViewHandlerOfT.GTK.cs" />
     <Compile Include="..\src-GTK\Handlers\Window\WindowHandler.GTK.cs" Link="Handlers\Window\WindowHandler.GTK.cs" />
@@ -101,7 +96,6 @@
     <Compile Include="..\src-GTK\ImageSources\UriImageSourceService\UriImageSourceService.GTK.cs" Link="ImageSources\UriImageSourceService\UriImageSourceService.GTK.cs" />
     <Compile Include="..\src-GTK\Platform\GTK\ActivityIndicator.cs" Link="Platform\GTK\ActivityIndicator.cs" />
     <Compile Include="..\src-GTK\Platform\GTK\ContentViewGroup.cs" Link="Platform\GTK\ContentViewGroup.cs" />
-    <Compile Include="..\src-GTK\Platform\GTK\CustomAltView.cs" Link="Platform\GTK\CustomAltView.cs" />
     <Compile Include="..\src-GTK\Platform\GTK\CustomBorder.cs" Link="Platform\GTK\CustomBorder.cs" />
     <Compile Include="..\src-GTK\Platform\GTK\CustomComboBox.cs" Link="Platform\GTK\CustomComboBox.cs" />
     <Compile Include="..\src-GTK\Platform\GTK\CustomSlider.cs" Link="Platform\GTK\CustomSlider.cs" />

@@ -9,7 +9,7 @@ using System.Collections.Generic;
 
 namespace Microsoft.Maui.Platform
 {
-	public class MauiPageControl : CustomAltView
+	public class MauiPageControl : CustomView
 	{
 		const int DefaultPadding = 4;
 

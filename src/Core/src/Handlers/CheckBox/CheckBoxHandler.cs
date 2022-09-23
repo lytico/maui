@@ -5,7 +5,7 @@ using PlatformView = Microsoft.Maui.Platform.MauiCheckBox;
 using PlatformView = AndroidX.AppCompat.Widget.AppCompatCheckBox;
 #elif WINDOWS
 #if __GTK__
-using PlatformView = Microsoft.Maui.Platform.CustomAltView;
+using PlatformView = Microsoft.Maui.Platform.CustomView;
 #else
 using PlatformView = Microsoft.UI.Xaml.Controls.CheckBox;
 #endif

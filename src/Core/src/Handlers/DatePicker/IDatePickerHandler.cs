@@ -18,11 +18,7 @@ using PlatformView = System.Object;
 
 namespace Microsoft.Maui.Handlers
 {
-#if __GTK__
-	public partial interface IDatePickerHandler : IAltViewHandler
-#else
 	public partial interface IDatePickerHandler : IViewHandler
-#endif
 	{
 		new IDatePicker VirtualView { get; }
 		new PlatformView PlatformView { get; }

@@ -5,7 +5,7 @@ namespace Microsoft.Maui.Handlers
 {
 	// TODO: NET7 issoto - Change the TPlatformView generic type to MauiAppCompatEditText
 	// This type adds support to the SelectionChanged event
-	public partial class EntryHandler : AltViewHandler<IEntry, EntryWrapper>
+	public partial class EntryHandler : ViewHandler<IEntry, EntryWrapper>
 	{
 		protected override EntryWrapper CreatePlatformView()
 		{

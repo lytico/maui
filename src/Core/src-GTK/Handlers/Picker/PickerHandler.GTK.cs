@@ -3,17 +3,17 @@ using System.Collections.Specialized;
 
 namespace Microsoft.Maui.Handlers
 {
-	public partial class PickerHandler : AltViewHandler<IPicker, CustomAltView>
+	public partial class PickerHandler : ViewHandler<IPicker, CustomView>
 	{
-		protected override CustomAltView CreatePlatformView()
+		protected override CustomView CreatePlatformView()
 		{
-			var plat = new CustomAltView();
+			var plat = new CustomView();
 			plat.Add(new Gtk.ComboBox());
 
 			return plat;
 		}
 
-		protected override void ConnectHandler(CustomAltView platformView)
+		protected override void ConnectHandler(CustomView platformView)
 		{
 			//platformView.FocusChange += OnFocusChange;
 			//platformView.Click += OnClick;
@@ -21,7 +21,7 @@ namespace Microsoft.Maui.Handlers
 			base.ConnectHandler(platformView);
 		}
 
-		protected override void DisconnectHandler(CustomAltView platformView)
+		protected override void DisconnectHandler(CustomView platformView)
 		{
 			//platformView.FocusChange -= OnFocusChange;
 			//platformView.Click -= OnClick;

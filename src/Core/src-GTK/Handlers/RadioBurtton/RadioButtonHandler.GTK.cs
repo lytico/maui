@@ -1,6 +1,6 @@
 ﻿namespace Microsoft.Maui.Handlers
 {
-	public partial class RadioButtonHandler : AltViewHandler<IRadioButton, RadioButton>
+	public partial class RadioButtonHandler : ViewHandler<IRadioButton, RadioButton>
 	{
 		static RadioButton? GetPlatformRadioButton(IRadioButtonHandler handler) => handler.PlatformView as RadioButton;
 

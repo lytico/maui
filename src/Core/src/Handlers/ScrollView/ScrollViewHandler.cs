@@ -6,7 +6,7 @@ using PlatformView = UIKit.UIScrollView;
 using PlatformView = Microsoft.Maui.Platform.MauiScrollView;
 #elif WINDOWS
 #if __GTK__
-using PlatformView = Microsoft.Maui.Platform.CustomAltView;
+using PlatformView = Microsoft.Maui.Platform.CustomView;
 #else
 using PlatformView = Microsoft.UI.Xaml.Controls.ScrollViewer;
 #endif

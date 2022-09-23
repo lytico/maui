@@ -2,7 +2,7 @@
 
 namespace Microsoft.Maui.Platform
 {
-	public class RadioButton : CustomAltView
+	public class RadioButton : CustomView
 	{
 		private Gtk.Alignment? _container;
 		private Gtk.Box? _imageAndLabelContainer;

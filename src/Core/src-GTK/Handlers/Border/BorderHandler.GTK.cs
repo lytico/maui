@@ -2,7 +2,7 @@
 
 namespace Microsoft.Maui.Handlers
 {
-	public partial class BorderHandler : AltViewHandler<IBorderView, CustomBorder>
+	public partial class BorderHandler : ViewHandler<IBorderView, CustomBorder>
 	{
 		protected override CustomBorder CreatePlatformView()
 		{

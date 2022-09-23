@@ -4,7 +4,7 @@ using PlatformView = UIKit.UIView;
 using PlatformView = Android.Views.View;
 #elif WINDOWS
 #if __GTK__
-using PlatformView = Microsoft.Maui.Platform.CustomAltView;
+using PlatformView = Microsoft.Maui.Platform.CustomView;
 #else
 using PlatformView = Microsoft.UI.Xaml.Controls.Frame;
 #endif
@@ -16,11 +16,7 @@ using PlatformView = System.Object;
 
 namespace Microsoft.Maui.Handlers
 {
-#if __GTK__
-	public partial interface INavigationViewHandler : IAltViewHandler
-#else
 	public partial interface INavigationViewHandler : IViewHandler
-#endif
 	{
 		new IStackNavigationView VirtualView { get; }
 		new PlatformView PlatformView { get; }

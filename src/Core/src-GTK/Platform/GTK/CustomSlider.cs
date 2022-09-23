@@ -14,7 +14,7 @@ namespace Microsoft.Maui.Platform
 		}
 	}
 
-	public class CustomSlider : CustomAltView
+	public class CustomSlider : CustomView
 	{
 		public CustomSlider(double minimum, double maximum, double step)
 		{

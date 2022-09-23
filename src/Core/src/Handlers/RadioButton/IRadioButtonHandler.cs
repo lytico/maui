@@ -16,11 +16,7 @@ using PlatformView = System.Object;
 
 namespace Microsoft.Maui.Handlers
 {
-#if __GTK__
-	public partial interface IRadioButtonHandler : IAltViewHandler
-#else
 	public partial interface IRadioButtonHandler : IViewHandler
-#endif
 	{
 		new IRadioButton VirtualView { get; }
 		new PlatformView PlatformView { get; }

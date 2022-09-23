@@ -4,25 +4,25 @@ using Microsoft.Maui.Layouts;
 
 namespace Microsoft.Maui.Handlers
 {
-	public partial class ScrollViewHandler : AltViewHandler<IScrollView, CustomAltView>
+	public partial class ScrollViewHandler : ViewHandler<IScrollView, CustomView>
 	{
 		const string InsetPanelTag = "MAUIContentInsetPanel";
 
-		protected override CustomAltView CreatePlatformView()
+		protected override CustomView CreatePlatformView()
 		{
-			var plat = new CustomAltView();
+			var plat = new CustomView();
 			plat.Add(new Gtk.ScrolledWindow());
 
 			return plat;
 		}
 
-		protected override void ConnectHandler(CustomAltView platformView)
+		protected override void ConnectHandler(CustomView platformView)
 		{
 			base.ConnectHandler(platformView);
 			platformView.ScrollEvent += PlatformView_ScrollEvent;
 		}
 
-		protected override void DisconnectHandler(CustomAltView platformView)
+		protected override void DisconnectHandler(CustomView platformView)
 		{
 			base.DisconnectHandler(platformView);
 			platformView.ScrollEvent -= PlatformView_ScrollEvent;

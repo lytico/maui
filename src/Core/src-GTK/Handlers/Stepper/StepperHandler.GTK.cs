@@ -3,7 +3,7 @@ using Gtk;
 
 namespace Microsoft.Maui.Handlers
 {
-	public partial class StepperHandler : AltViewHandler<IStepper, StepperControl>
+	public partial class StepperHandler : ViewHandler<IStepper, StepperControl>
 	{
 		protected override StepperControl CreatePlatformView()
 		{

@@ -16,11 +16,7 @@ using PlatformView = System.Object;
 
 namespace Microsoft.Maui.Handlers
 {
-#if __GTK__
-	public partial interface ISwitchHandler : IAltViewHandler
-#else
 	public partial interface ISwitchHandler : IViewHandler
-#endif
 	{
 		new ISwitch VirtualView { get; }
 		new PlatformView PlatformView { get; }

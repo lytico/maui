@@ -4,7 +4,7 @@ using Microsoft.UI.Xaml.Controls;
 
 namespace Microsoft.Maui.Platform
 {
-	public class ContentViewGroup : CustomAltView
+	public class ContentViewGroup : CustomView
 	{
 		Fixed _fixed;
 		IBorderStroke? _clip;

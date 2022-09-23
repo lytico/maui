@@ -4,7 +4,7 @@ using Pango;
 
 namespace Microsoft.Maui.Platform
 {
-	public class SwitchControl : CustomAltView
+	public class SwitchControl : CustomView
 	{
 		public SwitchControl()
 		{

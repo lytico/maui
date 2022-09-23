@@ -18,11 +18,7 @@ using PlatformView = System.Object;
 
 namespace Microsoft.Maui.Handlers
 {
-#if __GTK__
-	public partial interface ITimePickerHandler : IAltViewHandler
-#else
 	public partial interface ITimePickerHandler : IViewHandler
-#endif
 	{
 		new ITimePicker VirtualView { get; }
 		new PlatformView PlatformView { get; }

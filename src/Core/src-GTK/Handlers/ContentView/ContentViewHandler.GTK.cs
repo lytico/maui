@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Microsoft.Maui.Handlers
 {
-	public partial class ContentViewHandler : AltViewHandler<IContentView, ContentViewGroup>
+	public partial class ContentViewHandler : ViewHandler<IContentView, ContentViewGroup>
 	{
 		protected override ContentViewGroup CreatePlatformView()
 		{
