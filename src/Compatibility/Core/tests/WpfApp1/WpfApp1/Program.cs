@@ -16,11 +16,12 @@ namespace WpfApp1
 			Gtk.Application.Init();
 
 
-			var app = new WpfApp1.App();
-			var window = new FormsWindow();
-			window.LoadApplication(app);
-			window.SetSizeRequest(500, 600);
-			window.SetApplicationTitle("Welcome");
+			new WpfApp1.App();
+			//var app = new WpfApp1.App();
+			//var window = new FormsWindow();
+			//window.LoadApplication(app);
+			//window.SetSizeRequest(500, 600);
+			//window.SetApplicationTitle("Welcome");
 
 
 			////Create the Window
@@ -88,7 +89,7 @@ namespace WpfApp1
 
 			//Show Everything
 			//myWin.ShowAll();
-			window.Show();
+			//window.Show();
 
 			Gtk.Application.Run();
 		}
