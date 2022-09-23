@@ -2,9 +2,9 @@
 
 namespace Microsoft.Maui.Handlers
 {
-	public partial class GraphicsViewHandler : ViewHandler<IGraphicsView, CustomView>
+	public partial class GraphicsViewHandler : ViewHandler<IGraphicsView, MauiView>
 	{
-		protected override CustomView CreatePlatformView() => new CustomView();
+		protected override MauiView CreatePlatformView() => new MauiView();
 
 		public static void MapDrawable(IGraphicsViewHandler handler, IGraphicsView graphicsView)
 		{

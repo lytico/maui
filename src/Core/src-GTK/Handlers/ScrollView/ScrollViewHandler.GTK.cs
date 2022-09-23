@@ -4,25 +4,25 @@ using Microsoft.Maui.Layouts;
 
 namespace Microsoft.Maui.Handlers
 {
-	public partial class ScrollViewHandler : ViewHandler<IScrollView, CustomView>
+	public partial class ScrollViewHandler : ViewHandler<IScrollView, MauiView>
 	{
 		const string InsetPanelTag = "MAUIContentInsetPanel";
 
-		protected override CustomView CreatePlatformView()
+		protected override MauiView CreatePlatformView()
 		{
-			var plat = new CustomView();
+			var plat = new MauiView();
 			plat.Add(new Gtk.ScrolledWindow());
 
 			return plat;
 		}
 
-		protected override void ConnectHandler(CustomView platformView)
+		protected override void ConnectHandler(MauiView platformView)
 		{
 			base.ConnectHandler(platformView);
 			platformView.ScrollEvent += PlatformView_ScrollEvent;
 		}
 
-		protected override void DisconnectHandler(CustomView platformView)
+		protected override void DisconnectHandler(MauiView platformView)
 		{
 			base.DisconnectHandler(platformView);
 			platformView.ScrollEvent -= PlatformView_ScrollEvent;

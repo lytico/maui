@@ -4,7 +4,7 @@ using Microsoft.UI.Xaml.Controls;
 
 namespace Microsoft.Maui.Platform
 {
-	public class ContentViewGroup : CustomView
+	public class ContentViewGroup : MauiView
 	{
 		Fixed _fixed;
 		IBorderStroke? _clip;

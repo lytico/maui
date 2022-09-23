@@ -2,16 +2,16 @@
 
 namespace Microsoft.Maui.Handlers
 {
-	public partial class ImageHandler : ViewHandler<IImage, ImageControl>
+	public partial class ImageHandler : ViewHandler<IImage, MauiImage>
 	{
-		protected override ImageControl CreatePlatformView()
+		protected override MauiImage CreatePlatformView()
 		{
-			var imageView = new ImageControl();
+			var imageView = new MauiImage();
 
 			return imageView;
 		}
 
-		protected override void DisconnectHandler(ImageControl platformView)
+		protected override void DisconnectHandler(MauiImage platformView)
 		{
 			base.DisconnectHandler(platformView);
 			SourceLoader.Reset();

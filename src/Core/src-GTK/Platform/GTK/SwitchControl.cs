@@ -4,7 +4,7 @@ using Pango;
 
 namespace Microsoft.Maui.Platform
 {
-	public class SwitchControl : CustomView
+	public class SwitchControl : MauiView
 	{
 		public SwitchControl()
 		{

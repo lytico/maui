@@ -5,11 +5,11 @@ using Windows.ApplicationModel.VoiceCommands;
 
 namespace Microsoft.Maui.Platform
 {
-	public class CustomBorder : CustomView// Fixed
+	public class MauiBorder : MauiView
 	{
 		Fixed _fixed = null!;
 
-		public CustomBorder()
+		public MauiBorder()
 		{
 			_fixed = new Fixed();
 			Add(_fixed);

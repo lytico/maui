@@ -1,6 +1,6 @@
 ﻿#nullable enable
 using System;
-using PlatformView = Microsoft.Maui.Platform.CustomView;
+using PlatformView = Microsoft.Maui.Platform.MauiView;
 
 namespace Microsoft.Maui.Handlers
 {

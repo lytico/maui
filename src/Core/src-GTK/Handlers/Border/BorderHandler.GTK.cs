@@ -2,16 +2,16 @@
 
 namespace Microsoft.Maui.Handlers
 {
-	public partial class BorderHandler : ViewHandler<IBorderView, CustomBorder>
+	public partial class BorderHandler : ViewHandler<IBorderView, MauiBorder>
 	{
-		protected override CustomBorder CreatePlatformView()
+		protected override MauiBorder CreatePlatformView()
 		{
 			if (VirtualView == null)
 			{
 				throw new InvalidOperationException($"{nameof(VirtualView)} must be set to create a ContentViewGroup");
 			}
 
-			var viewGroup = new CustomBorder();
+			var viewGroup = new MauiBorder();
 			//{
 			//	CrossPlatformMeasure = VirtualView.CrossPlatformMeasure,
 			//	CrossPlatformArrange = VirtualView.CrossPlatformArrange

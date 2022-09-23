@@ -5,7 +5,7 @@ using PlatformView = UIKit.UISlider;
 using PlatformView = Android.Widget.SeekBar;
 #elif WINDOWS
 #if __GTK__
-using PlatformView = Microsoft.Maui.Platform.CustomSlider;
+using PlatformView = Microsoft.Maui.Platform.MauiSlider;
 #else
 using PlatformView = Microsoft.UI.Xaml.Controls.Slider;
 #endif

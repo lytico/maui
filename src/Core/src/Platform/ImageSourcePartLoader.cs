@@ -11,7 +11,7 @@ using PlatformView = Android.Views.View;
 #elif WINDOWS
 #if __GTK__
 using PlatformImage = Gdk.Pixbuf;
-using PlatformView = Microsoft.Maui.Platform.CustomView;
+using PlatformView = Microsoft.Maui.Platform.MauiView;
 #else
 using PlatformImage = Microsoft.UI.Xaml.Media.ImageSource;
 using PlatformView = Microsoft.UI.Xaml.FrameworkElement;

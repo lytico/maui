@@ -260,7 +260,7 @@ namespace Microsoft.Maui.Platform
 	{
 		private const string DefaultTimeFormat = @"hh\:mm\:ss";
 
-		private CustomComboBox _comboBox = null!;
+		private MauiComboBox _comboBox = null!;
 		private Gdk.Color _color;
 		private TimeSpan _currentTime;
 		private string _timeFormat = null!;
@@ -376,7 +376,7 @@ namespace Microsoft.Maui.Platform
 
 		private void BuildTimePicker()
 		{
-			_comboBox = new CustomComboBox();
+			_comboBox = new MauiComboBox();
 			Add(_comboBox);
 
 			if ((Child != null))

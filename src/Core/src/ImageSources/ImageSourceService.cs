@@ -54,7 +54,7 @@ namespace Microsoft.Maui
 			CancellationToken cancellationToken = default);
 #elif WINDOWS
 #if __GTK__
-		public abstract Gdk.Pixbuf? GetImageSourceAsync(
+		public abstract Task<IImageSourceServiceResult<Gdk.Pixbuf>?> GetImageSourceAsync(
 			IImageSource imageSource,
 			float scale = 1,
 			CancellationToken cancellationToken = default);

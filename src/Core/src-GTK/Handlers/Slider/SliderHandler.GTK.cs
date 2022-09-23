@@ -2,23 +2,23 @@ using System;
 
 namespace Microsoft.Maui.Handlers
 {
-	public partial class SliderHandler : ViewHandler<ISlider, CustomSlider>
+	public partial class SliderHandler : ViewHandler<ISlider, MauiSlider>
 	{
-		protected override CustomSlider CreatePlatformView()
+		protected override MauiSlider CreatePlatformView()
 		{
 			double stepping = Math.Min((VirtualView.Maximum - VirtualView.Minimum) / 10, 1);
 
-			var aSlider = new CustomSlider(VirtualView.Minimum, VirtualView.Maximum, stepping);
+			var aSlider = new MauiSlider(VirtualView.Minimum, VirtualView.Maximum, stepping);
 			aSlider.CustomValueChanged += ASlider_CustomValueChanged;
 			
 			return aSlider;
 		}
 
-		protected override void ConnectHandler(CustomSlider platformView)
+		protected override void ConnectHandler(MauiSlider platformView)
 		{
 		}
 
-		protected override void DisconnectHandler(CustomSlider platformView)
+		protected override void DisconnectHandler(MauiSlider platformView)
 		{
 		}
 
@@ -60,7 +60,7 @@ namespace Microsoft.Maui.Handlers
 			//	.FireAndForget(handler);
 		}
 
-		private void ASlider_CustomValueChanged(object? sender, CustomSliderEventArgs e)
+		private void ASlider_CustomValueChanged(object? sender, MauiSliderEventArgs e)
 		{
 			if (VirtualView == null)
 				return;
@@ -73,10 +73,10 @@ namespace Microsoft.Maui.Handlers
 			VirtualView.Value = value;
 		}
 
-		void OnStartTrackingTouch(CustomSlider seekBar) =>
+		void OnStartTrackingTouch(MauiSlider seekBar) =>
 			VirtualView?.DragStarted();
 
-		void OnStopTrackingTouch(CustomSlider seekBar) =>
+		void OnStopTrackingTouch(MauiSlider seekBar) =>
 			VirtualView?.DragCompleted();
 	}
 }

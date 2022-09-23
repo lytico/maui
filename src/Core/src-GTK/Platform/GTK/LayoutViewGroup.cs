@@ -4,11 +4,15 @@ using Microsoft.UI.Xaml.Controls;
 
 namespace Microsoft.Maui.Platform
 {
-	public class LayoutViewGroup : CustomView
+	public class LayoutViewGroup : MauiView
 	{
 		IBorderStroke? _clip;
 
 		public LayoutViewGroup()
+		{
+		}
+
+		public void UpdateClipsToBounds(ILayout layout)
 		{
 		}
 

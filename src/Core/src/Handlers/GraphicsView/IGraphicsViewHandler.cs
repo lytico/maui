@@ -1,6 +1,6 @@
 ﻿#if __IOS__ || MACCATALYST || MONOANDROID || WINDOWS || TIZEN
 #if __GTK__
-using PlatformView = Microsoft.Maui.Platform.CustomView;
+using PlatformView = Microsoft.Maui.Platform.MauiView;
 #else
 using PlatformView = Microsoft.Maui.Platform.PlatformTouchGraphicsView;
 #endif

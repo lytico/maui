@@ -101,21 +101,21 @@
     <Compile Include="..\src-GTK\LifecycleEvents\GTK\IGTKLifecycleBuilder.cs" Link="LifecycleEvents\GTK\IGTKLifecycleBuilder.cs" />
     <Compile Include="..\src-GTK\Platform\GTK\ActivityIndicator.cs" Link="Platform\GTK\ActivityIndicator.cs" />
     <Compile Include="..\src-GTK\Platform\GTK\ContentViewGroup.cs" Link="Platform\GTK\ContentViewGroup.cs" />
-    <Compile Include="..\src-GTK\Platform\GTK\CustomBorder.cs" Link="Platform\GTK\CustomBorder.cs" />
-    <Compile Include="..\src-GTK\Platform\GTK\CustomComboBox.cs" Link="Platform\GTK\CustomComboBox.cs" />
-    <Compile Include="..\src-GTK\Platform\GTK\CustomSlider.cs" Link="Platform\GTK\CustomSlider.cs" />
-    <Compile Include="..\src-GTK\Platform\GTK\CustomView.cs" Link="Platform\GTK\CustomView.cs" />
     <Compile Include="..\src-GTK\Platform\GTK\DatePicker.cs" Link="Platform\GTK\DatePicker.cs" />
     <Compile Include="..\src-GTK\Platform\GTK\EntryWrapper.cs" Link="Platform\GTK\EntryWrapper.cs" />
     <Compile Include="..\src-GTK\Platform\GTK\GtkFormsContainer.cs" Link="Platform\GTK\GtkFormsContainer.cs" />
     <Compile Include="..\src-GTK\Platform\GTK\IDesiredSizeProvider.cs" Link="Platform\GTK\IDesiredSizeProvider.cs" />
-    <Compile Include="..\src-GTK\Platform\GTK\ImageButton.cs" Link="Platform\GTK\ImageButton.cs" />
-    <Compile Include="..\src-GTK\Platform\GTK\ImageControl.cs" Link="Platform\GTK\ImageControl.cs" />
     <Compile Include="..\src-GTK\Platform\GTK\LayoutViewGroup.cs" Link="Platform\GTK\LayoutViewGroup.cs" />
+    <Compile Include="..\src-GTK\Platform\GTK\MauiBorder.cs" Link="Platform\GTK\MauiBorder.cs" />
+    <Compile Include="..\src-GTK\Platform\GTK\MauiComboBox.cs" Link="Platform\GTK\MauiComboBox.cs" />
     <Compile Include="..\src-GTK\Platform\GTK\MauiContextExtensions.cs" Link="Platform\GTK\MauiContextExtensions.cs" />
+    <Compile Include="..\src-GTK\Platform\GTK\MauiImage.cs" Link="Platform\GTK\MauiImage.cs" />
+    <Compile Include="..\src-GTK\Platform\GTK\MauiImageButton.cs" Link="Platform\GTK\MauiImageButton.cs" />
     <Compile Include="..\src-GTK\Platform\GTK\MauiNavigationView.cs" Link="Platform\GTK\MauiNavigationView.cs" />
     <Compile Include="..\src-GTK\Platform\GTK\MauiPageControl.cs" Link="Platform\GTK\MauiPageControl.cs" />
+    <Compile Include="..\src-GTK\Platform\GTK\MauiSlider.cs" Link="Platform\GTK\MauiSlider.cs" />
     <Compile Include="..\src-GTK\Platform\GTK\MauiStepper.cs" Link="Platform\GTK\MauiStepper.cs" />
+    <Compile Include="..\src-GTK\Platform\GTK\MauiView.cs" Link="Platform\GTK\MauiView.cs" />
     <Compile Include="..\src-GTK\Platform\GTK\NavigationRootManager.cs" Link="Platform\GTK\NavigationRootManager.cs" />
     <Compile Include="..\src-GTK\Platform\GTK\PlatformTouchGraphicsView.cs" Link="Platform\GTK\PlatformTouchGraphicsView.cs" />
     <Compile Include="..\src-GTK\Platform\GTK\RadioButton.cs" Link="Platform\GTK\RadioButton.cs" />

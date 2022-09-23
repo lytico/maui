@@ -5,7 +5,7 @@ using PlatformView = UIKit.UIProgressView;
 using PlatformView = Android.Widget.ProgressBar;
 #elif WINDOWS
 #if __GTK__
-using PlatformView = Microsoft.Maui.Platform.CustomView;
+using PlatformView = Microsoft.Maui.Platform.MauiView;
 #else
 using PlatformView = Microsoft.UI.Xaml.Controls.ProgressBar;
 #endif

@@ -4,19 +4,19 @@ using Gtk;
 
 namespace Microsoft.Maui.Platform
 {
-	public class CustomSliderEventArgs : EventArgs
+	public class MauiSliderEventArgs : EventArgs
 	{
 		public double CustomValue { get; set; }
 
-		public CustomSliderEventArgs(double value)
+		public MauiSliderEventArgs(double value)
 		{
 			CustomValue = value;
 		}
 	}
 
-	public class CustomSlider : CustomView
+	public class MauiSlider : MauiView
 	{
-		public CustomSlider(double minimum, double maximum, double step)
+		public MauiSlider(double minimum, double maximum, double step)
 		{
 			HScaleWidget = new Gtk.HScale(minimum, maximum, step);
 			CustomMinimum = minimum;
@@ -27,7 +27,7 @@ namespace Microsoft.Maui.Platform
 			Add(HScaleWidget);
 		}
 
-		public delegate void CustomSliderEventHandler(object sender, CustomSliderEventArgs args);
+		public delegate void CustomSliderEventHandler(object sender, MauiSliderEventArgs args);
 		public event CustomSliderEventHandler CustomValueChanged = null!;
 
 		public Gtk.HScale HScaleWidget { get; set; }
@@ -58,7 +58,7 @@ namespace Microsoft.Maui.Platform
 		{
 			if (CustomValueChanged != null!)
 			{
-				CustomSliderEventArgs args = new CustomSliderEventArgs(HScaleWidget.Value);
+				MauiSliderEventArgs args = new MauiSliderEventArgs(HScaleWidget.Value);
 				if (sender == null)
 					CustomValueChanged.Invoke(this, args);
 				else

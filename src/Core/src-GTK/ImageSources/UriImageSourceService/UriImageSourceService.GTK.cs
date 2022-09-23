@@ -9,7 +9,7 @@ namespace Microsoft.Maui
 {
 	public partial class UriImageSourceService
 	{
-		public override Pixbuf? GetImageSourceAsync(IImageSource imageSource, float scale = 1, CancellationToken cancellationToken = default)
+		public override Task<IImageSourceServiceResult<Gdk.Pixbuf>?> GetImageSourceAsync(IImageSource imageSource, float scale = 1, CancellationToken cancellationToken = default)
 		{
 			Pixbuf? image = null;
 			var fileImageSource = (IFileImageSource)imageSource;
@@ -29,7 +29,10 @@ namespace Microsoft.Maui
 				}
 			}
 
-			return image;
+			if (image == null)
+				return null!;
+
+			return Task.FromResult<IImageSourceServiceResult<Gdk.Pixbuf>?>(new ImageSourceServiceResult(image));
 		}
 	}
 }

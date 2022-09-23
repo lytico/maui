@@ -10,7 +10,7 @@ using PlatformView = Google.Android.Material.ImageView.ShapeableImageView;
 #if __GTK__
 using PlatformImage = Gdk.Pixbuf;
 using PlatformImageView = Gtk.Image;
-using PlatformView = Microsoft.Maui.Platform.ImageButton;
+using PlatformView = Microsoft.Maui.Platform.MauiImageButton;
 #else
 using System;
 using PlatformImage = Microsoft.UI.Xaml.Media.ImageSource;

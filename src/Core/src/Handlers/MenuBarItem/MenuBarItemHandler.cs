@@ -24,7 +24,7 @@ namespace Microsoft.Maui.Handlers
 
 		public static IPropertyMapper<IMenuBarItem, IMenuBarItemHandler> Mapper = new PropertyMapper<IMenuBarItem, IMenuBarItemHandler>(ElementMapper)
 		{
-#if WINDOWS
+#if WINDOWS && !__GTK__
 			[nameof(IMenuBarItem.Text)] = MapText,
 #endif
 		};

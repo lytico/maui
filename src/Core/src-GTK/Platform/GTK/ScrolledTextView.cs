@@ -2,7 +2,7 @@
 
 namespace Microsoft.Maui.Platform
 {
-	public class ScrolledTextView : CustomView
+	public class ScrolledTextView : MauiView
 	{
 		private Table _table;
 		private ScrolledWindow _scrolledWindow;

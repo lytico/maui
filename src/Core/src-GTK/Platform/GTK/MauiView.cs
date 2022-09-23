@@ -6,9 +6,9 @@ using Windows.ApplicationModel.VoiceCommands;
 
 namespace Microsoft.Maui.Platform
 {
-	public class CustomAltView : EventBox
+	public class MauiView : EventBox
 	{
-		public CustomAltView()
+		public MauiView()
 		{
 		}
 
@@ -89,7 +89,7 @@ namespace Microsoft.Maui.Platform
 		{
 		}
 
-		public void UpdateInputTransparent(IAltViewHandler handler, IView view)
+		public void UpdateInputTransparent(IViewHandler handler, IView view)
 		{
 		}
 

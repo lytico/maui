@@ -5,7 +5,11 @@ using PlatformView = UIKit.UIImage;
 #elif ANDROID
 using PlatformView = Android.Graphics.Drawables.Drawable;
 #elif WINDOWS
+#if __GTK__
+using PlatformView = Gdk.Pixbuf;
+#else
 using PlatformView = Microsoft.UI.Xaml.Media.ImageSource;
+#endif
 #elif TIZEN
 using PlatformView = Tizen.UIExtensions.ElmSharp.Image;
 #elif (NETSTANDARD || !PLATFORM) || (NET6_0_OR_GREATER && !IOS && !ANDROID && !TIZEN)

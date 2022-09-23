@@ -4,7 +4,7 @@ using Pango;
 
 namespace Microsoft.Maui.Platform
 {
-	public class StepperControl : CustomView
+	public class StepperControl : MauiView
 	{
 		public StepperControl(double min, double max, double step)
 		{

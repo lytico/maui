@@ -9,7 +9,7 @@ namespace Microsoft.Maui.Platform
 			textView.Text = label.Text;
 		}
 
-		public static void UpdateTextPlainText(this ImageButton textView, IText button)
+		public static void UpdateTextPlainText(this MauiImageButton textView, IText button)
 		{
 			textView.LabelWidget.Text = button.Text;
 		}

@@ -1,53 +1,50 @@
-﻿using Gdk;
+using System;
+using Gdk;
+using Gtk;
 
 namespace Microsoft.Maui.Platform
 {
-	public class RadioButton : MauiView
+	public sealed class MauiImageButton : MauiView
 	{
-		private Gtk.Alignment? _container;
-		private Gtk.Box? _imageAndLabelContainer;
+		private Alignment _container;
+		private Box _imageAndLabelContainer = null!;
 
 		private Gdk.Color _defaultBorderColor;
 		private Gdk.Color _defaultBackgroundColor;
 		private Gdk.Color? _borderColor;
 		private Gdk.Color? _backgroundColor;
 
-		private Gtk.Image? _image;
-		private Gtk.Label? _label;
+		private Gtk.Button _button;
+		private Gtk.Image _image;
+		private Gtk.Label _label;
 		private uint _imageSpacing = 0;
 		private uint _borderWidth = 0;
 
-		public RadioButton(Gtk.RadioButton? radio_group_member, string label)
+		public MauiImageButton()
 		{
-			_defaultBackgroundColor = Style.Backgrounds[(int)Gtk.StateType.Normal];
-			_defaultBorderColor = Style.BaseColors[(int)Gtk.StateType.Active];
+			_defaultBackgroundColor = Style.Backgrounds[(int)StateType.Normal];
+			_defaultBorderColor = Style.BaseColors[(int)StateType.Active];
 
-			RadioButtonWidget = new Gtk.RadioButton(radio_group_member, label);
+			_button = new Gtk.Button();
 
-			RadioButtonWidget.Relief = Gtk.ReliefStyle.None;
+			_button.Relief = ReliefStyle.None;
 
 			_image = new Gtk.Image();
 			_label = new Gtk.Label();
-			_container = new Gtk.Alignment(0.5f, 0.5f, 0, 0);
+			_container = new Alignment(0.5f, 0.5f, 0, 0);
 
+			_button.Add(_container);
 
-			RadioButtonWidget.Add(_container);
-			Add(RadioButtonWidget);
+			Add(_button);
 
 			RecreateContainer();
 		}
 
-		public RadioButton(string label) : this(null, label) { }
+		public Gtk.Label LabelWidget => _label;
 
-		public RadioButton() : this(string.Empty) { }
+		public Gtk.Image ImageWidget => _image;
 
-		#region Properties
-
-		public Gtk.Label? LabelWidget => _label;
-
-		public Gtk.Image? ImageWidget => _image;
-
-		public Gtk.RadioButton? RadioButtonWidget { get; set; }
+		public Gtk.Button ButtonWidget => _button;
 
 		public uint ImageSpacing
 		{
@@ -63,10 +60,6 @@ namespace Microsoft.Maui.Platform
 			}
 		}
 
-		#endregion Properties
-
-		#region Public methods
-
 		public void SetBackgroundColor(Gdk.Color? color)
 		{
 			_backgroundColor = color;
@@ -81,9 +74,9 @@ namespace Microsoft.Maui.Platform
 
 		public void SetForegroundColor(Gdk.Color color)
 		{
-			_label?.ModifyFg(Gtk.StateType.Normal, color);
-			_label?.ModifyFg(Gtk.StateType.Prelight, color);
-			_label?.ModifyFg(Gtk.StateType.Active, color);
+			_label.ModifyFg(StateType.Normal, color);
+			_label.ModifyFg(StateType.Prelight, color);
+			_label.ModifyFg(StateType.Active, color);
 		}
 
 		public void SetBorderWidth(uint width)
@@ -104,29 +97,20 @@ namespace Microsoft.Maui.Platform
 			QueueDraw();
 		}
 
-		public void SetImagePosition(Gtk.PositionType position)
+		public void SetImagePosition(PositionType position)
 		{
-			RadioButtonWidget.ImagePosition = position;
+			_button.ImagePosition = position;
 			RecreateContainer();
 		}
-
-		#endregion Public methods
-
-		#region Gtk.RadioButton overrides
 
 		public override void Destroy()
 		{
 			base.Destroy();
-
-			_label = null;
-			_image = null;
-			_imageAndLabelContainer = null;
-			_container = null;
+			_label = null!;
+			_image = null!;
+			_imageAndLabelContainer = null!;
+			_container = null!;
 		}
-
-		#endregion Gtk.RadioButton overrides
-
-		#region Gtk.Widget overrides
 
 		protected override bool OnExposeEvent(EventExpose evnt)
 		{
@@ -158,41 +142,35 @@ namespace Microsoft.Maui.Platform
 			return base.OnExposeEvent(evnt);
 		}
 
-		#endregion Gtk.Widget overrides
-
-		#region Private methods
-
 		private void RecreateContainer()
 		{
 			if (_imageAndLabelContainer != null)
 			{
-				if (_image != null)
-					_imageAndLabelContainer.RemoveFromContainer(_image);
-				if (_label != null)
-					_imageAndLabelContainer.RemoveFromContainer(_label);
-				_container?.RemoveFromContainer(_imageAndLabelContainer);
-				_imageAndLabelContainer = null;
+				_imageAndLabelContainer.RemoveFromContainer(_image);
+				_imageAndLabelContainer.RemoveFromContainer(_label);
+				_container.RemoveFromContainer(_imageAndLabelContainer);
+				_imageAndLabelContainer = null!;
 			}
 
-			switch (RadioButtonWidget.ImagePosition)
+			switch (_button.ImagePosition)
 			{
-				case Gtk.PositionType.Left:
-					_imageAndLabelContainer = new Gtk.HBox();
+				case PositionType.Left:
+					_imageAndLabelContainer = new HBox();
 					_imageAndLabelContainer.PackStart(_image, false, false, _imageSpacing);
 					_imageAndLabelContainer.PackStart(_label, false, false, 0);
 					break;
-				case Gtk.PositionType.Right:
-					_imageAndLabelContainer = new Gtk.HBox();
-					_imageAndLabelContainer.PackStart(_label, false, false, 0);
-					_imageAndLabelContainer.PackStart(_image, false, false, _imageSpacing);
-					break;
-				case Gtk.PositionType.Top:
-					_imageAndLabelContainer = new Gtk.VBox();
+				case PositionType.Top:
+					_imageAndLabelContainer = new VBox();
 					_imageAndLabelContainer.PackStart(_image, false, false, _imageSpacing);
 					_imageAndLabelContainer.PackStart(_label, false, false, 0);
 					break;
-				case Gtk.PositionType.Bottom:
-					_imageAndLabelContainer = new Gtk.VBox();
+				case PositionType.Right:
+					_imageAndLabelContainer = new HBox();
+					_imageAndLabelContainer.PackStart(_label, false, false, 0);
+					_imageAndLabelContainer.PackStart(_image, false, false, _imageSpacing);
+					break;
+				case PositionType.Bottom:
+					_imageAndLabelContainer = new VBox();
 					_imageAndLabelContainer.PackStart(_label, false, false, 0);
 					_imageAndLabelContainer.PackStart(_image, false, false, _imageSpacing);
 					break;
@@ -200,16 +178,14 @@ namespace Microsoft.Maui.Platform
 
 			if (_imageAndLabelContainer != null)
 			{
-				_container?.Add(_imageAndLabelContainer);
-				_container?.ShowAll();
+				_container.Add(_imageAndLabelContainer);
+				_container.ShowAll();
 			}
 		}
 
 		private void UpdateImageSpacing()
 		{
-			_imageAndLabelContainer?.SetChildPacking(_image, false, false, _imageSpacing, Gtk.PackType.Start);
+			_imageAndLabelContainer.SetChildPacking(_image, false, false, _imageSpacing, PackType.Start);
 		}
-
-		#endregion Private methods
 	}
 }

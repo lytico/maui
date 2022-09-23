@@ -7,7 +7,7 @@ using PlatformView = UIKit.UIView;
 using PlatformView = Android.Views.View;
 #elif WINDOWS
 #if __GTK__
-using PlatformView = Microsoft.Maui.Platform.CustomView;
+using PlatformView = Microsoft.Maui.Platform.MauiView;
 #else
 using PlatformView = Microsoft.UI.Xaml.FrameworkElement;
 #endif

@@ -1,14 +1,14 @@
 namespace Microsoft.Maui.Platform
 {
 	// CustomCombobox, Gtk.Entry + Gtk.Button
-	public class CustomComboBox : Gtk.HBox
+	public class MauiComboBox : Gtk.HBox
 	{
 		private Gtk.Entry _entry = null!;
 		private Gtk.Button _button = null!;
 		private Gtk.Arrow _arrow = null!;
 		private Gdk.Color _color;
 
-		public CustomComboBox()
+		public MauiComboBox()
 		{
 			BuildCustomComboBox();
 		}

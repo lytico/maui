@@ -4,7 +4,7 @@ using PlatformView = Microsoft.Maui.Platform.MauiPicker;
 using PlatformView = Microsoft.Maui.Platform.MauiPicker;
 #elif WINDOWS
 #if __GTK__
-using PlatformView = Microsoft.Maui.Platform.CustomView;
+using PlatformView = Microsoft.Maui.Platform.MauiView;
 #else
 using PlatformView = Microsoft.UI.Xaml.Controls.ComboBox;
 #endif

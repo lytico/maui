@@ -4,23 +4,23 @@ using Pango;
 
 namespace Microsoft.Maui.Platform
 {
-	public class SearchEntry : CustomView
+	public class SearchEntry : MauiView
 	{
 		private HBox _container;
 		private EntryWrapper _entryWrapper;
-		private ImageButton _searchButton;
-		private ImageButton _clearButton;
+		private MauiImageButton _searchButton;
+		private MauiImageButton _clearButton;
 
 		public SearchEntry()
 		{
 			_container = new HBox();
 			_entryWrapper = new EntryWrapper();
 			_entryWrapper.Entry.HasFrame = false;
-			_searchButton = new ImageButton();
+			_searchButton = new MauiImageButton();
 			_searchButton.SetImagePosition(PositionType.Left);
 			_searchButton.ImageWidget.Pixbuf = RenderIcon("gtk-find", IconSize.SmallToolbar, null); // Search icon
 
-			_clearButton = new ImageButton();
+			_clearButton = new MauiImageButton();
 			_clearButton.SetImagePosition(PositionType.Left);
 			_clearButton.ImageWidget.Pixbuf = RenderIcon("gtk-close", IconSize.SmallToolbar, null); // Cancel icon
 

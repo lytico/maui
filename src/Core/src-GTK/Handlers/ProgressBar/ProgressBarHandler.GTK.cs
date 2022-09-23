@@ -1,10 +1,10 @@
 ﻿namespace Microsoft.Maui.Handlers
 {
-	public partial class ProgressBarHandler : ViewHandler<IProgress, CustomView>
+	public partial class ProgressBarHandler : ViewHandler<IProgress, MauiView>
 	{
-		protected override CustomView CreatePlatformView()
+		protected override MauiView CreatePlatformView()
 		{
-			var plat = new CustomView();
+			var plat = new MauiView();
 			plat.Add(new Gtk.ProgressBar());
 
 			return plat;

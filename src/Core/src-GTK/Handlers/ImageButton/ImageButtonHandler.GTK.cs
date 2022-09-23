@@ -2,11 +2,11 @@
 
 namespace Microsoft.Maui.Handlers
 {
-	public partial class ImageButtonHandler : ViewHandler<IImageButton, ImageButton>
+	public partial class ImageButtonHandler : ViewHandler<IImageButton, MauiImageButton>
 	{
-		protected override ImageButton CreatePlatformView()
+		protected override MauiImageButton CreatePlatformView()
 		{
-			var platformView = new ImageButton();
+			var platformView = new MauiImageButton();
 
 			return platformView;
 		}
@@ -15,7 +15,7 @@ namespace Microsoft.Maui.Handlers
 		{
 		}
 
-		protected override void DisconnectHandler(ImageButton platformView)
+		protected override void DisconnectHandler(MauiImageButton platformView)
 		{
 			platformView.ButtonWidget.Clicked -= PlatformView_Clicked;
 
@@ -24,7 +24,7 @@ namespace Microsoft.Maui.Handlers
 			SourceLoader.Reset();
 		}
 
-		protected override void ConnectHandler(ImageButton platformView)
+		protected override void ConnectHandler(MauiImageButton platformView)
 		{
 			platformView.ButtonWidget.Clicked += PlatformView_Clicked;
 

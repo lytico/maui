@@ -3,14 +3,14 @@ using Gtk;
 
 namespace Microsoft.Maui.Handlers
 {
-	public partial class NavigationViewHandler : ViewHandler<IStackNavigationView, CustomView>
+	public partial class NavigationViewHandler : ViewHandler<IStackNavigationView, MauiView>
 	{
 		//StackNavigationManager? _stackNavigationManager;
 		//internal StackNavigationManager? StackNavigationManager => _stackNavigationManager;
 
-		protected override CustomView CreatePlatformView()
+		protected override MauiView CreatePlatformView()
 		{
-			return new CustomView();
+			return new MauiView();
 		}
 
 		public override Graphics.Size GetDesiredSize(double widthConstraint, double heightConstraint)
@@ -23,12 +23,12 @@ namespace Microsoft.Maui.Handlers
 			base.PlatformArrange(frame);
 		}
 
-		protected override void ConnectHandler(CustomView platformView)
+		protected override void ConnectHandler(MauiView platformView)
 		{
 			base.ConnectHandler(platformView);
 		}
 
-		protected override void DisconnectHandler(CustomView platformView)
+		protected override void DisconnectHandler(MauiView platformView)
 		{
 			base.DisconnectHandler(platformView);
 		}

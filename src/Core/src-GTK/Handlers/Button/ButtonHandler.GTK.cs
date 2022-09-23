@@ -3,15 +3,15 @@ using Microsoft.Maui.Graphics;
 
 namespace Microsoft.Maui.Handlers
 {
-	public partial class ButtonHandler : ViewHandler<IButton, ImageButton>
+	public partial class ButtonHandler : ViewHandler<IButton, MauiImageButton>
 	{
 		public readonly static Thickness DefaultPadding = new Thickness(16, 8.5);
 
 		//static ColorStateList TransparentColorStateList = Colors.Transparent.ToDefaultColorStateList();
 
-		protected override ImageButton CreatePlatformView()
+		protected override MauiImageButton CreatePlatformView()
 		{
-			ImageButton platformButton = new ImageButton();
+			MauiImageButton platformButton = new MauiImageButton();
 
 			return platformButton;
 		}

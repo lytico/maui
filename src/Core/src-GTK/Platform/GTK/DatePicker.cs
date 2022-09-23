@@ -252,9 +252,9 @@ namespace Microsoft.Maui.Platform
 		}
 	}
 
-	public partial class DatePicker : CustomView
+	public partial class DatePicker : MauiView
 	{
-		CustomComboBox _comboBox = null!;
+		MauiComboBox _comboBox = null!;
 		Gdk.Color _color;
 		DateTime _currentDate;
 		DateTime _minDate;
@@ -407,7 +407,7 @@ namespace Microsoft.Maui.Platform
 
 		void BuildDatePicker()
 		{
-			_comboBox = new CustomComboBox();
+			_comboBox = new MauiComboBox();
 			Add(_comboBox);
 
 			if ((Child != null))

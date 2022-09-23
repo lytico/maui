@@ -9,7 +9,11 @@ using PlatformImage = UIKit.UIImage;
 #elif MONOANDROID
 using PlatformImage = Android.Graphics.Drawables.Drawable;
 #elif WINDOWS
+#if __GTK__
+using PlatformImage = Gdk.Pixbuf;
+#else
 using PlatformImage = Microsoft.UI.Xaml.Media.ImageSource;
+#endif
 #elif TIZEN
 using PlatformImage = Tizen.UIExtensions.ElmSharp.Image;
 #elif (NETSTANDARD || !PLATFORM) || (NET6_0_OR_GREATER && !IOS && !ANDROID && !TIZEN)
