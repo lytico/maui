@@ -17,6 +17,7 @@ namespace Microsoft.Maui.Hosting
 
 		public static MauiAppBuilder ConfigureFonts(this MauiAppBuilder builder, Action<IFontCollection>? configureDelegate)
 		{
+#if !__GTK__
 			builder.Services.TryAddSingleton<IEmbeddedFontLoader>(svc => new EmbeddedFontLoader(svc));
 			builder.Services.TryAddSingleton<IFontRegistrar>(svc => new FontRegistrar(svc.GetRequiredService<IEmbeddedFontLoader>(), svc));
 			builder.Services.TryAddSingleton<IFontManager>(svc => new FontManager(svc.GetRequiredService<IFontRegistrar>(), svc));
@@ -25,6 +26,7 @@ namespace Microsoft.Maui.Hosting
 				builder.Services.AddSingleton<FontsRegistration>(new FontsRegistration(configureDelegate));
 			}
 			builder.Services.TryAddEnumerable(ServiceDescriptor.Transient<IMauiInitializeService, FontInitializer>());
+#endif
 			return builder;
 		}
 

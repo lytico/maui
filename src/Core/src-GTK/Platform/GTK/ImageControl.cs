@@ -30,6 +30,8 @@ namespace Microsoft.Maui.Platform
 			BuildImageControl();
 		}
 
+		public Gtk.Image ImageWidget => _image;
+
 		public ImageAspect Aspect
 		{
 			get

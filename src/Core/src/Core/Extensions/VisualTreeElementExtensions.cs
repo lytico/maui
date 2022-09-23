@@ -4,10 +4,15 @@ using System.Linq;
 using Microsoft.Maui.Graphics;
 
 #if WINDOWS
+#if __GTK__
+using WinPoint = Microsoft.Maui.Graphics.Point;
+using WinRect = Microsoft.Maui.Graphics.Rect;
+#else
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Media;
 using WinPoint = Windows.Foundation.Point;
 using WinRect = Windows.Foundation.Rect;
+#endif
 #endif
 
 namespace Microsoft.Maui
@@ -73,8 +78,12 @@ namespace Microsoft.Maui
 		public static IReadOnlyList<IVisualTreeElement> GetVisualTreeElements(this IVisualTreeElement visualElement, Rect rectangle)
 		{
 #if WINDOWS
+#if __GTK__
+			return null!;
+#else
 			return GetVisualTreeElementsWindowsInternal(visualElement,
 				uiElement => VisualTreeHelper.FindElementsInHostCoordinates(new WinRect(rectangle.X, rectangle.Y, rectangle.Width, rectangle.Height), uiElement));
+#endif
 #else
 			return GetVisualTreeElementsInternal(
 				visualElement,
@@ -101,14 +110,18 @@ namespace Microsoft.Maui
 		public static IReadOnlyList<IVisualTreeElement> GetVisualTreeElements(this IVisualTreeElement visualElement, Point point)
 		{
 #if WINDOWS
+#if __GTK__
+			return null!;
+#else
 			return GetVisualTreeElementsWindowsInternal(visualElement,
 				uiElement => VisualTreeHelper.FindElementsInHostCoordinates(new WinPoint(point.X, point.Y), uiElement));
+#endif
 #else
 			return GetVisualTreeElementsInternal(visualElement, bounds => bounds.Contains(point));
 #endif
 		}
 
-#if WINDOWS
+#if WINDOWS && !__GTK__
 		static List<IVisualTreeElement> GetVisualTreeElementsWindowsInternal(IVisualTreeElement visualElement, Func<UIElement, IEnumerable<UIElement>> findChildren)
 		{
 			UIElement? uiElement = null;
@@ -138,6 +151,9 @@ namespace Microsoft.Maui
 
 		static List<IVisualTreeElement> GetVisualTreeElementsInternal(IVisualTreeElement visualElement, Predicate<Rect> intersectElementBounds)
 		{
+#if __GTK__
+			return null!;
+#else
 			var elements = new List<IVisualTreeElement>();
 
 			Impl(visualElement, intersectElementBounds, elements);
@@ -160,6 +176,7 @@ namespace Microsoft.Maui
 					Impl(child, intersectElementBounds, elements);
 				}
 			}
+#endif
 		}
 	}
 }

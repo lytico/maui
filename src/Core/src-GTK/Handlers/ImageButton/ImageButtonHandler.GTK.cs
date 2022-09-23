@@ -11,6 +11,10 @@ namespace Microsoft.Maui.Handlers
 			return platformView;
 		}
 
+		void OnSetImageSource(Gdk.Pixbuf? obj)
+		{
+		}
+
 		protected override void DisconnectHandler(ImageButton platformView)
 		{
 			platformView.ButtonWidget.Clicked -= PlatformView_Clicked;

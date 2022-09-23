@@ -6,7 +6,7 @@ using PlatformView = UIKit.UIImageView;
 using PlatformView = Android.Widget.ImageView;
 #elif WINDOWS
 #if __GTK__
-using PlatformView = Microsoft.Maui.Platform.ImageControl;
+using PlatformView = Gtk.Image;
 #else
 using PlatformView = Microsoft.UI.Xaml.Controls.Image;
 #endif
@@ -50,6 +50,6 @@ namespace Microsoft.Maui.Handlers
 		// TODO MAUI: Should we remove all shadowing? 
 		IImage IImageHandler.VirtualView => VirtualView;
 
-		PlatformView IImageHandler.PlatformView => PlatformView;
+		PlatformView IImageHandler.PlatformView => PlatformView.ImageWidget;
 	}
 }

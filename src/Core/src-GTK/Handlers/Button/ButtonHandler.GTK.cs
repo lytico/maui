@@ -100,10 +100,10 @@ namespace Microsoft.Maui.Handlers
 			return handler.ImageSourceLoader.UpdateImageSourceAsync();
 		}
 
-		//void OnSetImageSource(Drawable? obj)
-		//{
-		//	PlatformView.Icon = obj;
-		//}
+		void OnSetImageSource(Gdk.Pixbuf? obj)
+		{
+			// PlatformView.Icon = obj;
+		}
 
 		//bool NeedsExactMeasure()
 		//{

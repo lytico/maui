@@ -90,10 +90,15 @@
     <Compile Include="..\src-GTK\Handlers\View\ViewHandler.GTK.cs" Link="Handlers\View\ViewHandler.GTK.cs" />
     <Compile Include="..\src-GTK\Handlers\View\ViewHandlerOfT.GTK.cs" Link="Handlers\View\ViewHandlerOfT.GTK.cs" />
     <Compile Include="..\src-GTK\Handlers\Window\WindowHandler.GTK.cs" Link="Handlers\Window\WindowHandler.GTK.cs" />
+    <Compile Include="..\src-GTK\Hosting\LifecycleEvents\AppHostBuilderExtensions.GTK.cs" Link="Hosting\LifecycleEvents\AppHostBuilderExtensions.GTK.cs" />
     <Compile Include="..\src-GTK\ImageSources\FileImageSourceService\FileImageSourceService.GTK.cs" Link="ImageSources\FileImageSourceService\FileImageSourceService.GTK.cs" />
     <Compile Include="..\src-GTK\ImageSources\FontImageSourceService\FontImageSourceService.GTK.cs" Link="ImageSources\FontImageSourceService\FontImageSourceService.GTK.cs" />
     <Compile Include="..\src-GTK\ImageSources\StreamingImageSourceService\StreamImageSourceService.GTK.cs" Link="ImageSources\StreamImageSourceService\StreamImageSourceService.GTK.cs" />
     <Compile Include="..\src-GTK\ImageSources\UriImageSourceService\UriImageSourceService.GTK.cs" Link="ImageSources\UriImageSourceService\UriImageSourceService.GTK.cs" />
+    <Compile Include="..\src-GTK\LifecycleEvents\GTK\GTKLifecycle.cs" Link="LifecycleEvents\GTK\GTKLifecycle.cs" />
+    <Compile Include="..\src-GTK\LifecycleEvents\GTK\GTKLifecycleBuilderExtensions.cs" Link="LifecycleEvents\GTK\GTKLifecycleBuilderExtensions.cs" />
+    <Compile Include="..\src-GTK\LifecycleEvents\GTK\GTKLifecycleExtensions.cs" Link="LifecycleEvents\GTK\GTKLifecycleExtensions.cs" />
+    <Compile Include="..\src-GTK\LifecycleEvents\GTK\IGTKLifecycleBuilder.cs" Link="LifecycleEvents\GTK\IGTKLifecycleBuilder.cs" />
     <Compile Include="..\src-GTK\Platform\GTK\ActivityIndicator.cs" Link="Platform\GTK\ActivityIndicator.cs" />
     <Compile Include="..\src-GTK\Platform\GTK\ContentViewGroup.cs" Link="Platform\GTK\ContentViewGroup.cs" />
     <Compile Include="..\src-GTK\Platform\GTK\CustomBorder.cs" Link="Platform\GTK\CustomBorder.cs" />
@@ -182,6 +187,9 @@
     <Reference Include="pango-sharp">
       <HintPath>C:\Program Files (x86)\GtkSharp\2.12\lib\gtk-sharp-2.0\pango-sharp.dll</HintPath>
     </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="LifecycleEvents\GTK\" />
   </ItemGroup>
   <Import Project="$(MauiSrcDirectory)PublicAPI.targets" />
 </Project>

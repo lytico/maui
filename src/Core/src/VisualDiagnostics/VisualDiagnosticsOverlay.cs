@@ -144,6 +144,7 @@ namespace Microsoft.Maui
 		/// <inheritdoc/>
 		public void ScrollToView(IVisualTreeElement element)
 		{
+#if !__GTK__
 			var parentScrollView = GetParentScrollView(element);
 			if (parentScrollView == null)
 				return;
@@ -153,6 +154,7 @@ namespace Microsoft.Maui
 
 			var platformView = view.GetPlatformViewBounds();
 			parentScrollView.RequestScrollTo(platformView.X, platformView.Y, true);
+#endif
 		}
 
 		/// <inheritdoc/>

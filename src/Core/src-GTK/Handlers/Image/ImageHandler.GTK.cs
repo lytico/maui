@@ -44,8 +44,9 @@ namespace Microsoft.Maui.Handlers
 			return Task.FromResult(0);
 		}
 
-		//void OnSetImageSource(Drawable? obj) =>
-		//	PlatformView.SetImageDrawable(obj);
+		void OnSetImageSource(Gdk.Pixbuf? obj)
+		{
+		}
 
 		public override void PlatformArrange(Graphics.Rect frame)
 		{

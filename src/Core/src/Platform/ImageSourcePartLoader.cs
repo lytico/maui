@@ -9,8 +9,13 @@ using PlatformView = UIKit.UIView;
 using PlatformImage = Android.Graphics.Drawables.Drawable;
 using PlatformView = Android.Views.View;
 #elif WINDOWS
+#if __GTK__
+using PlatformImage = Gdk.Pixbuf;
+using PlatformView = Microsoft.Maui.Platform.CustomView;
+#else
 using PlatformImage = Microsoft.UI.Xaml.Media.ImageSource;
 using PlatformView = Microsoft.UI.Xaml.FrameworkElement;
+#endif
 #elif TIZEN
 using PlatformImage = Tizen.UIExtensions.ElmSharp.Image;
 using PlatformView = ElmSharp.EvasObject;

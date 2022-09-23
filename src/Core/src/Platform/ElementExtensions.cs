@@ -12,7 +12,7 @@ using PlatformWindow = Android.App.Activity;
 using PlatformApplication = Android.App.Application;
 #elif WINDOWS
 #if __GTK__
-using PlatformView = Gtk.ScrolledWindow;
+using PlatformView = Microsoft.Maui.Platform.CustomView;
 using BasePlatformType = System.Object;
 using PlatformWindow = Gdk.Window;
 using PlatformApplication = Gtk.Application;

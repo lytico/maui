@@ -61,6 +61,8 @@ namespace Microsoft.Maui.Hosting
 						ApplicationModel.Platform.PerformActionForShortcutItem(application, shortcutItem, completionHandler);
 					}));
 #elif WINDOWS
+#if __GTK__
+#else
 				life.AddWindows(windows => windows
 					.OnPlatformMessage((window, args) =>
 					{
@@ -74,6 +76,7 @@ namespace Microsoft.Maui.Hosting
 					{
 						ApplicationModel.Platform.OnLaunched(args);
 					}));
+#endif
 #elif TIZEN
 
 #endif
