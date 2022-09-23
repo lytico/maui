@@ -4,7 +4,7 @@ using PlatformView = UIKit.UIStepper;
 using PlatformView = Microsoft.Maui.Platform.MauiStepper;
 #elif WINDOWS
 #if __GTK__
-using PlatformView = Microsoft.Maui.Platform.StepperControl;
+using PlatformView = Microsoft.Maui.Platform.MauiStepper;
 #else
 using PlatformView = Microsoft.Maui.Platform.MauiStepper;
 #endif

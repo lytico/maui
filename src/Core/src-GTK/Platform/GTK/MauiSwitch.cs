@@ -4,9 +4,9 @@ using Pango;
 
 namespace Microsoft.Maui.Platform
 {
-	public class SwitchControl : MauiView
+	public class MauiSwitch : MauiView
 	{
-		public SwitchControl()
+		public MauiSwitch()
 		{
 			SwitchWidget = new CheckButton();
 			Add(SwitchWidget);

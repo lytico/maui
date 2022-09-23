@@ -4,14 +4,14 @@ using Pango;
 
 namespace Microsoft.Maui.Platform
 {
-	public class SearchEntry : MauiView
+	public class MauiSearchEntry : MauiView
 	{
 		private HBox _container;
 		private EntryWrapper _entryWrapper;
 		private MauiImageButton _searchButton;
 		private MauiImageButton _clearButton;
 
-		public SearchEntry()
+		public MauiSearchEntry()
 		{
 			_container = new HBox();
 			_entryWrapper = new EntryWrapper();

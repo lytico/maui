@@ -113,17 +113,16 @@
     <Compile Include="..\src-GTK\Platform\GTK\MauiImageButton.cs" Link="Platform\GTK\MauiImageButton.cs" />
     <Compile Include="..\src-GTK\Platform\GTK\MauiNavigationView.cs" Link="Platform\GTK\MauiNavigationView.cs" />
     <Compile Include="..\src-GTK\Platform\GTK\MauiPageControl.cs" Link="Platform\GTK\MauiPageControl.cs" />
+    <Compile Include="..\src-GTK\Platform\GTK\MauiRadioButton.cs" Link="Platform\GTK\MauiRadioButton.cs" />
+    <Compile Include="..\src-GTK\Platform\GTK\MauiSearchEntry.cs" Link="Platform\GTK\MauiSearchEntry.cs" />
     <Compile Include="..\src-GTK\Platform\GTK\MauiSlider.cs" Link="Platform\GTK\MauiSlider.cs" />
     <Compile Include="..\src-GTK\Platform\GTK\MauiStepper.cs" Link="Platform\GTK\MauiStepper.cs" />
+    <Compile Include="..\src-GTK\Platform\GTK\MauiSwitch.cs" Link="Platform\GTK\MauiSwitch.cs" />
     <Compile Include="..\src-GTK\Platform\GTK\MauiView.cs" Link="Platform\GTK\MauiView.cs" />
     <Compile Include="..\src-GTK\Platform\GTK\NavigationRootManager.cs" Link="Platform\GTK\NavigationRootManager.cs" />
     <Compile Include="..\src-GTK\Platform\GTK\PlatformTouchGraphicsView.cs" Link="Platform\GTK\PlatformTouchGraphicsView.cs" />
-    <Compile Include="..\src-GTK\Platform\GTK\RadioButton.cs" Link="Platform\GTK\RadioButton.cs" />
     <Compile Include="..\src-GTK\Platform\GTK\RootNavigationView.cs" Link="Platform\GTK\RootNavigationView.cs" />
     <Compile Include="..\src-GTK\Platform\GTK\ScrolledTextView.cs" Link="Platform\GTK\ScrolledTextView.cs" />
-    <Compile Include="..\src-GTK\Platform\GTK\SearchEntry.cs" Link="Platform\GTK\SearchEntry.cs" />
-    <Compile Include="..\src-GTK\Platform\GTK\StepperControl.cs" Link="Platform\GTK\StepperControl.cs" />
-    <Compile Include="..\src-GTK\Platform\GTK\SwitchControl.cs" Link="Platform\GTK\SwitchControl.cs" />
     <Compile Include="..\src-GTK\Platform\GTK\TextViewExtensions.cs" Link="Platform\GTK\TextViewExtensions.cs" />
     <Compile Include="..\src-GTK\Platform\GTK\TimePicker.cs" Link="Platform\GTK\TimePicker.cs" />
     <Compile Include="..\src-GTK\Platform\GTK\ViewExtensions.cs" Link="Platform\GTK\ViewExtensions.cs" />

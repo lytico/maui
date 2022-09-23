@@ -2,7 +2,7 @@
 
 namespace Microsoft.Maui.Platform
 {
-	public class RadioButton : MauiView
+	public class MauiRadioButton : MauiView
 	{
 		private Gtk.Alignment? _container;
 		private Gtk.Box? _imageAndLabelContainer;
@@ -17,7 +17,7 @@ namespace Microsoft.Maui.Platform
 		private uint _imageSpacing = 0;
 		private uint _borderWidth = 0;
 
-		public RadioButton(Gtk.RadioButton? radio_group_member, string label)
+		public MauiRadioButton(Gtk.RadioButton? radio_group_member, string label)
 		{
 			_defaultBackgroundColor = Style.Backgrounds[(int)Gtk.StateType.Normal];
 			_defaultBorderColor = Style.BaseColors[(int)Gtk.StateType.Active];
@@ -37,9 +37,9 @@ namespace Microsoft.Maui.Platform
 			RecreateContainer();
 		}
 
-		public RadioButton(string label) : this(null, label) { }
+		public MauiRadioButton(string label) : this(null, label) { }
 
-		public RadioButton() : this(string.Empty) { }
+		public MauiRadioButton() : this(string.Empty) { }
 
 		#region Properties
 
@@ -106,7 +106,8 @@ namespace Microsoft.Maui.Platform
 
 		public void SetImagePosition(Gtk.PositionType position)
 		{
-			RadioButtonWidget.ImagePosition = position;
+			if (RadioButtonWidget != null)
+				RadioButtonWidget.ImagePosition = position;
 			RecreateContainer();
 		}
 
@@ -173,6 +174,9 @@ namespace Microsoft.Maui.Platform
 				_container?.RemoveFromContainer(_imageAndLabelContainer);
 				_imageAndLabelContainer = null;
 			}
+
+			if (RadioButtonWidget == null)
+				return;
 
 			switch (RadioButtonWidget.ImagePosition)
 			{

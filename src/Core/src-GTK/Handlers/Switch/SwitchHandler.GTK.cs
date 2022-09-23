@@ -3,22 +3,22 @@ using Microsoft.Maui.Graphics;
 
 namespace Microsoft.Maui.Handlers
 {
-	public partial class SwitchHandler : ViewHandler<ISwitch, SwitchControl>
+	public partial class SwitchHandler : ViewHandler<ISwitch, MauiSwitch>
 	{
-		protected override SwitchControl CreatePlatformView()
+		protected override MauiSwitch CreatePlatformView()
 		{
-			var aSwitch = new SwitchControl();
+			var aSwitch = new MauiSwitch();
 			aSwitch.SwitchWidget.Toggled += ASwitch_Toggled;
 
 			return aSwitch;
 		}
 
-		protected override void ConnectHandler(SwitchControl platformView)
+		protected override void ConnectHandler(MauiSwitch platformView)
 		{
 			base.ConnectHandler(platformView);
 		}
 
-		protected override void DisconnectHandler(SwitchControl platformView)
+		protected override void DisconnectHandler(MauiSwitch platformView)
 		{
 			base.DisconnectHandler(platformView);
 		}
@@ -69,7 +69,7 @@ namespace Microsoft.Maui.Handlers
 
 		private void ASwitch_Toggled(object? sender, System.EventArgs e)
 		{
-			if (sender is SwitchControl aSwitch)
+			if (sender is MauiSwitch aSwitch)
 			{
 				if (VirtualView is null || VirtualView.IsOn == aSwitch.SwitchWidget.Active)
 					return;

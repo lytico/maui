@@ -4,7 +4,7 @@ using PlatformView = UIKit.UISwitch;
 using PlatformView = AndroidX.AppCompat.Widget.SwitchCompat;
 #elif WINDOWS
 #if __GTK__
-using PlatformView = Microsoft.Maui.Platform.SwitchControl;
+using PlatformView = Microsoft.Maui.Platform.MauiSwitch;
 #else
 using PlatformView = Microsoft.UI.Xaml.Controls.ToggleSwitch;
 #endif

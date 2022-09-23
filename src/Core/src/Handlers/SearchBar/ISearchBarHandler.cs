@@ -7,7 +7,7 @@ using PlatformView = AndroidX.AppCompat.Widget.SearchView;
 using QueryEditor = Android.Widget.EditText;
 #elif WINDOWS
 #if __GTK__
-using PlatformView = Microsoft.Maui.Platform.SearchEntry;
+using PlatformView = Microsoft.Maui.Platform.MauiSearchEntry;
 using QueryEditor = Gtk.Entry;
 #else
 using PlatformView = Microsoft.UI.Xaml.Controls.AutoSuggestBox;

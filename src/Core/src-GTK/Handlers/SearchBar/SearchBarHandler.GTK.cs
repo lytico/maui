@@ -1,27 +1,27 @@
 ﻿namespace Microsoft.Maui.Handlers
 {
-	public partial class SearchBarHandler : ViewHandler<ISearchBar, SearchEntry>
+	public partial class SearchBarHandler : ViewHandler<ISearchBar, MauiSearchEntry>
 	{
 		Gtk.Entry? _editText;
 
 		public Gtk.Entry? QueryEditor => _editText; 
 		
-		protected override SearchEntry CreatePlatformView()
+		protected override MauiSearchEntry CreatePlatformView()
 		{
 			_editText = new Gtk.Entry();
 
-			var searchView = new SearchEntry();
+			var searchView = new MauiSearchEntry();
 
 			return searchView;
 		}
 
-		protected override void ConnectHandler(SearchEntry platformView)
+		protected override void ConnectHandler(MauiSearchEntry platformView)
 		{
 			//platformView.QueryTextChange += OnQueryTextChange;
 			//platformView.QueryTextSubmit += OnQueryTextSubmit;
 		}
 
-		protected override void DisconnectHandler(SearchEntry platformView)
+		protected override void DisconnectHandler(MauiSearchEntry platformView)
 		{
 			//platformView.QueryTextChange -= OnQueryTextChange;
 			//platformView.QueryTextSubmit -= OnQueryTextSubmit;

@@ -1,15 +1,15 @@
 ﻿namespace Microsoft.Maui.Handlers
 {
-	public partial class RadioButtonHandler : ViewHandler<IRadioButton, RadioButton>
+	public partial class RadioButtonHandler : ViewHandler<IRadioButton, MauiRadioButton>
 	{
-		static RadioButton? GetPlatformRadioButton(IRadioButtonHandler handler) => handler.PlatformView as RadioButton;
+		static MauiRadioButton? GetPlatformRadioButton(IRadioButtonHandler handler) => handler.PlatformView as MauiRadioButton;
 
-		protected override RadioButton CreatePlatformView()
+		protected override MauiRadioButton CreatePlatformView()
 		{
-			return new RadioButton();
+			return new MauiRadioButton();
 		}
 
-		protected override void ConnectHandler(RadioButton platformView)
+		protected override void ConnectHandler(MauiRadioButton platformView)
 		{
 			//RadioButton? platformRadioButton = GetPlatformRadioButton(this);
 			//if (platformRadioButton != null)
@@ -17,7 +17,7 @@
 			//	platformRadioButton.CheckedChange += OnCheckChanged;
 		}
 
-		protected override void DisconnectHandler(RadioButton platformView)
+		protected override void DisconnectHandler(MauiRadioButton platformView)
 		{
 			//if (platformView is AppCompatRadioButton platformRadioButton)
 			//	platformRadioButton.CheckedChange -= OnCheckChanged;

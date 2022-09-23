@@ -4,9 +4,9 @@ using Pango;
 
 namespace Microsoft.Maui.Platform
 {
-	public class StepperControl : MauiView
+	public class MauiStepperControl : MauiView
 	{
-		public StepperControl(double min, double max, double step)
+		public MauiStepperControl(double min, double max, double step)
 		{
 			StepperWidget = new Gtk.SpinButton(min, max, step);
 			Add(StepperWidget);

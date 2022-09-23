@@ -3,13 +3,13 @@ using Gtk;
 
 namespace Microsoft.Maui.Handlers
 {
-	public partial class StepperHandler : ViewHandler<IStepper, StepperControl>
+	public partial class StepperHandler : ViewHandler<IStepper, MauiStepper>
 	{
-		protected override StepperControl CreatePlatformView()
+		protected override MauiStepper CreatePlatformView()
 		{
 			double stepping = Math.Min((VirtualView.Maximum - VirtualView.Minimum) / 10, 1);
 
-			var stepperLayout = new StepperControl(VirtualView.Minimum, VirtualView.Maximum, stepping);
+			var stepperLayout = new MauiStepper(VirtualView.Minimum, VirtualView.Maximum, stepping);
 			stepperLayout.StepperWidget.ValueChanged += StepperLayout_ValueChanged;
 
 			return stepperLayout;
