@@ -5,6 +5,8 @@ namespace Microsoft.Maui.Devices.Sensors
 {
 	partial class AccelerometerImplementation
 	{
+		public bool IsSupported => false;
+
 		// keep around a reference so we can stop this same instance
 		WindowsAccelerometer sensor;
 

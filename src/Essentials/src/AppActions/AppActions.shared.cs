@@ -18,7 +18,7 @@ namespace Microsoft.Maui.ApplicationModel
 
 	public interface IPlatformAppActions
 	{
-#if WINDOWS
+#if WINDOWS && !__GTK__
 		Task OnLaunched(UI.Xaml.LaunchActivatedEventArgs e);
 #elif IOS || MACCATALYST
 		void PerformActionForShortcutItem(UIKit.UIApplication application, UIKit.UIApplicationShortcutItem shortcutItem, UIKit.UIOperationHandler completionHandler);
@@ -72,7 +72,7 @@ namespace Microsoft.Maui.ApplicationModel
 			return platform;
 		}
 
-#if WINDOWS
+#if WINDOWS && !__GTK__
 		public static Task OnLaunched(this IAppActions appActions, UI.Xaml.LaunchActivatedEventArgs e) =>
 			appActions.AsPlatform().OnLaunched(e);
 #elif IOS || MACCATALYST

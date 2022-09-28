@@ -23,6 +23,32 @@
     <DefineConstants>$(DefineConstants);WINDOWS;__GTK__</DefineConstants>
   </PropertyGroup>
   <Import Project="$(MauiNuSpecDirectory)Microsoft.Maui.Controls.MultiTargeting.targets" />
+  <ItemGroup Condition=" '$(_MauiTargetPlatformIsWindows)' == 'True' ">
+    <Compile Remove="**\*.Windows.cs" />
+    <None Include="**\*.Windows.cs" Exclude="$(DefaultItemExcludes);$(DefaultExcludesInProjectFolder)" />
+    <Compile Remove="**\AndroidSpecific\**\*.cs" />
+    <None Include="**\AndroidSpecific\**\*.cs" Exclude="$(DefaultItemExcludes);$(DefaultExcludesInProjectFolder)" />
+    <Compile Remove="**\iOSSpecific\**\*.cs" />
+    <None Include="**\iOSSpecific\**\*.cs" Exclude="$(DefaultItemExcludes);$(DefaultExcludesInProjectFolder)" />
+    <Compile Remove="**\macOSSpecific\**\*.cs" />
+    <None Include="**\macOSSpecific\**\*.cs" Exclude="$(DefaultItemExcludes);$(DefaultExcludesInProjectFolder)" />
+    <Compile Remove="**\TizenSpecific\**\*.cs" />
+    <None Include="**\TizenSpecific\**\*.cs" Exclude="$(DefaultItemExcludes);$(DefaultExcludesInProjectFolder)" />
+    <Compile Remove="**\WindowsSpecific\**\*.cs" />
+    <None Include="**\WindowsSpecific\**\*.cs" Exclude="$(DefaultItemExcludes);$(DefaultExcludesInProjectFolder)" />
+    <Compile Remove="**\Windows\**\*.cs" />
+    <None Include="**\Windows\**\*.cs" Exclude="$(DefaultItemExcludes);$(DefaultExcludesInProjectFolder)" />
+    <Compile Remove="**\*.uwp.cs" />
+    <None Include="**\*.uwp.cs" Exclude="$(DefaultItemExcludes);$(DefaultExcludesInProjectFolder)" />
+    <MauiXaml Remove="**\*.Windows.xaml" />
+    <None Include="**\*.Windows.xaml" Exclude="$(DefaultItemExcludes);$(DefaultExcludesInProjectFolder)" />
+    <Compile Remove="**\*.Windows.xaml.cs" />
+    <None Include="**\*.Windows.xaml.cs" Exclude="$(DefaultItemExcludes);$(DefaultExcludesInProjectFolder)" />
+    <MauiXaml Remove="**\Windows\**\*.xaml" />
+    <None Include="**\Windows\**\*.xaml" Exclude="$(DefaultItemExcludes);$(DefaultExcludesInProjectFolder)" />
+    <Compile Remove="**\Windows\**\*.xaml.cs" />
+    <None Include="**\Windows\**\*.xaml.cs" Exclude="$(DefaultItemExcludes);$(DefaultExcludesInProjectFolder)" />
+  </ItemGroup>
   <ItemGroup>
     <None Include="..\..\..\LICENSE" PackagePath="" Pack="true" />
     <None Include="..\..\..\Assets\xamarin.essentials_128x128.png" PackagePath="icon.png" Pack="true" />
@@ -31,12 +57,53 @@
     <Compile Include="**\*.shared.*.cs" Exclude="$(DefaultItemExcludes);$(DefaultExcludesInProjectFolder)" />
   </ItemGroup>
   <ItemGroup Condition=" $(TargetFramework.Contains('-windows')) ">
-    <Compile Include="**\*.uwp.cs" Exclude="$(DefaultItemExcludes);$(DefaultExcludesInProjectFolder)" />
-    <Compile Include="**\*.uwp.*.cs" Exclude="$(DefaultItemExcludes);$(DefaultExcludesInProjectFolder)" />
     <PackageReference Include="Microsoft.WindowsAppSDK" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\src-GTK\Accelerometer\Accelerometer.gtk.cs" Link="Accelerometer\Accelerometer.gtk.cs" />
+    <Compile Include="..\src-GTK\AppActions\AppActions.gtk.cs" Link="AppActions\AppActions.gtk.cs" />
+    <Compile Include="..\src-GTK\AppInfo\AppInfo.gtk.cs" Link="AppInfo\AppInfo.gtk.cs" />
+    <Compile Include="..\src-GTK\Barometer\Barometer.gtk.cs" Link="Barometer\Barometer.gtk.cs" />
+    <Compile Include="..\src-GTK\Battery\Battery.gtk.cs" Link="Battery\Battery.gtk.cs" />
+    <Compile Include="..\src-GTK\Clipboard\Clipboard.gtk.cs" Link="Clipboard\Clipboard.gtk.cs" />
+    <Compile Include="..\src-GTK\Connectivity\Connectivity.gtk.cs" Link="Connectivity\Connectivity.gtk.cs" />
+    <Compile Include="..\src-GTK\DeviceDisplay\DeviceDisplay.gtk.cs" Link="DeviceDisplay\DeviceDisplay.gtk.cs" />
+    <Compile Include="..\src-GTK\Email\Email.gtk.cs" Link="Email\Email.gtk.cs" />
+    <Compile Include="..\src-GTK\FileSystem\FileSystem.gtk.cs" Link="FileSystem\FileSystem.gtk.cs" />
+    <Compile Include="..\src-GTK\Permissions\Permissions.gtk.cs" Link="Permissions\Permissions.gtk.cs" />
+    <Compile Include="..\src-GTK\PhoneDialer\PhoneDialer.gtk.cs" Link="PhoneDialer\PhoneDialer.gtk.cs" />
+    <Compile Include="..\src-GTK\Platform\PlatformUtils.gtk.cs" Link="Platform\PlatformUtils.gtk.cs" />
+    <Compile Include="..\src-GTK\Sms\Sms.gtk.cs" Link="Sms\Sms.gtk.cs" />
+    <Compile Include="..\src-GTK\Vibration\Vibration.gtk.cs" Link="Vibration\Vibration.gtk.cs" />
+  </ItemGroup>
+  <ItemGroup>
     <ProjectReference Include="..\..\Graphics\src\Graphics\Graphics-GTK.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="atk-sharp">
+      <HintPath>C:\Program Files (x86)\GtkSharp\2.12\lib\gtk-sharp-2.0\atk-sharp.dll</HintPath>
+    </Reference>
+    <Reference Include="gdk-sharp">
+      <HintPath>C:\Program Files (x86)\GtkSharp\2.12\lib\gtk-sharp-2.0\gdk-sharp.dll</HintPath>
+    </Reference>
+    <Reference Include="glade-sharp">
+      <HintPath>C:\Program Files (x86)\GtkSharp\2.12\lib\gtk-sharp-2.0\glade-sharp.dll</HintPath>
+    </Reference>
+    <Reference Include="glib-sharp">
+      <HintPath>C:\Program Files (x86)\GtkSharp\2.12\lib\gtk-sharp-2.0\glib-sharp.dll</HintPath>
+    </Reference>
+    <Reference Include="gtk-dotnet">
+      <HintPath>C:\Program Files (x86)\GtkSharp\2.12\lib\gtk-sharp-2.0\gtk-dotnet.dll</HintPath>
+    </Reference>
+    <Reference Include="gtk-sharp">
+      <HintPath>C:\Program Files (x86)\GtkSharp\2.12\lib\gtk-sharp-2.0\gtk-sharp.dll</HintPath>
+    </Reference>
+    <Reference Include="Mono.Cairo">
+      <HintPath>C:\Program Files (x86)\GtkSharp\2.12\lib\Mono.Cairo\Mono.Cairo.dll</HintPath>
+    </Reference>
+    <Reference Include="pango-sharp">
+      <HintPath>C:\Program Files (x86)\GtkSharp\2.12\lib\gtk-sharp-2.0\pango-sharp.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <Import Project="$(MauiSrcDirectory)PublicAPI.targets" />
 </Project>

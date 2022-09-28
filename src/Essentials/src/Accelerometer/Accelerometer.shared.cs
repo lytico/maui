@@ -128,6 +128,7 @@ namespace Microsoft.Maui.Devices.Sensors
 			if (!IsSupported)
 				throw new FeatureNotSupportedException();
 
+#if !__GTK__
 			if (IsMonitoring)
 				throw new InvalidOperationException("Accelerometer has already been started.");
 
@@ -143,13 +144,14 @@ namespace Microsoft.Maui.Devices.Sensors
 				IsMonitoring = false;
 				throw;
 			}
+#endif
 		}
 
 		public void Stop()
 		{
 			if (!IsSupported)
 				throw new FeatureNotSupportedException();
-
+#if !__GTK__
 			if (!IsMonitoring)
 				return;
 
@@ -164,6 +166,7 @@ namespace Microsoft.Maui.Devices.Sensors
 				IsMonitoring = true;
 				throw;
 			}
+#endif
 		}
 
 		internal void OnChanged(AccelerometerData reading) =>
