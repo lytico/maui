@@ -16,10 +16,12 @@ namespace Microsoft.Maui.Devices.Sensors
 			if (placemark == null)
 				throw new ArgumentNullException(nameof(placemark));
 
+#if !__GTK__
 			if (placemark.Location == null)
 				Location = new Location();
 			else
 				Location = new Location(placemark.Location);
+#endif
 
 			CountryCode = placemark.CountryCode;
 			CountryName = placemark.CountryName;
@@ -33,8 +35,11 @@ namespace Microsoft.Maui.Devices.Sensors
 			AdminArea = placemark.AdminArea;
 		}
 
+#if !__GTK__
 		/// <include file="../../docs/Microsoft.Maui.Essentials/Placemark.xml" path="//Member[@MemberName='Location']/Docs" />
 		public Location Location { get; set; }
+#endif
+
 
 		/// <include file="../../docs/Microsoft.Maui.Essentials/Placemark.xml" path="//Member[@MemberName='CountryCode']/Docs" />
 		public string CountryCode { get; set; }
@@ -68,7 +73,9 @@ namespace Microsoft.Maui.Devices.Sensors
 
 		/// <include file="../../docs/Microsoft.Maui.Essentials/Placemark.xml" path="//Member[@MemberName='ToString']/Docs" />
 		public override string ToString() =>
+#if !__GTK__
 			$"{nameof(Location)}: {Location}, {nameof(CountryCode)}: {CountryCode}, " +
+#endif
 			$"{nameof(CountryName)}: {CountryName}, {nameof(FeatureName)}: {FeatureName}, " +
 			$"{nameof(PostalCode)}: {PostalCode}, {nameof(SubLocality)}: {SubLocality}, " +
 			$"{nameof(Thoroughfare)}: {Thoroughfare}, {nameof(SubThoroughfare)}: {SubThoroughfare}, " +

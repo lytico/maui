@@ -1,6 +1,8 @@
 ﻿using Microsoft.Maui.Graphics;
 using System.Threading.Tasks;
+#if !__GTK__
 using Microsoft.Maui.Media;
+#endif
 using System.IO;
 #if (NETSTANDARD || !PLATFORM) || (NET6_0_OR_GREATER && !IOS && !ANDROID && !TIZEN)
 using IPlatformViewHandler = Microsoft.Maui.IViewHandler;
@@ -32,9 +34,10 @@ namespace Microsoft.Maui
 {
 	public static partial class ViewExtensions
 	{
+#if !__GTK__
 		public static Task<IScreenshotResult?> CaptureAsync(this IView view)
 		{
-#if PLATFORM && !__GTK__
+#if PLATFORM
 			if (view?.ToPlatform() is not PlatformView platformView)
 				return Task.FromResult<IScreenshotResult?>(null);
 
@@ -46,6 +49,7 @@ namespace Microsoft.Maui
 			return Task.FromResult<IScreenshotResult?>(null);
 #endif
 		}
+#endif
 
 
 #if PLATFORM && !__GTK__

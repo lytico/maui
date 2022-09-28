@@ -2,7 +2,9 @@
 using System.Numerics;
 using Microsoft.Maui.Graphics;
 using System.Threading.Tasks;
+#if !__GTK__
 using Microsoft.Maui.Media;
+#endif
 using System.IO;
 
 #if (NETSTANDARD || !PLATFORM) || (NET6_0_OR_GREATER && !IOS && !ANDROID)

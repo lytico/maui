@@ -6,7 +6,9 @@ using System.ComponentModel;
 using System.IO;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
+#if !__GTK__
 using Microsoft.Maui.Media;
+#endif
 
 namespace Microsoft.Maui
 {
@@ -79,6 +81,7 @@ namespace Microsoft.Maui
 			VisualTreeChanged?.Invoke(e.Parent, e);
 		}
 
+#if !__GTK__
 		public static async Task<byte[]?> CaptureAsPngAsync(IView view)
 		{
 			var result = await view.CaptureAsync();
@@ -113,5 +116,6 @@ namespace Microsoft.Maui
 
 			return ms.ToArray();
 		}
+#endif
 	}
 }

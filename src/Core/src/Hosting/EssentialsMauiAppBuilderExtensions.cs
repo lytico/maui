@@ -135,6 +135,7 @@ namespace Microsoft.Maui.Hosting
 					}
 				}
 
+#if !__GTK__
 #if WINDOWS
 				ApplicationModel.Platform.MapServiceToken = _essentialsBuilder.MapServiceToken;
 #endif
@@ -150,6 +151,7 @@ namespace Microsoft.Maui.Hosting
 
 				if (_essentialsBuilder.TrackVersions)
 					VersionTracking.Track();
+#endif
 			}
 
 			private static async void SetAppActions(IServiceProvider services, List<AppAction> appActions)

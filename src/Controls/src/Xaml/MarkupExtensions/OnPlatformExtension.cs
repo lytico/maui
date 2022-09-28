@@ -113,6 +113,7 @@ namespace Microsoft.Maui.Controls.Xaml
 
 		bool TryGetValueForPlatform(out object value)
 		{
+#if !__GTK__
 			if (DeviceInfo.Platform == DevicePlatform.Android && Android != s_notset)
 			{
 				value = Android;
@@ -165,6 +166,7 @@ namespace Microsoft.Maui.Controls.Xaml
 				value = WPF;
 				return true;
 			}
+#endif
 			value = Default;
 			return value != s_notset;
 		}

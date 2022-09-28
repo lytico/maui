@@ -113,12 +113,14 @@ namespace Microsoft.Maui.Controls
 		/// <include file="../../docs/Microsoft.Maui.Controls/ListView.xml" path="//Member[@MemberName='.ctor']/Docs" />
 		public ListView([Parameter("CachingStrategy")] ListViewCachingStrategy cachingStrategy) : this()
 		{
+#if !__GTK__
 			// Unknown => UnitTest "platform"
 			if (DeviceInfo.Platform == DevicePlatform.Unknown ||
 				DeviceInfo.Platform == DevicePlatform.Android ||
 				DeviceInfo.Platform == DevicePlatform.iOS ||
 				DeviceInfo.Platform == DevicePlatform.macOS)
 				CachingStrategy = cachingStrategy;
+#endif
 		}
 
 		/// <include file="../../docs/Microsoft.Maui.Controls/ListView.xml" path="//Member[@MemberName='Footer']/Docs" />

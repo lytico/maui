@@ -10,11 +10,15 @@ namespace Microsoft.Maui.Controls
 		T _tV;
 		T _watch;
 		T _default;
+#if !__GTK__
 		bool _isPhoneSet;
 		bool _isTabletSet;
+#endif
 		bool _isDesktopSet;
+#if !__GTK__
 		bool _isTVSet;
 		bool _isWatchSet;
+#endif
 		bool _isDefaultSet;
 
 		public T Phone
@@ -23,7 +27,9 @@ namespace Microsoft.Maui.Controls
 			set
 			{
 				_phone = value;
+#if !__GTK__
 				_isPhoneSet = true;
+#endif
 			}
 		}
 		public T Tablet
@@ -32,7 +38,9 @@ namespace Microsoft.Maui.Controls
 			set
 			{
 				_tablet = value;
+#if !__GTK__
 				_isTabletSet = true;
+#endif
 			}
 		}
 		public T Desktop
@@ -50,7 +58,9 @@ namespace Microsoft.Maui.Controls
 			set
 			{
 				_tV = value;
+#if !__GTK__
 				_isTVSet = true;
+#endif
 			}
 		}
 		public T Watch
@@ -59,7 +69,9 @@ namespace Microsoft.Maui.Controls
 			set
 			{
 				_watch = value;
+#if !__GTK__
 				_isWatchSet = true;
+#endif
 			}
 		}
 		public T Default
@@ -74,17 +86,21 @@ namespace Microsoft.Maui.Controls
 
 		public static implicit operator T(OnIdiom<T> onIdiom)
 		{
+#if !__GTK__
 			var idiom = DeviceInfo.Idiom;
 			if (idiom == DeviceIdiom.Tablet)
 				return onIdiom._isTabletSet ? onIdiom.Tablet : (onIdiom._isDefaultSet ? onIdiom.Default : default(T));
 			else if (idiom == DeviceIdiom.Desktop)
-				return onIdiom._isDesktopSet ? onIdiom.Desktop : (onIdiom._isDefaultSet ? onIdiom.Default : default(T));
+#endif
+			return onIdiom._isDesktopSet ? onIdiom.Desktop : (onIdiom._isDefaultSet ? onIdiom.Default : default(T));
+#if !__GTK__
 			else if (idiom == DeviceIdiom.TV)
 				return onIdiom._isTVSet ? onIdiom.TV : (onIdiom._isDefaultSet ? onIdiom.Default : default(T));
 			else if (idiom == DeviceIdiom.Watch)
 				return onIdiom._isWatchSet ? onIdiom.Watch : (onIdiom._isDefaultSet ? onIdiom.Default : default(T));
 			else
 				return onIdiom._isPhoneSet ? onIdiom.Phone : (onIdiom._isDefaultSet ? onIdiom.Default : default(T));
+#endif
 		}
 	}
 }

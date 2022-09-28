@@ -1202,10 +1202,14 @@ namespace Microsoft.Maui.Controls.Internals
 			SetIndex(item, -1);
 			_itemsView.UnhookContent(item);
 
+#if __GTK__
+			await Task.Delay(100);
+#else
 			//Hack: the cell could still be visible on iOS because the cells are reloaded after this unhook 
 			//this causes some visual updates caused by a null datacontext and default values like IsVisible
 			if (DeviceInfo.Platform == DevicePlatform.iOS && CachingStrategy == ListViewCachingStrategy.RetainElement)
 				await Task.Delay(100);
+#endif
 			item.BindingContext = null;
 		}
 

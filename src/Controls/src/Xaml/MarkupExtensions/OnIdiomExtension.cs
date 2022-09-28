@@ -101,6 +101,7 @@ namespace Microsoft.Maui.Controls.Xaml
 
 		object GetValue()
 		{
+#if !__GTK__
 			if (DeviceInfo.Idiom == DeviceIdiom.Phone)
 				return Phone ?? Default;
 			if (DeviceInfo.Idiom == DeviceIdiom.Tablet)
@@ -111,6 +112,7 @@ namespace Microsoft.Maui.Controls.Xaml
 				return TV ?? Default;
 			if (DeviceInfo.Idiom == DeviceIdiom.Watch)
 				return Watch ?? Default;
+#endif
 			return Default;
 		}
 	}

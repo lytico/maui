@@ -99,8 +99,13 @@ namespace Microsoft.Maui.ApplicationModel
 
 		static IVersionTracking? defaultImplementation;
 
+#if __GTK__
+		public static IVersionTracking Default =>
+			defaultImplementation ??= new VersionTrackingImplementation(AppInfo.Current);
+#else
 		public static IVersionTracking Default =>
 			defaultImplementation ??= new VersionTrackingImplementation(Preferences.Default, AppInfo.Current);
+#endif
 
 		internal static void SetDefault(IVersionTracking? implementation) =>
 			defaultImplementation = implementation;
@@ -114,9 +119,16 @@ namespace Microsoft.Maui.ApplicationModel
 		const string versionsKey = "VersionTracking.Versions";
 		const string buildsKey = "VersionTracking.Builds";
 
+#if __GTK__
+		static readonly string sharedName = "versiontracking";
+#else
 		static readonly string sharedName = Preferences.GetPrivatePreferencesSharedName("versiontracking");
+#endif
 
+#if !__GTK__
 		readonly IPreferences preferences;
+#endif
+
 		readonly IAppInfo appInfo;
 
 		Dictionary<string, List<string>> versionTrail = null!;
@@ -125,9 +137,15 @@ namespace Microsoft.Maui.ApplicationModel
 
 		string LastInstalledBuild => versionTrail[buildsKey]?.LastOrDefault() ?? string.Empty;
 
+#if __GTK__
+		public VersionTrackingImplementation(IAppInfo appInfo)
+#else
 		public VersionTrackingImplementation(IPreferences preferences, IAppInfo appInfo)
+#endif
 		{
+#if !__GTK__
 			this.preferences = preferences;
+#endif
 			this.appInfo = appInfo;
 
 			Track();
@@ -149,6 +167,7 @@ namespace Microsoft.Maui.ApplicationModel
 		/// </remarks>
 		internal void InitVersionTracking()
 		{
+#if !__GTK__
 			IsFirstLaunchEver = !preferences.ContainsKey(versionsKey, sharedName) || !preferences.ContainsKey(buildsKey, sharedName);
 			if (IsFirstLaunchEver)
 			{
@@ -159,6 +178,7 @@ namespace Microsoft.Maui.ApplicationModel
 				};
 			}
 			else
+#endif
 			{
 				versionTrail = new Dictionary<string, List<string>>
 				{
@@ -239,11 +259,19 @@ namespace Microsoft.Maui.ApplicationModel
 			return sb.ToString();
 		}
 
+#if __GTK__
+		string[] ReadHistory(string key) => new string[10];
+
+		void WriteHistory(string key, IEnumerable<string> history)
+		{
+		}
+#else
 		string[] ReadHistory(string key)
 			=> preferences.Get<string?>(key, null, sharedName)?.Split(new[] { '|' }, StringSplitOptions.RemoveEmptyEntries) ?? new string[0];
 
 		void WriteHistory(string key, IEnumerable<string> history)
 			=> preferences.Set(key, string.Join("|", history), sharedName);
+#endif
 
 		string? GetPrevious(string key)
 		{

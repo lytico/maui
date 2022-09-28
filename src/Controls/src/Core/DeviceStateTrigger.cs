@@ -40,11 +40,14 @@ namespace Microsoft.Maui.Controls
 				return;
 
 			var device = DevicePlatform.Create(Device);
-
+#if __GTK__
+			SetActive(true);
+#else
 			if (device == DevicePlatform.Create("UWP"))
 				SetActive(DeviceInfo.Platform == DevicePlatform.WinUI);
 			else
 				SetActive(DeviceInfo.Platform == device);
+#endif
 		}
 	}
 }

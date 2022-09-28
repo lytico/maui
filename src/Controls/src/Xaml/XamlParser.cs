@@ -295,11 +295,17 @@ namespace Microsoft.Maui.Controls.Xaml
 
 				try
 				{
+#if __GTK__
+					if (targetPlatform != "UWP")
+#else
 					if (targetPlatform != DeviceInfo.Platform.ToString())
+#endif
 					{
 						// Special case for Windows backward compatibility
+#if !__GTK__
 						if (targetPlatform == "Windows" && DeviceInfo.Platform == DevicePlatform.WinUI)
 							continue;
+#endif
 
 						prefixes.Add(prefix);
 					}

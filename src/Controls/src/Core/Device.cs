@@ -53,6 +53,7 @@ namespace Microsoft.Maui.Controls
 		{
 			get
 			{
+#if !__GTK__
 				var idiom = DeviceInfo.Idiom;
 				if (idiom == DeviceIdiom.Tablet)
 					return TargetIdiom.Tablet;
@@ -64,13 +65,19 @@ namespace Microsoft.Maui.Controls
 					return TargetIdiom.TV;
 				if (idiom == DeviceIdiom.Watch)
 					return TargetIdiom.Watch;
+#endif
 				return TargetIdiom.Unsupported;
 			}
 		}
 
 		/// <include file="../../docs/Microsoft.Maui.Controls/Device.xml" path="//Member[@MemberName='RuntimePlatform']/Docs" />
 		[Obsolete("Use Microsoft.Maui.Devices.DeviceInfo.Platform instead.")]
+
+#if __GTK__
+		public static string RuntimePlatform => "UWP";
+#else
 		public static string RuntimePlatform => DeviceInfo.Platform.ToString();
+#endif
 
 		/// <include file="../../docs/Microsoft.Maui.Controls/Device.xml" path="//Member[@MemberName='FlowDirection']/Docs" />
 		[Obsolete("Use Microsoft.Maui.ApplicationModel.AppInfo.RequestedLayoutDirection instead.")]

@@ -25,7 +25,5 @@ namespace Microsoft.Maui.ApplicationModel
 
 			return Task.CompletedTask;
 		}
-
-		public event EventHandler<AppActionEventArgs> AppActionActivated;
 	}
 }

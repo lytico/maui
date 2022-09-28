@@ -55,6 +55,9 @@ namespace Microsoft.Maui.ApplicationModel.DataTransfer
 	{
 		public Task RequestAsync(ShareTextRequest request)
 		{
+#if __GTK__
+			return Task.CompletedTask;
+#else
 			if (request == null)
 				throw new ArgumentNullException(nameof(request));
 
@@ -62,10 +65,14 @@ namespace Microsoft.Maui.ApplicationModel.DataTransfer
 				throw new ArgumentException($"Both the {nameof(request.Text)} and {nameof(request.Uri)} are invalid. Make sure to include at least one of them in the request.");
 
 			return PlatformRequestAsync(request);
+#endif
 		}
 
 		public Task RequestAsync(ShareFileRequest request)
 		{
+#if __GTK__
+			return Task.CompletedTask;
+#else
 			if (request == null)
 				throw new ArgumentNullException(nameof(request));
 
@@ -73,10 +80,14 @@ namespace Microsoft.Maui.ApplicationModel.DataTransfer
 				throw new ArgumentException(FileNullExeption(nameof(request.File)));
 
 			return PlatformRequestAsync(request);
+#endif
 		}
 
 		public Task RequestAsync(ShareMultipleFilesRequest request)
 		{
+#if __GTK__
+			return Task.CompletedTask;
+#else
 			if (request == null)
 				throw new ArgumentNullException(nameof(request));
 
@@ -87,6 +98,7 @@ namespace Microsoft.Maui.ApplicationModel.DataTransfer
 				throw new ArgumentException(FileNullExeption(nameof(request.Files)));
 
 			return PlatformRequestAsync(request);
+#endif
 		}
 
 		static string FileNullExeption(string file)

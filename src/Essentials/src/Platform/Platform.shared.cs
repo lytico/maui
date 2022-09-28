@@ -68,7 +68,7 @@ namespace Microsoft.Maui.ApplicationModel
 		public static UIKit.UIViewController? GetCurrentUIViewController() =>
 			WindowStateManager.Default.GetCurrentUIViewController(true);
 
-#elif WINDOWS
+#elif WINDOWS && !__GTK__
 
 		public static string? MapServiceToken
 		{

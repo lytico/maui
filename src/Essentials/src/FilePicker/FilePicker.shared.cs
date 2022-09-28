@@ -68,8 +68,10 @@ namespace Microsoft.Maui.Storage
 		public FilePickerFileType(IDictionary<DevicePlatform, IEnumerable<string>> fileTypes) =>
 			this.fileTypes = fileTypes;
 
+#if !__GTK__
 		/// <include file="../../docs/Microsoft.Maui.Essentials/FilePickerFileType.xml" path="//Member[@MemberName='Value']/Docs" />
 		public IEnumerable<string> Value => GetPlatformFileType(DeviceInfo.Current.Platform);
+#endif
 
 		protected virtual IEnumerable<string> GetPlatformFileType(DevicePlatform platform)
 		{

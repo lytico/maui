@@ -9,6 +9,8 @@
     <IsTrimmable>true</IsTrimmable>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <NoWarn>$(NoWarn);CS1591;NU5104;RS0041;RS0026</NoWarn>
+    <RunAnalyzersDuringBuild>True</RunAnalyzersDuringBuild>
+    <RunAnalyzersDuringLiveAnalysis>True</RunAnalyzersDuringLiveAnalysis>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net6.0-windows10.0.19041|AnyCPU'">
     <DefineConstants>$(DefineConstants);WINDOWS;__GTK__</DefineConstants>
@@ -52,7 +54,37 @@
   <ItemGroup>
     <None Include="..\..\..\LICENSE" PackagePath="" Pack="true" />
     <None Include="..\..\..\Assets\xamarin.essentials_128x128.png" PackagePath="icon.png" Pack="true" />
+    <None Include="Accelerometer\Accelerometer.shared.cs" />
+    <None Include="Barometer\Barometer.shared.cs" />
+    <None Include="Battery\Battery.shared.cs" />
+    <None Include="Compass\Compass.shared.cs" />
+    <None Include="Contacts\Contacts.shared.cs" />
+    <None Include="DeviceInfo\DeviceInfo.shared.cs" />
+    <None Include="Flashlight\Flashlight.shared.cs" />
+    <None Include="Geocoding\Geocoding.shared.cs" />
+    <None Include="Geolocation\Geolocation.shared.cs" />
+    <None Include="Geolocation\GeolocationRequest.shared.cs" />
+    <None Include="HapticFeedback\HapticFeedback.shared.cs" />
+    <None Include="HapticFeedback\HapticFeedbackType.shared.cs" />
+    <None Include="Launcher\Launcher.shared.cs" />
+    <None Include="Magnetometer\Magnetometer.shared.cs" />
+    <None Include="Map\Map.shared.cs" />
+    <None Include="Map\MapLaunchOptions.shared.cs" />
+    <None Include="Map\NavigationMode.shared.cs" />
+    <None Include="MediaPicker\MediaPicker.shared.cs" />
     <None Include="nugetreadme.txt" PackagePath="readme.txt" Pack="true" />
+    <None Include="OrientationSensor\OrientationSensor.shared.cs" />
+    <None Include="Preferences\Preferences.shared.cs" />
+    <None Include="Screenshot\Screenshot.shared.cs" />
+    <None Include="TextToSpeech\TextToSpeech.shared.cs" />
+    <None Include="Types\Contact.shared.cs" />
+    <None Include="Types\Location.shared.cs" />
+    <None Include="Types\LocationExtensions.shared.cs" />
+    <None Include="Types\SensorSpeed.shared.cs" />
+    <None Include="UnitConverters\UnitConverters.shared.cs" />
+    <None Include="VersionTracking\VersionTracking.shared.cs" />
+    <None Include="Vibration\Vibration.shared.cs" />
+    <None Include="WebAuthenticator\AppleSignInAuthenticator.shared.cs" />
     <Compile Include="**\*.shared.cs" Exclude="$(DefaultItemExcludes);$(DefaultExcludesInProjectFolder)" />
     <Compile Include="**\*.shared.*.cs" Exclude="$(DefaultItemExcludes);$(DefaultExcludesInProjectFolder)" />
   </ItemGroup>
@@ -60,21 +92,56 @@
     <PackageReference Include="Microsoft.WindowsAppSDK" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\src-GTK\Accelerometer\Accelerometer.gtk.cs" Link="Accelerometer\Accelerometer.gtk.cs" />
+    <Compile Remove="Accelerometer\Accelerometer.shared.cs" />
+    <Compile Remove="Barometer\Barometer.shared.cs" />
+    <Compile Remove="Battery\Battery.shared.cs" />
+    <Compile Remove="Compass\Compass.shared.cs" />
+    <Compile Remove="Contacts\Contacts.shared.cs" />
+    <Compile Remove="DeviceInfo\DeviceInfo.shared.cs" />
+    <Compile Remove="Flashlight\Flashlight.shared.cs" />
+    <Compile Remove="Geocoding\Geocoding.shared.cs" />
+    <Compile Remove="Geolocation\Geolocation.shared.cs" />
+    <Compile Remove="Geolocation\GeolocationRequest.shared.cs" />
+    <Compile Remove="Gyroscope\Gyroscope.shared.cs" />
+    <Compile Remove="HapticFeedback\HapticFeedback.shared.cs" />
+    <Compile Remove="HapticFeedback\HapticFeedbackType.shared.cs" />
+    <Compile Remove="Launcher\Launcher.shared.cs" />
+    <Compile Remove="Magnetometer\Magnetometer.shared.cs" />
+    <Compile Remove="Map\Map.shared.cs" />
+    <Compile Remove="Map\MapLaunchOptions.shared.cs" />
+    <Compile Remove="Map\NavigationMode.shared.cs" />
+    <Compile Remove="MediaPicker\MediaPicker.shared.cs" />
+    <Compile Remove="OrientationSensor\OrientationSensor.shared.cs" />
+    <Compile Remove="Preferences\Preferences.shared.cs" />
+    <Compile Remove="Screenshot\Screenshot.shared.cs" />
+    <Compile Remove="TextToSpeech\TextToSpeech.shared.cs" />
+    <Compile Remove="Types\Contact.shared.cs" />
+    <Compile Remove="Types\Location.shared.cs" />
+    <Compile Remove="Types\LocationExtensions.shared.cs" />
+    <Compile Remove="Types\SensorSpeed.shared.cs" />
+    <Compile Remove="UnitConverters\UnitConverters.shared.cs" />
+    <Compile Remove="VersionTracking\VersionTracking.shared.cs" />
+    <Compile Remove="Vibration\Vibration.shared.cs" />
+    <Compile Remove="WebAuthenticator\AppleSignInAuthenticator.shared.cs" />
+  </ItemGroup>
+  <ItemGroup>
     <Compile Include="..\src-GTK\AppActions\AppActions.gtk.cs" Link="AppActions\AppActions.gtk.cs" />
     <Compile Include="..\src-GTK\AppInfo\AppInfo.gtk.cs" Link="AppInfo\AppInfo.gtk.cs" />
-    <Compile Include="..\src-GTK\Barometer\Barometer.gtk.cs" Link="Barometer\Barometer.gtk.cs" />
-    <Compile Include="..\src-GTK\Battery\Battery.gtk.cs" Link="Battery\Battery.gtk.cs" />
+    <Compile Include="..\src-GTK\Browser\Browser.gtk.cs" Link="Browser\Browser.gtk.cs" />
     <Compile Include="..\src-GTK\Clipboard\Clipboard.gtk.cs" Link="Clipboard\Clipboard.gtk.cs" />
     <Compile Include="..\src-GTK\Connectivity\Connectivity.gtk.cs" Link="Connectivity\Connectivity.gtk.cs" />
     <Compile Include="..\src-GTK\DeviceDisplay\DeviceDisplay.gtk.cs" Link="DeviceDisplay\DeviceDisplay.gtk.cs" />
     <Compile Include="..\src-GTK\Email\Email.gtk.cs" Link="Email\Email.gtk.cs" />
+    <Compile Include="..\src-GTK\FilePicker\FilePicker.gtk.cs" Link="FilePicker\FilePicker.gtk.cs" />
     <Compile Include="..\src-GTK\FileSystem\FileSystem.gtk.cs" Link="FileSystem\FileSystem.gtk.cs" />
+    <Compile Include="..\src-GTK\MainThread\MainThread.gtk.cs" Link="MainThread\MainThread.gtk.cs" />
     <Compile Include="..\src-GTK\Permissions\Permissions.gtk.cs" Link="Permissions\Permissions.gtk.cs" />
     <Compile Include="..\src-GTK\PhoneDialer\PhoneDialer.gtk.cs" Link="PhoneDialer\PhoneDialer.gtk.cs" />
     <Compile Include="..\src-GTK\Platform\PlatformUtils.gtk.cs" Link="Platform\PlatformUtils.gtk.cs" />
+    <Compile Include="..\src-GTK\SecureStorage\SecureStorage.gtk.cs" Link="SecureStorage\SecureStorage.gtk.cs" />
+    <Compile Include="..\src-GTK\SemanticScreenReader\SemanticScreenReader.gtk.cs" Link="SemanticScreenReader\SemanticScreenReader.gtk.cs" />
     <Compile Include="..\src-GTK\Sms\Sms.gtk.cs" Link="Sms\Sms.gtk.cs" />
-    <Compile Include="..\src-GTK\Vibration\Vibration.gtk.cs" Link="Vibration\Vibration.gtk.cs" />
+    <Compile Include="..\src-GTK\WebAuthenticator\WebAuthenticator.gtk.cs" Link="WebAuthenticator\WebAuthenticator.gtk.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Graphics\src\Graphics\Graphics-GTK.csproj" />
@@ -106,4 +173,18 @@
     </Reference>
   </ItemGroup>
   <Import Project="$(MauiSrcDirectory)PublicAPI.targets" />
+  <ItemGroup>
+    <AdditionalFiles Remove="PublicAPI\net-windows\PublicAPI.Shipped.txt" />
+    <AdditionalFiles Remove="PublicAPI\net-windows\PublicAPI.Unshipped.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <AdditionalFiles Include="..\src-GTK\PublicAPI\net-windows\PublicAPI.Shipped.txt" Link="PublicAPI\net-gtk\PublicAPI.Shipped.txt" />
+    <AdditionalFiles Include="..\src-GTK\PublicAPI\net-windows\PublicAPI.Unshipped.txt" Link="PublicAPI\net-gtk\PublicAPI.Unshipped.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="PublicAPI\net-gtk\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Gyroscope\Gyroscope.shared.cs" />
+  </ItemGroup>
 </Project>

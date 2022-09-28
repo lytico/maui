@@ -53,7 +53,11 @@ namespace Microsoft.Maui.Controls
 		/// <include file="../../../docs/Microsoft.Maui.Controls/Shell.xml" path="//Member[@MemberName='NavBarHasShadowProperty']/Docs" />
 		public static readonly BindableProperty NavBarHasShadowProperty =
 			BindableProperty.CreateAttached("NavBarHasShadow", typeof(bool), typeof(Shell), default(bool),
+#if __GTK__
+				defaultValueCreator: (b) => false);
+#else
 				defaultValueCreator: (b) => DeviceInfo.Platform == DevicePlatform.Android);
+#endif
 
 		/// <include file="../../../docs/Microsoft.Maui.Controls/Shell.xml" path="//Member[@MemberName='SearchHandlerProperty']/Docs" />
 		public static readonly BindableProperty SearchHandlerProperty =

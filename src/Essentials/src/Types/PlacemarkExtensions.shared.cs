@@ -7,6 +7,7 @@ namespace Microsoft.Maui.Devices.Sensors
 	/// <include file="../../docs/Microsoft.Maui.Essentials/PlacemarkExtensions.xml" path="Type[@FullName='Microsoft.Maui.Essentials.PlacemarkExtensions']/Docs" />
 	public static partial class PlacemarkExtensions
 	{
+#if !__GTK__
 		/// <include file="../../docs/Microsoft.Maui.Essentials/PlacemarkExtensions.xml" path="//Member[@MemberName='OpenMapsAsync'][2]/Docs" />
 		public static Task OpenMapsAsync(this Placemark placemark, MapLaunchOptions options) =>
 			Map.OpenAsync(placemark, options);
@@ -14,6 +15,7 @@ namespace Microsoft.Maui.Devices.Sensors
 		/// <include file="../../docs/Microsoft.Maui.Essentials/PlacemarkExtensions.xml" path="//Member[@MemberName='OpenMapsAsync'][1]/Docs" />
 		public static Task OpenMapsAsync(this Placemark placemark) =>
 			Map.OpenAsync(placemark);
+#endif
 
 		internal static string GetEscapedAddress(this Placemark placemark)
 		{

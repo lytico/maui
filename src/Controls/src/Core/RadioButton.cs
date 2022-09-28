@@ -561,7 +561,11 @@ namespace Microsoft.Maui.Controls
 			var content = Content;
 			if (content is View)
 			{
+#if __GTK__
+				Application.Current?.FindMauiContext()?.CreateLogger<RadioButton>()?.LogWarning("Warning - Runtime Platform does not support View as the {PropertyName} property of RadioButton; the return value of the ToString() method will be displayed instead.", ContentProperty.PropertyName);
+#else
 				Application.Current?.FindMauiContext()?.CreateLogger<RadioButton>()?.LogWarning("Warning - {RuntimePlatform} does not support View as the {PropertyName} property of RadioButton; the return value of the ToString() method will be displayed instead.", DeviceInfo.Platform, ContentProperty.PropertyName);
+#endif
 			}
 
 			return content?.ToString();

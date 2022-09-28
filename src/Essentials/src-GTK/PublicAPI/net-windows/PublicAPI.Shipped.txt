@@ -1,0 +1,527 @@
+﻿#nullable enable
+abstract Microsoft.Maui.ApplicationModel.Permissions.BasePermission.EnsureDeclared() -> void
+abstract Microsoft.Maui.ApplicationModel.Permissions.BasePermission.ShouldShowRationale() -> bool
+Microsoft.Maui.Accessibility.ISemanticScreenReader
+Microsoft.Maui.Accessibility.ISemanticScreenReader.Announce(string! text) -> void
+Microsoft.Maui.Accessibility.SemanticScreenReader
+Microsoft.Maui.ApplicationModel.AppAction
+Microsoft.Maui.ApplicationModel.AppAction.AppAction(string! id, string! title, string? subtitle = null, string? icon = null) -> void
+Microsoft.Maui.ApplicationModel.AppAction.Id.get -> string!
+Microsoft.Maui.ApplicationModel.AppAction.Id.set -> void
+Microsoft.Maui.ApplicationModel.AppAction.Subtitle.get -> string?
+Microsoft.Maui.ApplicationModel.AppAction.Subtitle.set -> void
+Microsoft.Maui.ApplicationModel.AppAction.Title.get -> string!
+Microsoft.Maui.ApplicationModel.AppAction.Title.set -> void
+Microsoft.Maui.ApplicationModel.AppActionEventArgs
+Microsoft.Maui.ApplicationModel.AppActionEventArgs.AppAction.get -> Microsoft.Maui.ApplicationModel.AppAction!
+Microsoft.Maui.ApplicationModel.AppActionEventArgs.AppActionEventArgs(Microsoft.Maui.ApplicationModel.AppAction! appAction) -> void
+Microsoft.Maui.ApplicationModel.AppActions
+Microsoft.Maui.ApplicationModel.AppActionsExtensions
+Microsoft.Maui.ApplicationModel.AppInfo
+Microsoft.Maui.ApplicationModel.AppPackagingModel
+Microsoft.Maui.ApplicationModel.AppPackagingModel.Packaged = 0 -> Microsoft.Maui.ApplicationModel.AppPackagingModel
+Microsoft.Maui.ApplicationModel.AppPackagingModel.Unpackaged = 1 -> Microsoft.Maui.ApplicationModel.AppPackagingModel
+Microsoft.Maui.ApplicationModel.AppTheme
+Microsoft.Maui.ApplicationModel.AppTheme.Dark = 2 -> Microsoft.Maui.ApplicationModel.AppTheme
+Microsoft.Maui.ApplicationModel.AppTheme.Light = 1 -> Microsoft.Maui.ApplicationModel.AppTheme
+Microsoft.Maui.ApplicationModel.AppTheme.Unspecified = 0 -> Microsoft.Maui.ApplicationModel.AppTheme
+Microsoft.Maui.ApplicationModel.Browser
+Microsoft.Maui.ApplicationModel.BrowserExtensions
+Microsoft.Maui.ApplicationModel.BrowserLaunchFlags
+Microsoft.Maui.ApplicationModel.BrowserLaunchFlags.LaunchAdjacent = 1 -> Microsoft.Maui.ApplicationModel.BrowserLaunchFlags
+Microsoft.Maui.ApplicationModel.BrowserLaunchFlags.None = 0 -> Microsoft.Maui.ApplicationModel.BrowserLaunchFlags
+Microsoft.Maui.ApplicationModel.BrowserLaunchFlags.PresentAsFormSheet = 4 -> Microsoft.Maui.ApplicationModel.BrowserLaunchFlags
+Microsoft.Maui.ApplicationModel.BrowserLaunchFlags.PresentAsPageSheet = 2 -> Microsoft.Maui.ApplicationModel.BrowserLaunchFlags
+Microsoft.Maui.ApplicationModel.BrowserLaunchMode
+Microsoft.Maui.ApplicationModel.BrowserLaunchMode.External = 1 -> Microsoft.Maui.ApplicationModel.BrowserLaunchMode
+Microsoft.Maui.ApplicationModel.BrowserLaunchMode.SystemPreferred = 0 -> Microsoft.Maui.ApplicationModel.BrowserLaunchMode
+Microsoft.Maui.ApplicationModel.BrowserLaunchOptions
+Microsoft.Maui.ApplicationModel.BrowserLaunchOptions.BrowserLaunchOptions() -> void
+Microsoft.Maui.ApplicationModel.BrowserLaunchOptions.Flags.get -> Microsoft.Maui.ApplicationModel.BrowserLaunchFlags
+Microsoft.Maui.ApplicationModel.BrowserLaunchOptions.Flags.set -> void
+Microsoft.Maui.ApplicationModel.BrowserLaunchOptions.LaunchMode.get -> Microsoft.Maui.ApplicationModel.BrowserLaunchMode
+Microsoft.Maui.ApplicationModel.BrowserLaunchOptions.LaunchMode.set -> void
+Microsoft.Maui.ApplicationModel.BrowserLaunchOptions.PreferredControlColor.get -> Microsoft.Maui.Graphics.Color?
+Microsoft.Maui.ApplicationModel.BrowserLaunchOptions.PreferredControlColor.set -> void
+Microsoft.Maui.ApplicationModel.BrowserLaunchOptions.PreferredToolbarColor.get -> Microsoft.Maui.Graphics.Color?
+Microsoft.Maui.ApplicationModel.BrowserLaunchOptions.PreferredToolbarColor.set -> void
+Microsoft.Maui.ApplicationModel.BrowserLaunchOptions.TitleMode.get -> Microsoft.Maui.ApplicationModel.BrowserTitleMode
+Microsoft.Maui.ApplicationModel.BrowserLaunchOptions.TitleMode.set -> void
+Microsoft.Maui.ApplicationModel.BrowserTitleMode
+Microsoft.Maui.ApplicationModel.BrowserTitleMode.Default = 0 -> Microsoft.Maui.ApplicationModel.BrowserTitleMode
+Microsoft.Maui.ApplicationModel.BrowserTitleMode.Hide = 2 -> Microsoft.Maui.ApplicationModel.BrowserTitleMode
+Microsoft.Maui.ApplicationModel.BrowserTitleMode.Show = 1 -> Microsoft.Maui.ApplicationModel.BrowserTitleMode
+Microsoft.Maui.ApplicationModel.Communication.Email
+Microsoft.Maui.ApplicationModel.Communication.EmailAttachment
+Microsoft.Maui.ApplicationModel.Communication.EmailAttachment.EmailAttachment(Microsoft.Maui.Storage.FileBase! file) -> void
+Microsoft.Maui.ApplicationModel.Communication.EmailAttachment.EmailAttachment(string! fullPath) -> void
+Microsoft.Maui.ApplicationModel.Communication.EmailAttachment.EmailAttachment(string! fullPath, string! contentType) -> void
+Microsoft.Maui.ApplicationModel.Communication.EmailBodyFormat
+Microsoft.Maui.ApplicationModel.Communication.EmailBodyFormat.Html = 1 -> Microsoft.Maui.ApplicationModel.Communication.EmailBodyFormat
+Microsoft.Maui.ApplicationModel.Communication.EmailBodyFormat.PlainText = 0 -> Microsoft.Maui.ApplicationModel.Communication.EmailBodyFormat
+Microsoft.Maui.ApplicationModel.Communication.EmailExtensions
+Microsoft.Maui.ApplicationModel.Communication.EmailMessage
+Microsoft.Maui.ApplicationModel.Communication.EmailMessage.Attachments.get -> System.Collections.Generic.List<Microsoft.Maui.ApplicationModel.Communication.EmailAttachment!>?
+Microsoft.Maui.ApplicationModel.Communication.EmailMessage.Attachments.set -> void
+Microsoft.Maui.ApplicationModel.Communication.EmailMessage.Bcc.get -> System.Collections.Generic.List<string!>?
+Microsoft.Maui.ApplicationModel.Communication.EmailMessage.Bcc.set -> void
+Microsoft.Maui.ApplicationModel.Communication.EmailMessage.Body.get -> string?
+Microsoft.Maui.ApplicationModel.Communication.EmailMessage.Body.set -> void
+Microsoft.Maui.ApplicationModel.Communication.EmailMessage.BodyFormat.get -> Microsoft.Maui.ApplicationModel.Communication.EmailBodyFormat
+Microsoft.Maui.ApplicationModel.Communication.EmailMessage.BodyFormat.set -> void
+Microsoft.Maui.ApplicationModel.Communication.EmailMessage.Cc.get -> System.Collections.Generic.List<string!>?
+Microsoft.Maui.ApplicationModel.Communication.EmailMessage.Cc.set -> void
+Microsoft.Maui.ApplicationModel.Communication.EmailMessage.EmailMessage() -> void
+Microsoft.Maui.ApplicationModel.Communication.EmailMessage.EmailMessage(string! subject, string! body, params string![]! to) -> void
+Microsoft.Maui.ApplicationModel.Communication.EmailMessage.Subject.get -> string?
+Microsoft.Maui.ApplicationModel.Communication.EmailMessage.Subject.set -> void
+Microsoft.Maui.ApplicationModel.Communication.EmailMessage.To.get -> System.Collections.Generic.List<string!>?
+Microsoft.Maui.ApplicationModel.Communication.EmailMessage.To.set -> void
+Microsoft.Maui.ApplicationModel.Communication.IEmail
+Microsoft.Maui.ApplicationModel.Communication.IEmail.ComposeAsync(Microsoft.Maui.ApplicationModel.Communication.EmailMessage? message) -> System.Threading.Tasks.Task!
+Microsoft.Maui.ApplicationModel.Communication.IEmail.IsComposeSupported.get -> bool
+Microsoft.Maui.ApplicationModel.Communication.IPhoneDialer
+Microsoft.Maui.ApplicationModel.Communication.IPhoneDialer.IsSupported.get -> bool
+Microsoft.Maui.ApplicationModel.Communication.IPhoneDialer.Open(string! number) -> void
+Microsoft.Maui.ApplicationModel.Communication.ISms
+Microsoft.Maui.ApplicationModel.Communication.ISms.ComposeAsync(Microsoft.Maui.ApplicationModel.Communication.SmsMessage? message) -> System.Threading.Tasks.Task!
+Microsoft.Maui.ApplicationModel.Communication.ISms.IsComposeSupported.get -> bool
+Microsoft.Maui.ApplicationModel.Communication.PhoneDialer
+Microsoft.Maui.ApplicationModel.Communication.Sms
+Microsoft.Maui.ApplicationModel.Communication.SmsMessage
+Microsoft.Maui.ApplicationModel.Communication.SmsMessage.Body.get -> string?
+Microsoft.Maui.ApplicationModel.Communication.SmsMessage.Body.set -> void
+Microsoft.Maui.ApplicationModel.Communication.SmsMessage.Recipients.get -> System.Collections.Generic.List<string!>!
+Microsoft.Maui.ApplicationModel.Communication.SmsMessage.Recipients.set -> void
+Microsoft.Maui.ApplicationModel.Communication.SmsMessage.SmsMessage() -> void
+Microsoft.Maui.ApplicationModel.Communication.SmsMessage.SmsMessage(string! body, string? recipient) -> void
+Microsoft.Maui.ApplicationModel.Communication.SmsMessage.SmsMessage(string! body, System.Collections.Generic.IEnumerable<string!>? recipients) -> void
+Microsoft.Maui.ApplicationModel.DataTransfer.Clipboard
+Microsoft.Maui.ApplicationModel.DataTransfer.IClipboard
+Microsoft.Maui.ApplicationModel.DataTransfer.IClipboard.ClipboardContentChanged -> System.EventHandler<System.EventArgs!>!
+Microsoft.Maui.ApplicationModel.DataTransfer.IClipboard.GetTextAsync() -> System.Threading.Tasks.Task<string?>!
+Microsoft.Maui.ApplicationModel.DataTransfer.IClipboard.HasText.get -> bool
+Microsoft.Maui.ApplicationModel.DataTransfer.IClipboard.SetTextAsync(string? text) -> System.Threading.Tasks.Task!
+Microsoft.Maui.ApplicationModel.DataTransfer.IShare
+Microsoft.Maui.ApplicationModel.DataTransfer.IShare.RequestAsync(Microsoft.Maui.ApplicationModel.DataTransfer.ShareFileRequest! request) -> System.Threading.Tasks.Task!
+Microsoft.Maui.ApplicationModel.DataTransfer.IShare.RequestAsync(Microsoft.Maui.ApplicationModel.DataTransfer.ShareMultipleFilesRequest! request) -> System.Threading.Tasks.Task!
+Microsoft.Maui.ApplicationModel.DataTransfer.IShare.RequestAsync(Microsoft.Maui.ApplicationModel.DataTransfer.ShareTextRequest! request) -> System.Threading.Tasks.Task!
+Microsoft.Maui.ApplicationModel.DataTransfer.Share
+Microsoft.Maui.ApplicationModel.DataTransfer.ShareExtensions
+Microsoft.Maui.ApplicationModel.DataTransfer.ShareFile
+Microsoft.Maui.ApplicationModel.DataTransfer.ShareFile.ShareFile(Microsoft.Maui.Storage.FileBase! file) -> void
+Microsoft.Maui.ApplicationModel.DataTransfer.ShareFile.ShareFile(string! fullPath) -> void
+Microsoft.Maui.ApplicationModel.DataTransfer.ShareFile.ShareFile(string! fullPath, string! contentType) -> void
+Microsoft.Maui.ApplicationModel.DataTransfer.ShareFileRequest
+Microsoft.Maui.ApplicationModel.DataTransfer.ShareFileRequest.File.get -> Microsoft.Maui.ApplicationModel.DataTransfer.ShareFile?
+Microsoft.Maui.ApplicationModel.DataTransfer.ShareFileRequest.File.set -> void
+Microsoft.Maui.ApplicationModel.DataTransfer.ShareFileRequest.ShareFileRequest() -> void
+Microsoft.Maui.ApplicationModel.DataTransfer.ShareFileRequest.ShareFileRequest(Microsoft.Maui.ApplicationModel.DataTransfer.ShareFile! file) -> void
+Microsoft.Maui.ApplicationModel.DataTransfer.ShareFileRequest.ShareFileRequest(Microsoft.Maui.Storage.FileBase! file) -> void
+Microsoft.Maui.ApplicationModel.DataTransfer.ShareFileRequest.ShareFileRequest(string! title, Microsoft.Maui.ApplicationModel.DataTransfer.ShareFile! file) -> void
+Microsoft.Maui.ApplicationModel.DataTransfer.ShareFileRequest.ShareFileRequest(string! title, Microsoft.Maui.Storage.FileBase! file) -> void
+Microsoft.Maui.ApplicationModel.DataTransfer.ShareMultipleFilesRequest
+Microsoft.Maui.ApplicationModel.DataTransfer.ShareMultipleFilesRequest.Files.get -> System.Collections.Generic.List<Microsoft.Maui.ApplicationModel.DataTransfer.ShareFile!>?
+Microsoft.Maui.ApplicationModel.DataTransfer.ShareMultipleFilesRequest.Files.set -> void
+Microsoft.Maui.ApplicationModel.DataTransfer.ShareMultipleFilesRequest.ShareMultipleFilesRequest() -> void
+Microsoft.Maui.ApplicationModel.DataTransfer.ShareMultipleFilesRequest.ShareMultipleFilesRequest(string! title, System.Collections.Generic.IEnumerable<Microsoft.Maui.ApplicationModel.DataTransfer.ShareFile!>! files) -> void
+Microsoft.Maui.ApplicationModel.DataTransfer.ShareMultipleFilesRequest.ShareMultipleFilesRequest(string! title, System.Collections.Generic.IEnumerable<Microsoft.Maui.Storage.FileBase!>! files) -> void
+Microsoft.Maui.ApplicationModel.DataTransfer.ShareMultipleFilesRequest.ShareMultipleFilesRequest(System.Collections.Generic.IEnumerable<Microsoft.Maui.ApplicationModel.DataTransfer.ShareFile!>! files) -> void
+Microsoft.Maui.ApplicationModel.DataTransfer.ShareMultipleFilesRequest.ShareMultipleFilesRequest(System.Collections.Generic.IEnumerable<Microsoft.Maui.Storage.FileBase!>! files) -> void
+Microsoft.Maui.ApplicationModel.DataTransfer.ShareRequestBase
+Microsoft.Maui.ApplicationModel.DataTransfer.ShareRequestBase.PresentationSourceBounds.get -> Microsoft.Maui.Graphics.Rect
+Microsoft.Maui.ApplicationModel.DataTransfer.ShareRequestBase.PresentationSourceBounds.set -> void
+Microsoft.Maui.ApplicationModel.DataTransfer.ShareRequestBase.ShareRequestBase() -> void
+Microsoft.Maui.ApplicationModel.DataTransfer.ShareRequestBase.Title.get -> string?
+Microsoft.Maui.ApplicationModel.DataTransfer.ShareRequestBase.Title.set -> void
+Microsoft.Maui.ApplicationModel.DataTransfer.ShareTextRequest
+Microsoft.Maui.ApplicationModel.DataTransfer.ShareTextRequest.ShareTextRequest() -> void
+Microsoft.Maui.ApplicationModel.DataTransfer.ShareTextRequest.ShareTextRequest(string! text) -> void
+Microsoft.Maui.ApplicationModel.DataTransfer.ShareTextRequest.ShareTextRequest(string! text, string! title) -> void
+Microsoft.Maui.ApplicationModel.DataTransfer.ShareTextRequest.Subject.get -> string?
+Microsoft.Maui.ApplicationModel.DataTransfer.ShareTextRequest.Subject.set -> void
+Microsoft.Maui.ApplicationModel.DataTransfer.ShareTextRequest.Text.get -> string?
+Microsoft.Maui.ApplicationModel.DataTransfer.ShareTextRequest.Text.set -> void
+Microsoft.Maui.ApplicationModel.DataTransfer.ShareTextRequest.Uri.get -> string?
+Microsoft.Maui.ApplicationModel.DataTransfer.ShareTextRequest.Uri.set -> void
+Microsoft.Maui.ApplicationModel.FeatureNotEnabledException
+Microsoft.Maui.ApplicationModel.FeatureNotEnabledException.FeatureNotEnabledException() -> void
+Microsoft.Maui.ApplicationModel.FeatureNotSupportedException
+Microsoft.Maui.ApplicationModel.FeatureNotSupportedException.FeatureNotSupportedException() -> void
+Microsoft.Maui.ApplicationModel.IAppActions
+Microsoft.Maui.ApplicationModel.IAppActions.GetAsync() -> System.Threading.Tasks.Task<System.Collections.Generic.IEnumerable<Microsoft.Maui.ApplicationModel.AppAction!>!>!
+Microsoft.Maui.ApplicationModel.IAppActions.IsSupported.get -> bool
+Microsoft.Maui.ApplicationModel.IAppActions.SetAsync(System.Collections.Generic.IEnumerable<Microsoft.Maui.ApplicationModel.AppAction!>! actions) -> System.Threading.Tasks.Task!
+Microsoft.Maui.ApplicationModel.IAppInfo
+Microsoft.Maui.ApplicationModel.IAppInfo.BuildString.get -> string!
+Microsoft.Maui.ApplicationModel.IAppInfo.Name.get -> string!
+Microsoft.Maui.ApplicationModel.IAppInfo.PackageName.get -> string!
+Microsoft.Maui.ApplicationModel.IAppInfo.PackagingModel.get -> Microsoft.Maui.ApplicationModel.AppPackagingModel
+Microsoft.Maui.ApplicationModel.IAppInfo.RequestedLayoutDirection.get -> Microsoft.Maui.ApplicationModel.LayoutDirection
+Microsoft.Maui.ApplicationModel.IAppInfo.RequestedTheme.get -> Microsoft.Maui.ApplicationModel.AppTheme
+Microsoft.Maui.ApplicationModel.IAppInfo.ShowSettingsUI() -> void
+Microsoft.Maui.ApplicationModel.IAppInfo.Version.get -> System.Version!
+Microsoft.Maui.ApplicationModel.IAppInfo.VersionString.get -> string!
+Microsoft.Maui.ApplicationModel.IBrowser
+Microsoft.Maui.ApplicationModel.IBrowser.OpenAsync(System.Uri! uri, Microsoft.Maui.ApplicationModel.BrowserLaunchOptions! options) -> System.Threading.Tasks.Task<bool>!
+Microsoft.Maui.ApplicationModel.IPlatformAppActions
+Microsoft.Maui.ApplicationModel.LayoutDirection
+Microsoft.Maui.ApplicationModel.LayoutDirection.LeftToRight = 1 -> Microsoft.Maui.ApplicationModel.LayoutDirection
+Microsoft.Maui.ApplicationModel.LayoutDirection.RightToLeft = 2 -> Microsoft.Maui.ApplicationModel.LayoutDirection
+Microsoft.Maui.ApplicationModel.LayoutDirection.Unknown = 0 -> Microsoft.Maui.ApplicationModel.LayoutDirection
+Microsoft.Maui.ApplicationModel.MainThread
+Microsoft.Maui.ApplicationModel.PermissionException
+Microsoft.Maui.ApplicationModel.Permissions
+Microsoft.Maui.ApplicationModel.Permissions.BasePermission
+Microsoft.Maui.ApplicationModel.Permissions.BasePermission.BasePermission() -> void
+Microsoft.Maui.ApplicationModel.Permissions.BasePlatformPermission
+Microsoft.Maui.ApplicationModel.Permissions.BasePlatformPermission.BasePlatformPermission() -> void
+Microsoft.Maui.ApplicationModel.Permissions.CalendarRead
+Microsoft.Maui.ApplicationModel.Permissions.CalendarRead.CalendarRead() -> void
+Microsoft.Maui.ApplicationModel.Permissions.CalendarWrite
+Microsoft.Maui.ApplicationModel.Permissions.CalendarWrite.CalendarWrite() -> void
+Microsoft.Maui.ApplicationModel.Permissions.Camera
+Microsoft.Maui.ApplicationModel.Permissions.Camera.Camera() -> void
+Microsoft.Maui.ApplicationModel.Permissions.LaunchApp
+Microsoft.Maui.ApplicationModel.Permissions.LaunchApp.LaunchApp() -> void
+Microsoft.Maui.ApplicationModel.Permissions.Microphone
+Microsoft.Maui.ApplicationModel.Permissions.Microphone.Microphone() -> void
+Microsoft.Maui.ApplicationModel.Permissions.NetworkState
+Microsoft.Maui.ApplicationModel.Permissions.NetworkState.NetworkState() -> void
+Microsoft.Maui.ApplicationModel.Permissions.Phone
+Microsoft.Maui.ApplicationModel.Permissions.Phone.Phone() -> void
+Microsoft.Maui.ApplicationModel.Permissions.Photos
+Microsoft.Maui.ApplicationModel.Permissions.Photos.Photos() -> void
+Microsoft.Maui.ApplicationModel.Permissions.PhotosAddOnly
+Microsoft.Maui.ApplicationModel.Permissions.PhotosAddOnly.PhotosAddOnly() -> void
+Microsoft.Maui.ApplicationModel.Permissions.Reminders
+Microsoft.Maui.ApplicationModel.Permissions.Reminders.Reminders() -> void
+Microsoft.Maui.ApplicationModel.Permissions.Sensors
+Microsoft.Maui.ApplicationModel.Permissions.Sensors.Sensors() -> void
+Microsoft.Maui.ApplicationModel.Permissions.Sms
+Microsoft.Maui.ApplicationModel.Permissions.Sms.Sms() -> void
+Microsoft.Maui.ApplicationModel.Permissions.Speech
+Microsoft.Maui.ApplicationModel.Permissions.Speech.Speech() -> void
+Microsoft.Maui.ApplicationModel.Permissions.StorageRead
+Microsoft.Maui.ApplicationModel.Permissions.StorageRead.StorageRead() -> void
+Microsoft.Maui.ApplicationModel.Permissions.StorageWrite
+Microsoft.Maui.ApplicationModel.Permissions.StorageWrite.StorageWrite() -> void
+Microsoft.Maui.ApplicationModel.Permissions.Vibrate
+Microsoft.Maui.ApplicationModel.Permissions.Vibrate.Vibrate() -> void
+Microsoft.Maui.ApplicationModel.PermissionStatus
+Microsoft.Maui.ApplicationModel.PermissionStatus.Denied = 1 -> Microsoft.Maui.ApplicationModel.PermissionStatus
+Microsoft.Maui.ApplicationModel.PermissionStatus.Disabled = 2 -> Microsoft.Maui.ApplicationModel.PermissionStatus
+Microsoft.Maui.ApplicationModel.PermissionStatus.Granted = 3 -> Microsoft.Maui.ApplicationModel.PermissionStatus
+Microsoft.Maui.ApplicationModel.PermissionStatus.Limited = 5 -> Microsoft.Maui.ApplicationModel.PermissionStatus
+Microsoft.Maui.ApplicationModel.PermissionStatus.Restricted = 4 -> Microsoft.Maui.ApplicationModel.PermissionStatus
+Microsoft.Maui.ApplicationModel.PermissionStatus.Unknown = 0 -> Microsoft.Maui.ApplicationModel.PermissionStatus
+Microsoft.Maui.ApplicationModel.Platform
+Microsoft.Maui.Authentication.IPlatformWebAuthenticatorCallback
+Microsoft.Maui.Authentication.IWebAuthenticator
+Microsoft.Maui.Authentication.IWebAuthenticator.AuthenticateAsync(Microsoft.Maui.Authentication.WebAuthenticatorOptions! webAuthenticatorOptions) -> System.Threading.Tasks.Task<Microsoft.Maui.Authentication.WebAuthenticatorResult!>!
+Microsoft.Maui.Authentication.WebAuthenticator
+Microsoft.Maui.Authentication.WebAuthenticatorExtensions
+Microsoft.Maui.Authentication.WebAuthenticatorOptions
+Microsoft.Maui.Authentication.WebAuthenticatorOptions.CallbackUrl.get -> System.Uri?
+Microsoft.Maui.Authentication.WebAuthenticatorOptions.CallbackUrl.set -> void
+Microsoft.Maui.Authentication.WebAuthenticatorOptions.PrefersEphemeralWebBrowserSession.get -> bool
+Microsoft.Maui.Authentication.WebAuthenticatorOptions.PrefersEphemeralWebBrowserSession.set -> void
+Microsoft.Maui.Authentication.WebAuthenticatorOptions.Url.get -> System.Uri?
+Microsoft.Maui.Authentication.WebAuthenticatorOptions.Url.set -> void
+Microsoft.Maui.Authentication.WebAuthenticatorOptions.WebAuthenticatorOptions() -> void
+Microsoft.Maui.Authentication.WebAuthenticatorResult
+Microsoft.Maui.Authentication.WebAuthenticatorResult.ExpiresIn.get -> System.DateTimeOffset?
+Microsoft.Maui.Authentication.WebAuthenticatorResult.RefreshTokenExpiresIn.get -> System.DateTimeOffset?
+Microsoft.Maui.Authentication.WebAuthenticatorResult.Timestamp.get -> System.DateTimeOffset
+Microsoft.Maui.Authentication.WebAuthenticatorResult.Timestamp.set -> void
+Microsoft.Maui.Authentication.WebAuthenticatorResult.WebAuthenticatorResult() -> void
+Microsoft.Maui.Devices.DeviceDisplay
+Microsoft.Maui.Devices.DeviceIdiom
+Microsoft.Maui.Devices.DeviceIdiom.DeviceIdiom() -> void
+Microsoft.Maui.Devices.DeviceIdiom.Equals(Microsoft.Maui.Devices.DeviceIdiom other) -> bool
+Microsoft.Maui.Devices.DevicePlatform
+Microsoft.Maui.Devices.DevicePlatform.DevicePlatform() -> void
+Microsoft.Maui.Devices.DevicePlatform.Equals(Microsoft.Maui.Devices.DevicePlatform other) -> bool
+Microsoft.Maui.Devices.DisplayInfo
+Microsoft.Maui.Devices.DisplayInfo.Density.get -> double
+Microsoft.Maui.Devices.DisplayInfo.DisplayInfo() -> void
+Microsoft.Maui.Devices.DisplayInfo.DisplayInfo(double width, double height, double density, Microsoft.Maui.Devices.DisplayOrientation orientation, Microsoft.Maui.Devices.DisplayRotation rotation) -> void
+Microsoft.Maui.Devices.DisplayInfo.DisplayInfo(double width, double height, double density, Microsoft.Maui.Devices.DisplayOrientation orientation, Microsoft.Maui.Devices.DisplayRotation rotation, float rate) -> void
+Microsoft.Maui.Devices.DisplayInfo.Equals(Microsoft.Maui.Devices.DisplayInfo other) -> bool
+Microsoft.Maui.Devices.DisplayInfo.Height.get -> double
+Microsoft.Maui.Devices.DisplayInfo.Orientation.get -> Microsoft.Maui.Devices.DisplayOrientation
+Microsoft.Maui.Devices.DisplayInfo.RefreshRate.get -> float
+Microsoft.Maui.Devices.DisplayInfo.Rotation.get -> Microsoft.Maui.Devices.DisplayRotation
+Microsoft.Maui.Devices.DisplayInfo.Width.get -> double
+Microsoft.Maui.Devices.DisplayInfoChangedEventArgs
+Microsoft.Maui.Devices.DisplayInfoChangedEventArgs.DisplayInfo.get -> Microsoft.Maui.Devices.DisplayInfo
+Microsoft.Maui.Devices.DisplayInfoChangedEventArgs.DisplayInfoChangedEventArgs(Microsoft.Maui.Devices.DisplayInfo displayInfo) -> void
+Microsoft.Maui.Devices.DisplayOrientation
+Microsoft.Maui.Devices.DisplayOrientation.Landscape = 2 -> Microsoft.Maui.Devices.DisplayOrientation
+Microsoft.Maui.Devices.DisplayOrientation.Portrait = 1 -> Microsoft.Maui.Devices.DisplayOrientation
+Microsoft.Maui.Devices.DisplayOrientation.Unknown = 0 -> Microsoft.Maui.Devices.DisplayOrientation
+Microsoft.Maui.Devices.DisplayRotation
+Microsoft.Maui.Devices.DisplayRotation.Rotation0 = 1 -> Microsoft.Maui.Devices.DisplayRotation
+Microsoft.Maui.Devices.DisplayRotation.Rotation180 = 3 -> Microsoft.Maui.Devices.DisplayRotation
+Microsoft.Maui.Devices.DisplayRotation.Rotation270 = 4 -> Microsoft.Maui.Devices.DisplayRotation
+Microsoft.Maui.Devices.DisplayRotation.Rotation90 = 2 -> Microsoft.Maui.Devices.DisplayRotation
+Microsoft.Maui.Devices.DisplayRotation.Unknown = 0 -> Microsoft.Maui.Devices.DisplayRotation
+Microsoft.Maui.Devices.IDeviceDisplay
+Microsoft.Maui.Devices.IDeviceDisplay.KeepScreenOn.get -> bool
+Microsoft.Maui.Devices.IDeviceDisplay.KeepScreenOn.set -> void
+Microsoft.Maui.Devices.IDeviceDisplay.MainDisplayInfo.get -> Microsoft.Maui.Devices.DisplayInfo
+Microsoft.Maui.Devices.IDeviceDisplay.MainDisplayInfoChanged -> System.EventHandler<Microsoft.Maui.Devices.DisplayInfoChangedEventArgs!>!
+Microsoft.Maui.Devices.Sensors.Placemark
+Microsoft.Maui.Devices.Sensors.Placemark.Placemark() -> void
+Microsoft.Maui.Devices.Sensors.PlacemarkExtensions
+Microsoft.Maui.Networking.ConnectionProfile
+Microsoft.Maui.Networking.ConnectionProfile.Bluetooth = 1 -> Microsoft.Maui.Networking.ConnectionProfile
+Microsoft.Maui.Networking.ConnectionProfile.Cellular = 2 -> Microsoft.Maui.Networking.ConnectionProfile
+Microsoft.Maui.Networking.ConnectionProfile.Ethernet = 3 -> Microsoft.Maui.Networking.ConnectionProfile
+Microsoft.Maui.Networking.ConnectionProfile.Unknown = 0 -> Microsoft.Maui.Networking.ConnectionProfile
+Microsoft.Maui.Networking.ConnectionProfile.WiFi = 4 -> Microsoft.Maui.Networking.ConnectionProfile
+Microsoft.Maui.Networking.Connectivity
+Microsoft.Maui.Networking.ConnectivityChangedEventArgs
+Microsoft.Maui.Networking.ConnectivityChangedEventArgs.NetworkAccess.get -> Microsoft.Maui.Networking.NetworkAccess
+Microsoft.Maui.Networking.IConnectivity
+Microsoft.Maui.Networking.IConnectivity.ConnectivityChanged -> System.EventHandler<Microsoft.Maui.Networking.ConnectivityChangedEventArgs>
+Microsoft.Maui.Networking.IConnectivity.NetworkAccess.get -> Microsoft.Maui.Networking.NetworkAccess
+Microsoft.Maui.Networking.NetworkAccess
+Microsoft.Maui.Networking.NetworkAccess.ConstrainedInternet = 3 -> Microsoft.Maui.Networking.NetworkAccess
+Microsoft.Maui.Networking.NetworkAccess.Internet = 4 -> Microsoft.Maui.Networking.NetworkAccess
+Microsoft.Maui.Networking.NetworkAccess.Local = 2 -> Microsoft.Maui.Networking.NetworkAccess
+Microsoft.Maui.Networking.NetworkAccess.None = 1 -> Microsoft.Maui.Networking.NetworkAccess
+Microsoft.Maui.Networking.NetworkAccess.Unknown = 0 -> Microsoft.Maui.Networking.NetworkAccess
+Microsoft.Maui.Storage.FileBase
+Microsoft.Maui.Storage.FileBase.ContentType.get -> string!
+Microsoft.Maui.Storage.FileBase.ContentType.set -> void
+Microsoft.Maui.Storage.FileBase.FileBase(Microsoft.Maui.Storage.FileBase! file) -> void
+Microsoft.Maui.Storage.FileBase.FileName.get -> string!
+Microsoft.Maui.Storage.FileBase.FileName.set -> void
+Microsoft.Maui.Storage.FileBase.FullPath.get -> string!
+Microsoft.Maui.Storage.FileBase.OpenReadAsync() -> System.Threading.Tasks.Task<System.IO.Stream!>!
+Microsoft.Maui.Storage.FilePicker
+Microsoft.Maui.Storage.FilePickerFileType
+Microsoft.Maui.Storage.FilePickerFileType.FilePickerFileType() -> void
+Microsoft.Maui.Storage.FilePickerFileType.FilePickerFileType(System.Collections.Generic.IDictionary<Microsoft.Maui.Devices.DevicePlatform, System.Collections.Generic.IEnumerable<string!>!>! fileTypes) -> void
+Microsoft.Maui.Storage.FileResult
+Microsoft.Maui.Storage.FileResult.FileResult(Microsoft.Maui.Storage.FileBase! file) -> void
+Microsoft.Maui.Storage.FileResult.FileResult(string! fullPath) -> void
+Microsoft.Maui.Storage.FileResult.FileResult(string! fullPath, string! contentType) -> void
+Microsoft.Maui.Storage.FileSystem
+Microsoft.Maui.Storage.FileSystemImplementation
+Microsoft.Maui.Storage.FileSystemImplementation.AppDataDirectory.get -> string!
+Microsoft.Maui.Storage.FileSystemImplementation.AppPackageFileExistsAsync(string! filename) -> System.Threading.Tasks.Task<bool>!
+Microsoft.Maui.Storage.FileSystemImplementation.CacheDirectory.get -> string!
+Microsoft.Maui.Storage.FileSystemImplementation.FileSystemImplementation() -> void
+Microsoft.Maui.Storage.FileSystemImplementation.OpenAppPackageFileAsync(string! filename) -> System.Threading.Tasks.Task<System.IO.Stream!>!
+Microsoft.Maui.Storage.IFilePicker
+Microsoft.Maui.Storage.IFilePicker.PickAsync(Microsoft.Maui.Storage.PickOptions? options = null) -> System.Threading.Tasks.Task<Microsoft.Maui.Storage.FileResult?>!
+Microsoft.Maui.Storage.IFilePicker.PickMultipleAsync(Microsoft.Maui.Storage.PickOptions? options = null) -> System.Threading.Tasks.Task<System.Collections.Generic.IEnumerable<Microsoft.Maui.Storage.FileResult!>!>!
+Microsoft.Maui.Storage.IFileSystem
+Microsoft.Maui.Storage.IFileSystem.AppDataDirectory.get -> string!
+Microsoft.Maui.Storage.IFileSystem.AppPackageFileExistsAsync(string! filename) -> System.Threading.Tasks.Task<bool>!
+Microsoft.Maui.Storage.IFileSystem.CacheDirectory.get -> string!
+Microsoft.Maui.Storage.IFileSystem.OpenAppPackageFileAsync(string! filename) -> System.Threading.Tasks.Task<System.IO.Stream!>!
+Microsoft.Maui.Storage.IPlatformSecureStorage
+Microsoft.Maui.Storage.ISecureStorage
+Microsoft.Maui.Storage.ISecureStorage.GetAsync(string! key) -> System.Threading.Tasks.Task<string!>!
+Microsoft.Maui.Storage.ISecureStorage.Remove(string! key) -> bool
+Microsoft.Maui.Storage.ISecureStorage.RemoveAll() -> void
+Microsoft.Maui.Storage.ISecureStorage.SetAsync(string! key, string! value) -> System.Threading.Tasks.Task!
+Microsoft.Maui.Storage.PickOptions
+Microsoft.Maui.Storage.PickOptions.FileTypes.get -> Microsoft.Maui.Storage.FilePickerFileType?
+Microsoft.Maui.Storage.PickOptions.FileTypes.set -> void
+Microsoft.Maui.Storage.PickOptions.PickerTitle.get -> string?
+Microsoft.Maui.Storage.PickOptions.PickerTitle.set -> void
+Microsoft.Maui.Storage.PickOptions.PickOptions() -> void
+Microsoft.Maui.Storage.ReadOnlyFile
+Microsoft.Maui.Storage.ReadOnlyFile.ReadOnlyFile(Microsoft.Maui.Storage.FileBase! file) -> void
+Microsoft.Maui.Storage.ReadOnlyFile.ReadOnlyFile(string! fullPath) -> void
+Microsoft.Maui.Storage.ReadOnlyFile.ReadOnlyFile(string! fullPath, string! contentType) -> void
+Microsoft.Maui.Storage.SecureStorage
+Microsoft.Maui.Storage.SecureStorageExtensions
+override Microsoft.Maui.ApplicationModel.Permissions.BasePlatformPermission.EnsureDeclared() -> void
+override Microsoft.Maui.ApplicationModel.Permissions.BasePlatformPermission.ShouldShowRationale() -> bool
+override Microsoft.Maui.Devices.DeviceIdiom.GetHashCode() -> int
+override Microsoft.Maui.Devices.DevicePlatform.GetHashCode() -> int
+override Microsoft.Maui.Devices.DisplayInfo.GetHashCode() -> int
+static Microsoft.Maui.Accessibility.SemanticScreenReader.Announce(string! text) -> void
+static Microsoft.Maui.Accessibility.SemanticScreenReader.Default.get -> Microsoft.Maui.Accessibility.ISemanticScreenReader!
+static Microsoft.Maui.ApplicationModel.AppActions.Current.get -> Microsoft.Maui.ApplicationModel.IAppActions!
+static Microsoft.Maui.ApplicationModel.AppActions.GetAsync() -> System.Threading.Tasks.Task<System.Collections.Generic.IEnumerable<Microsoft.Maui.ApplicationModel.AppAction!>!>!
+static Microsoft.Maui.ApplicationModel.AppActions.IsSupported.get -> bool
+static Microsoft.Maui.ApplicationModel.AppActions.SetAsync(params Microsoft.Maui.ApplicationModel.AppAction![]! actions) -> System.Threading.Tasks.Task!
+static Microsoft.Maui.ApplicationModel.AppActions.SetAsync(System.Collections.Generic.IEnumerable<Microsoft.Maui.ApplicationModel.AppAction!>! actions) -> System.Threading.Tasks.Task!
+static Microsoft.Maui.ApplicationModel.AppInfo.BuildString.get -> string!
+static Microsoft.Maui.ApplicationModel.AppInfo.Current.get -> Microsoft.Maui.ApplicationModel.IAppInfo!
+static Microsoft.Maui.ApplicationModel.AppInfo.Name.get -> string!
+static Microsoft.Maui.ApplicationModel.AppInfo.PackageName.get -> string!
+static Microsoft.Maui.ApplicationModel.AppInfo.PackagingModel.get -> Microsoft.Maui.ApplicationModel.AppPackagingModel
+static Microsoft.Maui.ApplicationModel.AppInfo.RequestedLayoutDirection.get -> Microsoft.Maui.ApplicationModel.LayoutDirection
+static Microsoft.Maui.ApplicationModel.AppInfo.RequestedTheme.get -> Microsoft.Maui.ApplicationModel.AppTheme
+static Microsoft.Maui.ApplicationModel.AppInfo.ShowSettingsUI() -> void
+static Microsoft.Maui.ApplicationModel.AppInfo.Version.get -> System.Version!
+static Microsoft.Maui.ApplicationModel.AppInfo.VersionString.get -> string!
+static Microsoft.Maui.ApplicationModel.Browser.Default.get -> Microsoft.Maui.ApplicationModel.IBrowser!
+static Microsoft.Maui.ApplicationModel.Browser.OpenAsync(string! uri) -> System.Threading.Tasks.Task<bool>!
+static Microsoft.Maui.ApplicationModel.Browser.OpenAsync(string! uri, Microsoft.Maui.ApplicationModel.BrowserLaunchMode launchMode) -> System.Threading.Tasks.Task<bool>!
+static Microsoft.Maui.ApplicationModel.Browser.OpenAsync(string! uri, Microsoft.Maui.ApplicationModel.BrowserLaunchOptions! options) -> System.Threading.Tasks.Task<bool>!
+static Microsoft.Maui.ApplicationModel.Browser.OpenAsync(System.Uri! uri) -> System.Threading.Tasks.Task<bool>!
+static Microsoft.Maui.ApplicationModel.Browser.OpenAsync(System.Uri! uri, Microsoft.Maui.ApplicationModel.BrowserLaunchMode launchMode) -> System.Threading.Tasks.Task<bool>!
+static Microsoft.Maui.ApplicationModel.Browser.OpenAsync(System.Uri! uri, Microsoft.Maui.ApplicationModel.BrowserLaunchOptions! options) -> System.Threading.Tasks.Task<bool>!
+static Microsoft.Maui.ApplicationModel.BrowserExtensions.OpenAsync(this Microsoft.Maui.ApplicationModel.IBrowser! browser, string! uri) -> System.Threading.Tasks.Task<bool>!
+static Microsoft.Maui.ApplicationModel.BrowserExtensions.OpenAsync(this Microsoft.Maui.ApplicationModel.IBrowser! browser, string! uri, Microsoft.Maui.ApplicationModel.BrowserLaunchMode launchMode) -> System.Threading.Tasks.Task<bool>!
+static Microsoft.Maui.ApplicationModel.BrowserExtensions.OpenAsync(this Microsoft.Maui.ApplicationModel.IBrowser! browser, string! uri, Microsoft.Maui.ApplicationModel.BrowserLaunchOptions! options) -> System.Threading.Tasks.Task<bool>!
+static Microsoft.Maui.ApplicationModel.BrowserExtensions.OpenAsync(this Microsoft.Maui.ApplicationModel.IBrowser! browser, System.Uri! uri) -> System.Threading.Tasks.Task<bool>!
+static Microsoft.Maui.ApplicationModel.BrowserExtensions.OpenAsync(this Microsoft.Maui.ApplicationModel.IBrowser! browser, System.Uri! uri, Microsoft.Maui.ApplicationModel.BrowserLaunchMode launchMode) -> System.Threading.Tasks.Task<bool>!
+static Microsoft.Maui.ApplicationModel.Communication.Email.ComposeAsync() -> System.Threading.Tasks.Task!
+static Microsoft.Maui.ApplicationModel.Communication.Email.ComposeAsync(Microsoft.Maui.ApplicationModel.Communication.EmailMessage! message) -> System.Threading.Tasks.Task!
+static Microsoft.Maui.ApplicationModel.Communication.Email.ComposeAsync(string! subject, string! body, params string![]! to) -> System.Threading.Tasks.Task!
+static Microsoft.Maui.ApplicationModel.Communication.Email.Default.get -> Microsoft.Maui.ApplicationModel.Communication.IEmail!
+static Microsoft.Maui.ApplicationModel.Communication.EmailExtensions.ComposeAsync(this Microsoft.Maui.ApplicationModel.Communication.IEmail! email) -> System.Threading.Tasks.Task!
+static Microsoft.Maui.ApplicationModel.Communication.EmailExtensions.ComposeAsync(this Microsoft.Maui.ApplicationModel.Communication.IEmail! email, string! subject, string! body, params string![]! to) -> System.Threading.Tasks.Task!
+static Microsoft.Maui.ApplicationModel.Communication.PhoneDialer.Current.get -> Microsoft.Maui.ApplicationModel.Communication.IPhoneDialer!
+static Microsoft.Maui.ApplicationModel.Communication.PhoneDialer.Default.get -> Microsoft.Maui.ApplicationModel.Communication.IPhoneDialer!
+static Microsoft.Maui.ApplicationModel.Communication.PhoneDialer.IsSupported.get -> bool
+static Microsoft.Maui.ApplicationModel.Communication.PhoneDialer.Open(string! number) -> void
+static Microsoft.Maui.ApplicationModel.Communication.Sms.ComposeAsync() -> System.Threading.Tasks.Task!
+static Microsoft.Maui.ApplicationModel.Communication.Sms.ComposeAsync(Microsoft.Maui.ApplicationModel.Communication.SmsMessage? message) -> System.Threading.Tasks.Task!
+static Microsoft.Maui.ApplicationModel.Communication.Sms.Default.get -> Microsoft.Maui.ApplicationModel.Communication.ISms!
+static Microsoft.Maui.ApplicationModel.DataTransfer.Clipboard.ClipboardContentChanged -> System.EventHandler<System.EventArgs!>!
+static Microsoft.Maui.ApplicationModel.DataTransfer.Clipboard.Default.get -> Microsoft.Maui.ApplicationModel.DataTransfer.IClipboard!
+static Microsoft.Maui.ApplicationModel.DataTransfer.Clipboard.GetTextAsync() -> System.Threading.Tasks.Task<string?>!
+static Microsoft.Maui.ApplicationModel.DataTransfer.Clipboard.HasText.get -> bool
+static Microsoft.Maui.ApplicationModel.DataTransfer.Clipboard.SetTextAsync(string? text) -> System.Threading.Tasks.Task!
+static Microsoft.Maui.ApplicationModel.DataTransfer.Share.Default.get -> Microsoft.Maui.ApplicationModel.DataTransfer.IShare!
+static Microsoft.Maui.ApplicationModel.DataTransfer.Share.RequestAsync(Microsoft.Maui.ApplicationModel.DataTransfer.ShareFileRequest! request) -> System.Threading.Tasks.Task!
+static Microsoft.Maui.ApplicationModel.DataTransfer.Share.RequestAsync(Microsoft.Maui.ApplicationModel.DataTransfer.ShareMultipleFilesRequest! request) -> System.Threading.Tasks.Task!
+static Microsoft.Maui.ApplicationModel.DataTransfer.Share.RequestAsync(Microsoft.Maui.ApplicationModel.DataTransfer.ShareTextRequest! request) -> System.Threading.Tasks.Task!
+static Microsoft.Maui.ApplicationModel.DataTransfer.Share.RequestAsync(string! text) -> System.Threading.Tasks.Task!
+static Microsoft.Maui.ApplicationModel.DataTransfer.Share.RequestAsync(string! text, string! title) -> System.Threading.Tasks.Task!
+static Microsoft.Maui.ApplicationModel.DataTransfer.ShareExtensions.RequestAsync(this Microsoft.Maui.ApplicationModel.DataTransfer.IShare! share, string! text) -> System.Threading.Tasks.Task!
+static Microsoft.Maui.ApplicationModel.DataTransfer.ShareExtensions.RequestAsync(this Microsoft.Maui.ApplicationModel.DataTransfer.IShare! share, string! text, string! title) -> System.Threading.Tasks.Task!
+static Microsoft.Maui.ApplicationModel.DataTransfer.ShareMultipleFilesRequest.explicit operator Microsoft.Maui.ApplicationModel.DataTransfer.ShareMultipleFilesRequest!(Microsoft.Maui.ApplicationModel.DataTransfer.ShareFileRequest! request) -> Microsoft.Maui.ApplicationModel.DataTransfer.ShareMultipleFilesRequest!
+static Microsoft.Maui.ApplicationModel.MainThread.IsMainThread.get -> bool
+static Microsoft.Maui.Authentication.WebAuthenticator.AuthenticateAsync(Microsoft.Maui.Authentication.WebAuthenticatorOptions! webAuthenticatorOptions) -> System.Threading.Tasks.Task<Microsoft.Maui.Authentication.WebAuthenticatorResult!>!
+static Microsoft.Maui.Authentication.WebAuthenticator.AuthenticateAsync(System.Uri! url, System.Uri! callbackUrl) -> System.Threading.Tasks.Task<Microsoft.Maui.Authentication.WebAuthenticatorResult!>!
+static Microsoft.Maui.Authentication.WebAuthenticator.Default.get -> Microsoft.Maui.Authentication.IWebAuthenticator!
+static Microsoft.Maui.Authentication.WebAuthenticatorExtensions.AuthenticateAsync(this Microsoft.Maui.Authentication.IWebAuthenticator! webAuthenticator, System.Uri! url, System.Uri! callbackUrl) -> System.Threading.Tasks.Task<Microsoft.Maui.Authentication.WebAuthenticatorResult!>!
+static Microsoft.Maui.Devices.DeviceDisplay.Current.get -> Microsoft.Maui.Devices.IDeviceDisplay!
+static Microsoft.Maui.Devices.DeviceDisplay.KeepScreenOn.get -> bool
+static Microsoft.Maui.Devices.DeviceDisplay.KeepScreenOn.set -> void
+static Microsoft.Maui.Devices.DeviceDisplay.MainDisplayInfo.get -> Microsoft.Maui.Devices.DisplayInfo
+static Microsoft.Maui.Devices.DeviceDisplay.MainDisplayInfoChanged -> System.EventHandler<Microsoft.Maui.Devices.DisplayInfoChangedEventArgs!>!
+static Microsoft.Maui.Devices.DeviceIdiom.Desktop.get -> Microsoft.Maui.Devices.DeviceIdiom
+static Microsoft.Maui.Devices.DeviceIdiom.operator !=(Microsoft.Maui.Devices.DeviceIdiom left, Microsoft.Maui.Devices.DeviceIdiom right) -> bool
+static Microsoft.Maui.Devices.DeviceIdiom.operator ==(Microsoft.Maui.Devices.DeviceIdiom left, Microsoft.Maui.Devices.DeviceIdiom right) -> bool
+static Microsoft.Maui.Devices.DeviceIdiom.Phone.get -> Microsoft.Maui.Devices.DeviceIdiom
+static Microsoft.Maui.Devices.DeviceIdiom.Tablet.get -> Microsoft.Maui.Devices.DeviceIdiom
+static Microsoft.Maui.Devices.DeviceIdiom.TV.get -> Microsoft.Maui.Devices.DeviceIdiom
+static Microsoft.Maui.Devices.DeviceIdiom.Unknown.get -> Microsoft.Maui.Devices.DeviceIdiom
+static Microsoft.Maui.Devices.DeviceIdiom.Watch.get -> Microsoft.Maui.Devices.DeviceIdiom
+static Microsoft.Maui.Devices.DevicePlatform.Android.get -> Microsoft.Maui.Devices.DevicePlatform
+static Microsoft.Maui.Devices.DevicePlatform.iOS.get -> Microsoft.Maui.Devices.DevicePlatform
+static Microsoft.Maui.Devices.DevicePlatform.MacCatalyst.get -> Microsoft.Maui.Devices.DevicePlatform
+static Microsoft.Maui.Devices.DevicePlatform.macOS.get -> Microsoft.Maui.Devices.DevicePlatform
+static Microsoft.Maui.Devices.DevicePlatform.operator !=(Microsoft.Maui.Devices.DevicePlatform left, Microsoft.Maui.Devices.DevicePlatform right) -> bool
+static Microsoft.Maui.Devices.DevicePlatform.operator ==(Microsoft.Maui.Devices.DevicePlatform left, Microsoft.Maui.Devices.DevicePlatform right) -> bool
+static Microsoft.Maui.Devices.DevicePlatform.Tizen.get -> Microsoft.Maui.Devices.DevicePlatform
+static Microsoft.Maui.Devices.DevicePlatform.tvOS.get -> Microsoft.Maui.Devices.DevicePlatform
+static Microsoft.Maui.Devices.DevicePlatform.Unknown.get -> Microsoft.Maui.Devices.DevicePlatform
+static Microsoft.Maui.Devices.DevicePlatform.UWP.get -> Microsoft.Maui.Devices.DevicePlatform
+static Microsoft.Maui.Devices.DevicePlatform.watchOS.get -> Microsoft.Maui.Devices.DevicePlatform
+static Microsoft.Maui.Devices.DevicePlatform.WinUI.get -> Microsoft.Maui.Devices.DevicePlatform
+static Microsoft.Maui.Devices.DisplayInfo.operator !=(Microsoft.Maui.Devices.DisplayInfo left, Microsoft.Maui.Devices.DisplayInfo right) -> bool
+static Microsoft.Maui.Devices.DisplayInfo.operator ==(Microsoft.Maui.Devices.DisplayInfo left, Microsoft.Maui.Devices.DisplayInfo right) -> bool
+static Microsoft.Maui.Networking.Connectivity.ConnectionProfiles.get -> System.Collections.Generic.IEnumerable<Microsoft.Maui.Networking.ConnectionProfile>!
+static Microsoft.Maui.Networking.Connectivity.ConnectivityChanged -> System.EventHandler<Microsoft.Maui.Networking.ConnectivityChangedEventArgs!>!
+static Microsoft.Maui.Networking.Connectivity.Current.get -> Microsoft.Maui.Networking.IConnectivity!
+static Microsoft.Maui.Networking.Connectivity.NetworkAccess.get -> Microsoft.Maui.Networking.NetworkAccess
+static Microsoft.Maui.Storage.FilePicker.Default.get -> Microsoft.Maui.Storage.IFilePicker!
+static Microsoft.Maui.Storage.FilePicker.PickAsync(Microsoft.Maui.Storage.PickOptions? options = null) -> System.Threading.Tasks.Task<Microsoft.Maui.Storage.FileResult?>!
+static Microsoft.Maui.Storage.FilePicker.PickMultipleAsync(Microsoft.Maui.Storage.PickOptions? options = null) -> System.Threading.Tasks.Task<System.Collections.Generic.IEnumerable<Microsoft.Maui.Storage.FileResult!>!>!
+static Microsoft.Maui.Storage.FileSystem.AppDataDirectory.get -> string!
+static Microsoft.Maui.Storage.FileSystem.AppPackageFileExistsAsync(string! filename) -> System.Threading.Tasks.Task<bool>!
+static Microsoft.Maui.Storage.FileSystem.CacheDirectory.get -> string!
+static Microsoft.Maui.Storage.FileSystem.Current.get -> Microsoft.Maui.Storage.IFileSystem!
+static Microsoft.Maui.Storage.FileSystem.OpenAppPackageFileAsync(string! filename) -> System.Threading.Tasks.Task<System.IO.Stream!>!
+static Microsoft.Maui.Storage.PickOptions.Default.get -> Microsoft.Maui.Storage.PickOptions!
+static Microsoft.Maui.Storage.PickOptions.Images.get -> Microsoft.Maui.Storage.PickOptions!
+static Microsoft.Maui.Storage.SecureStorage.Default.get -> Microsoft.Maui.Storage.ISecureStorage!
+static Microsoft.Maui.Storage.SecureStorage.GetAsync(string! key) -> System.Threading.Tasks.Task<string!>!
+static Microsoft.Maui.Storage.SecureStorage.Remove(string! key) -> bool
+static Microsoft.Maui.Storage.SecureStorage.RemoveAll() -> void
+static Microsoft.Maui.Storage.SecureStorage.SetAsync(string! key, string! value) -> System.Threading.Tasks.Task!
+static readonly Microsoft.Maui.Storage.FilePickerFileType.Images -> Microsoft.Maui.Storage.FilePickerFileType!
+static readonly Microsoft.Maui.Storage.FilePickerFileType.Jpeg -> Microsoft.Maui.Storage.FilePickerFileType!
+static readonly Microsoft.Maui.Storage.FilePickerFileType.Pdf -> Microsoft.Maui.Storage.FilePickerFileType!
+static readonly Microsoft.Maui.Storage.FilePickerFileType.Png -> Microsoft.Maui.Storage.FilePickerFileType!
+static readonly Microsoft.Maui.Storage.FilePickerFileType.Videos -> Microsoft.Maui.Storage.FilePickerFileType!
+virtual Microsoft.Maui.Storage.FilePickerFileType.GetPlatformFileType(Microsoft.Maui.Devices.DevicePlatform platform) -> System.Collections.Generic.IEnumerable<string!>!
+~abstract Microsoft.Maui.ApplicationModel.Permissions.BasePermission.CheckStatusAsync() -> System.Threading.Tasks.Task<Microsoft.Maui.ApplicationModel.PermissionStatus>
+~abstract Microsoft.Maui.ApplicationModel.Permissions.BasePermission.RequestAsync() -> System.Threading.Tasks.Task<Microsoft.Maui.ApplicationModel.PermissionStatus>
+~Microsoft.Maui.ApplicationModel.FeatureNotEnabledException.FeatureNotEnabledException(string message) -> void
+~Microsoft.Maui.ApplicationModel.FeatureNotEnabledException.FeatureNotEnabledException(string message, System.Exception innerException) -> void
+~Microsoft.Maui.ApplicationModel.FeatureNotSupportedException.FeatureNotSupportedException(string message) -> void
+~Microsoft.Maui.ApplicationModel.FeatureNotSupportedException.FeatureNotSupportedException(string message, System.Exception innerException) -> void
+~Microsoft.Maui.ApplicationModel.PermissionException.PermissionException(string message) -> void
+~Microsoft.Maui.Authentication.WebAuthenticatorResult.AccessToken.get -> string
+~Microsoft.Maui.Authentication.WebAuthenticatorResult.Get(string key) -> string
+~Microsoft.Maui.Authentication.WebAuthenticatorResult.IdToken.get -> string
+~Microsoft.Maui.Authentication.WebAuthenticatorResult.Properties.get -> System.Collections.Generic.Dictionary<string, string>
+~Microsoft.Maui.Authentication.WebAuthenticatorResult.Properties.set -> void
+~Microsoft.Maui.Authentication.WebAuthenticatorResult.Put(string key, string value) -> void
+~Microsoft.Maui.Authentication.WebAuthenticatorResult.RefreshToken.get -> string
+~Microsoft.Maui.Authentication.WebAuthenticatorResult.WebAuthenticatorResult(System.Collections.Generic.IDictionary<string, string> properties) -> void
+~Microsoft.Maui.Authentication.WebAuthenticatorResult.WebAuthenticatorResult(System.Uri uri) -> void
+~Microsoft.Maui.Devices.Sensors.Placemark.AdminArea.get -> string
+~Microsoft.Maui.Devices.Sensors.Placemark.AdminArea.set -> void
+~Microsoft.Maui.Devices.Sensors.Placemark.CountryCode.get -> string
+~Microsoft.Maui.Devices.Sensors.Placemark.CountryCode.set -> void
+~Microsoft.Maui.Devices.Sensors.Placemark.CountryName.get -> string
+~Microsoft.Maui.Devices.Sensors.Placemark.CountryName.set -> void
+~Microsoft.Maui.Devices.Sensors.Placemark.FeatureName.get -> string
+~Microsoft.Maui.Devices.Sensors.Placemark.FeatureName.set -> void
+~Microsoft.Maui.Devices.Sensors.Placemark.Locality.get -> string
+~Microsoft.Maui.Devices.Sensors.Placemark.Locality.set -> void
+~Microsoft.Maui.Devices.Sensors.Placemark.Placemark(Microsoft.Maui.Devices.Sensors.Placemark placemark) -> void
+~Microsoft.Maui.Devices.Sensors.Placemark.PostalCode.get -> string
+~Microsoft.Maui.Devices.Sensors.Placemark.PostalCode.set -> void
+~Microsoft.Maui.Devices.Sensors.Placemark.SubAdminArea.get -> string
+~Microsoft.Maui.Devices.Sensors.Placemark.SubAdminArea.set -> void
+~Microsoft.Maui.Devices.Sensors.Placemark.SubLocality.get -> string
+~Microsoft.Maui.Devices.Sensors.Placemark.SubLocality.set -> void
+~Microsoft.Maui.Devices.Sensors.Placemark.SubThoroughfare.get -> string
+~Microsoft.Maui.Devices.Sensors.Placemark.SubThoroughfare.set -> void
+~Microsoft.Maui.Devices.Sensors.Placemark.Thoroughfare.get -> string
+~Microsoft.Maui.Devices.Sensors.Placemark.Thoroughfare.set -> void
+~Microsoft.Maui.Networking.ConnectivityChangedEventArgs.ConnectionProfiles.get -> System.Collections.Generic.IEnumerable<Microsoft.Maui.Networking.ConnectionProfile>
+~Microsoft.Maui.Networking.ConnectivityChangedEventArgs.ConnectivityChangedEventArgs(Microsoft.Maui.Networking.NetworkAccess access, System.Collections.Generic.IEnumerable<Microsoft.Maui.Networking.ConnectionProfile> connectionProfiles) -> void
+~Microsoft.Maui.Networking.IConnectivity.ConnectionProfiles.get -> System.Collections.Generic.IEnumerable<Microsoft.Maui.Networking.ConnectionProfile>
+~override Microsoft.Maui.ApplicationModel.Permissions.BasePlatformPermission.CheckStatusAsync() -> System.Threading.Tasks.Task<Microsoft.Maui.ApplicationModel.PermissionStatus>
+~override Microsoft.Maui.ApplicationModel.Permissions.BasePlatformPermission.RequestAsync() -> System.Threading.Tasks.Task<Microsoft.Maui.ApplicationModel.PermissionStatus>
+~override Microsoft.Maui.ApplicationModel.Permissions.CalendarRead.RequiredDeclarations.get -> System.Func<System.Collections.Generic.IEnumerable<string>>
+~override Microsoft.Maui.ApplicationModel.Permissions.CalendarWrite.RequiredDeclarations.get -> System.Func<System.Collections.Generic.IEnumerable<string>>
+~override Microsoft.Maui.ApplicationModel.Permissions.Microphone.RequiredDeclarations.get -> System.Func<System.Collections.Generic.IEnumerable<string>>
+~override Microsoft.Maui.ApplicationModel.Permissions.Sensors.CheckStatusAsync() -> System.Threading.Tasks.Task<Microsoft.Maui.ApplicationModel.PermissionStatus>
+~override Microsoft.Maui.Devices.DeviceIdiom.Equals(object obj) -> bool
+~override Microsoft.Maui.Devices.DeviceIdiom.ToString() -> string
+~override Microsoft.Maui.Devices.DevicePlatform.Equals(object obj) -> bool
+~override Microsoft.Maui.Devices.DevicePlatform.ToString() -> string
+~override Microsoft.Maui.Devices.DisplayInfo.Equals(object obj) -> bool
+~override Microsoft.Maui.Devices.DisplayInfo.ToString() -> string
+~override Microsoft.Maui.Devices.Sensors.Placemark.ToString() -> string
+~override Microsoft.Maui.Networking.ConnectivityChangedEventArgs.ToString() -> string
+~static Microsoft.Maui.ApplicationModel.MainThread.BeginInvokeOnMainThread(System.Action action) -> void
+~static Microsoft.Maui.ApplicationModel.MainThread.GetMainThreadSynchronizationContextAsync() -> System.Threading.Tasks.Task<System.Threading.SynchronizationContext>
+~static Microsoft.Maui.ApplicationModel.MainThread.InvokeOnMainThreadAsync(System.Action action) -> System.Threading.Tasks.Task
+~static Microsoft.Maui.ApplicationModel.MainThread.InvokeOnMainThreadAsync(System.Func<System.Threading.Tasks.Task> funcTask) -> System.Threading.Tasks.Task
+~static Microsoft.Maui.ApplicationModel.MainThread.InvokeOnMainThreadAsync<T>(System.Func<System.Threading.Tasks.Task<T>> funcTask) -> System.Threading.Tasks.Task<T>
+~static Microsoft.Maui.ApplicationModel.MainThread.InvokeOnMainThreadAsync<T>(System.Func<T> func) -> System.Threading.Tasks.Task<T>
+~static Microsoft.Maui.ApplicationModel.Permissions.CheckStatusAsync<TPermission>() -> System.Threading.Tasks.Task<Microsoft.Maui.ApplicationModel.PermissionStatus>
+~static Microsoft.Maui.ApplicationModel.Permissions.RequestAsync<TPermission>() -> System.Threading.Tasks.Task<Microsoft.Maui.ApplicationModel.PermissionStatus>
+~static Microsoft.Maui.ApplicationModel.Permissions.ShouldShowRationale<TPermission>() -> bool
+~static Microsoft.Maui.Devices.DeviceIdiom.Create(string deviceIdiom) -> Microsoft.Maui.Devices.DeviceIdiom
+~static Microsoft.Maui.Devices.DevicePlatform.Create(string devicePlatform) -> Microsoft.Maui.Devices.DevicePlatform
+~virtual Microsoft.Maui.ApplicationModel.Permissions.BasePlatformPermission.RequiredDeclarations.get -> System.Func<System.Collections.Generic.IEnumerable<string>>

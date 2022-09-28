@@ -154,7 +154,9 @@ namespace Microsoft.Maui.Storage
 			FullPath = file.FullPath;
 			ContentType = file.ContentType;
 			FileName = file.FileName;
+#if !__GTK__
 			PlatformInit(file);
+#endif
 		}
 
 		internal FileBase(string fullPath, string contentType)
@@ -176,6 +178,7 @@ namespace Microsoft.Maui.Storage
 
 		internal string GetContentType()
 		{
+#if !__GTK__
 			// try the provided type
 			if (!string.IsNullOrWhiteSpace(contentType))
 				return contentType!;
@@ -188,6 +191,7 @@ namespace Microsoft.Maui.Storage
 				if (!string.IsNullOrWhiteSpace(content))
 					return content;
 			}
+#endif
 
 			return DefaultContentType;
 		}
@@ -217,7 +221,11 @@ namespace Microsoft.Maui.Storage
 
 		/// <include file="../../docs/Microsoft.Maui.Essentials/FileBase.xml" path="//Member[@MemberName='OpenReadAsync']/Docs" />
 		public Task<Stream> OpenReadAsync()
+#if __GTK__
+			=> Task.FromResult<Stream>(null!);
+#else
 			=> PlatformOpenReadAsync();
+#endif
 	}
 
 	/// <include file="../../docs/Microsoft.Maui.Essentials/ReadOnlyFile.xml" path="Type[@FullName='Microsoft.Maui.Essentials.ReadOnlyFile']/Docs" />

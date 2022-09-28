@@ -31,9 +31,11 @@ namespace Microsoft.Maui.ApplicationModel
 			public override bool ShouldShowRationale() => false;
 		}
 
+#if !__GTK__
 		public partial class Battery : BasePlatformPermission
 		{
 		}
+#endif
 
 		public partial class CalendarRead : BasePlatformPermission
 		{
@@ -51,40 +53,11 @@ namespace Microsoft.Maui.ApplicationModel
 		{
 		}
 
-		public partial class ContactsRead : BasePlatformPermission
-		{
-			protected override Func<IEnumerable<string>> RequiredDeclarations => () =>
-				new[] { "contacts" };
-
-			public override Task<PermissionStatus> CheckStatusAsync()
-			{
-				EnsureDeclared();
-
-				return Task.FromResult(PermissionStatus.Granted);
-			}
-		}
-
-		public partial class ContactsWrite : BasePlatformPermission
-		{
-			protected override Func<IEnumerable<string>> RequiredDeclarations => () =>
-				   new[] { "contacts" };
-
-			public override Task<PermissionStatus> CheckStatusAsync()
-			{
-				EnsureDeclared();
-
-				return Task.FromResult(PermissionStatus.Granted);
-			}
-		}
-
-		public partial class Flashlight : BasePlatformPermission
-		{
-		}
-
 		public partial class LaunchApp : BasePlatformPermission
 		{
 		}
 
+#if !__GTK__
 		public partial class LocationWhenInUse : BasePlatformPermission
 		{
 			protected override Func<IEnumerable<string>> RequiredDeclarations => () =>
@@ -108,14 +81,7 @@ namespace Microsoft.Maui.ApplicationModel
 				return Task.FromResult(PermissionStatus.Granted);
 			}
 		}
-
-		public partial class Maps : BasePlatformPermission
-		{
-		}
-
-		public partial class Media : BasePlatformPermission
-		{
-		}
+#endif
 
 		public partial class Microphone : BasePlatformPermission
 		{

@@ -81,6 +81,7 @@ namespace Microsoft.Maui.ApplicationModel.Communication
 		}
 	}
 
+#if !__GTK__
 	/// <include file="../../docs/Microsoft.Maui.Essentials/ContactEmail.xml" path="Type[@FullName='Microsoft.Maui.Essentials.ContactEmail']/Docs" />
 	public class ContactEmail
 	{
@@ -122,4 +123,5 @@ namespace Microsoft.Maui.ApplicationModel.Communication
 		/// <include file="../../docs/Microsoft.Maui.Essentials/ContactPhone.xml" path="//Member[@MemberName='ToString']/Docs" />
 		public override string ToString() => PhoneNumber;
 	}
+#endif
 }

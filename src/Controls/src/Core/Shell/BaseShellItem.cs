@@ -326,6 +326,9 @@ namespace Microsoft.Maui.Controls
 		{
 			return new DataTemplate(() =>
 			{
+#if __GTK__
+				return new ResourceDictionary();
+#else
 				var grid = new Grid();
 				if (DeviceInfo.Platform == DevicePlatform.WinUI)
 					grid.ColumnSpacing = grid.RowSpacing = 0;
@@ -492,6 +495,7 @@ namespace Microsoft.Maui.Controls
 
 				grid.Resources = new ResourceDictionary() { defaultGridClass, defaultLabelClass, defaultImageClass };
 				return grid;
+#endif
 			});
 		}
 	}

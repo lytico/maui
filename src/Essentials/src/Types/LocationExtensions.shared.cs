@@ -15,6 +15,7 @@ namespace Microsoft.Maui.Devices.Sensors
 		public static double CalculateDistance(this Location locationStart, Location locationEnd, DistanceUnits units) =>
 			Location.CalculateDistance(locationStart, locationEnd, units);
 
+#if !__GTK__
 		/// <include file="../../docs/Microsoft.Maui.Essentials/LocationExtensions.xml" path="//Member[@MemberName='OpenMapsAsync'][2]/Docs" />
 		public static Task OpenMapsAsync(this Location location, MapLaunchOptions options) =>
 			Map.OpenAsync(location, options);
@@ -22,5 +23,6 @@ namespace Microsoft.Maui.Devices.Sensors
 		/// <include file="../../docs/Microsoft.Maui.Essentials/LocationExtensions.xml" path="//Member[@MemberName='OpenMapsAsync'][1]/Docs" />
 		public static Task OpenMapsAsync(this Location location) =>
 			Map.OpenAsync(location);
+#endif
 	}
 }

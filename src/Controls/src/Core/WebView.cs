@@ -106,7 +106,9 @@ namespace Microsoft.Maui.Controls
 				return null;
 
 			//make all the platforms mimic Android's implementation, which is by far the most complete.
+#if !__GTK__
 			if (DeviceInfo.Platform != DevicePlatform.Android)
+#endif
 			{
 				script = EscapeJsString(script);
 				script = "try{JSON.stringify(eval('" + script + "'))}catch(e){'null'};";

@@ -1,5 +1,7 @@
 using System;
+#if !__GTK__
 using Microsoft.Maui.Media;
+#endif
 
 namespace Microsoft.Maui.Devices.Sensors
 {
@@ -134,9 +136,17 @@ namespace Microsoft.Maui.Devices.Sensors
 			switch (units)
 			{
 				case DistanceUnits.Kilometers:
+#if __GTK__
+					return 1.0;
+#else
 					return UnitConverters.CoordinatesToKilometers(latitudeStart, longitudeStart, latitudeEnd, longitudeEnd);
+#endif
 				case DistanceUnits.Miles:
+#if __GTK__
+					return 1.0;
+#else
 					return UnitConverters.CoordinatesToMiles(latitudeStart, longitudeStart, latitudeEnd, longitudeEnd);
+#endif
 				default:
 					throw new ArgumentOutOfRangeException(nameof(units));
 			}

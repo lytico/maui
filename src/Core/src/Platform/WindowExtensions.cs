@@ -1,13 +1,17 @@
 ﻿using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
+#if !__GTK__
 using Microsoft.Maui.Media;
+#endif
 
 #if __IOS__ || MACCATALYST
 using PlatformView = UIKit.UIWindow;
 #elif MONOANDROID
 using PlatformView = Android.App.Activity;
-#elif WINDOWS
+#elif WINDOWS && __GTK__
+using PlatformView = Gdk.Window;
+#elif WINDOWS && !__GTK__
 using PlatformView = Microsoft.UI.Xaml.Window;
 #endif
 

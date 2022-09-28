@@ -57,9 +57,11 @@ namespace Microsoft.Maui.ApplicationModel
 			public abstract bool ShouldShowRationale();
 		}
 
+#if !__GTK__
 		public partial class Battery
 		{
 		}
+#endif
 
 		public partial class CalendarRead
 		{
@@ -73,6 +75,7 @@ namespace Microsoft.Maui.ApplicationModel
 		{
 		}
 
+#if !__GTK__
 		public partial class ContactsRead
 		{
 		}
@@ -84,11 +87,13 @@ namespace Microsoft.Maui.ApplicationModel
 		public partial class Flashlight
 		{
 		}
+#endif
 
 		public partial class LaunchApp
 		{
 		}
 
+#if !__GTK__
 		public partial class LocationWhenInUse
 		{
 		}
@@ -104,6 +109,7 @@ namespace Microsoft.Maui.ApplicationModel
 		public partial class Media
 		{
 		}
+#endif
 
 		public partial class Microphone
 		{

@@ -12,8 +12,9 @@ namespace Microsoft.Maui.ApplicationModel
 		Task<IEnumerable<AppAction>> GetAsync();
 
 		Task SetAsync(IEnumerable<AppAction> actions);
-
+#if !__GTK__
 		event EventHandler<AppActionEventArgs>? AppActionActivated;
+#endif
 	}
 
 	public interface IPlatformAppActions
@@ -46,13 +47,14 @@ namespace Microsoft.Maui.ApplicationModel
 		public static Task SetAsync(IEnumerable<AppAction> actions)
 			=> Current.SetAsync(actions);
 
+#if !__GTK__
 		/// <include file="../../docs/Microsoft.Maui.Essentials/AppActions.xml" path="//Member[@MemberName='OnAppAction'][2]/Docs" />
 		public static event EventHandler<AppActionEventArgs>? OnAppAction
 		{
 			add => Current.AppActionActivated += value;
 			remove => Current.AppActionActivated -= value;
 		}
-
+#endif
 		static IAppActions? currentImplementation;
 
 		public static IAppActions Current =>
