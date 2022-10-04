@@ -4,12 +4,12 @@ namespace Microsoft.Maui.Platform
 {
 	public partial class NavigationRootManager
 	{
-		Gdk.Window _platformWindow;
+		Gtk.Window _platformWindow;
 		WindowRootView _rootView;
 		//bool _disconnected = true;
 		bool _isActiveRootManager;
 
-		public NavigationRootManager(Gdk.Window platformWindow)
+		public NavigationRootManager(Gtk.Window platformWindow)
 		{
 			_platformWindow = platformWindow;
 			_rootView = new WindowRootView();
@@ -49,7 +49,7 @@ namespace Microsoft.Maui.Platform
 			//}
 		}
 
-		public Gtk.EventBox RootView => _rootView;
+		public Gtk.Window RootView => _rootView;
 
 		public virtual void Connect(Gtk.Widget platformView)
 		{

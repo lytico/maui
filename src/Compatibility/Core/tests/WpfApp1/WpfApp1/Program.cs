@@ -13,10 +13,12 @@ namespace WpfApp1
 		/// </summary>
 		static void Main()
 		{
-			Gtk.Application.Init();
+			MauiProgram.CreateMauiApp();
+			//Gtk.Application.Init();
 
 
-			new WpfApp1.App();
+			var app = new WpfApp1.App();
+
 			//var app = new WpfApp1.App();
 			//var window = new FormsWindow();
 			//window.LoadApplication(app);

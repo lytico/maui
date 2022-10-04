@@ -122,6 +122,7 @@
     <Compile Include="..\src-GTK\Platform\GTK\ContentViewGroup.cs" Link="Platform\GTK\ContentViewGroup.cs" />
     <Compile Include="..\src-GTK\Platform\GTK\DatePicker.cs" Link="Platform\GTK\DatePicker.cs" />
     <Compile Include="..\src-GTK\Platform\GTK\EntryWrapper.cs" Link="Platform\GTK\EntryWrapper.cs" />
+    <Compile Include="..\src-GTK\Platform\GTK\Extensions\ApplicationExtensions.cs" Link="Platform\GTK\Extensions\ApplicationExtensions.cs" />
     <Compile Include="..\src-GTK\Platform\GTK\GtkFormsContainer.cs" Link="Platform\GTK\GtkFormsContainer.cs" />
     <Compile Include="..\src-GTK\Platform\GTK\IDesiredSizeProvider.cs" Link="Platform\GTK\IDesiredSizeProvider.cs" />
     <Compile Include="..\src-GTK\Platform\GTK\ImageSourcePartExtensions.cs" Link="Platform\GTK\ImageSourcePartExtensions.cs" />
@@ -130,6 +131,7 @@
     <Compile Include="..\src-GTK\Platform\GTK\MauiComboBox.cs" Link="Platform\GTK\MauiComboBox.cs" />
     <Compile Include="..\src-GTK\Platform\GTK\MauiContextExtensions.cs" Link="Platform\GTK\MauiContextExtensions.cs" />
     <Compile Include="..\src-GTK\Platform\GTK\MauiGTKApplication.cs" Link="Platform\GTK\MauiGTKApplication.cs" />
+    <Compile Include="..\src-GTK\Platform\GTK\MauiGTKWindow.cs" Link="Platform\GTK\MauiGTKWindow.cs" />
     <Compile Include="..\src-GTK\Platform\GTK\MauiImage.cs" Link="Platform\GTK\MauiImage.cs" />
     <Compile Include="..\src-GTK\Platform\GTK\MauiImageButton.cs" Link="Platform\GTK\MauiImageButton.cs" />
     <Compile Include="..\src-GTK\Platform\GTK\MauiNavigationView.cs" Link="Platform\GTK\MauiNavigationView.cs" />
@@ -210,6 +212,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="LifecycleEvents\GTK\" />
+    <Folder Include="Platform\GTK\Extensions\" />
     <Folder Include="Platform\Windows\Styles\" />
   </ItemGroup>
   <Import Project="$(MauiSrcDirectory)PublicAPI.targets" />

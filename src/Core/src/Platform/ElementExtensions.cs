@@ -14,7 +14,7 @@ using PlatformApplication = Android.App.Application;
 #if __GTK__
 using PlatformView = Microsoft.Maui.Platform.MauiView;
 using BasePlatformType = System.Object;
-using PlatformWindow = Gdk.Window;
+using PlatformWindow = Gtk.Window;
 using PlatformApplication = Gtk.Application;
 #else
 using PlatformView = Microsoft.UI.Xaml.FrameworkElement;

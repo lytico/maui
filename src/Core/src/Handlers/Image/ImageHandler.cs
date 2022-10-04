@@ -50,6 +50,10 @@ namespace Microsoft.Maui.Handlers
 		// TODO MAUI: Should we remove all shadowing? 
 		IImage IImageHandler.VirtualView => VirtualView;
 
+#if __GTK__
 		PlatformView IImageHandler.PlatformView => PlatformView.ImageWidget;
+#else
+		PlatformView IImageHandler.PlatformView => PlatformView;
+#endif
 	}
 }

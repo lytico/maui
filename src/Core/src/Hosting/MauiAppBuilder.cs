@@ -51,7 +51,9 @@ namespace Microsoft.Maui.Hosting
 		{
 			public void Initialize(IServiceProvider services)
 			{
-#if WINDOWS && !__GTK__
+#if WINDOWS && __GTK__
+				Gtk.Application.Init();
+#elif WINDOWS && !__GTK__
 				// WORKAROUND: use the MAUI dispatcher instead of the OS dispatcher to
 				// avoid crashing: https://github.com/microsoft/WindowsAppSDK/issues/2451
 				var dispatcher = services.GetRequiredService<IDispatcher>();

@@ -135,6 +135,7 @@
     <Compile Include="..\..\src-GTK\Compatibility\Handlers\GTK\ViewCellRenderer.cs" Link="Compatibility\Handlers\GTK\ViewCellRenderer.cs" />
     <Compile Include="..\..\src-GTK\Compatibility\Handlers\GTK\ViewRenderer.cs" Link="Compatibility\Handlers\GTK\ViewRenderer.cs" />
     <Compile Include="..\..\src-GTK\Compatibility\Handlers\GTK\VisualElementRenderer.cs" Link="Compatibility\Handlers\GTK\VisualElementRenderer.cs" />
+    <Compile Include="..\..\src-GTK\HandlerImpl\Application\Application.GTK.cs" Link="HandlerImpl\Application\Application.GTK.cs" />
     <Compile Include="..\..\src-GTK\HandlerImpl\Element\Element.GTK.cs" Link="HandlerImpl\Element\Element.GTK.cs" />
     <Compile Include="..\..\src-GTK\Platform\AlertManager\AlertManager.GTK.cs" Link="Platform\AlertManager\AlertManager.GTK.cs" />
     <Compile Include="..\..\src-GTK\Platform\GTK\AutomationPropertiesProvider.cs" Link="Platform\GTK\AutomationPropertiesProvider.cs" />
@@ -264,7 +265,6 @@
     <Folder Include="Compatibility\Handlers\GTK\" />
     <Folder Include="Compatibility\Handlers\ListView\GTK\" />
     <Folder Include="Compatibility\GTK\" />
-    <Folder Include="Platform\GTK\" />
     <Folder Include="Platform\Windows\Styles\" />
   </ItemGroup>
   

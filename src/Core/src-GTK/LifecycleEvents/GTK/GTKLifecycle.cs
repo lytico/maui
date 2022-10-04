@@ -7,6 +7,7 @@ namespace Microsoft.Maui.LifecycleEvents
 		// Events called by the Application
 		public delegate void OnApplicationCreating(Application application);
 		public delegate void OnApplicationCreate(Application application);
+		public delegate void OnWindowCreated(Window window);
 
 		// Events called by the ActivityLifecycleCallbacks
 

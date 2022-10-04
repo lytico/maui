@@ -3,13 +3,23 @@ using Microsoft.Maui.Graphics.Win2D;
 
 namespace Microsoft.Maui.Platform
 {
-	internal class WindowRootViewContainer : Gtk.EventBox
+	internal class WindowRootViewContainer : Gtk.Window
 	{
-		// Gtk.Fixed? _topPage;
+		Gtk.Window? _topPage;
 
-		internal void AddPage(Gtk.Widget pageView)
+		public WindowRootViewContainer() : base("No Title")
 		{
-			Add(pageView);
+			_topPage = this;
+			Title = "No Title";
+		}
+
+		internal void AddPage(Gtk.Window pageView)
+		{
+			if (_topPage != pageView)
+			{
+				_topPage = pageView;
+			}
+			//Add(pageView);
 			//if (!Children.Contains(pageView))
 			//{
 			//	int indexOFTopPage = 0;
@@ -21,9 +31,15 @@ namespace Microsoft.Maui.Platform
 			//}
 		}
 
-		internal void RemovePage(Gtk.Widget pageView)
+		internal void RemovePage(Gtk.Window pageView)
 		{
-			Remove(pageView);
+			//Remove(pageView);
+			if (_topPage == pageView)
+			{
+				_topPage.Dispose();
+				_topPage = null;
+			}
+
 			//int indexOFTopPage = -1;
 			//if (_topPage != null)
 			//	indexOFTopPage = Children.IndexOf(_topPage) - 1;

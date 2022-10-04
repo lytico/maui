@@ -16,7 +16,7 @@ namespace Microsoft.Maui
 			: this(context, GetPersistedState(states))
 		{
 		}
-#elif WINDOWS
+#elif WINDOWS && !__GTK__
 		public ActivationState(IMauiContext context, UI.Xaml.LaunchActivatedEventArgs? launchActivatedEventArgs)
 			: this(context)
 		{

@@ -1,6 +1,4 @@
-﻿using Microsoft.Maui.Graphics.Platform;
-
-namespace Microsoft.Maui.Handlers
+﻿namespace Microsoft.Maui.Handlers
 {
 	public partial class GraphicsViewHandler : ViewHandler<IGraphicsView, MauiView>
 	{

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Microsoft.Maui.Platform
 {
-	public partial class WindowRootView : Gtk.EventBox
+	public partial class WindowRootView : Gtk.Window
 	{
 		//public static readonly DependencyProperty AppTitleBarTemplateProperty
 		//	= DependencyProperty.Register(nameof(AppTitleBarTemplate), typeof(object), typeof(WindowRootView),
@@ -20,7 +20,7 @@ namespace Microsoft.Maui.Platform
 		//bool _hasTitleBarImage = false;
 		////public event TypedEventHandler<NavigationView, NavigationViewBackRequestedEventArgs>? BackRequested;
 
-		public WindowRootView()
+		public WindowRootView() : base("No Title")
 		{
 		}
 

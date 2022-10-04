@@ -8,7 +8,7 @@ namespace Microsoft.Maui
 	public partial class WindowOverlay
 	{
 		PlatformGraphicsView? _graphicsView;
-		Gtk.EventBox? _nativeLayer;
+		Gtk.Window? _nativeLayer;
 
 		public virtual bool Initialize()
 		{
@@ -34,7 +34,7 @@ namespace Microsoft.Maui
 			//	return false;
 
 			//_nativeActivity = activity;
-			_nativeLayer = rootManager.RootView as Gtk.EventBox;
+			_nativeLayer = rootManager.RootView as Gtk.Window;
 
 			//if (_nativeLayer?.Context == null)
 			//	return false;
