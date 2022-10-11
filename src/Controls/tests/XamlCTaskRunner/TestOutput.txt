@@ -1,0 +1,81 @@
+'XamlCTaskRunner.exe' (CoreCLR: DefaultDomain): Loaded 'C:\Program Files\dotnet\shared\Microsoft.NETCore.App\6.0.9\System.Private.CoreLib.dll'. Skipped loading symbols. Module is optimized and the debugger option 'Just My Code' is enabled.
+'XamlCTaskRunner.exe' (CoreCLR: clrhost): Loaded 'D:\Source\maui\src\Controls\tests\XamlCTaskRunner\bin\Debug\net6.0-windows\XamlCTaskRunner.dll'. Symbols loaded.
+'XamlCTaskRunner.exe' (CoreCLR: clrhost): Loaded 'C:\Program Files\dotnet\shared\Microsoft.NETCore.App\6.0.9\System.Runtime.dll'. Skipped loading symbols. Module is optimized and the debugger option 'Just My Code' is enabled.
+'XamlCTaskRunner.exe' (CoreCLR: clrhost): Loaded 'c:\program files\microsoft visual studio\2022\community\common7\ide\commonextensions\microsoft\hotreload\Microsoft.Extensions.DotNetDeltaApplier.dll'. Skipped loading symbols. Module is optimized and the debugger option 'Just My Code' is enabled.
+'XamlCTaskRunner.exe' (CoreCLR: clrhost): Loaded 'C:\Program Files\dotnet\shared\Microsoft.NETCore.App\6.0.9\System.IO.Pipes.dll'. Skipped loading symbols. Module is optimized and the debugger option 'Just My Code' is enabled.
+'XamlCTaskRunner.exe' (CoreCLR: clrhost): Loaded 'C:\Program Files\dotnet\shared\Microsoft.NETCore.App\6.0.9\System.Linq.dll'. Skipped loading symbols. Module is optimized and the debugger option 'Just My Code' is enabled.
+'XamlCTaskRunner.exe' (CoreCLR: clrhost): Loaded 'C:\Program Files\dotnet\shared\Microsoft.NETCore.App\6.0.9\System.Collections.dll'. Skipped loading symbols. Module is optimized and the debugger option 'Just My Code' is enabled.
+'XamlCTaskRunner.exe' (CoreCLR: clrhost): Loaded 'C:\Program Files\dotnet\shared\Microsoft.NETCore.App\6.0.9\System.Console.dll'. Skipped loading symbols. Module is optimized and the debugger option 'Just My Code' is enabled.
+'XamlCTaskRunner.exe' (CoreCLR: clrhost): Loaded 'C:\Program Files\dotnet\shared\Microsoft.NETCore.App\6.0.9\System.Threading.dll'. Skipped loading symbols. Module is optimized and the debugger option 'Just My Code' is enabled.
+'XamlCTaskRunner.exe' (CoreCLR: clrhost): Loaded 'C:\Program Files\dotnet\shared\Microsoft.NETCore.App\6.0.9\System.Threading.Overlapped.dll'. Skipped loading symbols. Module is optimized and the debugger option 'Just My Code' is enabled.
+'XamlCTaskRunner.exe' (CoreCLR: clrhost): Loaded 'C:\Program Files\dotnet\shared\Microsoft.NETCore.App\6.0.9\System.Security.AccessControl.dll'. Skipped loading symbols. Module is optimized and the debugger option 'Just My Code' is enabled.
+'XamlCTaskRunner.exe' (CoreCLR: clrhost): Loaded 'C:\Program Files\dotnet\shared\Microsoft.NETCore.App\6.0.9\System.Security.Principal.Windows.dll'. Skipped loading symbols. Module is optimized and the debugger option 'Just My Code' is enabled.
+'XamlCTaskRunner.exe' (CoreCLR: clrhost): Loaded 'C:\Program Files\dotnet\shared\Microsoft.NETCore.App\6.0.9\System.Runtime.InteropServices.dll'. Skipped loading symbols. Module is optimized and the debugger option 'Just My Code' is enabled.
+'XamlCTaskRunner.exe' (CoreCLR: clrhost): Loaded 'C:\Program Files\dotnet\shared\Microsoft.NETCore.App\6.0.9\System.Security.Claims.dll'. Skipped loading symbols. Module is optimized and the debugger option 'Just My Code' is enabled.
+'XamlCTaskRunner.exe' (CoreCLR: clrhost): Loaded 'C:\Program Files\dotnet\shared\Microsoft.NETCore.App\6.0.9\Microsoft.Win32.Primitives.dll'. Skipped loading symbols. Module is optimized and the debugger option 'Just My Code' is enabled.
+'XamlCTaskRunner.exe' (CoreCLR: clrhost): Loaded 'C:\Program Files\dotnet\shared\Microsoft.NETCore.App\6.0.9\System.Runtime.Loader.dll'. Skipped loading symbols. Module is optimized and the debugger option 'Just My Code' is enabled.
+'XamlCTaskRunner.exe' (CoreCLR: clrhost): Loaded 'C:\Program Files\dotnet\shared\Microsoft.WindowsDesktop.App\6.0.9\System.Windows.Forms.dll'. Skipped loading symbols. Module is optimized and the debugger option 'Just My Code' is enabled.
+'XamlCTaskRunner.exe' (CoreCLR: clrhost): Loaded 'C:\Program Files\dotnet\shared\Microsoft.NETCore.App\6.0.9\System.Collections.Concurrent.dll'. Skipped loading symbols. Module is optimized and the debugger option 'Just My Code' is enabled.
+'XamlCTaskRunner.exe' (CoreCLR: clrhost): Loaded 'C:\Program Files\dotnet\shared\Microsoft.NETCore.App\6.0.9\System.ComponentModel.Primitives.dll'. Skipped loading symbols. Module is optimized and the debugger option 'Just My Code' is enabled.
+'XamlCTaskRunner.exe' (CoreCLR: clrhost): Loaded 'C:\Program Files\dotnet\shared\Microsoft.WindowsDesktop.App\6.0.9\System.Windows.Forms.Primitives.dll'. Skipped loading symbols. Module is optimized and the debugger option 'Just My Code' is enabled.
+'XamlCTaskRunner.exe' (CoreCLR: clrhost): Loaded 'C:\Program Files\dotnet\shared\Microsoft.NETCore.App\6.0.9\System.Drawing.Primitives.dll'. Skipped loading symbols. Module is optimized and the debugger option 'Just My Code' is enabled.
+'XamlCTaskRunner.exe' (CoreCLR: clrhost): Loaded 'C:\Program Files\dotnet\shared\Microsoft.NETCore.App\6.0.9\System.Collections.Specialized.dll'. Skipped loading symbols. Module is optimized and the debugger option 'Just My Code' is enabled.
+'XamlCTaskRunner.exe' (CoreCLR: clrhost): Loaded 'C:\Program Files\dotnet\shared\Microsoft.NETCore.App\6.0.9\System.Diagnostics.TraceSource.dll'. Skipped loading symbols. Module is optimized and the debugger option 'Just My Code' is enabled.
+'XamlCTaskRunner.exe' (CoreCLR: clrhost): Loaded 'C:\Program Files\dotnet\shared\Microsoft.WindowsDesktop.App\6.0.9\System.Drawing.Common.dll'. Skipped loading symbols. Module is optimized and the debugger option 'Just My Code' is enabled.
+'XamlCTaskRunner.exe' (CoreCLR: clrhost): Loaded 'C:\Program Files\dotnet\shared\Microsoft.NETCore.App\6.0.9\System.ComponentModel.EventBasedAsync.dll'. Skipped loading symbols. Module is optimized and the debugger option 'Just My Code' is enabled.
+'XamlCTaskRunner.exe' (CoreCLR: clrhost): Loaded 'C:\Program Files\dotnet\shared\Microsoft.NETCore.App\6.0.9\System.Threading.Thread.dll'. Skipped loading symbols. Module is optimized and the debugger option 'Just My Code' is enabled.
+'XamlCTaskRunner.exe' (CoreCLR: clrhost): Loaded 'C:\Program Files\dotnet\shared\Microsoft.WindowsDesktop.App\6.0.9\Accessibility.dll'. Module was built without symbols.
+'XamlCTaskRunner.exe' (CoreCLR: clrhost): Loaded 'C:\Program Files\dotnet\shared\Microsoft.NETCore.App\6.0.9\System.Numerics.Vectors.dll'. Skipped loading symbols. Module is optimized and the debugger option 'Just My Code' is enabled.
+'XamlCTaskRunner.exe' (CoreCLR: clrhost): Loaded 'C:\Program Files\dotnet\shared\Microsoft.WindowsDesktop.App\6.0.9\Microsoft.Win32.SystemEvents.dll'. Skipped loading symbols. Module is optimized and the debugger option 'Just My Code' is enabled.
+'XamlCTaskRunner.exe' (CoreCLR: clrhost): Loaded 'C:\Program Files\dotnet\shared\Microsoft.NETCore.App\6.0.9\System.Collections.NonGeneric.dll'. Skipped loading symbols. Module is optimized and the debugger option 'Just My Code' is enabled.
+'XamlCTaskRunner.exe' (CoreCLR: clrhost): Loaded 'C:\Program Files\dotnet\shared\Microsoft.NETCore.App\6.0.9\System.ComponentModel.TypeConverter.dll'. Skipped loading symbols. Module is optimized and the debugger option 'Just My Code' is enabled.
+'XamlCTaskRunner.exe' (CoreCLR: clrhost): Loaded 'C:\Program Files\dotnet\shared\Microsoft.NETCore.App\6.0.9\System.Memory.dll'. Skipped loading symbols. Module is optimized and the debugger option 'Just My Code' is enabled.
+'XamlCTaskRunner.exe' (CoreCLR: clrhost): Loaded 'D:\Source\maui\src\Controls\tests\XamlCTaskRunner\bin\Debug\net6.0-windows\Mono.Cecil.dll'. Skipped loading symbols. Module is optimized and the debugger option 'Just My Code' is enabled.
+'XamlCTaskRunner.exe' (CoreCLR: clrhost): Loaded 'C:\Program Files\dotnet\shared\Microsoft.NETCore.App\6.0.9\netstandard.dll'. Skipped loading symbols. Module is optimized and the debugger option 'Just My Code' is enabled.
+'XamlCTaskRunner.exe' (CoreCLR: clrhost): Loaded 'D:\Source\maui\src\Controls\tests\XamlCTaskRunner\bin\Debug\net6.0-windows\Mono.Cecil.Rocks.dll'. Skipped loading symbols. Module is optimized and the debugger option 'Just My Code' is enabled.
+Normal: Preparing debug code for xamlc, assembly: D:\Source\maui\src\Compatibility\Core\tests\DefaultMauiApp\bin\Debug\net6.0-windows10.0.20348.0\win10-x64\DefaultMauiApp.dll
+Low:   Adding searchpath D:\Source\maui\src\Compatibility\Core\tests\DefaultMauiApp\bin\Debug\net6.0-windows10.0.20348.0\win10-x64
+Low:   Module: DefaultMauiApp.dll
+Low:     Resource: DefaultMauiApp.App.xaml
+'XamlCTaskRunner.exe' (CoreCLR: clrhost): Loaded 'C:\Program Files\dotnet\shared\Microsoft.NETCore.App\6.0.9\System.Xml.ReaderWriter.dll'. Skipped loading symbols. Module is optimized and the debugger option 'Just My Code' is enabled.
+'XamlCTaskRunner.exe' (CoreCLR: clrhost): Loaded 'C:\Program Files\dotnet\shared\Microsoft.NETCore.App\6.0.9\System.Private.Xml.dll'. Skipped loading symbols. Module is optimized and the debugger option 'Just My Code' is enabled.
+'XamlCTaskRunner.exe' (CoreCLR: clrhost): Loaded 'C:\Program Files\dotnet\shared\Microsoft.NETCore.App\6.0.9\System.Text.Encoding.Extensions.dll'. Skipped loading symbols. Module is optimized and the debugger option 'Just My Code' is enabled.
+Low:       Creating empty App.__InitComponentRuntime
+Low:         done.
+Low:       Copying body of InitializeComponent to __InitComponentRuntime
+Low:         done.
+Low:       Adding App.App (bool useCompiledXaml)
+Low:         done.
+Low:     Resource: DefaultMauiApp.AppShell.xaml
+Low:       Creating empty AppShell.__InitComponentRuntime
+Low:         done.
+Low:       Copying body of InitializeComponent to __InitComponentRuntime
+Low:         done.
+Low:       Adding AppShell.AppShell (bool useCompiledXaml)
+Low:         done.
+Low:     Resource: DefaultMauiApp.MainPage.xaml
+Low:       Creating empty MainPage.__InitComponentRuntime
+Low:         done.
+Low:       Copying body of InitializeComponent to __InitComponentRuntime
+Low:         done.
+Low:       Adding MainPage.MainPage (bool useCompiledXaml)
+Low:         done.
+Low:     Resource: DefaultMauiApp.Resources.Styles.Colors.xaml
+Low:       Creating empty __Type8E0E6A2186794406.__InitComponentRuntime
+Low:         done.
+Low:       Copying body of InitializeComponent to __InitComponentRuntime
+Low:         done.
+Low:       Adding __Type8E0E6A2186794406.__Type8E0E6A2186794406 (bool useCompiledXaml)
+Low:         done.
+Low:     Resource: DefaultMauiApp.Resources.Styles.Styles.xaml
+Low:       Creating empty __TypeB9B7C0D990E7F098.__InitComponentRuntime
+Low:         done.
+Low:       Copying body of InitializeComponent to __InitComponentRuntime
+Low:         done.
+Low:       Adding __TypeB9B7C0D990E7F098.__TypeB9B7C0D990E7F098 (bool useCompiledXaml)
+Low:         done.
+Normal: Writing the assembly.
+Normal:   done.
+'XamlCTaskRunner.exe' (CoreCLR: clrhost): Loaded 'C:\Program Files\dotnet\shared\Microsoft.NETCore.App\6.0.9\System.ComponentModel.dll'. Skipped loading symbols. Module is optimized and the debugger option 'Just My Code' is enabled.
+The program '[15088] XamlCTaskRunner.exe' has exited with code 0 (0x0).
+
