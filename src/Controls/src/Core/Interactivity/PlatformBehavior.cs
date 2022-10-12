@@ -6,7 +6,9 @@ using PlatformView = UIKit.UIView;
 using PlatformView = AppKit.NSView;
 #elif ANDROID
 using PlatformView = Android.Views.View;
-#elif WINDOWS
+#elif WINDOWS && __GTK__
+using PlatformView = Gtk.Window;
+#elif WINDOWS && !__GTK__
 using PlatformView = Microsoft.UI.Xaml.FrameworkElement;
 #elif TIZEN
 using PlatformView = ElmSharp.EvasObject;

@@ -14,6 +14,7 @@
   </PropertyGroup>
 
   <Import Project="$(MauiNuSpecDirectory)Microsoft.Maui.Controls.MultiTargeting.targets" />
+
   <ItemGroup Condition=" '$(_MauiTargetPlatformIsWindows)' == 'True' ">
     <Compile Remove="**\*.Windows.cs" />
     <None Include="**\*.Windows.cs" Exclude="$(DefaultItemExcludes);$(DefaultExcludesInProjectFolder)" />
@@ -39,6 +40,37 @@
     <None Include="**\Windows\**\*.xaml" Exclude="$(DefaultItemExcludes);$(DefaultExcludesInProjectFolder)" />
     <Compile Remove="**\Windows\**\*.xaml.cs" />
     <None Include="**\Windows\**\*.xaml.cs" Exclude="$(DefaultItemExcludes);$(DefaultExcludesInProjectFolder)" />
+    <Compile Remove="**\*.Standard.cs" />
+    <Compile Remove="**\Standard\**\*.cs" />
+  </ItemGroup>
+
+  <ItemGroup Condition=" '$(_MauiNoTargetPlatform)' == 'True'">
+    <Compile Remove="**\*.Windows.cs" />
+    <None Include="**\*.Windows.cs" Exclude="$(DefaultItemExcludes);$(DefaultExcludesInProjectFolder)" />
+    <Compile Remove="**\AndroidSpecific\**\*.cs" />
+    <None Include="**\AndroidSpecific\**\*.cs" Exclude="$(DefaultItemExcludes);$(DefaultExcludesInProjectFolder)" />
+    <Compile Remove="**\iOSSpecific\**\*.cs" />
+    <None Include="**\iOSSpecific\**\*.cs" Exclude="$(DefaultItemExcludes);$(DefaultExcludesInProjectFolder)" />
+    <Compile Remove="**\macOSSpecific\**\*.cs" />
+    <None Include="**\macOSSpecific\**\*.cs" Exclude="$(DefaultItemExcludes);$(DefaultExcludesInProjectFolder)" />
+    <Compile Remove="**\TizenSpecific\**\*.cs" />
+    <None Include="**\TizenSpecific\**\*.cs" Exclude="$(DefaultItemExcludes);$(DefaultExcludesInProjectFolder)" />
+    <Compile Remove="**\WindowsSpecific\**\*.cs" />
+    <None Include="**\WindowsSpecific\**\*.cs" Exclude="$(DefaultItemExcludes);$(DefaultExcludesInProjectFolder)" />
+    <Compile Remove="**\Windows\**\*.cs" />
+    <None Include="**\Windows\**\*.cs" Exclude="$(DefaultItemExcludes);$(DefaultExcludesInProjectFolder)" />
+    <Compile Remove="**\*.uwp.cs" />
+    <None Include="**\*.uwp.cs" Exclude="$(DefaultItemExcludes);$(DefaultExcludesInProjectFolder)" />
+    <MauiXaml Remove="**\*.Windows.xaml" />
+    <None Include="**\*.Windows.xaml" Exclude="$(DefaultItemExcludes);$(DefaultExcludesInProjectFolder)" />
+    <Compile Remove="**\*.Windows.xaml.cs" />
+    <None Include="**\*.Windows.xaml.cs" Exclude="$(DefaultItemExcludes);$(DefaultExcludesInProjectFolder)" />
+    <MauiXaml Remove="**\Windows\**\*.xaml" />
+    <None Include="**\Windows\**\*.xaml" Exclude="$(DefaultItemExcludes);$(DefaultExcludesInProjectFolder)" />
+    <Compile Remove="**\Windows\**\*.xaml.cs" />
+    <None Include="**\Windows\**\*.xaml.cs" Exclude="$(DefaultItemExcludes);$(DefaultExcludesInProjectFolder)" />
+    <Compile Remove="**\*.Standard.cs" />
+    <Compile Remove="**\Standard\**\*.cs" />
   </ItemGroup>
 
   <ItemGroup>
@@ -224,11 +256,11 @@
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|netstandard2.0|AnyCPU'">
-    <DefineConstants>$(DefineConstants)TRACE;__GTK__</DefineConstants>
+    <DefineConstants>$(DefineConstants)TRACE;WINDOWS;__GTK__</DefineConstants>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|netstandard2.0|AnyCPU'">
-    <DefineConstants>$(DefineConstants)TRACE;__GTK__</DefineConstants>
+    <DefineConstants>$(DefineConstants)TRACE;WINDOWS;__GTK__</DefineConstants>
   </PropertyGroup>
 
   <Target Name="_MauiPackXamlDesignAssemblies">
