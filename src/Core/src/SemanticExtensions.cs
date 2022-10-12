@@ -7,13 +7,13 @@ using Android.Text;
 using Android.Views;
 using Android.Views.Accessibility;
 using PlatformView = Android.Views.View;
-#elif WINDOWS
+#elif WINDOWS && !__GTK__
 using PlatformView = Microsoft.UI.Xaml.FrameworkElement;
 #elif TIZEN
 using ElmSharp;
 using ElmSharp.Accessible;
 using PlatformView = ElmSharp.EvasObject;
-#elif (NETSTANDARD || !PLATFORM)
+#elif (NETSTANDARD || !PLATFORM) || __GTK__
 using PlatformView = System.Object;
 #endif
 

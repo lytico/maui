@@ -48,7 +48,7 @@ namespace Microsoft.Maui
 
 #if __ANDROID__
 		public Android.OS.Bundle? SavedInstance { get; }
-#elif WINDOWS
+#elif WINDOWS && !__GTK__
 		public UI.Xaml.LaunchActivatedEventArgs? LaunchActivatedEventArgs { get; }
 #elif TIZEN
 		public Tizen.Applications.Bundle? SavedInstance { get; }

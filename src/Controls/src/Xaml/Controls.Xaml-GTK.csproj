@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
-		<TargetFrameworks>$(WindowsMauiPlatforms)</TargetFrameworks>
+		<TargetFrameworks>$(WindowsMauiPlatforms);netstandard2.0</TargetFrameworks>
 		<AssemblyName>Microsoft.Maui.Controls.Xaml</AssemblyName>
 		<RootNamespace>Microsoft.Maui.Controls.Xaml</RootNamespace>
 		<IsPackable>false</IsPackable>
@@ -31,6 +31,14 @@
 		$(TargetsForTfmSpecificBuildOutput);
 		_MauiPackXamlDesignAssemblies
 	</TargetsForTfmSpecificBuildOutput>
+	</PropertyGroup>
+
+	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|netstandard2.0|AnyCPU'">
+	  <DefineConstants>$(DefineConstants)TRACE;__GTK__</DefineConstants>
+	</PropertyGroup>
+
+	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|netstandard2.0|AnyCPU'">
+	  <DefineConstants>$(DefineConstants)TRACE;__GTK__</DefineConstants>
 	</PropertyGroup>
 
 	<Target Name="_MauiPackXamlDesignAssemblies">

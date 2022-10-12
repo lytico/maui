@@ -2,11 +2,11 @@
 using PlatformView = Microsoft.Maui.Platform.MauiShapeView;
 #elif MONOANDROID
 using PlatformView = Microsoft.Maui.Platform.MauiShapeView;
-#elif WINDOWS
+#elif WINDOWS && !__GTK__
 using PlatformView = Microsoft.Maui.Graphics.Win2D.W2DGraphicsView;
 #elif TIZEN
 using PlatformView = Microsoft.Maui.Platform.MauiShapeView;
-#elif (NETSTANDARD || !PLATFORM) || (NET6_0_OR_GREATER && !IOS && !ANDROID && !TIZEN)
+#elif (NETSTANDARD || !PLATFORM) || (NET6_0_OR_GREATER && !IOS && !ANDROID && !TIZEN) || __GTK__
 using PlatformView = System.Object;
 #endif
 

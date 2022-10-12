@@ -1,6 +1,5 @@
 ﻿using Gdk;
 using Gtk;
-using Microsoft.UI.Xaml.Controls;
 
 namespace Microsoft.Maui.Platform
 {

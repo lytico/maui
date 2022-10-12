@@ -50,7 +50,7 @@ namespace Microsoft.Maui.Handlers
 		ILogger? Logger =>
 			_logger ??= MauiContext?.Services.CreateLogger<ApplicationHandler>();
 
-#if !(NETSTANDARD || !PLATFORM)
+#if !(NETSTANDARD || !PLATFORM) || __GTK__
 		protected override PlatformView CreatePlatformElement() =>
 			MauiContext?.Services.GetService<PlatformView>() ?? throw new InvalidOperationException($"MauiContext did not have a valid application.");
 #endif

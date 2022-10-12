@@ -2,14 +2,12 @@
 using PlatformView = Microsoft.Maui.Platform.MauiActivityIndicator;
 #elif MONOANDROID
 using PlatformView = Android.Widget.ProgressBar;
-#elif WINDOWS
-#if __GTK__
+#elif WINDOWS && __GTK__
 using Gtk;
 using PlatformView = Microsoft.Maui.Platform.ActivityIndicator;
-#else
+#elif WINDOWS && !__GTK__
 using PlatformView = Microsoft.UI.Xaml.Controls.ProgressRing;
-#endif
-#elif TIZEN
+#elif TIZEN      
 using PlatformView = ElmSharp.ProgressBar;
 #elif (NETSTANDARD || !PLATFORM) || (NET6_0_OR_GREATER && !IOS && !ANDROID && !TIZEN && !__GTK__)
 using PlatformView = System.Object;

@@ -3,13 +3,11 @@
 using PlatformView = Microsoft.Maui.Platform.MauiCheckBox;
 #elif __ANDROID__
 using PlatformView = AndroidX.AppCompat.Widget.AppCompatCheckBox;
-#elif WINDOWS
-#if __GTK__
+#elif WINDOWS && __GTK__
 using PlatformView = Microsoft.Maui.Platform.MauiView;
-#else
+#elif WINDOWS && !__GTK__
 using PlatformView = Microsoft.UI.Xaml.Controls.CheckBox;
-#endif
-#elif TIZEN
+#elif TIZEN      
 using PlatformView = ElmSharp.Check;
 #elif (NETSTANDARD || !PLATFORM)
 using PlatformView = System.Object;

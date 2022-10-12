@@ -3,13 +3,11 @@ using Microsoft.Maui.Graphics;
 using PlatformView = UIKit.UIView;
 #elif __ANDROID__
 using PlatformView = Android.Views.View;
-#elif WINDOWS
-#if __GTK__
+#elif WINDOWS && __GTK__
 using PlatformView = Microsoft.Maui.Platform.MauiView;
-#else
+#elif WINDOWS && !__GTK__
 using PlatformView = Microsoft.UI.Xaml.FrameworkElement;
-#endif
-#elif TIZEN
+#elif TIZEN      
 using PlatformView = ElmSharp.EvasObject;
 #elif (NETSTANDARD || !PLATFORM)
 using PlatformView = System.Object;
@@ -135,7 +133,7 @@ namespace Microsoft.Maui.Handlers
 		}
 #endif
 
-#if !(NETSTANDARD || !PLATFORM)
+#if !(NETSTANDARD || !PLATFORM) || __GTK__
 		private protected abstract void OnConnectHandler(PlatformView platformView);
 
 		partial void ConnectingHandler(PlatformView? platformView);

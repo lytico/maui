@@ -1,6 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFrameworks>$(WindowsMauiPlatforms)</TargetFrameworks>
+    <TargetFrameworks>$(WindowsMauiPlatforms);netstandard2.0</TargetFrameworks>
     <AssemblyName>Microsoft.Maui.Essentials</AssemblyName>
     <RootNamespace>Microsoft.Maui.Essentials</RootNamespace>
     <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
@@ -23,6 +23,12 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net6.0-windows10.0.20348|AnyCPU'">
     <DefineConstants>$(DefineConstants);WINDOWS;__GTK__</DefineConstants>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|netstandard2.0|AnyCPU'">
+    <DefineConstants>$(DefineConstants)TRACE;__GTK__</DefineConstants>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|netstandard2.0|AnyCPU'">
+    <DefineConstants>$(DefineConstants)TRACE;__GTK__</DefineConstants>
   </PropertyGroup>
   <Import Project="$(MauiNuSpecDirectory)Microsoft.Maui.Controls.MultiTargeting.targets" />
   <ItemGroup Condition=" '$(_MauiTargetPlatformIsWindows)' == 'True' ">

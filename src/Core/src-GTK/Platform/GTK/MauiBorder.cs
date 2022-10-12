@@ -1,7 +1,6 @@
 using System;
 using System.Linq;
 using Gtk;
-using Windows.ApplicationModel.VoiceCommands;
 
 namespace Microsoft.Maui.Platform
 {

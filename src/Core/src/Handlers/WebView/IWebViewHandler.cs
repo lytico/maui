@@ -2,11 +2,11 @@
 using PlatformView = WebKit.WKWebView;
 #elif MONOANDROID
 using PlatformView = Android.Webkit.WebView;
-#elif WINDOWS
+#elif WINDOWS && !__GTK__
 using PlatformView = Microsoft.UI.Xaml.Controls.WebView2;
 #elif TIZEN
 using PlatformView = Microsoft.Maui.Platform.MauiWebView;
-#elif (NETSTANDARD || !PLATFORM) || (NET6_0_OR_GREATER && !IOS && !ANDROID && !TIZEN)
+#elif (NETSTANDARD || !PLATFORM) || (NET6_0_OR_GREATER && !IOS && !ANDROID && !TIZEN) || __GTK__
 using PlatformView = System.Object;
 #endif
 

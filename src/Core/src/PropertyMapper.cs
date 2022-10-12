@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using PlatformView = UIKit.UIView;
 #elif ANDROID
 using PlatformView = Android.Views.View;
-#elif WINDOWS
+#elif WINDOWS && !__GTK__
 using PlatformView = Microsoft.UI.Xaml.FrameworkElement;
 #elif (NETSTANDARD || !PLATFORM) || (NET6_0_OR_GREATER && !IOS && !ANDROID)
 using PlatformView = System.Object;

@@ -74,7 +74,7 @@ namespace Microsoft.Maui
 			}
 		}
 
-#if WINDOWS
+#if WINDOWS && !__GTK__
 		public static async void RunAndReport<T>(this TaskCompletionSource<T> request, global::Windows.Foundation.IAsyncOperation<T> task)
 		{
 			try

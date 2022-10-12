@@ -1,6 +1,6 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFrameworks>$(WindowsMauiPlatforms)</TargetFrameworks>
+    <TargetFrameworks>$(WindowsMauiPlatforms);netstandard2.0</TargetFrameworks>
     <RootNamespace>Microsoft.Maui.Controls</RootNamespace>
     <AssemblyName>Microsoft.Maui.Controls</AssemblyName>
     <Nullable>disable</Nullable>
@@ -221,6 +221,14 @@
 
   <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net6.0-windows10.0.20348|AnyCPU'">
     <DefineConstants>$(DefineConstants);WINDOWS;__GTK__</DefineConstants>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|netstandard2.0|AnyCPU'">
+    <DefineConstants>$(DefineConstants)TRACE;__GTK__</DefineConstants>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|netstandard2.0|AnyCPU'">
+    <DefineConstants>$(DefineConstants)TRACE;__GTK__</DefineConstants>
   </PropertyGroup>
 
   <Target Name="_MauiPackXamlDesignAssemblies">

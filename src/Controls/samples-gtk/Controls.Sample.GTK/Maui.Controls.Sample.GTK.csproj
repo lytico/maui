@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.Razor">
 
   <PropertyGroup>
-    <TargetFrameworks>net6.0-windows10.0.19041.0;net6.0-windows10.0.20348.0</TargetFrameworks>
+    <TargetFrameworks>$(WindowsMauiPlatforms)</TargetFrameworks>
     <OutputType Condition="$(TargetFramework.Contains('-'))">Exe</OutputType>
     <SingleProject>true</SingleProject>
     <RootNamespace>Maui.Controls.Sample</RootNamespace>
@@ -13,7 +13,7 @@
   <PropertyGroup>
     <ApplicationTitle>.NET MAUI Controls</ApplicationTitle>
     <ApplicationId>com.microsoft.maui.sample</ApplicationId>
-    <ApplicationIdGuid>f9e4fa3e-3505-4742-9b2b-d1acdaff4ec8</ApplicationIdGuid>
+    <ApplicationIdGuid>6FDE17A0-5469-4D5A-8C58-15219A9D7304</ApplicationIdGuid>
     <ApplicationDisplayVersion>1.0</ApplicationDisplayVersion>
     <ApplicationVersion>1</ApplicationVersion>
     <_FastDeploymentDiagnosticLogging>True</_FastDeploymentDiagnosticLogging>

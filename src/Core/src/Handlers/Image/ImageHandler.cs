@@ -46,7 +46,6 @@ namespace Microsoft.Maui.Handlers
 		{
 		}
 
-
 		// TODO MAUI: Should we remove all shadowing? 
 		IImage IImageHandler.VirtualView => VirtualView;
 

@@ -42,7 +42,7 @@ namespace Microsoft.Maui
 
 		public static MauiGTKApplication Current { get; set; } = null!;
 
-		public UI.Xaml.LaunchActivatedEventArgs LaunchActivatedEventArgs { get; protected set; } = null!;
+		// public UI.Xaml.LaunchActivatedEventArgs LaunchActivatedEventArgs { get; protected set; } = null!;
 
 		public IServiceProvider Services { get; protected set; } = null!;
 

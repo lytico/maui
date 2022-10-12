@@ -11,7 +11,7 @@ using PlatformView = Microsoft.Maui.Platform.ContentPanel;
 #endif
 #elif TIZEN
 using PlatformView = Microsoft.Maui.Platform.BorderView;
-#elif (NETSTANDARD || !PLATFORM)
+#elif (NETSTANDARD || !PLATFORM) && !__GTK__
 using PlatformView = System.Object;
 #endif
 
@@ -106,6 +106,14 @@ namespace Microsoft.Maui.Handlers
 		public static void MapStrokeMiterLimit(IBorderHandler handler, IBorderView border)
 		{
 			((PlatformView?)handler.PlatformView)?.UpdateStrokeMiterLimit(border);
+		}
+
+		private protected override void OnConnectHandler(MauiView platformView)
+		{
+		}
+
+		private protected override void OnDisconnectHandler(MauiView platformView)
+		{
 		}
 	}
 }

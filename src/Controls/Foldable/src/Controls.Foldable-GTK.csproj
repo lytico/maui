@@ -1,12 +1,30 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFrameworks>$(_MauiDotNetTfm);$(MauiPlatforms)</TargetFrameworks>
+    <TargetFrameworks>$(WindowsMauiPlatforms);netstandard2.0</TargetFrameworks>
     <AssemblyName>Microsoft.Maui.Controls.Foldable</AssemblyName>
     <RootNamespace>Microsoft.Maui.Controls.Foldable</RootNamespace>
     <WarningsNotAsErrors>BI1234</WarningsNotAsErrors>
     <IsPackable>true</IsPackable>
     <!-- TODO: remove this when Foldable is made into a nupkg -->
     <UseMaui Condition=" '$(UseWorkload)' == 'true' ">true</UseMaui>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net6.0-windows10.0.19041|AnyCPU'">
+    <DefineConstants>$(DefineConstants);WINDOWS;__GTK__</DefineConstants>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net6.0-windows10.0.19041|AnyCPU'">
+    <DefineConstants>$(DefineConstants);WINDOWS;__GTK__</DefineConstants>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net6.0-windows10.0.20348|AnyCPU'">
+    <DefineConstants>$(DefineConstants);WINDOWS;__GTK__</DefineConstants>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net6.0-windows10.0.20348|AnyCPU'">
+    <DefineConstants>$(DefineConstants);WINDOWS;__GTK__</DefineConstants>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|netstandard2.0|AnyCPU'">
+    <DefineConstants>$(DefineConstants);WINDOWS;__GTK__</DefineConstants>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|netstandard2.0|AnyCPU'">
+    <DefineConstants>$(DefineConstants);WINDOWS;__GTK__</DefineConstants>
   </PropertyGroup>
   <Import Project="$(MauiNuSpecDirectory)Microsoft.Maui.Controls.MultiTargeting.targets" />
   <ItemGroup Condition=" '$(UseMaui)' != 'true' ">

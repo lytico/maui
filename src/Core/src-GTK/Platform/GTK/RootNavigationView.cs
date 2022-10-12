@@ -2,13 +2,11 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Maui.Graphics;
-using Microsoft.UI.Xaml;
 
 namespace Microsoft.Maui.Platform
 {
 	// This is needed by WinUI because of 
 	// https://github.com/microsoft/microsoft-ui-xaml/issues/2698#issuecomment-648751713
-	[Microsoft.UI.Xaml.Data.Bindable]
 	public partial class RootNavigationView : MauiNavigationView
 	{
 		double AppBarTitleHeight => _useCustomAppTitleBar ? _appBarTitleHeight : 0;
@@ -33,25 +31,25 @@ namespace Microsoft.Maui.Platform
 			//this.DisplayModeChanged += (_, __) => UpdateNavigationAndPaneButtonHolderGridStyles();
 		}
 
-		internal MauiToolbar? Toolbar
-		{
-			get => null;
-			set
-			{
-				//if (base.Toolbar == value)
-				//	return;
+		//internal MauiToolbar? Toolbar
+		//{
+		//	get => null;
+		//	set
+		//	{
+		//		//if (base.Toolbar == value)
+		//		//	return;
 
-				//base.Toolbar = value;
+		//		//base.Toolbar = value;
 
-				//if (value != null)
-				//{
-				//	value.NavigationViewBackButton = NavigationViewBackButton;
-				//	value.TogglePaneButton = TogglePaneButton;
-				//}
+		//		//if (value != null)
+		//		//{
+		//		//	value.NavigationViewBackButton = NavigationViewBackButton;
+		//		//	value.TogglePaneButton = TogglePaneButton;
+		//		//}
 
-				UpdateToolbarPlacement();
-			}
-		}
+		//		UpdateToolbarPlacement();
+		//	}
+		//}
 
 		internal Size FlyoutPaneSize
 		{
@@ -68,18 +66,18 @@ namespace Microsoft.Maui.Platform
 
 		private protected override void ToolbarChanged()
 		{
-			if (Toolbar is MauiToolbar mauiToolbar)
-			{
-				Toolbar = mauiToolbar;
-				UpdateToolbarPlacement();
-			}
-			else
-			{
+			//if (Toolbar is MauiToolbar mauiToolbar)
+			//{
+			//	Toolbar = mauiToolbar;
+			//	UpdateToolbarPlacement();
+			//}
+			//else
+			//{
 				// By default MauiNavigationView always sets 
 				// NavigationView.Header to the Toolbar
 				// This lets us pivot based on the type of pane display mode				
 				base.ToolbarChanged();
-			}
+			//}
 
 		}
 

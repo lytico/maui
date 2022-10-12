@@ -1,6 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFrameworks>$(WindowsMauiPlatforms)</TargetFrameworks>
+    <TargetFrameworks>$(WindowsMauiPlatforms);netstandard2.0</TargetFrameworks>
     <RootNamespace>Microsoft.Maui</RootNamespace>
     <AssemblyName>Microsoft.Maui</AssemblyName>
     <Nullable>enable</Nullable>
@@ -22,8 +22,14 @@
   <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net6.0-windows10.0.20348|AnyCPU'">
     <DefineConstants>$(DefineConstants);WINDOWS;__GTK__</DefineConstants>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|netstandard2.0|AnyCPU'">
+    <DefineConstants>$(DefineConstants)TRACE;WINDOWS;__GTK__</DefineConstants>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|netstandard2.0|AnyCPU'">
+    <DefineConstants>$(DefineConstants)TRACE;WINDOWS;__GTK__</DefineConstants>
+  </PropertyGroup>
   <Import Project="$(MauiNuSpecDirectory)Microsoft.Maui.Controls.MultiTargeting.targets" />
-  <ItemGroup Condition=" '$(_MauiTargetPlatformIsWindows)' == 'True' ">
+  <ItemGroup Condition=" '$(_MauiTargetPlatformIsWindows)' == 'True'">
     <Compile Remove="**\*.Windows.cs" />
     <None Include="**\*.Windows.cs" Exclude="$(DefaultItemExcludes);$(DefaultExcludesInProjectFolder)" />
     <Compile Remove="**\Windows\**\*.cs" />
@@ -38,6 +44,26 @@
     <None Include="**\Windows\**\*.xaml" Exclude="$(DefaultItemExcludes);$(DefaultExcludesInProjectFolder)" />
     <Compile Remove="**\Windows\**\*.xaml.cs" />
     <None Include="**\Windows\**\*.xaml.cs" Exclude="$(DefaultItemExcludes);$(DefaultExcludesInProjectFolder)" />
+    <Compile Remove="**\*.Standard.cs" />
+    <Compile Remove="**\Standard\**\*.cs" />
+  </ItemGroup>
+  <ItemGroup Condition=" '$(_MauiNoTargetPlatform)' == 'True'">
+    <Compile Remove="**\*.Windows.cs" />
+    <None Include="**\*.Windows.cs" Exclude="$(DefaultItemExcludes);$(DefaultExcludesInProjectFolder)" />
+    <Compile Remove="**\Windows\**\*.cs" />
+    <None Include="**\Windows\**\*.cs" Exclude="$(DefaultItemExcludes);$(DefaultExcludesInProjectFolder)" />
+    <Compile Remove="**\*.uwp.cs" />
+    <None Include="**\*.uwp.cs" Exclude="$(DefaultItemExcludes);$(DefaultExcludesInProjectFolder)" />
+    <MauiXaml Remove="**\*.Windows.xaml" />
+    <None Include="**\*.Windows.xaml" Exclude="$(DefaultItemExcludes);$(DefaultExcludesInProjectFolder)" />
+    <Compile Remove="**\*.Windows.xaml.cs" />
+    <None Include="**\*.Windows.xaml.cs" Exclude="$(DefaultItemExcludes);$(DefaultExcludesInProjectFolder)" />
+    <MauiXaml Remove="**\Windows\**\*.xaml" />
+    <None Include="**\Windows\**\*.xaml" Exclude="$(DefaultItemExcludes);$(DefaultExcludesInProjectFolder)" />
+    <Compile Remove="**\Windows\**\*.xaml.cs" />
+    <None Include="**\Windows\**\*.xaml.cs" Exclude="$(DefaultItemExcludes);$(DefaultExcludesInProjectFolder)" />
+    <Compile Remove="**\*.Standard.cs" />
+    <Compile Remove="**\Standard\**\*.cs" />
   </ItemGroup>
   <ItemGroup>
     <Compile Remove="Handlers\FlyoutView\FlyoutViewHandler.cs" />

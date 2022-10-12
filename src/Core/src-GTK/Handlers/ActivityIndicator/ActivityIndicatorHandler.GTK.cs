@@ -82,12 +82,12 @@ namespace Microsoft.Maui.Handlers
 
 		private protected override void OnConnectHandler(MauiView platformView)
 		{
-			base.OnConnectHandler(platformView);
+			//base.OnConnectHandler(platformView);
 		}
 
 		private protected override void OnDisconnectHandler(MauiView platformView)
 		{
-			base.OnDisconnectHandler(platformView);
+			//base.OnDisconnectHandler(platformView);
 		}
 
 		//private protected override void OnConnectHandler(EventBox platformView)

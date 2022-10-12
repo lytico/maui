@@ -3,13 +3,11 @@ using System;
 using PlatformView = UIKit.UIView;
 #elif MONOANDROID
 using PlatformView = Android.Views.View;
-#elif WINDOWS
-#if __GTK__
+#elif WINDOWS && __GTK__
 using PlatformView = Microsoft.Maui.Platform.MauiView;
-#else
+#elif WINDOWS && !__GTK__
 using PlatformView = Microsoft.UI.Xaml.FrameworkElement;
-#endif
-#elif TIZEN
+#elif TIZEN                  
 using PlatformView = ElmSharp.EvasObject;
 #elif (NETSTANDARD || !PLATFORM) || (NET6_0_OR_GREATER && !IOS && !ANDROID && !TIZEN)
 using PlatformView = System.Object;
