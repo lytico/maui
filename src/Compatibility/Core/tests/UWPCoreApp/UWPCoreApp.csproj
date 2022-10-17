@@ -151,18 +151,6 @@
     </PackageReference>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\..\Controls\src\Core\Controls.Core.csproj">
-      <Project>{af64451f-e2bd-41c2-b083-f60c26ae2a9f}</Project>
-      <Name>Controls.Core</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\..\Controls\src\SourceGen\Controls.SourceGen.csproj">
-      <Project>{22c17254-2cb4-4ae7-a558-e3208e1d19d3}</Project>
-      <Name>Controls.SourceGen</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\..\Controls\src\Xaml\Controls.Xaml.csproj">
-      <Project>{cc3d4667-d94e-4276-9311-6439bfd075e4}</Project>
-      <Name>Controls.Xaml</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\..\..\Core\src\Core.csproj">
       <Project>{95ba42b5-b00e-4986-b9b5-517140378452}</Project>
       <Name>Core</Name>

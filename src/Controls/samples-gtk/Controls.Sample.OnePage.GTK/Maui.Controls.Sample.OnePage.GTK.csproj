@@ -1,29 +1,82 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>$(WindowsMauiPlatforms)</TargetFrameworks>
-    <OutputType>Exe</OutputType>
-    <SingleProject>true</SingleProject>
-    <IsPackable>false</IsPackable>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net6.0-windows</TargetFramework>
+    <Nullable>enable</Nullable>
+    <UseWPF>true</UseWPF>
   </PropertyGroup>
+  
+  <!-- Add this as a new ItemGroup, replacing paths and names appropriately -->
+  <ItemGroup>
+	<ProjectReference Include="D:\Source\maui\src\Controls\src\SourceGen\Controls.SourceGen.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
+  </ItemGroup>
 
-  <PropertyGroup>
-    <ApplicationTitle>.NET MAUI Controls</ApplicationTitle>
-    <ApplicationId>com.microsoft.maui.sample</ApplicationId>
-    <ApplicationVersion>1</ApplicationVersion>
-    <_FastDeploymentDiagnosticLogging>True</_FastDeploymentDiagnosticLogging>
-  </PropertyGroup>
-
-  <ItemGroup Condition=" '$(UseMaui)' != 'true' ">
+  <ItemGroup>
+    <PackageReference Include="Microsoft.CodeAnalysis.Analyzers" Version="3.3.3">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="4.3.1" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" />
   </ItemGroup>
 
   <ItemGroup>
-    <MauiImage Include="Resources\AppIcons\appicon.svg" ForegroundFile="Resources\AppIcons\appicon_foreground.svg" IsAppIcon="true" />
-    <MauiImage Include="Resources\Images\dotnet_bot.svg" Color="#FFFFFF" BaseSize="168,208" />
-    <MauiSplashScreen Include="Resources\Images\dotnet_bot.svg" Color="#FFFFFF" BaseSize="168,208" />
+    <ProjectReference Include="..\..\..\Core\src\Core-GTK.csproj" />
+    <ProjectReference Include="..\..\src\Core\Controls.Core-GTK.csproj" />
+    <ProjectReference Include="..\..\src\Xaml\Controls.Xaml-GTK.csproj" />
   </ItemGroup>
 
-  <Import Project="$(MauiSrcDirectory)Maui.InTree.props" Condition=" '$(UseMaui)' != 'true' " />
+  <ItemGroup>
+    <Reference Include="atk-sharp">
+      <HintPath>C:\Program Files (x86)\GtkSharp\2.12\lib\gtk-sharp-2.0\atk-sharp.dll</HintPath>
+    </Reference>
+    <Reference Include="gdk-sharp">
+      <HintPath>C:\Program Files (x86)\GtkSharp\2.12\lib\gtk-sharp-2.0\gdk-sharp.dll</HintPath>
+    </Reference>
+    <Reference Include="glade-sharp">
+      <HintPath>C:\Program Files (x86)\GtkSharp\2.12\lib\gtk-sharp-2.0\glade-sharp.dll</HintPath>
+    </Reference>
+    <Reference Include="glib-sharp">
+      <HintPath>C:\Program Files (x86)\GtkSharp\2.12\lib\gtk-sharp-2.0\glib-sharp.dll</HintPath>
+    </Reference>
+    <Reference Include="gtk-dotnet">
+      <HintPath>C:\Program Files (x86)\GtkSharp\2.12\lib\gtk-sharp-2.0\gtk-dotnet.dll</HintPath>
+    </Reference>
+    <Reference Include="gtk-sharp">
+      <HintPath>C:\Program Files (x86)\GtkSharp\2.12\lib\gtk-sharp-2.0\gtk-sharp.dll</HintPath>
+    </Reference>
+    <Reference Include="Mono.Cairo">
+      <HintPath>C:\Program Files (x86)\GtkSharp\2.12\lib\Mono.Cairo\Mono.Cairo.dll</HintPath>
+    </Reference>
+    <Reference Include="pango-sharp">
+      <HintPath>C:\Program Files (x86)\GtkSharp\2.12\lib\gtk-sharp-2.0\pango-sharp.dll</HintPath>
+    </Reference>
+  </ItemGroup>
 
-</Project>
+   <ItemDefinitionGroup>
+    <MauiXaml>
+      <SubType>Designer</SubType>
+    </MauiXaml>
+  </ItemDefinitionGroup>
+
+  <ItemGroup>
+    <MauiXaml Include="**\*.xaml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Page Remove="MainPage.xaml" />
+    <Page Remove="SandboxShell.xaml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Include="bin\Debug\net6.0-windows\MainPage.xaml.i.g.cs" />
+    <Compile Include="bin\Debug\net6.0-windows\SandboxShell.xaml.i.g.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="MainPage.xaml" />
+    <EmbeddedResource Include="SandboxShell.xaml" />
+  </ItemGroup>
+
+  </Project>
