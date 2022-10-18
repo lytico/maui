@@ -61,13 +61,17 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Include="obj\Debug\net6.0-windows\prebuilt\MainPage.xaml.i.g.cs" />
-    <Compile Include="obj\Debug\net6.0-windows\prebuilt\SandboxShell.xaml.i.g.cs" />
+    <Compile Include="obj\Debug\prebuilt\MainPage.xaml.i.g.cs" />
+    <Compile Include="obj\Debug\prebuilt\SandboxShell.xaml.i.g.cs" />
   </ItemGroup>
 
   <ItemGroup>
     <EmbeddedResource Include="MainPage.xaml" />
     <EmbeddedResource Include="SandboxShell.xaml" />
   </ItemGroup>
+
+  <Target Name="PreBuild" BeforeTargets="PreBuildEvent">
+    <Exec Command="D:\Source\maui\src\Controls\tests\GenerateXamlRunner\bin\Debug\net6.0\GenerateXamlRunner.exe $(ProjectDir) $(ProjectDir)$(BaseIntermediateOutputPath)$(Configuration)\prebuilt" />
+  </Target>
 
   </Project>
