@@ -11,7 +11,8 @@ void Generate1File()
 	var fileNameSourcePath = "D:\\Source\\maui\\src\\Controls\\samples-gtk\\Controls.Sample.OnePage.GTK";
 	var fullFileNamePath = Path.Combine(fileNameSourcePath, fileNameRoot);
 	var fileSource = File.ReadAllText(fullFileNamePath);
-	var projectOutputPath = "D:\\Source\\maui\\src\\Controls\\samples-gtk\\Controls.Sample.OnePage.GTK\\bin\\Debug\\net6.0-windows";
+	var projectOutputPath = "D:\\Source\\maui\\src\\Controls\\samples-gtk\\Controls.Sample.OnePage.GTK\\obj\\Debug\\net6.0-windows\\prebuilt";
+	Directory.CreateDirectory(projectOutputPath);
 	GenerateXaml.GenerateXamlCodeBehind(fileSource, fileNameRoot, fileNameSourcePath, fileNameRoot, projectOutputPath);
 }
 
@@ -21,6 +22,7 @@ void GenerateAnotherFile()
 	var fileNameSourcePath = "D:\\Source\\maui\\src\\Controls\\samples-gtk\\Controls.Sample.OnePage.GTK";
 	var fullFileNamePath = Path.Combine(fileNameSourcePath, fileNameRoot);
 	var fileSource = File.ReadAllText(fullFileNamePath);
-	var projectOutputPath = "D:\\Source\\maui\\src\\Controls\\samples-gtk\\Controls.Sample.OnePage.GTK\\bin\\Debug\\net6.0-windows";
+	var projectOutputPath = "D:\\Source\\maui\\src\\Controls\\samples-gtk\\Controls.Sample.OnePage.GTK\\obj\\Debug\\net6.0-windows\\prebuilt";
+	Directory.CreateDirectory(projectOutputPath);
 	GenerateXaml.GenerateXamlCodeBehind(fileSource, fileNameRoot, fileNameSourcePath, fileNameRoot, projectOutputPath);
 }

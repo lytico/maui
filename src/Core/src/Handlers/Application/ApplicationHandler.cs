@@ -8,7 +8,7 @@ using PlatformView = UIKit.IUIApplicationDelegate;
 using PlatformView = Android.App.Application;
 #elif WINDOWS
 #if __GTK__
-using PlatformView = Gtk.Application;
+using PlatformView = Microsoft.Maui.MauiGTKApplication;
 #else
 using PlatformView = Microsoft.UI.Xaml.Application;
 #endif

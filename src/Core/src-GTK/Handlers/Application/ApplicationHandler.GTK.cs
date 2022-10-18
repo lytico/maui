@@ -3,7 +3,7 @@ using Microsoft.Maui.Platform;
 
 namespace Microsoft.Maui.Handlers
 {
-	public partial class ApplicationHandler : ElementHandler<IApplication, Gtk.Application>
+	public partial class ApplicationHandler : ElementHandler<IApplication, MauiGTKApplication>
 	{
 		public static void MapTerminate(ApplicationHandler handler, IApplication application, object? args)
 		{
@@ -12,7 +12,7 @@ namespace Microsoft.Maui.Handlers
 
 		public static void MapOpenWindow(ApplicationHandler handler, IApplication application, object? args)
 		{
-			handler.PlatformView?.CreatePlatformWindow(application);
+			handler.PlatformView?.CreatePlatformWindow();
 		}
 
 		public static void MapCloseWindow(ApplicationHandler handler, IApplication application, object? args)

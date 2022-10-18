@@ -48,6 +48,13 @@ namespace Microsoft.Maui.Controls.SourceGen
 //------------------------------------------------------------------------------
 
 using Microsoft.Maui.Controls;
+using Button = Microsoft.Maui.Controls.Button;
+using CheckBox = Microsoft.Maui.Controls.CheckBox;
+using Image = Microsoft.Maui.Controls.Image;
+using Label = Microsoft.Maui.Controls.Label;
+using ListView = Microsoft.Maui.Controls.ListView;
+using ProgressBar = Microsoft.Maui.Controls.ProgressBar;
+using RadioButton = Microsoft.Maui.Controls.RadioButton;
 ";
 
 		public static void GenerateXamlCodeBehind(string fileSource, string fileNameRoot, string absolutePathName, string relativePathName, string projectOutputDirectory)
@@ -199,7 +206,7 @@ using Microsoft.Maui.Controls;
 			// <?xaml-comp compile="true" ?>
 			//
 			// we will generate a xaml.g.cs file with the default ctor calling InitializeComponent, and a XamlCompilation attribute
-			var hasXamlCompilationProcessingInstruction = GetXamlCompilationProcessingInstruction(xmlDoc);
+			//var hasXamlCompilationProcessingInstruction = GetXamlCompilationProcessingInstruction(xmlDoc);
 
 			var nsmgr = new XmlNamespaceManager(xmlDoc.NameTable);
 			nsmgr.AddNamespace("__f__", XamlParser.MauiUri);

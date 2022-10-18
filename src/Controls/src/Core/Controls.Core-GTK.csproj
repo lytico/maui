@@ -169,6 +169,7 @@
     <Compile Include="..\..\src-GTK\Compatibility\Handlers\GTK\VisualElementRenderer.cs" Link="Compatibility\Handlers\GTK\VisualElementRenderer.cs" />
     <Compile Include="..\..\src-GTK\HandlerImpl\Application\Application.GTK.cs" Link="HandlerImpl\Application\Application.GTK.cs" />
     <Compile Include="..\..\src-GTK\HandlerImpl\Element\Element.GTK.cs" Link="HandlerImpl\Element\Element.GTK.cs" />
+    <Compile Include="..\..\src-GTK\HandlerImpl\Window\Window.GTK.cs" Link="HandlerImpl\Window\Window.GTK.cs" />
     <Compile Include="..\..\src-GTK\Platform\AlertManager\AlertManager.GTK.cs" Link="Platform\AlertManager\AlertManager.GTK.cs" />
     <Compile Include="..\..\src-GTK\Platform\GTK\AutomationPropertiesProvider.cs" Link="Platform\GTK\AutomationPropertiesProvider.cs" />
   </ItemGroup>
