@@ -19,15 +19,16 @@ namespace Maui.Controls.Sample.OnePage.GTK.Platforms.GTK
 
 			var mauiGTKApp = new GTKApp();
 
+			System.Diagnostics.Debug.WriteLine("Inside Platforms.GTK.Program.Main.");
+
 			mauiGTKApp.Main(args);
 			//Gtk.Application.Init();
 			//MauiProgram.CreateMauiApp();
 
 			//_ =  new App();
 
-			System.Diagnostics.Debug.WriteLine("Inside Platforms.GTK.Program.Main.");
 
-			Gtk.Application.Run();
+			// Gtk.Application.Run();
 		}
 	}
 

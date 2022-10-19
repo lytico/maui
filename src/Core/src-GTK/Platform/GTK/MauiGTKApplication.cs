@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Maui.Hosting;
 using Microsoft.Maui.LifecycleEvents;
+using Microsoft.Maui.Platform;
 
 namespace Microsoft.Maui
 {
@@ -33,13 +35,21 @@ namespace Microsoft.Maui
 
 			// Services.InvokeLifecycleEvents<WindowsLifecycle.OnLaunching>(del => del(this, args));
 
+			if (Services.GetRequiredService<IApplication>() != null)
+			{
+				Application = Services.GetRequiredService<IApplication>();
+			}
+
 			// Application = Services.GetRequiredService<IApplication>();
 
 			// this.SetApplicationHandler(Application, applicationContext);
 
-			this.CreatePlatformWindow();
+			this.CreatePlatformWindow(Application);
+			// this.CreatePlatformWindow(this);
 
 			//Services.InvokeLifecycleEvents<WindowsLifecycle.OnLaunched>(del => del(this, args));
+
+			Gtk.Application.Run();
 		}
 
 		// private static MauiGTKApplication _instance = new MauiGTKApplication();

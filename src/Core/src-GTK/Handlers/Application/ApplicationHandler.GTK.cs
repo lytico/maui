@@ -1,4 +1,5 @@
 using System;
+using Microsoft.Maui.Hosting;
 using Microsoft.Maui.Platform;
 
 namespace Microsoft.Maui.Handlers
@@ -12,7 +13,7 @@ namespace Microsoft.Maui.Handlers
 
 		public static void MapOpenWindow(ApplicationHandler handler, IApplication application, object? args)
 		{
-			handler.PlatformView?.CreatePlatformWindow();
+			// handler.PlatformView?.CreatePlatformWindow(application as MauiApp);
 		}
 
 		public static void MapCloseWindow(ApplicationHandler handler, IApplication application, object? args)
