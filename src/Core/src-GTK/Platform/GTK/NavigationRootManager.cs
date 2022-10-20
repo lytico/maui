@@ -5,14 +5,14 @@ namespace Microsoft.Maui.Platform
 	public partial class NavigationRootManager
 	{
 		Gtk.Window _platformWindow;
-		WindowRootView _rootView;
+		MauiGTKWindow _rootView;
 		//bool _disconnected = true;
 		bool _isActiveRootManager;
 
 		public NavigationRootManager(Gtk.Window platformWindow)
 		{
 			_platformWindow = platformWindow;
-			_rootView = new WindowRootView();
+			_rootView = new MauiGTKWindow("My Maui GTK Window");
 			//_rootView.BackRequested += OnBackRequested;
 			//_rootView.OnApplyTemplateFinished += OnApplyTemplateFinished;
 			//_rootView.OnAppTitleBarChanged += OnAppTitleBarChanged;
@@ -51,15 +51,25 @@ namespace Microsoft.Maui.Platform
 
 		public Gtk.Window RootView => _rootView;
 
-		public virtual void Connect(Gtk.Widget platformView)
+		public virtual void Connect(IView platformView)
 		{
-			//if (_rootView.Content != null)
+			if (_rootView != null)
+			{
+				// We need to make sure to clear out the root view content 
+				// before creating the new view.
+				// Otherwise the new view might try to act on the old content.
+				// It might have code in the handler that retrieves this class.
+				_rootView = null!;
+			}
+
+			if (platformView is MauiGTKWindow gw)
+			{
+				_rootView = gw;
+			}
+
+			//if (IView is Microsoft.Maui.Controls.ContentPage)
 			//{
-			//	// We need to make sure to clear out the root view content 
-			//	// before creating the new view.
-			//	// Otherwise the new view might try to act on the old content.
-			//	// It might have code in the handler that retrieves this class.
-			//	_rootView.Content = null;
+
 			//}
 
 			//NavigationView rootNavigationView;

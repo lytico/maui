@@ -2,7 +2,7 @@ using System;
 
 namespace Microsoft.Maui.Handlers
 {
-	public partial class WindowHandler : ElementHandler<IWindow, Gtk.EventBox>
+	public partial class WindowHandler : ElementHandler<IWindow, Gtk.Window>
 	{
 		public static void MapTitle(IWindowHandler handler, IWindow window) { }
 
@@ -10,8 +10,9 @@ namespace Microsoft.Maui.Handlers
 		{
 			_ = handler.MauiContext ?? throw new InvalidOperationException($"{nameof(MauiContext)} should have been set by base class.");
 
-			var rootView = CreateRootViewFromContent(handler, window);
-			handler.PlatformView.Add(rootView);
+			_ = CreateRootViewFromContent(handler, window);
+			// handler.PlatformView.SetContentView(rootView);
+			// handler.PlatformView = rootView;
 			//if (window.VisualDiagnosticsOverlay != null && rootView is ViewGroup group)
 			//	window.VisualDiagnosticsOverlay.Initialize();
 		}
@@ -28,13 +29,18 @@ namespace Microsoft.Maui.Handlers
 			//	request.SetResult(handler.PlatformView.GetDisplayDensity());
 		}
 
-		internal static Gtk.Fixed? CreateRootViewFromContent(IWindowHandler handler, IWindow window)
+		internal static Gtk.Window? CreateRootViewFromContent(IWindowHandler handler, IWindow window)
 		{
-			//_ = handler.MauiContext ?? throw new InvalidOperationException($"{nameof(MauiContext)} should have been set by base class.");
-			//var rootManager = handler.MauiContext.GetNavigationRootManager();
-			//rootManager.Connect(window.Content);
-			//return rootManager.RootView;
-			return new Gtk.Fixed();
+			_ = handler.MauiContext ?? throw new InvalidOperationException($"{nameof(MauiContext)} should have been set by base class.");
+			var rootManager = handler.MauiContext.GetNavigationRootManager();
+			rootManager.Connect(window.Content);
+			return rootManager.RootView;
+			
+			//var winuiWindow = new Gtk.Fixed();
+
+			//foreach(var child in window.all)
+
+			//return winuiWindow;
 		}
 	}
 }

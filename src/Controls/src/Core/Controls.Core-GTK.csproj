@@ -130,6 +130,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Remove="click_me.gif" />
     <None Remove="Compatibility\Handlers\ListView\Windows\ListViewStyles.xaml" />
     <None Remove="Compatibility\Handlers\ListView\Windows\ListViewStyles.xaml" />
     <None Remove="Platform\Windows\CollectionView\ItemsViewStyles.xaml" />
@@ -172,6 +173,12 @@
     <Compile Include="..\..\src-GTK\HandlerImpl\Window\Window.GTK.cs" Link="HandlerImpl\Window\Window.GTK.cs" />
     <Compile Include="..\..\src-GTK\Platform\AlertManager\AlertManager.GTK.cs" Link="Platform\AlertManager\AlertManager.GTK.cs" />
     <Compile Include="..\..\src-GTK\Platform\GTK\AutomationPropertiesProvider.cs" Link="Platform\GTK\AutomationPropertiesProvider.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="click_me.gif">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
   </ItemGroup>
 
   <ItemGroup>

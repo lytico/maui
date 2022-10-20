@@ -1,8 +1,8 @@
 ﻿<ContentPage
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    x:Class="Maui.Controls.Sample.MainPage"
-    xmlns:local="clr-namespace:Maui.Controls.Sample">
+    x:Class="Maui.Controls.Sample.OnePage.GTK.MainPage"
+    xmlns:local="clr-namespace:Maui.Controls.Sample.OnePage.GTK">
     
     <ScrollView>
         <VerticalStackLayout
@@ -25,7 +25,7 @@
 
             <Button
                 x:Name="CounterBtn"
-                Text="Click me"
+                ImageSource="click_me.gif"
                 SemanticProperties.Hint="Counts the number of times you click"
                 Clicked="OnCounterClicked"
                 HorizontalOptions="Center" />

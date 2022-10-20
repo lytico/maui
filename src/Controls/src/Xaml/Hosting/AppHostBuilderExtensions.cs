@@ -16,14 +16,13 @@ using Microsoft.Maui.Platform;
 #if ANDROID
 using Microsoft.Maui.Controls.Handlers.Compatibility;
 using Microsoft.Maui.Controls.Compatibility.Platform.Android;
-#elif WINDOWS
-#if __GTK__
+#elif WINDOWS && __GTK__
 using ResourcesProvider = Microsoft.Maui.Controls.Compatibility.Platform.GTK.ResourcesProvider;
-#else
+using Microsoft.Maui.Controls.Compatibility.Platform.GTK;
+#elif WINDOWS && !__GTK__
 using ResourcesProvider = Microsoft.Maui.Controls.Compatibility.Platform.UWP.WindowsResourcesProvider;
 using Microsoft.Maui.Controls.Compatibility.Platform.UWP;
-#endif
-#elif IOS || MACCATALYST
+#elif IOS || MACCATALYST                   
 using Microsoft.Maui.Controls.Compatibility.Platform.iOS;
 using Microsoft.Maui.Controls.Handlers.Compatibility;
 #elif TIZEN
@@ -167,7 +166,7 @@ namespace Microsoft.Maui.Controls.Hosting
 
 		static MauiAppBuilder SetupDefaults(this MauiAppBuilder builder)
 		{
-#if WINDOWS || ANDROID || IOS || MACCATALYST || TIZEN
+#if WINDOWS || ANDROID || IOS || MACCATALYST || TIZEN || __GTK__
 			// initialize compatibility DependencyService
 			DependencyService.SetToInitialized();
 			DependencyService.Register<Xaml.ResourcesLoader>();
@@ -191,7 +190,7 @@ namespace Microsoft.Maui.Controls.Hosting
 					handlers.AddMauiControlsHandlers();
 				});
 
-#if WINDOWS
+#if WINDOWS || __GTK__
 			builder.Services.TryAddEnumerable(ServiceDescriptor.Transient<IMauiInitializeService, MauiControlsInitializer>());
 #endif
 			builder.RemapForControls();

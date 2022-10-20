@@ -6,7 +6,7 @@ using PlatformView = UIKit.UIWindow;
 using PlatformView = Android.App.Activity;
 #elif WINDOWS
 #if __GTK__
-using PlatformView = Gtk.EventBox;
+using PlatformView = Gtk.Window;
 #else
 using PlatformView = Microsoft.UI.Xaml.Window;
 #endif
@@ -56,9 +56,36 @@ namespace Microsoft.Maui.Handlers
 		{
 		}
 
-#if !(NETSTANDARD || !PLATFORM) || __GTK__
-		protected override PlatformView CreatePlatformElement() =>
-			MauiContext?.Services.GetService<PlatformView>() ?? throw new InvalidOperationException($"MauiContext did not have a valid window.");
-#endif
+		protected override PlatformView CreatePlatformElement()
+		{
+			var plat = MauiContext?.Services.GetService<PlatformView>();
+			if (plat != null)
+			{
+				return plat;
+			}
+//			else
+//			{
+//#if !(NETSTANDARD || !PLATFORM)
+//				var rawPlat = IPlatformApplication.Current;
+//				if (rawPlat != null)
+//				{
+//					return (PlatformView)rawPlat;
+//				}
+//#else
+//				var rawPlat = IWindow
+//				if (rawPlat != null)
+//				{
+//					return (PlatformView)rawPlat;
+//				}
+//#endif
+//			}
+			throw new InvalidOperationException($"MauiContext did not have a valid window.");
+		}
+
+
+//#if !(NETSTANDARD || !PLATFORM) || __GTK__
+//		protected override PlatformView CreatePlatformElement() =>
+//			MauiContext?.Services.GetService<PlatformView>() ?? throw new InvalidOperationException($"MauiContext did not have a valid window.");
+//#endif
 	}
 }

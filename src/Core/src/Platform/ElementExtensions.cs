@@ -15,7 +15,7 @@ using PlatformApplication = Android.App.Application;
 using PlatformView = Microsoft.Maui.Platform.MauiView;
 using BasePlatformType = System.Object;
 using PlatformWindow = Gtk.Window;
-using PlatformApplication = Gtk.Application;
+using PlatformApplication = Microsoft.Maui.MauiGTKApplication;
 #else
 using PlatformView = Microsoft.UI.Xaml.FrameworkElement;
 using BasePlatformType = WinRT.IWinRTObject;
@@ -164,6 +164,9 @@ namespace Microsoft.Maui.Platform
 
 			if (handler.VirtualView != element)
 				handler.SetVirtualView(element);
+#if __GTK__
+			element.PopulateNativeElement(nativeElement, context);
+#endif
 		}
 
 		public static void SetApplicationHandler(this PlatformApplication platformApplication, IApplication application, IMauiContext context) =>
@@ -172,8 +175,12 @@ namespace Microsoft.Maui.Platform
 		public static void SetWindowHandler(this PlatformWindow platformWindow, IWindow window, IMauiContext context) =>
 			SetHandler(platformWindow, window, context);
 
-#if WINDOWS || IOS || ANDROID
-#if !__GTK__
+#if WINDOWS || IOS || ANDROID || __GTK__
+#if __GTK__
+		internal static Gtk.Window GetWindow(this IElement element) =>
+			element.Handler?.MauiContext?.GetPlatformWindow() ??
+			throw new InvalidOperationException("IWindow not found");
+#else
 		internal static IWindow GetWindow(this IElement element) =>
 			element.Handler?.MauiContext?.GetPlatformWindow()?.GetWindow() ??
 			throw new InvalidOperationException("IWindow not found");

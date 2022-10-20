@@ -1,8 +1,8 @@
 ﻿<Shell
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    x:Class="Maui.Controls.Sample.SandboxShell"
-    xmlns:local="clr-namespace:Maui.Controls.Sample"
+    x:Class="Maui.Controls.Sample.OnePage.GTK.SandboxShell"
+    xmlns:local="clr-namespace:Maui.Controls.Sample.OnePage.GTK"
     x:Name="shell">
     <FlyoutItem Title="Flyout Item Title">
         <ShellContent ContentTemplate="{DataTemplate local:MainPage}"></ShellContent>

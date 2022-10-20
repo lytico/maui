@@ -17,24 +17,31 @@ namespace Microsoft.Maui.Platform
 			if (mauiApp == null)
 				return;
 
-			var winuiWndow = mauiApp.CreateWindow(null!);
+			if (mauiApp.Handler?.MauiContext is not IMauiContext applicationContext)
+				return;
 
+			var winuiWndow = new MauiGTKWindow("My first GTK# Application! ");
+
+			var window = mauiApp.CreateWindow(null!);
+			
 			//Gtk.Window winuiWndow = new Gtk.Window("My first GTK# Application! ");
 			if (winuiWndow is not null)
 			{
-				//var mauiContext = applicationContext!.MakeWindowScope(winuiWndow, out var windowScope);
+				var mauiContext = applicationContext!.MakeWindowScope(winuiWndow, out var windowScope);
 				//applicationContext.Services.InvokeLifecycleEvents<GTKLifecycle.OnMauiContextCreated>(del => del(mauiContext));
 
 				//var activationState = new ActivationState(mauiContext);
 
 				//var window = application.CreateWindow(activationState);
 
-				//winuiWndow.SetWindowHandler(window, mauiContext);
+				winuiWndow.SetWindowHandler(window, mauiContext);
+				//winuiWndow.PopulateFromXaml(window, mauiContext);
 
 				//applicationContext.Services.InvokeLifecycleEvents<GTKLifecycle.OnWindowCreated>(del => del(winuiWndow));
 
-				//winuiWndow.Activate();
-				((Gtk.Window)winuiWndow).Show();
+				winuiWndow.ShowAll();
+				// ((Gtk.Window)winuiWndow).Show();
+				//winuiWndow.NativeWindow.Show();
 			}
 		}
 	}

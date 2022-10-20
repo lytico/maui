@@ -6,13 +6,11 @@ using Microsoft.Extensions.Logging;
 using PlatformView = UIKit.IUIApplicationDelegate;
 #elif MONOANDROID
 using PlatformView = Android.App.Application;
-#elif WINDOWS
-#if __GTK__
+#elif WINDOWS && __GTK__
 using PlatformView = Microsoft.Maui.MauiGTKApplication;
-#else
+#elif WINDOWS && !__GTK__
 using PlatformView = Microsoft.UI.Xaml.Application;
-#endif
-#elif TIZEN
+#elif TIZEN      
 using PlatformView = Tizen.Applications.CoreApplication;
 #endif
 
@@ -50,9 +48,30 @@ namespace Microsoft.Maui.Handlers
 		ILogger? Logger =>
 			_logger ??= MauiContext?.Services.CreateLogger<ApplicationHandler>();
 
-#if !(NETSTANDARD || !PLATFORM) || __GTK__
-		protected override PlatformView CreatePlatformElement() =>
-			MauiContext?.Services.GetService<PlatformView>() ?? throw new InvalidOperationException($"MauiContext did not have a valid application.");
+		protected override PlatformView CreatePlatformElement()
+		{
+			var plat = MauiContext?.Services.GetService<PlatformView>();
+			if (plat != null)
+			{
+				return plat;
+			}
+			else
+			{
+#if !(NETSTANDARD || !PLATFORM)
+				var rawPlat = IPlatformApplication.Current;
+				if (rawPlat != null)
+				{
+					return (PlatformView)rawPlat;
+				}
+#else
+				var rawPlat = MauiGTKApplication.CurrentApp;
+				if (rawPlat != null)
+				{
+					return (PlatformView)rawPlat;
+				}
 #endif
+			}
+			throw new InvalidOperationException($"MauiContext did not have a valid application.");
+		}
 	}
 }

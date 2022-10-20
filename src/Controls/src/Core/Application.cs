@@ -53,10 +53,6 @@ namespace Microsoft.Maui.Controls
 			_platformConfigurationRegistry = new Lazy<PlatformConfigurationRegistry<Application>>(() => new PlatformConfigurationRegistry<Application>(this));
 
 			_lastAppTheme = PlatformAppTheme;
-
-#if __GTK__
-			ActivateGTKApp(this);
-#endif
 		}
 
 		/// <include file="../../docs/Microsoft.Maui.Controls/Application.xml" path="//Member[@MemberName='Quit']/Docs" />

@@ -11,5 +11,9 @@
 		/// Gets the Parent of the Element.
 		/// </summary>
 		IElement? Parent { get; }
+
+#if __GTK__
+		void PopulateNativeElement(object nativeElement, IMauiContext element);
+#endif
 	}
 }

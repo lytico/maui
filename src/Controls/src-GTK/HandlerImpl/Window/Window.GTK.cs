@@ -7,7 +7,7 @@ namespace Microsoft.Maui.Controls
 {
 	public partial class Window
 	{
-		internal Gtk.Window NativeWindow =>
+		public Gtk.Window NativeWindow =>
 			(Handler?.PlatformView as Gtk.Window) ?? throw new InvalidOperationException("Window Handler should have a Window set.");
 	}
 }

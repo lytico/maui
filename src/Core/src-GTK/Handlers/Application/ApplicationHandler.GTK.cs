@@ -13,7 +13,7 @@ namespace Microsoft.Maui.Handlers
 
 		public static void MapOpenWindow(ApplicationHandler handler, IApplication application, object? args)
 		{
-			// handler.PlatformView?.CreatePlatformWindow(application as MauiApp);
+			handler.PlatformView?.CreatePlatformWindow(application);
 		}
 
 		public static void MapCloseWindow(ApplicationHandler handler, IApplication application, object? args)

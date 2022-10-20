@@ -7,7 +7,7 @@ using Microsoft.Maui.ApplicationModel;
 
 #if WINDOWS
 #if __GTK__
-using NativeApplication = Gtk.Application;
+using NativeApplication = Microsoft.Maui.MauiGTKApplication;
 using NativeWindow = Gtk.Window;
 #else
 using NativeApplication = Microsoft.UI.Xaml.Application;

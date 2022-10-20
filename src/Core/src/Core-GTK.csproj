@@ -176,7 +176,6 @@
     <Compile Include="..\src-GTK\Platform\GTK\TimePicker.cs" Link="Platform\GTK\TimePicker.cs" />
     <Compile Include="..\src-GTK\Platform\GTK\ViewExtensions.cs" Link="Platform\GTK\ViewExtensions.cs" />
     <Compile Include="..\src-GTK\Platform\GTK\WidgetExtensions.cs" Link="Platform\GTK\WidgetExtensions.cs" />
-    <Compile Include="..\src-GTK\Platform\GTK\WindowRootView.cs" Link="Platform\GTK\WindowRootView.cs" />
     <Compile Include="..\src-GTK\Platform\GTK\WindowRootViewContainer.cs" Link="Platform\GTK\WindowRootViewContainer.cs" />
     <Compile Include="..\src-GTK\VisualDiagnostics\VisualDiagnosticsOverlay.GTK.cs" Link="VisualDiagnostics\VisualDiagnosticsOverlay.GTK.cs" />
     <Compile Include="..\src-GTK\WindowOverlay\WindowOverlay.GTK.cs" Link="WindowOverlay\WindowOverlay.GTK.cs" />

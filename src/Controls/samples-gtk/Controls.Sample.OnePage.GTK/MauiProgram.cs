@@ -4,7 +4,7 @@ using Microsoft.Maui.Controls.Hosting;
 using Microsoft.Maui.Controls.PlatformConfiguration;
 using Microsoft.Maui.Hosting;
 
-namespace Maui.Controls.Sample
+namespace Maui.Controls.Sample.OnePage.GTK
 {
 	public static class MauiProgram
 	{

@@ -237,6 +237,12 @@ namespace Microsoft.Maui.Controls.Xaml
 			if (resourceId == null)
 				return LegacyGetXamlForType(type);
 
+#if __GTK__
+			var AssemblyName = assembly.GetName();
+			var ResourcePath = XamlResourceIdAttribute.GetPathForType(type);
+			resourceId = AssemblyName.Name + "." + resourceId;
+#endif
+
 			using (var stream = assembly.GetManifestResourceStream(resourceId))
 			{
 				if (stream != null)

@@ -11,6 +11,15 @@ namespace Microsoft.Maui
 	{
 		protected abstract MauiApp CreateMauiApp();
 
+#if NETSTANDARD2_0     
+		/// <summary>                  
+		/// Gets the current IPlatformApplication.
+		/// This must be set in each implementation manually, as we can't
+		/// have a true static be used in the implementation.
+		/// </summary>
+		public static MauiGTKApplication? CurrentApp { get; set; }
+#endif
+
 		public void Main(string[] args)
 		{
 			//// Windows running on a different thread will "launch" the app again
@@ -24,7 +33,12 @@ namespace Microsoft.Maui
 			//Current = new IApplication();
 			Gtk.Application.Init();
 
-			//IPlatformApplication.Current = this;
+#if NETSTANDARD2_0
+			CurrentApp = this;
+#else
+			IPlatformApplication.Current = this;
+#endif
+
 			var mauiApp = CreateMauiApp();
 
 			var rootContext = new MauiContext(mauiApp.Services);
@@ -42,7 +56,7 @@ namespace Microsoft.Maui
 
 			// Application = Services.GetRequiredService<IApplication>();
 
-			// this.SetApplicationHandler(Application, applicationContext);
+			this.SetApplicationHandler(Application, applicationContext);
 
 			this.CreatePlatformWindow(Application);
 			// this.CreatePlatformWindow(this);

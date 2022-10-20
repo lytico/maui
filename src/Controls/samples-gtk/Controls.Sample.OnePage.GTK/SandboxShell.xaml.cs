@@ -5,7 +5,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Maui;
 using Microsoft.Maui.Controls;
 
-namespace Maui.Controls.Sample
+namespace Maui.Controls.Sample.OnePage.GTK
 {
 	public partial class SandboxShell : Shell
 	{
