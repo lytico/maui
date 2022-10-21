@@ -14,6 +14,11 @@ namespace Microsoft.Maui.Platform
 			Add(_fixed);
 		}
 
+		public void AddChild(Widget widget)
+		{
+			_fixed.Add(widget);
+		}
+
 		protected override bool OnExposeEvent(EventExpose evnt)
 		{
 			using (var cr = CairoHelper.Create(GdkWindow))

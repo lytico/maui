@@ -4,15 +4,21 @@ namespace Microsoft.Maui.Platform
 {
 	public partial class NavigationRootManager
 	{
-		Gtk.Window _platformWindow;
-		MauiGTKWindow _rootView;
+		IMauiContext _mauiContext;
+		MauiGTKWindow? _rootView;
 		//bool _disconnected = true;
 		bool _isActiveRootManager;
 
-		public NavigationRootManager(Gtk.Window platformWindow)
+		// TODO MAUI: temporary event to alert when rootview is ready
+		// handlers and various bits use this to start interacting with rootview
+		internal event EventHandler? RootViewChanged;
+
+		public MauiGTKWindow? RootView => _rootView;
+
+		public NavigationRootManager(IMauiContext mauiContext)
 		{
-			_platformWindow = platformWindow;
-			_rootView = new MauiGTKWindow("My Maui GTK Window");
+			_mauiContext = mauiContext;
+			// _rootView = new MauiGTKWindow("My Maui GTK Window");
 			//_rootView.BackRequested += OnBackRequested;
 			//_rootView.OnApplyTemplateFinished += OnApplyTemplateFinished;
 			//_rootView.OnAppTitleBarChanged += OnAppTitleBarChanged;
@@ -49,57 +55,18 @@ namespace Microsoft.Maui.Platform
 			//}
 		}
 
-		public Gtk.Window RootView => _rootView;
-
-		public virtual void Connect(IView platformView)
+		public virtual void Connect(IWindow window)
 		{
-			if (_rootView != null)
-			{
-				// We need to make sure to clear out the root view content 
-				// before creating the new view.
-				// Otherwise the new view might try to act on the old content.
-				// It might have code in the handler that retrieves this class.
-				_rootView = null!;
-			}
+			ClearPlatformParts();
 
-			if (platformView is MauiGTKWindow gw)
-			{
-				_rootView = gw;
-			}
+			var rootNavigationView = new RootNavigationView();
+			var containerView = window.ToContainerView();
 
-			//if (IView is Microsoft.Maui.Controls.ContentPage)
-			//{
+			_rootView = containerView;
 
-			//}
+			//SetContentView(containerView);
 
-			//NavigationView rootNavigationView;
-			//if (platformView is NavigationView nv)
-			//{
-			//	rootNavigationView = nv;
-			//	_rootView.Content = platformView;
-			//}
-			//else
-			//{
-			//	if (_rootView.Content is RootNavigationView navView)
-			//	{
-			//		rootNavigationView = navView;
-			//	}
-			//	else
-			//	{
-			//		rootNavigationView = new RootNavigationView();
-			//	}
-
-			//	rootNavigationView.Content = platformView;
-			//	_rootView.Content = rootNavigationView;
-			//}
-
-			//if (_disconnected)
-			//{
-			//	_isActiveRootManager = true;
-			//	_platformWindow.Activated += OnWindowActivated;
-			//}
-
-			//_disconnected = false;
+			RootViewChanged?.Invoke(this, EventArgs.Empty);
 		}
 
 		public virtual void Disconnect()
@@ -107,6 +74,11 @@ namespace Microsoft.Maui.Platform
 			//_platformWindow.Activated -= OnWindowActivated;
 			//_rootView.Content = null;
 			//_disconnected = true;
+		}
+
+		void ClearPlatformParts()
+		{
+			_rootView = null;
 		}
 
 		internal void UpdateAppTitleBar(bool isActive)
@@ -187,6 +159,19 @@ namespace Microsoft.Maui.Platform
 		//	{
 		//		_rootView.AppTitle.Foreground = defaultForegroundBrush;
 		//		SetWindowTitle(_platformWindow.GetWindow()?.Title);
+		//	}
+		//}
+
+		//void SetContentView(MauiView? view)
+		//{
+		//	if (view != null)
+		//	{
+		//		_viewFragment = new ViewFragment(view);
+		//		FragmentManager
+		//			.BeginTransaction()
+		//			.Replace(Resource.Id.navigationlayout_content, _viewFragment)
+		//			.SetReorderingAllowed(true)
+		//			.Commit();
 		//	}
 		//}
 	}

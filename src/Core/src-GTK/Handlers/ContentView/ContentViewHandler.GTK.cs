@@ -31,15 +31,18 @@ namespace Microsoft.Maui.Handlers
 
 		static void UpdateContent(IContentViewHandler handler)
 		{
-			//_ = handler.PlatformView ?? throw new InvalidOperationException($"{nameof(PlatformView)} should have been set by base class.");
-			//_ = handler.MauiContext ?? throw new InvalidOperationException($"{nameof(MauiContext)} should have been set by base class.");
-			//_ = handler.VirtualView ?? throw new InvalidOperationException($"{nameof(VirtualView)} should have been set by base class.");
+			_ = handler.PlatformView ?? throw new InvalidOperationException($"{nameof(PlatformView)} should have been set by base class.");
+			_ = handler.MauiContext ?? throw new InvalidOperationException($"{nameof(MauiContext)} should have been set by base class.");
+			_ = handler.VirtualView ?? throw new InvalidOperationException($"{nameof(VirtualView)} should have been set by base class.");
 
-			//handler.PlatformView.RemoveAllViews();
+			// handler.PlatformView.RemoveAllViews();
 
-			//if (handler.VirtualView.PresentedContent is IView view)
+			if (handler.VirtualView.PresentedContent is IView view)
+				handler.PlatformView.AddChild(view.ToPlatform(handler.MauiContext));
+
 			//	handler.PlatformView.AddView(view.ToPlatform(handler.MauiContext));
 		}
+
 
 		public static void MapContent(IContentViewHandler handler, IContentView page)
 		{

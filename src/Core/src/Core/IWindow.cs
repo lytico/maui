@@ -82,9 +82,5 @@ namespace Microsoft.Maui
 		void DisplayDensityChanged(float displayDensity);
 
 		float RequestDisplayDensity();
-
-#if __GTK__
-		Gtk.Window NativeWindow {  get; }
-#endif
 	}
 }

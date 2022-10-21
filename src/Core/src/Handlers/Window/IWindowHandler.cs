@@ -2,13 +2,11 @@
 using PlatformView = UIKit.UIWindow;
 #elif MONOANDROID
 using PlatformView = Android.App.Activity;
-#elif WINDOWS
-#if __GTK__
+#elif WINDOWS && __GTK__
 using PlatformView = Gtk.Window;
-#else
+#elif WINDOWS && !__GTK__
 using PlatformView = Microsoft.UI.Xaml.Window;
-#endif
-#elif TIZEN
+#elif TIZEN      
 using PlatformView = ElmSharp.Window;
 #elif (NETSTANDARD || !PLATFORM) || (NET6_0_OR_GREATER && !IOS && !ANDROID && !TIZEN)
 using PlatformView = System.Object;
@@ -19,6 +17,10 @@ namespace Microsoft.Maui.Handlers
 	public partial interface IWindowHandler : IElementHandler
 	{
 		new IWindow VirtualView { get; }
+#if WINDOWS && __GTK__
+		new PlatformView PlatformView { get; set; }
+#else
 		new PlatformView PlatformView { get; }
+#endif
 	}
 }

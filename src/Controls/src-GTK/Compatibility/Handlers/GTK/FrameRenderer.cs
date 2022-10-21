@@ -328,6 +328,10 @@ namespace Microsoft.Maui.Controls.Handlers.Compatibility
 		void IElementHandler.SetMauiContext(IMauiContext mauiContext) =>
 			_mauiContext = mauiContext;
 
+#if __GTK__
+		void IElementHandler.ClearVirtualView() { }
+#endif
+
 		void IElementHandler.SetVirtualView(Maui.IElement view) =>
 			_viewHandlerWrapper.SetVirtualView(view, OnElementChanged, false);
 

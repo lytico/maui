@@ -100,7 +100,7 @@ namespace Microsoft.Maui.Handlers
 			if (handler.PlatformView == null || handler.MauiContext == null)
 				return;
 
-			UpdateInsetView(scrollView, handler);
+			UpdateContentPanel(scrollView, handler);
 		}
 
 		public static void MapHorizontalScrollBarVisibility(IScrollViewHandler handler, IScrollView scrollView)
@@ -138,6 +138,69 @@ namespace Microsoft.Maui.Handlers
 			//handler.PlatformView.ScrollTo(horizontalOffsetDevice, verticalOffsetDevice,
 			//	request.Instant, () => handler.VirtualView.ScrollFinished());
 		}
+
+		static Gtk.ScrolledWindow? GetContentPanel(MauiView scrollViewer)
+		{
+			if (scrollViewer.Child is Gtk.ScrolledWindow contentPanel)
+			{
+				//if (contentPanel.Tag is string tag && tag == ContentPanelTag)
+				//{
+					return contentPanel;
+				//}
+			}
+
+			return null;
+		}
+
+		static void UpdateContentPanel(IScrollView scrollView, IScrollViewHandler handler)
+		{
+			if (scrollView.PresentedContent == null || handler.MauiContext == null)
+			{
+				return;
+			}
+
+			var scrollViewer = handler.PlatformView;
+			var nativeContent = scrollView.PresentedContent.ToPlatform(handler.MauiContext);
+
+			if (GetContentPanel(scrollViewer) is Gtk.ScrolledWindow currentPaddingLayer)
+			{
+				if (currentPaddingLayer.Children.Length == 0 || currentPaddingLayer.Children[0] != nativeContent)
+				{
+					// currentPaddingLayer.Children.R();
+					currentPaddingLayer.Add(nativeContent);
+
+				}
+			}
+			else
+			{
+				InsertContentPanel(scrollViewer, scrollView, nativeContent);
+			}
+		}
+
+		static void InsertContentPanel(MauiView scrollViewer, IScrollView scrollView, Gtk.Widget nativeContent)
+		{
+			if (scrollView.PresentedContent == null)
+			{
+				return;
+			}
+
+			//var paddingShim = new ContentPanel()
+			//{
+			//	CrossPlatformMeasure = IncludeScrollViewInsets(scrollView.CrossPlatformMeasure, scrollView),
+			//	CrossPlatformArrange = scrollView.CrossPlatformArrange,
+			//	Tag = ContentPanelTag
+			//};
+
+			if (scrollViewer.Child is Gtk.ScrolledWindow scroller)
+			{
+				scroller.Add(nativeContent);
+			}
+
+			//scrollViewer.Content = null;
+			//// paddingShim.Children.Add(nativeContent);
+			//scrollViewer.Content = paddingShim;
+		}
+
 
 		//static ContentViewGroup? FindInsetPanel(IScrollViewHandler handler)
 		//{

@@ -18,7 +18,7 @@ namespace Microsoft.Maui.Platform
 
 			if (registerNewNavigationRoot)
 			{
-				scopedContext.AddWeakSpecific(new NavigationRootManager(scopedContext.GetPlatformWindow()));
+				scopedContext.AddWeakSpecific(new NavigationRootManager(scopedContext));
 			}
 
 			return scopedContext;

@@ -22,5 +22,13 @@ namespace Microsoft.Maui
 		//		}
 		//	}
 		//}
+
+		public void RemovePage(Gtk.Window previousRootView)
+		{
+		}
+
+		public void AddPage(Gtk.Window RootView)
+		{
+		}
 	}
 }

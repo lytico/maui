@@ -63,10 +63,10 @@ namespace Microsoft.Maui
 
 			scopedContext.AddWeakSpecific(platformWindow);
 
-#if ANDROID
+#if ANDROID || (WINDOWS && __GTK__)
 			scopedContext.AddSpecific(new NavigationRootManager(scopedContext));
 #endif
-#if WINDOWS
+#if WINDOWS && !__GTK__
 			scopedContext.AddSpecific(new NavigationRootManager(platformWindow));
 #endif
 

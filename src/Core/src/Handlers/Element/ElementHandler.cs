@@ -35,6 +35,13 @@ namespace Microsoft.Maui.Handlers
 		public virtual void SetMauiContext(IMauiContext mauiContext) =>
 			MauiContext = mauiContext;
 
+#if __GTK__
+		public void ClearVirtualView()
+		{
+			VirtualView = null;
+		}
+#endif
+
 		public virtual void SetVirtualView(IElement view)
 		{
 			_ = view ?? throw new ArgumentNullException(nameof(view));
