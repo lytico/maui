@@ -58,7 +58,9 @@ namespace Microsoft.Maui.Handlers
 			handler.UpdateValue(nameof(handler.ContainerView));
 			handler.ToPlatform()?.UpdateBackground(layout);
 #endif
+#if !__GTK__
 			((PlatformView?)handler.PlatformView)?.UpdateBackground(layout);
+#endif
 		}
 
 		public static void MapClipsToBounds(ILayoutHandler handler, ILayout layout)

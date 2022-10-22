@@ -88,7 +88,7 @@ namespace Microsoft.Maui.Handlers
 
 		public static void MapFont(ILabelHandler handler, ILabel label)
 		{
-			var fontManager = handler.GetRequiredService<IFontManager>();
+			// var fontManager = handler.GetRequiredService<IFontManager>();
 
 			//handler.PlatformView?.UpdateFont(label, fontManager);
 		}

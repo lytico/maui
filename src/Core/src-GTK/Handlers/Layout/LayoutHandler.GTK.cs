@@ -1,8 +1,9 @@
 using System;
+using Gtk;
 
 namespace Microsoft.Maui.Handlers
 {
-	public partial class LayoutHandler : ViewHandler<ILayout, LayoutViewGroup>
+	public partial class LayoutHandler : ViewBoxHandler<ILayout, LayoutViewGroup>
 	{
 		protected override LayoutViewGroup CreatePlatformView()
 		{
@@ -26,10 +27,10 @@ namespace Microsoft.Maui.Handlers
 
 			// PlatformView.RemoveAllViews();
 
-			//foreach (var child in VirtualView.OrderByZIndex())
-			//{
-			//	PlatformView.AddView(child.ToPlatform(MauiContext));
-			//}
+			foreach (var child in VirtualView.OrderByZIndex())
+			{
+				PlatformView.PackStart(child.ToPlatform(MauiContext));
+			}
 		}
 
 		public void Add(IView child)
@@ -39,7 +40,8 @@ namespace Microsoft.Maui.Handlers
 			_ = MauiContext ?? throw new InvalidOperationException($"{nameof(MauiContext)} should have been set by base class.");
 
 			//var targetIndex = VirtualView.GetLayoutHandlerIndex(child);
-			//PlatformView.AddView(child.ToPlatform(MauiContext), targetIndex);
+			//PlatformView.Add(child.ToPlatform(MauiContext), targetIndex);
+			PlatformView.PackStart(child.ToPlatform(MauiContext));
 		}
 
 		public void Remove(IView child)
@@ -47,10 +49,10 @@ namespace Microsoft.Maui.Handlers
 			_ = PlatformView ?? throw new InvalidOperationException($"{nameof(PlatformView)} should have been set by base class.");
 			_ = VirtualView ?? throw new InvalidOperationException($"{nameof(VirtualView)} should have been set by base class.");
 
-			//if (child?.ToPlatform() is View view)
-			//{
-			//	PlatformView.RemoveView(view);
-			//}
+			if (child?.ToPlatform() is MauiView view)
+			{
+				PlatformView.Remove(view);
+			}
 		}
 
 		void Clear(LayoutViewGroup platformView)
@@ -71,6 +73,7 @@ namespace Microsoft.Maui.Handlers
 
 			//var targetIndex = VirtualView.GetLayoutHandlerIndex(child);
 			//PlatformView.AddView(child.ToPlatform(MauiContext), targetIndex);
+			PlatformView.PackStart(child.ToPlatform(MauiContext));
 		}
 
 		public void Update(int index, IView child)

@@ -115,6 +115,7 @@
     <Compile Include="..\src-GTK\Handlers\ImageButton\ImageButtonHandler.GTK.cs" Link="Handlers\ImageButton\ImageButtonHandler.GTK.cs" />
     <Compile Include="..\src-GTK\Handlers\Image\ImageHandler.GTK.cs" Link="Handlers\Image\ImageHandler.GTK.cs" />
     <Compile Include="..\src-GTK\Handlers\IndicatorView\IndicatorViewHandler.GTK.cs" Link="Handlers\IndicatorView\IndicatorViewHandler.GTK.cs" />
+    <Compile Include="..\src-GTK\Handlers\IViewBoxHandler.GTK.cs" Link="Handlers\IViewBoxHandler.GTK.cs" />
     <Compile Include="..\src-GTK\Handlers\IViewHandler.GTK.cs" Link="Handlers\IViewHandler.GTK.cs" />
     <Compile Include="..\src-GTK\Handlers\Label\LabelHandler.GTK.cs" Link="Handlers\Label\LabelHandler.GTK.cs" />
     <Compile Include="..\src-GTK\Handlers\Layout\LayoutHandler.GTK.cs" Link="Handlers\Layout\LayoutHandler.GTK.cs" />
@@ -132,6 +133,9 @@
     <Compile Include="..\src-GTK\Handlers\Switch\SwitchHandler.GTK.cs" Link="Handlers\Switch\SwitchHandler.GTK.cs" />
     <Compile Include="..\src-GTK\Handlers\TimePicker\TimePickerHandler.GTK.cs" Link="Handlers\TimePicker\TimePickerHandler.GTK.cs" />
     <Compile Include="..\src-GTK\Handlers\ViewHandlerExtensions.GTK.cs" Link="Handlers\ViewHandlerExtensions.GTK.cs" />
+    <Compile Include="..\src-GTK\Handlers\View\ViewBoxHandler.cs" Link="Handlers\View\ViewBoxHandler.cs" />
+    <Compile Include="..\src-GTK\Handlers\View\ViewBoxHandlerOfT.cs" Link="Handlers\View\ViewBoxHandlerOfT.cs" />
+    <Compile Include="..\src-GTK\Handlers\View\ViewBoxHandlerOfT.GTK.cs" Link="Handlers\View\ViewBoxHandlerOfT.GTK.cs" />
     <Compile Include="..\src-GTK\Handlers\View\ViewHandler.GTK.cs" Link="Handlers\View\ViewHandler.GTK.cs" />
     <Compile Include="..\src-GTK\Handlers\View\ViewHandlerOfT.GTK.cs" Link="Handlers\View\ViewHandlerOfT.GTK.cs" />
     <Compile Include="..\src-GTK\Handlers\Window\WindowHandler.GTK.cs" Link="Handlers\Window\WindowHandler.GTK.cs" />
