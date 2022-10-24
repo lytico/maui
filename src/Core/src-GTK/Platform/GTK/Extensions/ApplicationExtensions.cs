@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Runtime.Versioning;
+using Gtk;
 using Microsoft.Extensions.Logging;
 using Microsoft.Maui.Handlers;
 using Microsoft.Maui.Hosting;
@@ -15,6 +16,7 @@ namespace Microsoft.Maui.Platform
 				return;
 
 			var winuiWndow = new MauiGTKWindow("My first GTK# Application! ");
+			winuiWndow.Resize(500, 600);
 
 			var mauiContext = applicationContext!.MakeWindowScope(winuiWndow, out var windowScope);
 

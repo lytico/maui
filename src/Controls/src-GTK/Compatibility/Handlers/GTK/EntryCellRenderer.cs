@@ -6,7 +6,7 @@ namespace Microsoft.Maui.Controls.Handlers.Compatibility
 	{
 		EntryCellView _view;
 
-		protected override MauiView GetCellCore(Cell item, MauiView parent)
+		protected override System.Object GetCellCore(Cell item, System.Object parent)
 		{
 			//if ((_view = convertView as EntryCellView) == null)
 				_view = new EntryCellView(item);

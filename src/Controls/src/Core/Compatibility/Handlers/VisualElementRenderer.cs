@@ -9,7 +9,7 @@ using Microsoft.Maui.Controls.Platform;
 using Microsoft.Maui.Graphics;
 #if WINDOWS
 #if __GTK__
-using PlatformView = Microsoft.Maui.Platform.MauiView;
+using PlatformView = System.Object;
 #else
 using PlatformView = Microsoft.UI.Xaml.FrameworkElement;
 #endif

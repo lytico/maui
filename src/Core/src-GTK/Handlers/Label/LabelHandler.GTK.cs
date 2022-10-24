@@ -52,6 +52,17 @@ namespace Microsoft.Maui.Handlers
 		{
 			//handler.PlatformView?.UpdateTextPlainText(label);
 
+			if (handler.PlatformView is Gtk.EventBox handlerBox)
+			{
+				if (handlerBox.Children.Length > 0)
+				{
+					if (handlerBox.Children[0] is Gtk.Label childLabel)
+					{
+						childLabel.Text = label.Text;
+					}
+				}
+			}
+
 			// Any text update requires that we update any attributed string formatting
 			MapFormatting(handler, label);
 		}

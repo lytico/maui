@@ -4,7 +4,7 @@ namespace Microsoft.Maui.Controls.Handlers.Compatibility
 {
 	public class ImageCellRenderer : TextCellRenderer
 	{
-		protected override MauiView GetCellCore(Cell item, MauiView parent)
+		protected override System.Object GetCellCore(Cell item, System.Object parent)
 		{
 			var result = (BaseCellView)base.GetCellCore(item, parent);
 

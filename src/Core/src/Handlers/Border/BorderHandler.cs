@@ -108,12 +108,12 @@ namespace Microsoft.Maui.Handlers
 			((PlatformView?)handler.PlatformView)?.UpdateStrokeMiterLimit(border);
 		}
 
-		private protected override void OnConnectHandler(MauiView platformView)
-		{
-		}
+		//private protected override void OnConnectHandler(MauiView platformView)
+		//{
+		//}
 
-		private protected override void OnDisconnectHandler(MauiView platformView)
-		{
-		}
+		//private protected override void OnDisconnectHandler(MauiView platformView)
+		//{
+		//}
 	}
 }

@@ -76,6 +76,7 @@
     <Compile Remove="Handlers\SwipeItemView\SwipeItemViewHandler.cs" />
     <Compile Remove="Handlers\SwipeView\SwipeViewHandler.cs" />
     <Compile Remove="Handlers\Toolbar\ToolbarHandler.cs" />
+    <Compile Remove="Handlers\View\ViewHandler.cs" />
     <Compile Remove="Handlers\WebView\WebViewHandler.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -133,9 +134,7 @@
     <Compile Include="..\src-GTK\Handlers\Switch\SwitchHandler.GTK.cs" Link="Handlers\Switch\SwitchHandler.GTK.cs" />
     <Compile Include="..\src-GTK\Handlers\TimePicker\TimePickerHandler.GTK.cs" Link="Handlers\TimePicker\TimePickerHandler.GTK.cs" />
     <Compile Include="..\src-GTK\Handlers\ViewHandlerExtensions.GTK.cs" Link="Handlers\ViewHandlerExtensions.GTK.cs" />
-    <Compile Include="..\src-GTK\Handlers\View\ViewBoxHandler.cs" Link="Handlers\View\ViewBoxHandler.cs" />
-    <Compile Include="..\src-GTK\Handlers\View\ViewBoxHandlerOfT.cs" Link="Handlers\View\ViewBoxHandlerOfT.cs" />
-    <Compile Include="..\src-GTK\Handlers\View\ViewBoxHandlerOfT.GTK.cs" Link="Handlers\View\ViewBoxHandlerOfT.GTK.cs" />
+    <Compile Include="..\src-GTK\Handlers\View\ViewHandler-BASE-GTK.cs" Link="Handlers\View\ViewHandler-BASE-GTK.cs" />
     <Compile Include="..\src-GTK\Handlers\View\ViewHandler.GTK.cs" Link="Handlers\View\ViewHandler.GTK.cs" />
     <Compile Include="..\src-GTK\Handlers\View\ViewHandlerOfT.GTK.cs" Link="Handlers\View\ViewHandlerOfT.GTK.cs" />
     <Compile Include="..\src-GTK\Handlers\Window\WindowHandler.GTK.cs" Link="Handlers\Window\WindowHandler.GTK.cs" />

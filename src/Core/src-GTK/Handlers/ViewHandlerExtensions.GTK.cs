@@ -1,7 +1,7 @@
 ﻿using System;
 using Microsoft.Maui.Graphics;
 using Microsoft.Maui.Platform;
-using PlatformView = Microsoft.Maui.Platform.MauiView;
+using PlatformView = System.Object;
 
 namespace Microsoft.Maui
 {

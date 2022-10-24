@@ -69,6 +69,14 @@ namespace Microsoft.Maui.Handlers
 				throw new InvalidOperationException($"Unable to convert {window} to {typeof(Gtk.Window)}");
 			}
 			rootManager.Connect(window);
+
+			if (rootManager.RootView is Gtk.Window rootWin)
+			{
+				if (handlerWin.PlatformView is ContentViewGroup viewGroup)
+				{
+					rootWin.Add(viewGroup.GetView());
+				}
+			}
 			return rootManager.RootView;
 
 			//var winuiWindow = new Gtk.Fixed();

@@ -5,7 +5,7 @@ using PlatformView = Microsoft.Maui.Platform.LayoutView;
 using PlatformView = Microsoft.Maui.Platform.LayoutViewGroup;
 #elif WINDOWS
 #if __GTK__
-using PlatformView = Microsoft.Maui.Platform.LayoutViewGroup;
+using PlatformView = System.Object;
 #else
 using PlatformView = Microsoft.Maui.Platform.LayoutPanel;
 #endif
@@ -65,7 +65,7 @@ namespace Microsoft.Maui.Handlers
 
 		public static void MapClipsToBounds(ILayoutHandler handler, ILayout layout)
 		{
-			((PlatformView?)handler.PlatformView)?.UpdateClipsToBounds(layout);
+			//((PlatformView?)handler.PlatformView)?.UpdateClipsToBounds(layout);
 		}
 
 		public static void MapAdd(ILayoutHandler handler, ILayout layout, object? arg)

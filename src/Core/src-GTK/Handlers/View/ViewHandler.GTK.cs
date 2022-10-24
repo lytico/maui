@@ -1,27 +1,27 @@
 ﻿#nullable enable
 using System;
-using PlatformView = Microsoft.Maui.Platform.MauiView;
+using PlatformView = System.Object;
 
 namespace Microsoft.Maui.Handlers
 {
 	public partial class ViewHandler
 	{
-		partial void ConnectingHandler(PlatformView? platformView)
-		{
-			//if (platformView != null)
-			//{
-			//	platformView.GotFocus += OnPlatformViewGotFocus;
-			//	platformView.LostFocus += OnPlatformViewLostFocus;
-			//}
-		}
+		//partial void ConnectingHandler(PlatformView? platformView)
+		//{
+		//	//if (platformView != null)
+		//	//{
+		//	//	platformView.GotFocus += OnPlatformViewGotFocus;
+		//	//	platformView.LostFocus += OnPlatformViewLostFocus;
+		//	//}
+		//}
 
-		partial void DisconnectingHandler(PlatformView platformView)
-		{
-			UpdateIsFocused(false);
+		//partial void DisconnectingHandler(PlatformView platformView)
+		//{
+		//	UpdateIsFocused(false);
 
-			//platformView.GotFocus -= OnPlatformViewGotFocus;
-			//platformView.LostFocus -= OnPlatformViewLostFocus;
-		}
+		//	//platformView.GotFocus -= OnPlatformViewGotFocus;
+		//	//platformView.LostFocus -= OnPlatformViewLostFocus;
+		//}
 
 		static partial void MappingFrame(IViewHandler handler, IView view)
 		{

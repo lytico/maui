@@ -3,32 +3,39 @@ using Gtk;
 
 namespace Microsoft.Maui.Platform
 {
-	public class ContentViewGroup : MauiView
+	public class ContentViewGroup : System.Object
 	{
-		Fixed _fixed;
+		EventBox _box;
 		IBorderStroke? _clip;
 
 		public ContentViewGroup()
 		{
-			_fixed = new Fixed();
-			Add(_fixed);
+			_box = new EventBox();
+			//Add(_fixed);
 		}
 
-		public void AddChild(Widget widget)
+		public void AddChild(System.Object widget)
 		{
-			_fixed.Add(widget);
+			_box.Add((Gtk.Widget)widget);
+			//_box.Put((Gtk.Widget)widget, 0, 0);
+			//_fixed.Add((Gtk.Widget)widget);
 		}
 
-		protected override bool OnExposeEvent(EventExpose evnt)
+		public Gtk.EventBox GetView()
 		{
-			using (var cr = CairoHelper.Create(GdkWindow))
-			{
-				if (Clip != null)
-					ClipChild(cr);
-			}
-
-			return base.OnExposeEvent(evnt);
+			return _box;
 		}
+
+		//protected override bool OnExposeEvent(EventExpose evnt)
+		//{
+		//	using (var cr = CairoHelper.Create(GdkWindow))
+		//	{
+		//		if (Clip != null)
+		//			ClipChild(cr);
+		//	}
+
+		//	return base.OnExposeEvent(evnt);
+		//}
 
 		internal IBorderStroke? Clip
 		{
@@ -39,23 +46,23 @@ namespace Microsoft.Maui.Platform
 			}
 		}
 
-		void ClipChild(Cairo.Context? cr)
-		{
-			if (Clip == null || cr == null)
-				return;
+		//void ClipChild(Cairo.Context? cr)
+		//{
+		//	if (Clip == null || cr == null)
+		//		return;
 
-			float strokeThickness = (float)Clip.StrokeThickness;
-			float offset = strokeThickness / 2;
-			float w = Allocation.Width - strokeThickness;
-			float h = Allocation.Height - strokeThickness;
+		//	float strokeThickness = (float)Clip.StrokeThickness;
+		//	float offset = strokeThickness / 2;
+		//	float w = Allocation.Width - strokeThickness;
+		//	float h = Allocation.Height - strokeThickness;
 
-			// Draw Background
-			cr.Rectangle(offset, offset, w, h);
-			cr.FillPreserve();
+		//	// Draw Background
+		//	cr.Rectangle(offset, offset, w, h);
+		//	cr.FillPreserve();
 
-			// Draw Border
-			cr.Rectangle(offset, offset, w, h);
-			cr.StrokePreserve();
-		}
+		//	// Draw Border
+		//	cr.Rectangle(offset, offset, w, h);
+		//	cr.StrokePreserve();
+		//}
 	}
 }

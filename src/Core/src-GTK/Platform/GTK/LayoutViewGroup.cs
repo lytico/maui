@@ -3,7 +3,7 @@ using Gtk;
 
 namespace Microsoft.Maui.Platform
 {
-	public class LayoutViewGroup : VBox
+	public class LayoutViewGroup : MauiView
 	{
 		IBorderStroke? _clip;
 

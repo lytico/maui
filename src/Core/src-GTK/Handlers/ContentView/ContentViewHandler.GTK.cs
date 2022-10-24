@@ -49,20 +49,20 @@ namespace Microsoft.Maui.Handlers
 			UpdateContent(handler);
 		}
 
-		protected override void DisconnectHandler(ContentViewGroup platformView)
-		{
-			// If we're being disconnected from the xplat element, then we should no longer be managing its chidren
-			List<Gtk.Widget> childList = new List<Gtk.Widget>();
-			foreach (var child in platformView.Children)
-			{
-				childList.Add(child);
-			}
-			foreach (var child in childList)
-			{
-				platformView.Children.Remove(child);
-			}
+		//protected override void DisconnectHandler(ContentViewGroup platformView)
+		//{
+		//	// If we're being disconnected from the xplat element, then we should no longer be managing its chidren
+		//	List<Gtk.Widget> childList = new List<Gtk.Widget>();
+		//	foreach (var child in platformView.Children)
+		//	{
+		//		childList.Add(child);
+		//	}
+		//	foreach (var child in childList)
+		//	{
+		//		platformView.Children.Remove(child);
+		//	}
 
-			base.DisconnectHandler(platformView);
-		}
+		//	base.DisconnectHandler(platformView);
+		//}
 	}
 }

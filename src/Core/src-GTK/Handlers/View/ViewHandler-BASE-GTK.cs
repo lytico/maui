@@ -133,7 +133,7 @@ namespace Microsoft.Maui.Handlers
 		}
 #endif
 
-#if !(NETSTANDARD || !PLATFORM) || __GTK__
+#if !(NETSTANDARD || !PLATFORM) && !__GTK__
 		private protected abstract void OnConnectHandler(PlatformView platformView);
 
 		partial void ConnectingHandler(PlatformView? platformView);
@@ -157,120 +157,120 @@ namespace Microsoft.Maui.Handlers
 
 		public static void MapWidth(IViewHandler handler, IView view)
 		{
-			((PlatformView?)handler.PlatformView)?.UpdateWidth(view);
+			//((PlatformView?)handler.PlatformView)?.UpdateWidth(view);
 		}
 
 		public static void MapHeight(IViewHandler handler, IView view)
 		{
-			((PlatformView?)handler.PlatformView)?.UpdateHeight(view);
+			//((PlatformView?)handler.PlatformView)?.UpdateHeight(view);
 		}
 
 		public static void MapMinimumHeight(IViewHandler handler, IView view)
 		{
-			((PlatformView?)handler.PlatformView)?.UpdateMinimumHeight(view);
+			//((PlatformView?)handler.PlatformView)?.UpdateMinimumHeight(view);
 		}
 
 		public static void MapMaximumHeight(IViewHandler handler, IView view)
 		{
-			((PlatformView?)handler.PlatformView)?.UpdateMaximumHeight(view);
+			//((PlatformView?)handler.PlatformView)?.UpdateMaximumHeight(view);
 		}
 
 		public static void MapMinimumWidth(IViewHandler handler, IView view)
 		{
-			((PlatformView?)handler.PlatformView)?.UpdateMinimumWidth(view);
+			//((PlatformView?)handler.PlatformView)?.UpdateMinimumWidth(view);
 		}
 
 		public static void MapMaximumWidth(IViewHandler handler, IView view)
 		{
-			((PlatformView?)handler.PlatformView)?.UpdateMaximumWidth(view);
+			//((PlatformView?)handler.PlatformView)?.UpdateMaximumWidth(view);
 		}
 
 		public static void MapIsEnabled(IViewHandler handler, IView view)
 		{
-			((PlatformView?)handler.PlatformView)?.UpdateIsEnabled(view);
+			//((PlatformView?)handler.PlatformView)?.UpdateIsEnabled(view);
 		}
 
 		public static void MapVisibility(IViewHandler handler, IView view)
 		{
-			if (handler.HasContainer)
-				((PlatformView?)handler.ContainerView)?.UpdateVisibility(view);
-			else
-				((PlatformView?)handler.PlatformView)?.UpdateVisibility(view);
+			//if (handler.HasContainer)
+			//	((PlatformView?)handler.ContainerView)?.UpdateVisibility(view);
+			//else
+			//	((PlatformView?)handler.PlatformView)?.UpdateVisibility(view);
 		}
 
 		public static void MapBackground(IViewHandler handler, IView view)
 		{
-			if (handler.PlatformView is not PlatformView platformView)
-				return;
+			//if (handler.PlatformView is not PlatformView platformView)
+			//	return;
 
-			if (view.Background is ImageSourcePaint image)
-			{
-				var provider = handler.GetRequiredService<IImageSourceServiceProvider>();
+			//if (view.Background is ImageSourcePaint image)
+			//{
+			//	var provider = handler.GetRequiredService<IImageSourceServiceProvider>();
 
-				platformView.UpdateBackgroundImageSourceAsync(image.ImageSource, provider)
-					.FireAndForget(handler);
-			}
-			else
-			{
-				platformView.UpdateBackground(view);
-			}
+			//	platformView.UpdateBackgroundImageSourceAsync(image.ImageSource, provider)
+			//		.FireAndForget(handler);
+			//}
+			//else
+			//{
+			//	platformView.UpdateBackground(view);
+			//}
 		}
 
 		public static void MapFlowDirection(IViewHandler handler, IView view)
 		{
-			((PlatformView?)handler.PlatformView)?.UpdateFlowDirection(view);
+			//((PlatformView?)handler.PlatformView)?.UpdateFlowDirection(view);
 		}
 
 		public static void MapOpacity(IViewHandler handler, IView view)
 		{
-			if (handler.HasContainer)
-				((PlatformView?)handler.ContainerView)?.UpdateOpacity(view);
-			else
-				((PlatformView?)handler.PlatformView)?.UpdateOpacity(view);
+			//if (handler.HasContainer)
+			//	((PlatformView?)handler.ContainerView)?.UpdateOpacity(view);
+			//else
+			//	((PlatformView?)handler.PlatformView)?.UpdateOpacity(view);
 		}
 
 		public static void MapAutomationId(IViewHandler handler, IView view)
 		{
-			((PlatformView?)handler.PlatformView)?.UpdateAutomationId(view);
+			//((PlatformView?)handler.PlatformView)?.UpdateAutomationId(view);
 		}
 
 		public static void MapClip(IViewHandler handler, IView view)
 		{
-			var clipShape = view.Clip;
+			//var clipShape = view.Clip;
 
-			if (clipShape != null)
-			{
-				handler.HasContainer = true;
-			}
-			else
-			{
-				if (handler is ViewHandler viewHandler)
-					handler.HasContainer = viewHandler.NeedsContainer;
-			}
+			//if (clipShape != null)
+			//{
+			//	handler.HasContainer = true;
+			//}
+			//else
+			//{
+			//	if (handler is ViewHandler viewHandler)
+			//		handler.HasContainer = viewHandler.NeedsContainer;
+			//}
 
-			((PlatformView?)handler.ContainerView)?.UpdateClip(view);
+			//((PlatformView?)handler.ContainerView)?.UpdateClip(view);
 		}
 
 		public static void MapShadow(IViewHandler handler, IView view)
 		{
-			var shadow = view.Shadow;
+			//var shadow = view.Shadow;
 
-			UpdateHasContainer(handler, shadow != null);
+			//UpdateHasContainer(handler, shadow != null);
 
-			((PlatformView?)handler.ContainerView)?.UpdateShadow(view);
+			//((PlatformView?)handler.ContainerView)?.UpdateShadow(view);
 		}
 
 		static partial void MappingSemantics(IViewHandler handler, IView view);
 
 		public static void MapSemantics(IViewHandler handler, IView view)
 		{
-			MappingSemantics(handler, view);
-			((PlatformView?)handler.PlatformView)?.UpdateSemantics(view);
+			//MappingSemantics(handler, view);
+			//((PlatformView?)handler.PlatformView)?.UpdateSemantics(view);
 		}
 
 		public static void MapInvalidateMeasure(IViewHandler handler, IView view, object? args)
 		{
-			(handler.PlatformView as PlatformView)?.InvalidateMeasure(view);
+			//(handler.PlatformView as PlatformView)?.InvalidateMeasure(view);
 		}
 
 		public static void MapContainerView(IViewHandler handler, IView view)
@@ -281,19 +281,19 @@ namespace Microsoft.Maui.Handlers
 
 		public static void MapBorderView(IViewHandler handler, IView view)
 		{
-			var border = (view as IBorder)?.Border;
+			//var border = (view as IBorder)?.Border;
 
-			if (border != null)
-			{
-				handler.HasContainer = true;
-			}
-			else
-			{
-				if (handler is ViewHandler viewHandler)
-					handler.HasContainer = viewHandler.NeedsContainer;
-			}
+			//if (border != null)
+			//{
+			//	handler.HasContainer = true;
+			//}
+			//else
+			//{
+			//	if (handler is ViewHandler viewHandler)
+			//		handler.HasContainer = viewHandler.NeedsContainer;
+			//}
 
- 			((PlatformView?)handler.ContainerView)?.UpdateBorder(view);
+ 		//	((PlatformView?)handler.ContainerView)?.UpdateBorder(view);
 		}
 
 		static partial void MappingFrame(IViewHandler handler, IView view);
@@ -313,36 +313,25 @@ namespace Microsoft.Maui.Handlers
 
 		public static void MapFocus(IViewHandler handler, IView view, object? args)
 		{
-			if (args is FocusRequest request)
-			{
-				if (handler.PlatformView == null)
-				{
-					return;
-				}
+			//if (args is FocusRequest request)
+			//{
+			//	if (handler.PlatformView == null)
+			//	{
+			//		return;
+			//	}
 
-				((PlatformView?)handler.PlatformView)?.Focus(request);
-			}
+			//	((PlatformView?)handler.PlatformView)?.Focus(request);
+			//}
 		}
 
 		public static void MapInputTransparent(IViewHandler handler, IView view)
 		{
-#if ANDROID
-			var inputTransparent = view.InputTransparent;
-
-			UpdateHasContainer(handler, inputTransparent);
-
-			if (handler.ContainerView is WrapperView wrapper)
-			{
-				wrapper.InputTransparent = inputTransparent;
-			}
-#else
-			((PlatformView?)handler.PlatformView)?.UpdateInputTransparent(handler, view);
-#endif
+			// ((PlatformView?)handler.PlatformView)?.UpdateInputTransparent(handler, view);
 		}
 
 		public static void MapUnfocus(IViewHandler handler, IView view, object? args)
 		{
-			((PlatformView?)handler.PlatformView)?.Unfocus(view);
+			//((PlatformView?)handler.PlatformView)?.Unfocus(view);
 		}
 
 		static void UpdateHasContainer(IViewHandler handler, bool definitelyNeedsContainer)

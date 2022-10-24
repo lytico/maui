@@ -3,18 +3,19 @@ using Gtk;
 
 namespace Microsoft.Maui.Handlers
 {
-	public partial class LayoutHandler : ViewBoxHandler<ILayout, LayoutViewGroup>
+	public partial class LayoutHandler : ViewHandler<ILayout, Gtk.VBox>
 	{
-		protected override LayoutViewGroup CreatePlatformView()
+		protected override Gtk.VBox CreatePlatformView()
 		{
 			if (VirtualView == null)
 			{
 				throw new InvalidOperationException($"{nameof(VirtualView)} must be set to create a LayoutViewGroup");
 			}
 
-			var viewGroup = new LayoutViewGroup();
+			// var viewGroup = new LayoutViewGroup();
+			var view = new Gtk.VBox();
 
-			return viewGroup;
+			return view;
 		}
 
 		public override void SetVirtualView(IView view)
@@ -29,7 +30,7 @@ namespace Microsoft.Maui.Handlers
 
 			foreach (var child in VirtualView.OrderByZIndex())
 			{
-				PlatformView.PackStart(child.ToPlatform(MauiContext));
+				PlatformView.PackStart((Gtk.Widget)child.ToPlatform(MauiContext), true, false, 20);
 			}
 		}
 
@@ -41,7 +42,7 @@ namespace Microsoft.Maui.Handlers
 
 			//var targetIndex = VirtualView.GetLayoutHandlerIndex(child);
 			//PlatformView.Add(child.ToPlatform(MauiContext), targetIndex);
-			PlatformView.PackStart(child.ToPlatform(MauiContext));
+			//PlatformView.PackStart(child.ToPlatform(MauiContext));
 		}
 
 		public void Remove(IView child)
@@ -55,14 +56,14 @@ namespace Microsoft.Maui.Handlers
 			}
 		}
 
-		void Clear(LayoutViewGroup platformView)
+		void Clear(Gtk.VBox platformView)
 		{
 			//platformView.RemoveAllViews();
 		}
 
 		public void Clear()
 		{
-			Clear(PlatformView);
+			//Clear(PlatformView);
 		}
 
 		public void Insert(int index, IView child)
@@ -73,7 +74,7 @@ namespace Microsoft.Maui.Handlers
 
 			//var targetIndex = VirtualView.GetLayoutHandlerIndex(child);
 			//PlatformView.AddView(child.ToPlatform(MauiContext), targetIndex);
-			PlatformView.PackStart(child.ToPlatform(MauiContext));
+			//PlatformView.PackStart(child.ToPlatform(MauiContext));
 		}
 
 		public void Update(int index, IView child)
@@ -96,7 +97,7 @@ namespace Microsoft.Maui.Handlers
 			EnsureZIndexOrder(child);
 		}
 
-		protected override void DisconnectHandler(LayoutViewGroup platformView)
+		protected override void DisconnectHandler(Gtk.VBox platformView)
 		{
 			// If we're being disconnected from the xplat element, then we should no longer be managing its chidren
 			Clear(platformView);

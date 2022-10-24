@@ -9,17 +9,17 @@ namespace Microsoft.Maui.Handlers
 			return new MauiPageControl();
 		}
 
-		private protected override void OnConnectHandler(MauiView platformView)
-		{
-			base.OnConnectHandler(platformView);
-			PlatformView.SetIndicatorView(VirtualView);
-		}
+		//private protected override void OnConnectHandler(MauiView platformView)
+		//{
+		//	base.OnConnectHandler(platformView);
+		//	PlatformView.SetIndicatorView(VirtualView);
+		//}
 
-		private protected override void OnDisconnectHandler(MauiView platformView)
-		{
-			base.OnDisconnectHandler(platformView);
-			PlatformView.SetIndicatorView(null);
-		}
+		//private protected override void OnDisconnectHandler(MauiView platformView)
+		//{
+		//	base.OnDisconnectHandler(platformView);
+		//	PlatformView.SetIndicatorView(null);
+		//}
 
 		public static void MapCount(IIndicatorViewHandler handler, IIndicatorView indicator)
 		{

@@ -7,7 +7,7 @@ namespace Microsoft.Maui.Controls.Handlers.Compatibility
 		SwitchCellView _view;
 		//Drawable _defaultTrackDrawable;
 
-		protected override MauiView GetCellCore(Cell item, MauiView parent)
+		protected override System.Object GetCellCore(Cell item, System.Object parent)
 		{
 			var cell = (SwitchCell)Cell;
 

@@ -6,13 +6,13 @@ using Microsoft.Maui.Graphics;
 
 namespace Microsoft.Maui.Controls.Handlers.Compatibility
 {
-	public abstract partial class VisualElementRenderer<TElement> : MauiView, IPlatformViewHandler
+	public abstract partial class VisualElementRenderer<TElement> : System.Object, IPlatformViewHandler
 		where TElement : Element, IView
 	{
 		// private IMauiContext? _mauiContext;
-		public MauiView? PlatformView => new MauiView();
+		public System.Object? PlatformView => new System.Object();
 
-		public MauiView? ContainerView => new MauiView();
+		public System.Object? ContainerView => new System.Object();
 
 		public bool HasContainer { get; set; }
 

@@ -18,7 +18,7 @@ namespace Microsoft.Maui
 			if (nativeScroll != null)
 			{
 				//nativeScroll.ScrollChange += OnScrollChange;
-				_scrollViews.Add(scrollBar, nativeScroll);
+				//_scrollViews.Add(scrollBar, nativeScroll);
 			}
 		}
 

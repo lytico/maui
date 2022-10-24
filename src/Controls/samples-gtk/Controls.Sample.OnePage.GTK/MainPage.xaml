@@ -28,6 +28,7 @@
                 ImageSource="click_me.gif"
                 SemanticProperties.Hint="Counts the number of times you click"
                 Clicked="OnCounterClicked"
+                Text="Click Me"
                 HorizontalOptions="Center" />
 
         </VerticalStackLayout>

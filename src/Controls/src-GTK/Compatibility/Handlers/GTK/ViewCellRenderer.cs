@@ -8,7 +8,7 @@ namespace Microsoft.Maui.Controls.Handlers.Compatibility
 {
 	public class ViewCellRenderer : CellRenderer
 	{
-		protected override MauiView GetCellCore(Cell item, MauiView parent)
+		protected override System.Object GetCellCore(Cell item, System.Object parent)
 		{
 			Performance.Start(out string reference, "GetCellCore");
 			var cell = (ViewCell)item;
@@ -41,26 +41,26 @@ namespace Microsoft.Maui.Controls.Handlers.Compatibility
 			var view = (IPlatformViewHandler)cell.View.ToHandler(cell.FindMauiContext());
 			cell.View.IsPlatformEnabled = true;
 
-			ViewCellContainer c = view.PlatformView.GetParentOfType<ViewCellContainer>();
+			//ViewCellContainer c = view.PlatformView.GetParentOfType<ViewCellContainer>();
 
-			if (c != null)
-				return c;
+			//if (c != null)
+			//	return c;
 
-			c = new ViewCellContainer((IPlatformViewHandler)cell.View.Handler, cell, ParentView, unevenRows, rowHeight);
+			var c = new ViewCellContainer((IPlatformViewHandler)cell.View.Handler, cell, ParentView, unevenRows, rowHeight);
 
 			Performance.Stop(reference, "GetCellCore");
 
 			return c;
 		}
 
-		protected override void DisconnectHandler(MauiView platformView)
+		protected override void DisconnectHandler(System.Object platformView)
 		{
 			base.DisconnectHandler(platformView);
-			ViewCellContainer c = platformView.GetParentOfType<ViewCellContainer>();
-			c?.DisconnectHandler();
+			//ViewCellContainer c = platformView.GetParentOfType<ViewCellContainer>();
+			//c?.DisconnectHandler();
 		}
 
-		internal class ViewCellContainer : MauiView, INativeElementView
+		internal class ViewCellContainer : System.Object, INativeElementView
 		{
 			readonly View _parent;
 			readonly BindableProperty _rowHeight;
@@ -136,7 +136,7 @@ namespace Microsoft.Maui.Controls.Handlers.Compatibility
 				_unevenRows = unevenRows;
 				_rowHeight = rowHeight;
 				_viewCell = viewCell;
-				Add(view.PlatformView);
+				// Add(view.PlatformView);
 				UpdateIsEnabled();
 				UpdateWatchForLongPress();
 			}

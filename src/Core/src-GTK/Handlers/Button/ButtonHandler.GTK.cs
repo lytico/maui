@@ -1,3 +1,4 @@
+using System.Diagnostics;
 using System.Threading.Tasks;
 using Microsoft.Maui.Graphics;
 
@@ -14,6 +15,27 @@ namespace Microsoft.Maui.Handlers
 			MauiImageButton platformButton = new MauiImageButton();
 
 			return platformButton;
+		}
+
+		private protected override void OnConnectHandler(object platformView)
+		{
+			if (platformView is MauiImageButton imageButton)
+			{
+				imageButton.ButtonWidget.Clicked += ButtonWidget_Clicked;
+			}
+
+			base.OnConnectHandler(platformView);
+		}
+
+		private void ButtonWidget_Clicked(object? sender, System.EventArgs e)
+		{
+			Debug.WriteLine("Clicked");
+			VirtualView?.Clicked();
+		}
+
+		private protected override void OnDisconnectHandler(object platformView)
+		{
+			base.OnDisconnectHandler(platformView);
 		}
 
 		//protected override void ConnectHandler(Gtk.Button platformView)
@@ -68,6 +90,17 @@ namespace Microsoft.Maui.Handlers
 		public static void MapText(IButtonHandler handler, IText button)
 		{
 			// handler.PlatformView?.UpdateTextPlainText(button);
+			if (handler.PlatformView is MauiImageButton handlerBox)
+			{
+				handlerBox.ButtonWidget.Label = button.Text;
+				//if (handlerBox.Children.Length > 0)
+				//{
+				//	if (handlerBox.Children[0] is Gtk.Label childLabel)
+				//	{
+				//		childLabel.Text = label.Text;
+				//	}
+				//}
+			}
 		}
 
 		public static void MapTextColor(IButtonHandler handler, ITextStyle button)

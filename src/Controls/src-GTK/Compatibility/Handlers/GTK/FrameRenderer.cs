@@ -9,7 +9,7 @@ using Color = Microsoft.Maui.Graphics.Color;
 
 namespace Microsoft.Maui.Controls.Handlers.Compatibility
 {
-	public class FrameRenderer : MauiView, IPlatformViewHandler
+	public class FrameRenderer : System.Object, IPlatformViewHandler
 	{
 		public static IPropertyMapper<Frame, FrameRenderer> Mapper
 			= new PropertyMapper<Frame, FrameRenderer>()
@@ -318,9 +318,9 @@ namespace Microsoft.Maui.Controls.Handlers.Compatibility
 
 		IMauiContext? IElementHandler.MauiContext => _mauiContext;
 
-		MauiView IPlatformViewHandler.PlatformView => this;
+		System.Object IPlatformViewHandler.PlatformView => this;
 
-		MauiView? IPlatformViewHandler.ContainerView => this;
+		System.Object? IPlatformViewHandler.ContainerView => this;
 
 		void IViewHandler.PlatformArrange(Graphics.Rect rect) =>
 			this.PlatformArrangeHandler(rect);

@@ -5,7 +5,7 @@ using Microsoft.Maui.Controls.Internals;
 
 namespace Microsoft.Maui.Controls.Handlers.Compatibility
 {
-	public class CellRenderer : ElementHandler<Cell, MauiView>, IRegisterable
+	public class CellRenderer : ElementHandler<Cell, System.Object>, IRegisterable
 	{
 		static readonly PropertyChangedEventHandler PropertyChangedHandler = OnGlobalCellPropertyChanged;
 
@@ -25,12 +25,12 @@ namespace Microsoft.Maui.Controls.Handlers.Compatibility
 
 		protected Cell Cell { get; set; }
 
-		protected override MauiView CreatePlatformElement()
+		protected override System.Object CreatePlatformElement()
 		{
 			return GetCell(VirtualView, null);
 		}
 
-		public MauiView GetCell(Cell item, MauiView parent)
+		public System.Object GetCell(Cell item, System.Object parent)
 		{
 			if (item.Parent is View parentView)
 				ParentView = parentView;
@@ -43,7 +43,7 @@ namespace Microsoft.Maui.Controls.Handlers.Compatibility
 			Cell = item;
 			Cell.PropertyChanged -= PropertyChangedHandler;
 
-			MauiView view = GetCellCore(item, parent);
+			System.Object view = GetCellCore(item, parent);
 
 			WireUpForceUpdateSizeRequested(item, view);
 
@@ -55,7 +55,7 @@ namespace Microsoft.Maui.Controls.Handlers.Compatibility
 			return view;
 		}
 
-		protected virtual MauiView GetCellCore(Cell item, MauiView parent)
+		protected virtual System.Object GetCellCore(Cell item, System.Object parent)
 		{
 			Performance.Start(out string reference, "GetCellCore");
 
@@ -78,7 +78,7 @@ namespace Microsoft.Maui.Controls.Handlers.Compatibility
 		{
 		}
 
-		protected void WireUpForceUpdateSizeRequested(Cell cell, MauiView platformCell)
+		protected void WireUpForceUpdateSizeRequested(Cell cell, System.Object platformCell)
 		{
 			//ICellController cellController = cell;
 			//cellController.ForceUpdateSizeRequested -= _onForceUpdateSizeRequested;

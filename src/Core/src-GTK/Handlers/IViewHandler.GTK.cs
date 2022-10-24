@@ -2,8 +2,8 @@ namespace Microsoft.Maui
 {
 	public interface IPlatformViewHandler : IViewHandler
 	{
-		new MauiView? PlatformView { get; }
+		new System.Object? PlatformView { get; }
 
-		new MauiView? ContainerView { get; }
+		new System.Object? ContainerView { get; }
 	}
 }

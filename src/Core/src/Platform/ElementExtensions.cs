@@ -12,7 +12,7 @@ using PlatformWindow = Android.App.Activity;
 using PlatformApplication = Android.App.Application;
 #elif WINDOWS
 #if __GTK__
-using PlatformView = Microsoft.Maui.Platform.MauiView;
+using PlatformView = System.Object;
 using BasePlatformType = System.Object;
 using PlatformWindow = Microsoft.Maui.MauiGTKWindow;
 using PlatformApplication = Microsoft.Maui.MauiGTKApplication;

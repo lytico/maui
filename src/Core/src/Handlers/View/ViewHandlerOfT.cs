@@ -4,7 +4,7 @@ using PlatformView = UIKit.UIView;
 #elif MONOANDROID
 using PlatformView = Android.Views.View;
 #elif WINDOWS && __GTK__
-using PlatformView = Microsoft.Maui.Platform.MauiView;
+using PlatformView = System.Object;
 #elif WINDOWS && !__GTK__
 using PlatformView = Microsoft.UI.Xaml.FrameworkElement;
 #elif TIZEN                  
@@ -18,7 +18,11 @@ namespace Microsoft.Maui.Handlers
 	public abstract partial class ViewHandler<TVirtualView, TPlatformView> : ViewHandler, IViewHandler
 		where TVirtualView : class, IView
 #if !(NETSTANDARD || !PLATFORM) || IOS || ANDROID || WINDOWS || TIZEN
+#if __GTK__
+		where TPlatformView : class
+#else
 		where TPlatformView : PlatformView
+#endif
 #else
 		where TPlatformView : class
 #endif

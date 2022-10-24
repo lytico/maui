@@ -4,25 +4,25 @@ using Microsoft.Maui.Layouts;
 
 namespace Microsoft.Maui.Handlers
 {
-	public partial class ScrollViewHandler : ViewHandler<IScrollView, MauiView>
+	public partial class ScrollViewHandler : ViewHandler<IScrollView, Gtk.ScrolledWindow>
 	{
 		const string InsetPanelTag = "MAUIContentInsetPanel";
 
-		protected override MauiView CreatePlatformView()
+		protected override Gtk.ScrolledWindow CreatePlatformView()
 		{
-			var plat = new MauiView();
-			plat.Add(new Gtk.ScrolledWindow());
-
-			return plat;
+			//var plat = new MauiView();
+			//plat.Add(new Gtk.ScrolledWindow());
+			var scroller = new Gtk.ScrolledWindow();
+			return scroller;
 		}
 
-		protected override void ConnectHandler(MauiView platformView)
+		protected override void ConnectHandler(Gtk.ScrolledWindow platformView)
 		{
 			base.ConnectHandler(platformView);
 			platformView.ScrollEvent += PlatformView_ScrollEvent;
 		}
 
-		protected override void DisconnectHandler(MauiView platformView)
+		protected override void DisconnectHandler(Gtk.ScrolledWindow platformView)
 		{
 			base.DisconnectHandler(platformView);
 			platformView.ScrollEvent -= PlatformView_ScrollEvent;
@@ -139,7 +139,7 @@ namespace Microsoft.Maui.Handlers
 			//	request.Instant, () => handler.VirtualView.ScrollFinished());
 		}
 
-		static Gtk.ScrolledWindow? GetContentPanel(MauiView scrollViewer)
+		static Gtk.ScrolledWindow? GetContentPanel(Gtk.ScrolledWindow scrollViewer)
 		{
 			if (scrollViewer.Child is Gtk.ScrolledWindow contentPanel)
 			{
@@ -162,22 +162,22 @@ namespace Microsoft.Maui.Handlers
 			var scrollViewer = handler.PlatformView;
 			var nativeContent = scrollView.PresentedContent.ToPlatform(handler.MauiContext);
 
-			if (GetContentPanel(scrollViewer) is Gtk.ScrolledWindow currentPaddingLayer)
+			if (scrollViewer is Gtk.ScrolledWindow currentPaddingLayer)
 			{
 				if (currentPaddingLayer.Children.Length == 0 || currentPaddingLayer.Children[0] != nativeContent)
 				{
 					// currentPaddingLayer.Children.R();
-					currentPaddingLayer.Add(nativeContent);
+					currentPaddingLayer.Add((Gtk.Widget)nativeContent);
 
 				}
 			}
 			else
 			{
-				InsertContentPanel(scrollViewer, scrollView, nativeContent);
+				InsertContentPanel(scrollViewer, scrollView, (Gtk.Widget)nativeContent);
 			}
 		}
 
-		static void InsertContentPanel(MauiView scrollViewer, IScrollView scrollView, Gtk.Widget nativeContent)
+		static void InsertContentPanel(Gtk.ScrolledWindow scrollViewer, IScrollView scrollView, Gtk.Widget nativeContent)
 		{
 			if (scrollView.PresentedContent == null)
 			{
