@@ -2,7 +2,7 @@
 
 namespace Microsoft.Maui.LifecycleEvents
 {
-	public static class AndroidLifecycleExtensions
+	public static class GTKLifecycleExtensions
 	{
 		public static ILifecycleBuilder AddGTK(this ILifecycleBuilder builder, Action<IGTKLifecycleBuilder> configureDelegate)
 		{

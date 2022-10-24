@@ -1,3 +1,4 @@
+using System.Diagnostics;
 using Gtk;
 
 namespace GTKnonMAUI
@@ -18,6 +19,7 @@ namespace GTKnonMAUI
 			//Create the Window
 			Window myWin = new Window("My first GTK# Application! ");
 			myWin.Resize(500, 600);
+			myWin.Destroyed += MyWin_Destroyed;
 
 			// Create a VBox
 			VBox myContainer = new VBox();
@@ -81,6 +83,14 @@ namespace GTKnonMAUI
 			myWin.ShowAll();
 
 			Gtk.Application.Run();
+
+			Debug.WriteLine("After Run");
+		}
+
+		private static void MyWin_Destroyed(object? sender, EventArgs e)
+		{
+			Debug.WriteLine("Destroyed");
+			Gtk.Application.Quit();
 		}
 
 		private static void MyButton_Clicked(object? sender, EventArgs e)

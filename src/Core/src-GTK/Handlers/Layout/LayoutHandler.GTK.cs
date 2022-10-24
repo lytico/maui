@@ -30,7 +30,13 @@ namespace Microsoft.Maui.Handlers
 
 			foreach (var child in VirtualView.OrderByZIndex())
 			{
-				PlatformView.PackStart((Gtk.Widget)child.ToPlatform(MauiContext), true, false, 20);
+				// var widget = (Gtk.Widget)child.ToPlatform(MauiContext);
+				//var hbox = new Gtk.HBox();
+				//var vbox = new Gtk.VBox();
+				//hbox.PackStart(vbox, false, true, 20);
+
+				//hbox.PackStart((Gtk.Widget)child.ToPlatform(MauiContext), false, true, 0);
+				PlatformView.PackStart((Gtk.Widget)child.ToPlatform(MauiContext), false, false, 20);
 			}
 		}
 

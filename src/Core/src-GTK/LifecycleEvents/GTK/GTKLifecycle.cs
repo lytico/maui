@@ -8,6 +8,8 @@ namespace Microsoft.Maui.LifecycleEvents
 		public delegate void OnApplicationCreating(Application application);
 		public delegate void OnApplicationCreate(Application application);
 		public delegate void OnWindowCreated(Window window);
+		public delegate void OnLaunched(MauiGTKApplication application);
+		public delegate void OnLaunching(MauiGTKApplication application);
 
 		// Events called by the ActivityLifecycleCallbacks
 

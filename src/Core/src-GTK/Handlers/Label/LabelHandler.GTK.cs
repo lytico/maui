@@ -100,6 +100,20 @@ namespace Microsoft.Maui.Handlers
 		public static void MapFont(ILabelHandler handler, ILabel label)
 		{
 			// var fontManager = handler.GetRequiredService<IFontManager>();
+			if (handler.PlatformView is Gtk.EventBox handlerBox)
+			{
+				if (handlerBox.Children.Length > 0)
+				{
+					if (handlerBox.Children[0] is Gtk.Label childLabel)
+					{
+						Pango.FontDescription fontdesc = new Pango.FontDescription();
+						fontdesc.Family = label.Font.Family;
+						fontdesc.Size = (int)(label.Font.Size * Pango.Scale.PangoScale);
+
+						childLabel.ModifyFont(fontdesc);
+					}
+				}
+			}
 
 			//handler.PlatformView?.UpdateFont(label, fontManager);
 		}

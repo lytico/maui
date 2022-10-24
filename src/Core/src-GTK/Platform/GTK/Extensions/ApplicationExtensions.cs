@@ -16,7 +16,7 @@ namespace Microsoft.Maui.Platform
 				return;
 
 			var winuiWndow = new MauiGTKWindow("My first GTK# Application! ");
-			winuiWndow.Resize(500, 600);
+			winuiWndow.Resize(600, 300);
 
 			var mauiContext = applicationContext!.MakeWindowScope(winuiWndow, out var windowScope);
 
@@ -25,10 +25,12 @@ namespace Microsoft.Maui.Platform
 			var window = application.CreateWindow(null!);
 
 			winuiWndow.SetWindowHandler(window, mauiContext);
+			winuiWndow.ModifyBg(StateType.Normal, new Gdk.Color(200, 0, 200));
 
 			applicationContext.Services.InvokeLifecycleEvents<GTKLifecycle.OnWindowCreated>(del => del(winuiWndow));
 
 			winuiWndow.ShowAll();
+			winuiWndow.ModifyBg(StateType.Normal, new Gdk.Color(200, 0, 200));
 		}
 	}
 }

@@ -15,7 +15,7 @@ namespace Microsoft.Maui.Platform
 		private Gdk.Color? _backgroundColor;
 
 		private Gtk.Button _button;
-		private Gtk.Image _image;
+		private Gtk.Image _image = null!;
 		private Gtk.Label _label;
 		private uint _imageSpacing = 0;
 		private uint _borderWidth = 0;
@@ -29,7 +29,7 @@ namespace Microsoft.Maui.Platform
 
 			_button.Relief = ReliefStyle.None;
 
-			_image = new Gtk.Image();
+			//_image = new Gtk.Image();
 			_label = new Gtk.Label();
 			_container = new Alignment(0.5f, 0.5f, 0, 0);
 
@@ -62,14 +62,25 @@ namespace Microsoft.Maui.Platform
 
 		public void SetBackgroundColor(Gdk.Color? color)
 		{
-			_backgroundColor = color;
-			QueueDraw();
+			if (color != null)
+			{
+				_backgroundColor = color;
+				//QueueDraw();
+				if (_backgroundColor != null)
+				{
+					ModifyBg(StateType.Normal, _backgroundColor.Value);
+					ModifyBg(StateType.Prelight, _backgroundColor.Value);
+					//ModifyBg(StateType.Selected, _backgroundColor.Value);
+					ModifyBg(StateType.Active, _backgroundColor.Value);
+					//ModifyBg(StateType.Insensitive, _backgroundColor.Value);
+				}
+			}
 		}
 
 		public void ResetBackgroundColor()
 		{
 			_backgroundColor = _defaultBackgroundColor;
-			QueueDraw();
+			//QueueDraw();
 		}
 
 		public void SetForegroundColor(Gdk.Color color)
@@ -82,19 +93,19 @@ namespace Microsoft.Maui.Platform
 		public void SetBorderWidth(uint width)
 		{
 			_borderWidth = width;
-			QueueDraw();
+			//QueueDraw();
 		}
 
 		public void SetBorderColor(Gdk.Color? color)
 		{
 			_borderColor = color;
-			QueueDraw();
+			//QueueDraw();
 		}
 
 		public void ResetBorderColor()
 		{
 			_borderColor = _defaultBorderColor;
-			QueueDraw();
+			//QueueDraw();
 		}
 
 		public void SetImagePosition(PositionType position)
@@ -112,35 +123,35 @@ namespace Microsoft.Maui.Platform
 			_container = null!;
 		}
 
-		protected override bool OnExposeEvent(EventExpose evnt)
-		{
-			double colorMaxValue = 65535;
+		//protected override bool OnExposeEvent(EventExpose evnt)
+		//{
+		//	double colorMaxValue = 65535;
 
-			using (var cr = CairoHelper.Create(GdkWindow))
-			{
-				cr.Rectangle(Allocation.Left, Allocation.Top, Allocation.Width, Allocation.Height);
+		//	using (var cr = CairoHelper.Create(GdkWindow))
+		//	{
+		//		cr.Rectangle(Allocation.Left, Allocation.Top, Allocation.Width, Allocation.Height);
 
-				// Draw BackgroundColor
-				if (_backgroundColor.HasValue)
-				{
-					var color = _backgroundColor.Value;
-					cr.SetSourceRGBA(color.Red / colorMaxValue, color.Green / colorMaxValue, color.Blue / colorMaxValue, 1.0);
-					cr.FillPreserve();
-				}
+		//		// Draw BackgroundColor
+		//		if (_backgroundColor.HasValue)
+		//		{
+		//			var color = _backgroundColor.Value;
+		//			cr.SetSourceRGBA(color.Red / colorMaxValue, color.Green / colorMaxValue, color.Blue / colorMaxValue, 1.0);
+		//			cr.FillPreserve();
+		//		}
 
-				// Draw BorderColor
-				if (_borderColor.HasValue)
-				{
-					cr.LineWidth = _borderWidth;
+		//		// Draw BorderColor
+		//		if (_borderColor.HasValue)
+		//		{
+		//			cr.LineWidth = _borderWidth;
 
-					var color = _borderColor.Value;
-					cr.SetSourceRGB(color.Red / colorMaxValue, color.Green / colorMaxValue, color.Blue / colorMaxValue);
-					cr.Stroke();
-				}
-			}
+		//			var color = _borderColor.Value;
+		//			cr.SetSourceRGB(color.Red / colorMaxValue, color.Green / colorMaxValue, color.Blue / colorMaxValue);
+		//			cr.Stroke();
+		//		}
+		//	}
 
-			return base.OnExposeEvent(evnt);
-		}
+		//	return base.OnExposeEvent(evnt);
+		//}
 
 		private void RecreateContainer()
 		{

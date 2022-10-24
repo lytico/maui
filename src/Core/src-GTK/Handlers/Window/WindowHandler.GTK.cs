@@ -5,7 +5,15 @@ namespace Microsoft.Maui.Handlers
 {
 	public partial class WindowHandler : ElementHandler<IWindow, Gtk.Window>
 	{
-		public static void MapTitle(IWindowHandler handler, IWindow window) { }
+		public static void MapTitle(IWindowHandler handler, IWindow window)
+		{
+			if (handler.PlatformView is not Gtk.Window result)
+			{
+				throw new InvalidOperationException($"Unable to convert {window} to {typeof(Gtk.Window)}");
+			}
+
+			handler.PlatformView.Title = window.Title;
+		}
 
 		public static void MapContent(IWindowHandler handler, IWindow window)
 		{
