@@ -130,11 +130,10 @@ namespace Microsoft.Maui.Controls.Hosting
 #if !__GTK__
 			handlersCollection.AddHandler(typeof(TableView), typeof(Handlers.Compatibility.TableViewRenderer));
 #endif
-#endif
 			handlersCollection.AddHandler(typeof(Frame), typeof(Handlers.Compatibility.FrameRenderer));
 #endif
 
-#if WINDOWS || MACCATALYST
+#if (WINDOWS && !__GTK__) || MACCATALYST
 			handlersCollection.AddHandler(typeof(MenuFlyout), typeof(MenuFlyoutHandler));
 #endif
 

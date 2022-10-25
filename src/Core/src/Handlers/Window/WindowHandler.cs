@@ -4,13 +4,11 @@ using Microsoft.Extensions.DependencyInjection;
 using PlatformView = UIKit.UIWindow;
 #elif MONOANDROID
 using PlatformView = Android.App.Activity;
-#elif WINDOWS
-#if __GTK__
+#elif WINDOWS && __GTK__
 using PlatformView = Gtk.Window;
-#else
+#elif WINDOWS && !__GTK__
 using PlatformView = Microsoft.UI.Xaml.Window;
-#endif
-#elif TIZEN
+#elif TIZEN      
 using PlatformView = Tizen.NUI.Window;
 #endif
 
@@ -22,11 +20,13 @@ namespace Microsoft.Maui.Handlers
 		{
 			[nameof(IWindow.Title)] = MapTitle,
 			[nameof(IWindow.Content)] = MapContent,
+#if !__GTK__
 			[nameof(IWindow.X)] = MapX,
 			[nameof(IWindow.Y)] = MapY,
 			[nameof(IWindow.Width)] = MapWidth,
 			[nameof(IWindow.Height)] = MapHeight,
-#if WINDOWS || MACCATALYST
+#endif
+#if (WINDOWS && !__GTK__) || MACCATALYST
 			[nameof(IWindow.MaximumWidth)] = MapMaximumWidth,
 			[nameof(IWindow.MaximumHeight)] = MapMaximumHeight,
 			[nameof(IWindow.MinimumWidth)] = MapMinimumWidth,

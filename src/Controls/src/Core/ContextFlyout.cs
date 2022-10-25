@@ -32,7 +32,9 @@ namespace Microsoft.Maui.Controls
 		{
 			var index = _menus.Count;
 			_menus.Add(item);
+#if !__GTK__
 			NotifyHandler(nameof(IMenuFlyoutHandler.Add), index, item);
+#endif
 
 			// Take care of the Element internal bookkeeping
 			if (item is Element element)
@@ -70,7 +72,9 @@ namespace Microsoft.Maui.Controls
 		public void Insert(int index, IMenuElement item)
 		{
 			_menus.Insert(index, item);
+#if !__GTK__
 			NotifyHandler(nameof(IMenuFlyoutHandler.Insert), index, item);
+#endif
 
 			// Take care of the Element internal bookkeeping
 			if (item is Element element)
@@ -83,7 +87,9 @@ namespace Microsoft.Maui.Controls
 		{
 			var index = _menus.IndexOf(item);
 			var result = _menus.Remove(item);
+#if !__GTK__
 			NotifyHandler(nameof(IMenuFlyoutHandler.Remove), index, item);
+#endif
 
 			// Take care of the Element internal bookkeeping
 			if (item is Element element)
@@ -98,7 +104,9 @@ namespace Microsoft.Maui.Controls
 		{
 			var item = _menus[index];
 			_menus.RemoveAt(index);
+#if !__GTK__
 			NotifyHandler(nameof(IMenuFlyoutHandler.Remove), index, item);
+#endif
 
 			// Take care of the Element internal bookkeeping
 			if (item is Element element)

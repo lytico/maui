@@ -67,6 +67,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Remove="Handlers\FlyoutView\FlyoutViewHandler.cs" />
+    <Compile Remove="Handlers\MenuFlyoutHandler\IMenuFlyoutHandler.cs" />
+    <Compile Remove="Handlers\MenuFlyoutHandler\MenuFlyoutHandler.cs" />
     <Compile Remove="Handlers\MenuFlyoutItem\MenuFlyoutItemHandler.cs" />
     <Compile Remove="Handlers\MenuFlyoutSeparator\MenuFlyoutSeparatorHandler.cs" />
     <Compile Remove="Handlers\MenuFlyoutSubItem\MenuFlyoutSubItemHandler.cs" />
