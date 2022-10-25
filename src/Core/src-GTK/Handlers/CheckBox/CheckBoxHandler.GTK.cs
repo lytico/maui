@@ -7,7 +7,7 @@
 			var plat = new MauiView();
 			var platformCheckBox = new Gtk.CheckButton();
 
-			plat.Add(platformCheckBox);
+			plat.AddChildWidget(platformCheckBox);
 
 			return plat;
 		}

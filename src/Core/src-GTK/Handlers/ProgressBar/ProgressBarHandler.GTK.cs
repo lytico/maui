@@ -5,7 +5,7 @@
 		protected override MauiView CreatePlatformView()
 		{
 			var plat = new MauiView();
-			plat.Add(new Gtk.ProgressBar());
+			plat.AddChildWidget(new Gtk.ProgressBar());
 
 			return plat;
 		}

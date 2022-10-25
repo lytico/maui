@@ -8,7 +8,7 @@ namespace Microsoft.Maui.Handlers
 		protected override MauiView CreatePlatformView()
 		{
 			var plat = new MauiView();
-			plat.Add(new Gtk.ComboBox());
+			plat.AddChildWidget(new Gtk.ComboBox());
 
 			return plat;
 		}

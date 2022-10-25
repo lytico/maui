@@ -27,10 +27,8 @@ namespace Microsoft.Maui.Controls
 			[nameof(ILabel.Font)] = MapFont,
 			[nameof(TextColor)] = MapTextColor,
 #endif
-#if !__GTK__
 			[nameof(Label.LineBreakMode)] = MapLineBreakMode,
 			[nameof(Label.MaxLines)] = MapMaxLines,
-#endif
 		};
 
 		internal static new void RemapForControls()

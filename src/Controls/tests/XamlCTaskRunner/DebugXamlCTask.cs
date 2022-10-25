@@ -25,9 +25,9 @@ namespace XamlCTaskRunner
 
 		public bool Execute()
 		{
-			Assembly = "D:\\Source\\maui\\src\\Controls\\samples-gtk\\Controls.Sample.OnePage.GTK\\bin\\Debug\\net6.0-windows\\Maui.Controls.Sample.OnePage.GTK.dll";
+			Assembly = "D:\\Source\\maui\\src\\Controls\\samples-gtk\\Controls.Sample.OnePage.GTK\\bin\\x86\\Debug\\net6.0-windows\\Maui.Controls.Sample.OnePage.GTK.dll";
 			ReferencePath = new string[1];
-			ReferencePath[0] = "D:\\Source\\maui\\src\\Controls\\samples-gtk\\Controls.Sample.OnePage.GTK\\bin\\Debug\\net6.0-windows\\Maui.Controls.Sample.OnePage.GTK.exe";
+			ReferencePath[0] = "D:\\Source\\maui\\src\\Controls\\samples-gtk\\Controls.Sample.OnePage.GTK\\bin\\x86\\Debug\\net6.0-windows\\Maui.Controls.Sample.OnePage.GTK.exe";
 			//thrownExceptions = null!;
 			////LoggingHelper.LogMessage(Normal, $"{new string(' ', 0)}Preparing debug code for xamlc, assembly: {Assembly}");
 			System.Diagnostics.Debug.WriteLine($"Normal: {new string(' ', 0)}Preparing debug code for xamlc, assembly: {Assembly}");

@@ -8,7 +8,7 @@ namespace Microsoft.Maui.Handlers
 		protected override MauiView CreatePlatformView()
 		{
 			var plat = new MauiView();
-			plat.Add(new Gtk.Label());
+			plat.AddChildWidget(new Gtk.Label());
 
 			return plat;
 		}
@@ -46,21 +46,38 @@ namespace Microsoft.Maui.Handlers
 			handler.UpdateValue(nameof(IViewHandler.ContainerView));
 
 			//handler.ToPlatform().UpdateBackground(label);
+
+			if (handler.PlatformView.GetChildWidget() is Gtk.Label platformLabel)
+			{
+				if (label.Background != null)
+				{
+					if (label.Background.ToColor() != null)
+					{
+						byte r, g, b;
+						r = 0;
+						g = 0;
+						b = 0;
+						label.Background.ToColor()?.ToRgb(out r, out g, out b);
+						if (r != 0 && g != 0 && b != 0)
+						{
+							// handler.PlatformView.SetBackgroundColor(new Gdk.Color(r, g, b));
+							var color = new Gdk.Color(r, g, b);
+							handler.PlatformView.ModifyBg(Gtk.StateType.Normal, color);
+							handler.PlatformView.ModifyBg(Gtk.StateType.Prelight, color);
+							handler.PlatformView.ModifyBg(Gtk.StateType.Active, color);
+						}
+					}
+				}
+			}
 		}
 
 		public static void MapText(ILabelHandler handler, ILabel label)
 		{
 			//handler.PlatformView?.UpdateTextPlainText(label);
 
-			if (handler.PlatformView is Gtk.EventBox handlerBox)
+			if (handler.PlatformView.GetChildWidget() is Gtk.Label platformLabel)
 			{
-				if (handlerBox.Children.Length > 0)
-				{
-					if (handlerBox.Children[0] is Gtk.Label childLabel)
-					{
-						childLabel.Text = label.Text;
-					}
-				}
+				platformLabel.Text = label.Text;
 			}
 
 			// Any text update requires that we update any attributed string formatting
@@ -70,6 +87,25 @@ namespace Microsoft.Maui.Handlers
 		public static void MapTextColor(ILabelHandler handler, ILabel label)
 		{
 			//handler.PlatformView?.UpdateTextColor(label);
+			if (handler.PlatformView.GetChildWidget() is Gtk.Label platformLabel)
+			{
+				if (label.TextColor != null)
+				{
+					byte r, g, b;
+					r = 0;
+					g = 0;
+					b = 0;
+					label.TextColor.ToRgb(out r, out g, out b);
+					if (r != 0 && g != 0 && b != 0)
+					{
+						// handler.PlatformView.SetBackgroundColor(new Gdk.Color(r, g, b));
+						var color = new Gdk.Color(r, g, b);
+						platformLabel.ModifyFg(Gtk.StateType.Normal, color);
+						platformLabel.ModifyFg(Gtk.StateType.Prelight, color);
+						platformLabel.ModifyFg(Gtk.StateType.Active, color);
+					}
+				}
+			}
 		}
 
 		public static void MapCharacterSpacing(ILabelHandler handler, ILabel label)
@@ -100,19 +136,13 @@ namespace Microsoft.Maui.Handlers
 		public static void MapFont(ILabelHandler handler, ILabel label)
 		{
 			// var fontManager = handler.GetRequiredService<IFontManager>();
-			if (handler.PlatformView is Gtk.EventBox handlerBox)
+			if (handler.PlatformView.GetChildWidget() is Gtk.Label platformLabel)
 			{
-				if (handlerBox.Children.Length > 0)
-				{
-					if (handlerBox.Children[0] is Gtk.Label childLabel)
-					{
-						Pango.FontDescription fontdesc = new Pango.FontDescription();
-						fontdesc.Family = label.Font.Family;
-						fontdesc.Size = (int)(label.Font.Size * Pango.Scale.PangoScale);
+				Pango.FontDescription fontdesc = new Pango.FontDescription();
+				fontdesc.Family = label.Font.Family;
+				fontdesc.Size = (int)(label.Font.Size * Pango.Scale.PangoScale);
 
-						childLabel.ModifyFont(fontdesc);
-					}
-				}
+				platformLabel.ModifyFont(fontdesc);
 			}
 
 			//handler.PlatformView?.UpdateFont(label, fontManager);
