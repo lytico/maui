@@ -1,13 +1,9 @@
 using System;
-using System.Globalization;
-using Windows.ApplicationModel;
 using System.Diagnostics;
+using System.Globalization;
 using System.Reflection;
-#if WINDOWS
 using Microsoft.UI.Xaml;
-#else
-using Windows.UI.Xaml;
-#endif
+using Windows.ApplicationModel;
 
 namespace Microsoft.Maui.ApplicationModel
 {
@@ -19,11 +15,13 @@ namespace Microsoft.Maui.ApplicationModel
 
 		ApplicationTheme? _applicationTheme;
 
+		readonly ActiveWindowTracker _activeWindowTracker;
+
 		public AppInfoImplementation()
 		{
-			// TODO: NET7 use new public events
-			if (WindowStateManager.Default is WindowStateManagerImplementation impl)
-				impl.ActiveWindowThemeChanged += OnActiveWindowThemeChanged;
+			_activeWindowTracker = new(WindowStateManager.Default);
+			_activeWindowTracker.Start();
+			_activeWindowTracker.WindowMessage += OnWindowMessage;
 
 			if (MainThread.IsMainThread)
 				OnActiveWindowThemeChanged();
@@ -33,7 +31,7 @@ namespace Microsoft.Maui.ApplicationModel
 			? Package.Current.Id.Name
 			: _launchingAssembly.GetAppInfoValue("PackageName") ?? _launchingAssembly.GetCustomAttribute<AssemblyTitleAttribute>()?.Title ?? string.Empty;
 
-		// TODO: NET7 add this as a actual data point and public property if it is valid on platforms
+		// TODO: NET8 add this as a actual data point and public property if it is valid on platforms
 		internal static string PublisherName => AppInfoUtils.IsPackagedApp
 			? Package.Current.PublisherDisplayName
 			: _launchingAssembly.GetAppInfoValue("PublisherName") ?? _launchingAssembly.GetCustomAttribute<AssemblyCompanyAttribute>()?.Company ?? string.Empty;
@@ -78,7 +76,14 @@ namespace Microsoft.Maui.ApplicationModel
 		public LayoutDirection RequestedLayoutDirection =>
 			CultureInfo.CurrentCulture.TextInfo.IsRightToLeft ? LayoutDirection.RightToLeft : LayoutDirection.LeftToRight;
 
-		void OnActiveWindowThemeChanged(object sender = null, EventArgs e = null)
+		void OnWindowMessage(object sender, WindowMessageEventArgs e)
+		{
+			if (e.MessageId == PlatformMethods.MessageIds.WM_SETTINGCHANGE ||
+				e.MessageId == PlatformMethods.MessageIds.WM_THEMECHANGE)
+				OnActiveWindowThemeChanged();
+		}
+
+		void OnActiveWindowThemeChanged()
 		{
 			if (Application.Current is Application app)
 				_applicationTheme = app.RequestedTheme;

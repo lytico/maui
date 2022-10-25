@@ -12,7 +12,7 @@ using PlatformView = Microsoft.Maui.Platform.MauiView;
 using PlatformView = Microsoft.UI.Xaml.FrameworkElement;
 #endif
 #elif TIZEN
-using PlatformView = ElmSharp.EvasObject;
+using PlatformView = Tizen.NUI.BaseComponents.View;
 #elif (NETSTANDARD || !PLATFORM) || (NET6_0_OR_GREATER && !IOS && !ANDROID && !TIZEN)
 using PlatformView = System.Object;
 #endif
@@ -26,6 +26,16 @@ namespace Microsoft.Maui.Handlers
 		public static CommandMapper<ITabbedView, ITabbedViewHandler> CommandMapper = new(ViewCommandMapper);
 
 		public TabbedViewHandler() : base(Mapper, CommandMapper)
+		{
+		}
+
+		public TabbedViewHandler(IPropertyMapper? mapper)
+			: base(mapper ?? Mapper, CommandMapper)
+		{
+		}
+
+		public TabbedViewHandler(IPropertyMapper? mapper, CommandMapper? commandMapper)
+			: base(mapper ?? Mapper, commandMapper ?? CommandMapper)
 		{
 		}
 

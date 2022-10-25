@@ -9,7 +9,7 @@ using PlatformView = Microsoft.Maui.Platform.MauiView;
 using PlatformView = Microsoft.UI.Xaml.Controls.TextBlock;
 #endif
 #elif TIZEN
-using PlatformView = Tizen.UIExtensions.ElmSharp.Label;
+using PlatformView = Tizen.UIExtensions.NUI.Label;
 #elif (NETSTANDARD || !PLATFORM) || (NET6_0_OR_GREATER && !IOS && !TIZEN)
 using PlatformView = System.Object;
 #endif

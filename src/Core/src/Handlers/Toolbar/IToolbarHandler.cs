@@ -9,7 +9,7 @@ using PlatformView = System.Object;
 using PlatformView = Microsoft.Maui.Platform.MauiToolbar;
 #endif
 #elif TIZEN
-using PlatformView =ElmSharp.Toolbar;
+using PlatformView = Microsoft.Maui.Platform.MauiToolbar;
 #elif (NETSTANDARD || !PLATFORM) || (NET6_0_OR_GREATER && !IOS && !ANDROID && !TIZEN)
 using PlatformView = System.Object;
 #endif

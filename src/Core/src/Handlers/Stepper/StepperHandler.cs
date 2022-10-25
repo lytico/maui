@@ -2,13 +2,13 @@
 using PlatformView = UIKit.UIStepper;
 #elif MONOANDROID
 using PlatformView = Microsoft.Maui.Platform.MauiStepper;
-#elif WINDOWS
-#if __GTK__
+#elif WINDOWS && __GTK__
 using PlatformView = Microsoft.Maui.Platform.MauiStepper;
-#else
+#elif WINDOWS && !__GTK__
 using PlatformView = Microsoft.Maui.Platform.MauiStepper;
-#endif
-#elif (NETSTANDARD || !PLATFORM) || (NET6_0_OR_GREATER && !IOS && !ANDROID)
+#elif TIZEN
+using PlatformView = Microsoft.Maui.Platform.MauiStepper;
+#elif (NETSTANDARD || !PLATFORM) || (NET6_0_OR_GREATER && !IOS && !ANDROID && !TIZEN)
 using PlatformView = System.Object;
 #endif
 
@@ -35,7 +35,13 @@ namespace Microsoft.Maui.Handlers
 		{
 		}
 
-		public StepperHandler(IPropertyMapper mapper) : base(mapper ?? Mapper)
+		public StepperHandler(IPropertyMapper? mapper)
+			: base(mapper ?? Mapper, CommandMapper)
+		{
+		}
+
+		public StepperHandler(IPropertyMapper? mapper, CommandMapper? commandMapper)
+			: base(mapper ?? Mapper, commandMapper ?? CommandMapper)
 		{
 		}
 

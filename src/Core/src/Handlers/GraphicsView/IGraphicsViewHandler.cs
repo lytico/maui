@@ -1,4 +1,4 @@
-﻿#if __IOS__ || MACCATALYST || MONOANDROID || WINDOWS || TIZEN
+#if __IOS__ || MACCATALYST || MONOANDROID || WINDOWS || TIZEN
 #if __GTK__
 using PlatformView = Microsoft.Maui.Platform.MauiView;
 #else

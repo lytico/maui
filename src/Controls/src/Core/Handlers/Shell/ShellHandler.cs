@@ -1,4 +1,4 @@
-﻿#if WINDOWS && !__GTK__
+﻿#if (WINDOWS && !__GTK__) || TIZEN
 using System;
 using System.Collections.Generic;
 using System.Text;

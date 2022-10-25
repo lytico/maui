@@ -23,10 +23,10 @@ using PlatformWindow = Microsoft.UI.Xaml.Window;
 using PlatformApplication = Microsoft.UI.Xaml.Application;
 #endif
 #elif TIZEN
-using PlatformView = ElmSharp.EvasObject;
+using PlatformView = Tizen.NUI.BaseComponents.View;
 using BasePlatformType = System.Object;
-using PlatformWindow = ElmSharp.Window;
-using PlatformApplication = Tizen.Applications.CoreUIApplication;
+using PlatformWindow = Tizen.NUI.Window;
+using PlatformApplication = Tizen.Applications.CoreApplication;
 #elif (NETSTANDARD || !PLATFORM) || (NET6_0_OR_GREATER && !IOS && !ANDROID && !TIZEN)
 using PlatformView = System.Object;
 using BasePlatformType = System.Object;
@@ -242,7 +242,7 @@ namespace Microsoft.Maui.Platform
 		public static void SetWindowHandler(this PlatformWindow platformWindow, IWindow window, IMauiContext context) =>
 			SetHandler(platformWindow, window, context);
 
-#if WINDOWS || IOS || ANDROID || __GTK__
+#if WINDOWS || IOS || ANDROID || TIZEN || __GTK__
 #if __GTK__
 		internal static Gtk.Window GetWindow(this IElement element) =>
 			element.Handler?.MauiContext?.GetPlatformWindow() ??

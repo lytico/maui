@@ -11,6 +11,27 @@ namespace Microsoft.Maui.DeviceTests
 {
 	public partial class SearchBarHandlerTests
 	{
+		[Fact]
+		public async Task ShouldShowCancelButtonToggles()
+		{
+			var searchBarStub = new SearchBarStub();
+
+			await InvokeOnMainThreadAsync(() =>
+			{
+				var searchBar = CreateHandler(searchBarStub).PlatformView;
+
+				Assert.False(searchBar.ShowsCancelButton);
+
+				searchBarStub.Text = "additional text";
+				searchBarStub.Handler.UpdateValue(nameof(ISearchBar.Text));
+				Assert.True(searchBar.ShowsCancelButton);
+
+				searchBarStub.Text = "";
+				searchBarStub.Handler.UpdateValue(nameof(ISearchBar.Text));
+				Assert.False(searchBar.ShowsCancelButton);
+			});
+		}
+
 		[Fact(DisplayName = "Horizontal TextAlignment Updates Correctly")]
 		public async Task HorizontalTextAlignmentInitializesCorrectly()
 		{
@@ -86,6 +107,11 @@ namespace Microsoft.Maui.DeviceTests
 
 			Assert.Equal(xplatCharacterSpacing, values.ViewValue);
 			Assert.Equal(xplatCharacterSpacing, values.PlatformViewValue);
+		}
+
+		double GetInputFieldHeight(SearchBarHandler searchBarHandler)
+		{
+			return GetNativeSearchBar(searchBarHandler).Bounds.Height;
 		}
 
 		static UISearchBar GetNativeSearchBar(SearchBarHandler searchBarHandler) =>

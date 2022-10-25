@@ -9,7 +9,7 @@ using PlatformView = Gtk.EventBox;
 using PlatformView = Microsoft.UI.Xaml.FrameworkElement;
 #endif
 #elif TIZEN
-using PlatformView = ElmSharp.EvasObject;
+using PlatformView = Tizen.NUI.BaseComponents.View;
 #elif (NETSTANDARD || !PLATFORM)
 using PlatformView = System.Object;
 #endif
@@ -87,6 +87,17 @@ namespace Microsoft.Maui
 		{
 			handler?.Invoke(commandName, args);
 			return args.Result;
+		}
+
+		public static bool CanInvokeMappers(this IElementHandler viewHandler)
+		{
+#if ANDROID
+			var platformView = viewHandler?.PlatformView;
+
+			if (platformView is PlatformView androidView && androidView.IsDisposed())
+				return false;
+#endif
+			return true;
 		}
 	}
 }

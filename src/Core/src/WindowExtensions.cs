@@ -13,7 +13,7 @@ using PlatformView = Gdk.Window;
 #elif WINDOWS && !__GTK__
 using PlatformView = Microsoft.UI.Xaml.Window;
 #elif TIZEN
-using PlatformView = ElmSharp.Window;
+using PlatformView =  Tizen.NUI.Window;
 #endif
 
 namespace Microsoft.Maui

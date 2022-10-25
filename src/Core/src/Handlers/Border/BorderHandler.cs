@@ -10,7 +10,7 @@ using PlatformView = Microsoft.Maui.Platform.MauiBorder;
 using PlatformView = Microsoft.Maui.Platform.ContentPanel;
 #endif
 #elif TIZEN
-using PlatformView = Microsoft.Maui.Platform.BorderView;
+using PlatformView = Microsoft.Maui.Platform.ContentViewGroup;
 #elif (NETSTANDARD || !PLATFORM) && !__GTK__
 using PlatformView = System.Object;
 #endif
@@ -46,14 +46,14 @@ namespace Microsoft.Maui.Handlers
 
 		}
 
-		protected BorderHandler(IPropertyMapper mapper, CommandMapper? commandMapper = null)
-			: base(mapper, commandMapper ?? ViewCommandMapper)
+		public BorderHandler(IPropertyMapper? mapper)
+			: base(mapper ?? Mapper, CommandMapper)
 		{
 		}
 
-		public BorderHandler(IPropertyMapper? mapper = null) : base(mapper ?? Mapper)
+		public BorderHandler(IPropertyMapper? mapper, CommandMapper? commandMapper)
+			: base(mapper ?? Mapper, commandMapper ?? CommandMapper)
 		{
-
 		}
 
 		IBorderView IBorderHandler.VirtualView => VirtualView;

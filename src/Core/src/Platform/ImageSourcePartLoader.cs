@@ -17,8 +17,8 @@ using PlatformImage = Microsoft.UI.Xaml.Media.ImageSource;
 using PlatformView = Microsoft.UI.Xaml.FrameworkElement;
 #endif
 #elif TIZEN
-using PlatformImage = Tizen.UIExtensions.ElmSharp.Image;
-using PlatformView = ElmSharp.EvasObject;
+using PlatformImage = Microsoft.Maui.Platform.MauiImageSource;
+using PlatformView = Tizen.NUI.BaseComponents.View;
 #elif (NETSTANDARD || !PLATFORM) || (NET6_0_OR_GREATER && !IOS && !ANDROID && !TIZEN)
 using PlatformImage = System.Object;
 using PlatformView = System.Object;
@@ -64,14 +64,8 @@ namespace Microsoft.Maui.Platform
 
 				if (imageSource != null)
 				{
-#if IOS || ANDROID || WINDOWS
+#if __IOS__ || __ANDROID__ || WINDOWS || TIZEN
 					var result = await imageSource.UpdateSourceAsync(PlatformView, ImageSourceServiceProvider, SetImage!, token)
-						.ConfigureAwait(false);
-
-					SourceManager.CompleteLoad(result);
-#elif TIZEN
-					PlatformImage image = (PlatformView as PlatformImage)??new PlatformImage(PlatformView);
-					var result = await imageSource.UpdateSourceAsync(image, ImageSourceServiceProvider, SetImage!, token)
 						.ConfigureAwait(false);
 
 					SourceManager.CompleteLoad(result);

@@ -1,6 +1,6 @@
 ﻿#nullable enable
 
-#if (WINDOWS && __GTK__) || IOS || ANDROID
+#if WINDOWS || IOS || ANDROID || TIZEN
 using System;
 using System.Collections.Generic;
 using System.Text;

@@ -9,7 +9,7 @@ using PlatformView = Microsoft.Maui.Platform.MauiSwitch;
 using PlatformView = Microsoft.UI.Xaml.Controls.ToggleSwitch;
 #endif
 #elif TIZEN
-using PlatformView = ElmSharp.Check;
+using PlatformView = Tizen.UIExtensions.NUI.GraphicsView.Switch;
 #elif (NETSTANDARD || !PLATFORM) || (NET6_0_OR_GREATER && !IOS && !ANDROID && !TIZEN)
 using PlatformView = System.Object;
 #endif

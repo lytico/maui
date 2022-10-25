@@ -12,7 +12,7 @@ using PlatformView = Gtk.EventBox;
 using PlatformView = Microsoft.UI.Xaml.Controls.MenuBar;
 #endif
 #elif TIZEN
-using PlatformView = ElmSharp.EvasObject;
+using PlatformView = Tizen.NUI.BaseComponents.View;
 #elif (NETSTANDARD || !PLATFORM) || (NET6_0_OR_GREATER && !IOS && !ANDROID && !TIZEN)
 using PlatformView = System.Object;
 #endif

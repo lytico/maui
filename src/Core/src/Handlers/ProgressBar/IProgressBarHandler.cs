@@ -2,13 +2,13 @@
 using PlatformView = UIKit.UIProgressView;
 #elif MONOANDROID
 using PlatformView = Android.Widget.ProgressBar;
-#elif WINDOWS
-#if __GTK__
+#elif WINDOWS && __GTK__
 using PlatformView = Microsoft.Maui.Platform.MauiView;
-#else
+#elif WINDOWS && !__GTK__
 using PlatformView = Microsoft.UI.Xaml.Controls.ProgressBar;
-#endif
-#elif (NETSTANDARD || !PLATFORM) || (NET6_0_OR_GREATER && !IOS && !ANDROID)
+#elif TIZEN
+using PlatformView = Tizen.UIExtensions.NUI.GraphicsView.ProgressBar;
+#elif (NETSTANDARD || !PLATFORM) || (NET6_0_OR_GREATER && !IOS && !ANDROID && !TIZEN)
 using PlatformView = System.Object;
 #endif
 

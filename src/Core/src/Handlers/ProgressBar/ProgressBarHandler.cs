@@ -3,13 +3,13 @@
 using PlatformView = UIKit.UIProgressView;
 #elif MONOANDROID
 using PlatformView = Android.Widget.ProgressBar;
-#elif WINDOWS
-#if __GTK__
+#elif WINDOWS && __GTK__
 using PlatformView = Microsoft.Maui.Platform.MauiView;
-#else
+#elif WINDOWS && !__GTK__
 using PlatformView = Microsoft.UI.Xaml.Controls.ProgressBar;
-#endif
-#elif (NETSTANDARD || !PLATFORM) || (NET6_0_OR_GREATER && !IOS && !ANDROID)
+#elif TIZEN
+using PlatformView = Tizen.UIExtensions.NUI.GraphicsView.ProgressBar;
+#elif (NETSTANDARD || !PLATFORM) || (NET6_0_OR_GREATER && !IOS && !ANDROID && !TIZEN)
 using PlatformView = System.Object;
 #endif
 
@@ -23,7 +23,7 @@ namespace Microsoft.Maui.Handlers
 			[nameof(IProgress.ProgressColor)] = MapProgressColor
 		};
 
-		public static CommandMapper<IPicker, IProgressBarHandler> CommandMapper = new(ViewCommandMapper)
+		public static CommandMapper<IProgress, IProgressBarHandler> CommandMapper = new(ViewCommandMapper)
 		{
 		};
 
@@ -31,7 +31,13 @@ namespace Microsoft.Maui.Handlers
 		{
 		}
 
-		public ProgressBarHandler(IPropertyMapper? mapper = null) : base(mapper ?? Mapper)
+		public ProgressBarHandler(IPropertyMapper? mapper)
+			: base(mapper ?? Mapper, CommandMapper)
+		{
+		}
+
+		public ProgressBarHandler(IPropertyMapper? mapper, CommandMapper? commandMapper)
+			: base(mapper ?? Mapper, commandMapper ?? CommandMapper)
 		{
 		}
 

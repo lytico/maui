@@ -11,7 +11,7 @@ using PlatformView = Gdk.Pixbuf;
 using PlatformView = Microsoft.UI.Xaml.Media.ImageSource;
 #endif
 #elif TIZEN
-using PlatformView = Tizen.UIExtensions.ElmSharp.Image;
+using PlatformView = Microsoft.Maui.Platform.MauiImageSource;
 #elif (NETSTANDARD || !PLATFORM) || (NET6_0_OR_GREATER && !IOS && !ANDROID && !TIZEN)
 using PlatformView = System.Object;
 #endif

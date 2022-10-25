@@ -9,7 +9,7 @@ using PlatformView = Microsoft.Maui.Platform.MauiSlider;
 using PlatformView = Microsoft.UI.Xaml.Controls.Slider;
 #endif
 #elif TIZEN
-using PlatformView = ElmSharp.Slider;
+using PlatformView = Tizen.NUI.Components.Slider;
 #elif (NETSTANDARD || !PLATFORM) || (NET6_0_OR_GREATER && !IOS && !ANDROID && !TIZEN)
 using PlatformView = System.Object;
 #endif

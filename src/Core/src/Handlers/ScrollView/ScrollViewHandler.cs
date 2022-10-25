@@ -11,7 +11,7 @@ using PlatformView = Gtk.ScrolledWindow;
 using PlatformView = Microsoft.UI.Xaml.Controls.ScrollViewer;
 #endif
 #elif TIZEN
-using PlatformView = Tizen.UIExtensions.ElmSharp.ScrollView;
+using PlatformView = Tizen.UIExtensions.NUI.ScrollView;
 #elif (NETSTANDARD || !PLATFORM) || (NET6_0_OR_GREATER && !IOS && !ANDROID && !TIZEN)
 using PlatformView = System.Object;
 #endif
@@ -41,9 +41,14 @@ namespace Microsoft.Maui.Handlers
 
 		}
 
-		public ScrollViewHandler(IPropertyMapper? mapper = null) : base(mapper ?? Mapper)
+		public ScrollViewHandler(IPropertyMapper? mapper)
+			: base(mapper ?? Mapper, CommandMapper)
 		{
+		}
 
+		public ScrollViewHandler(IPropertyMapper? mapper, CommandMapper? commandMapper)
+			: base(mapper ?? Mapper, commandMapper ?? CommandMapper)
+		{
 		}
 
 		IScrollView IScrollViewHandler.VirtualView => VirtualView;

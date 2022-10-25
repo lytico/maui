@@ -2,12 +2,12 @@
 using PlatformView = UIKit.UIView;
 #elif MONOANDROID
 using PlatformView = Android.Views.View;
-#elif WINDOWS
-#if __GTK__
+#elif WINDOWS && __GTK__
 using PlatformView = Gtk.Fixed;
-#else
+#elif WINDOWS && !__GTK__
 using PlatformView = Microsoft.Maui.Platform.RootNavigationView;
-#endif
+#elif TIZEN
+using PlatformView = Tizen.UIExtensions.NUI.DrawerView;
 #elif (NETSTANDARD || !PLATFORM) || (NET6_0_OR_GREATER && !IOS && !ANDROID)
 using PlatformView = System.Object;
 #endif

@@ -10,7 +10,7 @@ using PlatformView = Microsoft.Maui.Platform.MauiView;
 using PlatformView = Microsoft.UI.Xaml.Controls.CheckBox;
 #endif
 #elif TIZEN
-using PlatformView = ElmSharp.Check;
+using PlatformView = Tizen.UIExtensions.NUI.GraphicsView.CheckBox;
 #elif (NETSTANDARD || !PLATFORM)
 using PlatformView = System.Object;
 #endif

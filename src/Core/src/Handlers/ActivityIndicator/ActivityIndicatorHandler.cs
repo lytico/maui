@@ -7,8 +7,8 @@ using Gtk;
 using PlatformView = Microsoft.Maui.Platform.ActivityIndicator;
 #elif WINDOWS && !__GTK__
 using PlatformView = Microsoft.UI.Xaml.Controls.ProgressRing;
-#elif TIZEN      
-using PlatformView = ElmSharp.ProgressBar;
+#elif TIZEN
+using PlatformView = Tizen.UIExtensions.NUI.GraphicsView.ActivityIndicator;
 #elif (NETSTANDARD || !PLATFORM) || (NET6_0_OR_GREATER && !IOS && !ANDROID && !TIZEN && !__GTK__)
 using PlatformView = System.Object;
 #endif
@@ -39,9 +39,14 @@ namespace Microsoft.Maui.Handlers
 
 		}
 
-		public ActivityIndicatorHandler(IPropertyMapper mapper) : base(mapper ?? Mapper, CommandMapper)
+		public ActivityIndicatorHandler(IPropertyMapper? mapper)
+			: base(mapper ?? Mapper, CommandMapper)
 		{
+		}
 
+		public ActivityIndicatorHandler(IPropertyMapper? mapper, CommandMapper? commandMapper)
+			: base(mapper ?? Mapper, commandMapper ?? CommandMapper)
+		{
 		}
 
 		IActivityIndicator IActivityIndicatorHandler.VirtualView => VirtualView;
