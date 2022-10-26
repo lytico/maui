@@ -12,10 +12,28 @@
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" />
   </ItemGroup>
 
+  <ItemDefinitionGroup>
+    <MauiXaml>
+      <SubType>Designer</SubType>
+    </MauiXaml>
+  </ItemDefinitionGroup>
+
+  <ItemGroup>
+    <MauiXaml Include="**\*.xaml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <MauiCss Include="**\*.css" />
+	<AvailableItemName Include="MauiXaml" />
+	<AvailableItemName Include="MauiCss" />
+    <EmbeddedResource Include="@(MauiCss)" />
+  </ItemGroup>
+
   <ItemGroup>
     <ProjectReference Include="..\..\..\Core\src\Core-GTK.csproj" />
     <ProjectReference Include="..\..\src\Core\Controls.Core-GTK.csproj" />
     <ProjectReference Include="..\..\src\Xaml\Controls.Xaml-GTK.csproj" />
+	<ProjectReference Include="..\..\..\Controls\src\SourceGen\Controls.SourceGen.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
   </ItemGroup>
 
   <ItemGroup>
@@ -45,25 +63,6 @@
     </Reference>
   </ItemGroup>
 
-   <ItemDefinitionGroup>
-    <MauiXaml>
-      <SubType>Designer</SubType>
-    </MauiXaml>
-  </ItemDefinitionGroup>
-
-  <ItemGroup>
-    <MauiXaml Include="**\*.xaml" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Remove="click_me.gif" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Page Remove="MainPage.xaml" />
-    <Page Remove="SandboxShell.xaml" />
-  </ItemGroup>
-
   <ItemGroup>
     <Compile Include="obj\Debug\prebuilt\MainPage.xaml.i.g.cs" />
     <Compile Include="obj\Debug\prebuilt\SandboxShell.xaml.i.g.cs" />
@@ -71,8 +70,6 @@
 
   <ItemGroup>
     <EmbeddedResource Include="click_me.gif" />
-    <EmbeddedResource Include="MainPage.xaml" />
-    <EmbeddedResource Include="SandboxShell.xaml" />
   </ItemGroup>
 
   <Target Name="PreBuild" BeforeTargets="PreBuildEvent">
