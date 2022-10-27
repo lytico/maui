@@ -54,35 +54,23 @@ namespace Microsoft.Maui.Controls.SourceGen
 			//			if (!System.Diagnostics.Debugger.IsAttached)
 			//				System.Diagnostics.Debugger.Launch();
 			//#endif
-
-			File.AppendAllText("D:\\TEMP\\SourceGenLog.Txt", "\r\n* * * Initializing Code Behind Generator * * *");
-
 			var projectItemProvider = initContext.AdditionalTextsProvider
 				.Combine(initContext.AnalyzerConfigOptionsProvider)
 				.Select(ComputeProjectItem);
 
-			File.AppendAllText("D:\\TEMP\\SourceGenLog.Txt", "\r\nprojectItemProvider");
-
 			var xmlnsDefinitionsProvider = initContext.CompilationProvider
 				.Select(GetXmlnsDefinitionAttributes);
-
-			File.AppendAllText("D:\\TEMP\\SourceGenLog.Txt", "\r\nxmlnsDefinitionsProvider");
 
 			var sourceProvider = projectItemProvider
 				.Combine(xmlnsDefinitionsProvider)
 				.Combine(initContext.CompilationProvider)
 				.Select(static (t, _) => (t.Left.Left, t.Left.Right, t.Right));
 
-			File.AppendAllText("D:\\TEMP\\SourceGenLog.Txt", "\r\nsourceProvider");
-
 			initContext.RegisterSourceOutput(sourceProvider, static (sourceProductionContext, provider) =>
 			{
 				var (projectItem, xmlnsDefinitions, compilation) = provider;
-				File.AppendAllText("D:\\TEMP\\SourceGenLog.Txt", "\r\nRegisterSourceOutput");
 				if (projectItem == null)
 				{
-					File.AppendAllText("D:\\TEMP\\SourceGenLog.Txt", "\r\nprojectItem == null");
-
 					return;
 				}
 				switch (projectItem.Kind)
@@ -102,35 +90,16 @@ namespace Microsoft.Maui.Controls.SourceGen
 		static ProjectItem? ComputeProjectItem((AdditionalText, AnalyzerConfigOptionsProvider) tuple, CancellationToken cancellationToken)
 		{
 			var (additionalText, globalOptions) = tuple;
-			File.AppendAllText("D:\\TEMP\\SourceGenLog.Txt", "\r\nComputeProjectItem additionalText: " + additionalText.Path);
 			var options = globalOptions.GetOptions(additionalText);
-			if (options == null)
-			{
-				File.AppendAllText("D:\\TEMP\\SourceGenLog.Txt", "\r\noptions is null");
-				return null;
-			}
-
-			// File.AppendAllText("D:\\TEMP\\SourceGenLog.Txt", "\r\noptions: " + options.);
-
 			if (!options.TryGetValue("build_metadata.additionalfiles.GenKind", out string? kind) || kind is null)
 			{
 				if (kind == null)
 				{
-					File.AppendAllText("D:\\TEMP\\SourceGenLog.Txt", "\r\nkind is null");
 					var ext = Path.GetExtension(additionalText.Path);
 					if (ext.Equals(".xaml", StringComparison.Ordinal))
 					{
 						kind = "Xaml";
-						File.AppendAllText("D:\\TEMP\\SourceGenLog.Txt", "\r\nkind is Xaml");
 					}
-					else
-					{
-						File.AppendAllText("D:\\TEMP\\SourceGenLog.Txt", "\r\next: " + ext);
-					}
-				}
-				else
-				{
-					File.AppendAllText("D:\\TEMP\\SourceGenLog.Txt", "\r\nkind: " + kind);
 				}
 
 				if (kind == null)
@@ -173,21 +142,16 @@ namespace Microsoft.Maui.Controls.SourceGen
 		static void GenerateXamlCodeBehind(ProjectItem projItem, Compilation compilation, SourceProductionContext context, IList<XmlnsDefinitionAttribute> xmlnsDefinitionCache)
 		{
 			var text = projItem.AdditionalText.GetText();
-			File.AppendAllText("D:\\TEMP\\SourceGenLog.Txt", "\r\ntext: " + text);
 			if (text == null)
 				return;
 
 			// Get a unique string for this xaml project item
 			var itemName = projItem.ManifestResourceName ?? projItem.RelativePath;
-			File.AppendAllText("D:\\TEMP\\SourceGenLog.Txt", "\r\nitemName: " + itemName);
 			if (itemName == null)
 			{
-				File.AppendAllText("D:\\TEMP\\SourceGenLog.Txt", "\r\nitemName is null");
 				itemName = projItem.TargetPath;
-				File.AppendAllText("D:\\TEMP\\SourceGenLog.Txt", "\r\nitemName: " + itemName);
 				if (itemName == null)
 				{
-					File.AppendAllText("D:\\TEMP\\SourceGenLog.Txt", "\r\nitemName is null");
 					return;
 				}
 			}
@@ -199,7 +163,6 @@ namespace Microsoft.Maui.Controls.SourceGen
 				if (parseException != null)
 					context.ReportDiagnostic(Diagnostic.Create(Descriptors.XamlParserError, null, parseException.Message));
 
-				File.AppendAllText("D:\\TEMP\\SourceGenLog.Txt", "\r\nTryParseXaml fail");
 				return;
 			}
 			var sb = new StringBuilder();
@@ -208,15 +171,12 @@ namespace Microsoft.Maui.Controls.SourceGen
 			var hintName = $"{(string.IsNullOrEmpty(Path.GetDirectoryName(projItem.TargetPath)) ? "" : Path.GetDirectoryName(projItem.TargetPath) + Path.DirectorySeparatorChar)}{Path.GetFileNameWithoutExtension(projItem.TargetPath)}.{projItem.Kind.ToLowerInvariant()}.sg.cs".Replace(Path.DirectorySeparatorChar, '_');
 			hintName = hintName.Replace(":", "_");
 
-			File.AppendAllText("D:\\TEMP\\SourceGenLog.Txt", "\r\nhintName: " + hintName);
-
 			if (projItem.ManifestResourceName != null && projItem.TargetPath != null)
 				sb.AppendLine($"[assembly: global::Microsoft.Maui.Controls.Xaml.XamlResourceId(\"{projItem.ManifestResourceName}\", \"{projItem.TargetPath.Replace('\\', '/')}\", {(rootType == null ? "null" : "typeof(global::" + rootClrNamespace + "." + rootType + ")")})]");
 
 			if (XamlResourceIdOnly)
 			{
 				context.AddSource(hintName, SourceText.From(sb.ToString(), Encoding.UTF8));
-				File.AppendAllText("D:\\TEMP\\SourceGenLog.Txt", "\r\nadded source");
 				return;
 			}
 
@@ -233,8 +193,6 @@ namespace Microsoft.Maui.Controls.SourceGen
 
 			sb.AppendLine($"\tpublic partial class {rootType} : {baseType}");
 			sb.AppendLine("\t{");
-
-			File.AppendAllText("D:\\TEMP\\SourceGenLog.Txt", "\r\nGenerateXamlCodeBehind sb: " + sb.ToString());
 
 			//optional default ctor
 			if (generateDefaultCtor)
@@ -284,20 +242,7 @@ namespace Microsoft.Maui.Controls.SourceGen
 			sb.AppendLine("\t}");
 			sb.AppendLine("}");
 
-			File.AppendAllText("D:\\TEMP\\SourceGenLog.Txt", "\r\nGenerateXamlCodeBehind sb: " + sb.ToString());
-
-			var sText = SourceText.From(sb.ToString(), Encoding.UTF8);
-			File.AppendAllText("D:\\TEMP\\SourceGenLog.Txt", "\r\nsText: " + sText);
-
-			try
-			{
-				context.AddSource(hintName, sText);
-			}
-			catch (Exception ex)
-			{
-				File.AppendAllText("D:\\TEMP\\SourceGenLog.Txt", "\r\nEXCEPTION: " + ex.ToString());
-			}
-			File.AppendAllText("D:\\TEMP\\SourceGenLog.Txt", "\r\nadded source at end");
+			context.AddSource(hintName, SourceText.From(sb.ToString(), Encoding.UTF8));
 		}
 
 		static bool TryParseXaml(SourceText text, string uid, Compilation compilation, IList<XmlnsDefinitionAttribute> xmlnsDefinitionCache, out string? rootType, out string? rootClrNamespace, out bool generateDefaultCtor, out bool addXamlCompilationAttribute, out bool hideFromIntellisense, out bool xamlResourceIdOnly, out string? baseType, out IEnumerable<(string, string, string)>? namedFields, out Exception? exception)
