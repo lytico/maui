@@ -20,21 +20,91 @@
 
   <ItemGroup>
     <MauiXaml Include="**\*.xaml" />
-  </ItemGroup>
-
-  <ItemGroup>
     <MauiCss Include="**\*.css" />
 	<AvailableItemName Include="MauiXaml" />
 	<AvailableItemName Include="MauiCss" />
-    <EmbeddedResource Include="@(MauiCss)" />
   </ItemGroup>
+
 
   <ItemGroup>
     <ProjectReference Include="..\..\..\Core\src\Core-GTK.csproj" />
-    <ProjectReference Include="..\..\src\Core\Controls.Core-GTK.csproj" />
+    <ProjectReference Include="..\..\src\Build.Tasks\Controls.Build.Tasks-GTK.csproj" />
     <ProjectReference Include="..\..\src\Xaml\Controls.Xaml-GTK.csproj" />
+    <ProjectReference Include="..\..\src\Core\Controls.Core-GTK.csproj" />
 	<ProjectReference Include="..\..\..\Controls\src\SourceGen\Controls.SourceGen.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
   </ItemGroup>
+
+  <UsingTask TaskName="Microsoft.Maui.Controls.Build.Tasks.XamlCTask" AssemblyFile="D:\Source\maui\src\Controls\src\Build.Tasks\bin\Debug\netstandard2.0\Microsoft.Maui.Controls.Build.Tasks.dll" />
+
+  <!-- Inject MauiXaml and MauiCss as AdditionalFiles for partial type generation-->
+  <Target Name="_MauiInjectXamlCssAdditionalFiles" BeforeTargets="GenerateMSBuildEditorConfigFileShouldRun" DependsOnTargets="$(CreateManifestResourceNamesDependsOn)">
+    <ItemGroup>
+      <_MauiXamlWithResourceNames Remove="@(_MauiXamlWithResourceNames)" />
+      <_MauiXamlWithTargetPath Remove="@(_MauiXamlWithTargetPath)" />
+      <_MauiCssWithResourceNames Remove="@(_MauiCssWithResourceNames)" />
+      <_MauiCssWithTargetPath Remove="@(_MauiCssWithTargetPath)" />
+    </ItemGroup>
+
+    <AssignTargetPath Files="@(MauiXaml)" RootFolder="$(MSBuildProjectDirectory)">
+      <Output TaskParameter="AssignedFiles" ItemName="_MauiXamlWithTargetPath" />
+    </AssignTargetPath>
+
+    <AssignTargetPath Files="@(MauiCss)" RootFolder="$(MSBuildProjectDirectory)">
+      <Output TaskParameter="AssignedFiles" ItemName="_MauiCssWithTargetPath" />
+    </AssignTargetPath>
+
+    <CreateCSharpManifestResourceName ResourceFiles="@(_MauiXamlWithTargetPath -> '%(FullPath)')" RootNamespace="$(RootNamespace)" UseDependentUponConvention="$(EmbeddedResourceUseDependentUponConvention)">
+      <Output TaskParameter="ResourceFilesWithManifestResourceNames" ItemName="_MauiXamlWithResourceNames" />
+    </CreateCSharpManifestResourceName>
+
+    <CreateCSharpManifestResourceName ResourceFiles="@(_MauiCssWithTargetPath -> '%(FullPath)')" RootNamespace="$(RootNamespace)" UseDependentUponConvention="$(EmbeddedResourceUseDependentUponConvention)">
+      <Output TaskParameter="ResourceFilesWithManifestResourceNames" ItemName="_MauiCssWithResourceNames" />
+    </CreateCSharpManifestResourceName>
+    <ItemGroup>
+      <AdditionalFiles Condition="%(_MauiXamlWithResourceNames.TargetPath) != ''" Include="@(_MauiXamlWithResourceNames)" ManifestResourceName="%(_MauiXamlWithResourceNames.ManifestResourceName)" TargetPath="%(_MauiXamlWithResourceNames.TargetPath)" RelativePath="$([MSBuild]::MakeRelative($(MSBuildProjectDirectory), %(_MauiXamlWithResourceNames.TargetPath)))" ItemSpec="%(_MauiXamlWithResourceNames.OriginalItemSpec)" GenKind="Xaml" />
+      <AdditionalFiles Condition="%(_MauiCssWithResourceNames.TargetPath) != ''" Include="@(_MauiCssWithResourceNames)" ManifestResourceName="%(_MauiCssWithResourceNames.ManifestResourceName)" TargetPath="%(_MauiCssWithResourceNames.TargetPath)" RelativePath="$([MSBuild]::MakeRelative($(MSBuildProjectDirectory), %(_MauiCssWithResourceNames.TargetPath)))" ItemSpec="%(_MauiCssWithResourceNames.OriginalItemSpec)" GenKind="Css" />
+      <_MauiXamlWithResourceNames Remove="@(_MauiXamlWithResourceNames)" />
+      <_MauiXamlWithTargetPath Remove="@(_MauiXamlWithTargetPath)" />
+      <_MauiCssWithResourceNames Remove="@(_MauiCssWithResourceNames)" />
+      <_MauiCssWithTargetPath Remove="@(_MauiCssWithTargetPath)" />
+    </ItemGroup>
+  </Target>
+
+
+  <!-- re-add MauiXaml and MauiCss as EmbeddedResources -->
+  <PropertyGroup>
+    <PrepareResourcesDependsOn>
+      _MauiAddXamlEmbeddedResources;
+      $(PrepareResourcesDependsOn);
+    </PrepareResourcesDependsOn>
+  </PropertyGroup>
+  <Target Name="_MauiAddXamlEmbeddedResources">
+    <ItemGroup>
+      <EmbeddedResource Include="@(MauiXaml)" />
+      <EmbeddedResource Include="@(MauiCss)" />
+    </ItemGroup>
+  </Target>
+
+	<!-- XamlC -->
+	<PropertyGroup>
+		<CompileDependsOn>
+			$(CompileDependsOn);
+			XamlC;
+		</CompileDependsOn>
+	</PropertyGroup>
+
+	<Target Name="XamlC" AfterTargets="AfterCompile" Inputs="$(IntermediateOutputPath)$(TargetFileName)" Outputs="$(IntermediateOutputPath)XamlC.stamp" Condition=" '$(DesignTimeBuild)' != 'True' AND '@(MauiXaml)' != ''">
+	    <PropertyGroup>
+		<_MauiXamlCValidateOnly>$(MauiXamlCValidateOnly)</_MauiXamlCValidateOnly>
+		<_MauiXamlCValidateOnly Condition="'$(Configuration)' != 'Release' AND '$(_MauiForceXamlCForDebug)' != 'True'">True</_MauiXamlCValidateOnly>
+		<_MauiXamlCValidateOnly Condition="'$(BuildingForLiveUnitTesting)' == 'True' ">True</_MauiXamlCValidateOnly>
+	    </PropertyGroup>
+		<XamlCTask Assembly="$(IntermediateOutputPath)$(TargetFileName)" ReferencePath="@(ReferencePath)" OptimizeIL="true" DebugSymbols="$(DebugSymbols)" DebugType="$(DebugType)" DefaultCompile="true" ValidateOnly="$(_MauiXamlCValidateOnly)" TargetFramework="$(TargetFramework)" KeepXamlResources="$(MauiKeepXamlResources)" />
+		<Touch Files="$(IntermediateOutputPath)XamlC.stamp" AlwaysCreate="True" />
+		<ItemGroup>
+			<FileWrites Include="$(IntermediateOutputPath)XamlC.stamp" />
+		</ItemGroup>
+	</Target>
 
   <ItemGroup>
     <Reference Include="atk-sharp">
@@ -64,16 +134,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Include="obj\Debug\prebuilt\MainPage.xaml.i.g.cs" />
-    <Compile Include="obj\Debug\prebuilt\SandboxShell.xaml.i.g.cs" />
-  </ItemGroup>
-
-  <ItemGroup>
     <EmbeddedResource Include="click_me.gif" />
   </ItemGroup>
-
-  <Target Name="PreBuild" BeforeTargets="PreBuildEvent">
-    <Exec Command="D:\Source\maui\src\Controls\tests\GenerateXamlRunner\bin\Debug\net6.0\GenerateXamlRunner.exe $(ProjectDir) $(ProjectDir)$(BaseIntermediateOutputPath)$(Configuration)\prebuilt" />
-  </Target>
 
   </Project>
