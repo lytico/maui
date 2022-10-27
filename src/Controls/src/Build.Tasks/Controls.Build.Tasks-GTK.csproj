@@ -22,6 +22,7 @@
 	<ItemGroup>
 		<ProjectReference Include="..\Core\Controls.Core-GTK.csproj" />
 		<ProjectReference Include="..\Xaml\Controls.Xaml-GTK.csproj" />
+		<ProjectReference Include="..\SourceGen\Controls.SourceGen-GTK.csproj" ReferenceOutputAssembly="false" />
 	</ItemGroup>
 	
 	<ItemGroup>
