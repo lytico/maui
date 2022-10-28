@@ -26,7 +26,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\src\Core-GTK\Controls.Core-GTK.csproj" />
-    <ProjectReference Include="..\..\src\Xaml\Controls.Xaml-GTK.csproj" />
+    <ProjectReference Include="..\..\src\Xaml-GTK\Controls.Xaml-GTK.csproj" />
   </ItemGroup>
 
   <Import Project="$(MauiSrcDirectory)Maui.InTree.props" Condition=" '$(UseMaui)' != 'true' " />

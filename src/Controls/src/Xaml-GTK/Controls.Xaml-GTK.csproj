@@ -1,0 +1,117 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<TargetFrameworks>netstandard2.0</TargetFrameworks>
+		<AssemblyName>Microsoft.Maui.Controls.Xaml</AssemblyName>
+		<RootNamespace>Microsoft.Maui.Controls.Xaml</RootNamespace>
+		<IsPackable>false</IsPackable>
+		<_MauiDesignDllBuild Condition=" '$(OS)' != 'Unix' ">True</_MauiDesignDllBuild>
+		<NoWarn>$(NoWarn);CA2200;CS1591;RS0041</NoWarn>
+		<PackageId>Microsoft.Maui.Controls.Xaml</PackageId>
+		<GenerateDocumentationFile>true</GenerateDocumentationFile>
+	</PropertyGroup>
+
+	<PropertyGroup Condition="$(TargetFramework.Contains('-windows')) == true ">
+		<NoWarn>$(NoWarn);CA1416</NoWarn>
+		<DefineConstants>$(DefineConstants);WINDOWS;__GTK__</DefineConstants>
+	</PropertyGroup>
+
+	<ItemGroup>
+	  <Compile Include="..\Xaml\ApplyPropertiesVisitor.cs" Link="ApplyPropertiesVisitor.cs" />
+	  <Compile Include="..\Xaml\CreateValuesVisitor.cs" Link="CreateValuesVisitor.cs" />
+	  <Compile Include="..\Xaml\Diagnostics\ResourceDictionaryDiagnostics.cs" Link="Diagnostics\ResourceDictionaryDiagnostics.cs" />
+	  <Compile Include="..\Xaml\Diagnostics\StaticResourceResolvedEventArgs.cs" Link="Diagnostics\StaticResourceResolvedEventArgs.cs" />
+	  <Compile Include="..\Xaml\ExpandMarkupsVisitor.cs" Link="ExpandMarkupsVisitor.cs" />
+	  <Compile Include="..\Xaml\FillResourceDictionariesVisitor.cs" Link="FillResourceDictionariesVisitor.cs" />
+	  <Compile Include="..\Xaml\Hosting\AppHostBuilderExtensions.cs" Link="Hosting\AppHostBuilderExtensions.cs" />
+	  <Compile Include="..\Xaml\HydrationContext.cs" Link="HydrationContext.cs" />
+	  <Compile Include="..\Xaml\IDictionaryExtensions.cs" Link="IDictionaryExtensions.cs" />
+	  <Compile Include="..\Xaml\IExpressionParser.cs" Link="IExpressionParser.cs" />
+	  <Compile Include="..\Xaml\MarkupExpressionParser.cs" Link="MarkupExpressionParser.cs" />
+	  <Compile Include="..\Xaml\MarkupExtensionParser.cs" Link="MarkupExtensionParser.cs" />
+	  <Compile Include="..\Xaml\MarkupExtensions\AppThemeBindingExtension.cs" Link="MarkupExtensions\AppThemeBindingExtension.cs" />
+	  <Compile Include="..\Xaml\MarkupExtensions\ArrayExtension.cs" Link="MarkupExtensions\ArrayExtension.cs" />
+	  <Compile Include="..\Xaml\MarkupExtensions\BindingExtension.cs" Link="MarkupExtensions\BindingExtension.cs" />
+	  <Compile Include="..\Xaml\MarkupExtensions\DataTemplateExtension.cs" Link="MarkupExtensions\DataTemplateExtension.cs" />
+	  <Compile Include="..\Xaml\MarkupExtensions\DynamicResourceExtension.cs" Link="MarkupExtensions\DynamicResourceExtension.cs" />
+	  <Compile Include="..\Xaml\MarkupExtensions\FontImageExtension.cs" Link="MarkupExtensions\FontImageExtension.cs" />
+	  <Compile Include="..\Xaml\MarkupExtensions\NullExtension.cs" Link="MarkupExtensions\NullExtension.cs" />
+	  <Compile Include="..\Xaml\MarkupExtensions\OnIdiomExtension.cs" Link="MarkupExtensions\OnIdiomExtension.cs" />
+	  <Compile Include="..\Xaml\MarkupExtensions\OnPlatformExtension.cs" Link="MarkupExtensions\OnPlatformExtension.cs" />
+	  <Compile Include="..\Xaml\MarkupExtensions\ReferenceExtension.cs" Link="MarkupExtensions\ReferenceExtension.cs" />
+	  <Compile Include="..\Xaml\MarkupExtensions\RelativeSourceExtension.cs" Link="MarkupExtensions\RelativeSourceExtension.cs" />
+	  <Compile Include="..\Xaml\MarkupExtensions\StaticExtension.cs" Link="MarkupExtensions\StaticExtension.cs" />
+	  <Compile Include="..\Xaml\MarkupExtensions\StaticResourceExtension.cs" Link="MarkupExtensions\StaticResourceExtension.cs" />
+	  <Compile Include="..\Xaml\MarkupExtensions\StyleSheetExtension.cs" Link="MarkupExtensions\StyleSheetExtension.cs" />
+	  <Compile Include="..\Xaml\MarkupExtensions\TemplateBindingExtension.cs" Link="MarkupExtensions\TemplateBindingExtension.cs" />
+	  <Compile Include="..\Xaml\MarkupExtensions\TypeExtension.cs" Link="MarkupExtensions\TypeExtension.cs" />
+	  <Compile Include="..\Xaml\NamescopingVisitor.cs" Link="NamescopingVisitor.cs" />
+	  <Compile Include="..\Xaml\Properties\AssemblyInfo.cs" Link="Properties\AssemblyInfo.cs" />
+	  <Compile Include="..\Xaml\PruneIgnoredNodesVisitor.cs" Link="PruneIgnoredNodesVisitor.cs" />
+	  <Compile Include="..\Xaml\RegisterXNamesVisitor.cs" Link="RegisterXNamesVisitor.cs" />
+	  <Compile Include="..\Xaml\RemoveDuplicateDesignNodes.cs" Link="RemoveDuplicateDesignNodes.cs" />
+	  <Compile Include="..\Xaml\ResourcesLoader.cs" Link="ResourcesLoader.cs" />
+	  <Compile Include="..\Xaml\SimplifyOnPlatformVisitor.cs" Link="SimplifyOnPlatformVisitor.cs" />
+	  <Compile Include="..\Xaml\TypeArgumentsParser.cs" Link="TypeArgumentsParser.cs" />
+	  <Compile Include="..\Xaml\ViewExtensions.cs" Link="ViewExtensions.cs" />
+	  <Compile Include="..\Xaml\XamlCompilationAttribute.cs" Link="XamlCompilationAttribute.cs" />
+	  <Compile Include="..\Xaml\XamlFilePathAttribute.cs" Link="XamlFilePathAttribute.cs" />
+	  <Compile Include="..\Xaml\XamlLoader.cs" Link="XamlLoader.cs" />
+	  <Compile Include="..\Xaml\XamlLoader.Types.cs" Link="XamlLoader.Types.cs" />
+	  <Compile Include="..\Xaml\XamlNode.cs" Link="XamlNode.cs" />
+	  <Compile Include="..\Xaml\XamlNodeVisitor.cs" Link="XamlNodeVisitor.cs" />
+	  <Compile Include="..\Xaml\XamlParser.cs" Link="XamlParser.cs" />
+	  <Compile Include="..\Xaml\XamlParser.Namespaces.cs" Link="XamlParser.Namespaces.cs" />
+	  <Compile Include="..\Xaml\XamlServiceProvider.cs" Link="XamlServiceProvider.cs" />
+	  <Compile Include="..\Xaml\XmlName.cs" Link="XmlName.cs" />
+	  <Compile Include="..\Xaml\XmlnsHelper.cs" Link="XmlnsHelper.cs" />
+	  <Compile Include="..\Xaml\XmlTypeXamlExtensions.cs" Link="XmlTypeXamlExtensions.cs" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\..\..\Core\src\Core-GTK.csproj" />
+		<ProjectReference Include="..\Core-GTK\Controls.Core-GTK.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Microsoft.Extensions.Configuration" />
+		<PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="7.0.0-rc.1.22426.10" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Folder Include="Diagnostics\" />
+	  <Folder Include="Hosting\" />
+	  <Folder Include="MarkupExtensions\" />
+	  <Folder Include="Properties\" />
+	  <Folder Include="PublicAPI\netstandard\" />
+	</ItemGroup>
+
+	<PropertyGroup Condition=" '$(_MauiDesignDllBuild)' == 'True'">
+	<TargetsForTfmSpecificBuildOutput>
+		$(TargetsForTfmSpecificBuildOutput);
+		_MauiPackXamlDesignAssemblies
+	</TargetsForTfmSpecificBuildOutput>
+	</PropertyGroup>
+
+	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|netstandard2.0|AnyCPU'">
+	  <DefineConstants>$(DefineConstants)TRACE;WINDOWS;__GTK__</DefineConstants>
+	</PropertyGroup>
+
+	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|netstandard2.0|AnyCPU'">
+	  <DefineConstants>$(DefineConstants)TRACE;WINDOWS;__GTK__</DefineConstants>
+	</PropertyGroup>
+
+	<Target Name="_MauiPackXamlDesignAssemblies">
+		<ItemGroup>
+			<BuildOutputInPackage Include="..\Xaml.Design\bin\$(Configuration)\net472\Microsoft.Maui.Controls.Xaml.DesignTools.dll">
+				<TargetPath>Design\Microsoft.Maui.Controls.Xaml.DesignTools.dll</TargetPath>
+			</BuildOutputInPackage>
+			<BuildOutputInPackage Include="..\Xaml.Design\bin\$(Configuration)\net472\Microsoft.Maui.Controls.Xaml.DesignTools.pdb">
+				<TargetPath>Design\Microsoft.Maui.Controls.Xaml.DesignTools.pdb</TargetPath>
+			</BuildOutputInPackage>
+		</ItemGroup>
+	</Target>
+
+	<Import Project="$(MauiSrcDirectory)PublicAPI.targets" />
+
+</Project>

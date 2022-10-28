@@ -30,8 +30,8 @@
     <ProjectReference Include="..\..\..\Core\src\Core-GTK.csproj" />
     <ProjectReference Include="..\..\src\Build.Tasks-GTK\Controls.Build.Tasks-GTK.csproj" />
     <ProjectReference Include="..\..\src\Core-GTK\Controls.Core-GTK.csproj" />
-    <ProjectReference Include="..\..\src\Xaml\Controls.Xaml-GTK.csproj" />
 	<ProjectReference Include="..\..\..\Controls\src\SourceGen\Controls.SourceGen-GTK.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
+	<ProjectReference Include="..\..\src\Xaml-GTK\Controls.Xaml-GTK.csproj" />
   </ItemGroup>
 
   <UsingTask TaskName="Microsoft.Maui.Controls.Build.Tasks.XamlCTask" AssemblyFile="D:\Source\maui\src\Controls\src\Build.Tasks\bin\Debug\netstandard2.0\Microsoft.Maui.Controls.Build.Tasks.dll" />
