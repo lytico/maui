@@ -66,7 +66,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\..\Core\src\Core-GTK.csproj" />
     <ProjectReference Include="..\..\..\Essentials\src\Essentials-GTK.csproj" />
-    <ProjectReference Include="..\..\src\Core\Controls.Core-GTK.csproj" />
+    <ProjectReference Include="..\..\src\Core-GTK\Controls.Core-GTK.csproj" />
   </ItemGroup>
 
   <Import Condition=" '$(UseMaui)' != 'true' " Project="..\..\..\BlazorWebView\src\Maui\build\Microsoft.AspNetCore.Components.WebView.Maui.targets" />

@@ -1,0 +1,881 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFrameworks>netstandard2.0</TargetFrameworks>
+    <RootNamespace>Microsoft.Maui.Controls</RootNamespace>
+    <AssemblyName>Microsoft.Maui.Controls</AssemblyName>
+    <Nullable>disable</Nullable>
+    <IsPackable>false</IsPackable>
+    <_MauiDesignDllBuild Condition=" '$(OS)' != 'Unix' ">True</_MauiDesignDllBuild>
+    <GitInfoReportImportance>high</GitInfoReportImportance>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <NoWarn>$(NoWarn);CS1591;RS0041;RS0026;RS0027;RS0022</NoWarn>
+    <RunAnalyzersDuringBuild>False</RunAnalyzersDuringBuild>
+    <RunAnalyzersDuringLiveAnalysis>False</RunAnalyzersDuringLiveAnalysis>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="..\..\src-GTK\Compatibility\GTK\ResourcesProvider.cs" Link="Compatibility\GTK\ResourcesProvider.cs" />
+    <Compile Include="..\..\src-GTK\Compatibility\Handlers\GTK\BaseCellView.cs" Link="Compatibility\Handlers\GTK\BaseCellView.cs" />
+    <Compile Include="..\..\src-GTK\Compatibility\Handlers\GTK\CellRenderer.cs" Link="Compatibility\Handlers\GTK\CellRenderer.cs" />
+    <Compile Include="..\..\src-GTK\Compatibility\Handlers\GTK\EntryCellRenderer.cs" Link="Compatibility\Handlers\GTK\EntryCellRenderer.cs" />
+    <Compile Include="..\..\src-GTK\Compatibility\Handlers\GTK\EntryCellView.cs" Link="Compatibility\Handlers\GTK\EntryCellView.cs" />
+    <Compile Include="..\..\src-GTK\Compatibility\Handlers\GTK\FrameRenderer.cs" Link="Compatibility\Handlers\GTK\FrameRenderer.cs" />
+    <Compile Include="..\..\src-GTK\Compatibility\Handlers\GTK\ImageCellRenderer.cs" Link="Compatibility\Handlers\GTK\ImageCellRenderer.cs" />
+    <Compile Include="..\..\src-GTK\Compatibility\Handlers\GTK\SwitchCellRenderer.cs" Link="Compatibility\Handlers\GTK\SwitchCellRenderer.cs" />
+    <Compile Include="..\..\src-GTK\Compatibility\Handlers\GTK\SwitchCellView.cs" Link="Compatibility\Handlers\GTK\SwitchCellView.cs" />
+    <Compile Include="..\..\src-GTK\Compatibility\Handlers\GTK\TextCellRenderer.cs" Link="Compatibility\Handlers\GTK\TextCellRenderer.cs" />
+    <Compile Include="..\..\src-GTK\Compatibility\Handlers\GTK\ViewCellRenderer.cs" Link="Compatibility\Handlers\GTK\ViewCellRenderer.cs" />
+    <Compile Include="..\..\src-GTK\Compatibility\Handlers\GTK\ViewRenderer.cs" Link="Compatibility\Handlers\GTK\ViewRenderer.cs" />
+    <Compile Include="..\..\src-GTK\Compatibility\Handlers\GTK\VisualElementRenderer.cs" Link="Compatibility\Handlers\GTK\VisualElementRenderer.cs" />
+    <Compile Include="..\..\src-GTK\HandlerImpl\Application\Application.GTK.cs" Link="HandlerImpl\Application\Application.GTK.cs" />
+    <Compile Include="..\..\src-GTK\HandlerImpl\Element\Element.GTK.cs" Link="HandlerImpl\Element\Element.GTK.cs" />
+    <Compile Include="..\..\src-GTK\HandlerImpl\Label\Label.GTK.cs" Link="HandlerImpl\Label\Label.GTK.cs" />
+    <Compile Include="..\..\src-GTK\HandlerImpl\Window\Window.GTK.cs" Link="HandlerImpl\Window\Window.GTK.cs" />
+    <Compile Include="..\..\src-GTK\Platform\AlertManager\AlertManager.GTK.cs" Link="Platform\AlertManager\AlertManager.GTK.cs" />
+    <Compile Include="..\..\src-GTK\Platform\GTK\AutomationPropertiesProvider.cs" Link="Platform\GTK\AutomationPropertiesProvider.cs" />
+    <Compile Include="..\..\src-GTK\Platform\GTK\LabelExtensions.cs" Link="Platform\GTK\LabelExtensions.cs" />
+    <Compile Include="..\Core\Accelerator.cs" Link="Accelerator.cs" />
+    <Compile Include="..\Core\AcceleratorTypeConverter.cs" Link="AcceleratorTypeConverter.cs" />
+    <Compile Include="..\Core\ActionSheetArguments.cs" Link="ActionSheetArguments.cs" />
+    <Compile Include="..\Core\ActivityIndicator.cs" Link="ActivityIndicator.cs" />
+    <Compile Include="..\Core\AdaptiveTrigger.cs" Link="AdaptiveTrigger.cs" />
+    <Compile Include="..\Core\AlertArguments.cs" Link="AlertArguments.cs" />
+    <Compile Include="..\Core\AnimatableKey.cs" Link="AnimatableKey.cs" />
+    <Compile Include="..\Core\Animation.cs" Link="Animation.cs" />
+    <Compile Include="..\Core\AnimationExtensions.cs" Link="AnimationExtensions.cs" />
+    <Compile Include="..\Core\Application.cs" Link="Application.cs" />
+    <Compile Include="..\Core\AppLinkEntry.cs" Link="AppLinkEntry.cs" />
+    <Compile Include="..\Core\AppThemeBinding.cs" Link="AppThemeBinding.cs" />
+    <Compile Include="..\Core\AppThemeChangedEventArgs.cs" Link="AppThemeChangedEventArgs.cs" />
+    <Compile Include="..\Core\AutomationProperties.cs" Link="AutomationProperties.cs" />
+    <Compile Include="..\Core\BackButtonPressedEventArgs.cs" Link="BackButtonPressedEventArgs.cs" />
+    <Compile Include="..\Core\BackgroundingEventArgs.cs" Link="BackgroundingEventArgs.cs" />
+    <Compile Include="..\Core\BarElement.cs" Link="BarElement.cs" />
+    <Compile Include="..\Core\BaseMenuItem.cs" Link="BaseMenuItem.cs" />
+    <Compile Include="..\Core\BindableLayout.cs" Link="BindableLayout.cs" />
+    <Compile Include="..\Core\BindableObject.cs" Link="BindableObject.cs" />
+    <Compile Include="..\Core\BindableObjectExtensions.cs" Link="BindableObjectExtensions.cs" />
+    <Compile Include="..\Core\BindableProperty.cs" Link="BindableProperty.cs" />
+    <Compile Include="..\Core\BindablePropertyConverter.cs" Link="BindablePropertyConverter.cs" />
+    <Compile Include="..\Core\BindablePropertyKey.cs" Link="BindablePropertyKey.cs" />
+    <Compile Include="..\Core\Binding.cs" Link="Binding.cs" />
+    <Compile Include="..\Core\BindingBase.cs" Link="BindingBase.cs" />
+    <Compile Include="..\Core\BindingBaseExtensions.cs" Link="BindingBaseExtensions.cs" />
+    <Compile Include="..\Core\BindingExpression.cs" Link="BindingExpression.cs" />
+    <Compile Include="..\Core\BindingMode.cs" Link="BindingMode.cs" />
+    <Compile Include="..\Core\Border.cs" Link="Border.cs" />
+    <Compile Include="..\Core\BorderElement.cs" Link="BorderElement.cs" />
+    <Compile Include="..\Core\BoundsConstraint.cs" Link="BoundsConstraint.cs" />
+    <Compile Include="..\Core\BoxView.cs" Link="BoxView.cs" />
+    <Compile Include="..\Core\Brush.cs" Link="Brush.cs" />
+    <Compile Include="..\Core\BrushTypeConverter.cs" Link="BrushTypeConverter.cs" />
+    <Compile Include="..\Core\Button.cs" Link="Button.cs" />
+    <Compile Include="..\Core\ButtonElement.cs" Link="ButtonElement.cs" />
+    <Compile Include="..\Core\ButtonsMask.cs" Link="ButtonsMask.cs" />
+    <Compile Include="..\Core\CarouselPage.cs" Link="CarouselPage.cs" />
+    <Compile Include="..\Core\CastingEnumerator.cs" Link="CastingEnumerator.cs" />
+    <Compile Include="..\Core\Cells\Cell.cs" Link="Cells\Cell.cs" />
+    <Compile Include="..\Core\Cells\EntryCell.cs" Link="Cells\EntryCell.cs" />
+    <Compile Include="..\Core\Cells\ICellController.cs" Link="Cells\ICellController.cs" />
+    <Compile Include="..\Core\Cells\IEntryCellController.cs" Link="Cells\IEntryCellController.cs" />
+    <Compile Include="..\Core\Cells\ImageCell.cs" Link="Cells\ImageCell.cs" />
+    <Compile Include="..\Core\Cells\SwitchCell.cs" Link="Cells\SwitchCell.cs" />
+    <Compile Include="..\Core\Cells\TextCell.cs" Link="Cells\TextCell.cs" />
+    <Compile Include="..\Core\Cells\ViewCell.cs" Link="Cells\ViewCell.cs" />
+    <Compile Include="..\Core\CheckBox.cs" Link="CheckBox.cs" />
+    <Compile Include="..\Core\CheckedChangedEventArgs.cs" Link="CheckedChangedEventArgs.cs" />
+    <Compile Include="..\Core\ChildCollectionChangedEventArgs.cs" Link="ChildCollectionChangedEventArgs.cs" />
+    <Compile Include="..\Core\ChildGestureRecognizer.cs" Link="ChildGestureRecognizer.cs" />
+    <Compile Include="..\Core\ClickedEventArgs.cs" Link="ClickedEventArgs.cs" />
+    <Compile Include="..\Core\ClickGestureRecognizer.cs" Link="ClickGestureRecognizer.cs" />
+    <Compile Include="..\Core\CollectionSynchronizationCallback.cs" Link="CollectionSynchronizationCallback.cs" />
+    <Compile Include="..\Core\CollectionSynchronizationContext.cs" Link="CollectionSynchronizationContext.cs" />
+    <Compile Include="..\Core\ColorElement.cs" Link="ColorElement.cs" />
+    <Compile Include="..\Core\ColumnDefinition.cs" Link="ColumnDefinition.cs" />
+    <Compile Include="..\Core\ColumnDefinitionCollection.cs" Link="ColumnDefinitionCollection.cs" />
+    <Compile Include="..\Core\ColumnDefinitionCollectionTypeConverter.cs" Link="ColumnDefinitionCollectionTypeConverter.cs" />
+    <Compile Include="..\Core\Command.cs" Link="Command.cs" />
+    <Compile Include="..\Core\CompareStateTrigger.cs" Link="CompareStateTrigger.cs" />
+    <Compile Include="..\Core\Compatibility\Handlers\ViewHandlerDelegator.cs" Link="Compatibility\Handlers\ViewHandlerDelegator.cs" />
+    <Compile Include="..\Core\Compatibility\Handlers\VisualElementRenderer.cs" Link="Compatibility\Handlers\VisualElementRenderer.cs" />
+    <Compile Include="..\Core\Compatibility\INativeElementView.cs" Link="Compatibility\INativeElementView.cs" />
+    <Compile Include="..\Core\CompressedLayout.cs" Link="CompressedLayout.cs" />
+    <Compile Include="..\Core\Configuration.cs" Link="Configuration.cs" />
+    <Compile Include="..\Core\ConstraintType.cs" Link="ConstraintType.cs" />
+    <Compile Include="..\Core\ContentConverter.cs" Link="ContentConverter.cs" />
+    <Compile Include="..\Core\ContentPage.cs" Link="ContentPage.cs" />
+    <Compile Include="..\Core\ContentPresenter.cs" Link="ContentPresenter.cs" />
+    <Compile Include="..\Core\ContentPropertyAttribute.cs" Link="ContentPropertyAttribute.cs" />
+    <Compile Include="..\Core\ContentView.cs" Link="ContentView.cs" />
+    <Compile Include="..\Core\ContextFlyout.cs" Link="ContextFlyout.cs" />
+    <Compile Include="..\Core\ControlsColorExtensions.cs" Link="ControlsColorExtensions.cs" />
+    <Compile Include="..\Core\ControlTemplate.cs" Link="ControlTemplate.cs" />
+    <Compile Include="..\Core\CornerElement.cs" Link="CornerElement.cs" />
+    <Compile Include="..\Core\DataTemplate.cs" Link="DataTemplate.cs" />
+    <Compile Include="..\Core\DataTemplateExtensions.cs" Link="DataTemplateExtensions.cs" />
+    <Compile Include="..\Core\DataTemplateSelector.cs" Link="DataTemplateSelector.cs" />
+    <Compile Include="..\Core\DateChangedEventArgs.cs" Link="DateChangedEventArgs.cs" />
+    <Compile Include="..\Core\DatePicker.cs" Link="DatePicker.cs" />
+    <Compile Include="..\Core\DecorableTextElement.cs" Link="DecorableTextElement.cs" />
+    <Compile Include="..\Core\DefinitionCollection.cs" Link="DefinitionCollection.cs" />
+    <Compile Include="..\Core\DependencyAttribute.cs" Link="DependencyAttribute.cs" />
+    <Compile Include="..\Core\DependencyFetchTarget.cs" Link="DependencyFetchTarget.cs" />
+    <Compile Include="..\Core\DependencyResolver.cs" Link="DependencyResolver.cs" />
+    <Compile Include="..\Core\DependencyService.cs" Link="DependencyService.cs" />
+    <Compile Include="..\Core\DesignMode.cs" Link="DesignMode.cs" />
+    <Compile Include="..\Core\Device.cs" Link="Device.cs" />
+    <Compile Include="..\Core\DeviceOrientationExtensions.cs" Link="DeviceOrientationExtensions.cs" />
+    <Compile Include="..\Core\DeviceStateTrigger.cs" Link="DeviceStateTrigger.cs" />
+    <Compile Include="..\Core\DispatcherExtensions.cs" Link="DispatcherExtensions.cs" />
+    <Compile Include="..\Core\DisplayDensityChangedEventArgs.cs" Link="DisplayDensityChangedEventArgs.cs" />
+    <Compile Include="..\Core\DisplayInfoExtensions.cs" Link="DisplayInfoExtensions.cs" />
+    <Compile Include="..\Core\DoubleCollection.cs" Link="DoubleCollection.cs" />
+    <Compile Include="..\Core\DoubleCollectionConverter.cs" Link="DoubleCollectionConverter.cs" />
+    <Compile Include="..\Core\DragAndDrop\DataPackage.cs" Link="DragAndDrop\DataPackage.cs" />
+    <Compile Include="..\Core\DragAndDrop\DataPackageOperation.cs" Link="DragAndDrop\DataPackageOperation.cs" />
+    <Compile Include="..\Core\DragAndDrop\DataPackagePropertySet.cs" Link="DragAndDrop\DataPackagePropertySet.cs" />
+    <Compile Include="..\Core\DragAndDrop\DataPackagePropertySetView.cs" Link="DragAndDrop\DataPackagePropertySetView.cs" />
+    <Compile Include="..\Core\DragAndDrop\DataPackageView.cs" Link="DragAndDrop\DataPackageView.cs" />
+    <Compile Include="..\Core\DragAndDrop\DragEventArgs.cs" Link="DragAndDrop\DragEventArgs.cs" />
+    <Compile Include="..\Core\DragAndDrop\DragStartingEventArgs.cs" Link="DragAndDrop\DragStartingEventArgs.cs" />
+    <Compile Include="..\Core\DragAndDrop\DropCompletedEventArgs.cs" Link="DragAndDrop\DropCompletedEventArgs.cs" />
+    <Compile Include="..\Core\DragAndDrop\DropEventArgs.cs" Link="DragAndDrop\DropEventArgs.cs" />
+    <Compile Include="..\Core\Editor.cs" Link="Editor.cs" />
+    <Compile Include="..\Core\EditorAutoSizeOption.cs" Link="EditorAutoSizeOption.cs" />
+    <Compile Include="..\Core\Effect.cs" Link="Effect.cs" />
+    <Compile Include="..\Core\EffectiveFlowDirection.cs" Link="EffectiveFlowDirection.cs" />
+    <Compile Include="..\Core\EffectiveFlowDirectionExtensions.cs" Link="EffectiveFlowDirectionExtensions.cs" />
+    <Compile Include="..\Core\EffectiveVisualExtensions.cs" Link="EffectiveVisualExtensions.cs" />
+    <Compile Include="..\Core\Element.cs" Link="Element.cs" />
+    <Compile Include="..\Core\ElementCollection.cs" Link="ElementCollection.cs" />
+    <Compile Include="..\Core\ElementEventArgs.cs" Link="ElementEventArgs.cs" />
+    <Compile Include="..\Core\ElementTemplate.cs" Link="ElementTemplate.cs" />
+    <Compile Include="..\Core\Element_StyleSheets.cs" Link="Element_StyleSheets.cs" />
+    <Compile Include="..\Core\Entry.cs" Link="Entry.cs" />
+    <Compile Include="..\Core\EnumerableExtensions.cs" Link="EnumerableExtensions.cs" />
+    <Compile Include="..\Core\EventArg.cs" Link="EventArg.cs" />
+    <Compile Include="..\Core\ExportEffectAttribute.cs" Link="ExportEffectAttribute.cs" />
+    <Compile Include="..\Core\ExportFontAttribute.cs" Link="ExportFontAttribute.cs" />
+    <Compile Include="..\Core\ExpressionSearch.cs" Link="ExpressionSearch.cs" />
+    <Compile Include="..\Core\FileImageSource.cs" Link="FileImageSource.cs" />
+    <Compile Include="..\Core\FileImageSourceConverter.cs" Link="FileImageSourceConverter.cs" />
+    <Compile Include="..\Core\FlowDirectionConverter.cs" Link="FlowDirectionConverter.cs" />
+    <Compile Include="..\Core\FlyoutBase.cs" Link="FlyoutBase.cs" />
+    <Compile Include="..\Core\FlyoutHeaderBehavior.cs" Link="FlyoutHeaderBehavior.cs" />
+    <Compile Include="..\Core\FlyoutLayoutBehavior.cs" Link="FlyoutLayoutBehavior.cs" />
+    <Compile Include="..\Core\FocusEventArgs.cs" Link="FocusEventArgs.cs" />
+    <Compile Include="..\Core\Foldable\IFoldableService.cs" Link="Foldable\IFoldableService.cs" />
+    <Compile Include="..\Core\FontAttributes.cs" Link="FontAttributes.cs" />
+    <Compile Include="..\Core\FontElement.cs" Link="FontElement.cs" />
+    <Compile Include="..\Core\FontExtensions.cs" Link="FontExtensions.cs" />
+    <Compile Include="..\Core\FontImageSource.cs" Link="FontImageSource.cs" />
+    <Compile Include="..\Core\FontSizeConverter.cs" Link="FontSizeConverter.cs" />
+    <Compile Include="..\Core\FormattedString.cs" Link="FormattedString.cs" />
+    <Compile Include="..\Core\Frame.cs" Link="Frame.cs" />
+    <Compile Include="..\Core\GestureElement.cs" Link="GestureElement.cs" />
+    <Compile Include="..\Core\GestureRecognizer.cs" Link="GestureRecognizer.cs" />
+    <Compile Include="..\Core\GestureState.cs" Link="GestureState.cs" />
+    <Compile Include="..\Core\GlobalNamespaces.cs" Link="GlobalNamespaces.cs" />
+    <Compile Include="..\Core\GradientBrush.cs" Link="GradientBrush.cs" />
+    <Compile Include="..\Core\GradientStop.cs" Link="GradientStop.cs" />
+    <Compile Include="..\Core\GradientStopCollection.cs" Link="GradientStopCollection.cs" />
+    <Compile Include="..\Core\GridLengthTypeConverter.cs" Link="GridLengthTypeConverter.cs" />
+    <Compile Include="..\Core\HandlerAttribute.cs" Link="HandlerAttribute.cs" />
+    <Compile Include="..\Core\HandlerChangingEventArgs.cs" Link="HandlerChangingEventArgs.cs" />
+    <Compile Include="..\Core\HandlerImpl\ActivityIndicator.Impl.cs" Link="HandlerImpl\ActivityIndicator.Impl.cs" />
+    <Compile Include="..\Core\HandlerImpl\Application\Application.cs" Link="HandlerImpl\Application\Application.cs" />
+    <Compile Include="..\Core\HandlerImpl\Application\Application.Impl.cs" Link="HandlerImpl\Application\Application.Impl.cs" />
+    <Compile Include="..\Core\HandlerImpl\BoxView.Impl.cs" Link="HandlerImpl\BoxView.Impl.cs" />
+    <Compile Include="..\Core\HandlerImpl\Brush.Impl.cs" Link="HandlerImpl\Brush.Impl.cs" />
+    <Compile Include="..\Core\HandlerImpl\Button\Button.cs" Link="HandlerImpl\Button\Button.cs" />
+    <Compile Include="..\Core\HandlerImpl\Button\Button.Impl.cs" Link="HandlerImpl\Button\Button.Impl.cs" />
+    <Compile Include="..\Core\HandlerImpl\CheckBox\CheckBox.cs" Link="HandlerImpl\CheckBox\CheckBox.cs" />
+    <Compile Include="..\Core\HandlerImpl\CheckBox\CheckBox.Impl.cs" Link="HandlerImpl\CheckBox\CheckBox.Impl.cs" />
+    <Compile Include="..\Core\HandlerImpl\ContentPage.Impl.cs" Link="HandlerImpl\ContentPage.Impl.cs" />
+    <Compile Include="..\Core\HandlerImpl\ContentView\ContentView.Impl.cs" Link="HandlerImpl\ContentView\ContentView.Impl.cs" />
+    <Compile Include="..\Core\HandlerImpl\DatePicker\DatePicker.cs" Link="HandlerImpl\DatePicker\DatePicker.cs" />
+    <Compile Include="..\Core\HandlerImpl\DatePicker\DatePicker.Impl.cs" Link="HandlerImpl\DatePicker\DatePicker.Impl.cs" />
+    <Compile Include="..\Core\HandlerImpl\Editor\Editor.cs" Link="HandlerImpl\Editor\Editor.cs" />
+    <Compile Include="..\Core\HandlerImpl\Editor\Editor.Impl.cs" Link="HandlerImpl\Editor\Editor.Impl.cs" />
+    <Compile Include="..\Core\HandlerImpl\Element\Element.cs" Link="HandlerImpl\Element\Element.cs" />
+    <Compile Include="..\Core\HandlerImpl\Element\Element.Impl.cs" Link="HandlerImpl\Element\Element.Impl.cs" />
+    <Compile Include="..\Core\HandlerImpl\Ellipse.Impl.cs" Link="HandlerImpl\Ellipse.Impl.cs" />
+    <Compile Include="..\Core\HandlerImpl\Entry\Entry.cs" Link="HandlerImpl\Entry\Entry.cs" />
+    <Compile Include="..\Core\HandlerImpl\Entry\Entry.Impl.cs" Link="HandlerImpl\Entry\Entry.Impl.cs" />
+    <Compile Include="..\Core\HandlerImpl\Frame.Impl.cs" Link="HandlerImpl\Frame.Impl.cs" />
+    <Compile Include="..\Core\HandlerImpl\GraphicsView.Impl.cs" Link="HandlerImpl\GraphicsView.Impl.cs" />
+    <Compile Include="..\Core\HandlerImpl\Image.Impl.cs" Link="HandlerImpl\Image.Impl.cs" />
+    <Compile Include="..\Core\HandlerImpl\ImageButton\ImageButton.Impl.cs" Link="HandlerImpl\ImageButton\ImageButton.Impl.cs" />
+    <Compile Include="..\Core\HandlerImpl\IMapColorPropertyToPaint.cs" Link="HandlerImpl\IMapColorPropertyToPaint.cs" />
+    <Compile Include="..\Core\HandlerImpl\IndicatorView.Impl.cs" Link="HandlerImpl\IndicatorView.Impl.cs" />
+    <Compile Include="..\Core\HandlerImpl\Label\Label.cs" Link="HandlerImpl\Label\Label.cs" />
+    <Compile Include="..\Core\HandlerImpl\Label\Label.Impl.cs" Link="HandlerImpl\Label\Label.Impl.cs" />
+    <Compile Include="..\Core\HandlerImpl\Layout.Impl.cs" Link="HandlerImpl\Layout.Impl.cs" />
+    <Compile Include="..\Core\HandlerImpl\Line.Impl.cs" Link="HandlerImpl\Line.Impl.cs" />
+    <Compile Include="..\Core\HandlerImpl\NavigationPage\NavigationPage.cs" Link="HandlerImpl\NavigationPage\NavigationPage.cs" />
+    <Compile Include="..\Core\HandlerImpl\NavigationPage\NavigationPage.Impl.cs" Link="HandlerImpl\NavigationPage\NavigationPage.Impl.cs" />
+    <Compile Include="..\Core\HandlerImpl\NavigationPage\NavigationPage.Legacy.cs" Link="HandlerImpl\NavigationPage\NavigationPage.Legacy.cs" />
+    <Compile Include="..\Core\HandlerImpl\Page.Impl.cs" Link="HandlerImpl\Page.Impl.cs" />
+    <Compile Include="..\Core\HandlerImpl\Path.Impl.cs" Link="HandlerImpl\Path.Impl.cs" />
+    <Compile Include="..\Core\HandlerImpl\Picker\Picker.cs" Link="HandlerImpl\Picker\Picker.cs" />
+    <Compile Include="..\Core\HandlerImpl\Picker\Picker.Impl.cs" Link="HandlerImpl\Picker\Picker.Impl.cs" />
+    <Compile Include="..\Core\HandlerImpl\Polygon.Impl.cs" Link="HandlerImpl\Polygon.Impl.cs" />
+    <Compile Include="..\Core\HandlerImpl\Polyline.Impl.cs" Link="HandlerImpl\Polyline.Impl.cs" />
+    <Compile Include="..\Core\HandlerImpl\ProgressBar.Impl.cs" Link="HandlerImpl\ProgressBar.Impl.cs" />
+    <Compile Include="..\Core\HandlerImpl\RadioButton\RadioButton.cs" Link="HandlerImpl\RadioButton\RadioButton.cs" />
+    <Compile Include="..\Core\HandlerImpl\RadioButton\RadioButton.Impl.cs" Link="HandlerImpl\RadioButton\RadioButton.Impl.cs" />
+    <Compile Include="..\Core\HandlerImpl\Rectangle.Impl.cs" Link="HandlerImpl\Rectangle.Impl.cs" />
+    <Compile Include="..\Core\HandlerImpl\RefreshView\RefreshView.Impl.cs" Link="HandlerImpl\RefreshView\RefreshView.Impl.cs" />
+    <Compile Include="..\Core\HandlerImpl\RoundRectangle.Impl.cs" Link="HandlerImpl\RoundRectangle.Impl.cs" />
+    <Compile Include="..\Core\HandlerImpl\ScrollView\ScrollView.cs" Link="HandlerImpl\ScrollView\ScrollView.cs" />
+    <Compile Include="..\Core\HandlerImpl\ScrollView\ScrollView.Impl.cs" Link="HandlerImpl\ScrollView\ScrollView.Impl.cs" />
+    <Compile Include="..\Core\HandlerImpl\SearchBar\SearchBar.cs" Link="HandlerImpl\SearchBar\SearchBar.cs" />
+    <Compile Include="..\Core\HandlerImpl\SearchBar\SearchBar.Impl.cs" Link="HandlerImpl\SearchBar\SearchBar.Impl.cs" />
+    <Compile Include="..\Core\HandlerImpl\Shape\Shape.Impl.cs" Link="HandlerImpl\Shape\Shape.Impl.cs" />
+    <Compile Include="..\Core\HandlerImpl\Shell.Impl.cs" Link="HandlerImpl\Shell.Impl.cs" />
+    <Compile Include="..\Core\HandlerImpl\ShellSection.Impl.cs" Link="HandlerImpl\ShellSection.Impl.cs" />
+    <Compile Include="..\Core\HandlerImpl\Slider.Impl.cs" Link="HandlerImpl\Slider.Impl.cs" />
+    <Compile Include="..\Core\HandlerImpl\Stepper.Impl.cs" Link="HandlerImpl\Stepper.Impl.cs" />
+    <Compile Include="..\Core\HandlerImpl\Switch.Impl.cs" Link="HandlerImpl\Switch.Impl.cs" />
+    <Compile Include="..\Core\HandlerImpl\TabbedPage\TabbedPage.Impl.cs" Link="HandlerImpl\TabbedPage\TabbedPage.Impl.cs" />
+    <Compile Include="..\Core\HandlerImpl\TemplatedView\TemplatedView.Impl.cs" Link="HandlerImpl\TemplatedView\TemplatedView.Impl.cs" />
+    <Compile Include="..\Core\HandlerImpl\TimePicker\TimePicker.cs" Link="HandlerImpl\TimePicker\TimePicker.cs" />
+    <Compile Include="..\Core\HandlerImpl\TimePicker\TimePicker.Impl.cs" Link="HandlerImpl\TimePicker\TimePicker.Impl.cs" />
+    <Compile Include="..\Core\HandlerImpl\VisualElement\VisualElement.cs" Link="HandlerImpl\VisualElement\VisualElement.cs" />
+    <Compile Include="..\Core\HandlerImpl\VisualElement\VisualElement.Impl.cs" Link="HandlerImpl\VisualElement\VisualElement.Impl.cs" />
+    <Compile Include="..\Core\HandlerImpl\WebView\WebView.Impl.cs" Link="HandlerImpl\WebView\WebView.Impl.cs" />
+    <Compile Include="..\Core\HandlerImpl\Window\Window.cs" Link="HandlerImpl\Window\Window.cs" />
+    <Compile Include="..\Core\HandlerImpl\Window\Window.Impl.cs" Link="HandlerImpl\Window\Window.Impl.cs" />
+    <Compile Include="..\Core\Handlers\Shell\ShellHandler.cs" Link="Handlers\Shell\ShellHandler.cs" />
+    <Compile Include="..\Core\Hosting\Effects\AppHostBuilderExtensions.cs" Link="Hosting\Effects\AppHostBuilderExtensions.cs" />
+    <Compile Include="..\Core\Hosting\Effects\IEffectsBuilder.cs" Link="Hosting\Effects\IEffectsBuilder.cs" />
+    <Compile Include="..\Core\HtmlWebViewSource.cs" Link="HtmlWebViewSource.cs" />
+    <Compile Include="..\Core\IAnimatable.cs" Link="IAnimatable.cs" />
+    <Compile Include="..\Core\IAppIndexingProvider.cs" Link="IAppIndexingProvider.cs" />
+    <Compile Include="..\Core\IApplicationController.cs" Link="IApplicationController.cs" />
+    <Compile Include="..\Core\IAppLinkEntry.cs" Link="IAppLinkEntry.cs" />
+    <Compile Include="..\Core\IAppLinks.cs" Link="IAppLinks.cs" />
+    <Compile Include="..\Core\IBarElement.cs" Link="IBarElement.cs" />
+    <Compile Include="..\Core\IBorderElement.cs" Link="IBorderElement.cs" />
+    <Compile Include="..\Core\IButtonController.cs" Link="IButtonController.cs" />
+    <Compile Include="..\Core\IButtonElement.cs" Link="IButtonElement.cs" />
+    <Compile Include="..\Core\IColorElement.cs" Link="IColorElement.cs" />
+    <Compile Include="..\Core\IConfigElement.cs" Link="IConfigElement.cs" />
+    <Compile Include="..\Core\IConfigPlatform.cs" Link="IConfigPlatform.cs" />
+    <Compile Include="..\Core\IControlTemplated.cs" Link="IControlTemplated.cs" />
+    <Compile Include="..\Core\IConverterOptions.cs" Link="IConverterOptions.cs" />
+    <Compile Include="..\Core\ICornerElement.cs" Link="ICornerElement.cs" />
+    <Compile Include="..\Core\IDataTemplateController.cs" Link="IDataTemplateController.cs" />
+    <Compile Include="..\Core\IDecorableTextElement.cs" Link="IDecorableTextElement.cs" />
+    <Compile Include="..\Core\IDefinition.cs" Link="IDefinition.cs" />
+    <Compile Include="..\Core\IEditorController.cs" Link="IEditorController.cs" />
+    <Compile Include="..\Core\IEffectControlProvider.cs" Link="IEffectControlProvider.cs" />
+    <Compile Include="..\Core\IElementConfiguration.cs" Link="IElementConfiguration.cs" />
+    <Compile Include="..\Core\IElementController.cs" Link="IElementController.cs" />
+    <Compile Include="..\Core\IElementDefinition.cs" Link="IElementDefinition.cs" />
+    <Compile Include="..\Core\IEntryController.cs" Link="IEntryController.cs" />
+    <Compile Include="..\Core\IExpressionSearch.cs" Link="IExpressionSearch.cs" />
+    <Compile Include="..\Core\IExtendedTypeConverter.cs" Link="IExtendedTypeConverter.cs" />
+    <Compile Include="..\Core\IFlowDirectionController.cs" Link="IFlowDirectionController.cs" />
+    <Compile Include="..\Core\IFlyoutPageController.cs" Link="IFlyoutPageController.cs" />
+    <Compile Include="..\Core\IFontElement.cs" Link="IFontElement.cs" />
+    <Compile Include="..\Core\IFontNamedSizeService.cs" Link="IFontNamedSizeService.cs" />
+    <Compile Include="..\Core\IGestureController.cs" Link="IGestureController.cs" />
+    <Compile Include="..\Core\IGestureRecognizer.cs" Link="IGestureRecognizer.cs" />
+    <Compile Include="..\Core\IGestureRecognizers.cs" Link="IGestureRecognizers.cs" />
+    <Compile Include="..\Core\IGridController.cs" Link="IGridController.cs" />
+    <Compile Include="..\Core\IImageController.cs" Link="IImageController.cs" />
+    <Compile Include="..\Core\IImageElement.cs" Link="IImageElement.cs" />
+    <Compile Include="..\Core\IItemsView.cs" Link="IItemsView.cs" />
+    <Compile Include="..\Core\IItemViewController.cs" Link="IItemViewController.cs" />
+    <Compile Include="..\Core\ILayout.cs" Link="ILayout.cs" />
+    <Compile Include="..\Core\ILayoutController.cs" Link="ILayoutController.cs" />
+    <Compile Include="..\Core\ILineHeightElement.cs" Link="ILineHeightElement.cs" />
+    <Compile Include="..\Core\IListProxy.cs" Link="IListProxy.cs" />
+    <Compile Include="..\Core\IListViewController.cs" Link="IListViewController.cs" />
+    <Compile Include="..\Core\Image.cs" Link="Image.cs" />
+    <Compile Include="..\Core\ImageBrush.cs" Link="ImageBrush.cs" />
+    <Compile Include="..\Core\ImageButton.cs" Link="ImageButton.cs" />
+    <Compile Include="..\Core\ImageElement.cs" Link="ImageElement.cs" />
+    <Compile Include="..\Core\ImageSource.cs" Link="ImageSource.cs" />
+    <Compile Include="..\Core\ImageSourceConverter.cs" Link="ImageSourceConverter.cs" />
+    <Compile Include="..\Core\IMarkupExtension.cs" Link="IMarkupExtension.cs" />
+    <Compile Include="..\Core\IMenuItemController.cs" Link="IMenuItemController.cs" />
+    <Compile Include="..\Core\ImmutableBrush.cs" Link="ImmutableBrush.cs" />
+    <Compile Include="..\Core\IMultiPageController.cs" Link="IMultiPageController.cs" />
+    <Compile Include="..\Core\IMultiValueConverter.cs" Link="IMultiValueConverter.cs" />
+    <Compile Include="..\Core\INativeBindingService.cs" Link="INativeBindingService.cs" />
+    <Compile Include="..\Core\INativeValueConverterService.cs" Link="INativeValueConverterService.cs" />
+    <Compile Include="..\Core\INavigation.cs" Link="INavigation.cs" />
+    <Compile Include="..\Core\INavigationPageController.cs" Link="INavigationPageController.cs" />
+    <Compile Include="..\Core\IndicatorShape.cs" Link="IndicatorShape.cs" />
+    <Compile Include="..\Core\IndicatorStackLayout.cs" Link="IndicatorStackLayout.cs" />
+    <Compile Include="..\Core\IndicatorView.cs" Link="IndicatorView.cs" />
+    <Compile Include="..\Core\InputView.cs" Link="InputView.cs" />
+    <Compile Include="..\Core\Interactivity\AttachedCollection.cs" Link="Interactivity\AttachedCollection.cs" />
+    <Compile Include="..\Core\Interactivity\Behavior.cs" Link="Interactivity\Behavior.cs" />
+    <Compile Include="..\Core\Interactivity\BindingCondition.cs" Link="Interactivity\BindingCondition.cs" />
+    <Compile Include="..\Core\Interactivity\Condition.cs" Link="Interactivity\Condition.cs" />
+    <Compile Include="..\Core\Interactivity\DataTrigger.cs" Link="Interactivity\DataTrigger.cs" />
+    <Compile Include="..\Core\Interactivity\EventTrigger.cs" Link="Interactivity\EventTrigger.cs" />
+    <Compile Include="..\Core\Interactivity\IAttachedObject.cs" Link="Interactivity\IAttachedObject.cs" />
+    <Compile Include="..\Core\Interactivity\MultiCondition.cs" Link="Interactivity\MultiCondition.cs" />
+    <Compile Include="..\Core\Interactivity\MultiTrigger.cs" Link="Interactivity\MultiTrigger.cs" />
+    <Compile Include="..\Core\Interactivity\PlatformBehavior.cs" Link="Interactivity\PlatformBehavior.cs" />
+    <Compile Include="..\Core\Interactivity\PropertyCondition.cs" Link="Interactivity\PropertyCondition.cs" />
+    <Compile Include="..\Core\Interactivity\Trigger.cs" Link="Interactivity\Trigger.cs" />
+    <Compile Include="..\Core\Interactivity\TriggerAction.cs" Link="Interactivity\TriggerAction.cs" />
+    <Compile Include="..\Core\Interactivity\TriggerBase.cs" Link="Interactivity\TriggerBase.cs" />
+    <Compile Include="..\Core\Internals\AsyncValue.cs" Link="Internals\AsyncValue.cs" />
+    <Compile Include="..\Core\Internals\AutoId.cs" Link="Internals\AutoId.cs" />
+    <Compile Include="..\Core\Internals\CellExtensions.cs" Link="Internals\CellExtensions.cs" />
+    <Compile Include="..\Core\Internals\DynamicResource.cs" Link="Internals\DynamicResource.cs" />
+    <Compile Include="..\Core\Internals\EffectUtilities.cs" Link="Internals\EffectUtilities.cs" />
+    <Compile Include="..\Core\Internals\EvalRequested.cs" Link="Internals\EvalRequested.cs" />
+    <Compile Include="..\Core\Internals\IDynamicResourceHandler.cs" Link="Internals\IDynamicResourceHandler.cs" />
+    <Compile Include="..\Core\Internals\ImageParser.cs" Link="Internals\ImageParser.cs" />
+    <Compile Include="..\Core\Internals\INameScope.cs" Link="Internals\INameScope.cs" />
+    <Compile Include="..\Core\Internals\InvalidationTrigger.cs" Link="Internals\InvalidationTrigger.cs" />
+    <Compile Include="..\Core\Internals\NameScope.cs" Link="Internals\NameScope.cs" />
+    <Compile Include="..\Core\Internals\NavigationRequestedEventArgs.cs" Link="Internals\NavigationRequestedEventArgs.cs" />
+    <Compile Include="..\Core\Internals\NavigationRequestType.cs" Link="Internals\NavigationRequestType.cs" />
+    <Compile Include="..\Core\Internals\NotifyCollectionChangedEventArgsEx.cs" Link="Internals\NotifyCollectionChangedEventArgsEx.cs" />
+    <Compile Include="..\Core\Internals\NotifyCollectionChangedEventArgsExtensions.cs" Link="Internals\NotifyCollectionChangedEventArgsExtensions.cs" />
+    <Compile Include="..\Core\Internals\PageExtensions.cs" Link="Internals\PageExtensions.cs" />
+    <Compile Include="..\Core\Internals\PreserveAttribute.cs" Link="Internals\PreserveAttribute.cs" />
+    <Compile Include="..\Core\Internals\ProfilePage.cs" Link="Internals\ProfilePage.cs" />
+    <Compile Include="..\Core\Internals\PropertyPropagationExtensions.cs" Link="Internals\PropertyPropagationExtensions.cs" />
+    <Compile Include="..\Core\Internals\ResourceLoader.cs" Link="Internals\ResourceLoader.cs" />
+    <Compile Include="..\Core\Internals\TextTransformUtilites.cs" Link="Internals\TextTransformUtilites.cs" />
+    <Compile Include="..\Core\InvalidationEventArgs.cs" Link="InvalidationEventArgs.cs" />
+    <Compile Include="..\Core\InvalidNavigationException.cs" Link="InvalidNavigationException.cs" />
+    <Compile Include="..\Core\IOpenGlViewController.cs" Link="IOpenGlViewController.cs" />
+    <Compile Include="..\Core\IPaddingElement.cs" Link="IPaddingElement.cs" />
+    <Compile Include="..\Core\IPageContainer.cs" Link="IPageContainer.cs" />
+    <Compile Include="..\Core\IPageController.cs" Link="IPageController.cs" />
+    <Compile Include="..\Core\IPanGestureController.cs" Link="IPanGestureController.cs" />
+    <Compile Include="..\Core\IPinchGestureController.cs" Link="IPinchGestureController.cs" />
+    <Compile Include="..\Core\IPlaceholderElement.cs" Link="IPlaceholderElement.cs" />
+    <Compile Include="..\Core\IPlatformElementConfiguration.cs" Link="IPlatformElementConfiguration.cs" />
+    <Compile Include="..\Core\IPlatformSizeService.cs" Link="IPlatformSizeService.cs" />
+    <Compile Include="..\Core\IPropertyPropagationController.cs" Link="IPropertyPropagationController.cs" />
+    <Compile Include="..\Core\IProvideParentValues.cs" Link="IProvideParentValues.cs" />
+    <Compile Include="..\Core\IProvideValueTarget.cs" Link="IProvideValueTarget.cs" />
+    <Compile Include="..\Core\IRegisterable.cs" Link="IRegisterable.cs" />
+    <Compile Include="..\Core\IResourceDictionary.cs" Link="IResourceDictionary.cs" />
+    <Compile Include="..\Core\IResourcesProvider.cs" Link="IResourcesProvider.cs" />
+    <Compile Include="..\Core\IRootObjectProvider.cs" Link="IRootObjectProvider.cs" />
+    <Compile Include="..\Core\IScrollViewController.cs" Link="IScrollViewController.cs" />
+    <Compile Include="..\Core\ISearchBarController.cs" Link="ISearchBarController.cs" />
+    <Compile Include="..\Core\ISliderController.cs" Link="ISliderController.cs" />
+    <Compile Include="..\Core\ISpatialElement.cs" Link="ISpatialElement.cs" />
+    <Compile Include="..\Core\IStyle.cs" Link="IStyle.cs" />
+    <Compile Include="..\Core\IStyleElement.cs" Link="IStyleElement.cs" />
+    <Compile Include="..\Core\ISwipeGestureController.cs" Link="ISwipeGestureController.cs" />
+    <Compile Include="..\Core\ISwipeItem.cs" Link="ISwipeItem.cs" />
+    <Compile Include="..\Core\ISwipeViewController.cs" Link="ISwipeViewController.cs" />
+    <Compile Include="..\Core\ISystemResourcesProvider.cs" Link="ISystemResourcesProvider.cs" />
+    <Compile Include="..\Core\ITableModel.cs" Link="ITableModel.cs" />
+    <Compile Include="..\Core\ITableViewController.cs" Link="ITableViewController.cs" />
+    <Compile Include="..\Core\ITemplatedItemsList.cs" Link="ITemplatedItemsList.cs" />
+    <Compile Include="..\Core\ITemplatedItemsListScrollToRequestedEventArgs.cs" Link="ITemplatedItemsListScrollToRequestedEventArgs.cs" />
+    <Compile Include="..\Core\ITemplatedItemsView.cs" Link="ITemplatedItemsView.cs" />
+    <Compile Include="..\Core\ItemsView.cs" Link="ItemsView.cs" />
+    <Compile Include="..\Core\Items\CarouselLayoutTypeConverter.cs" Link="Items\CarouselLayoutTypeConverter.cs" />
+    <Compile Include="..\Core\Items\CarouselView.cs" Link="Items\CarouselView.cs" />
+    <Compile Include="..\Core\Items\CollectionView.cs" Link="Items\CollectionView.cs" />
+    <Compile Include="..\Core\Items\CurrentItemChangedEventArgs.cs" Link="Items\CurrentItemChangedEventArgs.cs" />
+    <Compile Include="..\Core\Items\GridItemsLayout.cs" Link="Items\GridItemsLayout.cs" />
+    <Compile Include="..\Core\Items\GroupableItemsView.cs" Link="Items\GroupableItemsView.cs" />
+    <Compile Include="..\Core\Items\IItemsLayout.cs" Link="Items\IItemsLayout.cs" />
+    <Compile Include="..\Core\Items\ItemSizingStrategy.cs" Link="Items\ItemSizingStrategy.cs" />
+    <Compile Include="..\Core\Items\ItemsLayout.cs" Link="Items\ItemsLayout.cs" />
+    <Compile Include="..\Core\Items\ItemsLayoutOrientation.cs" Link="Items\ItemsLayoutOrientation.cs" />
+    <Compile Include="..\Core\Items\ItemsLayoutTypeConverter.cs" Link="Items\ItemsLayoutTypeConverter.cs" />
+    <Compile Include="..\Core\Items\ItemsUpdatingScrollMode.cs" Link="Items\ItemsUpdatingScrollMode.cs" />
+    <Compile Include="..\Core\Items\ItemsView.cs" Link="Items\ItemsView.cs" />
+    <Compile Include="..\Core\Items\ItemsViewScrolledEventArgs.cs" Link="Items\ItemsViewScrolledEventArgs.cs" />
+    <Compile Include="..\Core\Items\LinearItemsLayout.cs" Link="Items\LinearItemsLayout.cs" />
+    <Compile Include="..\Core\Items\MarshalingObservableCollection.cs" Link="Items\MarshalingObservableCollection.cs" />
+    <Compile Include="..\Core\Items\PositionChangedEventArgs.cs" Link="Items\PositionChangedEventArgs.cs" />
+    <Compile Include="..\Core\Items\ReorderableItemsView.cs" Link="Items\ReorderableItemsView.cs" />
+    <Compile Include="..\Core\Items\ScrollToRequestEventArgs.cs" Link="Items\ScrollToRequestEventArgs.cs" />
+    <Compile Include="..\Core\Items\SelectableItemsView.cs" Link="Items\SelectableItemsView.cs" />
+    <Compile Include="..\Core\Items\SelectionChangedEventArgs.cs" Link="Items\SelectionChangedEventArgs.cs" />
+    <Compile Include="..\Core\Items\SelectionList.cs" Link="Items\SelectionList.cs" />
+    <Compile Include="..\Core\Items\SelectionMode.cs" Link="Items\SelectionMode.cs" />
+    <Compile Include="..\Core\Items\SnapPointsAlignment.cs" Link="Items\SnapPointsAlignment.cs" />
+    <Compile Include="..\Core\Items\SnapPointsType.cs" Link="Items\SnapPointsType.cs" />
+    <Compile Include="..\Core\Items\StructuredItemsView.cs" Link="Items\StructuredItemsView.cs" />
+    <Compile Include="..\Core\ItemTappedEventArgs.cs" Link="ItemTappedEventArgs.cs" />
+    <Compile Include="..\Core\ItemVisibilityEventArgs.cs" Link="ItemVisibilityEventArgs.cs" />
+    <Compile Include="..\Core\ITextAlignmentElement.cs" Link="ITextAlignmentElement.cs" />
+    <Compile Include="..\Core\ITextElement.cs" Link="ITextElement.cs" />
+    <Compile Include="..\Core\IValueConverter.cs" Link="IValueConverter.cs" />
+    <Compile Include="..\Core\IValueConverterProvider.cs" Link="IValueConverterProvider.cs" />
+    <Compile Include="..\Core\IValueProvider.cs" Link="IValueProvider.cs" />
+    <Compile Include="..\Core\IViewContainer.cs" Link="IViewContainer.cs" />
+    <Compile Include="..\Core\IViewController.cs" Link="IViewController.cs" />
+    <Compile Include="..\Core\IVisualController.cs" Link="IVisualController.cs" />
+    <Compile Include="..\Core\IVisualElementController.cs" Link="IVisualElementController.cs" />
+    <Compile Include="..\Core\IWebViewController.cs" Link="IWebViewController.cs" />
+    <Compile Include="..\Core\IWindowController.cs" Link="IWindowController.cs" />
+    <Compile Include="..\Core\IXamlTypeResolver.cs" Link="IXamlTypeResolver.cs" />
+    <Compile Include="..\Core\IXmlLineInfoProvider.cs" Link="IXmlLineInfoProvider.cs" />
+    <Compile Include="..\Core\KnownColor.cs" Link="KnownColor.cs" />
+    <Compile Include="..\Core\Label.cs" Link="Label.cs" />
+    <Compile Include="..\Core\Layout.cs" Link="Layout.cs" />
+    <Compile Include="..\Core\LayoutAlignment.cs" Link="LayoutAlignment.cs" />
+    <Compile Include="..\Core\LayoutAlignmentExtensions.cs" Link="LayoutAlignmentExtensions.cs" />
+    <Compile Include="..\Core\LayoutConstraint.cs" Link="LayoutConstraint.cs" />
+    <Compile Include="..\Core\LayoutDirectionExtensions.cs" Link="LayoutDirectionExtensions.cs" />
+    <Compile Include="..\Core\LayoutExpandFlag.cs" Link="LayoutExpandFlag.cs" />
+    <Compile Include="..\Core\LayoutOptions.cs" Link="LayoutOptions.cs" />
+    <Compile Include="..\Core\LayoutOptionsConverter.cs" Link="LayoutOptionsConverter.cs" />
+    <Compile Include="..\Core\Layout\AbsoluteLayout.cs" Link="Layout\AbsoluteLayout.cs" />
+    <Compile Include="..\Core\Layout\AndExpandLayoutManager.cs" Link="Layout\AndExpandLayoutManager.cs" />
+    <Compile Include="..\Core\Layout\BoundsTypeConverter.cs" Link="Layout\BoundsTypeConverter.cs" />
+    <Compile Include="..\Core\Layout\FlexExtensions.cs" Link="Layout\FlexExtensions.cs" />
+    <Compile Include="..\Core\Layout\FlexLayout.cs" Link="Layout\FlexLayout.cs" />
+    <Compile Include="..\Core\Layout\Grid.cs" Link="Layout\Grid.cs" />
+    <Compile Include="..\Core\Layout\GridExtensions.cs" Link="Layout\GridExtensions.cs" />
+    <Compile Include="..\Core\Layout\HorizontalStackLayout.cs" Link="Layout\HorizontalStackLayout.cs" />
+    <Compile Include="..\Core\Layout\ILayoutManagerFactory.cs" Link="Layout\ILayoutManagerFactory.cs" />
+    <Compile Include="..\Core\Layout\Layout.cs" Link="Layout\Layout.cs" />
+    <Compile Include="..\Core\Layout\StackBase.cs" Link="Layout\StackBase.cs" />
+    <Compile Include="..\Core\Layout\StackLayout.cs" Link="Layout\StackLayout.cs" />
+    <Compile Include="..\Core\Layout\StackLayoutManager.cs" Link="Layout\StackLayoutManager.cs" />
+    <Compile Include="..\Core\Layout\VerticalStackLayout.cs" Link="Layout\VerticalStackLayout.cs" />
+    <Compile Include="..\Core\LegacyLayouts\AbsoluteLayout.cs" Link="LegacyLayouts\AbsoluteLayout.cs" />
+    <Compile Include="..\Core\LegacyLayouts\Constraint.cs" Link="LegacyLayouts\Constraint.cs" />
+    <Compile Include="..\Core\LegacyLayouts\ConstraintExpression.cs" Link="LegacyLayouts\ConstraintExpression.cs" />
+    <Compile Include="..\Core\LegacyLayouts\ConstraintTypeConverter.cs" Link="LegacyLayouts\ConstraintTypeConverter.cs" />
+    <Compile Include="..\Core\LegacyLayouts\FlexLayout.cs" Link="LegacyLayouts\FlexLayout.cs" />
+    <Compile Include="..\Core\LegacyLayouts\Grid.cs" Link="LegacyLayouts\Grid.cs" />
+    <Compile Include="..\Core\LegacyLayouts\GridCalc.cs" Link="LegacyLayouts\GridCalc.cs" />
+    <Compile Include="..\Core\LegacyLayouts\RelativeLayout.cs" Link="LegacyLayouts\RelativeLayout.cs" />
+    <Compile Include="..\Core\LegacyLayouts\StackLayout.cs" Link="LegacyLayouts\StackLayout.cs" />
+    <Compile Include="..\Core\LinearGradientBrush.cs" Link="LinearGradientBrush.cs" />
+    <Compile Include="..\Core\LineHeightElement.cs" Link="LineHeightElement.cs" />
+    <Compile Include="..\Core\ListProxy.cs" Link="ListProxy.cs" />
+    <Compile Include="..\Core\ListProxyChangedEventArgs.cs" Link="ListProxyChangedEventArgs.cs" />
+    <Compile Include="..\Core\ListStringTypeConverter.cs" Link="ListStringTypeConverter.cs" />
+    <Compile Include="..\Core\ListView.cs" Link="ListView.cs" />
+    <Compile Include="..\Core\ListViewCachingStrategy.cs" Link="ListViewCachingStrategy.cs" />
+    <Compile Include="..\Core\ListViewSelectionMode.cs" Link="ListViewSelectionMode.cs" />
+    <Compile Include="..\Core\LockingSemaphore.cs" Link="LockingSemaphore.cs" />
+    <Compile Include="..\Core\MeasureFlags.cs" Link="MeasureFlags.cs" />
+    <Compile Include="..\Core\MenuBar.cs" Link="MenuBar.cs" />
+    <Compile Include="..\Core\MenuBarItem.cs" Link="MenuBarItem.cs" />
+    <Compile Include="..\Core\MergedStyle.cs" Link="MergedStyle.cs" />
+    <Compile Include="..\Core\MessagingCenter.cs" Link="MessagingCenter.cs" />
+    <Compile Include="..\Core\ModalEventArgs.cs" Link="ModalEventArgs.cs" />
+    <Compile Include="..\Core\ModalPoppedEventArgs.cs" Link="ModalPoppedEventArgs.cs" />
+    <Compile Include="..\Core\ModalPoppingEventArgs.cs" Link="ModalPoppingEventArgs.cs" />
+    <Compile Include="..\Core\ModalPushedEventArgs.cs" Link="ModalPushedEventArgs.cs" />
+    <Compile Include="..\Core\ModalPushingEventArgs.cs" Link="ModalPushingEventArgs.cs" />
+    <Compile Include="..\Core\MultiBinding.cs" Link="MultiBinding.cs" />
+    <Compile Include="..\Core\MultiPage.cs" Link="MultiPage.cs" />
+    <Compile Include="..\Core\NamedSize.cs" Link="NamedSize.cs" />
+    <Compile Include="..\Core\NameScopeExtensions.cs" Link="NameScopeExtensions.cs" />
+    <Compile Include="..\Core\NavigationEventArgs.cs" Link="NavigationEventArgs.cs" />
+    <Compile Include="..\Core\NavigationModel.cs" Link="NavigationModel.cs" />
+    <Compile Include="..\Core\NavigationPage.cs" Link="NavigationPage.cs" />
+    <Compile Include="..\Core\NavigationProxy.cs" Link="NavigationProxy.cs" />
+    <Compile Include="..\Core\NullEffect.cs" Link="NullEffect.cs" />
+    <Compile Include="..\Core\NumericExtensions.cs" Link="NumericExtensions.cs" />
+    <Compile Include="..\Core\ObservableList.cs" Link="ObservableList.cs" />
+    <Compile Include="..\Core\ObservableWrapper.cs" Link="ObservableWrapper.cs" />
+    <Compile Include="..\Core\OnIdiom.cs" Link="OnIdiom.cs" />
+    <Compile Include="..\Core\OnPlatform.cs" Link="OnPlatform.cs" />
+    <Compile Include="..\Core\OpenGLView.cs" Link="OpenGLView.cs" />
+    <Compile Include="..\Core\OrderedDictionary.cs" Link="OrderedDictionary.cs" />
+    <Compile Include="..\Core\OrientationStateTrigger.cs" Link="OrientationStateTrigger.cs" />
+    <Compile Include="..\Core\PaddingElement.cs" Link="PaddingElement.cs" />
+    <Compile Include="..\Core\Page.cs" Link="Page.cs" />
+    <Compile Include="..\Core\PanGestureRecognizer.cs" Link="PanGestureRecognizer.cs" />
+    <Compile Include="..\Core\PanUpdatedEventArgs.cs" Link="PanUpdatedEventArgs.cs" />
+    <Compile Include="..\Core\ParameterAttribute.cs" Link="ParameterAttribute.cs" />
+    <Compile Include="..\Core\ParentChangingEventArgs.cs" Link="ParentChangingEventArgs.cs" />
+    <Compile Include="..\Core\Performance.cs" Link="Performance.cs" />
+    <Compile Include="..\Core\Picker.cs" Link="Picker.cs" />
+    <Compile Include="..\Core\PinchGestureRecognizer.cs" Link="PinchGestureRecognizer.cs" />
+    <Compile Include="..\Core\PinchGestureUpdatedEventArgs.cs" Link="PinchGestureUpdatedEventArgs.cs" />
+    <Compile Include="..\Core\PlaceholderElement.cs" Link="PlaceholderElement.cs" />
+    <Compile Include="..\Core\PlatformBindingHelpers.cs" Link="PlatformBindingHelpers.cs" />
+    <Compile Include="..\Core\PlatformConfigurationRegistry.cs" Link="PlatformConfigurationRegistry.cs" />
+    <Compile Include="..\Core\PlatformConfiguration\ExtensionPoints.cs" Link="PlatformConfiguration\ExtensionPoints.cs" />
+    <Compile Include="..\Core\PlatformConfiguration\GTKSpecific\BoxView.cs" Link="PlatformConfiguration\GTKSpecific\BoxView.cs" />
+    <Compile Include="..\Core\PlatformConfiguration\GTKSpecific\NavigationPage.cs" Link="PlatformConfiguration\GTKSpecific\NavigationPage.cs" />
+    <Compile Include="..\Core\PlatformConfiguration\GTKSpecific\TabbedPage.cs" Link="PlatformConfiguration\GTKSpecific\TabbedPage.cs" />
+    <Compile Include="..\Core\PlatformConfiguration\GTKSpecific\TabPosition.cs" Link="PlatformConfiguration\GTKSpecific\TabPosition.cs" />
+    <Compile Include="..\Core\PlatformEffect.cs" Link="PlatformEffect.cs" />
+    <Compile Include="..\Core\Platform\AlertManager\AlertManager.cs" Link="Platform\AlertManager\AlertManager.cs" />
+    <Compile Include="..\Core\Platform\IElementExtensions.cs" Link="Platform\IElementExtensions.cs" />
+    <Compile Include="..\Core\Platform\ImageExtensions.cs" Link="Platform\ImageExtensions.cs" />
+    <Compile Include="..\Core\Platform\ModalNavigationManager\ModalNavigationManager.cs" Link="Platform\ModalNavigationManager\ModalNavigationManager.cs" />
+    <Compile Include="..\Core\Platform\PageExtensions.cs" Link="Platform\PageExtensions.cs" />
+    <Compile Include="..\Core\Platform\PlatformConfigurationExtensions.cs" Link="Platform\PlatformConfigurationExtensions.cs" />
+    <Compile Include="..\Core\Platform\PlatformEffect.cs" Link="Platform\PlatformEffect.cs" />
+    <Compile Include="..\Core\Platform\SemanticExtensions.cs" Link="Platform\SemanticExtensions.cs" />
+    <Compile Include="..\Core\PointCollection.cs" Link="PointCollection.cs" />
+    <Compile Include="..\Core\PointerEventArgs.cs" Link="PointerEventArgs.cs" />
+    <Compile Include="..\Core\PointerGestureRecognizer.cs" Link="PointerGestureRecognizer.cs" />
+    <Compile Include="..\Core\PoppedToRootEventArgs.cs" Link="PoppedToRootEventArgs.cs" />
+    <Compile Include="..\Core\Profiler.cs" Link="Profiler.cs" />
+    <Compile Include="..\Core\ProgressBar.cs" Link="ProgressBar.cs" />
+    <Compile Include="..\Core\PromptArguments.cs" Link="PromptArguments.cs" />
+    <Compile Include="..\Core\Properties\AssemblyInfo.cs" Link="Properties\AssemblyInfo.cs" />
+    <Compile Include="..\Core\PropertyChangedEventArgsExtensions.cs" Link="PropertyChangedEventArgsExtensions.cs" />
+    <Compile Include="..\Core\PropertyChangingEventArgs.cs" Link="PropertyChangingEventArgs.cs" />
+    <Compile Include="..\Core\PropertyChangingEventHandler.cs" Link="PropertyChangingEventHandler.cs" />
+    <Compile Include="..\Core\ProvideCompiledAttribute.cs" Link="ProvideCompiledAttribute.cs" />
+    <Compile Include="..\Core\RadialGradientBrush.cs" Link="RadialGradientBrush.cs" />
+    <Compile Include="..\Core\RadioButton.cs" Link="RadioButton.cs" />
+    <Compile Include="..\Core\RadioButtonGroup.cs" Link="RadioButtonGroup.cs" />
+    <Compile Include="..\Core\RadioButtonGroupController.cs" Link="RadioButtonGroupController.cs" />
+    <Compile Include="..\Core\RadioButtonGroupSelectionChanged.cs" Link="RadioButtonGroupSelectionChanged.cs" />
+    <Compile Include="..\Core\ReadOnlyCastingList.cs" Link="ReadOnlyCastingList.cs" />
+    <Compile Include="..\Core\ReadOnlyListAdapter.cs" Link="ReadOnlyListAdapter.cs" />
+    <Compile Include="..\Core\ReferenceTypeConverter.cs" Link="ReferenceTypeConverter.cs" />
+    <Compile Include="..\Core\RefreshView.cs" Link="RefreshView.cs" />
+    <Compile Include="..\Core\Region.cs" Link="Region.cs" />
+    <Compile Include="..\Core\Registrar.cs" Link="Registrar.cs" />
+    <Compile Include="..\Core\RelativeBindingSource.cs" Link="RelativeBindingSource.cs" />
+    <Compile Include="..\Core\RelativeBindingSourceMode.cs" Link="RelativeBindingSourceMode.cs" />
+    <Compile Include="..\Core\RenderWithAttribute.cs" Link="RenderWithAttribute.cs" />
+    <Compile Include="..\Core\ResolutionGroupNameAttribute.cs" Link="ResolutionGroupNameAttribute.cs" />
+    <Compile Include="..\Core\ResourceDictionary.cs" Link="ResourceDictionary.cs" />
+    <Compile Include="..\Core\ResourcesChangedEventArgs.cs" Link="ResourcesChangedEventArgs.cs" />
+    <Compile Include="..\Core\ResourcesExtensions.cs" Link="ResourcesExtensions.cs" />
+    <Compile Include="..\Core\RouteFactory.cs" Link="RouteFactory.cs" />
+    <Compile Include="..\Core\Routing.cs" Link="Routing.cs" />
+    <Compile Include="..\Core\RoutingEffect.cs" Link="RoutingEffect.cs" />
+    <Compile Include="..\Core\RowDefinition.cs" Link="RowDefinition.cs" />
+    <Compile Include="..\Core\RowDefinitionCollection.cs" Link="RowDefinitionCollection.cs" />
+    <Compile Include="..\Core\RowDefinitionCollectionTypeConverter.cs" Link="RowDefinitionCollectionTypeConverter.cs" />
+    <Compile Include="..\Core\RuntimeNamePropertyAttribute.cs" Link="RuntimeNamePropertyAttribute.cs" />
+    <Compile Include="..\Core\ScrolledEventArgs.cs" Link="ScrolledEventArgs.cs" />
+    <Compile Include="..\Core\ScrollMode.cs" Link="ScrollMode.cs" />
+    <Compile Include="..\Core\ScrollToMode.cs" Link="ScrollToMode.cs" />
+    <Compile Include="..\Core\ScrollToPosition.cs" Link="ScrollToPosition.cs" />
+    <Compile Include="..\Core\ScrollToRequestedEventArgs.cs" Link="ScrollToRequestedEventArgs.cs" />
+    <Compile Include="..\Core\ScrollView.cs" Link="ScrollView.cs" />
+    <Compile Include="..\Core\SearchBar.cs" Link="SearchBar.cs" />
+    <Compile Include="..\Core\SearchBoxVisibility.cs" Link="SearchBoxVisibility.cs" />
+    <Compile Include="..\Core\SelectedItemChangedEventArgs.cs" Link="SelectedItemChangedEventArgs.cs" />
+    <Compile Include="..\Core\SelectedPositionChangedEventArgs.cs" Link="SelectedPositionChangedEventArgs.cs" />
+    <Compile Include="..\Core\SemanticProperties.cs" Link="SemanticProperties.cs" />
+    <Compile Include="..\Core\SeparatorVisibility.cs" Link="SeparatorVisibility.cs" />
+    <Compile Include="..\Core\Setter.cs" Link="Setter.cs" />
+    <Compile Include="..\Core\SettersExtensions.cs" Link="SettersExtensions.cs" />
+    <Compile Include="..\Core\Shadow.cs" Link="Shadow.cs" />
+    <Compile Include="..\Core\Shapes\ArcSegment.cs" Link="Shapes\ArcSegment.cs" />
+    <Compile Include="..\Core\Shapes\BezierSegment.cs" Link="Shapes\BezierSegment.cs" />
+    <Compile Include="..\Core\Shapes\CompositeTransform.cs" Link="Shapes\CompositeTransform.cs" />
+    <Compile Include="..\Core\Shapes\Ellipse.cs" Link="Shapes\Ellipse.cs" />
+    <Compile Include="..\Core\Shapes\EllipseGeometry.cs" Link="Shapes\EllipseGeometry.cs" />
+    <Compile Include="..\Core\Shapes\FillRule.cs" Link="Shapes\FillRule.cs" />
+    <Compile Include="..\Core\Shapes\Geometry.cs" Link="Shapes\Geometry.cs" />
+    <Compile Include="..\Core\Shapes\GeometryCollection.cs" Link="Shapes\GeometryCollection.cs" />
+    <Compile Include="..\Core\Shapes\GeometryGroup.cs" Link="Shapes\GeometryGroup.cs" />
+    <Compile Include="..\Core\Shapes\GeometryHelper.cs" Link="Shapes\GeometryHelper.cs" />
+    <Compile Include="..\Core\Shapes\IGeometry.cs" Link="Shapes\IGeometry.cs" />
+    <Compile Include="..\Core\Shapes\Line.cs" Link="Shapes\Line.cs" />
+    <Compile Include="..\Core\Shapes\LineGeometry.cs" Link="Shapes\LineGeometry.cs" />
+    <Compile Include="..\Core\Shapes\LineSegment.cs" Link="Shapes\LineSegment.cs" />
+    <Compile Include="..\Core\Shapes\Matrix.cs" Link="Shapes\Matrix.cs" />
+    <Compile Include="..\Core\Shapes\MatrixExtensions.cs" Link="Shapes\MatrixExtensions.cs" />
+    <Compile Include="..\Core\Shapes\MatrixTransform.cs" Link="Shapes\MatrixTransform.cs" />
+    <Compile Include="..\Core\Shapes\MatrixTypeConverter.cs" Link="Shapes\MatrixTypeConverter.cs" />
+    <Compile Include="..\Core\Shapes\Path.cs" Link="Shapes\Path.cs" />
+    <Compile Include="..\Core\Shapes\PathFigure.cs" Link="Shapes\PathFigure.cs" />
+    <Compile Include="..\Core\Shapes\PathFigureCollection.cs" Link="Shapes\PathFigureCollection.cs" />
+    <Compile Include="..\Core\Shapes\PathFigureCollectionConverter.cs" Link="Shapes\PathFigureCollectionConverter.cs" />
+    <Compile Include="..\Core\Shapes\PathGeometry.cs" Link="Shapes\PathGeometry.cs" />
+    <Compile Include="..\Core\Shapes\PathGeometryConverter.cs" Link="Shapes\PathGeometryConverter.cs" />
+    <Compile Include="..\Core\Shapes\PathSegment.cs" Link="Shapes\PathSegment.cs" />
+    <Compile Include="..\Core\Shapes\PathSegmentCollection.cs" Link="Shapes\PathSegmentCollection.cs" />
+    <Compile Include="..\Core\Shapes\PenLineCap.cs" Link="Shapes\PenLineCap.cs" />
+    <Compile Include="..\Core\Shapes\PenLineJoin.cs" Link="Shapes\PenLineJoin.cs" />
+    <Compile Include="..\Core\Shapes\PointCollectionConverter.cs" Link="Shapes\PointCollectionConverter.cs" />
+    <Compile Include="..\Core\Shapes\PolyBezierSegment.cs" Link="Shapes\PolyBezierSegment.cs" />
+    <Compile Include="..\Core\Shapes\Polygon.cs" Link="Shapes\Polygon.cs" />
+    <Compile Include="..\Core\Shapes\Polyline.cs" Link="Shapes\Polyline.cs" />
+    <Compile Include="..\Core\Shapes\PolyLineSegment.cs" Link="Shapes\PolyLineSegment.cs" />
+    <Compile Include="..\Core\Shapes\PolyQuadraticBezierSegment.cs" Link="Shapes\PolyQuadraticBezierSegment.cs" />
+    <Compile Include="..\Core\Shapes\QuadraticBezierSegment.cs" Link="Shapes\QuadraticBezierSegment.cs" />
+    <Compile Include="..\Core\Shapes\Rectangle.cs" Link="Shapes\Rectangle.cs" />
+    <Compile Include="..\Core\Shapes\RectangleGeometry.cs" Link="Shapes\RectangleGeometry.cs" />
+    <Compile Include="..\Core\Shapes\RotateTransform.cs" Link="Shapes\RotateTransform.cs" />
+    <Compile Include="..\Core\Shapes\RoundRectangle.cs" Link="Shapes\RoundRectangle.cs" />
+    <Compile Include="..\Core\Shapes\RoundRectangleGeometry.cs" Link="Shapes\RoundRectangleGeometry.cs" />
+    <Compile Include="..\Core\Shapes\ScaleTransform.cs" Link="Shapes\ScaleTransform.cs" />
+    <Compile Include="..\Core\Shapes\Shape.cs" Link="Shapes\Shape.cs" />
+    <Compile Include="..\Core\Shapes\SkewTransform.cs" Link="Shapes\SkewTransform.cs" />
+    <Compile Include="..\Core\Shapes\StrokeShapeTypeConverter.cs" Link="Shapes\StrokeShapeTypeConverter.cs" />
+    <Compile Include="..\Core\Shapes\Transform.cs" Link="Shapes\Transform.cs" />
+    <Compile Include="..\Core\Shapes\TransformCollection.cs" Link="Shapes\TransformCollection.cs" />
+    <Compile Include="..\Core\Shapes\TransformGroup.cs" Link="Shapes\TransformGroup.cs" />
+    <Compile Include="..\Core\Shapes\TransformTypeConverter.cs" Link="Shapes\TransformTypeConverter.cs" />
+    <Compile Include="..\Core\Shapes\TranslateTransform.cs" Link="Shapes\TranslateTransform.cs" />
+    <Compile Include="..\Core\Shell\BackButtonBehavior.cs" Link="Shell\BackButtonBehavior.cs" />
+    <Compile Include="..\Core\Shell\BaseShellItem.cs" Link="Shell\BaseShellItem.cs" />
+    <Compile Include="..\Core\Shell\FlyoutDisplayOptions.cs" Link="Shell\FlyoutDisplayOptions.cs" />
+    <Compile Include="..\Core\Shell\ISearchHandlerController.cs" Link="Shell\ISearchHandlerController.cs" />
+    <Compile Include="..\Core\Shell\IShellAppearanceElement.cs" Link="Shell\IShellAppearanceElement.cs" />
+    <Compile Include="..\Core\Shell\IShellContentController.cs" Link="Shell\IShellContentController.cs" />
+    <Compile Include="..\Core\Shell\IShellContentInsetObserver.cs" Link="Shell\IShellContentInsetObserver.cs" />
+    <Compile Include="..\Core\Shell\IShellController.cs" Link="Shell\IShellController.cs" />
+    <Compile Include="..\Core\Shell\IShellItemController.cs" Link="Shell\IShellItemController.cs" />
+    <Compile Include="..\Core\Shell\IShellSectionController.cs" Link="Shell\IShellSectionController.cs" />
+    <Compile Include="..\Core\Shell\NavigableElement.cs" Link="Shell\NavigableElement.cs" />
+    <Compile Include="..\Core\Shell\PresentationMode.cs" Link="Shell\PresentationMode.cs" />
+    <Compile Include="..\Core\Shell\QueryPropertyAttribute.cs" Link="Shell\QueryPropertyAttribute.cs" />
+    <Compile Include="..\Core\Shell\RequestDefinition.cs" Link="Shell\RequestDefinition.cs" />
+    <Compile Include="..\Core\Shell\RouteRequestBuilder.cs" Link="Shell\RouteRequestBuilder.cs" />
+    <Compile Include="..\Core\Shell\SearchHandler.cs" Link="Shell\SearchHandler.cs" />
+    <Compile Include="..\Core\Shell\Shell.cs" Link="Shell\Shell.cs" />
+    <Compile Include="..\Core\Shell\ShellAppearance.cs" Link="Shell\ShellAppearance.cs" />
+    <Compile Include="..\Core\Shell\ShellContent.cs" Link="Shell\ShellContent.cs" />
+    <Compile Include="..\Core\Shell\ShellContentCollection.cs" Link="Shell\ShellContentCollection.cs" />
+    <Compile Include="..\Core\Shell\ShellElementCollection.cs" Link="Shell\ShellElementCollection.cs" />
+    <Compile Include="..\Core\Shell\ShellExtensions.cs" Link="Shell\ShellExtensions.cs" />
+    <Compile Include="..\Core\Shell\ShellFlyoutItemsManager.cs" Link="Shell\ShellFlyoutItemsManager.cs" />
+    <Compile Include="..\Core\Shell\ShellGroupItem.cs" Link="Shell\ShellGroupItem.cs" />
+    <Compile Include="..\Core\Shell\ShellItem.cs" Link="Shell\ShellItem.cs" />
+    <Compile Include="..\Core\Shell\ShellItemCollection.cs" Link="Shell\ShellItemCollection.cs" />
+    <Compile Include="..\Core\Shell\ShellNavigatedEventArgs.cs" Link="Shell\ShellNavigatedEventArgs.cs" />
+    <Compile Include="..\Core\Shell\ShellNavigatingDeferral.cs" Link="Shell\ShellNavigatingDeferral.cs" />
+    <Compile Include="..\Core\Shell\ShellNavigatingEventArgs.cs" Link="Shell\ShellNavigatingEventArgs.cs" />
+    <Compile Include="..\Core\Shell\ShellNavigationManager.cs" Link="Shell\ShellNavigationManager.cs" />
+    <Compile Include="..\Core\Shell\ShellNavigationParameters.cs" Link="Shell\ShellNavigationParameters.cs" />
+    <Compile Include="..\Core\Shell\ShellNavigationRequest.cs" Link="Shell\ShellNavigationRequest.cs" />
+    <Compile Include="..\Core\Shell\ShellNavigationSource.cs" Link="Shell\ShellNavigationSource.cs" />
+    <Compile Include="..\Core\Shell\ShellNavigationState.cs" Link="Shell\ShellNavigationState.cs" />
+    <Compile Include="..\Core\Shell\ShellRouteParameters.cs" Link="Shell\ShellRouteParameters.cs" />
+    <Compile Include="..\Core\Shell\ShellSection.cs" Link="Shell\ShellSection.cs" />
+    <Compile Include="..\Core\Shell\ShellSectionCollection.cs" Link="Shell\ShellSectionCollection.cs" />
+    <Compile Include="..\Core\Shell\ShellTemplatedViewManager.cs" Link="Shell\ShellTemplatedViewManager.cs" />
+    <Compile Include="..\Core\Shell\ShellUriHandler.cs" Link="Shell\ShellUriHandler.cs" />
+    <Compile Include="..\Core\Slider.cs" Link="Slider.cs" />
+    <Compile Include="..\Core\SolidColorBrush.cs" Link="SolidColorBrush.cs" />
+    <Compile Include="..\Core\Span.cs" Link="Span.cs" />
+    <Compile Include="..\Core\StackOrientation.cs" Link="StackOrientation.cs" />
+    <Compile Include="..\Core\StateTrigger.cs" Link="StateTrigger.cs" />
+    <Compile Include="..\Core\StateTriggerBase.cs" Link="StateTriggerBase.cs" />
+    <Compile Include="..\Core\Stepper.cs" Link="Stepper.cs" />
+    <Compile Include="..\Core\StreamImageSource.cs" Link="StreamImageSource.cs" />
+    <Compile Include="..\Core\StreamWrapper.cs" Link="StreamWrapper.cs" />
+    <Compile Include="..\Core\Stretch.cs" Link="Stretch.cs" />
+    <Compile Include="..\Core\Style.cs" Link="Style.cs" />
+    <Compile Include="..\Core\StyleSheets\CharExtensions.cs" Link="StyleSheets\CharExtensions.cs" />
+    <Compile Include="..\Core\StyleSheets\CssReader.cs" Link="StyleSheets\CssReader.cs" />
+    <Compile Include="..\Core\StyleSheets\IStyleSelectable.cs" Link="StyleSheets\IStyleSelectable.cs" />
+    <Compile Include="..\Core\StyleSheets\Selector.cs" Link="StyleSheets\Selector.cs" />
+    <Compile Include="..\Core\StyleSheets\Style.cs" Link="StyleSheets\Style.cs" />
+    <Compile Include="..\Core\StyleSheets\StylePropertyAttribute.cs" Link="StyleSheets\StylePropertyAttribute.cs" />
+    <Compile Include="..\Core\StyleSheets\StyleSheet.cs" Link="StyleSheets\StyleSheet.cs" />
+    <Compile Include="..\Core\StyleSheets\StyleSheetExtensions.cs" Link="StyleSheets\StyleSheetExtensions.cs" />
+    <Compile Include="..\Core\StyleSheets\StyleSheetServiceProvider.cs" Link="StyleSheets\StyleSheetServiceProvider.cs" />
+    <Compile Include="..\Core\StyleSheets\TextReaderExtensions.cs" Link="StyleSheets\TextReaderExtensions.cs" />
+    <Compile Include="..\Core\SweepDirection.cs" Link="SweepDirection.cs" />
+    <Compile Include="..\Core\SwipedEventArgs.cs" Link="SwipedEventArgs.cs" />
+    <Compile Include="..\Core\SwipeEventArgs.cs" Link="SwipeEventArgs.cs" />
+    <Compile Include="..\Core\SwipeGestureRecognizer.cs" Link="SwipeGestureRecognizer.cs" />
+    <Compile Include="..\Core\Switch.cs" Link="Switch.cs" />
+    <Compile Include="..\Core\SynchronizedList.cs" Link="SynchronizedList.cs" />
+    <Compile Include="..\Core\TabbedPage.cs" Link="TabbedPage.cs" />
+    <Compile Include="..\Core\TableIntent.cs" Link="TableIntent.cs" />
+    <Compile Include="..\Core\TableModel.cs" Link="TableModel.cs" />
+    <Compile Include="..\Core\TableRoot.cs" Link="TableRoot.cs" />
+    <Compile Include="..\Core\TableSection.cs" Link="TableSection.cs" />
+    <Compile Include="..\Core\TableSectionBase.cs" Link="TableSectionBase.cs" />
+    <Compile Include="..\Core\TableView.cs" Link="TableView.cs" />
+    <Compile Include="..\Core\TapGestureRecognizer.cs" Link="TapGestureRecognizer.cs" />
+    <Compile Include="..\Core\TappedEventArgs.cs" Link="TappedEventArgs.cs" />
+    <Compile Include="..\Core\TargetIdiom.cs" Link="TargetIdiom.cs" />
+    <Compile Include="..\Core\TemplateBinding.cs" Link="TemplateBinding.cs" />
+    <Compile Include="..\Core\TemplatedItemsList.cs" Link="TemplatedItemsList.cs" />
+    <Compile Include="..\Core\TemplatedPage.cs" Link="TemplatedPage.cs" />
+    <Compile Include="..\Core\TemplatedView.cs" Link="TemplatedView.cs" />
+    <Compile Include="..\Core\TemplateExtensions.cs" Link="TemplateExtensions.cs" />
+    <Compile Include="..\Core\TemplateUtilities.cs" Link="TemplateUtilities.cs" />
+    <Compile Include="..\Core\TextAlignment.cs" Link="TextAlignment.cs" />
+    <Compile Include="..\Core\TextAlignmentElement.cs" Link="TextAlignmentElement.cs" />
+    <Compile Include="..\Core\TextChangedEventArgs.cs" Link="TextChangedEventArgs.cs" />
+    <Compile Include="..\Core\TextElement.cs" Link="TextElement.cs" />
+    <Compile Include="..\Core\TimePicker.cs" Link="TimePicker.cs" />
+    <Compile Include="..\Core\ToggledEventArgs.cs" Link="ToggledEventArgs.cs" />
+    <Compile Include="..\Core\ToolTipProperties.cs" Link="ToolTipProperties.cs" />
+    <Compile Include="..\Core\ToStringValueConverter.cs" Link="ToStringValueConverter.cs" />
+    <Compile Include="..\Core\TrackableCollection.cs" Link="TrackableCollection.cs" />
+    <Compile Include="..\Core\TrimmerConstants.cs" Link="TrimmerConstants.cs" />
+    <Compile Include="..\Core\Tweener.cs" Link="Tweener.cs" />
+    <Compile Include="..\Core\TypedBinding.cs" Link="TypedBinding.cs" />
+    <Compile Include="..\Core\TypeTypeConverter.cs" Link="TypeTypeConverter.cs" />
+    <Compile Include="..\Core\UnsolvableConstraintsException.cs" Link="UnsolvableConstraintsException.cs" />
+    <Compile Include="..\Core\UriImageSource.cs" Link="UriImageSource.cs" />
+    <Compile Include="..\Core\UriTypeConverter.cs" Link="UriTypeConverter.cs" />
+    <Compile Include="..\Core\UrlWebViewSource.cs" Link="UrlWebViewSource.cs" />
+    <Compile Include="..\Core\ValueChangedEventArgs.cs" Link="ValueChangedEventArgs.cs" />
+    <Compile Include="..\Core\View.cs" Link="View.cs" />
+    <Compile Include="..\Core\ViewExtensions.cs" Link="ViewExtensions.cs" />
+    <Compile Include="..\Core\ViewState.cs" Link="ViewState.cs" />
+    <Compile Include="..\Core\VisibilityExtensions.cs" Link="VisibilityExtensions.cs" />
+    <Compile Include="..\Core\VisualElement.cs" Link="VisualElement.cs" />
+    <Compile Include="..\Core\VisualElementChangedEventArgs.cs" Link="VisualElementChangedEventArgs.cs" />
+    <Compile Include="..\Core\VisualElement_StyleSheet.cs" Link="VisualElement_StyleSheet.cs" />
+    <Compile Include="..\Core\VisualStateManager.cs" Link="VisualStateManager.cs" />
+    <Compile Include="..\Core\Visuals\IVisual.cs" Link="Visuals\IVisual.cs" />
+    <Compile Include="..\Core\Visuals\VisualAttribute.cs" Link="Visuals\VisualAttribute.cs" />
+    <Compile Include="..\Core\Visuals\VisualMarker.cs" Link="Visuals\VisualMarker.cs" />
+    <Compile Include="..\Core\Visuals\VisualTypeConverter.cs" Link="Visuals\VisualTypeConverter.cs" />
+    <Compile Include="..\Core\WeakReferenceExtensions.cs" Link="WeakReferenceExtensions.cs" />
+    <Compile Include="..\Core\WebNavigatedEventArgs.cs" Link="WebNavigatedEventArgs.cs" />
+    <Compile Include="..\Core\WebNavigatingEventArgs.cs" Link="WebNavigatingEventArgs.cs" />
+    <Compile Include="..\Core\WebNavigationEventArgs.cs" Link="WebNavigationEventArgs.cs" />
+    <Compile Include="..\Core\WebView.cs" Link="WebView.cs" />
+    <Compile Include="..\Core\WebViewSource.cs" Link="WebViewSource.cs" />
+    <Compile Include="..\Core\WebViewSourceTypeConverter.cs" Link="WebViewSourceTypeConverter.cs" />
+    <Compile Include="..\Core\XamlParseException.cs" Link="XamlParseException.cs" />
+    <Compile Include="..\Core\Xaml\Diagnostics\BindingDiagnostics.cs" Link="Xaml\Diagnostics\BindingDiagnostics.cs" />
+    <Compile Include="..\Core\Xaml\Diagnostics\BindingErrorEventArgs.cs" Link="Xaml\Diagnostics\BindingErrorEventArgs.cs" />
+    <Compile Include="..\Core\Xaml\IReferenceProvider.cs" Link="Xaml\IReferenceProvider.cs" />
+    <Compile Include="..\Core\Xaml\IResourcesLoader.cs" Link="Xaml\IResourcesLoader.cs" />
+    <Compile Include="..\Core\Xaml\TypeConversionExtensions.cs" Link="Xaml\TypeConversionExtensions.cs" />
+    <Compile Include="..\Core\Xaml\ValueConverterProvider.cs" Link="Xaml\ValueConverterProvider.cs" />
+    <Compile Include="..\Core\Xaml\XamlResourceIdAttribute.cs" Link="Xaml\XamlResourceIdAttribute.cs" />
+    <Compile Include="..\Core\XmlLineInfo.cs" Link="XmlLineInfo.cs" />
+    <Compile Include="..\Core\XmlnsDefinitionAttribute.cs" Link="XmlnsDefinitionAttribute.cs" />
+    <Compile Include="..\Core\XmlnsPrefixAttribute.cs" Link="XmlnsPrefixAttribute.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Extensions.Configuration" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" />
+    <PackageReference Include="Microsoft.Extensions.Logging" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\Core\src\Core-GTK.csproj" />
+  </ItemGroup>
+
+  <PropertyGroup Condition=" '$(_MauiDesignDllBuild)' == 'True'">
+    <TargetsForTfmSpecificBuildOutput>
+      $(TargetsForTfmSpecificBuildOutput);
+      _MauiPackXamlDesignAssemblies
+    </TargetsForTfmSpecificBuildOutput>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net6.0-windows10.0.19041|AnyCPU'">
+    <DefineConstants>$(DefineConstants);WINDOWS;__GTK__</DefineConstants>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net6.0-windows10.0.19041|AnyCPU'">
+    <DefineConstants>$(DefineConstants);WINDOWS;__GTK__</DefineConstants>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net6.0-windows10.0.20348|AnyCPU'">
+    <DefineConstants>$(DefineConstants);WINDOWS;__GTK__</DefineConstants>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net6.0-windows10.0.20348|AnyCPU'">
+    <DefineConstants>$(DefineConstants);WINDOWS;__GTK__</DefineConstants>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|netstandard2.0|AnyCPU'">
+    <DefineConstants>$(DefineConstants)TRACE;WINDOWS;__GTK__</DefineConstants>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|netstandard2.0|AnyCPU'">
+    <DefineConstants>$(DefineConstants)TRACE;WINDOWS;__GTK__</DefineConstants>
+  </PropertyGroup>
+
+  <Target Name="_MauiPackXamlDesignAssemblies">
+    <ItemGroup>
+      <BuildOutputInPackage Include="..\Core.Design\bin\$(Configuration)\net472\Microsoft.Maui.Controls.DesignTools.dll">
+        <TargetPath>Design\Microsoft.Maui.Controls.DesignTools.dll</TargetPath>
+      </BuildOutputInPackage>
+      <BuildOutputInPackage Include="..\Core.Design\bin\$(Configuration)\net472\Microsoft.Maui.Controls.DesignTools.pdb">
+        <TargetPath>Design\Microsoft.Maui.Controls.DesignTools.pdb</TargetPath>
+      </BuildOutputInPackage>
+    </ItemGroup>
+  </Target>
+  
+  <ItemGroup>
+    <Reference Include="atk-sharp">
+      <HintPath>C:\Program Files (x86)\GtkSharp\2.12\lib\gtk-sharp-2.0\atk-sharp.dll</HintPath>
+    </Reference>
+    <Reference Include="gdk-sharp">
+      <HintPath>C:\Program Files (x86)\GtkSharp\2.12\lib\gtk-sharp-2.0\gdk-sharp.dll</HintPath>
+    </Reference>
+    <Reference Include="glade-sharp">
+      <HintPath>C:\Program Files (x86)\GtkSharp\2.12\lib\gtk-sharp-2.0\glade-sharp.dll</HintPath>
+    </Reference>
+    <Reference Include="glib-sharp">
+      <HintPath>C:\Program Files (x86)\GtkSharp\2.12\lib\gtk-sharp-2.0\glib-sharp.dll</HintPath>
+    </Reference>
+    <Reference Include="gtk-dotnet">
+      <HintPath>C:\Program Files (x86)\GtkSharp\2.12\lib\gtk-sharp-2.0\gtk-dotnet.dll</HintPath>
+    </Reference>
+    <Reference Include="gtk-sharp">
+      <HintPath>C:\Program Files (x86)\GtkSharp\2.12\lib\gtk-sharp-2.0\gtk-sharp.dll</HintPath>
+    </Reference>
+    <Reference Include="Mono.Cairo">
+      <HintPath>C:\Program Files (x86)\GtkSharp\2.12\lib\Mono.Cairo\Mono.Cairo.dll</HintPath>
+    </Reference>
+    <Reference Include="pango-sharp">
+      <HintPath>C:\Program Files (x86)\GtkSharp\2.12\lib\gtk-sharp-2.0\pango-sharp.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  
+  <ItemGroup>
+    <Folder Include="Cells\" />
+    <Folder Include="Compatibility\GTK\" />
+    <Folder Include="Compatibility\Handlers\GTK\" />
+    <Folder Include="DragAndDrop\" />
+    <Folder Include="Foldable\" />
+    <Folder Include="HandlerImpl\Application\" />
+    <Folder Include="HandlerImpl\Element\" />
+    <Folder Include="HandlerImpl\Label\" />
+    <Folder Include="HandlerImpl\Button\" />
+    <Folder Include="HandlerImpl\CheckBox\" />
+    <Folder Include="HandlerImpl\ContentView\" />
+    <Folder Include="HandlerImpl\DatePicker\" />
+    <Folder Include="HandlerImpl\Editor\" />
+    <Folder Include="HandlerImpl\Entry\" />
+    <Folder Include="HandlerImpl\ImageButton\" />
+    <Folder Include="HandlerImpl\NavigationPage\" />
+    <Folder Include="HandlerImpl\SearchBar\" />
+    <Folder Include="HandlerImpl\Shape\" />
+    <Folder Include="HandlerImpl\WebView\" />
+    <Folder Include="HandlerImpl\VisualElement\" />
+    <Folder Include="HandlerImpl\TimePicker\" />
+    <Folder Include="HandlerImpl\TemplatedView\" />
+    <Folder Include="HandlerImpl\TabbedPage\" />
+    <Folder Include="HandlerImpl\ScrollView\" />
+    <Folder Include="HandlerImpl\RefreshView\" />
+    <Folder Include="HandlerImpl\RadioButton\" />
+    <Folder Include="HandlerImpl\Picker\" />
+    <Folder Include="HandlerImpl\Window\" />
+    <Folder Include="Handlers\Shell\" />
+    <Folder Include="Hosting\Effects\" />
+    <Folder Include="Interactivity\" />
+    <Folder Include="Internals\" />
+    <Folder Include="Items\" />
+    <Folder Include="Layout\" />
+    <Folder Include="LegacyLayouts\" />
+    <Folder Include="PlatformConfiguration\GTKSpecific\" />
+    <Folder Include="Platform\GTK\" />
+    <Folder Include="Platform\AlertManager\" />
+    <Folder Include="Platform\ModalNavigationManager\" />
+    <Folder Include="Visuals\" />
+    <Folder Include="StyleSheets\" />
+    <Folder Include="Shell\" />
+    <Folder Include="Shapes\" />
+    <Folder Include="Properties\" />
+    <Folder Include="Xaml\Diagnostics\" />
+  </ItemGroup>
+  
+</Project>

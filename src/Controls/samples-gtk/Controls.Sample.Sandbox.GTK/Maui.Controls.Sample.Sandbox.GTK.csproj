@@ -25,7 +25,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\src\Core\Controls.Core-GTK.csproj" />
+    <ProjectReference Include="..\..\src\Core-GTK\Controls.Core-GTK.csproj" />
     <ProjectReference Include="..\..\src\Xaml\Controls.Xaml-GTK.csproj" />
   </ItemGroup>
 

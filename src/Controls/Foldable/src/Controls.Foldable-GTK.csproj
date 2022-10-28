@@ -29,7 +29,6 @@
   <Import Project="$(MauiNuSpecDirectory)Microsoft.Maui.Controls.MultiTargeting.targets" />
   <ItemGroup Condition=" '$(UseMaui)' != 'true' ">
     <ProjectReference Include="..\..\..\Graphics\src\Graphics\Graphics-GTK.csproj" PrivateAssets="all" />
-    <ProjectReference Include="..\..\..\Controls\src\Core\Controls.Core-GTK.csproj" PrivateAssets="all" />
     <ProjectReference Include="..\..\..\Core\src\Core-GTK.csproj" PrivateAssets="all" />
   </ItemGroup>
   <ItemGroup Condition=" '$(UseMaui)' != 'true' ">
@@ -43,5 +42,8 @@
     <PackageReference Include="Xamarin.Google.Android.Material" />
     <PackageReference Include="Xamarin.AndroidX.Legacy.Support.V4" />
     <PackageReference Include="Xamarin.AndroidX.Window.WindowJava" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\Core-GTK\Controls.Core-GTK.csproj" />
   </ItemGroup>
 </Project>
