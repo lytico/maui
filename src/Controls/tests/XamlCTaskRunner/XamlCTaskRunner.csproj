@@ -32,7 +32,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\src\Build.Tasks\Controls.Build.Tasks-GTK.csproj" />
+    <ProjectReference Include="..\..\src\Build.Tasks-GTK\Controls.Build.Tasks-GTK.csproj" />
     <ProjectReference Include="..\..\src\Xaml\Controls.Xaml-GTK.csproj" />
   </ItemGroup>
 

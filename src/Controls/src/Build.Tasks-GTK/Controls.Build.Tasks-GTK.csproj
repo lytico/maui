@@ -1,0 +1,132 @@
+﻿<!-- NOTE: This project is temporarily replacing part of Microsoft.Maui.Sdk -->
+<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<PackageId>Microsoft.Maui.Controls.Build.Tasks</PackageId>
+		<AssemblyName>Microsoft.Maui.Controls.Build.Tasks</AssemblyName>
+		<RootNamespace>Microsoft.Maui.Controls.Build.Tasks</RootNamespace>
+		<Description>.NET MAUI MSBuild tasks. Enabled via &lt;UseMaui&gt;true&lt;/UseMaui&gt;.</Description>
+		<TargetFramework>netstandard2.0</TargetFramework>
+		<CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
+		<IsPackable>false</IsPackable>
+	</PropertyGroup>
+
+	<ItemGroup>
+	  <Compile Include="..\Build.Tasks\BindablePropertyReferenceExtensions.cs" Link="BindablePropertyReferenceExtensions.cs" />
+	  <Compile Include="..\Build.Tasks\BuildException.cs" Link="BuildException.cs" />
+	  <Compile Include="..\Build.Tasks\CompiledConverters\BindablePropertyConverter.cs" Link="CompiledConverters\BindablePropertyConverter.cs" />
+	  <Compile Include="..\Build.Tasks\CompiledConverters\BoundsTypeConverter.cs" Link="CompiledConverters\BoundsTypeConverter.cs" />
+	  <Compile Include="..\Build.Tasks\CompiledConverters\BrushTypeConverter.cs" Link="CompiledConverters\BrushTypeConverter.cs" />
+	  <Compile Include="..\Build.Tasks\CompiledConverters\ColorTypeConverter.cs" Link="CompiledConverters\ColorTypeConverter.cs" />
+	  <Compile Include="..\Build.Tasks\CompiledConverters\ColumnDefinitionCollectionTypeConverter.cs" Link="CompiledConverters\ColumnDefinitionCollectionTypeConverter.cs" />
+	  <Compile Include="..\Build.Tasks\CompiledConverters\ConstraintTypeConverter.cs" Link="CompiledConverters\ConstraintTypeConverter.cs" />
+	  <Compile Include="..\Build.Tasks\CompiledConverters\CornerRadiusTypeConverter.cs" Link="CompiledConverters\CornerRadiusTypeConverter.cs" />
+	  <Compile Include="..\Build.Tasks\CompiledConverters\EasingTypeConverter.cs" Link="CompiledConverters\EasingTypeConverter.cs" />
+	  <Compile Include="..\Build.Tasks\CompiledConverters\EnumTypeConverter.cs" Link="CompiledConverters\EnumTypeConverter.cs" />
+	  <Compile Include="..\Build.Tasks\CompiledConverters\FlexBasisTypeConverter.cs" Link="CompiledConverters\FlexBasisTypeConverter.cs" />
+	  <Compile Include="..\Build.Tasks\CompiledConverters\FontSizeTypeConverter.cs" Link="CompiledConverters\FontSizeTypeConverter.cs" />
+	  <Compile Include="..\Build.Tasks\CompiledConverters\GridLengthTypeConverter.cs" Link="CompiledConverters\GridLengthTypeConverter.cs" />
+	  <Compile Include="..\Build.Tasks\CompiledConverters\ICompiledTypeConverter.cs" Link="CompiledConverters\ICompiledTypeConverter.cs" />
+	  <Compile Include="..\Build.Tasks\CompiledConverters\ImageSourceTypeConverter.cs" Link="CompiledConverters\ImageSourceTypeConverter.cs" />
+	  <Compile Include="..\Build.Tasks\CompiledConverters\LayoutOptionsConverter.cs" Link="CompiledConverters\LayoutOptionsConverter.cs" />
+	  <Compile Include="..\Build.Tasks\CompiledConverters\ListStringTypeConverter.cs" Link="CompiledConverters\ListStringTypeConverter.cs" />
+	  <Compile Include="..\Build.Tasks\CompiledConverters\PointTypeConverter.cs" Link="CompiledConverters\PointTypeConverter.cs" />
+	  <Compile Include="..\Build.Tasks\CompiledConverters\RDSourceTypeConverter.cs" Link="CompiledConverters\RDSourceTypeConverter.cs" />
+	  <Compile Include="..\Build.Tasks\CompiledConverters\RectangleTypeConverter.cs" Link="CompiledConverters\RectangleTypeConverter.cs" />
+	  <Compile Include="..\Build.Tasks\CompiledConverters\RowDefinitionCollectionTypeConverter.cs" Link="CompiledConverters\RowDefinitionCollectionTypeConverter.cs" />
+	  <Compile Include="..\Build.Tasks\CompiledConverters\StrokeShapeTypeConverter.cs" Link="CompiledConverters\StrokeShapeTypeConverter.cs" />
+	  <Compile Include="..\Build.Tasks\CompiledConverters\ThicknessTypeConverter.cs" Link="CompiledConverters\ThicknessTypeConverter.cs" />
+	  <Compile Include="..\Build.Tasks\CompiledConverters\TypeTypeConverter.cs" Link="CompiledConverters\TypeTypeConverter.cs" />
+	  <Compile Include="..\Build.Tasks\CompiledConverters\UriTypeConverter.cs" Link="CompiledConverters\UriTypeConverter.cs" />
+	  <Compile Include="..\Build.Tasks\CompiledMarkupExtensions\ArrayExtension.cs" Link="CompiledMarkupExtensions\ArrayExtension.cs" />
+	  <Compile Include="..\Build.Tasks\CompiledMarkupExtensions\DataTemplateExtension.cs" Link="CompiledMarkupExtensions\DataTemplateExtension.cs" />
+	  <Compile Include="..\Build.Tasks\CompiledMarkupExtensions\ICompiledMarkupExtension.cs" Link="CompiledMarkupExtensions\ICompiledMarkupExtension.cs" />
+	  <Compile Include="..\Build.Tasks\CompiledMarkupExtensions\NullExtension.cs" Link="CompiledMarkupExtensions\NullExtension.cs" />
+	  <Compile Include="..\Build.Tasks\CompiledMarkupExtensions\StaticExtension.cs" Link="CompiledMarkupExtensions\StaticExtension.cs" />
+	  <Compile Include="..\Build.Tasks\CompiledMarkupExtensions\TypeExtension.cs" Link="CompiledMarkupExtensions\TypeExtension.cs" />
+	  <Compile Include="..\Build.Tasks\CompiledValueProviders\ICompiledValueProvider.cs" Link="CompiledValueProviders\ICompiledValueProvider.cs" />
+	  <Compile Include="..\Build.Tasks\CompiledValueProviders\PassthroughValueProvider.cs" Link="CompiledValueProviders\PassthroughValueProvider.cs" />
+	  <Compile Include="..\Build.Tasks\CompiledValueProviders\SetterValueProvider.cs" Link="CompiledValueProviders\SetterValueProvider.cs" />
+	  <Compile Include="..\Build.Tasks\CompiledValueProviders\StyleSheetProvider.cs" Link="CompiledValueProviders\StyleSheetProvider.cs" />
+	  <Compile Include="..\Build.Tasks\CreateObjectVisitor.cs" Link="CreateObjectVisitor.cs" />
+	  <Compile Include="..\Build.Tasks\DebugXamlCTask.cs" Link="DebugXamlCTask.cs" />
+	  <Compile Include="..\Build.Tasks\ExpandMarkupsVisitor.cs" Link="ExpandMarkupsVisitor.cs" />
+	  <Compile Include="..\Build.Tasks\FieldReferenceExtensions.cs" Link="FieldReferenceExtensions.cs" />
+	  <Compile Include="..\Build.Tasks\ILContext.cs" Link="ILContext.cs" />
+	  <Compile Include="..\Build.Tasks\ILProcessorExtensions.cs" Link="ILProcessorExtensions.cs" />
+	  <Compile Include="..\Build.Tasks\ILRootNode.cs" Link="ILRootNode.cs" />
+	  <Compile Include="..\Build.Tasks\MethodBodyExtensions.cs" Link="MethodBodyExtensions.cs" />
+	  <Compile Include="..\Build.Tasks\MethodDefinitionExtensions.cs" Link="MethodDefinitionExtensions.cs" />
+	  <Compile Include="..\Build.Tasks\MethodReferenceExtensions.cs" Link="MethodReferenceExtensions.cs" />
+	  <Compile Include="..\Build.Tasks\ModuleDefinitionExtensions.cs" Link="ModuleDefinitionExtensions.cs" />
+	  <Compile Include="..\Build.Tasks\NodeILExtensions.cs" Link="NodeILExtensions.cs" />
+	  <Compile Include="..\Build.Tasks\PerformanceProvider.cs" Link="PerformanceProvider.cs" />
+	  <Compile Include="..\Build.Tasks\Properties\AssemblyInfo.cs" Link="Properties\AssemblyInfo.cs" />
+	  <Compile Include="..\Build.Tasks\SetFieldVisitor.cs" Link="SetFieldVisitor.cs" />
+	  <Compile Include="..\Build.Tasks\SetNamescopesAndRegisterNamesVisitor.cs" Link="SetNamescopesAndRegisterNamesVisitor.cs" />
+	  <Compile Include="..\Build.Tasks\SetPropertiesVisitor.cs" Link="SetPropertiesVisitor.cs" />
+	  <Compile Include="..\Build.Tasks\SetResourcesVisitor.cs" Link="SetResourcesVisitor.cs" />
+	  <Compile Include="..\Build.Tasks\TypeDefinitionExtensions.cs" Link="TypeDefinitionExtensions.cs" />
+	  <Compile Include="..\Build.Tasks\TypeReferenceExtensions.cs" Link="TypeReferenceExtensions.cs" />
+	  <Compile Include="..\Build.Tasks\VariableDefinitionExtensions.cs" Link="VariableDefinitionExtensions.cs" />
+	  <Compile Include="..\Build.Tasks\XamlCAssemblyResolver.cs" Link="XamlCAssemblyResolver.cs" />
+	  <Compile Include="..\Build.Tasks\XamlCTask.cs" Link="XamlCTask.cs" />
+	  <Compile Include="..\Build.Tasks\XamlTask.cs" Link="XamlTask.cs" />
+	  <Compile Include="..\Build.Tasks\XmlTypeExtensions.cs" Link="XmlTypeExtensions.cs" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Mono.Cecil" Version="0.11.4" />
+		<PackageReference Include="Microsoft.Build" Version="15.9.20" />
+		<PackageReference Include="Microsoft.Build.Framework" Version="15.9.20" />
+		<PackageReference Include="Microsoft.Build.Utilities.Core" Version="15.9.20" />
+		<PackageReference Include="Microsoft.Build.Tasks.Core" Version="15.9.20" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\Core-GTK\Controls.Core-GTK.csproj" />
+		<ProjectReference Include="..\Xaml\Controls.Xaml-GTK.csproj" />
+		<ProjectReference Include="..\SourceGen\Controls.SourceGen-GTK.csproj" ReferenceOutputAssembly="false" />
+	</ItemGroup>
+	
+	<ItemGroup>
+		<Compile Include="..\Build.Tasks\ErrorMessages.Designer.cs" Link="ErrorMessages.Designer.cs" />
+		<EmbeddedResource Include="..\Build.Tasks\ErrorMessages.resx" Link="ErrorMessages.resx" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<Compile Update="ErrorMessages.Designer.cs">
+			<DesignTime>True</DesignTime>
+			<AutoGen>True</AutoGen>
+			<DependentUpon>ErrorMessages.resx</DependentUpon>
+		</Compile>
+	</ItemGroup>
+
+	<ItemGroup>
+		<EmbeddedResource Update="ErrorMessages.resx">
+			<Generator>ResXFileCodeGenerator</Generator>
+			<LastGenOutput>ErrorMessages.Designer.cs</LastGenOutput>
+		</EmbeddedResource>
+	</ItemGroup>
+
+	<Target Name="_CopyToNuspecDir" AfterTargets="Build">
+		<ItemGroup>
+			<_CopyItems Include="$(TargetDir)*.dll" Exclude="$(TargetDir)System.*.dll" />
+		</ItemGroup>
+		<Copy SourceFiles="@(_CopyItems)" DestinationFolder="$(MauiNuSpecDirectory)" ContinueOnError="true" Retries="0" />
+	</Target>
+
+	<ItemGroup>
+		<!-- Ensure all references are PrivateAssets=all, so they are not transitive to end-user projects. -->
+		<PackageReference Update="@(PackageReference)" PrivateAssets="all" />
+		<ProjectReference Update="@(ProjectReference)" PrivateAssets="all" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Folder Include="CompiledConverters\" />
+	  <Folder Include="CompiledMarkupExtensions\" />
+	  <Folder Include="CompiledValueProviders\" />
+	  <Folder Include="xlf\" />
+	  <Folder Include="Properties\" />
+	</ItemGroup>
+</Project>
