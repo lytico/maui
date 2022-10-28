@@ -1,24 +1,12 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFrameworks>$(WindowsMauiPlatforms);netstandard2.0</TargetFrameworks>
+    <TargetFrameworks>netstandard2.0</TargetFrameworks>
     <AssemblyName>Microsoft.Maui.Controls.Foldable</AssemblyName>
     <RootNamespace>Microsoft.Maui.Controls.Foldable</RootNamespace>
     <WarningsNotAsErrors>BI1234</WarningsNotAsErrors>
     <IsPackable>true</IsPackable>
     <!-- TODO: remove this when Foldable is made into a nupkg -->
     <UseMaui Condition=" '$(UseWorkload)' == 'true' ">true</UseMaui>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net6.0-windows10.0.19041|AnyCPU'">
-    <DefineConstants>$(DefineConstants);WINDOWS;__GTK__</DefineConstants>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net6.0-windows10.0.19041|AnyCPU'">
-    <DefineConstants>$(DefineConstants);WINDOWS;__GTK__</DefineConstants>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net6.0-windows10.0.20348|AnyCPU'">
-    <DefineConstants>$(DefineConstants);WINDOWS;__GTK__</DefineConstants>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net6.0-windows10.0.20348|AnyCPU'">
-    <DefineConstants>$(DefineConstants);WINDOWS;__GTK__</DefineConstants>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|netstandard2.0|AnyCPU'">
     <DefineConstants>$(DefineConstants);WINDOWS;__GTK__</DefineConstants>
@@ -30,6 +18,7 @@
   <ItemGroup Condition=" '$(UseMaui)' != 'true' ">
     <ProjectReference Include="..\..\..\Graphics\src\Graphics\Graphics-GTK.csproj" PrivateAssets="all" />
     <ProjectReference Include="..\..\..\Core\src\Core-GTK.csproj" PrivateAssets="all" />
+    <ProjectReference Include="..\..\src\Core-GTK\Controls.Core-GTK.csproj" />
   </ItemGroup>
   <ItemGroup Condition=" '$(UseMaui)' != 'true' ">
     <PackageReference Include="Microsoft.Extensions.Configuration" />
@@ -37,13 +26,22 @@
     <PackageReference Include="Microsoft.Extensions.Logging" />
     <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" />
   </ItemGroup>
-  <ItemGroup Condition=" '$(TargetPlatformIdentifier)' == 'android' ">
-    <PackageReference Include="Xamarin.AndroidX.Lifecycle.LiveData" />
-    <PackageReference Include="Xamarin.Google.Android.Material" />
-    <PackageReference Include="Xamarin.AndroidX.Legacy.Support.V4" />
-    <PackageReference Include="Xamarin.AndroidX.Window.WindowJava" />
+  <ItemGroup>
+    <Compile Include="..\..\Foldable\src\DualScreenInfo.cs" Link="DualScreenInfo.cs" />
+    <Compile Include="..\..\Foldable\src\HostBuilderExtensions.cs" Link="HostBuilderExtensions.cs" />
+    <Compile Include="..\..\Foldable\src\IFoldableContext.cs" Link="IFoldableContext.cs" />
+    <Compile Include="..\..\Foldable\src\NoPlatformFoldableService.cs" Link="NoPlatformFoldableService.cs" />
+    <Compile Include="..\..\Foldable\src\Properties\AssemblyInfo.cs" Link="Properties\AssemblyInfo.cs" />
+    <Compile Include="..\..\Foldable\src\SpanModeStateTrigger.cs" Link="SpanModeStateTrigger.cs" />
+    <Compile Include="..\..\Foldable\src\TwoPaneView.cs" Link="TwoPaneView.cs" />
+    <Compile Include="..\..\Foldable\src\TwoPaneViewLayoutGuide.cs" Link="TwoPaneViewLayoutGuide.cs" />
+    <Compile Include="..\..\Foldable\src\TwoPaneViewMode.cs" Link="TwoPaneViewMode.cs" />
+    <Compile Include="..\..\Foldable\src\TwoPaneViewPriority.cs" Link="TwoPaneViewPriority.cs" />
+    <Compile Include="..\..\Foldable\src\TwoPaneViewTallModeConfiguration.cs" Link="TwoPaneViewTallModeConfiguration.cs" />
+    <Compile Include="..\..\Foldable\src\TwoPaneViewWideModeConfiguration.cs" Link="TwoPaneViewWideModeConfiguration.cs" />
+    <Compile Include="..\..\Foldable\src\WindowSpanModeStateTrigger.cs" Link="WindowSpanModeStateTrigger.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\src\Core-GTK\Controls.Core-GTK.csproj" />
+    <Folder Include="Properties\" />
   </ItemGroup>
 </Project>
