@@ -757,10 +757,6 @@
     <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" />
   </ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\..\..\Core\src\Core-GTK.csproj" />
-  </ItemGroup>
-
   <PropertyGroup Condition=" '$(_MauiDesignDllBuild)' == 'True'">
     <TargetsForTfmSpecificBuildOutput>
       $(TargetsForTfmSpecificBuildOutput);
@@ -860,6 +856,10 @@
     <Folder Include="Shapes\" />
     <Folder Include="Properties\" />
     <Folder Include="Xaml\Diagnostics\" />
+  </ItemGroup>
+  
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\Core-GTK\src\Core-GTK.csproj" />
   </ItemGroup>
   
 </Project>

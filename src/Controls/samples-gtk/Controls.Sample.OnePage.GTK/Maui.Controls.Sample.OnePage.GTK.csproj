@@ -27,7 +27,7 @@
 
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\Core\src\Core-GTK.csproj" />
+    <ProjectReference Include="..\..\..\Core-GTK\src\Core-GTK.csproj" />
     <ProjectReference Include="..\..\src\Build.Tasks-GTK\Controls.Build.Tasks-GTK.csproj" />
     <ProjectReference Include="..\..\src\Core-GTK\Controls.Core-GTK.csproj" />
 	<ProjectReference Include="..\..\..\Controls\src\SourceGen\Controls.SourceGen-GTK.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
