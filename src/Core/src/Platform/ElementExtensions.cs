@@ -10,19 +10,17 @@ using PlatformView = Android.Views.View;
 using BasePlatformType = Android.Content.Context;
 using PlatformWindow = Android.App.Activity;
 using PlatformApplication = Android.App.Application;
-#elif WINDOWS
-#if __GTK__
+#elif WINDOWS && __GTK__
 using PlatformView = System.Object;
 using BasePlatformType = System.Object;
 using PlatformWindow = Microsoft.Maui.MauiGTKWindow;
 using PlatformApplication = Microsoft.Maui.MauiGTKApplication;
-#else
+#elif WINDOWS && !__GTK__
 using PlatformView = Microsoft.UI.Xaml.FrameworkElement;
 using BasePlatformType = WinRT.IWinRTObject;
 using PlatformWindow = Microsoft.UI.Xaml.Window;
 using PlatformApplication = Microsoft.UI.Xaml.Application;
-#endif
-#elif TIZEN
+#elif TIZEN      
 using PlatformView = Tizen.NUI.BaseComponents.View;
 using BasePlatformType = System.Object;
 using PlatformWindow = Tizen.NUI.Window;
@@ -108,57 +106,6 @@ namespace Microsoft.Maui.Platform
 			return handler;
 		}
 
-		public static IElementHandler ToWindowHandler(this IElement view, IMauiContext context)
-		{
-			_ = view ?? throw new ArgumentNullException(nameof(view));
-			_ = context ?? throw new ArgumentNullException(nameof(context));
-
-			//This is how MVU works. It collapses views down
-			if (view is IReplaceableView ir)
-				view = ir.ReplacedView;
-
-			IElementHandler? handler = null;
-
-			//if (handler?.MauiContext != null && handler.MauiContext != context)
-				//handler = null;
-
-
-			// TODO Clean up this handler create. Handlers should probably create through the 
-			// DI.Ext Service provider. We just register them all as transient? possibly?
-			if (handler == null)
-			{
-				var viewType = view.GetType();
-				try
-				{
-					if (handlersWithConstructors.Contains(viewType))
-						handler = viewType.CreateTypeWithInjection(context);
-					else
-						handler = context.Handlers.GetHandler(viewType);
-				}
-				catch (MissingMethodException)
-				{
-					handler = viewType.CreateTypeWithInjection(context);
-					if (handler != null)
-						handlersWithConstructors.Add(view.GetType());
-				}
-			}
-
-			if (handler == null)
-				throw new HandlerNotFoundException(view);
-
-			handler.SetMauiContext(context);
-
-			view.Handler = handler;
-
-			handler.ClearVirtualView();
-			view.Handler.ClearVirtualView();
-
-			if (handler.VirtualView != view)
-			    handler.SetVirtualView(view);
-
-			return handler;
-		}
-
 		internal static PlatformView ToPlatform(this IElement view)
 		{
 			if (view is IReplaceableView replaceableView && replaceableView.ReplacedView != view)
@@ -193,6 +140,7 @@ namespace Microsoft.Maui.Platform
 
 		}
 
+#if __GTK__
 		public static MauiGTKWindow ToContainerView(this IElement view)
 		{
 			_ = view.Handler ?? throw new InvalidOperationException($"{nameof(MauiContext)} should have been set on parent.");
@@ -208,6 +156,7 @@ namespace Microsoft.Maui.Platform
 
 			return (view.Handler?.PlatformView as PlatformWindow) ?? throw new InvalidOperationException($"Unable to convert {view} to {typeof(PlatformWindow)}");
 		}
+#endif
 
 		static void SetHandler(this BasePlatformType nativeElement, IElement element, IMauiContext context)
 		{
