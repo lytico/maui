@@ -18,7 +18,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Include="..\..\src-GTK\SourceGen\GenerateXaml.cs" Link="GenerateXaml.cs" />
     <Compile Include="..\Core\Internals\INameScope.cs" Link="INameScope.cs" />
     <Compile Include="..\Core\IXmlLineInfoProvider.cs" Link="IXmlLineInfoProvider.cs" />
     <Compile Include="..\Core\XamlParseException.cs" Link="XamlParseException.cs" />

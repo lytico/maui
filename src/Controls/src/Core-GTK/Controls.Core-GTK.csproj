@@ -13,26 +13,6 @@
     <RunAnalyzersDuringLiveAnalysis>False</RunAnalyzersDuringLiveAnalysis>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="..\..\src-GTK\Compatibility\GTK\ResourcesProvider.cs" Link="Compatibility\GTK\ResourcesProvider.cs" />
-    <Compile Include="..\..\src-GTK\Compatibility\Handlers\GTK\BaseCellView.cs" Link="Compatibility\Handlers\GTK\BaseCellView.cs" />
-    <Compile Include="..\..\src-GTK\Compatibility\Handlers\GTK\CellRenderer.cs" Link="Compatibility\Handlers\GTK\CellRenderer.cs" />
-    <Compile Include="..\..\src-GTK\Compatibility\Handlers\GTK\EntryCellRenderer.cs" Link="Compatibility\Handlers\GTK\EntryCellRenderer.cs" />
-    <Compile Include="..\..\src-GTK\Compatibility\Handlers\GTK\EntryCellView.cs" Link="Compatibility\Handlers\GTK\EntryCellView.cs" />
-    <Compile Include="..\..\src-GTK\Compatibility\Handlers\GTK\FrameRenderer.cs" Link="Compatibility\Handlers\GTK\FrameRenderer.cs" />
-    <Compile Include="..\..\src-GTK\Compatibility\Handlers\GTK\ImageCellRenderer.cs" Link="Compatibility\Handlers\GTK\ImageCellRenderer.cs" />
-    <Compile Include="..\..\src-GTK\Compatibility\Handlers\GTK\SwitchCellRenderer.cs" Link="Compatibility\Handlers\GTK\SwitchCellRenderer.cs" />
-    <Compile Include="..\..\src-GTK\Compatibility\Handlers\GTK\SwitchCellView.cs" Link="Compatibility\Handlers\GTK\SwitchCellView.cs" />
-    <Compile Include="..\..\src-GTK\Compatibility\Handlers\GTK\TextCellRenderer.cs" Link="Compatibility\Handlers\GTK\TextCellRenderer.cs" />
-    <Compile Include="..\..\src-GTK\Compatibility\Handlers\GTK\ViewCellRenderer.cs" Link="Compatibility\Handlers\GTK\ViewCellRenderer.cs" />
-    <Compile Include="..\..\src-GTK\Compatibility\Handlers\GTK\ViewRenderer.cs" Link="Compatibility\Handlers\GTK\ViewRenderer.cs" />
-    <Compile Include="..\..\src-GTK\Compatibility\Handlers\GTK\VisualElementRenderer.cs" Link="Compatibility\Handlers\GTK\VisualElementRenderer.cs" />
-    <Compile Include="..\..\src-GTK\HandlerImpl\Application\Application.GTK.cs" Link="HandlerImpl\Application\Application.GTK.cs" />
-    <Compile Include="..\..\src-GTK\HandlerImpl\Element\Element.GTK.cs" Link="HandlerImpl\Element\Element.GTK.cs" />
-    <Compile Include="..\..\src-GTK\HandlerImpl\Label\Label.GTK.cs" Link="HandlerImpl\Label\Label.GTK.cs" />
-    <Compile Include="..\..\src-GTK\HandlerImpl\Window\Window.GTK.cs" Link="HandlerImpl\Window\Window.GTK.cs" />
-    <Compile Include="..\..\src-GTK\Platform\AlertManager\AlertManager.GTK.cs" Link="Platform\AlertManager\AlertManager.GTK.cs" />
-    <Compile Include="..\..\src-GTK\Platform\GTK\AutomationPropertiesProvider.cs" Link="Platform\GTK\AutomationPropertiesProvider.cs" />
-    <Compile Include="..\..\src-GTK\Platform\GTK\LabelExtensions.cs" Link="Platform\GTK\LabelExtensions.cs" />
     <Compile Include="..\Core\Accelerator.cs" Link="Accelerator.cs" />
     <Compile Include="..\Core\AcceleratorTypeConverter.cs" Link="AcceleratorTypeConverter.cs" />
     <Compile Include="..\Core\ActionSheetArguments.cs" Link="ActionSheetArguments.cs" />
@@ -812,13 +792,8 @@
   
   <ItemGroup>
     <Folder Include="Cells\" />
-    <Folder Include="Compatibility\GTK\" />
-    <Folder Include="Compatibility\Handlers\GTK\" />
     <Folder Include="DragAndDrop\" />
     <Folder Include="Foldable\" />
-    <Folder Include="HandlerImpl\Application\" />
-    <Folder Include="HandlerImpl\Element\" />
-    <Folder Include="HandlerImpl\Label\" />
     <Folder Include="HandlerImpl\Button\" />
     <Folder Include="HandlerImpl\CheckBox\" />
     <Folder Include="HandlerImpl\ContentView\" />
@@ -838,7 +813,6 @@
     <Folder Include="HandlerImpl\RefreshView\" />
     <Folder Include="HandlerImpl\RadioButton\" />
     <Folder Include="HandlerImpl\Picker\" />
-    <Folder Include="HandlerImpl\Window\" />
     <Folder Include="Handlers\Shell\" />
     <Folder Include="Hosting\Effects\" />
     <Folder Include="Interactivity\" />
@@ -847,8 +821,6 @@
     <Folder Include="Layout\" />
     <Folder Include="LegacyLayouts\" />
     <Folder Include="PlatformConfiguration\GTKSpecific\" />
-    <Folder Include="Platform\GTK\" />
-    <Folder Include="Platform\AlertManager\" />
     <Folder Include="Platform\ModalNavigationManager\" />
     <Folder Include="Visuals\" />
     <Folder Include="StyleSheets\" />
