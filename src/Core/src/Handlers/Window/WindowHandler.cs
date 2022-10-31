@@ -66,6 +66,7 @@ namespace Microsoft.Maui.Handlers
 		{
 		}
 
+#if !(NETSTANDARD || !PLATFORM) || __GTK__
 		protected override PlatformView CreatePlatformElement()
 		{
 			var plat = MauiContext?.Services.GetService<PlatformView>();
@@ -96,6 +97,6 @@ namespace Microsoft.Maui.Handlers
 //#if !(NETSTANDARD || !PLATFORM) || __GTK__
 //		protected override PlatformView CreatePlatformElement() =>
 //			MauiContext?.Services.GetService<PlatformView>() ?? throw new InvalidOperationException($"MauiContext did not have a valid window.");
-//#endif
+#endif
 	}
 }
