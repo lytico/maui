@@ -23,7 +23,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Include="..\..\src-GTK\Platforms\GTK\PlatformGraphicsView.cs" Link="Platforms\GTK\PlatformGraphicsView.cs" />
     <Compile Include="..\Graphics\AbstractCanvas.cs" Link="AbstractCanvas.cs" />
     <Compile Include="..\Graphics\AbstractPattern.cs" Link="AbstractPattern.cs" />
     <Compile Include="..\Graphics\ArcFlattener.cs" Link="ArcFlattener.cs" />
