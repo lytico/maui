@@ -16,7 +16,6 @@
   </PropertyGroup>
   <Import Project="$(MauiNuSpecDirectory)Microsoft.Maui.Controls.MultiTargeting.targets" />
   <ItemGroup Condition=" '$(UseMaui)' != 'true' ">
-    <ProjectReference Include="..\..\..\Graphics\src\Graphics\Graphics-GTK.csproj" PrivateAssets="all" />
     <ProjectReference Include="..\..\..\Core\src\Core-GTK.csproj" PrivateAssets="all" />
     <ProjectReference Include="..\..\src\Core-GTK\Controls.Core-GTK.csproj" />
   </ItemGroup>

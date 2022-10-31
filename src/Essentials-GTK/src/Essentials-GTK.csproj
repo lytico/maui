@@ -1,0 +1,124 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFrameworks>netstandard2.0</TargetFrameworks>
+    <AssemblyName>Microsoft.Maui.Essentials</AssemblyName>
+    <RootNamespace>Microsoft.Maui.Essentials</RootNamespace>
+    <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
+    <WarningsNotAsErrors>BI1234</WarningsNotAsErrors>
+    <IsPackable>false</IsPackable>
+    <IsTrimmable>true</IsTrimmable>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <NoWarn>$(NoWarn);CS1591;NU5104;RS0041;RS0026</NoWarn>
+    <RunAnalyzersDuringBuild>True</RunAnalyzersDuringBuild>
+    <RunAnalyzersDuringLiveAnalysis>True</RunAnalyzersDuringLiveAnalysis>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|netstandard2.0|AnyCPU'">
+    <DefineConstants>$(DefineConstants)TRACE;__GTK__</DefineConstants>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|netstandard2.0|AnyCPU'">
+    <DefineConstants>$(DefineConstants)TRACE;__GTK__</DefineConstants>
+  </PropertyGroup>
+  <ItemGroup Condition=" $(TargetFramework.Contains('-windows')) ">
+    <PackageReference Include="Microsoft.WindowsAppSDK" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\..\Essentials\src\AppActions\AppActions.shared.cs" Link="AppActions\AppActions.shared.cs" />
+    <Compile Include="..\..\Essentials\src\AppInfo\AppInfo.shared.cs" Link="AppInfo\AppInfo.shared.cs" />
+    <Compile Include="..\..\Essentials\src\AppInfo\AppTheme.shared.cs" Link="AppInfo\AppTheme.shared.cs" />
+    <Compile Include="..\..\Essentials\src\AppInfo\LayoutDirection.shared.cs" Link="AppInfo\LayoutDirection.shared.cs" />
+    <Compile Include="..\..\Essentials\src\AssemblyInfo\AssemblyInfo.shared.cs" Link="AssemblyInfo\AssemblyInfo.shared.cs" />
+    <Compile Include="..\..\Essentials\src\Browser\Browser.shared.cs" Link="Browser\Browser.shared.cs" />
+    <Compile Include="..\..\Essentials\src\Browser\BrowserLaunchMode.shared.cs" Link="Browser\BrowserLaunchMode.shared.cs" />
+    <Compile Include="..\..\Essentials\src\Browser\BrowserLaunchOptions.shared.cs" Link="Browser\BrowserLaunchOptions.shared.cs" />
+    <Compile Include="..\..\Essentials\src\Browser\BrowserTitleMode.shared.cs" Link="Browser\BrowserTitleMode.shared.cs" />
+    <Compile Include="..\..\Essentials\src\Clipboard\Clipboard.shared.cs" Link="Clipboard\Clipboard.shared.cs" />
+    <Compile Include="..\..\Essentials\src\Connectivity\Connectivity.shared.cs" Link="Connectivity\Connectivity.shared.cs" />
+    <Compile Include="..\..\Essentials\src\Connectivity\Connectivity.shared.enums.cs" Link="Connectivity\Connectivity.shared.enums.cs" />
+    <Compile Include="..\..\Essentials\src\DeviceDisplay\DeviceDisplay.shared.cs" Link="DeviceDisplay\DeviceDisplay.shared.cs" />
+    <Compile Include="..\..\Essentials\src\Email\Email.shared.cs" Link="Email\Email.shared.cs" />
+    <Compile Include="..\..\Essentials\src\FilePicker\FilePicker.shared.cs" Link="FilePicker\FilePicker.shared.cs" />
+    <Compile Include="..\..\Essentials\src\FileSystem\FileSystem.shared.cs" Link="FileSystem\FileSystem.shared.cs" />
+    <Compile Include="..\..\Essentials\src\FileSystem\FileSystemUtils.shared.cs" Link="FileSystem\FileSystemUtils.shared.cs" />
+    <Compile Include="..\..\Essentials\src\GlobalSuppressions.shared.cs" Link="GlobalSuppressions.shared.cs" />
+    <Compile Include="..\..\Essentials\src\MainThread\MainThread.shared.cs" Link="MainThread\MainThread.shared.cs" />
+    <Compile Include="..\..\Essentials\src\Permissions\Permissions.shared.cs" Link="Permissions\Permissions.shared.cs" />
+    <Compile Include="..\..\Essentials\src\Permissions\Permissions.shared.enums.cs" Link="Permissions\Permissions.shared.enums.cs" />
+    <Compile Include="..\..\Essentials\src\PhoneDialer\PhoneDialer.shared.cs" Link="PhoneDialer\PhoneDialer.shared.cs" />
+    <Compile Include="..\..\Essentials\src\Platform\Platform.shared.cs" Link="Platform\Platform.shared.cs" />
+    <Compile Include="..\..\Essentials\src\Properties\AssemblyInfo.shared.cs" Link="Properties\AssemblyInfo.shared.cs" />
+    <Compile Include="..\..\Essentials\src\SecureStorage\SecureStorage.shared.cs" Link="SecureStorage\SecureStorage.shared.cs" />
+    <Compile Include="..\..\Essentials\src\SemanticScreenReader\SemanticScreenReader.shared.cs" Link="SemanticScreenReader\SemanticScreenReader.shared.cs" />
+    <Compile Include="..\..\Essentials\src\Share\Share.shared.cs" Link="Share\Share.shared.cs" />
+    <Compile Include="..\..\Essentials\src\Sms\Sms.shared.cs" Link="Sms\Sms.shared.cs" />
+    <Compile Include="..\..\Essentials\src\Types\DeviceIdiom.shared.cs" Link="Types\DeviceIdiom.shared.cs" />
+    <Compile Include="..\..\Essentials\src\Types\DevicePlatform.shared.cs" Link="Types\DevicePlatform.shared.cs" />
+    <Compile Include="..\..\Essentials\src\Types\DisplayInfo.shared.cs" Link="Types\DisplayInfo.shared.cs" />
+    <Compile Include="..\..\Essentials\src\Types\DisplayOrientation.shared.cs" Link="Types\DisplayOrientation.shared.cs" />
+    <Compile Include="..\..\Essentials\src\Types\DisplayRotation.shared.cs" Link="Types\DisplayRotation.shared.cs" />
+    <Compile Include="..\..\Essentials\src\Types\Placemark.shared.cs" Link="Types\Placemark.shared.cs" />
+    <Compile Include="..\..\Essentials\src\Types\PlacemarkExtensions.shared.cs" Link="Types\PlacemarkExtensions.shared.cs" />
+    <Compile Include="..\..\Essentials\src\Types\Shared\Exceptions.shared.cs" Link="Types\Shared\Exceptions.shared.cs" />
+    <Compile Include="..\..\Essentials\src\Types\Shared\Utils.shared.cs" Link="Types\Shared\Utils.shared.cs" />
+    <Compile Include="..\..\Essentials\src\Types\Shared\WebUtils.shared.cs" Link="Types\Shared\WebUtils.shared.cs" />
+    <Compile Include="..\..\Essentials\src\WebAuthenticator\WebAuthenticator.shared.cs" Link="WebAuthenticator\WebAuthenticator.shared.cs" />
+    <Compile Include="..\..\Essentials\src\WebAuthenticator\WebAuthenticatorResult.shared.cs" Link="WebAuthenticator\WebAuthenticatorResult.shared.cs" />
+    <Compile Include="Accelerometer\Accelerometer.gtk.cs" />
+    <Compile Include="AppActions\AppActions.gtk.cs" />
+    <Compile Include="AppInfo\AppInfo.gtk.cs" />
+    <Compile Include="Browser\Browser.gtk.cs" />
+    <Compile Include="Clipboard\Clipboard.gtk.cs" />
+    <Compile Include="Connectivity\Connectivity.gtk.cs" />
+    <Compile Include="DeviceDisplay\DeviceDisplay.gtk.cs" />
+    <Compile Include="Email\Email.gtk.cs" />
+    <Compile Include="FilePicker\FilePicker.gtk.cs" />
+    <Compile Include="FileSystem\FileSystem.gtk.cs" />
+    <Compile Include="MainThread\MainThread.gtk.cs" />
+    <Compile Include="Permissions\Permissions.gtk.cs" />
+    <Compile Include="PhoneDialer\PhoneDialer.gtk.cs" />
+    <Compile Include="Platform\PlatformUtils.gtk.cs" />
+    <Compile Include="SecureStorage\SecureStorage.gtk.cs" />
+    <Compile Include="SemanticScreenReader\SemanticScreenReader.gtk.cs" />
+    <Compile Include="Sms\Sms.gtk.cs" />
+    <Compile Include="WebAuthenticator\WebAuthenticator.gtk.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="..\..\Essentials\src\Resources\xml\microsoft_maui_essentials_fileprovider_file_paths.xml" Link="Resources\xml\microsoft_maui_essentials_fileprovider_file_paths.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="atk-sharp">
+      <HintPath>C:\Program Files (x86)\GtkSharp\2.12\lib\gtk-sharp-2.0\atk-sharp.dll</HintPath>
+    </Reference>
+    <Reference Include="gdk-sharp">
+      <HintPath>C:\Program Files (x86)\GtkSharp\2.12\lib\gtk-sharp-2.0\gdk-sharp.dll</HintPath>
+    </Reference>
+    <Reference Include="glade-sharp">
+      <HintPath>C:\Program Files (x86)\GtkSharp\2.12\lib\gtk-sharp-2.0\glade-sharp.dll</HintPath>
+    </Reference>
+    <Reference Include="glib-sharp">
+      <HintPath>C:\Program Files (x86)\GtkSharp\2.12\lib\gtk-sharp-2.0\glib-sharp.dll</HintPath>
+    </Reference>
+    <Reference Include="gtk-dotnet">
+      <HintPath>C:\Program Files (x86)\GtkSharp\2.12\lib\gtk-sharp-2.0\gtk-dotnet.dll</HintPath>
+    </Reference>
+    <Reference Include="gtk-sharp">
+      <HintPath>C:\Program Files (x86)\GtkSharp\2.12\lib\gtk-sharp-2.0\gtk-sharp.dll</HintPath>
+    </Reference>
+    <Reference Include="Mono.Cairo">
+      <HintPath>C:\Program Files (x86)\GtkSharp\2.12\lib\Mono.Cairo\Mono.Cairo.dll</HintPath>
+    </Reference>
+    <Reference Include="pango-sharp">
+      <HintPath>C:\Program Files (x86)\GtkSharp\2.12\lib\gtk-sharp-2.0\pango-sharp.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <Import Project="$(MauiSrcDirectory)PublicAPI.targets" />
+  <ItemGroup>
+    <ProjectReference Include="..\..\Graphics\src\Graphics-GTK\Graphics-GTK.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="AssemblyInfo\" />
+    <Folder Include="Resources\xml\" />
+    <Folder Include="Share\" />
+    <Folder Include="Properties\" />
+    <Folder Include="Types\Shared\" />
+  </ItemGroup>
+</Project>

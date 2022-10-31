@@ -211,11 +211,10 @@
   <ItemGroup Condition="$(TargetFramework.Contains('-windows'))">
     <PackageReference Include="Microsoft.WindowsAppSDK" />
     <PackageReference Include="Microsoft.Graphics.Win2D" />
-    <ProjectReference Include="..\..\Graphics\src\Graphics.Win2D\Graphics.Win2D-GTK.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Essentials\src\Essentials-GTK.csproj" />
-    <ProjectReference Include="..\..\Graphics\src\Graphics\Graphics-GTK.csproj" />
+    <ProjectReference Include="..\..\Essentials-GTK\src\Essentials-GTK.csproj" />
+    <ProjectReference Include="..\..\Graphics\src\Graphics-GTK\Graphics-GTK.csproj" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="atk-sharp">

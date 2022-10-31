@@ -1,0 +1,185 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFrameworks>netstandard2.0</TargetFrameworks>
+    <!-- Optional: Publish the repository URL in the built .nupkg (in the NuSpec <Repository> element) -->
+    <PublishRepositoryUrl>true</PublishRepositoryUrl>
+    <!-- Optional: Build symbol package (.snupkg) to distribute the PDB containing Source Link -->
+    <IncludeSymbols>true</IncludeSymbols>
+    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+    <AssemblyName>Microsoft.Maui.Graphics</AssemblyName>
+    <RootNamespace>Microsoft.Maui.Graphics</RootNamespace>
+    <PackageId>Microsoft.Maui.Graphics</PackageId>
+    <Product>Microsoft.Maui.Graphics</Product>
+    <NoWarn>$(NoWarn);CA1307;CA1309</NoWarn>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|netstandard2.0|AnyCPU'">
+    <DefineConstants>$(DefineConstants)TRACE;__GTK__</DefineConstants>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|netstandard2.0|AnyCPU'">
+    <DefineConstants>$(DefineConstants)TRACE;__GTK__</DefineConstants>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Include="..\..\src-GTK\Platforms\GTK\PlatformGraphicsView.cs" Link="Platforms\GTK\PlatformGraphicsView.cs" />
+    <Compile Include="..\Graphics\AbstractCanvas.cs" Link="AbstractCanvas.cs" />
+    <Compile Include="..\Graphics\AbstractPattern.cs" Link="AbstractPattern.cs" />
+    <Compile Include="..\Graphics\ArcFlattener.cs" Link="ArcFlattener.cs" />
+    <Compile Include="..\Graphics\AssemblyInfo.cs" Link="AssemblyInfo.cs" />
+    <Compile Include="..\Graphics\BitmapExportContext.cs" Link="BitmapExportContext.cs" />
+    <Compile Include="..\Graphics\BitmapExportContextExtensions.cs" Link="BitmapExportContextExtensions.cs" />
+    <Compile Include="..\Graphics\BlendMode.cs" Link="BlendMode.cs" />
+    <Compile Include="..\Graphics\CanvasDefaults.cs" Link="CanvasDefaults.cs" />
+    <Compile Include="..\Graphics\CanvasExtensions.cs" Link="CanvasExtensions.cs" />
+    <Compile Include="..\Graphics\CanvasState.cs" Link="CanvasState.cs" />
+    <Compile Include="..\Graphics\Color.cs" Link="Color.cs" />
+    <Compile Include="..\Graphics\Colors.cs" Link="Colors.cs" />
+    <Compile Include="..\Graphics\Converters\ColorTypeConverter.cs" Link="Converters\ColorTypeConverter.cs" />
+    <Compile Include="..\Graphics\Converters\PointFTypeConverter.cs" Link="Converters\PointFTypeConverter.cs" />
+    <Compile Include="..\Graphics\Converters\PointTypeConverter.cs" Link="Converters\PointTypeConverter.cs" />
+    <Compile Include="..\Graphics\Converters\RectFTypeConverter.cs" Link="Converters\RectFTypeConverter.cs" />
+    <Compile Include="..\Graphics\Converters\RectTypeConverter.cs" Link="Converters\RectTypeConverter.cs" />
+    <Compile Include="..\Graphics\Converters\SizeFTypeConverter.cs" Link="Converters\SizeFTypeConverter.cs" />
+    <Compile Include="..\Graphics\Converters\SizeTypeConverter.cs" Link="Converters\SizeTypeConverter.cs" />
+    <Compile Include="..\Graphics\Font.cs" Link="Font.cs" />
+    <Compile Include="..\Graphics\FontSource.cs" Link="FontSource.cs" />
+    <Compile Include="..\Graphics\FontStyleType.cs" Link="FontStyleType.cs" />
+    <Compile Include="..\Graphics\GeometryUtil.cs" Link="GeometryUtil.cs" />
+    <Compile Include="..\Graphics\GradientPaint.cs" Link="GradientPaint.cs" />
+    <Compile Include="..\Graphics\HorizontalAlignment.cs" Link="HorizontalAlignment.cs" />
+    <Compile Include="..\Graphics\IBitmapExportService.cs" Link="IBitmapExportService.cs" />
+    <Compile Include="..\Graphics\IBlurrableCanvas.cs" Link="IBlurrableCanvas.cs" />
+    <Compile Include="..\Graphics\ICanvas.cs" Link="ICanvas.cs" />
+    <Compile Include="..\Graphics\ICanvasStateService.cs" Link="ICanvasStateService.cs" />
+    <Compile Include="..\Graphics\IDrawable.cs" Link="IDrawable.cs" />
+    <Compile Include="..\Graphics\IFont.cs" Link="IFont.cs" />
+    <Compile Include="..\Graphics\IFontExtensions.cs" Link="IFontExtensions.cs" />
+    <Compile Include="..\Graphics\IImage.cs" Link="IImage.cs" />
+    <Compile Include="..\Graphics\IImageLoadingService.cs" Link="IImageLoadingService.cs" />
+    <Compile Include="..\Graphics\ImageExtensions.cs" Link="ImageExtensions.cs" />
+    <Compile Include="..\Graphics\ImageFormat.cs" Link="ImageFormat.cs" />
+    <Compile Include="..\Graphics\ImageLoadingServiceExtensions.cs" Link="ImageLoadingServiceExtensions.cs" />
+    <Compile Include="..\Graphics\ImagePaint.cs" Link="ImagePaint.cs" />
+    <Compile Include="..\Graphics\Insets.cs" Link="Insets.cs" />
+    <Compile Include="..\Graphics\InsetsF.cs" Link="InsetsF.cs" />
+    <Compile Include="..\Graphics\InvariantExtensions.cs" Link="InvariantExtensions.cs" />
+    <Compile Include="..\Graphics\IPattern.cs" Link="IPattern.cs" />
+    <Compile Include="..\Graphics\IPdfExportService.cs" Link="IPdfExportService.cs" />
+    <Compile Include="..\Graphics\IPdfPage.cs" Link="IPdfPage.cs" />
+    <Compile Include="..\Graphics\IPdfRenderService.cs" Link="IPdfRenderService.cs" />
+    <Compile Include="..\Graphics\IPicture.cs" Link="IPicture.cs" />
+    <Compile Include="..\Graphics\IPictureWriter.cs" Link="IPictureWriter.cs" />
+    <Compile Include="..\Graphics\IPlatformFonts.cs" Link="IPlatformFonts.cs" />
+    <Compile Include="..\Graphics\IStringSizeService.cs" Link="IStringSizeService.cs" />
+    <Compile Include="..\Graphics\ITextAttributes.cs" Link="ITextAttributes.cs" />
+    <Compile Include="..\Graphics\LayoutLine.cs" Link="LayoutLine.cs" />
+    <Compile Include="..\Graphics\LinearGradientPaint.cs" Link="LinearGradientPaint.cs" />
+    <Compile Include="..\Graphics\LineCap.cs" Link="LineCap.cs" />
+    <Compile Include="..\Graphics\LineJoin.cs" Link="LineJoin.cs" />
+    <Compile Include="..\Graphics\Matrix3x2Extensions.cs" Link="Matrix3x2Extensions.cs" />
+    <Compile Include="..\Graphics\NumericExtensions.cs" Link="NumericExtensions.cs" />
+    <Compile Include="..\Graphics\Paint.cs" Link="Paint.cs" />
+    <Compile Include="..\Graphics\PaintGradientStop.cs" Link="PaintGradientStop.cs" />
+    <Compile Include="..\Graphics\PaintPattern.cs" Link="PaintPattern.cs" />
+    <Compile Include="..\Graphics\PathArcExtensions.cs" Link="PathArcExtensions.cs" />
+    <Compile Include="..\Graphics\PathBuilder.cs" Link="PathBuilder.cs" />
+    <Compile Include="..\Graphics\PathExtensions.cs" Link="PathExtensions.cs" />
+    <Compile Include="..\Graphics\PathF.cs" Link="PathF.cs" />
+    <Compile Include="..\Graphics\PathOperation.cs" Link="PathOperation.cs" />
+    <Compile Include="..\Graphics\PatternExtensions.cs" Link="PatternExtensions.cs" />
+    <Compile Include="..\Graphics\PatternPaint.cs" Link="PatternPaint.cs" />
+    <Compile Include="..\Graphics\PdfExportContext.cs" Link="PdfExportContext.cs" />
+    <Compile Include="..\Graphics\PdfExportContextExtensions.cs" Link="PdfExportContextExtensions.cs" />
+    <Compile Include="..\Graphics\PdfPageExtensions.cs" Link="PdfPageExtensions.cs" />
+    <Compile Include="..\Graphics\PictureCanvas.cs" Link="PictureCanvas.cs" />
+    <Compile Include="..\Graphics\PictureCommand.cs" Link="PictureCommand.cs" />
+    <Compile Include="..\Graphics\PictureExtensions.cs" Link="PictureExtensions.cs" />
+    <Compile Include="..\Graphics\PicturePattern.cs" Link="PicturePattern.cs" />
+    <Compile Include="..\Graphics\PictureReader.cs" Link="PictureReader.cs" />
+    <Compile Include="..\Graphics\PictureReaderExtensions.cs" Link="PictureReaderExtensions.cs" />
+    <Compile Include="..\Graphics\PictureWriterExtensions.cs" Link="PictureWriterExtensions.cs" />
+    <Compile Include="..\Graphics\PlatformImage.cs" Link="PlatformImage.cs" />
+    <Compile Include="..\Graphics\Point.cs" Link="Point.cs" />
+    <Compile Include="..\Graphics\PointF.cs" Link="PointF.cs" />
+    <Compile Include="..\Graphics\RadialGradientPaint.cs" Link="RadialGradientPaint.cs" />
+    <Compile Include="..\Graphics\Rect.cs" Link="Rect.cs" />
+    <Compile Include="..\Graphics\RectF.cs" Link="RectF.cs" />
+    <Compile Include="..\Graphics\ScalingCanvas.cs" Link="ScalingCanvas.cs" />
+    <Compile Include="..\Graphics\Size.cs" Link="Size.cs" />
+    <Compile Include="..\Graphics\SizeF.cs" Link="SizeF.cs" />
+    <Compile Include="..\Graphics\SolidPaint.cs" Link="SolidPaint.cs" />
+    <Compile Include="..\Graphics\StandardPicture.cs" Link="StandardPicture.cs" />
+    <Compile Include="..\Graphics\StandardTextAttributes.cs" Link="StandardTextAttributes.cs" />
+    <Compile Include="..\Graphics\TextFlow.cs" Link="TextFlow.cs" />
+    <Compile Include="..\Graphics\Text\AbstractAttributedText.cs" Link="Text\AbstractAttributedText.cs" />
+    <Compile Include="..\Graphics\Text\AttributedText.cs" Link="Text\AttributedText.cs" />
+    <Compile Include="..\Graphics\Text\AttributedTextBlock.cs" Link="Text\AttributedTextBlock.cs" />
+    <Compile Include="..\Graphics\Text\AttributedTextExtensions.cs" Link="Text\AttributedTextExtensions.cs" />
+    <Compile Include="..\Graphics\Text\AttributedTextRun.cs" Link="Text\AttributedTextRun.cs" />
+    <Compile Include="..\Graphics\Text\AttributedTextRunComparer.cs" Link="Text\AttributedTextRunComparer.cs" />
+    <Compile Include="..\Graphics\Text\AttributedTextRunExtensions.cs" Link="Text\AttributedTextRunExtensions.cs" />
+    <Compile Include="..\Graphics\Text\CountingWriter.cs" Link="Text\CountingWriter.cs" />
+    <Compile Include="..\Graphics\Text\IAttributedText.cs" Link="Text\IAttributedText.cs" />
+    <Compile Include="..\Graphics\Text\IAttributedTextRun.cs" Link="Text\IAttributedTextRun.cs" />
+    <Compile Include="..\Graphics\Text\ITextAttributes.cs" Link="Text\ITextAttributes.cs" />
+    <Compile Include="..\Graphics\Text\MarkerType.cs" Link="Text\MarkerType.cs" />
+    <Compile Include="..\Graphics\Text\MutableAttributedText.cs" Link="Text\MutableAttributedText.cs" />
+    <Compile Include="..\Graphics\Text\TextAttribute.cs" Link="Text\TextAttribute.cs" />
+    <Compile Include="..\Graphics\Text\TextAttributeExtensions.cs" Link="Text\TextAttributeExtensions.cs" />
+    <Compile Include="..\Graphics\Text\TextAttributes.cs" Link="Text\TextAttributes.cs" />
+    <Compile Include="..\Graphics\Text\TextAttributesExtensions.cs" Link="Text\TextAttributesExtensions.cs" />
+    <Compile Include="..\Graphics\Text\TextColors.cs" Link="Text\TextColors.cs" />
+    <Compile Include="..\Graphics\Text\XmlAttributedTextNames.cs" Link="Text\XmlAttributedTextNames.cs" />
+    <Compile Include="..\Graphics\Text\XmlAttributedTextReader.cs" Link="Text\XmlAttributedTextReader.cs" />
+    <Compile Include="..\Graphics\Text\XmlAttributedTextWriter.cs" Link="Text\XmlAttributedTextWriter.cs" />
+    <Compile Include="..\Graphics\VerticalAlignment.cs" Link="VerticalAlignment.cs" />
+    <Compile Include="..\Graphics\WindingMode.cs" Link="WindingMode.cs" />
+    <Compile Include="..\Graphics\XmlnsDefinitionAttribute.cs" Link="XmlnsDefinitionAttribute.cs" />
+    <Compile Include="..\Graphics\XmlnsPrefixAttribute.cs" Link="XmlnsPrefixAttribute.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.NETCore.Platforms" Version="1.1.0" />
+    <PackageReference Include="System.Buffers" Version="4.5.1" />
+    <PackageReference Include="System.Memory" Version="4.5.5" Condition="'$(TargetFramework)' == 'netstandard2.0'" />
+    <PackageReference Include="System.Numerics.Vectors" Version="4.5.0" Condition="$(TargetFramework.StartsWith('netstandard'))" />
+    <PackageReference Include="System.Runtime.CompilerServices.Unsafe" Version="4.5.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="atk-sharp">
+      <HintPath>C:\Program Files (x86)\GtkSharp\2.12\lib\gtk-sharp-2.0\atk-sharp.dll</HintPath>
+    </Reference>
+    <Reference Include="gdk-sharp">
+      <HintPath>C:\Program Files (x86)\GtkSharp\2.12\lib\gtk-sharp-2.0\gdk-sharp.dll</HintPath>
+    </Reference>
+    <Reference Include="glade-sharp">
+      <HintPath>C:\Program Files (x86)\GtkSharp\2.12\lib\gtk-sharp-2.0\glade-sharp.dll</HintPath>
+    </Reference>
+    <Reference Include="glib-sharp">
+      <HintPath>C:\Program Files (x86)\GtkSharp\2.12\lib\gtk-sharp-2.0\glib-sharp.dll</HintPath>
+    </Reference>
+    <Reference Include="gtk-dotnet">
+      <HintPath>C:\Program Files (x86)\GtkSharp\2.12\lib\gtk-sharp-2.0\gtk-dotnet.dll</HintPath>
+    </Reference>
+    <Reference Include="gtk-sharp">
+      <HintPath>C:\Program Files (x86)\GtkSharp\2.12\lib\gtk-sharp-2.0\gtk-sharp.dll</HintPath>
+    </Reference>
+    <Reference Include="Mono.Cairo">
+      <HintPath>C:\Program Files (x86)\GtkSharp\2.12\lib\Mono.Cairo\Mono.Cairo.dll</HintPath>
+    </Reference>
+    <Reference Include="pango-sharp">
+      <HintPath>C:\Program Files (x86)\GtkSharp\2.12\lib\gtk-sharp-2.0\pango-sharp.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Converters\" />
+    <Folder Include="Text\" />
+  </ItemGroup>
+
+  <Import Project="..\..\..\Workload\Shared\LibraryPacks.targets" />
+
+</Project>
