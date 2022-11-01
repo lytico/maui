@@ -5,11 +5,13 @@ using Microsoft.Maui.Controls.Internals;
 
 [assembly: InternalsVisibleTo("Microsoft.Maui.Controls.Xaml.UnitTests")]
 [assembly: InternalsVisibleTo("Microsoft.Maui.Controls.Build.Tasks")]
+[assembly: InternalsVisibleTo("Microsoft.Maui.Controls.Build.Tasks-GTK")]
 [assembly: InternalsVisibleTo("Microsoft.Maui.Controls.Xaml.Design")]
 [assembly: InternalsVisibleTo("Microsoft.Maui.Controls.Loader")]// Microsoft.Maui.Controls.Loader.dll Microsoft.Maui.Controls.Xaml.XamlLoader.Load(object, string), kzu@microsoft.com
 [assembly: InternalsVisibleTo("Microsoft.Maui.Controls.HotReload.Forms")]
 [assembly: InternalsVisibleTo("Microsoft.Maui.Controls.HotReload.UnitTests")]
 [assembly: InternalsVisibleTo("Microsoft.Maui.Controls.SourceGen")]
+[assembly: InternalsVisibleTo("Microsoft.Maui.Controls.SourceGen-GTK")]
 [assembly: InternalsVisibleTo("Microsoft.Maui.Controls.Compatibility")]
 [assembly: InternalsVisibleTo("Microsoft.Maui.Controls.Compatibility.GTK")]
 [assembly: InternalsVisibleTo("CommunityToolkit.Maui")]

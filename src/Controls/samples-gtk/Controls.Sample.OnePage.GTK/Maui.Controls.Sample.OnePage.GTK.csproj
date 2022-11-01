@@ -34,7 +34,7 @@
 	<ProjectReference Include="..\..\src\Xaml-GTK\Controls.Xaml-GTK.csproj" />
   </ItemGroup>
 
-  <UsingTask TaskName="Microsoft.Maui.Controls.Build.Tasks.XamlCTask" AssemblyFile="D:\Source\maui\src\Controls\src\Build.Tasks\bin\Debug\netstandard2.0\Microsoft.Maui.Controls.Build.Tasks.dll" />
+  <UsingTask TaskName="Microsoft.Maui.Controls.Build.Tasks.XamlCTask" AssemblyFile="D:\Source\maui\src\Controls\src\Build.Tasks-GTK\bin\Debug\netstandard2.0\Microsoft.Maui.Controls.Build.Tasks-GTK.dll" />
 
   <!-- Inject MauiXaml and MauiCss as AdditionalFiles for partial type generation-->
   <Target Name="_MauiInjectXamlCssAdditionalFiles" BeforeTargets="GenerateMSBuildEditorConfigFileShouldRun" DependsOnTargets="$(CreateManifestResourceNamesDependsOn)">
@@ -93,13 +93,13 @@
 		</CompileDependsOn>
 	</PropertyGroup>
 
-	<Target Name="XamlC" AfterTargets="AfterCompile" Inputs="$(IntermediateOutputPath)$(TargetFileName)" Outputs="$(IntermediateOutputPath)XamlC.stamp" Condition=" '$(DesignTimeBuild)' != 'True' AND '@(MauiXaml)' != ''">
+	<Target Name="XamlC" AfterTargets="AfterCompile" Inputs="$(IntermediateOutputPath)$(TargetFileName)-GTK" Outputs="$(IntermediateOutputPath)XamlC.stamp" Condition=" '$(DesignTimeBuild)' != 'True' AND '@(MauiXaml)' != ''">
 	    <PropertyGroup>
 		<_MauiXamlCValidateOnly>$(MauiXamlCValidateOnly)</_MauiXamlCValidateOnly>
 		<_MauiXamlCValidateOnly Condition="'$(Configuration)' != 'Release' AND '$(_MauiForceXamlCForDebug)' != 'True'">True</_MauiXamlCValidateOnly>
 		<_MauiXamlCValidateOnly Condition="'$(BuildingForLiveUnitTesting)' == 'True' ">True</_MauiXamlCValidateOnly>
 	    </PropertyGroup>
-		<XamlCTask Assembly="$(IntermediateOutputPath)$(TargetFileName)" ReferencePath="@(ReferencePath)" OptimizeIL="true" DebugSymbols="$(DebugSymbols)" DebugType="$(DebugType)" DefaultCompile="true" ValidateOnly="$(_MauiXamlCValidateOnly)" TargetFramework="$(TargetFramework)" KeepXamlResources="$(MauiKeepXamlResources)" />
+		<XamlCTask Assembly="$(IntermediateOutputPath)$(TargetFileName)-GTK" ReferencePath="@(ReferencePath)" OptimizeIL="true" DebugSymbols="$(DebugSymbols)" DebugType="$(DebugType)" DefaultCompile="true" ValidateOnly="$(_MauiXamlCValidateOnly)" TargetFramework="$(TargetFramework)" KeepXamlResources="$(MauiKeepXamlResources)" />
 		<Touch Files="$(IntermediateOutputPath)XamlC.stamp" AlwaysCreate="True" />
 		<ItemGroup>
 			<FileWrites Include="$(IntermediateOutputPath)XamlC.stamp" />

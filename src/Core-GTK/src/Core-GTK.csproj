@@ -2,7 +2,7 @@
   <PropertyGroup>
     <TargetFrameworks>netstandard2.0</TargetFrameworks>
     <RootNamespace>Microsoft.Maui</RootNamespace>
-    <AssemblyName>Microsoft.Maui</AssemblyName>
+    <AssemblyName>Microsoft.Maui-GTK</AssemblyName>
     <Nullable>enable</Nullable>
     <IsPackable>false</IsPackable>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>

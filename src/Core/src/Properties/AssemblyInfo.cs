@@ -2,6 +2,7 @@ using System.Runtime.CompilerServices;
 
 [assembly: InternalsVisibleTo("iOSUnitTests")]
 [assembly: InternalsVisibleTo("Microsoft.Maui.Controls")]
+[assembly: InternalsVisibleTo("Microsoft.Maui.Controls-GTK")]
 [assembly: InternalsVisibleTo("Microsoft.Maui.Controls.Compatibility")]
 [assembly: InternalsVisibleTo("Microsoft.Maui.Controls.Compatibility.Android")]
 [assembly: InternalsVisibleTo("Microsoft.Maui.Controls.Compatibility.Maps.Android")]
@@ -13,6 +14,7 @@ using System.Runtime.CompilerServices;
 [assembly: InternalsVisibleTo("Microsoft.Maui.Controls.Compatibility.ControlGallery.Android")]
 [assembly: InternalsVisibleTo("Microsoft.Maui.Controls.Compatibility.ControlGallery.Tizen")]
 [assembly: InternalsVisibleTo("Microsoft.Maui.Controls.Xaml")]
+[assembly: InternalsVisibleTo("Microsoft.Maui.Controls.Xaml-GTK")]
 [assembly: InternalsVisibleTo("Microsoft.Maui.Controls.Xaml.UnitTests")]
 [assembly: InternalsVisibleTo("Microsoft.Maui.Controls.HotReload.Forms")]
 [assembly: InternalsVisibleTo("Microsoft.Maui.Core.UnitTests")]

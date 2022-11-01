@@ -3,7 +3,7 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <Nullable>enable</Nullable>
-    <AssemblyName>Microsoft.Maui.Controls.SourceGen</AssemblyName>
+    <AssemblyName>Microsoft.Maui.Controls.SourceGen-GTK</AssemblyName>
     <RootNamespace>Microsoft.Maui.Controls.SourceGen</RootNamespace>
     <IsPackable>false</IsPackable>
     <NoWarn>$(NoWarn);NU5128;</NoWarn>

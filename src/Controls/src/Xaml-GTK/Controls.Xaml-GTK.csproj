@@ -2,7 +2,7 @@
 
 	<PropertyGroup>
 		<TargetFrameworks>netstandard2.0</TargetFrameworks>
-		<AssemblyName>Microsoft.Maui.Controls.Xaml</AssemblyName>
+		<AssemblyName>Microsoft.Maui.Controls.Xaml-GTK</AssemblyName>
 		<RootNamespace>Microsoft.Maui.Controls.Xaml</RootNamespace>
 		<IsPackable>false</IsPackable>
 		<_MauiDesignDllBuild Condition=" '$(OS)' != 'Unix' ">True</_MauiDesignDllBuild>
