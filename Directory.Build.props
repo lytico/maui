@@ -15,6 +15,9 @@
     <_MauiTargetPlatformIstvOS Condition="'$(_MauiTargetPlatformIdentifier)' == 'tvos'">True</_MauiTargetPlatformIstvOS>
     <_MauiTargetPlatformIsWindows Condition="$(_MauiTargetPlatformIdentifier.Contains('windows')) == 'True'">True</_MauiTargetPlatformIsWindows>
     <_MauiTargetPlatformIsTizen Condition="'$(_MauiTargetPlatformIdentifier)' == 'tizen'">True</_MauiTargetPlatformIsTizen>
+    <_MauiTargetPlatformIsGTK Condition="$(TargetFramework) == 'netstandard2.0-gtk' AND $(_MauiNoTargetPlatform) == 'True'">True</_MauiTargetPlatformIsGTK>
+    <_MauiNoTargetPlatform Condition="'$(_MauiTargetPlatformIsGTK)' == 'True'">False</_MauiNoTargetPlatform>
+	<!-- <Value14 Condition="$(Value12) != 'netstandard2.0-gtk2.1' AND $(Value7) == 'True'">Too Bad</Value14> -->
   </PropertyGroup>
 
   <!-- Try determine which .NET workloads are installed -->
@@ -40,6 +43,7 @@
     <IncludeAndroidTargetFrameworks>true</IncludeAndroidTargetFrameworks>
     <IncludeMacCatalystTargetFrameworks>true</IncludeMacCatalystTargetFrameworks>
     <IncludeIosTargetFrameworks>true</IncludeIosTargetFrameworks>
+    <IncludeGTKTargetFrameworks>true</IncludeGTKTargetFrameworks>
   </PropertyGroup>
 
   <!-- this is CI, so everything should be there -->
@@ -50,6 +54,7 @@
     <IncludeAndroidTargetFrameworks>true</IncludeAndroidTargetFrameworks>
     <IncludeMacCatalystTargetFrameworks>true</IncludeMacCatalystTargetFrameworks>
     <IncludeIosTargetFrameworks>true</IncludeIosTargetFrameworks>
+    <IncludeGTKTargetFrameworks>true</IncludeGTKTargetFrameworks>
   </PropertyGroup>
 
   <PropertyGroup>
@@ -82,6 +87,7 @@
 
     <MauiPlatforms Condition="'$(IncludeTizenTargetFrameworks)' == 'true'">net$(_MauiDotNetVersion)-tizen;$(MauiPlatforms)</MauiPlatforms>
     <MauiPlatforms Condition="'$(IncludeWindowsTargetFrameworks)' == 'true'">$(WindowsMauiPlatforms);$(MauiPlatforms)</MauiPlatforms>
+    <MauiPlatforms Condition="'$(IncludeGTKTargetFrameworks)' == 'true'">netstandard2.0;$(MauiPlatforms)</MauiPlatforms>
     <MauiPlatforms Condition="'$(IncludeAndroidTargetFrameworks)' == 'true'">net$(_MauiDotNetVersion)-android;$(MauiPlatforms)</MauiPlatforms>
     <MauiPlatforms Condition="'$(IncludeMacCatalystTargetFrameworks)' == 'true'">net$(_MauiDotNetVersion)-maccatalyst;$(MauiPlatforms)</MauiPlatforms>
     <MauiPlatforms Condition="'$(IncludeIosTargetFrameworks)' == 'true'">net$(_MauiDotNetVersion)-ios;$(MauiPlatforms)</MauiPlatforms>
