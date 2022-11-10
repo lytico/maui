@@ -1,4 +1,5 @@
 ﻿using System;
+using Gtk;
 using Microsoft.Maui.Platform;
 
 namespace Microsoft.Maui.Handlers
@@ -56,7 +57,16 @@ namespace Microsoft.Maui.Handlers
 		public static void MapBackground(IEntryHandler handler, IEntry entry) { }
 			// handler.PlatformView?.UpdateBackground(entry);
 
-		public static void MapText(IEntryHandler handler, IEntry entry) { }
+		public static void MapText(IEntryHandler handler, IEntry entry) {
+			if (handler.PlatformView.Entry is Gtk.Entry platformEntry)
+			{
+				platformEntry.Text = entry.Text;
+			}
+
+			// Any text update requires that we update any attributed string formatting
+			// MapFormatting(handler, label);
+		}
+
 		// handler.PlatformView?.UpdateText(entry);
 
 		public static void MapTextColor(IEntryHandler handler, IEntry entry) { }

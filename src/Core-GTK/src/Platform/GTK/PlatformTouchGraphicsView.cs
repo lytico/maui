@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using Microsoft.Maui.Graphics;
 using Microsoft.Maui.Graphics.Platform;
+using Microsoft.Maui.Graphics.Platforms.GTK;
 
 namespace Microsoft.Maui.Platform
 {

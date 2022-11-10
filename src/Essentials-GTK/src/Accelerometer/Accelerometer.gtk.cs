@@ -1,4 +1,4 @@
-namespace Microsoft.Maui.Devices.Sensors
+namespace Microsoft.Maui.Essentials.Accelerometer
 {
 	partial class AccelerometerImplementation
 	{

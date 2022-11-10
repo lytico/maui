@@ -8,7 +8,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\src\SourceGen\Controls.SourceGen-GTK.csproj" />
+    <ProjectReference Include="..\..\src\SourceGen-GTK\Controls.SourceGen-GTK.csproj" />
   </ItemGroup>
 
 </Project>

@@ -8,6 +8,7 @@ namespace Microsoft.Maui.Platform
 	public class MauiView : EventBox
 	{
 		private Gtk.Widget _child = null!;
+		private Gtk.Entry _childEntry = null!;
 
 		public MauiView()
 		{
@@ -19,9 +20,19 @@ namespace Microsoft.Maui.Platform
 			Add(_child);
 		}
 
+		public void AddChildEntry(Gtk.Entry entry)
+		{
+			_childEntry = entry;
+		}
+
 		public Gtk.Widget GetChildWidget()
 		{
 			return _child;
+		}
+
+		public Gtk.Entry GetChildEntry()
+		{
+			return _childEntry;
 		}
 
 		public void UpdateBackground(IView handler)

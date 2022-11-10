@@ -85,7 +85,6 @@
 
 	<ItemGroup>
 		<ProjectReference Include="..\Core-GTK\Controls.Core-GTK.csproj" />
-		<ProjectReference Include="..\SourceGen\Controls.SourceGen-GTK.csproj" ReferenceOutputAssembly="false" />
 		<ProjectReference Include="..\Xaml-GTK\Controls.Xaml-GTK.csproj" />
 	</ItemGroup>
 	

@@ -27,7 +27,7 @@ namespace Microsoft.Maui.Platform
 
 			SetBackgroundColor(_entry.Style.BaseColors[(int)StateType.Normal]);
 
-			Add(_table);
+			AddChildWidget(_table);
 
 			_table.Attach(_entry, 0, 1, 0, 1);
 			_table.Attach(_placeholderContainer, 0, 1, 0, 1, AttachOptions.Fill, AttachOptions.Fill, 0, 0);

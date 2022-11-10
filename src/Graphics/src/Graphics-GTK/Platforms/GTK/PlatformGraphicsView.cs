@@ -1,4 +1,4 @@
-namespace Microsoft.Maui.Graphics.Platform
+namespace Microsoft.Maui.Graphics.Platforms.GTK
 {
 	public class PlatformGraphicsView : Gtk.EventBox
 	{
