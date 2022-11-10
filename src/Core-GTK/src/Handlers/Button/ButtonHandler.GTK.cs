@@ -1,5 +1,8 @@
+using System;
 using System.Diagnostics;
+using System.Runtime.InteropServices;
 using System.Threading.Tasks;
+using Gtk;
 using Microsoft.Maui.Graphics;
 
 namespace Microsoft.Maui.Handlers
@@ -110,8 +113,15 @@ namespace Microsoft.Maui.Handlers
 			// handler.PlatformView?.UpdateTextPlainText(button);
 			if (handler.PlatformView is MauiImageButton handlerBox)
 			{
+				// need to attach Attributes after setting text again, so get it ...
+				var attrs = handlerBox.LabelWidget.Attributes;
+
 				// handlerBox.ButtonWidget.Label = button.Text;
+
 				handlerBox.LabelWidget.Text = button.Text;
+				SetMarkupAttributes(handler, button);
+				handlerBox.LabelWidget.Attributes = attrs;
+
 				// handlerBox.SetBackgroundColor(new Gdk.Color(200, 0, 200));
 				// handlerBox.ModifyBg(Gtk.StateType.Normal, new Gdk.Color(200, 0, 200));
 				//if (handlerBox.Children.Length > 0)
@@ -127,7 +137,9 @@ namespace Microsoft.Maui.Handlers
 		public static void MapTextColor(IButtonHandler handler, ITextStyle button)
 		{
 			// handler.PlatformView?.UpdateTextColor(button);
+			SetMarkupAttributes(handler, button);
 		}
+
 
 		public static void MapCharacterSpacing(IButtonHandler handler, ITextStyle button)
 		{
@@ -136,6 +148,9 @@ namespace Microsoft.Maui.Handlers
 
 		public static void MapFont(IButtonHandler handler, ITextStyle button)
 		{
+			// label.set_markup("<span font_desc='unifont medium'>%s</span>" % 'some text')
+			SetMarkupAttributes(handler, button);
+
 			//if (handler.PlatformView is MauiImageButton handlerBox)
 			//{
 			//	Pango.FontDescription fontdesc = new Pango.FontDescription();
@@ -183,7 +198,7 @@ namespace Microsoft.Maui.Handlers
 			// handler.PlatformView?.UpdateFont(button, fontManager);
 		}
 
-			public static void MapPadding(IButtonHandler handler, IButton button)
+		public static void MapPadding(IButtonHandler handler, IButton button)
 		{
 			// handler.PlatformView?.UpdatePadding(button, DefaultPadding);
 		}
@@ -199,6 +214,60 @@ namespace Microsoft.Maui.Handlers
 		void OnSetImageSource(Gdk.Pixbuf? obj)
 		{
 			// PlatformView.Icon = obj;
+		}
+
+		static void SetMarkupAttributes(IButtonHandler handler, ITextStyle button)
+		{
+			if (handler.PlatformView is MauiImageButton handlerBox)
+			{
+				var text = handlerBox.LabelWidget.Text;
+				var markup = string.Empty;
+
+				if (button.TextColor == null)
+				{
+					markup += "<span";
+				}
+				else
+				{
+					markup += "<span foreground='";
+					markup += button.TextColor.ToColorString();
+					markup += "'";
+				}
+
+				if (button.Font.Family == null)
+				{
+					if (button.TextColor != null)
+					{
+						markup += "'";
+					}
+				}
+				else
+				{
+					if (button.TextColor != null)
+					{
+						markup += "'";
+					}
+					markup += " font_desc='";
+					markup += button.Font.Family;
+					markup += "'";
+				}
+
+				if (button.Font.Size > 0)
+				{
+					if (button.TextColor != null || button.Font.Family != null)
+					{
+						markup += "'";
+					}
+					markup += " font_size='";
+					markup += Convert.ToInt32(button.Font.Size).ToString("D");
+					markup += "'";
+				}
+
+				markup += ">";
+				markup += text;
+				markup += "</span>";
+				handlerBox.LabelWidget.Markup = markup;
+			}
 		}
 
 		//bool NeedsExactMeasure()

@@ -424,7 +424,6 @@
     <Folder Include="Converters\" />
     <Folder Include="Core\Extensions\" />
     <Folder Include="Extensions\" />
-    <Folder Include="Graphics\" />
     <Folder Include="Handlers\Element\" />
     <Folder Include="Handlers\FlyoutView\" />
     <Folder Include="Handlers\MenuFlyoutHandler\" />

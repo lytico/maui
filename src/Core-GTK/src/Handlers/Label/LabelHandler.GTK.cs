@@ -78,6 +78,7 @@ namespace Microsoft.Maui.Handlers
 			if (handler.PlatformView.GetChildWidget() is Gtk.Label platformLabel)
 			{
 				platformLabel.Text = label.Text;
+				SetMarkupAttributes(handler, label);
 			}
 
 			// Any text update requires that we update any attributed string formatting
@@ -86,6 +87,7 @@ namespace Microsoft.Maui.Handlers
 
 		public static void MapTextColor(ILabelHandler handler, ILabel label)
 		{
+			SetMarkupAttributes(handler, label);
 			//handler.PlatformView?.UpdateTextColor(label);
 			//if (handler.PlatformView.GetChildWidget() is Gtk.Label platformLabel)
 			//{
@@ -135,6 +137,8 @@ namespace Microsoft.Maui.Handlers
 
 		public static void MapFont(ILabelHandler handler, ILabel label)
 		{
+			SetMarkupAttributes(handler, label);
+
 			//// var fontManager = handler.GetRequiredService<IFontManager>();
 			//if (handler.PlatformView.GetChildWidget() is Gtk.Label platformLabel)
 			//{
@@ -169,6 +173,60 @@ namespace Microsoft.Maui.Handlers
 		{
 			// throw new NotImplementedException();
 			return new Size(widthConstraint, heightConstraint);
+		}
+
+		static void SetMarkupAttributes(ILabelHandler handler, ILabel label)
+		{
+			if (handler.PlatformView.GetChildWidget() is Gtk.Label platformLabel)
+			{
+				var text = platformLabel.Text;
+				var markup = string.Empty;
+
+				if (label.TextColor == null)
+				{
+					markup += "<span";
+				}
+				else
+				{
+					markup += "<span foreground='";
+					markup += label.TextColor.ToColorString();
+					markup += "'";
+				}
+
+				if (label.Font.Family == null)
+				{
+					if (label.TextColor != null)
+					{
+						markup += "'";
+					}
+				}
+				else
+				{
+					if (label.TextColor != null)
+					{
+						markup += "'";
+					}
+					markup += " font_desc='";
+					markup += label.Font.Family;
+					markup += "'";
+				}
+
+				if (label.Font.Size > 0)
+				{
+					if (label.TextColor != null || label.Font.Family != null)
+					{
+						markup += "'";
+					}
+					markup += " font_size='";
+					markup += Convert.ToInt32(label.Font.Size).ToString("D");
+					markup += "'";
+				}
+
+				markup += ">";
+				markup += text;
+				markup += "</span>";
+				platformLabel.Markup = markup;
+			}
 		}
 	}
 }

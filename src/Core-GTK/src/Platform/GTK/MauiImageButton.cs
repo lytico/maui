@@ -10,7 +10,7 @@ namespace Microsoft.Maui.Platform
 		private Box _imageAndLabelContainer = null!;
 
 		//private Gdk.Color _defaultBorderColor;
-		//private Gdk.Color _defaultBackgroundColor;
+		// private Gdk.Color _defaultBackgroundColor;
 		private Gdk.Color? _borderColor;
 		// private Gdk.Color? _backgroundColor;
 
@@ -22,7 +22,7 @@ namespace Microsoft.Maui.Platform
 
 		public MauiImageButton()
 		{
-			//_defaultBackgroundColor = Style.Backgrounds[(int)StateType.Normal];
+			// _defaultBackgroundColor = Style.Backgrounds[(int)StateType.Normal];
 			//_defaultBorderColor = Style.BaseColors[(int)StateType.Active];
 
 			_button = new Gtk.Button();
@@ -68,11 +68,19 @@ namespace Microsoft.Maui.Platform
 			//	//QueueDraw();
 			//	if (_backgroundColor != null)
 			//	{
-			//		ModifyBg(StateType.Normal, _backgroundColor.Value);
-			//		ModifyBg(StateType.Prelight, _backgroundColor.Value);
-			//		//ModifyBg(StateType.Selected, _backgroundColor.Value);
-			//		ModifyBg(StateType.Active, _backgroundColor.Value);
-			//		//ModifyBg(StateType.Insensitive, _backgroundColor.Value);
+			//		var rgbaColor = new Gdk.RGBA();
+			
+			//		rgbaColor.Red = _backgroundColor.Value.Red;
+			//		rgbaColor.Green = _backgroundColor.Value.Green;
+			//		rgbaColor.Blue = _backgroundColor.Value.Blue;
+			//		OverrideBackgroundColor(StateFlags.Normal, rgbaColor);
+			//		OverrideBackgroundColor(StateFlags.Prelight, rgbaColor);
+			//		OverrideBackgroundColor(StateFlags.Active, rgbaColor);
+			//		//		ModifyBg(StateType.Normal, _backgroundColor.Value);
+			//		//		ModifyBg(StateType.Prelight, _backgroundColor.Value);
+			//		//		//ModifyBg(StateType.Selected, _backgroundColor.Value);
+			//		//		ModifyBg(StateType.Active, _backgroundColor.Value);
+			//		//		//ModifyBg(StateType.Insensitive, _backgroundColor.Value);
 			//	}
 			//}
 		}
