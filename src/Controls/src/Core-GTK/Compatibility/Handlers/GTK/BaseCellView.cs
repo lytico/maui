@@ -15,7 +15,7 @@ namespace Microsoft.Maui.Controls.Handlers.Compatibility
 		readonly Gtk.Label _detailText;
 		readonly MauiImage _imageView;
 		readonly Gtk.Label _mainText;
-		readonly Gtk.VBox _vBox;
+		readonly Gtk.Box _vBox;
 		//Color _defaultDetailColor;
 		//Color _defaultMainTextColor;
 		//Color _detailTextColor;
@@ -34,7 +34,7 @@ namespace Microsoft.Maui.Controls.Handlers.Compatibility
 			//var padding = (int)context.FromPixels(8);
 			//SetPadding(padding, padding, padding, padding);
 
-			_vBox = new Gtk.VBox();
+			_vBox = new Gtk.Box(Gtk.Orientation.Vertical, 0);
 			_imageView = new MauiImage();
 			//var imageParams = new LayoutParams(ViewGroup.LayoutParams.WrapContent, ViewGroup.LayoutParams.MatchParent)
 			//{
@@ -77,9 +77,9 @@ namespace Microsoft.Maui.Controls.Handlers.Compatibility
 			//_mainText.TextAlignment = global::Android.Views.TextAlignment.ViewStart;
 			//_detailText.TextAlignment = global::Android.Views.TextAlignment.ViewStart;
 
-			_vBox.PackStart(_imageView);
-			_vBox.PackStart(_mainText);
-			_vBox.PackStart(_detailText);
+			_vBox.PackStart(_imageView, false, false, 0);
+			_vBox.PackStart(_mainText, false, false, 0);
+			_vBox.PackStart(_detailText, false, false, 0);
 			Add(_vBox);
 		}
 
@@ -128,7 +128,7 @@ namespace Microsoft.Maui.Controls.Handlers.Compatibility
 				//	AddView(view, layout);
 
 				AccessoryView = view;
-				_vBox.PackEnd(AccessoryView);
+				_vBox.PackEnd(AccessoryView, false, false, 0);
 			}
 		}
 

@@ -25,12 +25,12 @@ namespace Microsoft.Maui.Platform
 			var window = application.CreateWindow(null!);
 
 			winuiWndow.SetWindowHandler(window, mauiContext);
-			winuiWndow.ModifyBg(StateType.Normal, new Gdk.Color(200, 0, 200));
+			//winuiWndow.ModifyBg(StateType.Normal, new Gdk.Color(200, 0, 200));
 
 			applicationContext.Services.InvokeLifecycleEvents<GTKLifecycle.OnWindowCreated>(del => del(winuiWndow));
 
 			winuiWndow.ShowAll();
-			winuiWndow.ModifyBg(StateType.Normal, new Gdk.Color(200, 0, 200));
+			//winuiWndow.ModifyBg(StateType.Normal, new Gdk.Color(200, 0, 200));
 		}
 	}
 }

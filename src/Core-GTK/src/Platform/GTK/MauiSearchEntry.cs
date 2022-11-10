@@ -6,26 +6,26 @@ namespace Microsoft.Maui.Platform
 {
 	public class MauiSearchEntry : MauiView
 	{
-		private HBox _container;
+		private Box _container;
 		private EntryWrapper _entryWrapper;
 		private MauiImageButton _searchButton;
 		private MauiImageButton _clearButton;
 
 		public MauiSearchEntry()
 		{
-			_container = new HBox();
+			_container = new Box(Gtk.Orientation.Horizontal, 0);
 			_entryWrapper = new EntryWrapper();
 			_entryWrapper.Entry.HasFrame = false;
 			_searchButton = new MauiImageButton();
 			_searchButton.SetImagePosition(PositionType.Left);
-			_searchButton.ImageWidget.Pixbuf = RenderIcon("gtk-find", IconSize.SmallToolbar, null); // Search icon
+			//_searchButton.ImageWidget.Pixbuf = RenderIcon("gtk-find", IconSize.SmallToolbar, null); // Search icon
 
 			_clearButton = new MauiImageButton();
 			_clearButton.SetImagePosition(PositionType.Left);
-			_clearButton.ImageWidget.Pixbuf = RenderIcon("gtk-close", IconSize.SmallToolbar, null); // Cancel icon
+			//_clearButton.ImageWidget.Pixbuf = RenderIcon("gtk-close", IconSize.SmallToolbar, null); // Cancel icon
 
 			_container.PackStart(_searchButton, false, false, 0);
-			_container.PackStart(_entryWrapper);
+			_container.PackStart(_entryWrapper, false, false, 0);
 
 			_entryWrapper.Entry.Changed += EntryChanged;
 			_clearButton.ButtonWidget.Clicked += CancelButtonClicked;

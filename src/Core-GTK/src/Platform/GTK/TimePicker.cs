@@ -24,7 +24,7 @@ namespace Microsoft.Maui.Platform
 
 	public class TimePickerWindow : Gtk.Window
 	{
-		private Gtk.HBox _timeBox = null!;
+		private Gtk.Box _timeBox = null!;
 		private Gtk.Label _labelHour = null!;
 		private Gtk.SpinButton _txtHour = null!;
 		private Gtk.Label _labelMin = null!;
@@ -32,7 +32,7 @@ namespace Microsoft.Maui.Platform
 		private Gtk.Label _labelSec = null!;
 		private Gtk.SpinButton _txtSec = null!;
 
-		private static uint CURRENT_TIME = 0;
+		//private static uint CURRENT_TIME = 0;
 
 		public TimePickerWindow()
 			: base(Gtk.WindowType.Popup)
@@ -44,27 +44,27 @@ namespace Microsoft.Maui.Platform
 
 			Grab.Add(this);
 
-			Gdk.GrabStatus grabbed =
-				Gdk.Pointer.Grab(GdkWindow, true,
-				Gdk.EventMask.ButtonPressMask
-				| Gdk.EventMask.ButtonReleaseMask
-				| Gdk.EventMask.PointerMotionMask, null, null, CURRENT_TIME);
+			//Gdk.GrabStatus grabbed =
+			//	Gdk.Pointer.Grab(GdkWindow, true,
+			//	Gdk.EventMask.ButtonPressMask
+			//	| Gdk.EventMask.ButtonReleaseMask
+			//	| Gdk.EventMask.PointerMotionMask, null, null, CURRENT_TIME);
 
-			if (grabbed == Gdk.GrabStatus.Success)
-			{
-				grabbed = Gdk.Keyboard.Grab(GdkWindow, true, CURRENT_TIME);
+			//if (grabbed == Gdk.GrabStatus.Success)
+			//{
+			//	grabbed = Gdk.Keyboard.Grab(GdkWindow, true, CURRENT_TIME);
 
-				if (grabbed != Gdk.GrabStatus.Success)
-				{
-					Grab.Remove(this);
-					Destroy();
-				}
-			}
-			else
-			{
-				Grab.Remove(this);
-				Destroy();
-			}
+			//	if (grabbed != Gdk.GrabStatus.Success)
+			//	{
+			//		Grab.Remove(this);
+			//		Destroy();
+			//	}
+			//}
+			//else
+			//{
+			//	Grab.Remove(this);
+			//	Destroy();
+			//}
 
 			RefreshTime();
 		}
@@ -88,21 +88,21 @@ namespace Microsoft.Maui.Platform
 
 		public event TimeEventHandler OnTimeChanged = null!;
 
-		protected override bool OnExposeEvent(Gdk.EventExpose args)
-		{
-			base.OnExposeEvent(args);
+		//protected override bool OnExposeEvent(Gdk.EventExpose args)
+		//{
+		//	base.OnExposeEvent(args);
 
-			int winWidth, winHeight;
-			GetSize(out winWidth, out winHeight);
-			GdkWindow.DrawRectangle(
-				Style.ForegroundGC(Gtk.StateType.Insensitive), false, 0, 0, winWidth - 1, winHeight - 1);
+		//	int winWidth, winHeight;
+		//	GetSize(out winWidth, out winHeight);
+		//	GdkWindow.DrawRectangle(
+		//		Style.ForegroundGC(Gtk.StateType.Insensitive), false, 0, 0, winWidth - 1, winHeight - 1);
 
-			return false;
-		}
+		//	return false;
+		//}
 
 		protected virtual void OnButtonPressEvent(object o, Gtk.ButtonPressEventArgs args)
 		{
-			Close();
+			CloseRemoveGrab();
 		}
 
 		private void BuildTimePickerWindow()
@@ -112,13 +112,13 @@ namespace Microsoft.Maui.Platform
 			WindowPosition = Gtk.WindowPosition.None;
 			BorderWidth = 1;
 			Resizable = false;
-			AllowGrow = false;
+			// AllowGrow = false;
 			Decorated = false;
 			DestroyWithParent = true;
 			SkipPagerHint = true;
 			SkipTaskbarHint = true;
 
-			_timeBox = new Gtk.HBox();
+			_timeBox = new Gtk.Box(Gtk.Orientation.Horizontal, 0);
 			_timeBox.Spacing = 6;
 			_timeBox.BorderWidth = 3;
 
@@ -202,11 +202,11 @@ namespace Microsoft.Maui.Platform
 			_txtSec.ButtonPressEvent += new Gtk.ButtonPressEventHandler(OnTxtSecButtonPressEvent);
 		}
 
-		private void Close()
+		private void CloseRemoveGrab()
 		{
 			Grab.Remove(this);
-			Gdk.Pointer.Ungrab(CURRENT_TIME);
-			Gdk.Keyboard.Ungrab(CURRENT_TIME);
+			//Gdk.Pointer.Ungrab(CURRENT_TIME);
+			//Gdk.Keyboard.Ungrab(CURRENT_TIME);
 
 			Destroy();
 		}
@@ -275,7 +275,7 @@ namespace Microsoft.Maui.Platform
 
 			CurrentTime = new TimeSpan(DateTime.Now.Ticks);
 
-			TextColor = _comboBox.Entry.Style.Text(Gtk.StateType.Normal);
+			//TextColor = _comboBox.Entry.Style.Text(Gtk.StateType.Normal);
 
 			_comboBox.Entry.Changed += new EventHandler(OnTxtTimeChanged);
 			_comboBox.PopupButton.Clicked += new EventHandler(OnBtnShowTimePickerClicked);
@@ -343,7 +343,7 @@ namespace Microsoft.Maui.Platform
 
 		protected virtual void OnTxtTimeChanged(object? sender, EventArgs e)
 		{
-			_comboBox.Entry.ModifyText(Gtk.StateType.Normal, TextColor);
+			// _comboBox.Entry.ModifyText(Gtk.StateType.Normal, TextColor);
 
 			TimeChanged?.Invoke(this, e);
 		}
@@ -355,14 +355,14 @@ namespace Microsoft.Maui.Platform
 
 		private void ShowTimePickerWindow()
 		{
-			int x = 0;
-			int y = 0;
+			//int x = 0;
+			//int y = 0;
 
-			GdkWindow.GetOrigin(out x, out y);
-			y += Allocation.Height;
+			//GdkWindow.GetOrigin(out x, out y);
+			//y += Allocation.Height;
 
 			var picker = new TimePickerWindow();
-			picker.Move(x, y);
+			//picker.Move(x, y);
 			picker.CurrentTime = CurrentTime;
 			picker.OnTimeChanged += OnPopupTimeChanged;
 			picker.Destroyed += OnPickerClosed;

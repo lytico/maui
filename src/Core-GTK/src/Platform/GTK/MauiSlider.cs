@@ -18,7 +18,7 @@ namespace Microsoft.Maui.Platform
 	{
 		public MauiSlider(double minimum, double maximum, double step)
 		{
-			HScaleWidget = new Gtk.HScale(minimum, maximum, step);
+			HScaleWidget = new Gtk.Scale(Orientation.Horizontal, minimum, maximum, step);
 			CustomMinimum = minimum;
 			CustomMaximum = maximum;
 			CustomStep = step;
@@ -30,7 +30,7 @@ namespace Microsoft.Maui.Platform
 		public delegate void CustomSliderEventHandler(object sender, MauiSliderEventArgs args);
 		public event CustomSliderEventHandler CustomValueChanged = null!;
 
-		public Gtk.HScale HScaleWidget { get; set; }
+		public Gtk.Scale HScaleWidget { get; set; }
 		public double CustomMinimum { get; set; }
 		public double CustomMaximum { get; set; }
 		public double CustomStep { get; set; }

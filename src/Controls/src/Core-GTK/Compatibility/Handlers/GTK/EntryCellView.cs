@@ -11,7 +11,7 @@ namespace Microsoft.Maui.Controls.Handlers.Compatibility
 
 		readonly Cell _cell;
 		readonly Gtk.Label _label;
-		readonly Gtk.HBox _hbox;
+		readonly Gtk.Box _hbox;
 
 		//Color _labelTextColor;
 		string _labelTextText;
@@ -27,7 +27,7 @@ namespace Microsoft.Maui.Controls.Handlers.Compatibility
 			//SetPadding((int)context.ToPixels(15), padding, padding, padding);
 
 			_label = new Gtk.Label();
-			_hbox = new Gtk.HBox();
+			_hbox = new Gtk.Box(Gtk.Orientation.Horizontal, 0);
 			//TextViewCompat.SetTextAppearance(_label, global::Android.Resource.Style.TextAppearanceSmall);
 
 			//var layoutParams = new LayoutParams(ViewGroup.LayoutParams.WrapContent, ViewGroup.LayoutParams.WrapContent) { Gravity = GravityFlags.CenterVertical };
@@ -45,8 +45,8 @@ namespace Microsoft.Maui.Controls.Handlers.Compatibility
 			//layoutParams = new LayoutParams(ViewGroup.LayoutParams.MatchParent, ViewGroup.LayoutParams.WrapContent) { Width = 0, Weight = 1, Gravity = GravityFlags.FillHorizontal | GravityFlags.Center };
 			//using (layoutParams)
 			//	AddView(EditText, layoutParams);
-			_hbox.PackStart(_label);
-			_hbox.PackStart(EditText);
+			_hbox.PackStart(_label, false, false, 0);
+			_hbox.PackStart(EditText, false, false, 0);
 			Add(_hbox);
 		}
 

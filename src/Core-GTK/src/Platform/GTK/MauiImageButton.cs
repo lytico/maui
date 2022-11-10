@@ -6,13 +6,13 @@ namespace Microsoft.Maui.Platform
 {
 	public sealed class MauiImageButton : MauiView
 	{
-		private Alignment _container;
+		private EventBox _container;
 		private Box _imageAndLabelContainer = null!;
 
-		private Gdk.Color _defaultBorderColor;
-		private Gdk.Color _defaultBackgroundColor;
+		//private Gdk.Color _defaultBorderColor;
+		//private Gdk.Color _defaultBackgroundColor;
 		private Gdk.Color? _borderColor;
-		private Gdk.Color? _backgroundColor;
+		// private Gdk.Color? _backgroundColor;
 
 		private Gtk.Button _button;
 		private Gtk.Image _image = null!;
@@ -22,8 +22,8 @@ namespace Microsoft.Maui.Platform
 
 		public MauiImageButton()
 		{
-			_defaultBackgroundColor = Style.Backgrounds[(int)StateType.Normal];
-			_defaultBorderColor = Style.BaseColors[(int)StateType.Active];
+			//_defaultBackgroundColor = Style.Backgrounds[(int)StateType.Normal];
+			//_defaultBorderColor = Style.BaseColors[(int)StateType.Active];
 
 			_button = new Gtk.Button();
 
@@ -31,7 +31,7 @@ namespace Microsoft.Maui.Platform
 
 			//_image = new Gtk.Image();
 			_label = new Gtk.Label();
-			_container = new Alignment(0.5f, 0.5f, 0, 0);
+			_container = new EventBox();
 
 			_button.Add(_container);
 
@@ -62,32 +62,32 @@ namespace Microsoft.Maui.Platform
 
 		public void SetBackgroundColor(Gdk.Color? color)
 		{
-			if (color != null)
-			{
-				_backgroundColor = color;
-				//QueueDraw();
-				if (_backgroundColor != null)
-				{
-					ModifyBg(StateType.Normal, _backgroundColor.Value);
-					ModifyBg(StateType.Prelight, _backgroundColor.Value);
-					//ModifyBg(StateType.Selected, _backgroundColor.Value);
-					ModifyBg(StateType.Active, _backgroundColor.Value);
-					//ModifyBg(StateType.Insensitive, _backgroundColor.Value);
-				}
-			}
+			//if (color != null)
+			//{
+			//	_backgroundColor = color;
+			//	//QueueDraw();
+			//	if (_backgroundColor != null)
+			//	{
+			//		ModifyBg(StateType.Normal, _backgroundColor.Value);
+			//		ModifyBg(StateType.Prelight, _backgroundColor.Value);
+			//		//ModifyBg(StateType.Selected, _backgroundColor.Value);
+			//		ModifyBg(StateType.Active, _backgroundColor.Value);
+			//		//ModifyBg(StateType.Insensitive, _backgroundColor.Value);
+			//	}
+			//}
 		}
 
 		public void ResetBackgroundColor()
 		{
-			_backgroundColor = _defaultBackgroundColor;
+			//_backgroundColor = _defaultBackgroundColor;
 			//QueueDraw();
 		}
 
 		public void SetForegroundColor(Gdk.Color color)
 		{
-			_label.ModifyFg(StateType.Normal, color);
-			_label.ModifyFg(StateType.Prelight, color);
-			_label.ModifyFg(StateType.Active, color);
+			//_label.ModifyFg(StateType.Normal, color);
+			//_label.ModifyFg(StateType.Prelight, color);
+			//_label.ModifyFg(StateType.Active, color);
 		}
 
 		public void SetBorderWidth(uint width)
@@ -104,7 +104,7 @@ namespace Microsoft.Maui.Platform
 
 		public void ResetBorderColor()
 		{
-			_borderColor = _defaultBorderColor;
+			//_borderColor = _defaultBorderColor;
 			//QueueDraw();
 		}
 
@@ -166,22 +166,22 @@ namespace Microsoft.Maui.Platform
 			switch (_button.ImagePosition)
 			{
 				case PositionType.Left:
-					_imageAndLabelContainer = new HBox();
+					_imageAndLabelContainer = new Box(Gtk.Orientation.Horizontal, 0);
 					_imageAndLabelContainer.PackStart(_image, false, false, _imageSpacing);
 					_imageAndLabelContainer.PackStart(_label, false, false, 0);
 					break;
 				case PositionType.Top:
-					_imageAndLabelContainer = new VBox();
+					_imageAndLabelContainer = new Box(Gtk.Orientation.Vertical, 0);
 					_imageAndLabelContainer.PackStart(_image, false, false, _imageSpacing);
 					_imageAndLabelContainer.PackStart(_label, false, false, 0);
 					break;
 				case PositionType.Right:
-					_imageAndLabelContainer = new HBox();
+					_imageAndLabelContainer = new Box(Gtk.Orientation.Horizontal, 0);
 					_imageAndLabelContainer.PackStart(_label, false, false, 0);
 					_imageAndLabelContainer.PackStart(_image, false, false, _imageSpacing);
 					break;
 				case PositionType.Bottom:
-					_imageAndLabelContainer = new VBox();
+					_imageAndLabelContainer = new Box(Gtk.Orientation.Vertical, 0);
 					_imageAndLabelContainer.PackStart(_label, false, false, 0);
 					_imageAndLabelContainer.PackStart(_image, false, false, _imageSpacing);
 					break;

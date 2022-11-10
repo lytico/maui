@@ -6,7 +6,7 @@ namespace Microsoft.Maui.Platform
 {
 	public class MauiImage : MauiView, IDesiredSizeProvider
 	{
-		private Gtk.HBox _hBox = null!;
+		private Gtk.Box _hBox = null!;
 		private Gtk.Image _image = null!;
 		private Pixbuf _original = null!;
 		private ImageAspect _aspect;
@@ -21,7 +21,7 @@ namespace Microsoft.Maui.Platform
 
 		public MauiImage()
 		{
-			_hBox = new Gtk.HBox();
+			_hBox = new Gtk.Box(Gtk.Orientation.Horizontal, 0);
 			_aspect = ImageAspect.AspectFill;
 			_scaleX = 1.0;
 			_scaleY = 1.0;

@@ -12,7 +12,7 @@ namespace Microsoft.Maui
 		public MauiGTKWindow(string title) : base(title)
 		{
 			Destroyed += MauiGTKWindow_Destroyed;
-			ModifyBg(StateType.Normal, new Gdk.Color(200, 0, 200));
+			// ModifyBg(StateType.Normal, new Gdk.Color(200, 0, 200));
 		}
 
 		private void MauiGTKWindow_Destroyed(object? sender, EventArgs e)

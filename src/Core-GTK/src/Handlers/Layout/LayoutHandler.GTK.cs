@@ -3,9 +3,9 @@ using Gtk;
 
 namespace Microsoft.Maui.Handlers
 {
-	public partial class LayoutHandler : ViewHandler<ILayout, Gtk.VBox>
+	public partial class LayoutHandler : ViewHandler<ILayout, Gtk.Box>
 	{
-		protected override Gtk.VBox CreatePlatformView()
+		protected override Gtk.Box CreatePlatformView()
 		{
 			if (VirtualView == null)
 			{
@@ -13,7 +13,7 @@ namespace Microsoft.Maui.Handlers
 			}
 
 			// var viewGroup = new LayoutViewGroup();
-			var view = new Gtk.VBox();
+			var view = new Gtk.Box(Gtk.Orientation.Vertical, 0);
 
 			return view;
 		}
@@ -62,7 +62,7 @@ namespace Microsoft.Maui.Handlers
 			}
 		}
 
-		void Clear(Gtk.VBox platformView)
+		void Clear(Gtk.Box platformView)
 		{
 			//platformView.RemoveAllViews();
 		}
@@ -103,7 +103,7 @@ namespace Microsoft.Maui.Handlers
 			EnsureZIndexOrder(child);
 		}
 
-		protected override void DisconnectHandler(Gtk.VBox platformView)
+		protected override void DisconnectHandler(Gtk.Box platformView)
 		{
 			// If we're being disconnected from the xplat element, then we should no longer be managing its chidren
 			Clear(platformView);

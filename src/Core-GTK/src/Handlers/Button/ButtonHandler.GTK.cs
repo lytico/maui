@@ -136,47 +136,47 @@ namespace Microsoft.Maui.Handlers
 
 		public static void MapFont(IButtonHandler handler, ITextStyle button)
 		{
-			if (handler.PlatformView is MauiImageButton handlerBox)
-			{
-				Pango.FontDescription fontdesc = new Pango.FontDescription();
-				fontdesc.Family = button.Font.Family;
-				fontdesc.Size = (int)(button.Font.Size * Pango.Scale.PangoScale);
+			//if (handler.PlatformView is MauiImageButton handlerBox)
+			//{
+			//	Pango.FontDescription fontdesc = new Pango.FontDescription();
+			//	fontdesc.Family = button.Font.Family;
+			//	fontdesc.Size = (int)(button.Font.Size * Pango.Scale.PangoScale);
 
-				var style = new Gtk.RcStyle();
-				style.FontDesc = fontdesc;
+			//	var style = new Gtk.RcStyle();
+			//	style.FontDesc = fontdesc;
 
-				// handlerBox.ModifyStyle(style);
-				handlerBox.LabelWidget.ModifyStyle(style);
-				//handlerBox.LabelWidget.ModifyBg(Gtk.StateType.Normal, new Gdk.Color(200, 0, 200));
-				//handlerBox.BoxWidget.ModifyBg(Gtk.StateType.Normal, new Gdk.Color(200, 0, 200));
-				// handlerBox.SetBackgroundColor(new Gdk.Color(200, 0, 200));
-				// handlerBox.ModifyBg(Gtk.StateType.Normal, new Gdk.Color(200, 0, 200));
-				//if (handlerBox.ButtonWidget.Child is Gtk.Alignment alignChild)
-				//{
-				//	if (alignChild.Children.Length > 0)
-				//	{
-				//		if (alignChild.Children[0] is Gtk.HBox horizBox)
-				//		{
-				//			if (horizBox.Children.Length > 1)
-				//			{
-				//				if (horizBox.Children[0] is Gtk.Label label0Child)
-				//				{
-				//					label0Child.ModifyFont(fontdesc);
-				//				}
-				//				if (horizBox.Children[1] is Gtk.Label label1Child)
-				//				{
-				//					//label1Child.ModifyFont(fontdesc);
-				//					label1Child.Style.FontDesc.Family = button.Font.Family;
-				//					label1Child.Style.FontDesc.Size = (int)(button.Font.Size * Pango.Scale.PangoScale);
-				//				}
-				//			}
-				//		}
-				//	}
-				//}
+			//	// handlerBox.ModifyStyle(style);
+			//	handlerBox.LabelWidget.ModifyStyle(style);
+			//	//handlerBox.LabelWidget.ModifyBg(Gtk.StateType.Normal, new Gdk.Color(200, 0, 200));
+			//	//handlerBox.BoxWidget.ModifyBg(Gtk.StateType.Normal, new Gdk.Color(200, 0, 200));
+			//	// handlerBox.SetBackgroundColor(new Gdk.Color(200, 0, 200));
+			//	// handlerBox.ModifyBg(Gtk.StateType.Normal, new Gdk.Color(200, 0, 200));
+			//	//if (handlerBox.ButtonWidget.Child is Gtk.Alignment alignChild)
+			//	//{
+			//	//	if (alignChild.Children.Length > 0)
+			//	//	{
+			//	//		if (alignChild.Children[0] is Gtk.HBox horizBox)
+			//	//		{
+			//	//			if (horizBox.Children.Length > 1)
+			//	//			{
+			//	//				if (horizBox.Children[0] is Gtk.Label label0Child)
+			//	//				{
+			//	//					label0Child.ModifyFont(fontdesc);
+			//	//				}
+			//	//				if (horizBox.Children[1] is Gtk.Label label1Child)
+			//	//				{
+			//	//					//label1Child.ModifyFont(fontdesc);
+			//	//					label1Child.Style.FontDesc.Family = button.Font.Family;
+			//	//					label1Child.Style.FontDesc.Size = (int)(button.Font.Size * Pango.Scale.PangoScale);
+			//	//				}
+			//	//			}
+			//	//		}
+			//	//	}
+			//	//}
 
-				//handlerBox.ButtonWidget.ModifyFont(fontdesc);
-				//handlerBox.LabelWidget.ModifyFont(fontdesc);
-			}
+			//	//handlerBox.ButtonWidget.ModifyFont(fontdesc);
+			//	//handlerBox.LabelWidget.ModifyFont(fontdesc);
+			//}
 
 			// var fontManager = handler.GetRequiredService<IFontManager>();
 

@@ -8,14 +8,14 @@ namespace Microsoft.Maui.Platform
 	{
 		public static void UpdateFont(this MauiView platformControl, Font font, IFontManager fontManager)
 		{
-			if (platformControl.GetChildWidget() is Gtk.Label platformLabel)
-			{
-				Pango.FontDescription fontdesc = new Pango.FontDescription();
-				fontdesc.Family = fontManager.GetFontFamily(font);
-				fontdesc.Size = (int)(fontManager.GetFontSize(font) * Pango.Scale.PangoScale);
+			//if (platformControl.GetChildWidget() is Gtk.Label platformLabel)
+			//{
+			//	Pango.FontDescription fontdesc = new Pango.FontDescription();
+			//	fontdesc.Family = fontManager.GetFontFamily(font);
+			//	fontdesc.Size = (int)(fontManager.GetFontSize(font) * Pango.Scale.PangoScale);
 
-				platformLabel.ModifyFont(fontdesc);
-			}
+			//	platformLabel.ModifyFont(fontdesc);
+			//}
 		}
 
 		public static void UpdateFont(this MauiView platformControl, IText text, IFontManager fontManager) =>

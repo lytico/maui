@@ -22,6 +22,7 @@
     <PackageReference Include="Microsoft.WindowsAppSDK" />
   </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="GtkSharp" Version="3.24.24.65" />
     <Compile Include="..\..\Essentials\src\AppActions\AppActions.shared.cs" Link="AppActions\AppActions.shared.cs" />
     <Compile Include="..\..\Essentials\src\AppInfo\AppInfo.shared.cs" Link="AppInfo\AppInfo.shared.cs" />
     <Compile Include="..\..\Essentials\src\AppInfo\AppTheme.shared.cs" Link="AppInfo\AppTheme.shared.cs" />
@@ -83,32 +84,6 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="..\..\Essentials\src\Resources\xml\microsoft_maui_essentials_fileprovider_file_paths.xml" Link="Resources\xml\microsoft_maui_essentials_fileprovider_file_paths.xml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Reference Include="atk-sharp">
-      <HintPath>C:\Program Files (x86)\GtkSharp\2.12\lib\gtk-sharp-2.0\atk-sharp.dll</HintPath>
-    </Reference>
-    <Reference Include="gdk-sharp">
-      <HintPath>C:\Program Files (x86)\GtkSharp\2.12\lib\gtk-sharp-2.0\gdk-sharp.dll</HintPath>
-    </Reference>
-    <Reference Include="glade-sharp">
-      <HintPath>C:\Program Files (x86)\GtkSharp\2.12\lib\gtk-sharp-2.0\glade-sharp.dll</HintPath>
-    </Reference>
-    <Reference Include="glib-sharp">
-      <HintPath>C:\Program Files (x86)\GtkSharp\2.12\lib\gtk-sharp-2.0\glib-sharp.dll</HintPath>
-    </Reference>
-    <Reference Include="gtk-dotnet">
-      <HintPath>C:\Program Files (x86)\GtkSharp\2.12\lib\gtk-sharp-2.0\gtk-dotnet.dll</HintPath>
-    </Reference>
-    <Reference Include="gtk-sharp">
-      <HintPath>C:\Program Files (x86)\GtkSharp\2.12\lib\gtk-sharp-2.0\gtk-sharp.dll</HintPath>
-    </Reference>
-    <Reference Include="Mono.Cairo">
-      <HintPath>C:\Program Files (x86)\GtkSharp\2.12\lib\Mono.Cairo\Mono.Cairo.dll</HintPath>
-    </Reference>
-    <Reference Include="pango-sharp">
-      <HintPath>C:\Program Files (x86)\GtkSharp\2.12\lib\gtk-sharp-2.0\pango-sharp.dll</HintPath>
-    </Reference>
   </ItemGroup>
   <Import Project="$(MauiSrcDirectory)PublicAPI.targets" />
   <ItemGroup>

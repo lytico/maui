@@ -4,7 +4,7 @@ namespace Microsoft.Maui.Platform
 {
 	public class ScrolledTextView : MauiView
 	{
-		private Table _table;
+		private Grid _table;
 		private ScrolledWindow _scrolledWindow;
 		private Gtk.Label _placeholder;
 		private EventBox _placeholderContainer;
@@ -12,7 +12,7 @@ namespace Microsoft.Maui.Platform
 
 		public ScrolledTextView()
 		{
-			_table = new Table(1, 1, true);
+			_table = new Grid();
 
 			TextView = new TextView
 			{
@@ -33,7 +33,7 @@ namespace Microsoft.Maui.Platform
 			_scrolledWindow.Add(TextView);
 
 			_placeholder = new Gtk.Label();
-			_placeholder.SetAlignment(0, 0);
+			//_placeholder.SetAlignment(0, 0);
 
 			_placeholderContainer = new EventBox
 			{
@@ -44,11 +44,11 @@ namespace Microsoft.Maui.Platform
 
 			_placeholderContainer.ButtonPressEvent += PlaceHolderContainerPressed;
 
-			SetBackgroundColor(TextView.Style.BaseColors[(int)StateType.Normal]);
+			// SetBackgroundColor(TextView.Style.BaseColors[(int)StateType.Normal]);
 
 			Add(_table);
 
-			_table.Attach(_placeholderContainer, 0, 1, 0, 1, AttachOptions.Fill, AttachOptions.Fill, 0, 0);
+			_table.Attach(_placeholderContainer, 0, 1, 0, 1);
 			_table.Attach(_scrolledWindow, 0, 1, 0, 1);
 		}
 
@@ -68,14 +68,14 @@ namespace Microsoft.Maui.Platform
 
 		public void SetBackgroundColor(Gdk.Color color)
 		{
-			ModifyBg(StateType.Normal, color);
-			TextView.ModifyBase(StateType.Normal, color);
-			_placeholderContainer.ModifyBg(StateType.Normal, color);
+			//ModifyBg(StateType.Normal, color);
+			//TextView.ModifyBase(StateType.Normal, color);
+			//_placeholderContainer.ModifyBg(StateType.Normal, color);
 		}
 
 		public void SetPlaceholderTextColor(Gdk.Color color)
 		{
-			_placeholder.ModifyFg(StateType.Normal, color);
+			// _placeholder.ModifyFg(StateType.Normal, color);
 		}
 
 		public void SetMaxLength(int maxLength)
@@ -102,7 +102,7 @@ namespace Microsoft.Maui.Platform
 
 		private void InsertText(object o, InsertTextArgs args)
 		{
-			args.RetVal = args.Length <= _maxLength;
+			// args.RetVal = args.Length <= _maxLength;
 		}
 
 		private void FocusedOut(object o, FocusOutEventArgs args)
@@ -128,7 +128,7 @@ namespace Microsoft.Maui.Platform
 			{
 				TextView.Sensitive = true;
 				TextView.HasFocus = true;
-				TextView.GdkWindow?.Raise();
+				// TextView.GdkWindow?.Raise();
 			}
 		}
 	}

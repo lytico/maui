@@ -5,7 +5,7 @@ namespace Microsoft.Maui.Platform
 {
 	public class LayoutViewGroup : MauiView
 	{
-		IBorderStroke? _clip;
+		//IBorderStroke? _clip;
 
 		public LayoutViewGroup()
 		{
@@ -15,43 +15,43 @@ namespace Microsoft.Maui.Platform
 		{
 		}
 
-		protected override bool OnExposeEvent(EventExpose evnt)
-		{
-			using (var cr = CairoHelper.Create(GdkWindow))
-			{
-				if (Clip != null)
-					ClipChild(cr);
-			}
+		//protected override bool OnExposeEvent(EventExpose evnt)
+		//{
+		//	using (var cr = CairoHelper.Create(GdkWindow))
+		//	{
+		//		if (Clip != null)
+		//			ClipChild(cr);
+		//	}
 
-			return base.OnExposeEvent(evnt);
-		}
+		//	return base.OnExposeEvent(evnt);
+		//}
 
-		internal IBorderStroke? Clip
-		{
-			get => _clip;
-			set
-			{
-				_clip = value;
-			}
-		}
+		//internal IBorderStroke? Clip
+		//{
+		//	get => _clip;
+		//	set
+		//	{
+		//		_clip = value;
+		//	}
+		//}
 
-		void ClipChild(Cairo.Context? cr)
-		{
-			if (Clip == null || cr == null)
-				return;
+		//void ClipChild(Cairo.Context? cr)
+		//{
+		//	if (Clip == null || cr == null)
+		//		return;
 
-			float strokeThickness = (float)Clip.StrokeThickness;
-			float offset = strokeThickness / 2;
-			float w = Allocation.Width - strokeThickness;
-			float h = Allocation.Height - strokeThickness;
+		//	float strokeThickness = (float)Clip.StrokeThickness;
+		//	float offset = strokeThickness / 2;
+		//	float w = Allocation.Width - strokeThickness;
+		//	float h = Allocation.Height - strokeThickness;
 
-			// Draw Background
-			cr.Rectangle(offset, offset, w, h);
-			cr.FillPreserve();
+		//	// Draw Background
+		//	cr.Rectangle(offset, offset, w, h);
+		//	cr.FillPreserve();
 
-			// Draw Border
-			cr.Rectangle(offset, offset, w, h);
-			cr.StrokePreserve();
-		}
+		//	// Draw Border
+		//	cr.Rectangle(offset, offset, w, h);
+		//	cr.StrokePreserve();
+		//}
 	}
 }

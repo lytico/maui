@@ -4,11 +4,12 @@ namespace Microsoft.Maui.Platform
 {
 	public class MauiRadioButton : MauiView
 	{
-		private Gtk.Alignment? _container;
+		// private Gtk.Alignment? _container;
+		private Gtk.EventBox? _container;
 		private Gtk.Box? _imageAndLabelContainer;
 
-		private Gdk.Color _defaultBorderColor;
-		private Gdk.Color _defaultBackgroundColor;
+		//private Gdk.Color _defaultBorderColor;
+		//private Gdk.Color _defaultBackgroundColor;
 		private Gdk.Color? _borderColor;
 		private Gdk.Color? _backgroundColor;
 
@@ -19,8 +20,8 @@ namespace Microsoft.Maui.Platform
 
 		public MauiRadioButton(Gtk.RadioButton? radio_group_member, string label)
 		{
-			_defaultBackgroundColor = Style.Backgrounds[(int)Gtk.StateType.Normal];
-			_defaultBorderColor = Style.BaseColors[(int)Gtk.StateType.Active];
+			//_defaultBackgroundColor = Style.Backgrounds[(int)Gtk.StateType.Normal];
+			//_defaultBorderColor = Style.BaseColors[(int)Gtk.StateType.Active];
 
 			RadioButtonWidget = new Gtk.RadioButton(radio_group_member, label);
 
@@ -28,7 +29,7 @@ namespace Microsoft.Maui.Platform
 
 			_image = new Gtk.Image();
 			_label = new Gtk.Label();
-			_container = new Gtk.Alignment(0.5f, 0.5f, 0, 0);
+			_container = new Gtk.EventBox();
 
 
 			RadioButtonWidget.Add(_container);
@@ -75,15 +76,15 @@ namespace Microsoft.Maui.Platform
 
 		public void ResetBackgroundColor()
 		{
-			_backgroundColor = _defaultBackgroundColor;
+			//_backgroundColor = _defaultBackgroundColor;
 			QueueDraw();
 		}
 
 		public void SetForegroundColor(Gdk.Color color)
 		{
-			_label?.ModifyFg(Gtk.StateType.Normal, color);
-			_label?.ModifyFg(Gtk.StateType.Prelight, color);
-			_label?.ModifyFg(Gtk.StateType.Active, color);
+			//_label?.ModifyFg(Gtk.StateType.Normal, color);
+			//_label?.ModifyFg(Gtk.StateType.Prelight, color);
+			//_label?.ModifyFg(Gtk.StateType.Active, color);
 		}
 
 		public void SetBorderWidth(uint width)
@@ -100,7 +101,7 @@ namespace Microsoft.Maui.Platform
 
 		public void ResetBorderColor()
 		{
-			_borderColor = _defaultBorderColor;
+			//_borderColor = _defaultBorderColor;
 			QueueDraw();
 		}
 
@@ -129,35 +130,35 @@ namespace Microsoft.Maui.Platform
 
 		#region Gtk.Widget overrides
 
-		protected override bool OnExposeEvent(EventExpose evnt)
-		{
-			double colorMaxValue = 65535;
+		//protected override bool OnExposeEvent(EventExpose evnt)
+		//{
+		//	double colorMaxValue = 65535;
 
-			using (var cr = CairoHelper.Create(GdkWindow))
-			{
-				cr.Rectangle(Allocation.Left, Allocation.Top, Allocation.Width, Allocation.Height);
+		//	using (var cr = CairoHelper.Create(GdkWindow))
+		//	{
+		//		cr.Rectangle(Allocation.Left, Allocation.Top, Allocation.Width, Allocation.Height);
 
-				// Draw BackgroundColor
-				if (_backgroundColor.HasValue)
-				{
-					var color = _backgroundColor.Value;
-					cr.SetSourceRGBA(color.Red / colorMaxValue, color.Green / colorMaxValue, color.Blue / colorMaxValue, 1.0);
-					cr.FillPreserve();
-				}
+		//		// Draw BackgroundColor
+		//		if (_backgroundColor.HasValue)
+		//		{
+		//			var color = _backgroundColor.Value;
+		//			cr.SetSourceRGBA(color.Red / colorMaxValue, color.Green / colorMaxValue, color.Blue / colorMaxValue, 1.0);
+		//			cr.FillPreserve();
+		//		}
 
-				// Draw BorderColor
-				if (_borderColor.HasValue)
-				{
-					cr.LineWidth = _borderWidth;
+		//		// Draw BorderColor
+		//		if (_borderColor.HasValue)
+		//		{
+		//			cr.LineWidth = _borderWidth;
 
-					var color = _borderColor.Value;
-					cr.SetSourceRGB(color.Red / colorMaxValue, color.Green / colorMaxValue, color.Blue / colorMaxValue);
-					cr.Stroke();
-				}
-			}
+		//			var color = _borderColor.Value;
+		//			cr.SetSourceRGB(color.Red / colorMaxValue, color.Green / colorMaxValue, color.Blue / colorMaxValue);
+		//			cr.Stroke();
+		//		}
+		//	}
 
-			return base.OnExposeEvent(evnt);
-		}
+		//	return base.OnExposeEvent(evnt);
+		//}
 
 		#endregion Gtk.Widget overrides
 
@@ -181,22 +182,22 @@ namespace Microsoft.Maui.Platform
 			switch (RadioButtonWidget.ImagePosition)
 			{
 				case Gtk.PositionType.Left:
-					_imageAndLabelContainer = new Gtk.HBox();
+					_imageAndLabelContainer = new Gtk.Box(Gtk.Orientation.Horizontal, 0);
 					_imageAndLabelContainer.PackStart(_image, false, false, _imageSpacing);
 					_imageAndLabelContainer.PackStart(_label, false, false, 0);
 					break;
 				case Gtk.PositionType.Right:
-					_imageAndLabelContainer = new Gtk.HBox();
+					_imageAndLabelContainer = new Gtk.Box(Gtk.Orientation.Horizontal, 0);
 					_imageAndLabelContainer.PackStart(_label, false, false, 0);
 					_imageAndLabelContainer.PackStart(_image, false, false, _imageSpacing);
 					break;
 				case Gtk.PositionType.Top:
-					_imageAndLabelContainer = new Gtk.VBox();
+					_imageAndLabelContainer = new Gtk.Box(Gtk.Orientation.Vertical, 0);
 					_imageAndLabelContainer.PackStart(_image, false, false, _imageSpacing);
 					_imageAndLabelContainer.PackStart(_label, false, false, 0);
 					break;
 				case Gtk.PositionType.Bottom:
-					_imageAndLabelContainer = new Gtk.VBox();
+					_imageAndLabelContainer = new Gtk.Box(Gtk.Orientation.Vertical, 0);
 					_imageAndLabelContainer.PackStart(_label, false, false, 0);
 					_imageAndLabelContainer.PackStart(_image, false, false, _imageSpacing);
 					break;

@@ -24,9 +24,9 @@ namespace Microsoft.Maui.Platform
 
 	public partial class DatePickerWindow : Gtk.Window
 	{
-		VBox _datebox = null!;
+		Box _datebox = null!;
 		RangeCalendar _calendar = null!;
-		private static uint CURRENT_TIME = 0;
+		//private static uint CURRENT_TIME = 0;
 
 		public DatePickerWindow()
 			: base(WindowType.Popup)
@@ -37,27 +37,27 @@ namespace Microsoft.Maui.Platform
 
 			Grab.Add(this);
 
-			Gdk.GrabStatus grabbed =
-				Gdk.Pointer.Grab(GdkWindow, true,
-				Gdk.EventMask.ButtonPressMask
-				| Gdk.EventMask.ButtonReleaseMask
-				| Gdk.EventMask.PointerMotionMask, null, null, CURRENT_TIME);
+			//Gdk.GrabStatus grabbed =
+			//	Gdk.Pointer.Grab(GdkWindow, true,
+			//	Gdk.EventMask.ButtonPressMask
+			//	| Gdk.EventMask.ButtonReleaseMask
+			//	| Gdk.EventMask.PointerMotionMask, null, null, CURRENT_TIME);
 
-			if (grabbed == Gdk.GrabStatus.Success)
-			{
-				grabbed = Gdk.Keyboard.Grab(GdkWindow, true, CURRENT_TIME);
+			//if (grabbed == Gdk.GrabStatus.Success)
+			//{
+			//	grabbed = Gdk.Keyboard.Grab(GdkWindow, true, CURRENT_TIME);
 
-				if (grabbed != Gdk.GrabStatus.Success)
-				{
-					Grab.Remove(this);
-					this.Destroy();
-				}
-			}
-			else
-			{
-				Grab.Remove(this);
-				this.Destroy();
-			}
+			//	if (grabbed != Gdk.GrabStatus.Success)
+			//	{
+			//		Grab.Remove(this);
+			//		this.Destroy();
+			//	}
+			//}
+			//else
+			//{
+			//	Grab.Remove(this);
+			//	this.Destroy();
+			//}
 
 			SelectedDate = DateTime.Now;
 		}
@@ -105,21 +105,21 @@ namespace Microsoft.Maui.Platform
 
 		public event DateEventHandler OnDateTimeChanged = null!;
 
-		protected override bool OnExposeEvent(Gdk.EventExpose args)
-		{
-			base.OnExposeEvent(args);
+		//protected override bool OnExposeEvent(Gdk.EventExpose args)
+		//{
+		//	base.OnExposeEvent(args);
 
-			int winWidth, winHeight;
-			GetSize(out winWidth, out winHeight);
-			GdkWindow.DrawRectangle(
-				Style.ForegroundGC(StateType.Insensitive), false, 0, 0, winWidth - 1, winHeight - 1);
+		//	int winWidth, winHeight;
+		//	GetSize(out winWidth, out winHeight);
+		//	GdkWindow.DrawRectangle(
+		//		Style.ForegroundGC(StateType.Insensitive), false, 0, 0, winWidth - 1, winHeight - 1);
 
-			return false;
-		}
+		//	return false;
+		//}
 
 		protected virtual void OnButtonPressEvent(object? o, ButtonPressEventArgs args)
 		{
-			Close();
+			CloseRemoveGrab();
 		}
 
 		protected virtual void OnCalendarButtonPressEvent(object? o, ButtonPressEventArgs args)
@@ -135,7 +135,7 @@ namespace Microsoft.Maui.Platform
 		protected virtual void OnCalendarDaySelectedDoubleClick(object? sender, EventArgs e)
 		{
 			OnDateTimeChanged?.Invoke(this, new DateEventArgs(SelectedDate));
-			Close();
+			CloseRemoveGrab();
 		}
 
 		private void BuildDatePickerWindow()
@@ -145,13 +145,13 @@ namespace Microsoft.Maui.Platform
 			WindowPosition = WindowPosition.Mouse;
 			BorderWidth = 1;
 			Resizable = false;
-			AllowGrow = false;
+			// AllowGrow = false;
 			Decorated = false;
 			DestroyWithParent = true;
 			SkipPagerHint = true;
 			SkipTaskbarHint = true;
 
-			_datebox = new VBox();
+			_datebox = new Box(Gtk.Orientation.Vertical, 0);
 			_datebox.Spacing = 6;
 			_datebox.BorderWidth = 3;
 
@@ -177,11 +177,11 @@ namespace Microsoft.Maui.Platform
 			_calendar.DaySelectedDoubleClick += new EventHandler(OnCalendarDaySelectedDoubleClick);
 		}
 
-		void Close()
+		void CloseRemoveGrab()
 		{
 			Grab.Remove(this);
-			Gdk.Pointer.Ungrab(CURRENT_TIME);
-			Gdk.Keyboard.Ungrab(CURRENT_TIME);
+			//Gdk.Pointer.Ungrab(CURRENT_TIME);
+			//Gdk.Keyboard.Ungrab(CURRENT_TIME);
 			Destroy();
 		}
 
@@ -273,12 +273,12 @@ namespace Microsoft.Maui.Platform
 
 			if (_comboBox != null)
 			{
-				TextColor = _comboBox.Entry.Style.Text(StateType.Normal);
+				// TextColor = _comboBox.Entry.Style.Text(StateType.Normal);
 
 				_comboBox.Entry.CanDefault = false;
 				_comboBox.Entry.CanFocus = false;
 				_comboBox.Entry.IsEditable = false;
-				_comboBox.Entry.State = StateType.Normal;
+				// _comboBox.Entry.State = StateType.Normal;
 				_comboBox.Entry.FocusGrabbed += new EventHandler(OnEntryFocused);
 				_comboBox.PopupButton.Clicked += new EventHandler(OnBtnShowCalendarClicked);
 			}
@@ -370,14 +370,14 @@ namespace Microsoft.Maui.Platform
 
 		void ShowPickerWindow()
 		{
-			int x = 0;
-			int y = 0;
+			//int x = 0;
+			//int y = 0;
 
-			GdkWindow.GetOrigin(out x, out y);
-			y += Allocation.Height;
+			//GdkWindow.GetOrigin(out x, out y);
+			//y += Allocation.Height;
 
 			var picker = new DatePickerWindow();
-			picker.Move(x, y);
+			//picker.Move(x, y);
 			picker.SelectedDate = CurrentDate;
 			picker.MinimumDate = _minDate;
 			picker.MaximumDate = _maxDate;

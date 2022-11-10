@@ -1,14 +1,14 @@
 namespace Microsoft.Maui.Platform
 {
 	// CustomCombobox, Gtk.Entry + Gtk.Button
-	public class MauiComboBox : Gtk.HBox
+	public class MauiComboBox : Gtk.Box
 	{
 		private Gtk.Entry _entry = null!;
 		private Gtk.Button _button = null!;
-		private Gtk.Arrow _arrow = null!;
+		//private Gtk.Arrow _arrow = null!;
 		private Gdk.Color _color;
 
-		public MauiComboBox()
+		public MauiComboBox() : base(Gtk.Orientation.Horizontal, 0)
 		{
 			BuildCustomComboBox();
 		}
@@ -35,7 +35,7 @@ namespace Microsoft.Maui.Platform
 			set
 			{
 				_color = value;
-				Entry.ModifyText(Gtk.StateType.Normal, _color);
+				//Entry.ModifyText(Gtk.StateType.Normal, _color);
 			}
 		}
 
@@ -55,8 +55,8 @@ namespace Microsoft.Maui.Platform
 			_button = new Gtk.Button();
 			_button.WidthRequest = 30;
 			_button.CanFocus = true;
-			_arrow = new Gtk.Arrow(Gtk.ArrowType.Down, Gtk.ShadowType.EtchedOut);
-			_button.Add(_arrow);
+			//_arrow = new Gtk.Arrow(Gtk.ArrowType.Down, Gtk.ShadowType.EtchedOut);
+			//_button.Add(_arrow);
 			PackEnd(_button, false, false, 0);
 		}
 	}

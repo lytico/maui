@@ -13,19 +13,19 @@ namespace Microsoft.Maui.Platform
 			double widthConstraint,
 			double heightConstraint)
 		{
-			Gdk.Size desiredSize;
+			Gdk.Size desiredSize = new Gdk.Size(0, 0);
 
 			if (self is IDesiredSizeProvider)
 			{
 				desiredSize = ((IDesiredSizeProvider)self).GetDesiredSize();
 			}
-			else
-			{
-				var req = self.SizeRequest();
-				desiredSize = new Gdk.Size(
-					req.Width > 0 ? req.Width : 0,
-					req.Height > 0 ? req.Height : 0);
-			}
+			//else
+			//{
+			//	var req = self.SizeRequest();
+			//	desiredSize = new Gdk.Size(
+			//		req.Width > 0 ? req.Width : 0,
+			//		req.Height > 0 ? req.Height : 0);
+			//}
 
 			var widthFits = widthConstraint >= desiredSize.Width;
 			var heightFits = heightConstraint >= desiredSize.Height;
@@ -39,11 +39,11 @@ namespace Microsoft.Maui.Platform
 			{
 				self.SetSize((int)widthConstraint, -1);
 
-				var req = self.SizeRequest();
-				desiredSize = new Gdk.Size(
-					req.Width > 0 ? req.Width : 0,
-					req.Height > 0 ? req.Height : 0);
-				heightFits = heightConstraint >= desiredSize.Height;
+				//var req = self.SizeRequest();
+				//desiredSize = new Gdk.Size(
+				//	req.Width > 0 ? req.Width : 0,
+				//	req.Height > 0 ? req.Height : 0);
+				//heightFits = heightConstraint >= desiredSize.Height;
 			}
 
 			var size = new Graphics.Size(desiredSize.Width, heightFits ? desiredSize.Height : (int)heightConstraint);
