@@ -45,6 +45,23 @@ namespace Microsoft.Maui.Handlers
 		{
 			handler.UpdateValue(nameof(IViewHandler.ContainerView));
 
+			if (label.Background != null)
+			{
+				if (label.Background.ToColor() != null)
+				{
+					byte r, g, b;
+					r = 0;
+					g = 0;
+					b = 0;
+					label.Background.ToColor()?.ToRgb(out r, out g, out b);
+					if (r != 0 && g != 0 && b != 0)
+					{
+						var color = new Gdk.Color(r, g, b);
+						handler.PlatformView.SetBackgroundColor(color);
+					}
+				}
+			}
+
 			//handler.ToPlatform().UpdateBackground(label);
 
 			//if (handler.PlatformView.GetChildWidget() is Gtk.Label platformLabel)

@@ -25,7 +25,6 @@
 
             <Button
                 x:Name="CounterBtn"
-                ImageSource="click_me.gif"
                 SemanticProperties.Hint="Counts the number of times you click"
                 Clicked="OnCounterClicked"
                 BackgroundColor="#512BD4"

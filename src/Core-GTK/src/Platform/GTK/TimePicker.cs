@@ -320,10 +320,10 @@ namespace Microsoft.Maui.Platform
 			}
 		}
 
-		public void SetBackgroundColor(Gdk.Color color)
-		{
-			_comboBox.SetBackgroundColor(color);
-		}
+		//public void SetBackgroundColor(Gdk.Color color)
+		//{
+		//	_comboBox.SetBackgroundColor(color);
+		//}
 
 		public void OpenPicker()
 		{

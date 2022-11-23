@@ -119,5 +119,9 @@ namespace Microsoft.Maui.Platform
 		public void Unfocus(IView handler)
 		{
 		}
+
+		public void SetBackgroundColor(Gdk.Color color)
+		{
+		}
 	}
 }

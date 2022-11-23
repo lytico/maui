@@ -18,13 +18,13 @@ namespace Microsoft.Maui.Controls
 #if IOS
 			[nameof(Padding)] = MapPadding,
 #endif
-#if WINDOWS && !__GTK__
+#if WINDOWS
 			[nameof(IText.Text)] = MapText,
 			[nameof(ImageSource)] = MapImageSource,
 #endif
-#if !__GTK__
 			[nameof(TextTransform)] = MapText,
 			[nameof(Text)] = MapText,
+#if !__GTK__
 			[nameof(Button.LineBreakMode)] = MapLineBreakMode,
 #endif
 		};

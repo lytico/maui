@@ -47,12 +47,12 @@ namespace Microsoft.Maui.Platform
 			}
 		}
 
-		public void SetBackgroundColor(Gdk.Color color)
-		{
-			//ModifyBg(StateType.Normal, color);
-			//_entry.ModifyBase(StateType.Normal, color);
-			//_placeholderContainer.ModifyBg(StateType.Normal, color);
-		}
+		//public void SetBackgroundColor(Gdk.Color color)
+		//{
+		//	//ModifyBg(StateType.Normal, color);
+		//	//_entry.ModifyBase(StateType.Normal, color);
+		//	//_placeholderContainer.ModifyBg(StateType.Normal, color);
+		//}
 
 		public void SetTextColor(Gdk.Color color)
 		{

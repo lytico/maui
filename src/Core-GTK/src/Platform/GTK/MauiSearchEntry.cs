@@ -123,11 +123,11 @@ namespace Microsoft.Maui.Platform
 			}
 		}
 
-		public void SetBackgroundColor(Gdk.Color color)
-		{
-			_searchButton.SetBackgroundColor(color);
-			_entryWrapper.SetBackgroundColor(color);
-		}
+		//public void SetBackgroundColor(Gdk.Color color)
+		//{
+		//	_searchButton.SetBackgroundColor(color);
+		//	_entryWrapper.SetBackgroundColor(color);
+		//}
 
 		public void SetTextColor(Gdk.Color color)
 		{

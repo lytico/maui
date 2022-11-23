@@ -4,27 +4,29 @@ using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 using Gtk;
 using Microsoft.Maui.Graphics;
+using Microsoft.Maui.Platform.GTK;
 
 namespace Microsoft.Maui.Handlers
 {
-	public partial class ButtonHandler : ViewHandler<IButton, MauiImageButton>
+	public partial class ButtonHandler : ViewHandler<IButton, MauiGTKButton>
 	{
 		public readonly static Thickness DefaultPadding = new Thickness(16, 8.5);
 
 		//static ColorStateList TransparentColorStateList = Colors.Transparent.ToDefaultColorStateList();
 
-		protected override MauiImageButton CreatePlatformView()
+		protected override MauiGTKButton CreatePlatformView()
 		{
-			MauiImageButton platformButton = new MauiImageButton();
+			MauiGTKButton platformButton = new MauiGTKButton();
 
 			return platformButton;
 		}
 
 		private protected override void OnConnectHandler(object platformView)
 		{
-			if (platformView is MauiImageButton imageButton)
+			if (platformView is MauiGTKButton imageButton)
 			{
-				imageButton.ButtonWidget.Clicked += ButtonWidget_Clicked;
+				//imageButton.ButtonWidget.Clicked += ButtonWidget_Clicked;
+				imageButton.Clicked += ButtonWidget_Clicked;
 			}
 
 			base.OnConnectHandler(platformView);
@@ -111,16 +113,18 @@ namespace Microsoft.Maui.Handlers
 		public static void MapText(IButtonHandler handler, IText button)
 		{
 			// handler.PlatformView?.UpdateTextPlainText(button);
-			if (handler.PlatformView is MauiImageButton handlerBox)
+			if (handler.PlatformView is MauiGTKButton handlerBox)
 			{
 				// need to attach Attributes after setting text again, so get it ...
-				var attrs = handlerBox.LabelWidget.Attributes;
+				var attrs = handlerBox.GetInternalLabel.Attributes;
+				// var attrs = handlerBox.LabelWidget.Attributes;
 
 				// handlerBox.ButtonWidget.Label = button.Text;
 
-				handlerBox.LabelWidget.Text = button.Text;
-				SetMarkupAttributes(handler, button);
-				handlerBox.LabelWidget.Attributes = attrs;
+				handlerBox.Label = button.Text;
+				//handlerBox.LabelWidget.Text = button.Text;
+				SetMarkupAttributes(handler, button, button.Text);
+				handlerBox.GetInternalLabel.Attributes = attrs;
 
 				// handlerBox.SetBackgroundColor(new Gdk.Color(200, 0, 200));
 				// handlerBox.ModifyBg(Gtk.StateType.Normal, new Gdk.Color(200, 0, 200));
@@ -203,24 +207,52 @@ namespace Microsoft.Maui.Handlers
 			// handler.PlatformView?.UpdatePadding(button, DefaultPadding);
 		}
 
-		public static void MapImageSource(IButtonHandler handler, IImage image) =>
-			MapImageSourceAsync(handler, image).FireAndForget(handler);
+		//public static void MapImageSource(IButtonHandler handler, IImage image) =>
+		//	MapImageSourceAsync(handler, image).FireAndForget(handler);
 
-		public static Task MapImageSourceAsync(IButtonHandler handler, IImage image)
+		//public static Task MapImageSourceAsync(IButtonHandler handler, IImage image)
+		//{
+		//	return handler.ImageSourceLoader.UpdateImageSourceAsync();
+		//}
+
+		public static void MapImageSource(IButtonHandler handler, string source)
 		{
-			return handler.ImageSourceLoader.UpdateImageSourceAsync();
+			if (handler.PlatformView is MauiGTKButton buttonHandler)
+			{
+				buttonHandler.Image = new Gtk.Image(source);
+			}
 		}
+
+		public static void MapImageSource(IButtonHandler handler, IImage image) { }
+			// MapImageSource(handler, image.Source);
 
 		void OnSetImageSource(Gdk.Pixbuf? obj)
 		{
 			// PlatformView.Icon = obj;
+			PlatformView.Image = new Gtk.Image(obj);
 		}
 
-		static void SetMarkupAttributes(IButtonHandler handler, ITextStyle button)
+		static void SetMarkupAttributes(IButtonHandler handler, ITextStyle button, string buttonText = "")
 		{
-			if (handler.PlatformView is MauiImageButton handlerBox)
+			if (handler.PlatformView is MauiGTKButton handlerBox)
 			{
-				var text = handlerBox.LabelWidget.Text;
+				if (handlerBox.GetInternalLabel == null)
+				{
+					if (string.IsNullOrEmpty(buttonText))
+					{
+						return;
+					} else
+					{
+						handlerBox.Label = buttonText;
+					}
+				}
+
+				if (handlerBox.GetInternalLabel == null)
+				{
+					return;
+				}
+
+				var text = handlerBox.GetInternalLabel.Text;
 				var markup = string.Empty;
 
 				if (button.TextColor == null)
@@ -266,7 +298,7 @@ namespace Microsoft.Maui.Handlers
 				markup += ">";
 				markup += text;
 				markup += "</span>";
-				handlerBox.LabelWidget.Markup = markup;
+				handlerBox.GetInternalLabel.Markup = markup;
 			}
 		}
 

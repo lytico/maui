@@ -4,7 +4,7 @@ using PlatformView = UIKit.UIButton;
 using PlatformView = Google.Android.Material.Button.MaterialButton;
 #elif WINDOWS
 #if __GTK__
-using PlatformView = Microsoft.Maui.Platform.MauiImageButton;
+using PlatformView = Microsoft.Maui.Platform.GTK.MauiGTKButton;
 #else
 using PlatformView = Microsoft.UI.Xaml.Controls.Button;
 #endif
