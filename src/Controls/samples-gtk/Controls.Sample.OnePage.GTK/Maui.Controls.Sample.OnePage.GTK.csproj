@@ -139,7 +139,9 @@
 	</Target>
 
   <ItemGroup>
-    <EmbeddedResource Include="click_me.gif" />
+    <EmbeddedResource Include="click_me.gif">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
   </ItemGroup>
 
   </Project>

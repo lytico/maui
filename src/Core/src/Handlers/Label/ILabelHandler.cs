@@ -4,7 +4,7 @@ using PlatformView = Microsoft.Maui.Platform.MauiLabel;
 using PlatformView = AndroidX.AppCompat.Widget.AppCompatTextView;
 #elif WINDOWS
 #if __GTK__
-using PlatformView = Microsoft.Maui.Platform.MauiView;
+using PlatformView = Microsoft.Maui.Platform.GTK.MauiGTKLabel;
 #else
 using PlatformView = Microsoft.UI.Xaml.Controls.TextBlock;
 #endif

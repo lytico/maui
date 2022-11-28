@@ -5,7 +5,7 @@ namespace Microsoft.Maui.Handlers
 {
 	public partial class SwitchHandler : ViewHandler<ISwitch, MauiSwitch>
 	{
-		protected override MauiSwitch CreatePlatformView()
+		protected override MauiSwitch CreatePlatformView(IView switchView)
 		{
 			var aSwitch = new MauiSwitch();
 			aSwitch.SwitchWidget.Toggled += ASwitch_Toggled;

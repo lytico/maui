@@ -8,7 +8,7 @@ namespace Microsoft.Maui.Handlers
 	{
 		const string InsetPanelTag = "MAUIContentInsetPanel";
 
-		protected override Gtk.ScrolledWindow CreatePlatformView()
+		protected override Gtk.ScrolledWindow CreatePlatformView(IView scrollView)
 		{
 			//var plat = new MauiView();
 			//plat.Add(new Gtk.ScrolledWindow());

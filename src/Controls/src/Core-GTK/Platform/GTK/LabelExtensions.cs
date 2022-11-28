@@ -1,15 +1,16 @@
 #nullable enable
 using System;
 using Microsoft.Maui.Controls.Internals;
+using Microsoft.Maui.Platform.GTK;
 
 namespace Microsoft.Maui.Controls.Platform
 {
 	internal static class LabelExtensions
 	{
-		public static void UpdateLineBreakMode(this MauiView textBlock, Label label) =>
+		public static void UpdateLineBreakMode(this MauiGTKLabel textBlock, Label label) =>
 			textBlock.UpdateLineBreakMode(label.LineBreakMode);
 
-		public static void UpdateLineBreakMode(this MauiView textBlock, LineBreakMode lineBreakMode)
+		public static void UpdateLineBreakMode(this MauiGTKLabel textBlock, LineBreakMode lineBreakMode)
 		{
 			//if (textBlock == null)
 			//	return;
@@ -47,28 +48,25 @@ namespace Microsoft.Maui.Controls.Platform
 			//}
 		}
 
-		static void DetermineTruncatedTextWrapping(MauiView textBlock) { }
+		static void DetermineTruncatedTextWrapping(MauiGTKLabel textBlock) { }
 			// textBlock.TextWrapping = textBlock.MaxLines > 1 ? TextWrapping.Wrap : TextWrapping.NoWrap;
 
-		public static void UpdateText(this MauiView platformControl, Label label)
+		public static void UpdateText(this MauiGTKLabel platformControl, Label label)
 		{
-			if (platformControl.GetChildWidget() is Gtk.Label platformLabel)
+			switch (label.TextType)
 			{
-				switch (label.TextType)
-				{
-					case TextType.Html:
-						platformControl.UpdateTextHtml(label);
-						break;
+				case TextType.Html:
+					platformControl.UpdateTextHtml(label.Text);
+					break;
 
-					default:
-						platformLabel.Text = label.Text;
-						break;
-						//	if (label.FormattedText != null)
-						//		platformControl.UpdateInlines(label);
-						//	else
-						//		platformControl.Text = TextTransformUtilites.GetTransformedText(label.Text, label.TextTransform);
-						//	break;
-				}
+				default:
+					platformControl.Text = label.Text;
+					break;
+					//	if (label.FormattedText != null)
+					//		platformControl.UpdateInlines(label);
+					//	else
+					//		platformControl.Text = TextTransformUtilites.GetTransformedText(label.Text, label.TextTransform);
+					//	break;
 			}
 		}
 
@@ -85,7 +83,7 @@ namespace Microsoft.Maui.Controls.Platform
 		//	return height;
 		//}
 
-		public static void UpdateMaxLines(this MauiView platformControl, Label label)
+		public static void UpdateMaxLines(this MauiGTKLabel platformControl, Label label)
 		{
 			//if (label.MaxLines >= 0)
 			//	platformControl.MaxLines = label.MaxLines;
@@ -93,13 +91,13 @@ namespace Microsoft.Maui.Controls.Platform
 			//	platformControl.MaxLines = 0;
 		}
 
-		public static void UpdateDetectReadingOrderFromContent(this MauiView platformControl, Label label)
+		public static void UpdateDetectReadingOrderFromContent(this MauiGTKLabel platformControl, Label label)
 		{
 			//if (label.IsSet(Specifics.DetectReadingOrderFromContentProperty))
 			//	platformControl.SetTextReadingOrder(label.OnThisPlatform().GetDetectReadingOrderFromContent());
 		}
 
-		internal static void SetTextReadingOrder(this MauiView platformControl, bool detectReadingOrderFromContent) { }
+		internal static void SetTextReadingOrder(this MauiGTKLabel platformControl, bool detectReadingOrderFromContent) { }
 			//platformControl.TextReadingOrder = detectReadingOrderFromContent
 			//	? TextReadingOrder.DetectFromContent
 			//	: TextReadingOrder.UseFlowDirection;

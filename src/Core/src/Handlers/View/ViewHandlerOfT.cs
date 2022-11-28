@@ -63,7 +63,11 @@ namespace Microsoft.Maui.Handlers
 
 		public static Func<ViewHandler<TVirtualView, TPlatformView>, TPlatformView>? PlatformViewFactory { get; set; }
 
+#if __GTK__
+		protected abstract TPlatformView CreatePlatformView(IView button);
+#else
 		protected abstract TPlatformView CreatePlatformView();
+#endif
 
 		protected virtual void ConnectHandler(TPlatformView platformView)
 		{
@@ -75,7 +79,23 @@ namespace Microsoft.Maui.Handlers
 
 		private protected override PlatformView OnCreatePlatformView()
 		{
+#if __GTK__
+			if (PlatformViewFactory == null)
+			{
+				if (base.VirtualView == null)
+				{
+					return new MauiView();
+				}
+				else
+				{
+					 return CreatePlatformView(base.VirtualView);
+				}
+			}
+			
+			return PlatformViewFactory.Invoke(this);
+#else
 			return PlatformViewFactory?.Invoke(this) ?? CreatePlatformView();
+#endif
 		}
 
 		private protected override void OnConnectHandler(PlatformView platformView) =>

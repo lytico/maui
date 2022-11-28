@@ -6,7 +6,7 @@
 
 		public Gtk.Entry? QueryEditor => _editText; 
 		
-		protected override MauiSearchEntry CreatePlatformView()
+		protected override MauiSearchEntry CreatePlatformView(IView searchBar)
 		{
 			_editText = new Gtk.Entry();
 

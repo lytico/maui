@@ -5,7 +5,7 @@ namespace Microsoft.Maui.Handlers
 {
 	public partial class LayoutHandler : ViewHandler<ILayout, Gtk.Box>
 	{
-		protected override Gtk.Box CreatePlatformView()
+		protected override Gtk.Box CreatePlatformView(IView layout)
 		{
 			if (VirtualView == null)
 			{

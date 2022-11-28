@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Reflection.Emit;
+using System.Runtime.InteropServices;
 using Atk;
 using Cairo;
 using Gdk;
 using GLib;
 using Gtk;
+using Microsoft.Maui.Hosting;
 using static System.Net.Mime.MediaTypeNames;
 
 namespace Microsoft.Maui.Platform.GTK
@@ -34,6 +36,51 @@ namespace Microsoft.Maui.Platform.GTK
 			Initialize(label, resFileId);
 		}
 
+		public MauiGTKButton(IView button) : base(Gtk.Orientation.Horizontal, 0)
+		{
+			if ((button is ITextButton virtualTextButton) && (button is IImageButton virtualImageButton))
+			{
+				_fontSize = Convert.ToInt32(virtualTextButton.Font.Size);
+				if (virtualTextButton.TextColor != null)
+				{
+					var red = Convert.ToByte(virtualTextButton.TextColor.Red * 255);
+					var green = Convert.ToByte(virtualTextButton.TextColor.Green * 255);
+					var blue = Convert.ToByte(virtualTextButton.TextColor.Blue * 255);
+					FontColor = new Gdk.Color(red, green, blue);
+				}
+				else if (virtualTextButton.StrokeColor != null)
+				{
+					var red = Convert.ToByte(virtualTextButton.StrokeColor.Red * 255);
+					var green = Convert.ToByte(virtualTextButton.StrokeColor.Green * 255);
+					var blue = Convert.ToByte(virtualTextButton.StrokeColor.Blue * 255);
+					FontColor = new Gdk.Color(red, green, blue);
+				}
+
+				if (virtualImageButton.Source != null)
+				{
+					var fileImageSource = (IFileImageSource)virtualImageButton.Source;
+
+					if (fileImageSource != null)
+					{
+						Console.WriteLine("Image: " + fileImageSource.File);
+						if (string.IsNullOrEmpty(virtualTextButton.Text))
+						{
+							Initialize(string.Empty, fileImageSource.File);
+						}
+						else
+						{
+							Initialize(virtualTextButton.Text, fileImageSource.File);
+						}
+						return;
+					}
+				}
+				Initialize(virtualTextButton.Text, string.Empty);
+
+				return;
+			}
+			Initialize(string.Empty, string.Empty);
+		}
+
 		public Gdk.Color? BorderColor {  get; set; }
 		public Gdk.Color? BackgroundColor { get; set; }
 		public uint BorderWidthButton { get; set; } = 0;
@@ -43,6 +90,10 @@ namespace Microsoft.Maui.Platform.GTK
 			get { return _image; }
 			set {
 				_image = value;
+				if (_image == null)
+				{
+					_resFileId = null!;
+				}
 				RecreateContainer();
 			}
 		}
@@ -98,20 +149,21 @@ namespace Microsoft.Maui.Platform.GTK
 			this._label = text;
 			if (this._localLabel != null)
 			{
-				var font_Size = (int)(_fontSize * Pango.Scale.PangoScale);
-				var fontColor = "#";
-				// color.Red / colorMaxValue, color.Green / colorMaxValue, color.Blue / colorMaxValue, 1.0
-				var red = (ushort)(FontColor.Red / colorMaxValue) * 0xFF;
-				var green = (ushort)(FontColor.Green / colorMaxValue) * 0xFF;
-				var blue = (ushort)(FontColor.Blue / colorMaxValue) * 0xFF;
-				fontColor += red.ToString("X2") + green.ToString("X2") + blue.ToString("X2");
-				var markup = "<span foreground='";
-				markup += fontColor;
-				markup += "' size='";
-				markup += font_Size.ToString("D");
-				markup += "'>";
-				markup += this.Label;
-				markup += "</span>";
+				var markup = MauiGTKText.GetUpdateText(text, _fontSize, FontColor);
+				//var font_Size = (int)(_fontSize * Pango.Scale.PangoScale);
+				//var fontColor = "#";
+				//// color.Red / colorMaxValue, color.Green / colorMaxValue, color.Blue / colorMaxValue, 1.0
+				//var red = (ushort)(FontColor.Red / colorMaxValue) * 0xFF;
+				//var green = (ushort)(FontColor.Green / colorMaxValue) * 0xFF;
+				//var blue = (ushort)(FontColor.Blue / colorMaxValue) * 0xFF;
+				//fontColor += red.ToString("X2") + green.ToString("X2") + blue.ToString("X2");
+				//var markup = "<span foreground='";
+				//markup += fontColor;
+				//markup += "' size='";
+				//markup += font_Size.ToString("D");
+				//markup += "'>";
+				//markup += this.Label;
+				//markup += "</span>";
 				this._localLabel.Markup = markup;
 			}
 		}
@@ -161,23 +213,25 @@ namespace Microsoft.Maui.Platform.GTK
 		private void CalculateOffset() {
 			var testLabel = new Gtk.Label("");
 
-			var font_Size = (int)(_fontSize * Pango.Scale.PangoScale);
-			var fontColor = "#";
-			// color.Red / colorMaxValue, color.Green / colorMaxValue, color.Blue / colorMaxValue, 1.0
-			var red = (ushort)(FontColor.Red / colorMaxValue) * 0xFF;
-			var green = (ushort)(FontColor.Green / colorMaxValue) * 0xFF;
-			var blue = (ushort)(FontColor.Blue / colorMaxValue) * 0xFF;
-			fontColor += red.ToString("X2") + green.ToString("X2") + blue.ToString("X2");
-			var s1 = "<span foreground='";
-			s1 += fontColor;
-			s1 += "' size='";
-			s1 += font_Size.ToString("D");
-			s1 += "'>hello</span>";
+			//var font_Size = (int)(_fontSize * Pango.Scale.PangoScale);
+			//var fontColor = "#";
+			//// color.Red / colorMaxValue, color.Green / colorMaxValue, color.Blue / colorMaxValue, 1.0
+			//var red = (ushort)(FontColor.Red / colorMaxValue) * 0xFF;
+			//var green = (ushort)(FontColor.Green / colorMaxValue) * 0xFF;
+			//var blue = (ushort)(FontColor.Blue / colorMaxValue) * 0xFF;
+			//fontColor += red.ToString("X2") + green.ToString("X2") + blue.ToString("X2");
+			//var s1 = "<span foreground='";
+			//s1 += fontColor;
+			//s1 += "' size='";
+			//s1 += font_Size.ToString("D");
+			//s1 += "'>hello</span>";
+
+			var markup = MauiGTKText.GetUpdateText("hello", _fontSize, FontColor);
 
 			//var s1 = "<span font-size='";
 			//s1 += _fontSize.ToString("D");
 			//s1 += "'>hello</span>";
-			testLabel.Markup = s1;
+			testLabel.Markup = markup;
 			//var s2 = "@@@@@";
 			//var s3 = "String pixel";
 			// var layout = testLabel.CreatePangoLayout(s1);

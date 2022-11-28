@@ -4,7 +4,7 @@ namespace Microsoft.Maui.Handlers
 {
 	public partial class IndicatorViewHandler : ViewHandler<IIndicatorView, MauiPageControl>
 	{
-		protected override MauiPageControl CreatePlatformView()
+		protected override MauiPageControl CreatePlatformView(IView indicator)
 		{
 			return new MauiPageControl();
 		}

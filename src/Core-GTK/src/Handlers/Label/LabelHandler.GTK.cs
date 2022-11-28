@@ -1,14 +1,15 @@
 using System;
 using Microsoft.Maui.Graphics;
+using Microsoft.Maui.Platform.GTK;
 
 namespace Microsoft.Maui.Handlers
 {
-	public partial class LabelHandler : ViewHandler<ILabel, MauiView>
+	public partial class LabelHandler : ViewHandler<ILabel, MauiGTKLabel>
 	{
-		protected override MauiView CreatePlatformView()
+		protected override MauiGTKLabel CreatePlatformView(IView label)
 		{
-			var plat = new MauiView();
-			plat.AddChildWidget(new Gtk.Label());
+			var plat = new MauiGTKLabel(label);
+			//plat.AddChildWidget(new Gtk.Label());
 
 			return plat;
 		}
@@ -43,9 +44,9 @@ namespace Microsoft.Maui.Handlers
 
 		public static void MapBackground(ILabelHandler handler, ILabel label)
 		{
-			handler.UpdateValue(nameof(IViewHandler.ContainerView));
+			// handler.UpdateValue(nameof(IViewHandler.ContainerView));
 
-			if (label.Background != null)
+			if (handler.PlatformView != null && label.Background != null)
 			{
 				if (label.Background.ToColor() != null)
 				{
@@ -92,19 +93,38 @@ namespace Microsoft.Maui.Handlers
 		{
 			//handler.PlatformView?.UpdateTextPlainText(label);
 
-			if (handler.PlatformView.GetChildWidget() is Gtk.Label platformLabel)
+			if (handler.PlatformView is MauiGTKLabel handlerBox)
 			{
-				platformLabel.Text = label.Text;
-				SetMarkupAttributes(handler, label);
+				// need to attach Attributes after setting text again, so get it ...
+				handlerBox.UpdateText(label.Text);
+				//var attrs = handlerBox.Attributes;
+				//// var attrs = handlerBox.LabelWidget.Attributes;
+
+				//// handlerBox.ButtonWidget.Label = button.Text;
+
+				//handlerBox.Text = label.Text;
+				////handlerBox.LabelWidget.Text = button.Text;
+				//MauiGTKText.SetMarkupAttributes(handler, label, label.Text);
+				//handlerBox.Attributes = attrs;
 			}
 
-			// Any text update requires that we update any attributed string formatting
-			MapFormatting(handler, label);
+			//if (handler.PlatformView is MauiGTKLabel platformLabel)
+			//{
+			//	platformLabel.Text = label.Text;
+			//	SetMarkupAttributes(handler, label);
+			//}
+
+			//// Any text update requires that we update any attributed string formatting
+			//MapFormatting(handler, label);
 		}
 
 		public static void MapTextColor(ILabelHandler handler, ILabel label)
 		{
-			SetMarkupAttributes(handler, label);
+			if (handler.PlatformView is MauiGTKLabel handlerBox)
+			{
+				handlerBox.UpdateText(label.Text);
+			}
+			//MauiGTKText.SetMarkupAttributes(handler, label, label.Text);
 			//handler.PlatformView?.UpdateTextColor(label);
 			//if (handler.PlatformView.GetChildWidget() is Gtk.Label platformLabel)
 			//{
@@ -154,7 +174,11 @@ namespace Microsoft.Maui.Handlers
 
 		public static void MapFont(ILabelHandler handler, ILabel label)
 		{
-			SetMarkupAttributes(handler, label);
+			if (handler.PlatformView is MauiGTKLabel handlerBox)
+			{
+				handlerBox.UpdateText(label.Text);
+			}
+			// MauiGTKText.SetMarkupAttributes(handler, label, label.Text);
 
 			//// var fontManager = handler.GetRequiredService<IFontManager>();
 			//if (handler.PlatformView.GetChildWidget() is Gtk.Label platformLabel)
@@ -190,60 +214,6 @@ namespace Microsoft.Maui.Handlers
 		{
 			// throw new NotImplementedException();
 			return new Size(widthConstraint, heightConstraint);
-		}
-
-		static void SetMarkupAttributes(ILabelHandler handler, ILabel label)
-		{
-			if (handler.PlatformView.GetChildWidget() is Gtk.Label platformLabel)
-			{
-				var text = platformLabel.Text;
-				var markup = string.Empty;
-
-				if (label.TextColor == null)
-				{
-					markup += "<span";
-				}
-				else
-				{
-					markup += "<span foreground='";
-					markup += label.TextColor.ToColorString();
-					markup += "'";
-				}
-
-				if (label.Font.Family == null)
-				{
-					if (label.TextColor != null)
-					{
-						markup += "'";
-					}
-				}
-				else
-				{
-					if (label.TextColor != null)
-					{
-						markup += "'";
-					}
-					markup += " font_desc='";
-					markup += label.Font.Family;
-					markup += "'";
-				}
-
-				if (label.Font.Size > 0)
-				{
-					if (label.TextColor != null || label.Font.Family != null)
-					{
-						markup += "'";
-					}
-					markup += " font_size='";
-					markup += Convert.ToInt32(label.Font.Size).ToString("D");
-					markup += "'";
-				}
-
-				markup += ">";
-				markup += text;
-				markup += "</span>";
-				platformLabel.Markup = markup;
-			}
 		}
 	}
 }

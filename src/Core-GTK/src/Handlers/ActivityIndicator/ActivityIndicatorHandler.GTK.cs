@@ -11,7 +11,7 @@ namespace Microsoft.Maui.Handlers
 		//	VirtualView?.Background != null ||
 		//	base.NeedsContainer;
 
-		protected override ActivityIndicator CreatePlatformView()
+		protected override ActivityIndicator CreatePlatformView(IView indicator)
 		{
 			var eventBox = new ActivityIndicator();
 			return eventBox;

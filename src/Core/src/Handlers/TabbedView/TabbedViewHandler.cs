@@ -39,7 +39,11 @@ namespace Microsoft.Maui.Handlers
 		{
 		}
 
+#if __GTK__
+		protected override PlatformView CreatePlatformView(IView tabbedView)
+#else
 		protected override PlatformView CreatePlatformView()
+#endif
 		{
 			throw new NotImplementedException();
 		}

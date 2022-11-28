@@ -8,7 +8,7 @@ namespace Microsoft.Maui.Handlers
 		//StackNavigationManager? _stackNavigationManager;
 		//internal StackNavigationManager? StackNavigationManager => _stackNavigationManager;
 
-		protected override MauiView CreatePlatformView()
+		protected override MauiView CreatePlatformView(IView navigationView)
 		{
 			return new MauiView();
 		}

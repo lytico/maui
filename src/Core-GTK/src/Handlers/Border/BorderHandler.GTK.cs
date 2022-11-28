@@ -4,7 +4,7 @@ namespace Microsoft.Maui.Handlers
 {
 	public partial class BorderHandler : ViewHandler<IBorderView, MauiBorder>
 	{
-		protected override MauiBorder CreatePlatformView()
+		protected override MauiBorder CreatePlatformView(IView border)
 		{
 			if (VirtualView == null)
 			{

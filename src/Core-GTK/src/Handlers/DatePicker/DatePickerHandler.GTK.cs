@@ -7,7 +7,7 @@ namespace Microsoft.Maui.Handlers
 	{
 		//DatePickerDialog? _dialog;
 
-		protected override DatePicker CreatePlatformView()
+		protected override DatePicker CreatePlatformView(IView picker)
 		{
 			var mauiDatePicker = new DatePicker();
 

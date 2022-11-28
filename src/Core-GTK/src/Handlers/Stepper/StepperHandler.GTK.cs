@@ -5,7 +5,7 @@ namespace Microsoft.Maui.Handlers
 {
 	public partial class StepperHandler : ViewHandler<IStepper, MauiStepper>
 	{
-		protected override MauiStepper CreatePlatformView()
+		protected override MauiStepper CreatePlatformView(IView stepper)
 		{
 			double stepping = Math.Min((VirtualView.Maximum - VirtualView.Minimum) / 10, 1);
 

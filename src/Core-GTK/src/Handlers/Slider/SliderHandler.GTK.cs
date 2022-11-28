@@ -4,7 +4,7 @@ namespace Microsoft.Maui.Handlers
 {
 	public partial class SliderHandler : ViewHandler<ISlider, MauiSlider>
 	{
-		protected override MauiSlider CreatePlatformView()
+		protected override MauiSlider CreatePlatformView(IView slider)
 		{
 			double stepping = Math.Min((VirtualView.Maximum - VirtualView.Minimum) / 10, 1);
 

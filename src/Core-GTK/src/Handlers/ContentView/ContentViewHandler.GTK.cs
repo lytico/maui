@@ -5,18 +5,18 @@ namespace Microsoft.Maui.Handlers
 {
 	public partial class ContentViewHandler : ViewHandler<IContentView, ContentViewGroup>
 	{
-		protected override ContentViewGroup CreatePlatformView()
+		protected override ContentViewGroup CreatePlatformView(IView viewGroup)
 		{
 			if (VirtualView == null)
 			{
 				throw new InvalidOperationException($"{nameof(VirtualView)} must be set to create a ContentViewGroup");
 			}
 
-			var viewGroup = new ContentViewGroup();
+			var contentViewGroup = new ContentViewGroup();
 
 			//viewGroup.SetClipChildren(false);
 
-			return viewGroup;
+			return contentViewGroup;
 		}
 
 		public override void SetVirtualView(IView view)

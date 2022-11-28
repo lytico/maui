@@ -9,7 +9,7 @@ namespace Microsoft.Maui.Handlers
 		bool _set;
 
 		// TODO: NET7 issoto - Change the return type to MauiAppCompatEditText
-		protected override ScrolledTextView CreatePlatformView()
+		protected override ScrolledTextView CreatePlatformView(IView editor)
 		{
 			var editText = new ScrolledTextView();
 

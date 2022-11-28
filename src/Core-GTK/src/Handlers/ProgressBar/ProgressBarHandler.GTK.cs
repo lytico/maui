@@ -2,7 +2,7 @@
 {
 	public partial class ProgressBarHandler : ViewHandler<IProgress, MauiView>
 	{
-		protected override MauiView CreatePlatformView()
+		protected override MauiView CreatePlatformView(IView progressBar)
 		{
 			var plat = new MauiView();
 			plat.AddChildWidget(new Gtk.ProgressBar());

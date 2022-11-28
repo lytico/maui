@@ -4,7 +4,7 @@
 	{
 		static MauiRadioButton? GetPlatformRadioButton(IRadioButtonHandler handler) => handler.PlatformView as MauiRadioButton;
 
-		protected override MauiRadioButton CreatePlatformView()
+		protected override MauiRadioButton CreatePlatformView(IView radioButton)
 		{
 			return new MauiRadioButton();
 		}

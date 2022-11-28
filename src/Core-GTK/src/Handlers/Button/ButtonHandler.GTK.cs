@@ -2,6 +2,7 @@ using System;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
 using System.Threading.Tasks;
+using GLib;
 using Gtk;
 using Microsoft.Maui.Graphics;
 using Microsoft.Maui.Platform.GTK;
@@ -14,9 +15,9 @@ namespace Microsoft.Maui.Handlers
 
 		//static ColorStateList TransparentColorStateList = Colors.Transparent.ToDefaultColorStateList();
 
-		protected override MauiGTKButton CreatePlatformView()
+		protected override MauiGTKButton CreatePlatformView(IView button)
 		{
-			MauiGTKButton platformButton = new MauiGTKButton();
+			MauiGTKButton platformButton = new MauiGTKButton(button);
 
 			return platformButton;
 		}
@@ -40,6 +41,11 @@ namespace Microsoft.Maui.Handlers
 
 		private protected override void OnDisconnectHandler(object platformView)
 		{
+			if (platformView is MauiGTKButton button)
+			{
+				button.Clicked -= ButtonWidget_Clicked;
+			}
+
 			base.OnDisconnectHandler(platformView);
 		}
 
@@ -75,21 +81,18 @@ namespace Microsoft.Maui.Handlers
 		public static void MapBackground(IButtonHandler handler, IButton button)
 		{
 			// handler.PlatformView?.UpdateBackground(button);
-			if (handler.PlatformView != null)
+			if (handler.PlatformView != null && button.Background != null)
 			{
-				if (button.Background != null)
+				if (button.Background.ToColor() != null)
 				{
-					if (button.Background.ToColor() != null)
+					byte r, g, b;
+					r = 0;
+					g = 0;
+					b = 0;
+					button.Background.ToColor()?.ToRgb(out r, out g, out b);
+					if (r != 0 && g != 0 && b != 0)
 					{
-						byte r, g, b;
-						r = 0;
-						g = 0;
-						b = 0;
-						button.Background.ToColor()?.ToRgb(out r, out g, out b);
-						if (r != 0 && g != 0 && b != 0)
-						{
-							handler.PlatformView.SetBackgroundColor(new Gdk.Color(r, g, b));
-						}
+						handler.PlatformView.SetBackgroundColor(new Gdk.Color(r, g, b));
 					}
 				}
 			}
@@ -123,7 +126,7 @@ namespace Microsoft.Maui.Handlers
 
 				handlerBox.Label = button.Text;
 				//handlerBox.LabelWidget.Text = button.Text;
-				SetMarkupAttributes(handler, button, button.Text);
+				MauiGTKText.SetMarkupAttributes(handler, button, button.Text);
 				handlerBox.GetInternalLabel.Attributes = attrs;
 
 				// handlerBox.SetBackgroundColor(new Gdk.Color(200, 0, 200));
@@ -141,7 +144,7 @@ namespace Microsoft.Maui.Handlers
 		public static void MapTextColor(IButtonHandler handler, ITextStyle button)
 		{
 			// handler.PlatformView?.UpdateTextColor(button);
-			SetMarkupAttributes(handler, button);
+			MauiGTKText.SetMarkupAttributes(handler, button);
 		}
 
 
@@ -153,7 +156,7 @@ namespace Microsoft.Maui.Handlers
 		public static void MapFont(IButtonHandler handler, ITextStyle button)
 		{
 			// label.set_markup("<span font_desc='unifont medium'>%s</span>" % 'some text')
-			SetMarkupAttributes(handler, button);
+			MauiGTKText.SetMarkupAttributes(handler, button);
 
 			//if (handler.PlatformView is MauiImageButton handlerBox)
 			//{
@@ -215,91 +218,40 @@ namespace Microsoft.Maui.Handlers
 		//	return handler.ImageSourceLoader.UpdateImageSourceAsync();
 		//}
 
-		public static void MapImageSource(IButtonHandler handler, string source)
+		//public static void MapImageSource(IButtonHandler handler, string source)
+		//{
+		//	if (handler.PlatformView is MauiGTKButton buttonHandler)
+		//	{
+		//		buttonHandler.Image = new Gtk.Image(source);
+		//	}
+		//}
+
+		public static void MapImageSource(IButtonHandler handler, IImage image)
 		{
 			if (handler.PlatformView is MauiGTKButton buttonHandler)
 			{
-				buttonHandler.Image = new Gtk.Image(source);
+				// buttonHandler.Image = new Gtk.Image(source);
+				if (image.Source == null)
+				{
+					buttonHandler.Image = null!;
+				}
+				else
+				{
+					var fileImageSource = (IFileImageSource)image.Source;
+
+					if (fileImageSource != null)
+					{
+						Console.WriteLine("MapImageSource Image: " + fileImageSource.File);
+						buttonHandler.Image = new Gtk.Image(fileImageSource.File);
+					}
+				}
 			}
 		}
-
-		public static void MapImageSource(IButtonHandler handler, IImage image) { }
-			// MapImageSource(handler, image.Source);
 
 		void OnSetImageSource(Gdk.Pixbuf? obj)
 		{
 			// PlatformView.Icon = obj;
 			PlatformView.Image = new Gtk.Image(obj);
-		}
-
-		static void SetMarkupAttributes(IButtonHandler handler, ITextStyle button, string buttonText = "")
-		{
-			if (handler.PlatformView is MauiGTKButton handlerBox)
-			{
-				if (handlerBox.GetInternalLabel == null)
-				{
-					if (string.IsNullOrEmpty(buttonText))
-					{
-						return;
-					} else
-					{
-						handlerBox.Label = buttonText;
-					}
-				}
-
-				if (handlerBox.GetInternalLabel == null)
-				{
-					return;
-				}
-
-				var text = handlerBox.GetInternalLabel.Text;
-				var markup = string.Empty;
-
-				if (button.TextColor == null)
-				{
-					markup += "<span";
-				}
-				else
-				{
-					markup += "<span foreground='";
-					markup += button.TextColor.ToColorString();
-					markup += "'";
-				}
-
-				if (button.Font.Family == null)
-				{
-					if (button.TextColor != null)
-					{
-						markup += "'";
-					}
-				}
-				else
-				{
-					if (button.TextColor != null)
-					{
-						markup += "'";
-					}
-					markup += " font_desc='";
-					markup += button.Font.Family;
-					markup += "'";
-				}
-
-				if (button.Font.Size > 0)
-				{
-					if (button.TextColor != null || button.Font.Family != null)
-					{
-						markup += "'";
-					}
-					markup += " font_size='";
-					markup += Convert.ToInt32(button.Font.Size).ToString("D");
-					markup += "'";
-				}
-
-				markup += ">";
-				markup += text;
-				markup += "</span>";
-				handlerBox.GetInternalLabel.Markup = markup;
-			}
 		}
 
 		//bool NeedsExactMeasure()

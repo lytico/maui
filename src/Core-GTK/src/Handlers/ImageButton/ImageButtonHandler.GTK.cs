@@ -4,7 +4,7 @@ namespace Microsoft.Maui.Handlers
 {
 	public partial class ImageButtonHandler : ViewHandler<IImageButton, MauiImageButton>
 	{
-		protected override MauiImageButton CreatePlatformView()
+		protected override MauiImageButton CreatePlatformView(IView imageButton)
 		{
 			var platformView = new MauiImageButton();
 

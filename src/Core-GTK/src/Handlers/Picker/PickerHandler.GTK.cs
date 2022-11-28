@@ -5,7 +5,7 @@ namespace Microsoft.Maui.Handlers
 {
 	public partial class PickerHandler : ViewHandler<IPicker, MauiView>
 	{
-		protected override MauiView CreatePlatformView()
+		protected override MauiView CreatePlatformView(IView picker)
 		{
 			var plat = new MauiView();
 			plat.AddChildWidget(new Gtk.ComboBox());

@@ -11,6 +11,7 @@ namespace Maui.Controls.Sample.OnePage.GTK
 	public partial class MainPage : ContentPage
 	{
 		int count = 0;
+		int count2 = 0;
 
 		public MainPage()
 		{
@@ -25,6 +26,22 @@ namespace Maui.Controls.Sample.OnePage.GTK
 				CounterBtn.Text = $"Clicked {count} time";
 			else
 				CounterBtn.Text = $"Clicked {count} times";
+		}
+
+		private void OnCounter2Clicked(object sender, EventArgs e)
+		{
+			count2++;
+
+			if (count2 == 1)
+			{
+				CounterBtn2.ImageSource = null;
+				CounterBtn2.Text = $"Clicked {count2} time";
+			}
+			else
+			{
+				CounterBtn2.ImageSource = null;
+				CounterBtn2.Text = $"Clicked {count2} times";
+			}
 		}
 	}
 }

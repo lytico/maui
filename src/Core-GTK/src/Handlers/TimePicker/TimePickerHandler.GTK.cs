@@ -6,7 +6,7 @@ namespace Microsoft.Maui.Handlers
 	{
 		TimePicker? _timePicker;
 
-		protected override TimePicker CreatePlatformView()
+		protected override TimePicker CreatePlatformView(IView picker)
 		{
 			_timePicker = new TimePicker();
 

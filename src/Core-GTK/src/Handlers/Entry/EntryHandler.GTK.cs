@@ -8,7 +8,7 @@ namespace Microsoft.Maui.Handlers
 	// This type adds support to the SelectionChanged event
 	public partial class EntryHandler : ViewHandler<IEntry, EntryWrapper>
 	{
-		protected override EntryWrapper CreatePlatformView()
+		protected override EntryWrapper CreatePlatformView(IView entry)
 		{
 			var nativeEntry = new EntryWrapper();
 			return nativeEntry;

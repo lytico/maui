@@ -30,6 +30,13 @@
                 BackgroundColor="#512BD4"
                 Text="Click Me"
                 FontSize="18"
+                TextColor="#FFFFFF"
+                HorizontalOptions="Center" />
+
+            <Button
+                x:Name="CounterBtn2"
+                Clicked="OnCounter2Clicked"
+                ImageSource="click_me.gif"
                 HorizontalOptions="Center" />
 
         </VerticalStackLayout>

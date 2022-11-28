@@ -2,7 +2,7 @@
 {
 	public partial class CheckBoxHandler : ViewHandler<ICheckBox, MauiView>
 	{
-		protected override MauiView CreatePlatformView()
+		protected override MauiView CreatePlatformView(IView checkBox)
 		{
 			var plat = new MauiView();
 			var platformCheckBox = new Gtk.CheckButton();

@@ -2,7 +2,7 @@
 {
 	public partial class GraphicsViewHandler : ViewHandler<IGraphicsView, MauiView>
 	{
-		protected override MauiView CreatePlatformView() => new MauiView();
+		protected override MauiView CreatePlatformView(IView graphicsView) => new MauiView();
 
 		public static void MapDrawable(IGraphicsViewHandler handler, IGraphicsView graphicsView)
 		{
