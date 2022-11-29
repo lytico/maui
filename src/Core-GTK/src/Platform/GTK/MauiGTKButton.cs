@@ -62,7 +62,7 @@ namespace Microsoft.Maui.Platform.GTK
 
 					if (fileImageSource != null)
 					{
-						Console.WriteLine("Image: " + fileImageSource.File);
+						// Console.WriteLine("Image: " + fileImageSource.File);
 						if (string.IsNullOrEmpty(virtualTextButton.Text))
 						{
 							Initialize(string.Empty, fileImageSource.File);

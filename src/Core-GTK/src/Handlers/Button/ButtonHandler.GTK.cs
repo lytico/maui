@@ -241,7 +241,7 @@ namespace Microsoft.Maui.Handlers
 
 					if (fileImageSource != null)
 					{
-						Console.WriteLine("MapImageSource Image: " + fileImageSource.File);
+						// Console.WriteLine("MapImageSource Image: " + fileImageSource.File);
 						buttonHandler.Image = new Gtk.Image(fileImageSource.File);
 					}
 				}

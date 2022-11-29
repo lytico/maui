@@ -26,6 +26,8 @@ namespace Maui.Controls.Sample.OnePage.GTK
 				CounterBtn.Text = $"Clicked {count} time";
 			else
 				CounterBtn.Text = $"Clicked {count} times";
+
+			Console.WriteLine("Button 1 " + CounterBtn.Text);
 		}
 
 		private void OnCounter2Clicked(object sender, EventArgs e)
@@ -42,6 +44,8 @@ namespace Maui.Controls.Sample.OnePage.GTK
 				CounterBtn2.ImageSource = null;
 				CounterBtn2.Text = $"Clicked {count2} times";
 			}
+
+			Console.WriteLine("Button 2 " + CounterBtn2.Text);
 		}
 	}
 }
