@@ -119,6 +119,7 @@ namespace Microsoft.Maui.Platform.GTK
 		}
 
 		public Gdk.Color FontColor { get; set; }
+		public string FontFamily { get; set; } = null!;
 
 		public Gtk.Label GetInternalLabel { 
 			get
@@ -149,7 +150,7 @@ namespace Microsoft.Maui.Platform.GTK
 			this._label = text;
 			if (this._localLabel != null)
 			{
-				var markup = MauiGTKText.GetUpdateText(text, _fontSize, FontColor);
+				var markup = MauiGTKText.GetUpdateText(text, _fontSize, FontColor, FontFamily);
 				//var font_Size = (int)(_fontSize * Pango.Scale.PangoScale);
 				//var fontColor = "#";
 				//// color.Red / colorMaxValue, color.Green / colorMaxValue, color.Blue / colorMaxValue, 1.0
@@ -226,7 +227,7 @@ namespace Microsoft.Maui.Platform.GTK
 			//s1 += font_Size.ToString("D");
 			//s1 += "'>hello</span>";
 
-			var markup = MauiGTKText.GetUpdateText("hello", _fontSize, FontColor);
+			var markup = MauiGTKText.GetUpdateText("hello", _fontSize, FontColor, FontFamily);
 
 			//var s1 = "<span font-size='";
 			//s1 += _fontSize.ToString("D");
@@ -436,6 +437,12 @@ namespace Microsoft.Maui.Platform.GTK
 				x = 0;
 			}
 			double y = labelY;
+
+			if (y < 0)
+			{
+				y = 0;
+			}
+
 			// double width = pangoPixelWidth + (2 * offsetX);
 			double width = pangoPixelWidth + (2 * _offsetX);
 

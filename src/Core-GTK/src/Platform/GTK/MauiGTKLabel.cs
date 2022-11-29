@@ -61,6 +61,7 @@ namespace Microsoft.Maui.Platform.GTK
 		}
 
 		public Gdk.Color FontColor { get; set; }
+		public string FontFamily {  get; set; } = null!;
 
 		public void SetBackgroundColor(Gdk.Color backgroundColor)
 		{
@@ -70,7 +71,7 @@ namespace Microsoft.Maui.Platform.GTK
 		public void UpdateText(string text)
 		{
 			this.Text = text;
-			var markup = MauiGTKText.GetUpdateText(text, _fontSize, FontColor);
+			var markup = MauiGTKText.GetUpdateText(text, _fontSize, FontColor, FontFamily);
 			//var font_Size = (int)(_fontSize * Pango.Scale.PangoScale);
 			//var fontColor = "#";
 			//// color.Red / colorMaxValue, color.Green / colorMaxValue, color.Blue / colorMaxValue, 1.0
