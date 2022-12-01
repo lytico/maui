@@ -251,7 +251,6 @@
     <Compile Include="..\..\Core\src\Hosting\IMauiInitializeService.cs" Link="Hosting\IMauiInitializeService.cs" />
     <Compile Include="..\..\Core\src\Hosting\IMauiServiceCollection.cs" Link="Hosting\IMauiServiceCollection.cs" />
     <Compile Include="..\..\Core\src\Hosting\Internal\FontCollection.cs" Link="Hosting\Internal\FontCollection.cs" />
-    <Compile Include="..\..\Core\src\Hosting\Internal\MauiApplicationServiceCollection.cs" Link="Hosting\Internal\MauiApplicationServiceCollection.cs" />
     <Compile Include="..\..\Core\src\Hosting\Internal\MauiFactory.cs" Link="Hosting\Internal\MauiFactory.cs" />
     <Compile Include="..\..\Core\src\Hosting\Internal\MauiHandlersCollection.cs" Link="Hosting\Internal\MauiHandlersCollection.cs" />
     <Compile Include="..\..\Core\src\Hosting\Internal\MauiHandlersFactory.cs" Link="Hosting\Internal\MauiHandlersFactory.cs" />
