@@ -88,10 +88,6 @@ namespace Microsoft.Maui.Controls.Handlers.Compatibility
 			_mauiContext = mauiContext;
 		}
 
-#if __GTK__
-		public void ClearVirtualView() { }
-#endif
-
 		public void SetVirtualView(IElement view)
 		{
 			//throw new NotImplementedException();

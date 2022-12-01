@@ -192,10 +192,20 @@ namespace Microsoft.Maui.Handlers
 
 		public static void MapVisibility(IViewHandler handler, IView view)
 		{
-			//if (handler.HasContainer)
-			//	((PlatformView?)handler.ContainerView)?.UpdateVisibility(view);
-			//else
-			//	((PlatformView?)handler.PlatformView)?.UpdateVisibility(view);
+			if (handler.HasContainer)
+			{
+				if (handler.ContainerView is Gtk.Widget widget)
+				{
+					widget.UpdateVisibility(view);
+				}
+			}
+			else
+			{
+				if (handler.PlatformView is Gtk.Widget widget)
+				{
+					widget.UpdateVisibility(view);
+				}
+			}
 		}
 
 		public static void MapBackground(IViewHandler handler, IView view)

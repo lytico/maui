@@ -5,7 +5,7 @@ using Microsoft.Maui.ApplicationModel;
 using Microsoft.Maui.Graphics;
 using Microsoft.Maui.Primitives;
 using GColor = Gdk.Color;
-using GView = Gtk.EventBox;
+using GView = Gtk.Widget;
 
 namespace Microsoft.Maui.Platform
 {
@@ -80,10 +80,19 @@ namespace Microsoft.Maui.Platform
 		//	platformView.ClearFocus();
 		//}
 
-		//public static void UpdateVisibility(this AView platformView, IView view)
-		//{
-		//	platformView.Visibility = view.Visibility.ToPlatformVisibility();
-		//}
+		public static void UpdateVisibility(this GView platformView, IView view)
+		{
+			if (view.Visibility == Visibility.Visible)
+			{
+				platformView.Visible = true;
+				platformView.Show();
+			}
+			else
+			{
+				platformView.Visible = false;
+				platformView.Hide();
+			}
+		}
 
 		//public static void UpdateClip(this AView platformView, IView view)
 		//{

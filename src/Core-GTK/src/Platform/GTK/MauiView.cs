@@ -67,10 +67,6 @@ namespace Microsoft.Maui.Platform
 		{
 		}
 
-		public void UpdateVisibility(IView handler)
-		{
-		}
-
 		public Task UpdateBackgroundImageSourceAsync(IImageSource? source, IImageSourceServiceProvider provider)
 		{
 			return Task.FromResult(0);

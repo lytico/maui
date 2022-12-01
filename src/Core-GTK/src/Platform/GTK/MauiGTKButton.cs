@@ -86,14 +86,24 @@ namespace Microsoft.Maui.Platform.GTK
 		public uint BorderWidthButton { get; set; } = 0;
 
 		private Gtk.Image _image = null!;
+		private Gtk.Image _newImage = null!;
 		public Gtk.Image Image { 
 			get { return _image; }
 			set {
-				_image = value;
-				if (_image == null)
+				_newImage = value;
+				if (_newImage == null)
 				{
 					_resFileId = null!;
 				}
+				else
+				{
+					_resFileId = _newImage.File;
+				}
+				//_image = value;
+				//if (_image == null)
+				//{
+				//	_resFileId = null!;
+				//}
 				RecreateContainer();
 			}
 		}
@@ -264,10 +274,13 @@ namespace Microsoft.Maui.Platform.GTK
 			if (_imageAndLabelBox != null) {
 				if (_image != null) {
 					_imageAndLabelBox.RemoveFromContainer(_image);
+					_image.Dispose();
 					_image = null!;
+					// _image = _newImage;
 				}
 				if (_localLabel != null) {
 					_imageAndLabelBox.RemoveFromContainer(_localLabel);
+					_localLabel.Dispose();
 					_localLabel = null!;
 				}
 				_eventBox.RemoveFromContainer(_imageAndLabelBox);
@@ -292,19 +305,20 @@ namespace Microsoft.Maui.Platform.GTK
 			if (string.IsNullOrEmpty(_label) && !string.IsNullOrEmpty(_resFileId)) {
 				// We don't have a label but we do have an image
 				PackStart(_eventBox, false, false, 0);
-			} else if (!string.IsNullOrEmpty(_label) && string.IsNullOrEmpty(_resFileId)) {
-				// We do have a label and no image.
-				//var pangoLayout = _localLabel.Layout;
-				//pangoLayout.GetPixelSize(out int pangoPixelWidth, out int pangoPixelHeight);
-				//_localLabel.GetLayoutOffsets(out int labelX, out int labelY);
+			} else if (!string.IsNullOrEmpty(_label)) {  //} && string.IsNullOrEmpty(_resFileId)) {
+														 // We do have a label and no image.
+														 //var pangoLayout = _localLabel.Layout;
+														 //pangoLayout.GetPixelSize(out int pangoPixelWidth, out int pangoPixelHeight);
+														 //_localLabel.GetLayoutOffsets(out int labelX, out int labelY);
 
 				//var localOffsetXDouble = pangoPixelHeight / 3;
 				//var localOffsetX = Convert.ToUInt32(localOffsetXDouble);
 				//_offsetX = Convert.ToUInt32(textHeight / 3);
+				//_eventBox.SetSizeRequest(500, 45);
 				PackStart(_eventBox, false, false, _offsetX);
-			} else if (!string.IsNullOrEmpty(Label) && !string.IsNullOrEmpty(_resFileId)) {
-				// We do have a label and an image.
-				PackStart(_eventBox, false, false, _offsetX);
+			//} else if (!string.IsNullOrEmpty(Label) && !string.IsNullOrEmpty(_resFileId)) {
+			//	// We do have a label and an image.
+			//	PackStart(_eventBox, false, false, _offsetX);
 			}
 
 			_imageAndLabelBox = new Gtk.Box(Gtk.Orientation.Horizontal, 0);
@@ -322,8 +336,6 @@ namespace Microsoft.Maui.Platform.GTK
 			}
 
 			UpdateText(this.Label);
-
-			QueueDraw();
 		}
 
 		private void PrivateRecreateImageLabelContainer() {
@@ -342,6 +354,7 @@ namespace Microsoft.Maui.Platform.GTK
 			}
 
 			if (_localLabel != null) {
+				//_localLabel.SetSizeRequest(250, 38);
 				if (useOffset) {
 					_imageAndLabelBox.PackStart(_localLabel, false, false, _offsetX);
 				} else {

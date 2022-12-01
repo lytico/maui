@@ -4,10 +4,6 @@
 	{
 		void SetMauiContext(IMauiContext mauiContext);
 
-#if __GTK__
-		void ClearVirtualView();
-#endif
-
 		void SetVirtualView(IElement view);
 
 		void UpdateValue(string property);

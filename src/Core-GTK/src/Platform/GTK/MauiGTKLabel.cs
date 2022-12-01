@@ -9,7 +9,6 @@ namespace Microsoft.Maui.Platform.GTK
 {
 	public class MauiGTKLabel : Label
 	{
-		// private double colorMaxValue = 65535;
 		private Gdk.Color _defaultBorderColor;
 		private Gdk.Color _defaultBackgroundColor;
 		private int _fontSize = 16;

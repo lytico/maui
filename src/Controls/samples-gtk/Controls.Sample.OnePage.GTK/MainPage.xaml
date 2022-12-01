@@ -35,6 +35,16 @@
 
             <Button
                 x:Name="CounterBtn2"
+                SemanticProperties.Hint="Counts the number of times you click"
+                Clicked="OnCounter2Clicked"
+                BackgroundColor="#512BD4"
+                Text="Clicked 1 time"
+                FontSize="18"
+                TextColor="#FFFFFF"
+                HorizontalOptions="Center" />
+
+            <Button
+                x:Name="CounterBtn2Image"
                 Clicked="OnCounter2Clicked"
                 ImageSource="click_me.gif"
                 HorizontalOptions="Center" />
