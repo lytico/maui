@@ -103,7 +103,6 @@ namespace Microsoft.Maui.ApplicationModel.Communication
 		public override string ToString() => EmailAddress;
 	}
 
-	/// <include file="../../docs/Microsoft.Maui.Essentials/ContactPhone.xml" path="Type[@FullName='Microsoft.Maui.ApplicationModel.CommunicationPhone']/Docs/*" />
 	public class ContactPhone
 	{
 		/// <include file="../../docs/Microsoft.Maui.Essentials/ContactPhone.xml" path="//Member[@MemberName='.ctor'][1]/Docs/*" />

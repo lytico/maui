@@ -26,6 +26,7 @@ namespace Microsoft.Maui.Handlers
 		{
 #if WINDOWS && !__GTK__
 			[nameof(IMenuBarItem.Text)] = MapText,
+			[nameof(IMenuBarItem.IsEnabled)] = MapIsEnabled,
 #endif
 		};
 
