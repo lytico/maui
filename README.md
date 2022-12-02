@@ -4,6 +4,14 @@
 
 [.NET Multi-platform App UI (.NET MAUI)](https://dotnet.microsoft.com/en-us/apps/maui) is a cross-platform framework for creating mobile and desktop apps with C# and XAML. Using .NET MAUI, you can develop apps that can run on Android, iOS, iPadOS, macOS, and Windows from a single shared codebase.
 
+This is a Fork of GitHub maui created by Derby Russell.
+This Fork is used for building a GTK 3 app.
+To use this place Derby Russell maui and Derby Russell GtkSharp in the same directory.
+See the README of GtkSharp and build GtkSharp as described.
+Then Open Microsoft.Maui-GTK.sln
+The controls samples-gtk show how to use this. Specifically Maui.Controls.Sample.OnePage.GTK
+Code is still under development.
+
 ## Getting Started ##
 
 * [Install .NET MAUI](https://dot.net/maui)
