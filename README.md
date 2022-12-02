@@ -7,6 +7,7 @@
 This is a Fork of GitHub maui created by Derby Russell.
 This Fork is used for building a GTK 3 app.
 To use this place Derby Russell maui and Derby Russell GtkSharp in the same directory.
+switch both to the derby-gtk3-integration branch
 See the README of GtkSharp and build GtkSharp as described.
 Then Open Microsoft.Maui-GTK.sln
 The controls samples-gtk show how to use this. Specifically Maui.Controls.Sample.OnePage.GTK
