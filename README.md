@@ -8,15 +8,11 @@ This is a Fork of GitHub maui created by Derby Russell.
 
 This Fork is used for building a GTK 3 app.
 
-To use this place Derby Russell maui and Derby Russell GtkSharp in the same directory.
-
-Switch both to the derby-gtk3-integration branch.
-
-See the README of GtkSharp and build GtkSharp as described.
-
-Then Open Microsoft.Maui-GTK.sln
-
-The controls samples-gtk show how to use this. Specifically Maui.Controls.Sample.OnePage.GTK
+* To use this place Derby Russell maui and Derby Russell GtkSharp in the same directory.
+* Switch both to the derby-gtk3-integration branch.
+* See the README of GtkSharp and build GtkSharp as described.
+* Then Open Microsoft.Maui-GTK.sln
+* The controls samples-gtk show how to use this. Specifically Maui.Controls.Sample.OnePage.GTK
 
 Code is still under development.
 
@@ -35,6 +31,7 @@ Code is still under development.
 
 ## Current News
 
+* December 2, 2022 - Derby Russell published GTK 3.0 version for further development - sample builds and runs
 * November 8, 2022 - [Announcing .NET MAUI for .NET 7 General Availability](https://devblogs.microsoft.com/dotnet/dotnet-maui-dotnet-7/)
 * May 23, 2022 - [Introducing .NET MAUI – One Codebase, Many Platforms](https://devblogs.microsoft.com/dotnet/introducing-dotnet-maui-one-codebase-many-platforms/)
 * May 10, 2022 - [.NET MAUI Release Candidate 3](https://devblogs.microsoft.com/dotnet/dotnet-maui-rc-3/)
