@@ -34,7 +34,7 @@
 	<ProjectReference Include="..\..\src\Xaml-GTK\Controls.Xaml-GTK.csproj" />
   </ItemGroup>
 
-  <UsingTask TaskName="Microsoft.Maui.Controls.Build.Tasks.XamlCTask" AssemblyFile="D:\Source\maui\src\Controls\src\Build.Tasks-GTK\bin\Debug\netstandard2.0\Microsoft.Maui.Controls.Build.Tasks-GTK.dll" />
+  <UsingTask TaskName="Microsoft.Maui.Controls.Build.Tasks.XamlCTask" AssemblyFile="..\..\src\Build.Tasks-GTK\bin\Debug\netstandard2.0\Microsoft.Maui.Controls.Build.Tasks-GTK.dll" />
 
   <!-- Inject MauiXaml and MauiCss as AdditionalFiles for partial type generation-->
   <Target Name="_MauiInjectXamlCssAdditionalFiles" BeforeTargets="GenerateMSBuildEditorConfigFileShouldRun" DependsOnTargets="$(CreateManifestResourceNamesDependsOn)">
