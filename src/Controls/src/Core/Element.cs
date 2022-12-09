@@ -347,6 +347,18 @@ namespace Microsoft.Maui.Controls
 
 			child.ApplyBindings(skipBindingContext: false, fromBindingContextChanged: true);
 
+#if __GTK__
+			if (child is Page childPage)
+			{
+				var childX = childPage.X;
+				var childY = childPage.Y;
+				var childWidthReq = childPage.WidthRequest;
+				var childHeightReq = childPage.HeightRequest;
+				var bounds = new Graphics.Rect(childX, childY, childWidthReq, childHeightReq);
+				childPage.Frame = bounds;
+			}
+#endif
+
 			ChildAdded?.Invoke(this, new ElementEventArgs(child));
 
 			VisualDiagnostics.OnChildAdded(this, child);

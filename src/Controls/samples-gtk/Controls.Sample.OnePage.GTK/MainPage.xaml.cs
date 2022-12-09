@@ -16,6 +16,8 @@ namespace Maui.Controls.Sample.OnePage.GTK
 		public MainPage()
 		{
 			InitializeComponent();
+
+			EntryBox1.Text = "hello";
 		}
 
 		protected override void OnAppearing()

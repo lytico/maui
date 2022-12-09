@@ -2,7 +2,8 @@
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     x:Class="Maui.Controls.Sample.OnePage.GTK.MainPage"
-    xmlns:local="clr-namespace:Maui.Controls.Sample.OnePage.GTK">
+    xmlns:local="clr-namespace:Maui.Controls.Sample.OnePage.GTK"
+    WidthRequest="600" HeightRequest="600" >
     
     <ScrollView>
         <VerticalStackLayout
@@ -47,6 +48,10 @@
                 x:Name="CounterBtn2Image"
                 Clicked="OnCounter2Clicked"
                 ImageSource="click_me.gif"
+                HorizontalOptions="Center" />
+
+            <Entry
+                x:Name="EntryBox1"
                 HorizontalOptions="Center" />
 
         </VerticalStackLayout>

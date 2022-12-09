@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Runtime.Versioning;
 using Gtk;
 using Microsoft.Extensions.Logging;
@@ -16,7 +17,7 @@ namespace Microsoft.Maui.Platform
 				return;
 
 			var winuiWndow = new MauiGTKWindow("My first GTK# Application! ");
-			winuiWndow.Resize(600, 300);
+			// winuiWndow.Resize(600, 300);
 
 			var mauiContext = applicationContext!.MakeWindowScope(winuiWndow, out var windowScope);
 
@@ -26,6 +27,14 @@ namespace Microsoft.Maui.Platform
 
 			winuiWndow.SetWindowHandler(window, mauiContext);
 			//winuiWndow.ModifyBg(StateType.Normal, new Gdk.Color(200, 0, 200));
+
+			var x = Convert.ToInt32(window.Content.AnchorX);
+			var y = Convert.ToInt32(window.Content.AnchorY);
+			var width = Convert.ToInt32(window.Content.Width);
+			var height = Convert.ToInt32(window.Content.Height);
+
+			winuiWndow.Move(x, y);
+			winuiWndow.Resize(width, height);
 
 			applicationContext.Services.InvokeLifecycleEvents<GTKLifecycle.OnWindowCreated>(del => del(winuiWndow));
 
