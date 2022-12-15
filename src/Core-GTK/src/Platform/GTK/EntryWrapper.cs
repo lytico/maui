@@ -12,7 +12,7 @@ namespace Microsoft.Maui.Platform
 		private Gtk.Label _placeholder;
 		private EventBox _placeholderContainer;
 
-		public EntryWrapper()
+		public EntryWrapper(IView entry)
 		{
 			_table = new Grid();
 			_entry = new Gtk.Entry();
@@ -29,8 +29,8 @@ namespace Microsoft.Maui.Platform
 
 			AddChildWidget(_table);
 
-			_table.Attach(_entry, 0, 1, 0, 1);
-			_table.Attach(_placeholderContainer, 0, 1, 0, 1);
+			_table.Attach(_entry, 0, 1, 1, 1);
+			_table.Attach(_placeholderContainer, 0, 1, 1, 1);
 		}
 
 		public Gtk.Entry Entry => _entry;

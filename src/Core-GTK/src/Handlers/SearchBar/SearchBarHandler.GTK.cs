@@ -10,7 +10,7 @@
 		{
 			_editText = new Gtk.Entry();
 
-			var searchView = new MauiSearchEntry();
+			var searchView = new MauiSearchEntry(searchBar);
 
 			return searchView;
 		}

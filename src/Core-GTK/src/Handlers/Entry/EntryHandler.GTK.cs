@@ -10,7 +10,7 @@ namespace Microsoft.Maui.Handlers
 	{
 		protected override EntryWrapper CreatePlatformView(IView entry)
 		{
-			var nativeEntry = new EntryWrapper();
+			var nativeEntry = new EntryWrapper(entry);
 			return nativeEntry;
 		}
 

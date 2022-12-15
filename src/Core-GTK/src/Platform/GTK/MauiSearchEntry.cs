@@ -11,10 +11,10 @@ namespace Microsoft.Maui.Platform
 		private MauiImageButton _searchButton;
 		private MauiImageButton _clearButton;
 
-		public MauiSearchEntry()
+		public MauiSearchEntry(IView entry)
 		{
 			_container = new Box(Gtk.Orientation.Horizontal, 0);
-			_entryWrapper = new EntryWrapper();
+			_entryWrapper = new EntryWrapper(entry);
 			_entryWrapper.Entry.HasFrame = false;
 			_searchButton = new MauiImageButton();
 			_searchButton.SetImagePosition(PositionType.Left);
