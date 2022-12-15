@@ -113,5 +113,26 @@ namespace Maui.Controls.Sample.OnePage.GTK
 				Console.WriteLine("Hiding CounterBtn2Image");
 			});
 		}
+
+		private void CheckBox_CheckedChanged(object sender, CheckedChangedEventArgs e)
+		{
+			bool isChecked = false;
+			if (sender is CheckBox checkBox)
+			{
+				if (checkBox.IsChecked == true)
+				{
+					isChecked = true;
+				}
+			}
+
+			if (isChecked)
+			{
+				Console.WriteLine("CheckBox_CheckedChanged CHECKED");
+			}
+			else
+			{
+				Console.WriteLine("CheckBox_CheckedChanged NOT CHECKED");
+			}
+		}
 	}
 }

@@ -1,4 +1,6 @@
-﻿namespace Microsoft.Maui.Handlers
+﻿using System.Diagnostics;
+
+namespace Microsoft.Maui.Handlers
 {
 	public partial class CheckBoxHandler : ViewHandler<ICheckBox, MauiView>
 	{
@@ -14,11 +16,34 @@
 
 		protected override void ConnectHandler(MauiView platformView)
 		{
+			if (platformView.GetChildWidget() is Gtk.CheckButton checkButton)
+			{
+				checkButton.Clicked += CheckButton_Clicked;
+			}
 			//platformView.CheckedChange += OnCheckedChange;
+		}
+
+		private void CheckButton_Clicked(object sender, System.EventArgs e)
+		{
+			Debug.WriteLine("Clicked");
+			if (VirtualView != null)
+			{
+				if (sender is Gtk.CheckButton checkButton)
+				{
+					if (checkButton.Active)
+						VirtualView.IsChecked = true;
+					else
+						VirtualView.IsChecked = false;
+				}
+			}
 		}
 
 		protected override void DisconnectHandler(MauiView platformView)
 		{
+			if (platformView.GetChildWidget() is Gtk.CheckButton checkButton)
+			{
+				checkButton.Clicked -= CheckButton_Clicked;
+			}
 			//platformView.CheckedChange -= OnCheckedChange;
 		}
 
