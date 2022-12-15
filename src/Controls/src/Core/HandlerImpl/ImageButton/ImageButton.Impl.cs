@@ -12,7 +12,11 @@ namespace Microsoft.Maui.Controls
 
 		bool IImageSourcePart.IsAnimationPlaying => false;
 
-		IImageSource IImageSourcePart.Source => Source;
+		IImageSource IImageSourcePart.Source {
+			get {
+				return Source;
+			}
+		}
 
 		void IButton.Clicked()
 		{

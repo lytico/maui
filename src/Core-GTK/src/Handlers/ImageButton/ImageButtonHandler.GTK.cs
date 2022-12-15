@@ -1,40 +1,70 @@
 ﻿using System;
+using System.Diagnostics;
+using Microsoft.Maui.Platform.GTK;
 
 namespace Microsoft.Maui.Handlers
 {
-	public partial class ImageButtonHandler : ViewHandler<IImageButton, MauiImageButton>
+	public partial class ImageButtonHandler : ViewHandler<IImageButton, MauiGTKButton>
 	{
-		protected override MauiImageButton CreatePlatformView(IView imageButton)
+		protected override MauiGTKButton CreatePlatformView(IView imageButton)
 		{
-			var platformView = new MauiImageButton();
+			var platformView = new MauiGTKButton(imageButton);
 
 			return platformView;
 		}
 
 		void OnSetImageSource(Gdk.Pixbuf? obj)
 		{
+			Console.WriteLine("OnSetImageSource");
 		}
 
-		protected override void DisconnectHandler(MauiImageButton platformView)
+		//protected override void DisconnectHandler(MauiGTKButton platformView)
+		//{
+		//	platformView.ButtonWidget.Clicked -= PlatformView_Clicked;
+
+		//	base.DisconnectHandler(platformView);
+
+		//	SourceLoader.Reset();
+		//}
+
+		//protected override void ConnectHandler(MauiGTKButton platformView)
+		//{
+		//	platformView.ButtonWidget.Clicked += PlatformView_Clicked;
+
+		//	base.ConnectHandler(platformView);
+		//}
+
+		private protected override void OnConnectHandler(object platformView)
 		{
-			platformView.ButtonWidget.Clicked -= PlatformView_Clicked;
+			if (platformView is MauiGTKButton imageButton)
+			{
+				//imageButton.ButtonWidget.Clicked += ButtonWidget_Clicked;
+				imageButton.Clicked += ButtonWidget_Clicked;
+			}
 
-			base.DisconnectHandler(platformView);
-
-			SourceLoader.Reset();
+			base.OnConnectHandler(platformView);
 		}
 
-		protected override void ConnectHandler(MauiImageButton platformView)
+		private void ButtonWidget_Clicked(object? sender, System.EventArgs e)
 		{
-			platformView.ButtonWidget.Clicked += PlatformView_Clicked;
-
-			base.ConnectHandler(platformView);
-		}
-
-		private void PlatformView_Clicked(object? sender, EventArgs e)
-		{
+			Debug.WriteLine("Clicked");
 			VirtualView?.Clicked();
 		}
+
+		private protected override void OnDisconnectHandler(object platformView)
+		{
+			if (platformView is MauiGTKButton button)
+			{
+				button.Clicked -= ButtonWidget_Clicked;
+			}
+
+			base.OnDisconnectHandler(platformView);
+		}
+
+		//private void PlatformView_Clicked(object? sender, EventArgs e)
+		//{
+		//	VirtualView?.Clicked();
+		//}
 
 		// TODO: NET7 make this public
 		internal static void MapBackground(IImageButtonHandler handler, IImageButton imageButton)
@@ -60,6 +90,28 @@ namespace Microsoft.Maui.Handlers
 		public static void MapPadding(IImageButtonHandler handler, IImageButton imageButton)
 		{
 			//(handler.PlatformView as ShapeableImageView)?.UpdatePadding(imageButton);
+		}
+
+		public static void MapImageSource(IImageButtonHandler handler, IImageButton image)
+		{
+			if (handler.PlatformView is MauiGTKButton buttonHandler)
+			{
+				// buttonHandler.Image = new Gtk.Image(source);
+				if (image.Source == null)
+				{
+					buttonHandler.Image = null!;
+				}
+				else
+				{
+					var fileImageSource = (IFileImageSource)image.Source;
+
+					if (fileImageSource != null)
+					{
+						// Console.WriteLine("MapImageSource Image: " + fileImageSource.File);
+						buttonHandler.Image = new Gtk.Image(fileImageSource.File);
+					}
+				}
+			}
 		}
 
 		//void OnFocusChange(object? sender, View.FocusChangeEventArgs e)

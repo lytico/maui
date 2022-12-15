@@ -78,6 +78,22 @@ namespace Microsoft.Maui.Platform.GTK
 
 				return;
 			}
+			else if (!(button is ITextButton) && (button is IImageButton virtualImageButtonButton))
+			{
+				if (virtualImageButtonButton.Source != null)
+				{
+					var fileImageSource = (IFileImageSource)virtualImageButtonButton.Source;
+
+					if (fileImageSource != null)
+					{
+						// Console.WriteLine("Image: " + fileImageSource.File);
+						Initialize(string.Empty, fileImageSource.File);
+
+						return;
+					}
+				}
+			}
+
 			Initialize(string.Empty, string.Empty);
 		}
 

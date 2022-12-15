@@ -49,6 +49,12 @@
                 Clicked="OnCounter2Clicked"
                 ImageSource="click_me.gif"
                 HorizontalOptions="Center" />
+            
+            <ImageButton
+                x:Name="CounterBtn3Image"
+                Clicked="OnCounter3Clicked"
+                Source="click_me.gif"
+                HorizontalOptions="Center" />
 
             <Entry
                 x:Name="EntryBox1"

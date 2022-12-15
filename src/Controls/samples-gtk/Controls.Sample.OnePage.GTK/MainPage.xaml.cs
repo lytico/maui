@@ -12,6 +12,7 @@ namespace Maui.Controls.Sample.OnePage.GTK
 	{
 		int count = 0;
 		int count2 = 0;
+		int count3 = 0;
 
 		public MainPage()
 		{
@@ -81,6 +82,26 @@ namespace Maui.Controls.Sample.OnePage.GTK
 			}
 
 			Console.WriteLine("Button 2 " + CounterBtn2.Text + " Clicked");
+		}
+
+		private void OnCounter3Clicked(object sender, EventArgs e)
+		{
+			count3++;
+
+			//if (count3 == 1)
+			//{
+			//	// Console.WriteLine("Count2 = 1");
+
+			//	CounterBtn3Image.Text = $"Clicked {count3} time";
+			//}
+			//else
+			//{
+			//	// Console.WriteLine("Count2 > 1");
+
+			//	CounterBtn3Image.Text = $"Clicked {count2} times";
+			//}
+
+			Console.WriteLine("Image Button " + count3.ToString("D") + " Clicked");
 		}
 
 		private void HideButtonWithImage()
