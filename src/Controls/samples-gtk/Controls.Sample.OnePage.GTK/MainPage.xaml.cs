@@ -53,7 +53,14 @@ namespace Maui.Controls.Sample.OnePage.GTK
 			else
 				CounterBtn.Text = $"Clicked {count} times";
 
-			Console.WriteLine("Button 1 " + CounterBtn.Text);
+			if (RadioBtnOne.IsChecked)
+			{
+				Console.WriteLine("Button 1 " + CounterBtn.Text + " radio button \"One\" is selected");
+			}
+			else
+			{
+				Console.WriteLine("Button 1 " + CounterBtn.Text + " radio button \"Two\" is selected");
+			}
 		}
 
 		private void OnCounter2Clicked(object sender, EventArgs e)
@@ -133,6 +140,39 @@ namespace Maui.Controls.Sample.OnePage.GTK
 			{
 				Console.WriteLine("CheckBox_CheckedChanged NOT CHECKED");
 			}
+		}
+
+		private void RadioButton_CheckedChanged(object sender, CheckedChangedEventArgs e)
+		{
+			bool isChecked = false;
+			string groupName = string.Empty;
+			string valueName = string.Empty;
+
+			if (sender is RadioButton radioButton)
+			{
+				groupName = radioButton.GroupName;
+				if (radioButton.Value != null)
+				{
+					valueName = radioButton.Value as string;
+				}
+				else
+				{
+					valueName = "NULL";
+				}
+				if (radioButton.IsChecked == true)
+				{
+					isChecked = true;
+				}
+			}
+
+			if (isChecked)
+			{
+				Console.WriteLine("RadioButton_CheckedChanged SELECTED in group: \"" + groupName + "\" with name: \"" + valueName + "\"");
+			}
+			//else
+			//{
+			//	Console.WriteLine("RadioButton_CheckedChanged NOT CHECKED in group: " + groupName + " with name: " + valueName);
+			//}
 		}
 	}
 }

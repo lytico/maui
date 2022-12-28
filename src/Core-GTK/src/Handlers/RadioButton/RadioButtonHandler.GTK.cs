@@ -1,24 +1,105 @@
-﻿namespace Microsoft.Maui.Handlers
-{
-	public partial class RadioButtonHandler : ViewHandler<IRadioButton, MauiRadioButton>
-	{
-		static MauiRadioButton? GetPlatformRadioButton(IRadioButtonHandler handler) => handler.PlatformView as MauiRadioButton;
+﻿using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq;
 
-		protected override MauiRadioButton CreatePlatformView(IView radioButton)
+namespace Microsoft.Maui.Handlers
+{
+	public partial class RadioButtonHandler : ViewHandler<IRadioButton, MauiView>
+	{
+		static MauiView? GetPlatformRadioButton(IRadioButtonHandler handler) => handler.PlatformView as MauiView;
+		static Dictionary<Gtk.RadioButton, string> RadioButtonGrouping = new Dictionary<Gtk.RadioButton, string>();
+
+		protected override MauiView CreatePlatformView(IView radioButtonView)
 		{
-			return new MauiRadioButton();
+			var plat = new MauiView();
+			if (radioButtonView is IRadioButton radioButton)
+			{
+				var radioButtonText = string.Empty;
+
+				if (radioButton.Value is string valueText)
+				{
+					radioButtonText = valueText;
+				}
+
+				if (RadioButtonGrouping.ContainsValue(radioButton.GroupName))
+				{
+					var radioButtonGroup = RadioButtonGrouping.FirstOrDefault(x => x.Value.Equals(radioButton.GroupName));
+					if (radioButtonGroup.Value.Equals(radioButton.GroupName))
+					{
+						var platformRadioButton = new Gtk.RadioButton(radioButtonGroup.Key);
+						if (!string.IsNullOrEmpty(radioButtonText))
+						{
+							platformRadioButton.Label = radioButtonText;
+						}
+
+						plat.AddChildWidget(platformRadioButton);
+					}
+					else
+					{
+						var platformRadioButton = new Gtk.RadioButton((Gtk.RadioButton)null!);
+						if (!string.IsNullOrEmpty(radioButtonText))
+						{
+							platformRadioButton.Label = radioButtonText;
+						}
+
+						plat.AddChildWidget(platformRadioButton);
+					}
+				}
+				else
+				{
+					var platformRadioButton = new Gtk.RadioButton((Gtk.RadioButton)null!);
+					if (!string.IsNullOrEmpty(radioButtonText))
+					{
+						platformRadioButton.Label = radioButtonText;
+					}
+
+					RadioButtonGrouping.Add(platformRadioButton, radioButton.GroupName);
+
+					plat.AddChildWidget(platformRadioButton);
+				}
+			}
+
+			return plat;
 		}
 
-		protected override void ConnectHandler(MauiRadioButton platformView)
+		protected override void ConnectHandler(MauiView platformView)
 		{
+			if (platformView.GetChildWidget() is Gtk.RadioButton radioButton)
+			{
+				radioButton.Clicked += RadioButton_Clicked;
+			}
+
 			//RadioButton? platformRadioButton = GetPlatformRadioButton(this);
 			//if (platformRadioButton != null)
 			//	platformRadioButton.cli
 			//	platformRadioButton.CheckedChange += OnCheckChanged;
 		}
 
-		protected override void DisconnectHandler(MauiRadioButton platformView)
+		private void RadioButton_Clicked(object sender, System.EventArgs e)
 		{
+			Debug.WriteLine("Clicked");
+			if (VirtualView != null)
+			{
+				if (sender is Gtk.RadioButton radioButton)
+				{
+					if (radioButton.Active)
+						VirtualView.IsChecked = true;
+					else
+						VirtualView.IsChecked = false;
+				}
+			}
+		}
+
+		protected override void DisconnectHandler(MauiView platformView)
+		{
+			if (platformView.GetChildWidget() is Gtk.RadioButton radioButton)
+			{
+				radioButton.Clicked -= RadioButton_Clicked;
+				if (RadioButtonGrouping.ContainsKey(radioButton))
+				{
+					RadioButtonGrouping.Remove(radioButton);
+				}
+			}
 			//if (platformView is AppCompatRadioButton platformRadioButton)
 			//	platformRadioButton.CheckedChange -= OnCheckChanged;
 		}

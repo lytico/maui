@@ -13,6 +13,9 @@
     <RunAnalyzersDuringLiveAnalysis>False</RunAnalyzersDuringLiveAnalysis>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Remove="HandlerImpl\RadioButton\RadioButton.GTK.cs" />
+  </ItemGroup>
+  <ItemGroup>
     <Compile Include="..\Core\Accelerator.cs" Link="Accelerator.cs" />
     <Compile Include="..\Core\AcceleratorTypeConverter.cs" Link="AcceleratorTypeConverter.cs" />
     <Compile Include="..\Core\ActionSheetArguments.cs" Link="ActionSheetArguments.cs" />
@@ -784,7 +787,6 @@
     <Folder Include="HandlerImpl\TabbedPage\" />
     <Folder Include="HandlerImpl\ScrollView\" />
     <Folder Include="HandlerImpl\RefreshView\" />
-    <Folder Include="HandlerImpl\RadioButton\" />
     <Folder Include="HandlerImpl\Picker\" />
     <Folder Include="Handlers\Shell\" />
     <Folder Include="Hosting\Effects\" />
@@ -801,6 +803,10 @@
     <Folder Include="Shapes\" />
     <Folder Include="Properties\" />
     <Folder Include="Xaml\Diagnostics\" />
+  </ItemGroup>
+  
+  <ItemGroup>
+    <None Include="HandlerImpl\RadioButton\RadioButton.GTK.cs" />
   </ItemGroup>
   
   <ItemGroup>
