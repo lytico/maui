@@ -15,16 +15,22 @@ namespace Microsoft.Maui.Handlers
 			if (radioButtonView is IRadioButton radioButton)
 			{
 				var radioButtonText = string.Empty;
+				var radioButtonGroupName = "NULL";
 
 				if (radioButton.Value is string valueText)
 				{
 					radioButtonText = valueText;
 				}
 
-				if (RadioButtonGrouping.ContainsValue(radioButton.GroupName))
+				if (radioButton.GroupName is string foundGroupName)
 				{
-					var radioButtonGroup = RadioButtonGrouping.FirstOrDefault(x => x.Value.Equals(radioButton.GroupName));
-					if (radioButtonGroup.Value.Equals(radioButton.GroupName))
+					radioButtonGroupName = foundGroupName;
+				}
+
+				if (RadioButtonGrouping.ContainsValue(radioButtonGroupName))
+				{
+					var radioButtonGroup = RadioButtonGrouping.FirstOrDefault(x => x.Value.Equals(radioButtonGroupName));
+					if (radioButtonGroup.Value.Equals(radioButtonGroupName))
 					{
 						var platformRadioButton = new Gtk.RadioButton(radioButtonGroup.Key);
 						if (!string.IsNullOrEmpty(radioButtonText))
@@ -42,6 +48,8 @@ namespace Microsoft.Maui.Handlers
 							platformRadioButton.Label = radioButtonText;
 						}
 
+						RadioButtonGrouping.Add(platformRadioButton, radioButtonGroupName);
+
 						plat.AddChildWidget(platformRadioButton);
 					}
 				}
@@ -53,7 +61,7 @@ namespace Microsoft.Maui.Handlers
 						platformRadioButton.Label = radioButtonText;
 					}
 
-					RadioButtonGrouping.Add(platformRadioButton, radioButton.GroupName);
+					RadioButtonGrouping.Add(platformRadioButton, radioButtonGroupName);
 
 					plat.AddChildWidget(platformRadioButton);
 				}

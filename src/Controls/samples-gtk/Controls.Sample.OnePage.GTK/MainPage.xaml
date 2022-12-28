@@ -72,6 +72,8 @@
             <RadioButton x:Name="RadioBtnThree" CheckedChanged="RadioButton_CheckedChanged" Value="Three" IsChecked="True" GroupName="Three" />
             <RadioButton CheckedChanged="RadioButton_CheckedChanged" Value="Four" GroupName="Three" />
 
+            <RadioButton x:Name="RadioBtnFive" CheckedChanged="RadioButton_CheckedChanged" Value="Five" IsChecked="True" />
+            <RadioButton CheckedChanged="RadioButton_CheckedChanged" Value="Six" />
         </VerticalStackLayout>
     </ScrollView>
 
