@@ -34,6 +34,8 @@ namespace Microsoft.Maui.Platform
 
 			_placeholder = new Gtk.Label();
 			//_placeholder.SetAlignment(0, 0);
+			// _table.Add(_scrolledWindow, 1, 1, 1, 0);
+			_table.Add(_scrolledWindow);
 
 			_placeholderContainer = new EventBox
 			{

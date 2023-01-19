@@ -58,7 +58,14 @@
 
             <Entry
                 x:Name="EntryBox1"
-                HorizontalOptions="Center" />
+                HorizontalOptions="Center"
+                Text="EntryBox1"
+                WidthRequest="180" />
+
+            <Image
+                x:Name="PlainImage"
+                Source="click_me.gif"
+                HorizontalOptions="Center" WidthRequest="180" />
 
             <Label
                 Text="Test a CheckBox: "
@@ -74,6 +81,12 @@
 
             <RadioButton x:Name="RadioBtnFive" CheckedChanged="RadioButton_CheckedChanged" Value="Five" IsChecked="True" />
             <RadioButton CheckedChanged="RadioButton_CheckedChanged" Value="Six" />
+
+            <Label
+                Text="Test an Editor: "
+                FontSize="10" />
+
+            <Editor Text="Hello from editor" FontSize="14" WidthRequest="180"/>
         </VerticalStackLayout>
     </ScrollView>
 

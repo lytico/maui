@@ -153,7 +153,7 @@ namespace Microsoft.Maui.Platform
 			
 			_hBox.PackStart(_image, true, true, 0);
 
-			Add(_hBox);
+			AddChildWidget(_hBox);
 		}
 
 		private static Pixbuf GetAspectFitPixBuf(Pixbuf original, Gdk.Rectangle allocation)
