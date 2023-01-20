@@ -60,6 +60,12 @@ namespace Microsoft.Maui.Handlers
 		public static void MapText(IEntryHandler handler, IEntry entry) {
 			if (handler.PlatformView.Entry is Gtk.Entry platformEntry)
 			{
+				if (entry.IsPassword)
+				{
+					platformEntry.InputPurpose = Gtk.InputPurpose.Password;
+					platformEntry.Visibility = false;
+				}
+
 				platformEntry.Text = entry.Text;
 			}
 

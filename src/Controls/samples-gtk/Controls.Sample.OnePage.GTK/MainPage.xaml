@@ -59,7 +59,14 @@
             <Entry
                 x:Name="EntryBox1"
                 HorizontalOptions="Center"
-                Text="EntryBox1"
+                Text="Hello"
+                IsPassword="True"
+                WidthRequest="180" />
+
+            <Entry
+                x:Name="EntryBox2"
+                HorizontalOptions="Center"
+                Text="Hello"
                 WidthRequest="180" />
 
             <Image
@@ -86,7 +93,7 @@
                 Text="Test an Editor: "
                 FontSize="10" />
 
-            <Editor Text="Hello from editor" FontSize="14" WidthRequest="180"/>
+            <Editor x:Name="Editor1" Text="Hello from editor" FontSize="14" WidthRequest="180"/>
         </VerticalStackLayout>
     </ScrollView>
 

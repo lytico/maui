@@ -66,10 +66,58 @@ namespace Microsoft.Maui.Handlers
 		}
 
 		public static void MapBackground(IEditorHandler handler, IEditor editor) { }
-			// handler.PlatformView?.UpdateBackground(editor);
+		// handler.PlatformView?.UpdateBackground(editor);
 
-		public static void MapText(IEditorHandler handler, IEditor editor) { }
-		// handler.PlatformView?.UpdateText(editor);
+		public static void MapText(IEditorHandler handler, IEditor editor)
+		{
+			if (handler.PlatformView is ScrolledTextView platformTextView)
+			{
+				// platformTextView.UpdateText(editor);
+				// handler.PlatformView?.UpdateText(editor);
+
+				// var hasFocus = platformTextView.TextView.HasFocus;
+				// var hasFocus = platformControl.FocusState != UI.Xaml.FocusState.Unfocused;
+				// var passwordBox = platformControl as MauiPasswordTextBox;
+				// var isPassword = passwordBox?.IsPassword ?? false;
+				//var textTransform = editor?.TextTransform ?? TextTransform.None;
+
+				// Setting the text causes the cursor to be reset to position zero.
+				// So, let's retain the current cursor position and calculate a new cursor
+				// position if the text was modified by a Converter.
+				// var oldText = platformControl.TextView.Text ?? string.Empty;
+				Gtk.TextIter start, end, newEndIter;
+				platformTextView.TextView.Buffer.GetBounds(out start, out end);
+				var oldText = platformTextView.TextView.Buffer.GetText(start, end, false);
+				//var newText = TextTransformUtilites.GetTransformedText(
+				//	inputView?.Text,
+				//	isPassword ? TextTransform.None : textTransform
+				//	);
+
+				//var newText = TextTransformUtilites.GetTransformedText(
+				//	editor?.Text,
+				//	textTransform
+				//	);
+
+				var newText = editor?.Text;
+
+				// Re-calculate the cursor offset position if the text was modified by a Converter.
+				// but if the text is being set by code, let's just move the cursor to the end.
+				//var cursorOffset = newText.Length - oldText.Length;
+				// int cursorPosition = hasFocus ? platformControl.GetCursorPosition(cursorOffset) : newText.Length;
+				//platformControl.TextView.Buffer.Insert(end, newText);
+				platformTextView.TextView.Buffer.Text = newText;
+
+				platformTextView.TextView.Buffer.GetBounds(out start, out newEndIter);
+
+				//if (oldText != newText && passwordBox is not null)
+				//	passwordBox.Password = newText;
+				//else if (oldText != newText)
+				//	platformControl.Text = newText;
+
+				// platformControl.Select(cursorPosition, 0);
+				platformTextView.TextView.ScrollToIter(newEndIter, 0, false, 0, 0);
+			}
+		}
 
 		public static void MapTextColor(IEditorHandler handler, IEditor editor) { }
 		// handler.PlatformView?.UpdateTextColor(editor);

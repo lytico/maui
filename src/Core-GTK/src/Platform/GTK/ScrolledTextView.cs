@@ -1,4 +1,7 @@
-﻿using Gtk;
+﻿using Atk;
+using System;
+using Gtk;
+using Pango;
 
 namespace Microsoft.Maui.Platform
 {
@@ -17,7 +20,7 @@ namespace Microsoft.Maui.Platform
 			TextView = new TextView
 			{
 				AcceptsTab = false,
-				WrapMode = WrapMode.WordChar
+				WrapMode = Gtk.WrapMode.WordChar
 			};
 
 			TextView.Buffer.InsertText += InsertText;
@@ -35,7 +38,7 @@ namespace Microsoft.Maui.Platform
 			_placeholder = new Gtk.Label();
 			//_placeholder.SetAlignment(0, 0);
 			// _table.Add(_scrolledWindow, 1, 1, 1, 0);
-			_table.Add(_scrolledWindow);
+			// _table.Add(_scrolledWindow);
 
 			_placeholderContainer = new EventBox
 			{
@@ -50,8 +53,35 @@ namespace Microsoft.Maui.Platform
 
 			Add(_table);
 
-			_table.Attach(_placeholderContainer, 0, 1, 0, 1);
-			_table.Attach(_scrolledWindow, 0, 1, 0, 1);
+			//			Parameters
+			//			child
+			//Type:
+			//			GtkWidget
+			//			The widget to add.
+
+			//The data is owned by the caller of the function.
+			//column
+			//Type: int
+
+			//The column number to attach the left side of child to.
+
+			//row
+			//Type: int
+
+			//The row number to attach the top side of child to.
+
+			//width
+			//			Type: int
+
+			//The number of columns that child will span.
+
+			//height
+			//			Type: int
+
+			//The number of rows that child will span.
+
+			_table.Attach(_placeholderContainer, 0, 0, 1, 1);
+			_table.Attach(_scrolledWindow, 0, 0, 1, 1);
 		}
 
 		public TextView TextView { get; }

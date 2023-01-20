@@ -9,6 +9,12 @@ namespace Microsoft.Maui.Controls.Platform
 	{
 		public static void UpdateText(this EntryWrapper platformControl, Entry entry)
 		{
+			if (entry.IsPassword)
+			{
+				platformControl.Entry.InputPurpose = Gtk.InputPurpose.Password;
+				platformControl.Entry.Visibility = false;
+			}
+
 			platformControl.Entry.Text = entry.Text;
 		}
 	}
