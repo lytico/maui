@@ -74,11 +74,13 @@
                 Source="click_me.gif"
                 HorizontalOptions="Center" WidthRequest="180" />
 
-            <Label
-                Text="Test a CheckBox: "
-                FontSize="10" />
+            <HorizontalStackLayout>
+                <Label
+                    Text="Test a CheckBox: "
+                    FontSize="10" />
 
-            <CheckBox CheckedChanged="CheckBox_CheckedChanged" />
+                <CheckBox CheckedChanged="CheckBox_CheckedChanged" />
+            </HorizontalStackLayout>
 
             <RadioButton x:Name="RadioBtnOne" CheckedChanged="RadioButton_CheckedChanged" Value="One" IsChecked="True" GroupName="Start" />
             <RadioButton CheckedChanged="RadioButton_CheckedChanged" Value="Two" GroupName="Start" />

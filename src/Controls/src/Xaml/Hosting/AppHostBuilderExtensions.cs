@@ -71,6 +71,10 @@ namespace Microsoft.Maui.Controls.Hosting
 			handlersCollection.AddHandler<GraphicsView, GraphicsViewHandler>();
 			handlersCollection.AddHandler<Image, ImageHandler>();
 			handlersCollection.AddHandler<Label, LabelHandler>();
+#if __GTK__
+			handlersCollection.AddHandler<VerticalStackLayout, VerticalStackLayoutHandler>();
+			handlersCollection.AddHandler<HorizontalStackLayout, HorizontalStackLayoutHandler>();
+#endif
 			handlersCollection.AddHandler<Layout, LayoutHandler>();
 			handlersCollection.AddHandler<Picker, PickerHandler>();
 			handlersCollection.AddHandler<ProgressBar, ProgressBarHandler>();
