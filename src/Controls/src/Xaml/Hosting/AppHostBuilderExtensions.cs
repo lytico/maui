@@ -74,6 +74,7 @@ namespace Microsoft.Maui.Controls.Hosting
 #if __GTK__
 			handlersCollection.AddHandler<VerticalStackLayout, VerticalStackLayoutHandler>();
 			handlersCollection.AddHandler<HorizontalStackLayout, HorizontalStackLayoutHandler>();
+			handlersCollection.AddHandler<Grid, GridHandler>();
 #endif
 			handlersCollection.AddHandler<Layout, LayoutHandler>();
 			handlersCollection.AddHandler<Picker, PickerHandler>();

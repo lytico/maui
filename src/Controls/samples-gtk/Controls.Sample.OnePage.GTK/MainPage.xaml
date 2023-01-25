@@ -91,11 +91,24 @@
             <RadioButton x:Name="RadioBtnFive" CheckedChanged="RadioButton_CheckedChanged" Value="Five" IsChecked="True" />
             <RadioButton CheckedChanged="RadioButton_CheckedChanged" Value="Six" />
 
-            <Label
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="120" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+
+                <Label
+                    Grid.Row="0" Grid.Column="0"
                 Text="Test an Editor: "
                 FontSize="10" />
 
-            <Editor x:Name="Editor1" Text="Hello from editor" FontSize="14" WidthRequest="180"/>
+                <Editor
+                    Grid.Row="0" Grid.Column="1"
+                    x:Name="Editor1" Text="Hello from editor" FontSize="14" WidthRequest="180"/>
+            </Grid>
         </VerticalStackLayout>
     </ScrollView>
 
