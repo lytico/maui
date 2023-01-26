@@ -4,17 +4,57 @@ using System.Text;
 
 namespace Microsoft.Maui.Handlers
 {
-	public class GridHandler : ViewHandler<ILayout, Gtk.Box>, IGridHandler
+	public class GridHandler : ViewHandler<IGridLayout, Gtk.Grid>, IGridHandler
 	{
-		protected override Gtk.Box CreatePlatformView(IView layout)
+		private int[]? colWidth;
+		private int[]? rowHeight;
+
+		protected override Gtk.Grid CreatePlatformView(IView layout)
 		{
 			if (VirtualView == null)
 			{
 				throw new InvalidOperationException($"{nameof(VirtualView)} must be set to create a LayoutViewGroup");
 			}
 
+			// var bounds = layout.GetWindow().GetBoundingBox();
+			// var bounds = VirtualView.Page;
+
 			// var viewGroup = new LayoutViewGroup();
-			var view = new Gtk.Box(Gtk.Orientation.Horizontal, 0);
+			var width = 0;
+			var colCount = 0;
+			colWidth = new int[VirtualView.ColumnDefinitions.Count];
+			foreach (var col in VirtualView.ColumnDefinitions)
+			{
+				if (col is IGridColumnDefinition def)
+				{
+					if (def.Width.GridUnitType == GridUnitType.Absolute)
+					{
+						colWidth[colCount] = (int)def.Width.Value;
+						width += colWidth[colCount];
+						colCount++;
+					}
+				}
+			}
+			var height = 0;
+			var rowCount = 0;
+			rowHeight = new int[VirtualView.RowDefinitions.Count];
+			foreach (var row in VirtualView.RowDefinitions)
+			{
+				if (row is IGridRowDefinition def)
+				{
+					if (def.Height.GridUnitType == GridUnitType.Absolute)
+					{
+						rowHeight[rowCount] = (int)def.Height.Value;
+						height += rowHeight[rowCount];
+						rowCount++;
+					}
+				}
+			}
+			//var width = VirtualView.Width;
+			//var height = VirtualView.Height;
+			var view = new Gtk.Grid();
+			view.WidthRequest = width;
+			view.HeightRequest = height;
 
 			return view;
 		}
@@ -37,7 +77,40 @@ namespace Microsoft.Maui.Handlers
 				//hbox.PackStart(vbox, false, true, 20);
 
 				//hbox.PackStart((Gtk.Widget)child.ToPlatform(MauiContext), false, true, 0);
-				PlatformView.PackStart((Gtk.Widget)child.ToPlatform(MauiContext), false, false, 20);
+
+				// PlatformView.PackStart((Gtk.Widget)child.ToPlatform(MauiContext), false, false, 20);
+				int col = VirtualView.GetColumn(child);
+				int row = VirtualView.GetRow(child);
+				int colSpan = VirtualView.GetColumnSpan(child);
+				int rowSpan = VirtualView.GetRowSpan(child);
+				var widget = (Gtk.Widget)child.ToPlatform(MauiContext);
+				if (colWidth != null && rowHeight != null)
+				{
+					var colWide = colWidth[col];
+					var rowHigh = rowHeight[row];
+					if ((VirtualView.ColumnDefinitions.Count > col)
+						&& ((VirtualView.ColumnDefinitions[col].Width.GridUnitType == GridUnitType.Auto)
+							|| (VirtualView.ColumnDefinitions[col].Width.GridUnitType == GridUnitType.Star)))
+					{
+						widget.Hexpand = true;
+					}
+					else
+					{
+						widget.WidthRequest = colWide;
+					}
+
+					if ((VirtualView.RowDefinitions.Count > row)
+						&& ((VirtualView.RowDefinitions[row].Height.GridUnitType == GridUnitType.Auto)
+							|| (VirtualView.RowDefinitions[row].Height.GridUnitType == GridUnitType.Star)))
+					{
+						widget.Vexpand = true;
+					}
+					else
+					{
+						widget.HeightRequest = rowHigh;
+					}
+				}
+				PlatformView.Attach(widget, col, row, colSpan, rowSpan);
 			}
 		}
 
@@ -63,7 +136,7 @@ namespace Microsoft.Maui.Handlers
 			}
 		}
 
-		void Clear(Gtk.Box platformView)
+		void Clear(Gtk.Grid platformView)
 		{
 			//platformView.RemoveAllViews();
 		}
@@ -104,7 +177,7 @@ namespace Microsoft.Maui.Handlers
 			EnsureZIndexOrder(child);
 		}
 
-		protected override void DisconnectHandler(Gtk.Box platformView)
+		protected override void DisconnectHandler(Gtk.Grid platformView)
 		{
 			// If we're being disconnected from the xplat element, then we should no longer be managing its chidren
 			Clear(platformView);
@@ -177,6 +250,8 @@ namespace Microsoft.Maui.Handlers
 
 		public GridHandler() : base(Mapper, CommandMapper)
 		{
+			colWidth = null;
+			rowHeight = null;
 		}
 
 		public GridHandler(IPropertyMapper? mapper = null, CommandMapper? commandMapper = null)
@@ -185,7 +260,7 @@ namespace Microsoft.Maui.Handlers
 
 		}
 
-		ILayout IGridHandler.VirtualView => VirtualView;
+		IGridLayout IGridHandler.VirtualView => VirtualView;
 
 		System.Object IGridHandler.PlatformView => PlatformView;
 

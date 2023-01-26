@@ -2,7 +2,7 @@
 {
 	public interface IGridHandler : IViewHandler
 	{
-		new ILayout VirtualView { get; }
+		new IGridLayout VirtualView { get; }
 		new System.Object PlatformView { get; }
 
 		void Add(IView view);
