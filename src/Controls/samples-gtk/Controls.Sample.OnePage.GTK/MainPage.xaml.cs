@@ -110,7 +110,6 @@ namespace Maui.Controls.Sample.OnePage.GTK
 			//}
 
 			Console.WriteLine("Image Button " + count3.ToString("D") + " Clicked");
-
 		}
 
 		private void HideButtonWithImage()

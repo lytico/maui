@@ -7,18 +7,30 @@ namespace Microsoft.Maui.Platform
 	{
 		EventBox _box;
 		IBorderStroke? _clip;
+		Widget? _child;
 
 		public ContentViewGroup()
 		{
+			_child = null;
 			_box = new EventBox();
 			//Add(_fixed);
 		}
 
 		public void AddChild(System.Object widget)
 		{
-			_box.Add((Gtk.Widget)widget);
+			_child = (Gtk.Widget) widget;
+			_box.Add(_child);
 			//_box.Put((Gtk.Widget)widget, 0, 0);
 			//_fixed.Add((Gtk.Widget)widget);
+		}
+
+		public void RemoveChild()
+		{
+			if (_child != null)
+			{
+				_box.Remove(_child);
+				_child = null;
+			}
 		}
 
 		public Gtk.EventBox GetView()

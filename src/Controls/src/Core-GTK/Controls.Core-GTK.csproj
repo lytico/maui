@@ -196,7 +196,6 @@
     <Compile Include="..\Core\HandlerImpl\Line.Impl.cs" Link="HandlerImpl\Line.Impl.cs" />
     <Compile Include="..\Core\HandlerImpl\NavigationPage\NavigationPage.cs" Link="HandlerImpl\NavigationPage\NavigationPage.cs" />
     <Compile Include="..\Core\HandlerImpl\NavigationPage\NavigationPage.Impl.cs" Link="HandlerImpl\NavigationPage\NavigationPage.Impl.cs" />
-    <Compile Include="..\Core\HandlerImpl\NavigationPage\NavigationPage.Legacy.cs" Link="HandlerImpl\NavigationPage\NavigationPage.Legacy.cs" />
     <Compile Include="..\Core\HandlerImpl\Page.Impl.cs" Link="HandlerImpl\Page.Impl.cs" />
     <Compile Include="..\Core\HandlerImpl\Path.Impl.cs" Link="HandlerImpl\Path.Impl.cs" />
     <Compile Include="..\Core\HandlerImpl\Picker\Picker.cs" Link="HandlerImpl\Picker\Picker.cs" />

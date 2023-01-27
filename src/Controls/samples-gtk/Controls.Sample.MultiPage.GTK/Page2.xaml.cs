@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
+using System.Diagnostics.Metrics;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Maui;
 using Microsoft.Maui.Controls;
@@ -13,6 +14,13 @@ namespace Maui.Controls.Sample.MultiPage.GTK
 		public Page2()
 		{
 			InitializeComponent();
+		}
+
+		private async void Button_Clicked(object sender, EventArgs e)
+		{
+			Console.WriteLine("Button_Clicked");
+			// await Navigation.PushAsync(new Page2());
+			await Navigation.PopAsync();
 		}
 	}
 }

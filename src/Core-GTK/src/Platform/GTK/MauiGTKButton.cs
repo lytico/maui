@@ -374,6 +374,8 @@ namespace Microsoft.Maui.Platform.GTK
 				_imageAndLabelBox.HeightRequest = (int)_view.Height;
 			}
 			_eventBox.Add(_imageAndLabelBox);
+			_eventBox.Show();
+			_imageAndLabelBox.Show();
 
 			if (string.IsNullOrEmpty(_label) && !string.IsNullOrEmpty(_resFileId)) {
 				// We don't have a label but we do have an image
@@ -419,6 +421,8 @@ namespace Microsoft.Maui.Platform.GTK
 				} else {
 					_imageAndLabelBox.PackStart(_localLabel, false, false, 0);
 				}
+
+				_localLabel.Show();
 			}
 		}
 

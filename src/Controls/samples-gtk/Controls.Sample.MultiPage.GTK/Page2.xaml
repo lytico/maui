@@ -4,11 +4,25 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     x:Class="Maui.Controls.Sample.MultiPage.GTK.Page2"
     WidthRequest="600" HeightRequest="600" >
-    <ContentPage.Content>
-        <StackLayout>
+    <ScrollView>
+        <VerticalStackLayout
+            Spacing="25"
+            Padding="30,0"
+            HeightRequest="800"
+            VerticalOptions="Center">
+
             <Label Text="Welcome to Xamarin.Forms!"
                 VerticalOptions="CenterAndExpand" 
                 HorizontalOptions="CenterAndExpand" />
-        </StackLayout>
-    </ContentPage.Content>
+
+            <Button
+                Text="Back"
+                Clicked="Button_Clicked"
+                BackgroundColor="#512BD4"
+                FontSize="18"
+                TextColor="#FFFFFF"
+                HorizontalOptions="Center" />
+
+        </VerticalStackLayout>
+    </ScrollView>
 </ContentPage>
