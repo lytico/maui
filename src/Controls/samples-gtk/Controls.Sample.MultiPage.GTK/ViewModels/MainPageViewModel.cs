@@ -12,6 +12,7 @@ using Prism.Services;
 using Prism.Commands;
 using Microsoft.Maui.Controls;
 using Prism.Navigation.Xaml;
+using System.Windows.Input;
 
 namespace Maui.Controls.Sample.MultiPage.GTK.ViewModels
 {
@@ -46,6 +47,33 @@ namespace Maui.Controls.Sample.MultiPage.GTK.ViewModels
 			SelectedDialog = AvailableDialogs.FirstOrDefault();
 			ShowDialog = new DelegateCommand(OnShowDialogCommand, () => !string.IsNullOrEmpty(SelectedDialog))
 				.ObservesProperty(() => SelectedDialog);
+
+			// Button 1
+			this.CounterClickedCommand = new DelegateCommand<object>(this.OnCounterClicked, this.OnCounterCanSubmit);
+			this.ButtonText = "Click Me";
+
+			// Button 2
+			this.Counter2ClickedCommand = new DelegateCommand<object>(this.OnCounter2Clicked, this.OnCounter2CanSubmit);
+			this.Button2Text = "Clicked 1 time";
+
+			// Button 2 Image
+			this.CounterBtn2ImageVisible = true;
+
+			// Button 3
+			this.Counter3ClickedCommand = new DelegateCommand<object>(this.OnCounter3Clicked, this.OnCounter3CanSubmit);
+
+			// Button 4
+			this.Button4ClickedCommand = new DelegateCommand<object>(this.OnButton4Clicked, this.OnButton4CanSubmit);
+
+			// Radio Button 1
+			this.RadioBtnOneIsChecked = true;
+			this.RadioButton1ChangedCommand = new DelegateCommand<object>(this.RadioButton_CheckedChanged, this.RadioButton_CheckedChangedCanSubmit);
+
+			// Radio Button 3
+			this.RadioBtnThreeIsChecked = true;
+
+			// Radio Button 5
+			this.RadioBtnFiveIsChecked = true;
 		}
 
 		public IEnumerable<string> AvailableDialogs { get; }
@@ -61,6 +89,20 @@ namespace Maui.Controls.Sample.MultiPage.GTK.ViewModels
 			set => SetProperty(ref _selectedDialog, value);
 		}
 
+		public string ButtonText { get; private set; }
+
+		public bool CounterBtn2Visible { get; private set; }
+
+		public string Button2Text { get; private set; }
+
+		public bool CounterBtn2ImageVisible { get; private set; }
+
+		public bool RadioBtnOneIsChecked { get; set; }
+
+		public bool RadioBtnThreeIsChecked { get; set; }
+
+		public bool RadioBtnFiveIsChecked { get; set; }
+
 		public ObservableCollection<string> Messages { get; }
 
 		public DelegateCommand<string> NavigateCommand { get; }
@@ -68,6 +110,16 @@ namespace Maui.Controls.Sample.MultiPage.GTK.ViewModels
 		public DelegateCommand ShowPageDialog { get; }
 
 		public DelegateCommand ShowDialog { get; }
+
+		public ICommand CounterClickedCommand { get; private set; }
+
+		public ICommand Counter2ClickedCommand { get; private set; }
+
+		public ICommand Counter3ClickedCommand { get; private set; }
+
+		public ICommand Button4ClickedCommand { get; private set; }
+
+		public ICommand RadioButton1ChangedCommand { get; private set; }
 
 		private void OnNavigateCommandExecuted(string uri)
 		{
@@ -132,31 +184,37 @@ namespace Maui.Controls.Sample.MultiPage.GTK.ViewModels
 			Microsoft.Maui.ApplicationModel.MainThread.BeginInvokeOnMainThread(() =>
 			{
 				//Update view here
-				CounterBtn2.IsVisible = false;
+				// CounterBtn2.IsVisible = false;
+				CounterBtn2Visible = false;
 				Console.WriteLine("Button 2 made invisible");
 			});
 		}
 
-		private void OnCounterClicked(object sender, EventArgs e)
+		private void OnCounterClicked(object arg)
 		{
 			count++;
 
 			if (count == 1)
-				CounterBtn.Text = $"Clicked {count} time";
+				ButtonText = $"Clicked {count} time";
 			else
-				CounterBtn.Text = $"Clicked {count} times";
+				ButtonText = $"Clicked {count} times";
 
-			if (RadioBtnOne.IsChecked)
+			if (this.RadioBtnOneIsChecked)
 			{
-				Console.WriteLine("Button 1 " + CounterBtn.Text + " radio button \"One\" is selected");
+				Console.WriteLine("Button 1 " + ButtonText + " radio button \"One\" is selected");
 			}
 			else
 			{
-				Console.WriteLine("Button 1 " + CounterBtn.Text + " radio button \"Two\" is selected");
+				Console.WriteLine("Button 1 " + ButtonText + " radio button \"Two\" is selected");
 			}
 		}
 
-		private void OnCounter2Clicked(object sender, EventArgs e)
+		private bool OnCounterCanSubmit(object arg)
+		{
+			return true;
+		}
+
+		private void OnCounter2Clicked(object arg)
 		{
 			count2++;
 
@@ -164,7 +222,7 @@ namespace Maui.Controls.Sample.MultiPage.GTK.ViewModels
 			{
 				// Console.WriteLine("Count2 = 1");
 
-				CounterBtn2.IsVisible = true;
+				CounterBtn2Visible = true;
 
 				var timer = Application.Current.Dispatcher.CreateTimer();
 				timer.Interval = TimeSpan.FromMilliseconds(300);
@@ -176,15 +234,20 @@ namespace Maui.Controls.Sample.MultiPage.GTK.ViewModels
 			{
 				// Console.WriteLine("Count2 > 1");
 
-				CounterBtn2.IsVisible = true;
-				CounterBtn2Image.IsVisible = false;
-				CounterBtn2.Text = $"Clicked {count2} times";
+				CounterBtn2Visible = true;
+				CounterBtn2ImageVisible = false;
+				Button2Text = $"Clicked {count2} times";
 			}
 
-			Console.WriteLine("Button 2 " + CounterBtn2.Text + " Clicked");
+			Console.WriteLine("Button 2 " + Button2Text + " Clicked");
 		}
 
-		private void OnCounter3Clicked(object sender, EventArgs e)
+		private bool OnCounter2CanSubmit(object arg)
+		{
+			return true;
+		}
+
+		private void OnCounter3Clicked(object arg)
 		{
 			count3++;
 
@@ -204,7 +267,12 @@ namespace Maui.Controls.Sample.MultiPage.GTK.ViewModels
 			Console.WriteLine("Image Button " + count3.ToString("D") + " Clicked");
 		}
 
-		private async void OnButton4Clicked(object sender, EventArgs e)
+		private bool OnCounter3CanSubmit(object arg)
+		{
+			return true;
+		}
+
+		private async void OnButton4Clicked(object arg)
 		{
 			count3++;
 
@@ -222,14 +290,20 @@ namespace Maui.Controls.Sample.MultiPage.GTK.ViewModels
 			//}
 
 			Console.WriteLine("OnButton4Clicked");
-			await Navigation.PushAsync(new Page2());
+			// await Navigation.PushAsync(new Page2());
+			await _navigationService.NavigateAsync("Page2");
+		}
+
+		private bool OnButton4CanSubmit(object arg)
+		{
+			return true;
 		}
 
 		private void HideButtonWithImage()
 		{
 			Microsoft.Maui.ApplicationModel.MainThread.BeginInvokeOnMainThread(() =>
 			{
-				CounterBtn2Image.IsVisible = false;
+				CounterBtn2ImageVisible = false;
 				//CounterBtn2.Text = $"Clicked {count2} time";
 				Console.WriteLine("Hiding CounterBtn2Image");
 			});
@@ -256,37 +330,17 @@ namespace Maui.Controls.Sample.MultiPage.GTK.ViewModels
 			}
 		}
 
-		private void RadioButton_CheckedChanged(object sender, CheckedChangedEventArgs e)
+		private void RadioButton_CheckedChanged(object arg)
 		{
-			bool isChecked = false;
-			string groupName = string.Empty;
-			string valueName = string.Empty;
-
-			if (sender is RadioButton radioButton)
+			if (RadioBtnOneIsChecked || RadioBtnThreeIsChecked || RadioBtnFiveIsChecked)
 			{
-				groupName = radioButton.GroupName;
-				if (radioButton.Value != null)
-				{
-					valueName = radioButton.Value as string;
-				}
-				else
-				{
-					valueName = "NULL";
-				}
-				if (radioButton.IsChecked == true)
-				{
-					isChecked = true;
-				}
+				Console.WriteLine("RadioButton_CheckedChanged SELECTED in group: \"" + arg);
 			}
+		}
 
-			if (isChecked)
-			{
-				Console.WriteLine("RadioButton_CheckedChanged SELECTED in group: \"" + groupName + "\" with name: \"" + valueName + "\"");
-			}
-			//else
-			//{
-			//	Console.WriteLine("RadioButton_CheckedChanged NOT CHECKED in group: " + groupName + " with name: " + valueName);
-			//}
+		private bool RadioButton_CheckedChangedCanSubmit(object arg)
+		{
+			return true;
 		}
 	}
 }

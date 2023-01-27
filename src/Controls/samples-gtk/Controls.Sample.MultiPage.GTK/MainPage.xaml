@@ -27,39 +27,41 @@
             <Button
                 x:Name="CounterBtn"
                 SemanticProperties.Hint="Counts the number of times you click"
-                Clicked="OnCounterClicked"
+                Command="{Binding Path=CounterClickedCommand}"
                 BackgroundColor="#512BD4"
-                Text="Click Me"
+                Text="{Binding ButtonText}"
                 FontSize="18"
                 TextColor="#FFFFFF"
                 HorizontalOptions="Center" />
 
             <Button
                 x:Name="CounterBtn2"
+                IsVisible="{Binding CounterBtn2Visible}"
                 SemanticProperties.Hint="Counts the number of times you click"
-                Clicked="OnCounter2Clicked"
+                Command="{Binding Path=Counter2ClickedCommand}"
                 BackgroundColor="#512BD4"
-                Text="Clicked 1 time"
+                Text="{Binding Button2Text}"
                 FontSize="18"
                 TextColor="#FFFFFF"
                 HorizontalOptions="Center" />
 
             <Button
                 x:Name="CounterBtn2Image"
-                Clicked="OnCounter2Clicked"
+                Command="{Binding Path=OnCounter2ClickedCommand}"
+                IsVisible="{Binding CounterBtn2ImageVisible}"
                 ImageSource="click_me.gif"
                 HorizontalOptions="Center" />
             
             <ImageButton
                 x:Name="CounterBtn3Image"
-                Clicked="OnCounter3Clicked"
+                Command="{Binding Path=Counter3ClickedCommand}"
                 Source="click_me.gif"
                 HorizontalOptions="Center" />
 
             <Button
                 x:Name="Button4"
                 Text="Go To Page2"
-                Clicked="OnButton4Clicked"
+                Command="{Binding Path=OnButton4ClickedCommand}"
                 HorizontalOptions="Center" />
 
             <Button
@@ -92,14 +94,14 @@
                 <CheckBox CheckedChanged="CheckBox_CheckedChanged" />
             </HorizontalStackLayout>
 
-            <RadioButton x:Name="RadioBtnOne" CheckedChanged="RadioButton_CheckedChanged" Value="One" IsChecked="True" GroupName="Start" />
-            <RadioButton CheckedChanged="RadioButton_CheckedChanged" Value="Two" GroupName="Start" />
+            <RadioButton x:Name="RadioBtnOne" Command="{Binding RadioButton1ChangedCommand}" CommandParameter="Start with name: One" Value="One" IsChecked="{Binding RadioBtnOneIsChecked}" GroupName="Start" />
+            <RadioButton Value="Two" GroupName="Start" Command="{Binding RadioButton1ChangedCommand}" CommandParameter="Start with name: Two" />
 
-            <RadioButton x:Name="RadioBtnThree" CheckedChanged="RadioButton_CheckedChanged" Value="Three" IsChecked="True" GroupName="Three" />
-            <RadioButton CheckedChanged="RadioButton_CheckedChanged" Value="Four" GroupName="Three" />
+            <RadioButton x:Name="RadioBtnThree" Command="{Binding RadioButton1ChangedCommand}" CommandParameter="Three with name: Three" Value="Three" IsChecked="{Binding RadioBtnThreeIsChecked}" GroupName="Three" />
+            <RadioButton Value="Four" GroupName="Three" Command="{Binding RadioButton1ChangedCommand}" CommandParameter="Three with name: Four" />
 
-            <RadioButton x:Name="RadioBtnFive" CheckedChanged="RadioButton_CheckedChanged" Value="Five" IsChecked="True" />
-            <RadioButton CheckedChanged="RadioButton_CheckedChanged" Value="Six" />
+            <RadioButton x:Name="RadioBtnFive" Command="{Binding RadioButton1ChangedCommand}" CommandParameter=" with name: Five" Value="Five" IsChecked="{Binding RadioBtnFiveIsChecked}" />
+            <RadioButton Value="Six" Command="{Binding RadioButton1ChangedCommand}" CommandParameter=" with name: Six" />
 
             <Grid>
                 <Grid.RowDefinitions>

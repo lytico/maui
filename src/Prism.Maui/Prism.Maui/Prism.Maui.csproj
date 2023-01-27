@@ -1,15 +1,32 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <OutputType>Exe</OutputType>
-    <TargetFrameworks>net6.0-windows10.0.19041.0;net6.0-windows10.0.20348.0</TargetFrameworks>
-    <!-- <UseWindowsForms>true</UseWindowsForms> -->
-    <ImplicitUsings>enable</ImplicitUsings>
-    <Platforms>AnyCPU;x86</Platforms>
+	<TargetFramework>netstandard2.0</TargetFramework>
+    <RootNamespace>Prism</RootNamespace>
+    <ImplicitUsings>true</ImplicitUsings>
+	<LangVersion>10.0</LangVersion>
   </PropertyGroup>
-  
+
   <ItemGroup>
-    <PackageReference Include="Microsoft.Extensions.DependencyInjection" />
+    <PackageReference Include="Prism.Core" Version="8.1.97" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <InternalsVisibleTo Include="Prism.Maui.Tests" />
+    <InternalsVisibleTo Include="Prism.DryIoc.Maui.Tests" />
+    <None Include="build\*.targets" Pack="True" PackagePath="buildTransitive" />
+    <Compile Update="Properties\Resources.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Update="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
   </ItemGroup>
 
   <ItemDefinitionGroup>
@@ -25,19 +42,15 @@
 	<AvailableItemName Include="MauiCss" />
   </ItemGroup>
 
-
   <ItemGroup>
-    <ProjectReference Include="..\..\..\Core-GTK\src\Core-GTK.csproj" />
-    <ProjectReference Include="..\..\..\Prism.Maui\Prism.DryIoc.Maui\Prism.DryIoc.Maui.csproj" />
-    <ProjectReference Include="..\..\..\Prism.Maui\Prism.Maui.Rx\Prism.Maui.Rx.csproj" />
-    <ProjectReference Include="..\..\..\Prism.Maui\Prism.Maui\Prism.Maui.csproj" />
-    <ProjectReference Include="..\..\src\Build.Tasks-GTK\Controls.Build.Tasks-GTK.csproj" />
-    <ProjectReference Include="..\..\src\Core-GTK\Controls.Core-GTK.csproj" />
-	<ProjectReference Include="..\..\..\Controls\src\SourceGen-GTK\Controls.SourceGen-GTK.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
-	<ProjectReference Include="..\..\src\Xaml-GTK\Controls.Xaml-GTK.csproj" />
+    <ProjectReference Include="..\..\Controls\src\Core-GTK\Controls.Core-GTK.csproj" />
+    <ProjectReference Include="..\..\Controls\src\Build.Tasks-GTK\Controls.Build.Tasks-GTK.csproj" />
+    <ProjectReference Include="..\..\Controls\src\Xaml-GTK\Controls.Xaml-GTK.csproj" />
+    <ProjectReference Include="..\..\Controls\src\SourceGen-GTK\Controls.SourceGen-GTK.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
+    <ProjectReference Include="..\..\Core-GTK\src\Core-GTK.csproj" />
   </ItemGroup>
 
-  <UsingTask TaskName="Microsoft.Maui.Controls.Build.Tasks.XamlCTask" AssemblyFile="..\..\src\Build.Tasks-GTK\bin\Debug\netstandard2.0\Microsoft.Maui.Controls.Build.Tasks-GTK.dll" />
+  <UsingTask TaskName="Microsoft.Maui.Controls.Build.Tasks.XamlCTask" AssemblyFile="..\..\..\maui\src\Controls\Build.Tasks-GTK\bin\Debug\netstandard2.0\Microsoft.Maui.Controls.Build.Tasks-GTK.dll" />
 
   <!-- Inject MauiXaml and MauiCss as AdditionalFiles for partial type generation-->
   <Target Name="_MauiInjectXamlCssAdditionalFiles" BeforeTargets="GenerateMSBuildEditorConfigFileShouldRun" DependsOnTargets="$(CreateManifestResourceNamesDependsOn)">
@@ -95,38 +108,6 @@
 			XamlC;
 		</CompileDependsOn>
 	</PropertyGroup>
-	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net6.0-windows10.0.19041.0|AnyCPU'">
-	  <TreatWarningsAsErrors>False</TreatWarningsAsErrors>
-	  <NoWarn>1701;1702;2002</NoWarn>
-	</PropertyGroup>
-	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net6.0-windows10.0.19041.0|AnyCPU'">
-	  <TreatWarningsAsErrors>False</TreatWarningsAsErrors>
-	  <NoWarn>1701;1702;2002</NoWarn>
-	</PropertyGroup>
-	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net6.0-windows10.0.19041.0|x86'">
-	  <TreatWarningsAsErrors>False</TreatWarningsAsErrors>
-	  <NoWarn>1701;1702;2002</NoWarn>
-	</PropertyGroup>
-	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net6.0-windows10.0.19041.0|x86'">
-	  <TreatWarningsAsErrors>False</TreatWarningsAsErrors>
-	  <NoWarn>1701;1702;2002</NoWarn>
-	</PropertyGroup>
-	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net6.0-windows10.0.20348.0|AnyCPU'">
-	  <TreatWarningsAsErrors>False</TreatWarningsAsErrors>
-	  <NoWarn>1701;1702;2002</NoWarn>
-	</PropertyGroup>
-	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net6.0-windows10.0.20348.0|AnyCPU'">
-	  <TreatWarningsAsErrors>False</TreatWarningsAsErrors>
-	  <NoWarn>1701;1702;2002</NoWarn>
-	</PropertyGroup>
-	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net6.0-windows10.0.20348.0|x86'">
-	  <TreatWarningsAsErrors>False</TreatWarningsAsErrors>
-	  <NoWarn>1701;1702;2002</NoWarn>
-	</PropertyGroup>
-	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net6.0-windows10.0.20348.0|x86'">
-	  <TreatWarningsAsErrors>False</TreatWarningsAsErrors>
-	  <NoWarn>1701;1702;2002</NoWarn>
-	</PropertyGroup>
 
 	<Target Name="XamlC" AfterTargets="AfterCompile" Inputs="$(IntermediateOutputPath)$(TargetFileName)-GTK" Outputs="$(IntermediateOutputPath)XamlC.stamp" Condition=" '$(DesignTimeBuild)' != 'True' AND '@(MauiXaml)' != ''">
 	    <PropertyGroup>
@@ -140,11 +121,4 @@
 			<FileWrites Include="$(IntermediateOutputPath)XamlC.stamp" />
 		</ItemGroup>
 	</Target>
-
-  <ItemGroup>
-    <EmbeddedResource Include="click_me.gif">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </EmbeddedResource>
-  </ItemGroup>
-
-  </Project>
+</Project>

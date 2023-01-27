@@ -1,3 +1,0 @@
-<Project>
-  <Import Project="..\src\Prism.Maui\build\Prism.Maui.targets" />
-</Project>
