@@ -209,17 +209,17 @@ namespace Microsoft.Maui.Platform.GTK
 		}
 
 		private void Initialize(string label, string resFileId) {
-			_defaultBackgroundColor = new Gdk.Color(0x56, 0x2F, 0xD9); // #562FD9
-			_defaultBorderColor = new Gdk.Color(0x26, 0x0F, 0xC9);
-			//_defaultBackgroundColor = new Gdk.Color(0x80, 0x80, 0x80); // #562FD9
-			//_defaultBorderColor = new Gdk.Color(0x80, 0x80, 0x80);
+			//_defaultBackgroundColor = new Gdk.Color(0x56, 0x2F, 0xD9); // #562FD9
+			//_defaultBorderColor = new Gdk.Color(0x26, 0x0F, 0xC9);
+			_defaultBackgroundColor = new Gdk.Color(0x80, 0x80, 0x80); // #562FD9
+			_defaultBorderColor = new Gdk.Color(0x80, 0x80, 0x80);
 			BackgroundColor = _defaultBackgroundColor;
 			BorderColor = _defaultBorderColor;
 			//_offsetXSet = false;
 			//_offsetX = 0;
 
-			FontSize = 24;
-			FontColor = new Gdk.Color(0xFF, 0xFF, 0xFF);
+			//FontSize = 12;
+			//FontColor = new Gdk.Color(0, 0, 0);
 
 			_resFileId = resFileId;
 			_label = label;

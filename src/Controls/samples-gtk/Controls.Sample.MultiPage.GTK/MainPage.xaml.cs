@@ -92,7 +92,7 @@ namespace Maui.Controls.Sample.MultiPage.GTK
 			Console.WriteLine("Button 2 " + CounterBtn2.Text + " Clicked");
 		}
 
-		private async void OnCounter3Clicked(object sender, EventArgs e)
+		private void OnCounter3Clicked(object sender, EventArgs e)
 		{
 			count3++;
 
@@ -110,6 +110,26 @@ namespace Maui.Controls.Sample.MultiPage.GTK
 			//}
 
 			Console.WriteLine("Image Button " + count3.ToString("D") + " Clicked");
+		}
+
+		private async void OnButton4Clicked(object sender, EventArgs e)
+		{
+			count3++;
+
+			//if (count3 == 1)
+			//{
+			//	// Console.WriteLine("Count2 = 1");
+
+			//	CounterBtn3Image.Text = $"Clicked {count3} time";
+			//}
+			//else
+			//{
+			//	// Console.WriteLine("Count2 > 1");
+
+			//	CounterBtn3Image.Text = $"Clicked {count2} times";
+			//}
+
+			Console.WriteLine("OnButton4Clicked");
 			await Navigation.PushAsync(new Page2());
 		}
 

@@ -56,6 +56,12 @@
                 Source="click_me.gif"
                 HorizontalOptions="Center" />
 
+            <Button
+                x:Name="Button4"
+                Text="Go To Page2"
+                Clicked="OnButton4Clicked"
+                HorizontalOptions="Center" />
+
             <Entry
                 x:Name="EntryBox1"
                 HorizontalOptions="Center"
