@@ -22,5 +22,59 @@ namespace Maui.Controls.Sample.MultiPage.GTK
 			// await Navigation.PushAsync(new Page2());
 			await Navigation.PopAsync();
 		}
+
+		private void CheckBox_CheckedChanged(object sender, CheckedChangedEventArgs e)
+		{
+			bool isChecked = false;
+			if (sender is CheckBox checkBox)
+			{
+				if (checkBox.IsChecked == true)
+				{
+					isChecked = true;
+				}
+			}
+
+			if (isChecked)
+			{
+				Console.WriteLine("CheckBox_CheckedChanged CHECKED");
+			}
+			else
+			{
+				Console.WriteLine("CheckBox_CheckedChanged NOT CHECKED");
+			}
+		}
+
+		private void RadioButton_CheckedChanged(object sender, CheckedChangedEventArgs e)
+		{
+			bool isChecked = false;
+			string groupName = string.Empty;
+			string valueName = string.Empty;
+
+			if (sender is RadioButton radioButton)
+			{
+				groupName = radioButton.GroupName;
+				if (radioButton.Value != null)
+				{
+					valueName = radioButton.Value as string;
+				}
+				else
+				{
+					valueName = "NULL";
+				}
+				if (radioButton.IsChecked == true)
+				{
+					isChecked = true;
+				}
+			}
+
+			if (isChecked)
+			{
+				Console.WriteLine("RadioButton_CheckedChanged SELECTED in group: \"" + groupName + "\" with name: \"" + valueName + "\"");
+			}
+			//else
+			//{
+			//	Console.WriteLine("RadioButton_CheckedChanged NOT CHECKED in group: " + groupName + " with name: " + valueName);
+			//}
+		}
 	}
 }

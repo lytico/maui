@@ -7,6 +7,7 @@
 			var plat = new MauiView();
 			plat.AddChildWidget(new Gtk.ProgressBar());
 
+			plat.Show();
 			return plat;
 		}
 

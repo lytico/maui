@@ -28,6 +28,9 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\..\Core-GTK\src\Core-GTK.csproj" />
+    <ProjectReference Include="..\..\..\Prism.Maui\src\Prism.DryIoc.Maui\Prism.DryIoc.Maui.csproj" />
+    <ProjectReference Include="..\..\..\Prism.Maui\src\Prism.Maui.Rx\Prism.Maui.Rx.csproj" />
+    <ProjectReference Include="..\..\..\Prism.Maui\src\Prism.Maui\Prism.Maui.csproj" />
     <ProjectReference Include="..\..\src\Build.Tasks-GTK\Controls.Build.Tasks-GTK.csproj" />
     <ProjectReference Include="..\..\src\Core-GTK\Controls.Core-GTK.csproj" />
 	<ProjectReference Include="..\..\..\Controls\src\SourceGen-GTK\Controls.SourceGen-GTK.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />

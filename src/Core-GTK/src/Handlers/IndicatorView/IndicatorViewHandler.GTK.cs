@@ -6,7 +6,10 @@ namespace Microsoft.Maui.Handlers
 	{
 		protected override MauiPageControl CreatePlatformView(IView indicator)
 		{
-			return new MauiPageControl();
+			var view =  new MauiPageControl();
+			view.Show();
+			return view;
+
 		}
 
 		//private protected override void OnConnectHandler(MauiView platformView)

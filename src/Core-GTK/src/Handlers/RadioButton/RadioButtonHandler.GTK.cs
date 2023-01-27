@@ -70,6 +70,7 @@ namespace Microsoft.Maui.Handlers
 			Gtk.Widget widget = plat;
 			SetMargins(radioButtonView, ref widget);
 
+			plat.ShowAll();
 			return plat;
 		}
 

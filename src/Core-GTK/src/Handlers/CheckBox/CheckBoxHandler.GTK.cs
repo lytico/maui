@@ -15,6 +15,9 @@ namespace Microsoft.Maui.Handlers
 
 			plat.AddChildWidget(platformCheckBox);
 
+			platformCheckBox.Show();
+			plat.Show();
+
 			return plat;
 		}
 

@@ -60,6 +60,8 @@ namespace Microsoft.Maui.Handlers
 			Gtk.Widget widget = view;
 			SetMargins(layout, ref widget);
 
+			view.ShowAll();
+
 			return view;
 		}
 

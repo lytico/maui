@@ -11,6 +11,8 @@ namespace Microsoft.Maui.Handlers
 			Gtk.Widget widget = imageView;
 			SetMargins(image, ref widget);
 
+			imageView.Show();
+
 			return imageView;
 		}
 

@@ -13,6 +13,7 @@ namespace Microsoft.Maui.Handlers
 			var nativeEntry = new EntryWrapper(entry);
 			Gtk.Widget widget = nativeEntry;
 			SetMargins(entry, ref widget);
+			nativeEntry.Show();
 			return nativeEntry;
 		}
 

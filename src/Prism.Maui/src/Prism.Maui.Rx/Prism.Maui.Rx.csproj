@@ -1,0 +1,110 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+	<TargetFramework>netstandard2.0</TargetFramework>
+	<LangVersion>10.0</LangVersion>
+    <ImplicitUsings>true</ImplicitUsings>
+    <Description>Prism.Maui.Rx is a support package for .NET MAUI developers. This package provides some helpers to access an IObservable for globally handling Navigation Request Results.</Description>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="DryIoc.dll" Version="5.3.1" />
+    <ProjectReference Include="..\..\..\Controls\src\Build.Tasks-GTK\Controls.Build.Tasks-GTK.csproj" />
+    <ProjectReference Include="..\..\..\Controls\src\Core-GTK\Controls.Core-GTK.csproj" />
+    <ProjectReference Include="..\..\..\Controls\src\Xaml-GTK\Controls.Xaml-GTK.csproj" />
+    <ProjectReference Include="..\..\..\Controls\src\SourceGen-GTK\Controls.SourceGen-GTK.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
+    <ProjectReference Include="..\..\..\Core-GTK\src\Core-GTK.csproj" />
+    <ProjectReference Include="..\Prism.Maui\Prism.Maui.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="System.Reactive" Version="5.0.0" />
+  </ItemGroup>
+  <Import Project="..\Prism.DryIoc.Shared\Prism.DryIoc.Shared.projitems" Label="Shared" />
+
+  <ItemDefinitionGroup>
+    <MauiXaml>
+      <SubType>Designer</SubType>
+    </MauiXaml>
+  </ItemDefinitionGroup>
+
+  <ItemGroup>
+    <MauiXaml Include="**\*.xaml" />
+    <MauiCss Include="**\*.css" />
+	<AvailableItemName Include="MauiXaml" />
+	<AvailableItemName Include="MauiCss" />
+  </ItemGroup>
+  
+  <UsingTask TaskName="Microsoft.Maui.Controls.Build.Tasks.XamlCTask" AssemblyFile="..\..\..\maui\src\Controls\Build.Tasks-GTK\bin\Debug\netstandard2.0\Microsoft.Maui.Controls.Build.Tasks-GTK.dll" />
+
+  <!-- Inject MauiXaml and MauiCss as AdditionalFiles for partial type generation-->
+  <Target Name="_MauiInjectXamlCssAdditionalFiles" BeforeTargets="GenerateMSBuildEditorConfigFileShouldRun" DependsOnTargets="$(CreateManifestResourceNamesDependsOn)">
+    <ItemGroup>
+      <_MauiXamlWithResourceNames Remove="@(_MauiXamlWithResourceNames)" />
+      <_MauiXamlWithTargetPath Remove="@(_MauiXamlWithTargetPath)" />
+      <_MauiCssWithResourceNames Remove="@(_MauiCssWithResourceNames)" />
+      <_MauiCssWithTargetPath Remove="@(_MauiCssWithTargetPath)" />
+    </ItemGroup>
+
+    <AssignTargetPath Files="@(MauiXaml)" RootFolder="$(MSBuildProjectDirectory)">
+      <Output TaskParameter="AssignedFiles" ItemName="_MauiXamlWithTargetPath" />
+    </AssignTargetPath>
+
+    <AssignTargetPath Files="@(MauiCss)" RootFolder="$(MSBuildProjectDirectory)">
+      <Output TaskParameter="AssignedFiles" ItemName="_MauiCssWithTargetPath" />
+    </AssignTargetPath>
+
+    <CreateCSharpManifestResourceName ResourceFiles="@(_MauiXamlWithTargetPath -> '%(FullPath)')" RootNamespace="$(RootNamespace)" UseDependentUponConvention="$(EmbeddedResourceUseDependentUponConvention)">
+      <Output TaskParameter="ResourceFilesWithManifestResourceNames" ItemName="_MauiXamlWithResourceNames" />
+    </CreateCSharpManifestResourceName>
+
+    <CreateCSharpManifestResourceName ResourceFiles="@(_MauiCssWithTargetPath -> '%(FullPath)')" RootNamespace="$(RootNamespace)" UseDependentUponConvention="$(EmbeddedResourceUseDependentUponConvention)">
+      <Output TaskParameter="ResourceFilesWithManifestResourceNames" ItemName="_MauiCssWithResourceNames" />
+    </CreateCSharpManifestResourceName>
+    <ItemGroup>
+      <AdditionalFiles Condition="%(_MauiXamlWithResourceNames.TargetPath) != ''" Include="@(_MauiXamlWithResourceNames)" ManifestResourceName="%(_MauiXamlWithResourceNames.ManifestResourceName)" TargetPath="%(_MauiXamlWithResourceNames.TargetPath)" RelativePath="$([MSBuild]::MakeRelative($(MSBuildProjectDirectory), %(_MauiXamlWithResourceNames.TargetPath)))" ItemSpec="%(_MauiXamlWithResourceNames.OriginalItemSpec)" GenKind="Xaml" />
+      <AdditionalFiles Condition="%(_MauiCssWithResourceNames.TargetPath) != ''" Include="@(_MauiCssWithResourceNames)" ManifestResourceName="%(_MauiCssWithResourceNames.ManifestResourceName)" TargetPath="%(_MauiCssWithResourceNames.TargetPath)" RelativePath="$([MSBuild]::MakeRelative($(MSBuildProjectDirectory), %(_MauiCssWithResourceNames.TargetPath)))" ItemSpec="%(_MauiCssWithResourceNames.OriginalItemSpec)" GenKind="Css" />
+      <_MauiXamlWithResourceNames Remove="@(_MauiXamlWithResourceNames)" />
+      <_MauiXamlWithTargetPath Remove="@(_MauiXamlWithTargetPath)" />
+      <_MauiCssWithResourceNames Remove="@(_MauiCssWithResourceNames)" />
+      <_MauiCssWithTargetPath Remove="@(_MauiCssWithTargetPath)" />
+    </ItemGroup>
+  </Target>
+
+
+  <!-- re-add MauiXaml and MauiCss as EmbeddedResources -->
+  <PropertyGroup>
+    <PrepareResourcesDependsOn>
+      _MauiAddXamlEmbeddedResources;
+      $(PrepareResourcesDependsOn);
+    </PrepareResourcesDependsOn>
+  </PropertyGroup>
+  <Target Name="_MauiAddXamlEmbeddedResources">
+    <ItemGroup>
+      <EmbeddedResource Include="@(MauiXaml)" />
+      <EmbeddedResource Include="@(MauiCss)" />
+    </ItemGroup>
+  </Target>
+
+	<!-- XamlC -->
+	<PropertyGroup>
+		<CompileDependsOn>
+			$(CompileDependsOn);
+			XamlC;
+		</CompileDependsOn>
+	</PropertyGroup>
+
+	<Target Name="XamlC" AfterTargets="AfterCompile" Inputs="$(IntermediateOutputPath)$(TargetFileName)-GTK" Outputs="$(IntermediateOutputPath)XamlC.stamp" Condition=" '$(DesignTimeBuild)' != 'True' AND '@(MauiXaml)' != ''">
+	    <PropertyGroup>
+		<_MauiXamlCValidateOnly>$(MauiXamlCValidateOnly)</_MauiXamlCValidateOnly>
+		<_MauiXamlCValidateOnly Condition="'$(Configuration)' != 'Release' AND '$(_MauiForceXamlCForDebug)' != 'True'">True</_MauiXamlCValidateOnly>
+		<_MauiXamlCValidateOnly Condition="'$(BuildingForLiveUnitTesting)' == 'True' ">True</_MauiXamlCValidateOnly>
+	    </PropertyGroup>
+		<XamlCTask Assembly="$(IntermediateOutputPath)$(TargetFileName)-GTK" ReferencePath="@(ReferencePath)" OptimizeIL="true" DebugSymbols="$(DebugSymbols)" DebugType="$(DebugType)" DefaultCompile="true" ValidateOnly="$(_MauiXamlCValidateOnly)" TargetFramework="$(TargetFramework)" KeepXamlResources="$(MauiKeepXamlResources)" />
+		<Touch Files="$(IntermediateOutputPath)XamlC.stamp" AlwaysCreate="True" />
+		<ItemGroup>
+			<FileWrites Include="$(IntermediateOutputPath)XamlC.stamp" />
+		</ItemGroup>
+	</Target>
+
+</Project>

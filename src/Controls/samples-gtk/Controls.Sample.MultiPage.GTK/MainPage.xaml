@@ -62,6 +62,10 @@
                 Clicked="OnButton4Clicked"
                 HorizontalOptions="Center" />
 
+            <Button
+                Text="Test"
+                HorizontalOptions="Center" />
+
             <Entry
                 x:Name="EntryBox1"
                 HorizontalOptions="Center"

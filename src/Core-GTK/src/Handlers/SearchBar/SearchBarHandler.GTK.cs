@@ -1,17 +1,22 @@
-﻿namespace Microsoft.Maui.Handlers
+﻿using Gtk;
+
+namespace Microsoft.Maui.Handlers
 {
 	public partial class SearchBarHandler : ViewHandler<ISearchBar, MauiSearchEntry>
 	{
-		Gtk.Entry? _editText;
+		//Gtk.Entry? _editText;
 
-		public Gtk.Entry? QueryEditor => _editText; 
+		public Gtk.Entry? QueryEditor { get; set; } = null; 
 		
 		protected override MauiSearchEntry CreatePlatformView(IView searchBar)
 		{
-			_editText = new Gtk.Entry();
+			//_editText = new Gtk.Entry();
 
 			var searchView = new MauiSearchEntry(searchBar);
-
+			QueryEditor = searchView.Entry;
+			Gtk.Widget widget = searchView;
+			SetMargins(searchBar, ref widget);
+			searchView.Show();
 			return searchView;
 		}
 

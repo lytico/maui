@@ -1,8 +1,12 @@
-﻿using Microsoft.Maui;
+﻿using Maui.Controls.Sample.MultiPage.GTK.ViewModels;
+using Microsoft.Maui;
 using Microsoft.Maui.Controls;
 using Microsoft.Maui.Controls.Hosting;
 using Microsoft.Maui.Controls.PlatformConfiguration;
 using Microsoft.Maui.Hosting;
+using Prism;
+using Prism.DryIoc;
+using Prism.Ioc;
 
 namespace Maui.Controls.Sample.MultiPage.GTK
 {
@@ -12,6 +16,12 @@ namespace Maui.Controls.Sample.MultiPage.GTK
 			MauiApp
 				.CreateBuilder()
 				.UseMauiApp<App>()
+				.UsePrism(prism =>
+					prism.RegisterTypes(containerRegistry =>
+					{
+						containerRegistry.RegisterForNavigation<MainPage, MainPageViewModel>();
+						containerRegistry.RegisterForNavigation<Page2, Page2ViewModel>();
+					}))
 				.Build();
 	}
 

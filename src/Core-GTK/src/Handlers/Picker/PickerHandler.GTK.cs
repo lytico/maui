@@ -10,6 +10,7 @@ namespace Microsoft.Maui.Handlers
 			var plat = new MauiView();
 			plat.AddChildWidget(new Gtk.ComboBox());
 
+			plat.Show();
 			return plat;
 		}
 

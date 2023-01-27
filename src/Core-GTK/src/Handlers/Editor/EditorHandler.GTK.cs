@@ -18,6 +18,8 @@ namespace Microsoft.Maui.Handlers
 			//editText.SetSingleLine(false);
 			//editText.SetHorizontallyScrolling(false);
 
+			editText.Show();
+
 			return editText;
 		}
 

@@ -10,6 +10,10 @@ namespace Microsoft.Maui.Handlers
 		{
 			_timePicker = new TimePicker();
 
+			Gtk.Widget widget = _timePicker;
+			SetMargins(picker, ref widget);
+
+			_timePicker.Show();
 			return _timePicker;
 		}
 

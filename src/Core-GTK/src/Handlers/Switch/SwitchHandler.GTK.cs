@@ -13,6 +13,7 @@ namespace Microsoft.Maui.Handlers
 			Gtk.Widget widget = aSwitch;
 			SetMargins(switchView, ref widget);
 
+			aSwitch.Show();
 			return aSwitch;
 		}
 

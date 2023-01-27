@@ -13,6 +13,8 @@ namespace Microsoft.Maui.Handlers
 			Gtk.Widget widget = platformView;
 			SetMargins(imageButton, ref widget);
 
+			platformView.Show();
+
 			return platformView;
 		}
 

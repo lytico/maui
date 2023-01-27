@@ -1,5 +1,6 @@
 ﻿using System;
 using Gtk;
+using Microsoft.Maui.Platform;
 
 namespace Microsoft.Maui.Handlers
 {
@@ -18,6 +19,7 @@ namespace Microsoft.Maui.Handlers
 			Gtk.Widget widget = view;
 			SetMargins(layout, ref widget);
 
+			view.Show();
 			return view;
 		}
 

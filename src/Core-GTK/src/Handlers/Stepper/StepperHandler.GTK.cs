@@ -15,6 +15,7 @@ namespace Microsoft.Maui.Handlers
 			Gtk.Widget widget = stepperLayout;
 			SetMargins(stepper, ref widget);
 
+			stepperLayout.Show();
 			return stepperLayout;
 		}
 

@@ -15,6 +15,8 @@ namespace Microsoft.Maui.Handlers
 			Gtk.Widget widget = aSlider;
 			SetMargins(slider, ref widget);
 
+			aSlider.Show();
+
 			return aSlider;
 		}
 

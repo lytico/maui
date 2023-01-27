@@ -23,6 +23,78 @@
                 TextColor="#FFFFFF"
                 HorizontalOptions="Center" />
 
+            <Entry
+                x:Name="EntryBox1"
+                HorizontalOptions="Center"
+                Text="Hello"
+                IsPassword="True"
+                WidthRequest="180" />
+
+            <Entry
+                x:Name="EntryBox2"
+                HorizontalOptions="Center"
+                Text="Hello"
+                WidthRequest="180" />
+
+            <Image
+                x:Name="PlainImage"
+                Source="click_me.gif"
+                HorizontalOptions="Center" WidthRequest="180" />
+
+            <HorizontalStackLayout>
+                <Label
+                    Text="Test a CheckBox: "
+                    FontSize="10" />
+
+                <CheckBox CheckedChanged="CheckBox_CheckedChanged" />
+            </HorizontalStackLayout>
+
+            <RadioButton x:Name="RadioBtnOne" CheckedChanged="RadioButton_CheckedChanged" Value="One" IsChecked="True" GroupName="Start" />
+            <RadioButton CheckedChanged="RadioButton_CheckedChanged" Value="Two" GroupName="Start" />
+
+            <RadioButton x:Name="RadioBtnThree" CheckedChanged="RadioButton_CheckedChanged" Value="Three" IsChecked="True" GroupName="Three" />
+            <RadioButton CheckedChanged="RadioButton_CheckedChanged" Value="Four" GroupName="Three" />
+
+            <RadioButton x:Name="RadioBtnFive" CheckedChanged="RadioButton_CheckedChanged" Value="Five" IsChecked="True" />
+            <RadioButton CheckedChanged="RadioButton_CheckedChanged" Value="Six" />
+
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="60" />
+                    <RowDefinition Height="30" />
+                    <RowDefinition Height="30" />
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="120" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+
+                <Label
+                    Grid.Row="0" Grid.Column="0"
+                    Text="Test an Editor: "
+                    FontSize="10" />
+
+                <Editor
+                    Grid.Row="0" Grid.Column="1"
+                    x:Name="Editor1" Text="Hello from editor" FontSize="14" WidthRequest="180"/>
+                <Label
+                    Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2"
+                    Text="Above is an Editor. This is a span of 2 columns. This gives a long label."
+                    FontSize="14" />
+                <Grid Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2">
+                    <Label
+                    Grid.Row="0" Grid.Column="0"
+                    Text="Test Label 1"
+                    FontSize="10" />
+
+                    <Label
+                    Grid.Row="0" Grid.Column="1"
+                    Text="Test Label 2"
+                    FontSize="10" />
+
+                </Grid>
+            </Grid>
+
         </VerticalStackLayout>
     </ScrollView>
 </ContentPage>
