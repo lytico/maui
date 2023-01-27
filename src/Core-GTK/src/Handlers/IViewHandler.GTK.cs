@@ -5,5 +5,7 @@ namespace Microsoft.Maui
 		new System.Object? PlatformView { get; }
 
 		new System.Object? ContainerView { get; }
+
+		void SetMargins(IView view, ref Gtk.Widget widget);
 	}
 }

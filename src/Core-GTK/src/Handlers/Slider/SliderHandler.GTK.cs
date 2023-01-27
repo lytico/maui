@@ -1,4 +1,5 @@
 using System;
+using Gtk;
 
 namespace Microsoft.Maui.Handlers
 {
@@ -10,7 +11,10 @@ namespace Microsoft.Maui.Handlers
 
 			var aSlider = new MauiSlider(VirtualView.Minimum, VirtualView.Maximum, stepping);
 			aSlider.CustomValueChanged += ASlider_CustomValueChanged;
-			
+
+			Gtk.Widget widget = aSlider;
+			SetMargins(slider, ref widget);
+
 			return aSlider;
 		}
 

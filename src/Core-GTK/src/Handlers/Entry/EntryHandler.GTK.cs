@@ -11,6 +11,8 @@ namespace Microsoft.Maui.Handlers
 		protected override EntryWrapper CreatePlatformView(IView entry)
 		{
 			var nativeEntry = new EntryWrapper(entry);
+			Gtk.Widget widget = nativeEntry;
+			SetMargins(entry, ref widget);
 			return nativeEntry;
 		}
 

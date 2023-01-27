@@ -13,6 +13,8 @@ namespace Microsoft.Maui.Handlers
 		{
 			var editText = new ScrolledTextView();
 
+			Gtk.Widget widget = editText;
+			SetMargins(editor, ref widget);
 			//editText.SetSingleLine(false);
 			//editText.SetHorizontallyScrolling(false);
 

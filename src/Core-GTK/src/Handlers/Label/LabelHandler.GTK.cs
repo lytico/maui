@@ -9,8 +9,8 @@ namespace Microsoft.Maui.Handlers
 		protected override MauiGTKLabel CreatePlatformView(IView label)
 		{
 			var plat = new MauiGTKLabel(label);
-			//plat.AddChildWidget(new Gtk.Label());
-
+			Gtk.Widget widget = plat;
+			SetMargins(label, ref widget);
 			return plat;
 		}
 

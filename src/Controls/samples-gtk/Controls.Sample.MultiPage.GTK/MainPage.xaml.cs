@@ -6,7 +6,7 @@ using Microsoft.Maui;
 using Microsoft.Maui.Controls;
 using Microsoft.Maui.Graphics;
 
-namespace Maui.Controls.Sample.OnePage.GTK
+namespace Maui.Controls.Sample.MultiPage.GTK
 {
 	public partial class MainPage : ContentPage
 	{

@@ -4,7 +4,7 @@ using Microsoft.Maui.Controls.Hosting;
 using Microsoft.Maui.Controls.PlatformConfiguration;
 using Microsoft.Maui.Hosting;
 
-namespace Maui.Controls.Sample.OnePage.GTK
+namespace Maui.Controls.Sample.MultiPage.GTK
 {
 	public static class MauiProgram
 	{
@@ -19,7 +19,10 @@ namespace Maui.Controls.Sample.OnePage.GTK
 	{
 		protected override Window CreateWindow(IActivationState activationState)
 		{
-			return new Window(new MainPage());
+			var navPage = new NavigationPage(new MainPage());
+			navPage.WidthRequest = 600;
+			navPage.HeightRequest = 600;
+			return new Window(navPage);
 		}
 	}
 }

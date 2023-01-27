@@ -14,6 +14,8 @@ namespace Microsoft.Maui.Handlers
 
 			// var viewGroup = new LayoutViewGroup();
 			var view = new Gtk.Box(Gtk.Orientation.Horizontal, 0);
+			Gtk.Widget widget = view;
+			SetMargins(layout, ref widget);
 
 			return view;
 		}

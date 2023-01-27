@@ -13,6 +13,8 @@ namespace Microsoft.Maui.Handlers
 			//var plat = new MauiView();
 			//plat.Add(new Gtk.ScrolledWindow());
 			var scroller = new Gtk.ScrolledWindow();
+			Gtk.Widget widget = scroller;
+			SetMargins(scrollView, ref widget);
 			return scroller;
 		}
 

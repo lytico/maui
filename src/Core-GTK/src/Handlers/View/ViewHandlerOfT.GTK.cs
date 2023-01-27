@@ -1,5 +1,6 @@
 using System;
 using System.Runtime.CompilerServices;
+using Gtk;
 using Microsoft.Maui.Graphics;
 using static Microsoft.Maui.Primitives.Dimension;
 
@@ -12,6 +13,36 @@ namespace Microsoft.Maui.Handlers
 
 		public override Size GetDesiredSize(double widthConstraint, double heightConstraint) =>
 			this.GetDesiredSizeFromHandler(widthConstraint, heightConstraint);
+
+		public void SetMargins(IView view, ref Gtk.Widget widget)
+		{
+			if (view.Margin.Left > 0)
+			{
+				widget.MarginStart = (int)view.Margin.Left;
+			}
+			if (view.Margin.Top > 0)
+			{
+				widget.MarginTop = (int)view.Margin.Top;
+			}
+			if (view.Margin.Right > 0)
+			{
+				widget.MarginEnd = (int)view.Margin.Right;
+			}
+			if (view.Margin.Bottom > 0)
+			{
+				widget.MarginBottom = (int)view.Margin.Bottom;
+			}
+
+			if (view.Width > 0)
+			{
+				widget.WidthRequest = (int)view.Width;
+			}
+
+			if (view.Height > 0)
+			{
+				widget.HeightRequest = (int)view.Height;
+			}
+		}
 
 		protected override void SetupContainer()
 		{

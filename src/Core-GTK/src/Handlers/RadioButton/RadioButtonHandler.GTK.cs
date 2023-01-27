@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using Gtk;
 
 namespace Microsoft.Maui.Handlers
 {
@@ -66,6 +67,8 @@ namespace Microsoft.Maui.Handlers
 					plat.AddChildWidget(platformRadioButton);
 				}
 			}
+			Gtk.Widget widget = plat;
+			SetMargins(radioButtonView, ref widget);
 
 			return plat;
 		}

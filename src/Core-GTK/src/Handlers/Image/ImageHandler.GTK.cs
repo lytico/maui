@@ -8,6 +8,9 @@ namespace Microsoft.Maui.Handlers
 		{
 			var imageView = new MauiImage();
 
+			Gtk.Widget widget = imageView;
+			SetMargins(image, ref widget);
+
 			return imageView;
 		}
 

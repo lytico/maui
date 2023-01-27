@@ -19,6 +19,9 @@ namespace Microsoft.Maui.Handlers
 		{
 			MauiGTKButton platformButton = new MauiGTKButton(button);
 
+			Gtk.Widget widget = platformButton;
+			SetMargins(button, ref widget);
+
 			return platformButton;
 		}
 

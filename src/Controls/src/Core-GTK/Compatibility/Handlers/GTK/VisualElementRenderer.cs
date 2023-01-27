@@ -41,6 +41,26 @@ namespace Microsoft.Maui.Controls.Handlers.Compatibility
 		//	}
 		//}
 
+		public void SetMargins(IView view, ref Gtk.Widget widget)
+		{
+			if (view.Margin.Left > 0)
+			{
+				widget.MarginStart = (int)view.Margin.Left;
+			}
+			if (view.Margin.Top > 0)
+			{
+				widget.MarginTop = (int)view.Margin.Top;
+			}
+			if (view.Margin.Right > 0)
+			{
+				widget.MarginEnd = (int)view.Margin.Right;
+			}
+			if (view.Margin.Bottom > 0)
+			{
+				widget.MarginBottom = (int)view.Margin.Bottom;
+			}
+		}
+
 		static partial void ProcessAutoPackage(Maui.IElement element)
 		{
 			//if (element?.Handler?.PlatformView is not MauiView viewGroup)

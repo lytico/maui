@@ -12,6 +12,9 @@ namespace Microsoft.Maui.Handlers
 			var stepperLayout = new MauiStepper(VirtualView.Minimum, VirtualView.Maximum, stepping);
 			stepperLayout.StepperWidget.ValueChanged += StepperLayout_ValueChanged;
 
+			Gtk.Widget widget = stepperLayout;
+			SetMargins(stepper, ref widget);
+
 			return stepperLayout;
 		}
 

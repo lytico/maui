@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics;
+using Gtk;
 
 namespace Microsoft.Maui.Handlers
 {
@@ -8,6 +9,9 @@ namespace Microsoft.Maui.Handlers
 		{
 			var plat = new MauiView();
 			var platformCheckBox = new Gtk.CheckButton();
+
+			Gtk.Widget widget = platformCheckBox;
+			SetMargins(checkBox, ref widget);
 
 			plat.AddChildWidget(platformCheckBox);
 

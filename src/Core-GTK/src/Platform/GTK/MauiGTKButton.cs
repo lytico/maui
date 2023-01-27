@@ -27,17 +27,30 @@ namespace Microsoft.Maui.Platform.GTK
 		private Gtk.EventBox _eventBox = null!;
 		private string _resFileId = null!;
 		private int _fontSize = 16;
+		private IView? _view;
 
 		public MauiGTKButton() : base(Gtk.Orientation.Horizontal, 0) {
+			_view = null;
 			Initialize(string.Empty, string.Empty);
 		}
 
 		public MauiGTKButton(string label, string resFileId) : base(Gtk.Orientation.Horizontal, 0) {
+			_view = null;
 			Initialize(label, resFileId);
 		}
 
 		public MauiGTKButton(IView button) : base(Gtk.Orientation.Horizontal, 0)
 		{
+			_view = button;
+			if ((_view != null) && (_view.Width > 0))
+			{
+				WidthRequest = (int)_view.Width;
+			}
+			if ((_view != null) && (_view.Height > 0))
+			{
+				HeightRequest = (int)_view.Height;
+			}
+
 			if ((button is ITextButton virtualTextButton) && (button is IImageButton virtualImageButton))
 			{
 				_fontSize = Convert.ToInt32(virtualTextButton.Font.Size);
@@ -238,6 +251,12 @@ namespace Microsoft.Maui.Platform.GTK
 		}
 
 		private void CalculateOffset() {
+			if ((_view != null) && (_view.Height > 0))
+			{
+				_offsetX = Convert.ToUInt32(_view.Height / 4);
+				return;
+			}
+
 			var testLabel = new Gtk.Label("");
 
 			//var font_Size = (int)(_fontSize * Pango.Scale.PangoScale);
@@ -311,6 +330,14 @@ namespace Microsoft.Maui.Platform.GTK
 			}
 
 			_eventBox = new Gtk.EventBox();
+			if ((_view != null) && (_view.Width > 0))
+			{
+				_eventBox.WidthRequest = (int)_view.Width;
+			}
+			if ((_view != null) && (_view.Height > 0))
+			{
+				_eventBox.HeightRequest = (int)_view.Height;
+			}
 
 			// EventWindow
 			_eventBox.Events |= EventMask.ButtonPressMask;
@@ -338,6 +365,14 @@ namespace Microsoft.Maui.Platform.GTK
 			}
 
 			_imageAndLabelBox = new Gtk.Box(Gtk.Orientation.Horizontal, 0);
+			if ((_view != null) && (_view.Width > 0))
+			{
+				_imageAndLabelBox.WidthRequest = (int)_view.Width;
+			}
+			if ((_view != null) && (_view.Height > 0))
+			{
+				_imageAndLabelBox.HeightRequest = (int)_view.Height;
+			}
 			_eventBox.Add(_imageAndLabelBox);
 
 			if (string.IsNullOrEmpty(_label) && !string.IsNullOrEmpty(_resFileId)) {
@@ -367,6 +402,14 @@ namespace Microsoft.Maui.Platform.GTK
 		private void PrivateRecreateLabelContainer(bool useOffset) {
 			if (_localLabel == null) {
 				_localLabel = new Gtk.Label(Label);
+				if ((_view != null) && (_view.Width > 0))
+				{
+					_localLabel.WidthRequest = (int)_view.Width;
+				}
+				if ((_view != null) && (_view.Height > 0))
+				{
+					_localLabel.HeightRequest = (int)_view.Height;
+				}
 			}
 
 			if (_localLabel != null) {
@@ -408,6 +451,18 @@ namespace Microsoft.Maui.Platform.GTK
 			int pangoImagePixelHeight = 0;
 			int labelX = 0;
 			int labelY = 0;
+			int viewWidth = 0;
+			int viewHeight = 0;
+
+			if ((_view != null) && (_view.Width > 0))
+			{
+				viewWidth = (int)_view.Width;
+			}
+			if ((_view != null) && (_view.Height > 0))
+			{
+				viewHeight = (int)_view.Height;
+			}
+
 
 			if (_image != null && _image.Pixbuf != null) {
 				pangoImagePixelWidth = _image.Pixbuf.Width;
@@ -481,6 +536,12 @@ namespace Microsoft.Maui.Platform.GTK
 				width = pangoImagePixelWidth;
 			}
 
+			if (width < viewWidth)
+			{
+				width = viewWidth;
+				x = 0;
+			}
+
 			//if (drawType == DrawType.LABELONLY) {
 			//	width = pangoPixelWidth + (2 * _offsetX);
 			//}
@@ -489,6 +550,12 @@ namespace Microsoft.Maui.Platform.GTK
 			double height = pangoPixelHeight;
 			if (drawType == DrawType.IMAGEONLY) {
 				height = pangoImagePixelHeight;
+			}
+
+			if (height < viewHeight)
+			{
+				height = viewHeight;
+				y = 0;
 			}
 
 			//if (drawType == DrawType.LABELANDIMAGE) {

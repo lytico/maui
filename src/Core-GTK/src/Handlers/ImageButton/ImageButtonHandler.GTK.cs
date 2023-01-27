@@ -10,6 +10,9 @@ namespace Microsoft.Maui.Handlers
 		{
 			var platformView = new MauiGTKButton(imageButton);
 
+			Gtk.Widget widget = platformView;
+			SetMargins(imageButton, ref widget);
+
 			return platformView;
 		}
 

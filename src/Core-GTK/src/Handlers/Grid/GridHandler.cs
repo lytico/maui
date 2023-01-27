@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
+using Gtk;
 
 namespace Microsoft.Maui.Handlers
 {
@@ -55,6 +57,8 @@ namespace Microsoft.Maui.Handlers
 			var view = new Gtk.Grid();
 			view.WidthRequest = width;
 			view.HeightRequest = height;
+			Gtk.Widget widget = view;
+			SetMargins(layout, ref widget);
 
 			return view;
 		}
@@ -83,11 +87,21 @@ namespace Microsoft.Maui.Handlers
 				int row = VirtualView.GetRow(child);
 				int colSpan = VirtualView.GetColumnSpan(child);
 				int rowSpan = VirtualView.GetRowSpan(child);
+				int colSpacing = (int)VirtualView.ColumnSpacing;
+				int rowSpacing = (int)VirtualView.RowSpacing;
 				var widget = (Gtk.Widget)child.ToPlatform(MauiContext);
 				if (colWidth != null && rowHeight != null)
 				{
-					var colWide = colWidth[col];
-					var rowHigh = rowHeight[row];
+					var colWide = 0;
+					var rowHigh = 0;
+					if (colWidth.Count() > col)
+					{
+						colWide = colWidth[col];
+					}
+					if (rowHeight.Count() > row)
+					{
+						rowHigh = rowHeight[row];
+					}
 					if ((VirtualView.ColumnDefinitions.Count > col)
 						&& ((VirtualView.ColumnDefinitions[col].Width.GridUnitType == GridUnitType.Auto)
 							|| (VirtualView.ColumnDefinitions[col].Width.GridUnitType == GridUnitType.Star)))
@@ -96,7 +110,14 @@ namespace Microsoft.Maui.Handlers
 					}
 					else
 					{
-						widget.WidthRequest = colWide;
+						if (colWide > 0)
+						{
+							widget.WidthRequest = colWide;
+						}
+					}
+					if (colSpacing > 0)
+					{
+						widget.MarginStart = colSpacing;
 					}
 
 					if ((VirtualView.RowDefinitions.Count > row)
@@ -107,7 +128,15 @@ namespace Microsoft.Maui.Handlers
 					}
 					else
 					{
-						widget.HeightRequest = rowHigh;
+						if (rowHigh > 0)
+						{
+							widget.HeightRequest = rowHigh;
+						}
+					}
+
+					if (rowSpacing > 0)
+					{
+						widget.MarginTop = rowSpacing;
 					}
 				}
 				PlatformView.Attach(widget, col, row, colSpan, rowSpan);

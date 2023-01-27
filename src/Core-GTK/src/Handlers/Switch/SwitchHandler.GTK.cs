@@ -10,6 +10,9 @@ namespace Microsoft.Maui.Handlers
 			var aSwitch = new MauiSwitch();
 			aSwitch.SwitchWidget.Toggled += ASwitch_Toggled;
 
+			Gtk.Widget widget = aSwitch;
+			SetMargins(switchView, ref widget);
+
 			return aSwitch;
 		}
 
