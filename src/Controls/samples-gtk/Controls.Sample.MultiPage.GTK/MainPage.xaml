@@ -91,17 +91,17 @@
                     Text="Test a CheckBox: "
                     FontSize="10" />
 
-                <CheckBox CheckedChanged="CheckBox_CheckedChanged" />
+                <CheckBox  />
             </HorizontalStackLayout>
 
-            <RadioButton x:Name="RadioBtnOne" Command="{Binding RadioButton1ChangedCommand}" CommandParameter="Start with name: One" Value="One" IsChecked="{Binding RadioBtnOneIsChecked}" GroupName="Start" />
-            <RadioButton Value="Two" GroupName="Start" Command="{Binding RadioButton1ChangedCommand}" CommandParameter="Start with name: Two" />
+            <RadioButton x:Name="RadioBtnOne" Value="One" IsChecked="{Binding RadioBtnOneIsChecked}" GroupName="Start" />
+            <RadioButton Value="Two" GroupName="Start" />
 
-            <RadioButton x:Name="RadioBtnThree" Command="{Binding RadioButton1ChangedCommand}" CommandParameter="Three with name: Three" Value="Three" IsChecked="{Binding RadioBtnThreeIsChecked}" GroupName="Three" />
-            <RadioButton Value="Four" GroupName="Three" Command="{Binding RadioButton1ChangedCommand}" CommandParameter="Three with name: Four" />
+            <RadioButton x:Name="RadioBtnThree" Value="Three" IsChecked="{Binding RadioBtnThreeIsChecked}" GroupName="Three" />
+            <RadioButton Value="Four" GroupName="Three" />
 
-            <RadioButton x:Name="RadioBtnFive" Command="{Binding RadioButton1ChangedCommand}" CommandParameter=" with name: Five" Value="Five" IsChecked="{Binding RadioBtnFiveIsChecked}" />
-            <RadioButton Value="Six" Command="{Binding RadioButton1ChangedCommand}" CommandParameter=" with name: Six" />
+            <RadioButton x:Name="RadioBtnFive" Value="Five" IsChecked="{Binding RadioBtnFiveIsChecked}" />
+            <RadioButton Value="Six" />
 
             <Grid>
                 <Grid.RowDefinitions>
