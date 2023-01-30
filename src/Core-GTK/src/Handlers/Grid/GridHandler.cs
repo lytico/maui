@@ -104,37 +104,37 @@ namespace Microsoft.Maui.Handlers
 					{
 						rowHigh = rowHeight[row];
 					}
-					if ((VirtualView.ColumnDefinitions.Count > col)
-						&& ((VirtualView.ColumnDefinitions[col].Width.GridUnitType == GridUnitType.Auto)
-							|| (VirtualView.ColumnDefinitions[col].Width.GridUnitType == GridUnitType.Star)))
-					{
-						widget.Hexpand = true;
-					}
-					else
-					{
+					//if ((VirtualView.ColumnDefinitions.Count > col)
+					//	&& ((VirtualView.ColumnDefinitions[col].Width.GridUnitType == GridUnitType.Auto)
+					//		|| (VirtualView.ColumnDefinitions[col].Width.GridUnitType == GridUnitType.Star)))
+					//{
+					//	widget.Hexpand = true;
+					//}
+					//else
+					//{
 						if (colWide > 0)
 						{
 							widget.WidthRequest = colWide;
 						}
-					}
+					//}
 					if (colSpacing > 0)
 					{
 						widget.MarginStart = colSpacing;
 					}
 
-					if ((VirtualView.RowDefinitions.Count > row)
-						&& ((VirtualView.RowDefinitions[row].Height.GridUnitType == GridUnitType.Auto)
-							|| (VirtualView.RowDefinitions[row].Height.GridUnitType == GridUnitType.Star)))
-					{
-						widget.Vexpand = true;
-					}
-					else
-					{
+					//if ((VirtualView.RowDefinitions.Count > row)
+					//	&& ((VirtualView.RowDefinitions[row].Height.GridUnitType == GridUnitType.Auto)
+					//		|| (VirtualView.RowDefinitions[row].Height.GridUnitType == GridUnitType.Star)))
+					//{
+					//	widget.Vexpand = true;
+					//}
+					//else
+					//{
 						if (rowHigh > 0)
 						{
 							widget.HeightRequest = rowHigh;
 						}
-					}
+					//}
 
 					if (rowSpacing > 0)
 					{

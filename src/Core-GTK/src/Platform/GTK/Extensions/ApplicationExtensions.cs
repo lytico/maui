@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Runtime.Versioning;
+using GLib;
 using Gtk;
 using Microsoft.Extensions.Logging;
 using Microsoft.Maui.Handlers;
@@ -23,7 +24,9 @@ namespace Microsoft.Maui.Platform
 
 			applicationContext.Services.InvokeLifecycleEvents<GTKLifecycle.OnMauiContextCreated>(del => del(mauiContext));
 
-			var window = application.CreateWindow(null!);
+			var activationState = new ActivationState(mauiContext);
+
+			var window = application.CreateWindow(activationState);
 
 			winuiWndow.SetWindowHandler(window, mauiContext);
 			//winuiWndow.ModifyBg(StateType.Normal, new Gdk.Color(200, 0, 200));

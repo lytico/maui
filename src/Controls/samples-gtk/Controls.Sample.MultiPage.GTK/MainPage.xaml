@@ -1,6 +1,7 @@
 ﻿<ContentPage
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:prism="http://prismlibrary.com"
     x:Class="Maui.Controls.Sample.MultiPage.GTK.MainPage"
     xmlns:local="clr-namespace:Maui.Controls.Sample.MultiPage.GTK"
     WidthRequest="600" HeightRequest="600" >
@@ -29,7 +30,7 @@
                 SemanticProperties.Hint="Counts the number of times you click"
                 Command="{Binding Path=CounterClickedCommand}"
                 BackgroundColor="#512BD4"
-                Text="{Binding ButtonText}"
+                Text="{Binding Path=ButtonText}"
                 FontSize="18"
                 TextColor="#FFFFFF"
                 HorizontalOptions="Center" />

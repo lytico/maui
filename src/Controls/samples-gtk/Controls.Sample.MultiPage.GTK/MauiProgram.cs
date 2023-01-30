@@ -7,6 +7,7 @@ using Microsoft.Maui.Hosting;
 using Prism;
 using Prism.DryIoc;
 using Prism.Ioc;
+using Prism.Navigation;
 
 namespace Maui.Controls.Sample.MultiPage.GTK
 {
@@ -21,18 +22,28 @@ namespace Maui.Controls.Sample.MultiPage.GTK
 					{
 						containerRegistry.RegisterForNavigation<MainPage, MainPageViewModel>();
 						containerRegistry.RegisterForNavigation<Page2, Page2ViewModel>();
-					}))
-				.Build();
-	}
+					})
+					.OnAppStart(navigationService => navigationService.CreateBuilder()
+										.AddSegment<MainPageViewModel>()
+										.NavigateAsync(HandleNavigationError))
+				)
+			.Build();
 
-	class App : Microsoft.Maui.Controls.Application
-	{
-		protected override Window CreateWindow(IActivationState activationState)
+		private static void HandleNavigationError(Exception ex)
 		{
-			var navPage = new NavigationPage(new MainPage());
-			navPage.WidthRequest = 600;
-			navPage.HeightRequest = 600;
-			return new Window(navPage);
+			Console.WriteLine(ex);
+			System.Diagnostics.Debugger.Break();
 		}
 	}
+
+	//class App : PrismApplication
+	//{
+	//	protected override Window CreateWindow(IActivationState activationState)
+	//	{
+	//		var navPage = new NavigationPage(new MainPage());
+	//		navPage.WidthRequest = 600;
+	//		navPage.HeightRequest = 600;
+	//		return new Window(navPage);
+	//	}
+	//}
 }
