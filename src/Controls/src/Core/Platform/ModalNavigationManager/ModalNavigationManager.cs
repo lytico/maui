@@ -24,21 +24,13 @@ namespace Microsoft.Maui.Controls.Platform
 
 		public Task<Page> PopModalAsync()
 		{
-#if __GTK__
-			return PopModalAsync();
-#else
 			return PopModalAsync(true);
-#endif
 		}
 
 
 		public Task PushModalAsync(Page modal)
 		{
-#if __GTK__
-			return PushModalAsync(modal);
-#else
 			return PushModalAsync(modal, true);
-#endif
 		}
 
 		internal void SettingNewPage()

@@ -13,14 +13,13 @@ using Prism.Commands;
 using Microsoft.Maui.Controls;
 using Prism.Navigation.Xaml;
 using System.Windows.Input;
+using GLib;
 
 namespace Maui.Controls.Sample.MultiPage.GTK.ViewModels
 {
 	public class MainPageViewModel : BindableBase, IInitialize, INavigatedAware, IPageLifecycleAware
 	{
 		protected INavigationService _navigationService { get; }
-		protected IPageDialogService _pageDialogs { get; }
-		protected IDialogService _dialogs { get; }
 
 		private int count = 0;
 		private int count2 = 0;
@@ -29,24 +28,8 @@ namespace Maui.Controls.Sample.MultiPage.GTK.ViewModels
 		public MainPageViewModel(BaseServices baseServices)
 		{
 			_navigationService = baseServices.NavigationService;
-			_pageDialogs = baseServices.PageDialogs;
-			_dialogs = baseServices.Dialogs;
 
-			Title = Regex.Replace(GetType().Name, "ViewModel", string.Empty);
-			Id = Guid.NewGuid().ToString();
 			NavigateCommand = new DelegateCommand<string>(OnNavigateCommandExecuted);
-			ShowPageDialog = new DelegateCommand(OnShowPageDialog);
-			Messages = new ObservableCollection<string>();
-			Messages.CollectionChanged += (sender, args) =>
-			{
-				foreach (string message in args.NewItems)
-					Console.WriteLine($"{Title} - {message}");
-			};
-
-			AvailableDialogs = baseServices.DialogRegistry.Registrations.Select(x => x.Name).ToList();
-			SelectedDialog = AvailableDialogs.FirstOrDefault();
-			ShowDialog = new DelegateCommand(OnShowDialogCommand, () => !string.IsNullOrEmpty(SelectedDialog))
-				.ObservesProperty(() => SelectedDialog);
 
 			// Button 1
 			this.CounterClickedCommand = new DelegateCommand<object>(this.OnCounterClicked, this.OnCounterCanSubmit);
@@ -76,40 +59,56 @@ namespace Maui.Controls.Sample.MultiPage.GTK.ViewModels
 			this.RadioBtnFiveIsChecked = true;
 		}
 
-		public IEnumerable<string> AvailableDialogs { get; }
-
-		public string Title { get; }
-
-		public string Id { get; }
-
-		private string _selectedDialog;
-		public string SelectedDialog
+		private string _buttonText;
+		public string ButtonText
 		{
-			get => _selectedDialog;
-			set => SetProperty(ref _selectedDialog, value);
+			get => _buttonText;
+			set => SetProperty(ref _buttonText, value);
 		}
 
-		public string ButtonText { get; private set; }
+		private bool _counterBtn2Visible;
+		public bool CounterBtn2Visible
+		{
+			get => _counterBtn2Visible;
+			set => SetProperty(ref _counterBtn2Visible, value);
+		}
 
-		public bool CounterBtn2Visible { get; private set; }
+		private string _button2Text;
+		public string Button2Text
+		{
+			get => _button2Text;
+			set => SetProperty(ref _button2Text, value);
+		}
 
-		public string Button2Text { get; private set; }
+		private bool _counterBtn2ImageVisible;
+		public bool CounterBtn2ImageVisible
+		{
+			get => _counterBtn2ImageVisible;
+			set => SetProperty(ref _counterBtn2ImageVisible, value);
+		}
 
-		public bool CounterBtn2ImageVisible { get; private set; }
+		private bool _radioBtnOneIsChecked;
+		public bool RadioBtnOneIsChecked
+		{
+			get => _radioBtnOneIsChecked;
+			set => SetProperty(ref _radioBtnOneIsChecked, value);
+		}
 
-		public bool RadioBtnOneIsChecked { get; set; }
+		private bool _radioBtnThreeIsChecked;
+		public bool RadioBtnThreeIsChecked
+		{
+			get => _radioBtnThreeIsChecked;
+			set => SetProperty(ref _radioBtnThreeIsChecked, value);
+		}
 
-		public bool RadioBtnThreeIsChecked { get; set; }
-
-		public bool RadioBtnFiveIsChecked { get; set; }
-
-		public ObservableCollection<string> Messages { get; }
+		private bool _radioBtnFiveIsChecked;
+		public bool RadioBtnFiveIsChecked
+		{
+			get => _radioBtnFiveIsChecked;
+			set => SetProperty(ref _radioBtnFiveIsChecked, value);
+		}
 
 		public DelegateCommand<string> NavigateCommand { get; }
-
-		public DelegateCommand ShowPageDialog { get; }
-
-		public DelegateCommand ShowDialog { get; }
 
 		public ICommand CounterClickedCommand { get; private set; }
 
@@ -123,60 +122,33 @@ namespace Maui.Controls.Sample.MultiPage.GTK.ViewModels
 
 		private void OnNavigateCommandExecuted(string uri)
 		{
-			Messages.Add($"OnNavigateCommandExecuted: {uri}");
 			_navigationService.NavigateAsync(uri)
 				.OnNavigationError(ex => Console.WriteLine(ex));
 		}
 
-		private void OnShowPageDialog()
-		{
-			Messages.Add("OnShowPageDialog");
-			_pageDialogs.DisplayAlertAsync("Message", $"Hello from {Title}. This is a Page Dialog Service Alert!", "Ok");
-		}
-
-		private void OnShowDialogCommand()
-		{
-			Messages.Add("OnShowDialog");
-			_dialogs.ShowDialog(SelectedDialog, null, DialogCallback);
-		}
-
-		private void DialogCallback(IDialogResult result) =>
-			Messages.Add("Dialog Closed");
-
 		public void Initialize(INavigationParameters parameters)
 		{
-			Messages.Add("ViewModel Initialized");
-			foreach (var parameter in parameters.Where(x => x.Key.Contains("message", StringComparison.Ordinal)))
-				Messages.Add(parameter.Value.ToString());
+		}
 
+		public void OnNavigatedFrom(INavigationParameters parameters)
+		{
+		}
 
+		public void OnNavigatedTo(INavigationParameters parameters)
+		{
+		}
+
+		public void OnAppearing()
+		{
 			var timer = Microsoft.Maui.Controls.Application.Current.Dispatcher.CreateTimer();
 			timer.Interval = TimeSpan.FromMilliseconds(200);
 			timer.Tick += (s, e) => ClearVisibilityOnButton2();
 			timer.IsRepeating = false;
 			timer.Start();
-			//CounterBtn2.IsVisible = false;
-			//Console.WriteLine("Button 2 made invisible");
-		}
-
-		public void OnNavigatedFrom(INavigationParameters parameters)
-		{
-			Messages.Add("ViewModel NavigatedFrom");
-		}
-
-		public void OnNavigatedTo(INavigationParameters parameters)
-		{
-			Messages.Add("ViewModel NavigatedTo");
-		}
-
-		public void OnAppearing()
-		{
-			Messages.Add("View Appearing");
 		}
 
 		public void OnDisappearing()
 		{
-			Messages.Add("View Disappearing");
 		}
 
 		void ClearVisibilityOnButton2()
@@ -224,7 +196,7 @@ namespace Maui.Controls.Sample.MultiPage.GTK.ViewModels
 
 				CounterBtn2Visible = true;
 
-				var timer = Application.Current.Dispatcher.CreateTimer();
+				var timer = Microsoft.Maui.Controls.Application.Current.Dispatcher.CreateTimer();
 				timer.Interval = TimeSpan.FromMilliseconds(300);
 				timer.Tick += (s, e) => HideButtonWithImage();
 				timer.IsRepeating = false;

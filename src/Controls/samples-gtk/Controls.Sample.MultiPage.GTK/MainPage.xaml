@@ -26,7 +26,6 @@
                 HorizontalOptions="Center" />
 
             <Button
-                x:Name="CounterBtn"
                 SemanticProperties.Hint="Counts the number of times you click"
                 Command="{Binding Path=CounterClickedCommand}"
                 BackgroundColor="#512BD4"
@@ -36,7 +35,6 @@
                 HorizontalOptions="Center" />
 
             <Button
-                x:Name="CounterBtn2"
                 IsVisible="{Binding CounterBtn2Visible}"
                 SemanticProperties.Hint="Counts the number of times you click"
                 Command="{Binding Path=Counter2ClickedCommand}"
@@ -47,22 +45,19 @@
                 HorizontalOptions="Center" />
 
             <Button
-                x:Name="CounterBtn2Image"
                 Command="{Binding Path=OnCounter2ClickedCommand}"
                 IsVisible="{Binding CounterBtn2ImageVisible}"
                 ImageSource="click_me.gif"
                 HorizontalOptions="Center" />
             
             <ImageButton
-                x:Name="CounterBtn3Image"
                 Command="{Binding Path=Counter3ClickedCommand}"
                 Source="click_me.gif"
                 HorizontalOptions="Center" />
 
             <Button
-                x:Name="Button4"
                 Text="Go To Page2"
-                Command="{Binding Path=OnButton4ClickedCommand}"
+                Command="{Binding Path=Button4ClickedCommand}"
                 HorizontalOptions="Center" />
 
             <Button
@@ -70,20 +65,17 @@
                 HorizontalOptions="Center" />
 
             <Entry
-                x:Name="EntryBox1"
                 HorizontalOptions="Center"
                 Text="Hello"
                 IsPassword="True"
                 WidthRequest="180" />
 
             <Entry
-                x:Name="EntryBox2"
                 HorizontalOptions="Center"
                 Text="Hello"
                 WidthRequest="180" />
 
             <Image
-                x:Name="PlainImage"
                 Source="click_me.gif"
                 HorizontalOptions="Center" WidthRequest="180" />
 
@@ -95,13 +87,13 @@
                 <CheckBox  />
             </HorizontalStackLayout>
 
-            <RadioButton x:Name="RadioBtnOne" Value="One" IsChecked="{Binding RadioBtnOneIsChecked}" GroupName="Start" />
+            <RadioButton Value="One" IsChecked="{Binding RadioBtnOneIsChecked}" GroupName="Start" />
             <RadioButton Value="Two" GroupName="Start" />
 
-            <RadioButton x:Name="RadioBtnThree" Value="Three" IsChecked="{Binding RadioBtnThreeIsChecked}" GroupName="Three" />
+            <RadioButton Value="Three" IsChecked="{Binding RadioBtnThreeIsChecked}" GroupName="Three" />
             <RadioButton Value="Four" GroupName="Three" />
 
-            <RadioButton x:Name="RadioBtnFive" Value="Five" IsChecked="{Binding RadioBtnFiveIsChecked}" />
+            <RadioButton Value="Five" IsChecked="{Binding RadioBtnFiveIsChecked}" />
             <RadioButton Value="Six" />
 
             <Grid>
