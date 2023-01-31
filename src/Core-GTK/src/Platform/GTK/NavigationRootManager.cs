@@ -4,8 +4,9 @@ namespace Microsoft.Maui.Platform
 {
 	public partial class NavigationRootManager
 	{
-		IMauiContext _mauiContext;
-		MauiGTKWindow? _rootView;
+		// IMauiContext _mauiContext;
+		MauiGTKWindow _platformWindow;
+		//ContentViewGroup _rootView;
 		//bool _disconnected = true;
 		bool _isActiveRootManager;
 
@@ -13,11 +14,13 @@ namespace Microsoft.Maui.Platform
 		// handlers and various bits use this to start interacting with rootview
 		internal event EventHandler? RootViewChanged;
 
-		public MauiGTKWindow? RootView => _rootView;
+		public MauiGTKWindow RootView => _platformWindow;
 
-		public NavigationRootManager(IMauiContext mauiContext)
+		public NavigationRootManager(MauiGTKWindow platformWindow)
 		{
-			_mauiContext = mauiContext;
+			// _mauiContext = mauiContext;
+			_platformWindow = platformWindow;
+			//_rootView = new ContentViewGroup();
 			// _rootView = new MauiGTKWindow("My Maui GTK Window");
 			//_rootView.BackRequested += OnBackRequested;
 			//_rootView.OnApplyTemplateFinished += OnApplyTemplateFinished;
@@ -62,7 +65,8 @@ namespace Microsoft.Maui.Platform
 			var rootNavigationView = new RootNavigationView();
 			var containerView = window.ToContainerView();
 
-			_rootView = containerView;
+			AddPlatformParts(containerView);
+			//_rootView = containerView;
 
 			//SetContentView(containerView);
 
@@ -78,7 +82,27 @@ namespace Microsoft.Maui.Platform
 
 		void ClearPlatformParts()
 		{
-			_rootView = null;
+			// _rootView = null;
+			if (_platformWindow != null)
+			{
+				foreach (var child in _platformWindow.Children)
+				{
+					_platformWindow.Remove(child);
+				}
+			}
+		}
+
+		void AddPlatformParts(MauiGTKWindow? containerView)
+		{
+			if (containerView != null && _platformWindow != null)
+			{
+				foreach (var child in containerView.Children)
+				{
+					_platformWindow.Add(child);
+					return;
+				}
+			}
+
 		}
 
 		internal void UpdateAppTitleBar(bool isActive)

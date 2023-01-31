@@ -33,10 +33,27 @@ namespace Microsoft.Maui
 
 		public void RemovePage(Gtk.Window previousRootView)
 		{
+			foreach (var child in previousRootView.Children)
+			{
+				Remove(child);
+			}
 		}
 
-		public void AddPage(Gtk.Window RootView)
+		public void AddPage(ContentViewGroup RootView)
 		{
+			//var child = RootView.GetChild();
+			Add(RootView.GetView());
+			ShowAll();
+			//if (child != null)
+			//{
+			//	RootView.RemoveChild();
+			//	Add(child);
+			//}
+			//foreach (var child in RootView.GetView())
+			//{
+			//	Add(child);
+			//	return;
+			//}
 		}
 	}
 }

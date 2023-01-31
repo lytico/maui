@@ -38,6 +38,11 @@ namespace Microsoft.Maui.Platform
 			return _box;
 		}
 
+		public Gtk.Widget? GetChild()
+		{
+			return _child;
+		}
+
 		//protected override bool OnExposeEvent(EventExpose evnt)
 		//{
 		//	using (var cr = CairoHelper.Create(GdkWindow))

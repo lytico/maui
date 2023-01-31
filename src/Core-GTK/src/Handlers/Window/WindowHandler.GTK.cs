@@ -3,7 +3,7 @@ using Microsoft.Maui.Platform;
 
 namespace Microsoft.Maui.Handlers
 {
-	public partial class WindowHandler : ElementHandler<IWindow, Gtk.Window>
+	public partial class WindowHandler : ElementHandler<IWindow, Microsoft.Maui.MauiGTKWindow>
 	{
 		public static void MapTitle(IWindowHandler handler, IWindow window)
 		{

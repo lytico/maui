@@ -8,7 +8,7 @@ using Microsoft.Maui.ApplicationModel;
 #if WINDOWS
 #if __GTK__
 using NativeApplication = Microsoft.Maui.MauiGTKApplication;
-using NativeWindow = Gtk.Window;
+using NativeWindow = Microsoft.Maui.MauiGTKWindow;
 #else
 using NativeApplication = Microsoft.UI.Xaml.Application;
 using NativeWindow = Microsoft.UI.Xaml.Window;
@@ -63,10 +63,10 @@ namespace Microsoft.Maui
 
 			scopedContext.AddWeakSpecific(platformWindow);
 
-#if ANDROID || (WINDOWS && __GTK__)
+#if ANDROID
 			scopedContext.AddSpecific(new NavigationRootManager(scopedContext));
 #endif
-#if WINDOWS && !__GTK__
+#if WINDOWS
 			scopedContext.AddSpecific(new NavigationRootManager(platformWindow));
 #endif
 

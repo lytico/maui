@@ -39,7 +39,10 @@ namespace Microsoft.Maui.Controls.Platform
 				throw new InvalidOperationException("Maui Context removed from outgoing page too early");
 
 			var windowManager = mauiContext.GetNavigationRootManager();
-			Container.RemovePage(windowManager.RootView);
+			if (windowManager.RootView != null)
+			{
+				Container.RemovePage(windowManager.RootView);
+			}
 		}
 
 		void SetCurrent(Page newPage, Page previousPage, bool popping, Action? completedCallback = null)
@@ -75,16 +78,21 @@ namespace Microsoft.Maui.Controls.Platform
 				// pushing modal
 				if (!popping)
 				{
-					var modalContext =
-						WindowMauiContext
-							.MakeScoped(registerNewNavigationRoot: true);
+					//var modalContext =
+					//	WindowMauiContext
+					//		.MakeScoped(registerNewNavigationRoot: true);
 
-					newPage.Toolbar ??= new Toolbar(newPage);
-					_ = newPage.Toolbar.ToPlatform(modalContext);
+					//newPage.Toolbar ??= new Toolbar(newPage);
+					//_ = newPage.Toolbar.ToPlatform(modalContext);
 
-					var windowManager = modalContext.GetNavigationRootManager();
-					windowManager.Connect(newPage.ToPlatform(modalContext));
-					Container.AddPage(windowManager.RootView);
+					//var windowManager = modalContext.GetNavigationRootManager();
+					//windowManager.Connect((IWindow)newPage.ToPlatform(modalContext));
+					//if (windowManager.RootView != null)
+					//{
+						var newPageWin = newPage.ToPlatform(WindowMauiContext);
+
+						Container.AddPage((ContentViewGroup)newPageWin);
+					//}
 
 					previousPage
 						.FindMauiContext()
@@ -94,12 +102,19 @@ namespace Microsoft.Maui.Controls.Platform
 				// popping modal
 				else
 				{
-					var windowManager = newPage.FindMauiContext()?.GetNavigationRootManager() ??
-						throw new InvalidOperationException("Previous Page Has Lost its MauiContext");
+					var newPageWin = newPage.ToPlatform(WindowMauiContext);
 
-					Container.AddPage(windowManager.RootView);
+					Container.AddPage((ContentViewGroup)newPageWin);
+					//var windowManager = newPage.FindMauiContext()?.GetNavigationRootManager() ??
+					//	throw new InvalidOperationException("Previous Page Has Lost its MauiContext");
 
-					windowManager.UpdateAppTitleBar(true);
+					//if (windowManager.RootView != null)
+					//{
+
+					//	Container.AddPage(windowManager.RootView);
+					//}
+
+					// windowManager.UpdateAppTitleBar(true);
 				}
 
 				completedCallback?.Invoke();

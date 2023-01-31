@@ -8,8 +8,8 @@ namespace Microsoft.Maui.Platform
 		public static NavigationRootManager GetNavigationRootManager(this IMauiContext mauiContext) =>
 			mauiContext.Services.GetRequiredService<NavigationRootManager>();
 
-		public static Gtk.Window GetPlatformWindow(this IMauiContext mauiContext) =>
-			mauiContext.Services.GetRequiredService<Gtk.Window>();
+		public static MauiGTKWindow GetPlatformWindow(this IMauiContext mauiContext) =>
+			mauiContext.Services.GetRequiredService<MauiGTKWindow>();
 
 
 		public static IMauiContext MakeScoped(this IMauiContext mauiContext, bool registerNewNavigationRoot)
@@ -18,7 +18,7 @@ namespace Microsoft.Maui.Platform
 
 			if (registerNewNavigationRoot)
 			{
-				scopedContext.AddWeakSpecific(new NavigationRootManager(scopedContext));
+				scopedContext.AddWeakSpecific(new NavigationRootManager(scopedContext.GetPlatformWindow()));
 			}
 
 			return scopedContext;

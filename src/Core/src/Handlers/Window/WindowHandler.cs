@@ -5,7 +5,7 @@ using PlatformView = UIKit.UIWindow;
 #elif MONOANDROID
 using PlatformView = Android.App.Activity;
 #elif WINDOWS && __GTK__
-using PlatformView = Gtk.Window;
+using PlatformView = Microsoft.Maui.MauiGTKWindow;
 #elif WINDOWS && !__GTK__
 using PlatformView = Microsoft.UI.Xaml.Window;
 #elif TIZEN      
