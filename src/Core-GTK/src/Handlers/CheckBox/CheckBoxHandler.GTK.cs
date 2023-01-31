@@ -32,7 +32,7 @@ namespace Microsoft.Maui.Handlers
 
 		private void CheckButton_Clicked(object sender, System.EventArgs e)
 		{
-			Debug.WriteLine("Clicked");
+			// Debug.WriteLine("Clicked");
 			if (VirtualView != null)
 			{
 				if (sender is Gtk.CheckButton checkButton)
@@ -62,6 +62,17 @@ namespace Microsoft.Maui.Handlers
 
 		public static void MapIsChecked(ICheckBoxHandler handler, ICheckBox check)
 		{
+			if (handler.PlatformView?.GetChildWidget() is Gtk.CheckButton checkBox)
+			{
+				if (check.IsChecked)
+				{
+					checkBox.Active = true;
+				}
+				else
+				{
+					checkBox.Active = false;
+				}
+			}
 			//handler.PlatformView?.UpdateIsChecked(check);
 		}
 

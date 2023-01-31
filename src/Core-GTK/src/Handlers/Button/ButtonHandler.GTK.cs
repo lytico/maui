@@ -40,7 +40,7 @@ namespace Microsoft.Maui.Handlers
 
 		private void ButtonWidget_Clicked(object? sender, System.EventArgs e)
 		{
-			Debug.WriteLine("Clicked");
+			// Debug.WriteLine("Clicked");
 			VirtualView?.Clicked();
 		}
 

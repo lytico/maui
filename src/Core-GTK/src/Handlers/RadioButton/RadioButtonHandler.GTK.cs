@@ -89,7 +89,7 @@ namespace Microsoft.Maui.Handlers
 
 		private void RadioButton_Clicked(object sender, System.EventArgs e)
 		{
-			Debug.WriteLine("Clicked");
+			// Debug.WriteLine("Clicked");
 			if (VirtualView != null)
 			{
 				if (sender is Gtk.RadioButton radioButton)
@@ -121,8 +121,19 @@ namespace Microsoft.Maui.Handlers
 			//GetPlatformRadioButton(handler)?.UpdateBackground(radioButton);
 		}
 
-		public static void MapIsChecked(IRadioButtonHandler handler, IRadioButton radioButton)
+		public static void MapIsChecked(IRadioButtonHandler handler, IRadioButton radio)
 		{
+			if (handler.PlatformView?.GetChildWidget() is Gtk.RadioButton radioButton)
+			{
+				if (radio.IsChecked)
+				{
+					radioButton.Active = true;
+				}
+				else
+				{
+					radioButton.Active = false;
+				}
+			}
 			//GetPlatformRadioButton(handler)?.UpdateIsChecked(radioButton);
 		}
 

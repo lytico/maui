@@ -29,7 +29,7 @@ namespace Maui.Controls.Sample.MultiPage.GTK.ViewModels
 		{
 			_navigationService = baseServices.NavigationService;
 
-			NavigateCommand = new DelegateCommand<string>(OnNavigateCommandExecuted);
+			// NavigateCommand = new DelegateCommand<string>(OnNavigateCommandExecuted);
 
 			// Button 1
 			this.CounterClickedCommand = new DelegateCommand<object>(this.OnCounterClicked, this.OnCounterCanSubmit);
@@ -108,7 +108,7 @@ namespace Maui.Controls.Sample.MultiPage.GTK.ViewModels
 			set => SetProperty(ref _radioBtnFiveIsChecked, value);
 		}
 
-		public DelegateCommand<string> NavigateCommand { get; }
+		// public DelegateCommand<string> NavigateCommand { get; }
 
 		public ICommand CounterClickedCommand { get; private set; }
 
@@ -120,11 +120,11 @@ namespace Maui.Controls.Sample.MultiPage.GTK.ViewModels
 
 		public ICommand RadioButton1ChangedCommand { get; private set; }
 
-		private void OnNavigateCommandExecuted(string uri)
-		{
-			_navigationService.NavigateAsync(uri)
-				.OnNavigationError(ex => Console.WriteLine(ex));
-		}
+		//private void OnNavigateCommandExecuted(string uri)
+		//{
+		//	_navigationService.NavigateAsync(uri)
+		//		.OnNavigationError(ex => Console.WriteLine(ex));
+		//}
 
 		public void Initialize(INavigationParameters parameters)
 		{
