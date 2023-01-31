@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Runtime.InteropServices;
 using Gtk;
 using Microsoft.Maui.Platform;
 
@@ -35,10 +36,25 @@ namespace Microsoft.Maui.Handlers
 		// TODO: NET7 issoto - Change the return type to MauiAppCompatEditText
 		protected override void ConnectHandler(EntryWrapper platformView)
 		{
+			if (platformView.Entry is Gtk.Entry platformEntry)
+			{
+				platformEntry.Changed += PlatformEntry_Changed;
+			}
 			//platformView.TextChanged += OnTextChanged;
 			//platformView.FocusChange += OnFocusedChange;
 			//platformView.Touch += OnTouch;
 			//platformView.EditorAction += OnEditorAction;
+		}
+
+		private void PlatformEntry_Changed(object sender, EventArgs e)
+		{
+			if (VirtualView != null)
+			{
+				if (sender is Gtk.Entry entry)
+				{
+					VirtualView.Text = entry.Text;
+				}
+			}
 		}
 
 		// TODO: NET7 issoto - Change the return type to MauiAppCompatEditText

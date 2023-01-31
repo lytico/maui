@@ -29,8 +29,6 @@ namespace Maui.Controls.Sample.MultiPage.GTK.ViewModels
 		{
 			_navigationService = baseServices.NavigationService;
 
-			// NavigateCommand = new DelegateCommand<string>(OnNavigateCommandExecuted);
-
 			// Button 1
 			this.CounterClickedCommand = new DelegateCommand<object>(this.OnCounterClicked, this.OnCounterCanSubmit);
 			this.ButtonText = "Click Me";
@@ -48,15 +46,25 @@ namespace Maui.Controls.Sample.MultiPage.GTK.ViewModels
 			// Button 4
 			this.Button4ClickedCommand = new DelegateCommand<object>(this.OnButton4Clicked, this.OnButton4CanSubmit);
 
+			// Checkbox
+			this.CheckBoxCheckedChanged = new DelegateCommand<object>(this.OnCheckBoxChanged, this.OnCheckBoxCanSubmit);
+
+			// Radio Buttons
+			this.RadioButtonOne_CheckedChanged = new DelegateCommand<object>((arg) => this.RadioBoxWriteLine(this.RadioButtonOneChecked, "Start", "One"), this.OnRadioBoxCanSubmit);
+			this.RadioButtonTwo_CheckedChanged = new DelegateCommand<object>((arg) => this.RadioBoxWriteLine(this.RadioButtonTwoChecked, "Start", "Two"), this.OnRadioBoxCanSubmit);
+			this.RadioButtonThree_CheckedChanged = new DelegateCommand<object>((arg) => this.RadioBoxWriteLine(this.RadioButtonThreeChecked, "Three", "Three"), this.OnRadioBoxCanSubmit);
+			this.RadioButtonFour_CheckedChanged = new DelegateCommand<object>((arg) => this.RadioBoxWriteLine(this.RadioButtonFourChecked, "Three", "Four"), this.OnRadioBoxCanSubmit);
+			this.RadioButtonFive_CheckedChanged = new DelegateCommand<object>((arg) => this.RadioBoxWriteLine(this.RadioButtonFiveChecked, "NULL", "Five"), this.OnRadioBoxCanSubmit);
+			this.RadioButtonSix_CheckedChanged = new DelegateCommand<object>((arg) => this.RadioBoxWriteLine(this.RadioButtonSixChecked, "NULL", "Six"), this.OnRadioBoxCanSubmit);
+
 			// Radio Button 1
-			this.RadioBtnOneIsChecked = true;
-			this.RadioButton1ChangedCommand = new DelegateCommand<object>(this.RadioButton_CheckedChanged, this.RadioButton_CheckedChangedCanSubmit);
+			this.RadioButtonOneChecked = true;
 
 			// Radio Button 3
-			this.RadioBtnThreeIsChecked = true;
+			this.RadioButtonThreeChecked = true;
 
 			// Radio Button 5
-			this.RadioBtnFiveIsChecked = true;
+			this.RadioButtonFiveChecked = true;
 		}
 
 		private string _buttonText;
@@ -87,28 +95,54 @@ namespace Maui.Controls.Sample.MultiPage.GTK.ViewModels
 			set => SetProperty(ref _counterBtn2ImageVisible, value);
 		}
 
-		private bool _radioBtnOneIsChecked;
-		public bool RadioBtnOneIsChecked
+		private bool _isCheckBoxChecked;
+		public bool IsCheckBoxChecked
 		{
-			get => _radioBtnOneIsChecked;
-			set => SetProperty(ref _radioBtnOneIsChecked, value);
+			get => _isCheckBoxChecked;
+			set => SetProperty(ref _isCheckBoxChecked, value);
 		}
 
-		private bool _radioBtnThreeIsChecked;
-		public bool RadioBtnThreeIsChecked
+		private bool _radioButtonOneChecked;
+		public bool RadioButtonOneChecked
 		{
-			get => _radioBtnThreeIsChecked;
-			set => SetProperty(ref _radioBtnThreeIsChecked, value);
+			get => _radioButtonOneChecked;
+			set => SetProperty(ref _radioButtonOneChecked, value);
 		}
 
-		private bool _radioBtnFiveIsChecked;
-		public bool RadioBtnFiveIsChecked
+		private bool _radioButtonTwoChecked;
+		public bool RadioButtonTwoChecked
 		{
-			get => _radioBtnFiveIsChecked;
-			set => SetProperty(ref _radioBtnFiveIsChecked, value);
+			get => _radioButtonTwoChecked;
+			set => SetProperty(ref _radioButtonTwoChecked, value);
 		}
 
-		// public DelegateCommand<string> NavigateCommand { get; }
+		private bool _radioButtonThreeChecked;
+		public bool RadioButtonThreeChecked
+		{
+			get => _radioButtonThreeChecked;
+			set => SetProperty(ref _radioButtonThreeChecked, value);
+		}
+
+		private bool _radioButtonFourChecked;
+		public bool RadioButtonFourChecked
+		{
+			get => _radioButtonFourChecked;
+			set => SetProperty(ref _radioButtonFourChecked, value);
+		}
+
+		private bool _radioButtonFiveChecked;
+		public bool RadioButtonFiveChecked
+		{
+			get => _radioButtonFiveChecked;
+			set => SetProperty(ref _radioButtonFiveChecked, value);
+		}
+
+		private bool _radioButtonSixChecked;
+		public bool RadioButtonSixChecked
+		{
+			get => _radioButtonSixChecked;
+			set => SetProperty(ref _radioButtonSixChecked, value);
+		}
 
 		public ICommand CounterClickedCommand { get; private set; }
 
@@ -118,13 +152,14 @@ namespace Maui.Controls.Sample.MultiPage.GTK.ViewModels
 
 		public ICommand Button4ClickedCommand { get; private set; }
 
-		public ICommand RadioButton1ChangedCommand { get; private set; }
+		public ICommand CheckBoxCheckedChanged { get; }
 
-		//private void OnNavigateCommandExecuted(string uri)
-		//{
-		//	_navigationService.NavigateAsync(uri)
-		//		.OnNavigationError(ex => Console.WriteLine(ex));
-		//}
+		public ICommand RadioButtonOne_CheckedChanged { get; }
+		public ICommand RadioButtonTwo_CheckedChanged { get; }
+		public ICommand RadioButtonThree_CheckedChanged { get; }
+		public ICommand RadioButtonFour_CheckedChanged { get; }
+		public ICommand RadioButtonFive_CheckedChanged { get; }
+		public ICommand RadioButtonSix_CheckedChanged { get; }
 
 		public void Initialize(INavigationParameters parameters)
 		{
@@ -171,7 +206,7 @@ namespace Maui.Controls.Sample.MultiPage.GTK.ViewModels
 			else
 				ButtonText = $"Clicked {count} times";
 
-			if (this.RadioBtnOneIsChecked)
+			if (this.RadioButtonOneChecked)
 			{
 				Console.WriteLine("Button 1 " + ButtonText + " radio button \"One\" is selected");
 			}
@@ -271,6 +306,23 @@ namespace Maui.Controls.Sample.MultiPage.GTK.ViewModels
 			return true;
 		}
 
+		private void OnCheckBoxChanged(object arg)
+		{
+			if (IsCheckBoxChecked)
+			{
+				Console.WriteLine("CheckBox_CheckedChanged CHECKED");
+			}
+			else
+			{
+				Console.WriteLine("CheckBox_CheckedChanged NOT CHECKED");
+			}
+		}
+
+		private bool OnCheckBoxCanSubmit(object arg)
+		{
+			return true;
+		}
+
 		private void HideButtonWithImage()
 		{
 			Microsoft.Maui.ApplicationModel.MainThread.BeginInvokeOnMainThread(() =>
@@ -281,36 +333,15 @@ namespace Maui.Controls.Sample.MultiPage.GTK.ViewModels
 			});
 		}
 
-		private void CheckBox_CheckedChanged(object sender, CheckedChangedEventArgs e)
+		private void RadioBoxWriteLine(bool isChecked, string groupName, string valueName)
 		{
-			bool isChecked = false;
-			if (sender is CheckBox checkBox)
-			{
-				if (checkBox.IsChecked == true)
-				{
-					isChecked = true;
-				}
-			}
-
 			if (isChecked)
 			{
-				Console.WriteLine("CheckBox_CheckedChanged CHECKED");
-			}
-			else
-			{
-				Console.WriteLine("CheckBox_CheckedChanged NOT CHECKED");
+				Console.WriteLine("OnRadioBox" + valueName + "CheckedChanged SELECTED in group: \"" + groupName + "\" with name: \"" + valueName + "\"");
 			}
 		}
 
-		private void RadioButton_CheckedChanged(object arg)
-		{
-			if (RadioBtnOneIsChecked || RadioBtnThreeIsChecked || RadioBtnFiveIsChecked)
-			{
-				Console.WriteLine("RadioButton_CheckedChanged SELECTED in group: \"" + arg);
-			}
-		}
-
-		private bool RadioButton_CheckedChangedCanSubmit(object arg)
+		private bool OnRadioBoxCanSubmit(object arg)
 		{
 			return true;
 		}

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Runtime.InteropServices;
 
 namespace Microsoft.Maui.Handlers
 {
@@ -17,6 +18,7 @@ namespace Microsoft.Maui.Handlers
 			SetMargins(editor, ref widget);
 			//editText.SetSingleLine(false);
 			//editText.SetHorizontallyScrolling(false);
+			_ignoreBufferWhileInputing = false;
 
 			editText.Show();
 
@@ -52,8 +54,21 @@ namespace Microsoft.Maui.Handlers
 		// TODO: NET7 issoto - Change the platformView type to MauiAppCompatEditText
 		protected override void ConnectHandler(ScrolledTextView platformView)
 		{
+			platformView.TextView.Buffer.Changed += Buffer_Changed;
 			//platformView.ViewAttachedToWindow += OnPlatformViewAttachedToWindow;
 			//platformView.TextChanged += OnTextChanged;
+		}
+
+		private void Buffer_Changed(object sender, EventArgs e)
+		{
+			if (VirtualView.Handler is IEditorHandler handler)
+			{
+				var ignore = handler._ignoreBufferWhileInputing;
+				if (VirtualView.Text != PlatformView.TextView.Buffer.Text && !ignore)
+				{
+					VirtualView.Text = PlatformView.TextView.Buffer.Text;
+				}
+			}
 		}
 
 		// TODO: NET7 issoto - Change the platformView type to MauiAppCompatEditText
@@ -61,6 +76,7 @@ namespace Microsoft.Maui.Handlers
 		{
 			//platformView.ViewAttachedToWindow -= OnPlatformViewAttachedToWindow;
 			//platformView.TextChanged -= OnTextChanged;
+			platformView.TextView.Buffer.Changed -= Buffer_Changed;
 
 			//// TODO: NET7 issoto - Remove the casting once we can set the TPlatformView generic type as MauiAppCompatEditText
 			//if (_set && platformView is ScrolledTextView editText)
@@ -78,50 +94,91 @@ namespace Microsoft.Maui.Handlers
 			{
 				// platformTextView.UpdateText(editor);
 				// handler.PlatformView?.UpdateText(editor);
+				if (!handler._ignoreBufferWhileInputing)
+				{
+					handler._ignoreBufferWhileInputing = true;
 
-				// var hasFocus = platformTextView.TextView.HasFocus;
-				// var hasFocus = platformControl.FocusState != UI.Xaml.FocusState.Unfocused;
-				// var passwordBox = platformControl as MauiPasswordTextBox;
-				// var isPassword = passwordBox?.IsPassword ?? false;
-				//var textTransform = editor?.TextTransform ?? TextTransform.None;
+					// await System.Threading.Tasks.Task.Delay(500);
+					// var hasFocus = platformTextView.TextView.HasFocus;
+					// var hasFocus = platformControl.FocusState != UI.Xaml.FocusState.Unfocused;
+					// var passwordBox = platformControl as MauiPasswordTextBox;
+					// var isPassword = passwordBox?.IsPassword ?? false;
+					//var textTransform = editor?.TextTransform ?? TextTransform.None;
 
-				// Setting the text causes the cursor to be reset to position zero.
-				// So, let's retain the current cursor position and calculate a new cursor
-				// position if the text was modified by a Converter.
-				// var oldText = platformControl.TextView.Text ?? string.Empty;
-				Gtk.TextIter start, end, newEndIter;
-				platformTextView.TextView.Buffer.GetBounds(out start, out end);
-				var oldText = platformTextView.TextView.Buffer.GetText(start, end, false);
-				//var newText = TextTransformUtilites.GetTransformedText(
-				//	inputView?.Text,
-				//	isPassword ? TextTransform.None : textTransform
-				//	);
+					// Setting the text causes the cursor to be reset to position zero.
+					// So, let's retain the current cursor position and calculate a new cursor
+					// position if the text was modified by a Converter.
+					// var oldText = platformControl.TextView.Text ?? string.Empty;
+					Gtk.TextIter start, end, newEndIter;
+					platformTextView.TextView.Buffer.GetBounds(out start, out end);
+					var oldText = platformTextView.TextView.Buffer.GetText(start, end, false);
+					if (editor.Text == oldText)
+					{
+						handler._ignoreBufferWhileInputing = false;
+						return;
+					}
+					//var newText = TextTransformUtilites.GetTransformedText(
+					//	inputView?.Text,
+					//	isPassword ? TextTransform.None : textTransform
+					//	);
 
-				//var newText = TextTransformUtilites.GetTransformedText(
-				//	editor?.Text,
-				//	textTransform
-				//	);
+					//var newText = TextTransformUtilites.GetTransformedText(
+					//	editor?.Text,
+					//	textTransform
+					//	);
 
-				var newText = editor?.Text;
+					var newText = string.Empty;
+					if (editor != null)
+					{
+						newText = editor.Text;
+					}
 
-				// Re-calculate the cursor offset position if the text was modified by a Converter.
-				// but if the text is being set by code, let's just move the cursor to the end.
-				//var cursorOffset = newText.Length - oldText.Length;
-				// int cursorPosition = hasFocus ? platformControl.GetCursorPosition(cursorOffset) : newText.Length;
-				//platformControl.TextView.Buffer.Insert(end, newText);
-				platformTextView.TextView.Buffer.Text = newText;
+					// platformTextView.TextView.Buffer.Text = newText;
 
-				platformTextView.TextView.Buffer.GetBounds(out start, out newEndIter);
+					// Re-calculate the cursor offset position if the text was modified by a Converter.
+					// but if the text is being set by code, let's just move the cursor to the end.
+					//var cursorOffset = newText.Length - oldText.Length;
+					// int cursorPosition = hasFocus ? platformControl.GetCursorPosition(cursorOffset) : newText.Length;
+					// platformTextView.TextView.Buffer.Insert(start, newText);
 
-				//if (oldText != newText && passwordBox is not null)
-				//	passwordBox.Password = newText;
-				//else if (oldText != newText)
-				//	platformControl.Text = newText;
+					//DispatchData data = new DispatchData();
+					//data.buffer = platformTextView.TextView.Buffer;
+					//data.output_str = newText;
 
-				// platformControl.Select(cursorPosition, 0);
-				platformTextView.TextView.ScrollToIter(newEndIter, 0, false, 0, 0);
+					GLib.Idle.Add(() =>
+					{
+						System.Threading.Thread.CurrentThread.IsBackground = true;
+
+						//Gdk.Threads.AddIdle(1, display_status_textbuffer, data);
+						platformTextView.TextView.Buffer.Text = newText;
+
+						platformTextView.TextView.Buffer.GetBounds(out start, out newEndIter);
+
+						////if (oldText != newText && passwordBox is not null)
+						////	passwordBox.Password = newText;
+						////else if (oldText != newText)
+						////	platformControl.Text = newText;
+
+						////// platformControl.Select(cursorPosition, 0);
+						platformTextView.TextView.ScrollToIter(newEndIter, 0, false, 0, 0);
+						handler._ignoreBufferWhileInputing = false;
+
+						return false;
+					});
+				}
 			}
 		}
+
+		//private static void display_status_textbuffer(DispatchData data)
+		//{
+
+		//}
+
+		//struct DispatchData
+		//{
+		//	public Gtk.TextBuffer buffer;
+		//	public string output_str;
+		//};
 
 		public static void MapTextColor(IEditorHandler handler, IEditor editor) { }
 		// handler.PlatformView?.UpdateTextColor(editor);

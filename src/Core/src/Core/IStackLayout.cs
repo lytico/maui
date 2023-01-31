@@ -9,5 +9,8 @@
 		/// Specifies the amount of space between children.
 		/// </summary>
 		double Spacing { get; }
+#if __GTK__
+		StackOrientation Orientation { get; }
+#endif
 	}
 }

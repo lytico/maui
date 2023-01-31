@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using Gtk;
@@ -78,7 +79,8 @@ namespace Microsoft.Maui.Handlers
 		{
 			if (platformView.GetChildWidget() is Gtk.RadioButton radioButton)
 			{
-				radioButton.Clicked += RadioButton_Clicked;
+				//radioButton.Clicked += RadioButton_Clicked;
+				radioButton.Released += RadioButton_Released;
 			}
 
 			//RadioButton? platformRadioButton = GetPlatformRadioButton(this);
@@ -87,26 +89,55 @@ namespace Microsoft.Maui.Handlers
 			//	platformRadioButton.CheckedChange += OnCheckChanged;
 		}
 
-		private void RadioButton_Clicked(object sender, System.EventArgs e)
+		private void RadioButton_Released(object sender, EventArgs e)
 		{
-			// Debug.WriteLine("Clicked");
+			Console.WriteLine("Radio Button Clicked");
 			if (VirtualView != null)
 			{
 				if (sender is Gtk.RadioButton radioButton)
 				{
 					if (radioButton.Active)
+					{
 						VirtualView.IsChecked = true;
+						// Console.WriteLine("Read Checked!");
+					}
 					else
+					{
 						VirtualView.IsChecked = false;
+						// Console.WriteLine("Read NOT Checked!");
+					}
 				}
 			}
+		}
+
+		private void RadioButton_Clicked(object sender, System.EventArgs e)
+		{
+			//// Debug.WriteLine("Clicked");
+			//Console.WriteLine("Radio Button Clicked");
+			//if (VirtualView != null)
+			//{
+			//	if (sender is Gtk.RadioButton radioButton)
+			//	{
+			//		if (radioButton.Active)
+			//		{
+			//			VirtualView.IsChecked = true;
+			//			// Console.WriteLine("Read Checked!");
+			//		}
+			//		else
+			//		{
+			//			VirtualView.IsChecked = false;
+			//			// Console.WriteLine("Read NOT Checked!");
+			//		}
+			//	}
+			//}
 		}
 
 		protected override void DisconnectHandler(MauiView platformView)
 		{
 			if (platformView.GetChildWidget() is Gtk.RadioButton radioButton)
 			{
-				radioButton.Clicked -= RadioButton_Clicked;
+				//radioButton.Clicked -= RadioButton_Clicked;
+				radioButton.Released -= RadioButton_Released;
 				if (RadioButtonGrouping.ContainsKey(radioButton))
 				{
 					RadioButtonGrouping.Remove(radioButton);
@@ -128,10 +159,12 @@ namespace Microsoft.Maui.Handlers
 				if (radio.IsChecked)
 				{
 					radioButton.Active = true;
+					//Console.WriteLine("Mark Checked!");
 				}
 				else
 				{
 					radioButton.Active = false;
+					//Console.WriteLine("Mark NOT Checked!");
 				}
 			}
 			//GetPlatformRadioButton(handler)?.UpdateIsChecked(radioButton);

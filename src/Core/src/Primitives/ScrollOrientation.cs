@@ -1,6 +1,5 @@
 ﻿namespace Microsoft.Maui
 {
-	/// <include file="../../docs/Microsoft.Maui/ScrollOrientation.xml" path="Type[@FullName='Microsoft.Maui.ScrollOrientation']/Docs/*" />
 	public enum ScrollOrientation
 	{
 		/// <summary>

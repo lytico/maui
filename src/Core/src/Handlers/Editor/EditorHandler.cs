@@ -60,5 +60,9 @@ namespace Microsoft.Maui.Handlers
 		IEditor IEditorHandler.VirtualView => VirtualView;
 
 		PlatformView IEditorHandler.PlatformView => PlatformView;
+
+#if __GTK__
+		public bool _ignoreBufferWhileInputing { get; set; }
+#endif
 	}
 }

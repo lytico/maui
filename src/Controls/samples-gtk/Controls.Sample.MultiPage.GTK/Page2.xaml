@@ -18,7 +18,7 @@
 
             <Button
                 Text="Back"
-                Command="{Binding Path=BackButtonClickedCommand}"
+                Command="{Binding BackButtonClickedCommand}"
                 BackgroundColor="#512BD4"
                 FontSize="18"
                 TextColor="#FFFFFF"
@@ -26,20 +26,20 @@
 
             <Entry
                 HorizontalOptions="Center"
-                Text="Hello"
+                Text="{Binding Entry1Text}"
                 IsPassword="True"
                 WidthRequest="180" />
 
             <Entry
                 HorizontalOptions="Center"
-                Text="Hello"
+                Text="{Binding Entry2Text}"
                 WidthRequest="180" />
 
             <Image
                 Source="click_me.gif"
                 HorizontalOptions="Center" WidthRequest="180" />
 
-            <HorizontalStackLayout>
+            <StackLayout Orientation="Horizontal">
                 <Label
                     Text="Test a CheckBox: "
                     FontSize="10" />
@@ -51,7 +51,7 @@
                             Command="{Binding CheckBoxCheckedChanged}" />
                     </CheckBox.Behaviors>
                 </CheckBox>
-            </HorizontalStackLayout>
+            </StackLayout>
 
             <RadioButton Value="One" IsChecked="{Binding RadioButtonOneChecked}" GroupName="Start">
                 <RadioButton.Behaviors>
@@ -116,7 +116,8 @@
 
                 <Editor
                     Grid.Row="0" Grid.Column="1"
-                    x:Name="Editor1" Text="Hello from editor" FontSize="14" WidthRequest="180"/>
+                    Text="{Binding Editor1Text}"
+                    FontSize="14" WidthRequest="180"/>
                 <Label
                     Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2"
                     Text="Above is an Editor. This is a span of 2 columns. This gives a long label."
@@ -129,7 +130,7 @@
 
                     <Label
                     Grid.Row="0" Grid.Column="1"
-                    Text="Test Label 2"
+                    Text="{Binding Grid2Label2Text}"
                     FontSize="10" />
 
                 </Grid>

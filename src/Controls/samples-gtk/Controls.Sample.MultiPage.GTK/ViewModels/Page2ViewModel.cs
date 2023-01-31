@@ -14,6 +14,8 @@ using Microsoft.Maui.Controls;
 using Prism.Navigation.Xaml;
 using System.Windows.Input;
 using GLib;
+using Microsoft.Maui;
+using System.Windows.Forms;
 
 namespace Maui.Controls.Sample.MultiPage.GTK.ViewModels
 {
@@ -32,15 +34,19 @@ namespace Maui.Controls.Sample.MultiPage.GTK.ViewModels
 			this.CheckBoxCheckedChanged = new DelegateCommand<object>(this.OnCheckBoxChanged, this.OnCheckBoxCanSubmit);
 
 			// Radio Buttons
-			this.RadioButtonOne_CheckedChanged = new DelegateCommand<object>(this.OnRadioBoxOneCheckedChanged, this.OnRadioBoxCanSubmit);
-			this.RadioButtonTwo_CheckedChanged = new DelegateCommand<object>(this.OnRadioBoxTwoCheckedChanged, this.OnRadioBoxCanSubmit);
-			this.RadioButtonThree_CheckedChanged = new DelegateCommand<object>(this.OnRadioBoxThreeCheckedChanged, this.OnRadioBoxCanSubmit);
-			this.RadioButtonFour_CheckedChanged = new DelegateCommand<object>(this.OnRadioBoxFourCheckedChanged, this.OnRadioBoxCanSubmit);
-			this.RadioButtonFive_CheckedChanged = new DelegateCommand<object>(this.OnRadioBoxFiveCheckedChanged, this.OnRadioBoxCanSubmit);
-			this.RadioButtonSix_CheckedChanged = new DelegateCommand<object>(this.OnRadioBoxSixCheckedChanged, this.OnRadioBoxCanSubmit);
+			this.RadioButtonOne_CheckedChanged = new DelegateCommand<object>((arg) => this.RadioBoxWriteLine(this.RadioButtonOneChecked, "Start", "One"), this.OnRadioBoxCanSubmit);
+			this.RadioButtonTwo_CheckedChanged = new DelegateCommand<object>((arg) => this.RadioBoxWriteLine(this.RadioButtonTwoChecked, "Start", "Two"), this.OnRadioBoxCanSubmit);
+			this.RadioButtonThree_CheckedChanged = new DelegateCommand<object>((arg) => this.RadioBoxWriteLine(this.RadioButtonThreeChecked, "Three", "Three"), this.OnRadioBoxCanSubmit);
+			this.RadioButtonFour_CheckedChanged = new DelegateCommand<object>((arg) => this.RadioBoxWriteLine(this.RadioButtonFourChecked, "Three", "Four"), this.OnRadioBoxCanSubmit);
+			this.RadioButtonFive_CheckedChanged = new DelegateCommand<object>((arg) => this.RadioBoxWriteLine(this.RadioButtonFiveChecked, "NULL", "Five"), this.OnRadioBoxCanSubmit);
+			this.RadioButtonSix_CheckedChanged = new DelegateCommand<object>((arg) => this.RadioBoxWriteLine(this.RadioButtonSixChecked, "NULL", "Six"), this.OnRadioBoxCanSubmit);
 			this.RadioButtonOneChecked = true;
 			this.RadioButtonThreeChecked = true;
 			this.RadioButtonFiveChecked = true;
+			this.Entry1Text = "testPW";
+			this.Entry2Text = "Hello";
+			this.Editor1Text = "Hello from editor";
+			this.Grid2Label2Text = "Test Label 2";
 		}
 
 		private bool _isCheckBoxChecked;
@@ -92,6 +98,34 @@ namespace Maui.Controls.Sample.MultiPage.GTK.ViewModels
 			set => SetProperty(ref _radioButtonSixChecked, value);
 		}
 
+		private string _entry1Text;
+		public string Entry1Text
+		{
+			get => _entry1Text;
+			set => SetProperty(ref _entry1Text, value);
+		}
+
+		private string _entry2Text;
+		public string Entry2Text
+		{
+			get => _entry2Text;
+			set => SetProperty(ref _entry2Text, value);
+		}
+
+		private string _editor1Text;
+		public string Editor1Text
+		{
+			get => _editor1Text;
+			set => SetProperty(ref _editor1Text, value);
+		}
+
+		private string _grid2Label2Text;
+		public string Grid2Label2Text
+		{
+			get => _grid2Label2Text;
+			set => SetProperty(ref _grid2Label2Text, value);
+		}
+
 		public ICommand BackButtonClickedCommand { get; private set; }
 		public ICommand CheckBoxCheckedChanged { get; }
 		public ICommand RadioButtonOne_CheckedChanged { get; }
@@ -115,11 +149,6 @@ namespace Maui.Controls.Sample.MultiPage.GTK.ViewModels
 
 		public void OnAppearing()
 		{
-			//var timer = Microsoft.Maui.Controls.Application.Current.Dispatcher.CreateTimer();
-			//timer.Interval = TimeSpan.FromMilliseconds(200);
-			//timer.Tick += (s, e) => ClearVisibilityOnButton2();
-			//timer.IsRepeating = false;
-			//timer.Start();
 		}
 
 		public void OnDisappearing()
@@ -128,9 +157,11 @@ namespace Maui.Controls.Sample.MultiPage.GTK.ViewModels
 
 		private async void OnBackButtonClicked(object arg)
 		{
-			Console.WriteLine("OnBackButtonClicked");
-			//// await Navigation.PushAsync(new Page2());
-			//await Navigation.PopAsync();
+			Console.WriteLine("OnBackButtonClicked Here is Entry 1 text: " + this.Entry1Text);
+			Console.WriteLine("OnBackButtonClicked Here is Entry 2 text: " + this.Entry2Text);
+			Console.WriteLine("OnBackButtonClicked Here is Editor 1 text: " + this.Editor1Text);
+			Console.WriteLine("OnBackButtonClicked Here is Test Label 2 text: " + this.Grid2Label2Text);
+
 			await _navigationService.NavigateAsync("MainPage");
 		}
 
@@ -141,14 +172,10 @@ namespace Maui.Controls.Sample.MultiPage.GTK.ViewModels
 
 		private void OnCheckBoxChanged(object arg)
 		{
-			//bool isChecked = false;
-			//if (sender is CheckBox checkBox)
-			//{
-			//	if (checkBox.IsChecked == true)
-			//	{
-			//		isChecked = true;
-			//	}
-			//}
+			Console.WriteLine("OnCheckBoxChanged Here is Entry 1 text: " + this.Entry1Text);
+			Console.WriteLine("OnCheckBoxChanged Here is Entry 2 text: " + this.Entry2Text);
+			Console.WriteLine("OnCheckBoxChanged Here is Editor 1 text: " + this.Editor1Text);
+			Console.WriteLine("OnCheckBoxChanged Here is Test Label 2 text: " + this.Grid2Label2Text);
 
 			if (IsCheckBoxChecked)
 			{
@@ -165,104 +192,11 @@ namespace Maui.Controls.Sample.MultiPage.GTK.ViewModels
 			return true;
 		}
 
-		private void RadioBoxWriteLine(string groupName, string valueName)
+		private void RadioBoxWriteLine(bool isChecked, string groupName, string valueName)
 		{
-			Console.WriteLine("OnRadioBox" + valueName + "CheckedChanged SELECTED in group: \"" + groupName + "\" with name: \"" + valueName + "\"");
-		}
-
-		private void OnRadioBoxOneCheckedChanged(object arg)
-		{
-			//bool isChecked = false;
-			string groupName = "Start";
-			string valueName = "One";
-
-			//if (sender is RadioButton radioButton)
-			//{
-			//	groupName = radioButton.GroupName;
-			//	if (radioButton.Value != null)
-			//	{
-			//		valueName = radioButton.Value as string;
-			//	}
-			//	else
-			//	{
-			//		valueName = "NULL";
-			//	}
-			//	if (radioButton.IsChecked == true)
-			//	{
-			//		isChecked = true;
-			//	}
-			//}
-			if (RadioButtonOneChecked)
+			if (isChecked)
 			{
-				RadioBoxWriteLine(groupName, valueName);
-			}
-			//else if (RadioButtonTwoChecked)
-			//{
-			//	valueName = "Two";
-			//}
-
-			////if (isChecked)
-			////{
-			//Console.WriteLine("OnRadioBoxOneCheckedChanged SELECTED in group: \"" + groupName + "\" with name: \"" + valueName + "\"");
-			////}
-			////else
-			////{
-			////	Console.WriteLine("RadioButton_CheckedChanged NOT CHECKED in group: " + groupName + " with name: " + valueName);
-			////}
-		}
-
-		private void OnRadioBoxTwoCheckedChanged(object arg)
-		{
-			string groupName = "Start";
-			string valueName = "Two";
-
-			if (RadioButtonTwoChecked)
-			{
-				RadioBoxWriteLine(groupName, valueName);
-			}
-		}
-
-		private void OnRadioBoxThreeCheckedChanged(object arg)
-		{
-			string groupName = "Three";
-			string valueName = "Three";
-
-			if (RadioButtonThreeChecked)
-			{
-				RadioBoxWriteLine(groupName, valueName);
-			}
-		}
-
-		private void OnRadioBoxFourCheckedChanged(object arg)
-		{
-			string groupName = "Three";
-			string valueName = "Four";
-
-			if (RadioButtonFourChecked)
-			{
-				RadioBoxWriteLine(groupName, valueName);
-			}
-		}
-
-		private void OnRadioBoxFiveCheckedChanged(object arg)
-		{
-			string groupName = "NULL";
-			string valueName = "Five";
-
-			if (RadioButtonFiveChecked)
-			{
-				RadioBoxWriteLine(groupName, valueName);
-			}
-		}
-
-		private void OnRadioBoxSixCheckedChanged(object arg)
-		{
-			string groupName = "NULL";
-			string valueName = "Six";
-
-			if (RadioButtonSixChecked)
-			{
-				RadioBoxWriteLine(groupName, valueName);
+				Console.WriteLine("OnRadioBox" + valueName + "CheckedChanged SELECTED in group: \"" + groupName + "\" with name: \"" + valueName + "\"");
 			}
 		}
 

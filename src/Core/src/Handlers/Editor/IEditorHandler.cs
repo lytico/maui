@@ -20,5 +20,8 @@ namespace Microsoft.Maui.Handlers
 	{
 		new IEditor VirtualView { get; }
 		new PlatformView PlatformView { get; }
+#if __GTK__
+		bool _ignoreBufferWhileInputing { get; set; }
+#endif
 	}
 }

@@ -642,7 +642,6 @@
     <Compile Include="..\Core\Slider.cs" Link="Slider.cs" />
     <Compile Include="..\Core\SolidColorBrush.cs" Link="SolidColorBrush.cs" />
     <Compile Include="..\Core\Span.cs" Link="Span.cs" />
-    <Compile Include="..\Core\StackOrientation.cs" Link="StackOrientation.cs" />
     <Compile Include="..\Core\StateTrigger.cs" Link="StateTrigger.cs" />
     <Compile Include="..\Core\StateTriggerBase.cs" Link="StateTriggerBase.cs" />
     <Compile Include="..\Core\Stepper.cs" Link="Stepper.cs" />

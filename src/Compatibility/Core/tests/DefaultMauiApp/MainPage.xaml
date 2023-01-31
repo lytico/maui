@@ -35,6 +35,11 @@
                 Clicked="OnCounterClicked"
                 HorizontalOptions="Center" />
 
+            <StackLayout Orientation="Horizontal">
+                <Label Text="Here is a checkbox" />
+                <CheckBox />
+            </StackLayout>
+
         </VerticalStackLayout>
     </ScrollView>
 

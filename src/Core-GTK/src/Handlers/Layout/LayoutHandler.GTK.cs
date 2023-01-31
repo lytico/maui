@@ -12,6 +12,23 @@ namespace Microsoft.Maui.Handlers
 				throw new InvalidOperationException($"{nameof(VirtualView)} must be set to create a LayoutViewGroup");
 			}
 
+			if (layout is IStackLayout stackLayout)
+			{
+				Console.WriteLine("Stack Layout!");
+				if (stackLayout.Orientation == StackOrientation.Horizontal)
+				{
+					var viewHoriz = new Gtk.Box(Gtk.Orientation.Horizontal, 0);
+
+					return viewHoriz;
+				}
+				else if (stackLayout.Orientation == StackOrientation.Vertical)
+				{
+					var viewVert = new Gtk.Box(Gtk.Orientation.Horizontal, 0);
+
+					return viewVert;
+				}
+			}
+
 			// var viewGroup = new LayoutViewGroup();
 			var view = new Gtk.Box(Gtk.Orientation.Vertical, 0);
 
