@@ -14,7 +14,7 @@ namespace Microsoft.Maui.Handlers
 
 			if (layout is IStackLayout stackLayout)
 			{
-				Console.WriteLine("Stack Layout!");
+				// Console.WriteLine("Stack Layout!");
 				if (stackLayout.Orientation == StackOrientation.Horizontal)
 				{
 					var viewHoriz = new Gtk.Box(Gtk.Orientation.Horizontal, 0);

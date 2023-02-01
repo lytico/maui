@@ -39,6 +39,7 @@ namespace Microsoft.Maui.Handlers
 			if (platformView.Entry is Gtk.Entry platformEntry)
 			{
 				platformEntry.Changed += PlatformEntry_Changed;
+				platformEntry.KeyReleaseEvent += PlatformEntry_KeyReleaseEvent;
 			}
 			//platformView.TextChanged += OnTextChanged;
 			//platformView.FocusChange += OnFocusedChange;
@@ -46,20 +47,15 @@ namespace Microsoft.Maui.Handlers
 			//platformView.EditorAction += OnEditorAction;
 		}
 
-		private void PlatformEntry_Changed(object sender, EventArgs e)
-		{
-			if (VirtualView != null)
-			{
-				if (sender is Gtk.Entry entry)
-				{
-					VirtualView.Text = entry.Text;
-				}
-			}
-		}
-
 		// TODO: NET7 issoto - Change the return type to MauiAppCompatEditText
 		protected override void DisconnectHandler(EntryWrapper platformView)
 		{
+			if (platformView.Entry is Gtk.Entry platformEntry)
+			{
+				platformEntry.Changed -= PlatformEntry_Changed;
+				platformEntry.KeyReleaseEvent -= PlatformEntry_KeyReleaseEvent;
+			}
+
 			//_clearButtonDrawable = null;
 			//platformView.TextChanged -= OnTextChanged;
 			//platformView.FocusChange -= OnFocusedChange;
@@ -71,6 +67,37 @@ namespace Microsoft.Maui.Handlers
 			//	editText.SelectionChanged -= OnSelectionChanged;
 
 			//_set = false;
+		}
+
+		private void PlatformEntry_KeyReleaseEvent(object o, KeyReleaseEventArgs args)
+		{
+			// var GDK_KEY_Return = 0xff0d;
+			if (args.Event.Key != Gdk.Key.Return)
+			{
+				return;
+			}
+
+			//if (VirtualView?.ReturnType == ReturnType.Next)
+			//{
+			//	PlatformView?.TryMoveFocus(FocusNavigationDirection.Next);
+			//}
+			//else
+			//{
+			//	// TODO: Hide the soft keyboard; this matches the behavior of .NET MAUI on Android/iOS
+			//}
+
+			VirtualView?.Completed();
+		}
+
+		private void PlatformEntry_Changed(object sender, EventArgs e)
+		{
+			if (VirtualView != null)
+			{
+				if (sender is Gtk.Entry entry)
+				{
+					VirtualView.Text = entry.Text;
+				}
+			}
 		}
 
 		public static void MapBackground(IEntryHandler handler, IEntry entry) { }

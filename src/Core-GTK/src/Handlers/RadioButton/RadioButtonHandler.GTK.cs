@@ -91,7 +91,7 @@ namespace Microsoft.Maui.Handlers
 
 		private void RadioButton_Released(object sender, EventArgs e)
 		{
-			Console.WriteLine("Radio Button Clicked");
+			// Console.WriteLine("Radio Button Clicked");
 			if (VirtualView != null)
 			{
 				if (sender is Gtk.RadioButton radioButton)

@@ -33,11 +33,14 @@ namespace Microsoft.Maui.Platform
 
 			var x = Convert.ToInt32(window.Content.AnchorX);
 			var y = Convert.ToInt32(window.Content.AnchorY);
-			var width = Convert.ToInt32(window.Content.Width);
-			var height = Convert.ToInt32(window.Content.Height);
-
 			winuiWndow.Move(x, y);
-			winuiWndow.Resize(width, height);
+
+			if (window.Content.Width > 0 && window.Content.Height > 0)
+			{
+				var width = Convert.ToInt32(window.Content.Width);
+				var height = Convert.ToInt32(window.Content.Height);
+				winuiWndow.Resize(width, height);
+			}
 
 			applicationContext.Services.InvokeLifecycleEvents<GTKLifecycle.OnWindowCreated>(del => del(winuiWndow));
 
