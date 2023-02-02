@@ -111,6 +111,8 @@ namespace Microsoft.Maui
 		public IServiceProvider Services { get; protected set; } = null!;
 
 		public IApplication Application { get; protected set; } = null!;
+
+		public string? WindowCssFileName {  get; set; } = null;
 	}
 
 	//class AppTemplate : IApplication

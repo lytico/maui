@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Runtime.Versioning;
 using GLib;
 using Gtk;
@@ -19,6 +20,16 @@ namespace Microsoft.Maui.Platform
 
 			var winuiWndow = new MauiGTKWindow("My first GTK# Application! ");
 			// winuiWndow.Resize(600, 300);
+			var provider = new Gtk.CssProvider();
+			if (!string.IsNullOrEmpty(platformApplication.WindowCssFileName))
+			{
+				var windowStyleCss = File.ReadAllText(platformApplication.WindowCssFileName);
+				provider.LoadFromData(windowStyleCss);
+				var context = winuiWndow.StyleContext;
+				context.AddProvider(provider, Gtk.StyleProviderPriority.User);
+				context.Save();
+				Gtk.StyleContext.AddProviderForScreen(Gdk.Screen.Default, provider, Gtk.StyleProviderPriority.User);
+			}
 
 			var mauiContext = applicationContext!.MakeWindowScope(winuiWndow, out var windowScope);
 

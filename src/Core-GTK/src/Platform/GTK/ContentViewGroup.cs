@@ -43,6 +43,15 @@ namespace Microsoft.Maui.Platform
 			return _child;
 		}
 
+		//public void ChangeBackgroundForChild()
+		//{
+		//	if (_child != null)
+		//	{
+		//		var cssProvider = new Gtk.CssProvider();
+		//		cssProvider.LoadFromPath();
+		//	}
+		//}
+
 		//protected override bool OnExposeEvent(EventExpose evnt)
 		//{
 		//	using (var cr = CairoHelper.Create(GdkWindow))

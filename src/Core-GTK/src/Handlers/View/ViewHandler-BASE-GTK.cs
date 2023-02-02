@@ -324,15 +324,19 @@ namespace Microsoft.Maui.Handlers
 
 		public static void MapFocus(IViewHandler handler, IView view, object? args)
 		{
-			//if (args is FocusRequest request)
-			//{
-			//	if (handler.PlatformView == null)
-			//	{
-			//		return;
-			//	}
+			if (args is FocusRequest request)
+			{
+				if (handler.PlatformView == null)
+				{
+					return;
+				}
 
-			//	((PlatformView?)handler.PlatformView)?.Focus(request);
-			//}
+				// ((PlatformView?)handler.PlatformView)?.Focus(request);
+				if (handler.PlatformView is EntryWrapper entry)
+				{
+					entry.Entry.GrabFocus();
+				}
+			}
 		}
 
 		public static void MapInputTransparent(IViewHandler handler, IView view)
