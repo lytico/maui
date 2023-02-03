@@ -88,6 +88,7 @@ namespace Microsoft.Maui.Platform
 				foreach (var child in _platformWindow.Children)
 				{
 					_platformWindow.Remove(child);
+					return;
 				}
 			}
 		}
