@@ -22,7 +22,7 @@ using Microsoft.Maui.Controls.Compatibility.Platform.GTK;
 #elif WINDOWS && !__GTK__
 using ResourcesProvider = Microsoft.Maui.Controls.Compatibility.Platform.UWP.WindowsResourcesProvider;
 using Microsoft.Maui.Controls.Compatibility.Platform.UWP;
-#elif IOS || MACCATALYST                   
+#elif IOS || MACCATALYST
 using Microsoft.Maui.Controls.Compatibility.Platform.iOS;
 using Microsoft.Maui.Controls.Handlers.Compatibility;
 #elif TIZEN

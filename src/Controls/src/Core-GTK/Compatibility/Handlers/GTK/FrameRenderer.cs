@@ -2,6 +2,7 @@
 
 using System;
 using System.ComponentModel;
+using Gtk;
 using Microsoft.Maui.Controls.Platform;
 using Microsoft.Maui.Graphics;
 using Microsoft.Maui.Platform;
@@ -9,7 +10,7 @@ using Color = Microsoft.Maui.Graphics.Color;
 
 namespace Microsoft.Maui.Controls.Handlers.Compatibility
 {
-	public class FrameRenderer : System.Object, IPlatformViewHandler
+	public class FrameRenderer : ViewRenderer<Frame, Gtk.EventBox>
 	{
 		public static IPropertyMapper<Frame, FrameRenderer> Mapper
 			= new PropertyMapper<Frame, FrameRenderer>()
@@ -19,7 +20,7 @@ namespace Microsoft.Maui.Controls.Handlers.Compatibility
 				[VisualElement.BackgroundProperty.PropertyName] = (h, _) => h.UpdateBackground(),
 				[Frame.CornerRadiusProperty.PropertyName] = (h, _) => h.UpdateCornerRadius(),
 				[Frame.BorderColorProperty.PropertyName] = (h, _) => h.UpdateBorderColor(),
-				[Microsoft.Maui.Controls.Compatibility.Layout.IsClippedToBoundsProperty.PropertyName] = (h, _) => h.UpdateClippedToBounds(),
+				// [Microsoft.Maui.Controls.Compatibility.Layout.IsClippedToBoundsProperty.PropertyName] = (h, _) => h.UpdateClippedToBounds(),
 				[Frame.ContentProperty.PropertyName] = (h, _) => h.UpdateContent()
 			};
 
@@ -36,52 +37,52 @@ namespace Microsoft.Maui.Controls.Handlers.Compatibility
 		//readonly Controls.Compatibility.Platform.Android.MotionEventHelper2 _motionEventHelper = new Controls.Compatibility.Platform.Android.MotionEventHelper2();
 		//bool _disposed;
 		//GradientDrawable? _backgroundDrawable;
-		private IMauiContext? _mauiContext;
-		ViewHandlerDelegator<Frame> _viewHandlerWrapper;
-		public event EventHandler<VisualElementChangedEventArgs>? ElementChanged;
-		public event EventHandler<PropertyChangedEventArgs>? ElementPropertyChanged;
+		//private IMauiContext? _mauiContext;
+		//ViewHandlerDelegator<Frame> _viewHandlerWrapper;
+		//public event EventHandler<VisualElementChangedEventArgs>? ElementChanged;
+		//public event EventHandler<PropertyChangedEventArgs>? ElementPropertyChanged;
 
 		public FrameRenderer()
 		{
-			_viewHandlerWrapper = new ViewHandlerDelegator<Frame>(Mapper, CommandMapper, this);
+			//_viewHandlerWrapper = new ViewHandlerDelegator<Frame>(Mapper, CommandMapper, this);
 		}
 
 		//protected CardView Control => this;
 
-		protected Frame? Element
-		{
-			get { return _viewHandlerWrapper.Element; }
-			set
-			{
-				if (value != null)
-					(this as IPlatformViewHandler).SetVirtualView(value);
-			}
-		}
+		//protected Frame? Element
+		//{
+		//	get { return _viewHandlerWrapper.Element; }
+		//	set
+		//	{
+		//		if (value != null)
+		//			(this as IPlatformViewHandler).SetVirtualView(value);
+		//	}
+		//}
 
-		public void SetMargins(IView view, ref Gtk.Widget widget)
-		{
-			if (view.Margin.Left > 0)
-			{
-				widget.MarginStart = (int)view.Margin.Left;
-			}
-			if (view.Margin.Top > 0)
-			{
-				widget.MarginTop = (int)view.Margin.Top;
-			}
-			if (view.Margin.Right > 0)
-			{
-				widget.MarginEnd = (int)view.Margin.Right;
-			}
-			if (view.Margin.Bottom > 0)
-			{
-				widget.MarginBottom = (int)view.Margin.Bottom;
-			}
-		}
+		//public void SetMargins(IView view, ref Gtk.Widget widget)
+		//{
+		//	if (view.Margin.Left > 0)
+		//	{
+		//		widget.MarginStart = (int)view.Margin.Left;
+		//	}
+		//	if (view.Margin.Top > 0)
+		//	{
+		//		widget.MarginTop = (int)view.Margin.Top;
+		//	}
+		//	if (view.Margin.Right > 0)
+		//	{
+		//		widget.MarginEnd = (int)view.Margin.Right;
+		//	}
+		//	if (view.Margin.Bottom > 0)
+		//	{
+		//		widget.MarginBottom = (int)view.Margin.Bottom;
+		//	}
+		//}
 
-		Size IViewHandler.GetDesiredSize(double widthMeasureSpec, double heightMeasureSpec)
-		{
-			return new Size(widthMeasureSpec, heightMeasureSpec);
-		}
+		//Size IViewHandler.GetDesiredSize(double widthMeasureSpec, double heightMeasureSpec)
+		//{
+		//	return new Size(widthMeasureSpec, heightMeasureSpec);
+		//}
 
 		//protected override void Dispose(bool disposing)
 		//{
@@ -116,20 +117,80 @@ namespace Microsoft.Maui.Controls.Handlers.Compatibility
 		//	base.Dispose(disposing);
 		//}
 
-		protected virtual void OnElementChanged(ElementChangedEventArgs<Frame> e)
+		protected override void OnElementChanged(ElementChangedEventArgs<Frame> e)
 		{
-			ElementChanged?.Invoke(this, new VisualElementChangedEventArgs(e.OldElement, e.NewElement));
+			base.OnElementChanged(e);
 
-			//if (e.NewElement != null)
+			if (e.NewElement != null)
+			{
+				if (Control == null)
+				{
+					var evntBox = new Gtk.EventBox();
+					evntBox.Add(new Gtk.Frame());
+					SetNativeControl(evntBox);
+				}
+
+				//PackChild();
+				UpdateBorder();
+				UpdateCornerRadius();
+				UpdatePadding();
+			}
+		}
+
+		protected override void OnElementPropertyChanged(object sender, PropertyChangedEventArgs e)
+		{
+			base.OnElementPropertyChanged(sender, e);
+
+			//if (e.PropertyName == "Content")
 			//{
-			//	this.EnsureId();
-			//	_backgroundDrawable = new GradientDrawable();
-			//	_backgroundDrawable.SetShape(ShapeType.Rectangle);
-			//	this.SetBackground(_backgroundDrawable);
+			//	PackChild();
+			//}
+			/* else */ if (e.PropertyName == Frame.BorderColorProperty.PropertyName || e.PropertyName == Frame.HasShadowProperty.PropertyName)
+			{
+				UpdateBorder();
+			}
+			else if (e.PropertyName == Frame.CornerRadiusProperty.PropertyName)
+			{
+				UpdateCornerRadius();
+			}
+			else if (e.PropertyName == Frame.PaddingProperty.PropertyName)
+			{
+				UpdatePadding();
+			}
+		}
 
-			//	ElevationHelper.SetElevation(this, e.NewElement);
+		void UpdatePadding()
+		{
+			// Control.Padding = Element.Padding.ToPlatform();
+		}
+
+		void UpdateBorder()
+		{
+			//if (Element.BorderColor.IsNotDefault())
+			//{
+			//	Control.BorderBrush = Element.BorderColor.ToPlatform();
+			//	Control.BorderThickness = WinUIHelpers.CreateThickness(1);
+			//}
+			//else
+			//{
+			//	Control.BorderBrush = new Color(0, 0, 0, 0).ToPlatform();
 			//}
 		}
+
+		//protected virtual void OnElementChanged(ElementChangedEventArgs<Frame> e)
+		//{
+		//	ElementChanged?.Invoke(this, new VisualElementChangedEventArgs(e.OldElement, e.NewElement));
+
+		//	//if (e.NewElement != null)
+		//	//{
+		//	//	this.EnsureId();
+		//	//	_backgroundDrawable = new GradientDrawable();
+		//	//	_backgroundDrawable.SetShape(ShapeType.Rectangle);
+		//	//	this.SetBackground(_backgroundDrawable);
+
+		//	//	ElevationHelper.SetElevation(this, e.NewElement);
+		//	//}
+		//}
 
 		//protected override void OnMeasure(int widthMeasureSpec, int heightMeasureSpec)
 		//{
@@ -194,69 +255,69 @@ namespace Microsoft.Maui.Controls.Handlers.Compatibility
 		//		UpdateBackground();
 		//}
 
-		protected virtual void OnElementPropertyChanged(object? sender, PropertyChangedEventArgs e)
-		{
-			//if (this.IsDisposed())
-			//{
-			//	return;
-			//}
+		//protected virtual void OnElementPropertyChanged(object? sender, PropertyChangedEventArgs e)
+		//{
+		//	//if (this.IsDisposed())
+		//	//{
+		//	//	return;
+		//	//}
 
-			if (Element != null && e.PropertyName != null)
-				_viewHandlerWrapper.UpdateProperty(e.PropertyName);
+		//	if (Element != null && e.PropertyName != null)
+		//		_viewHandlerWrapper.UpdateProperty(e.PropertyName);
 
-			ElementPropertyChanged?.Invoke(this, e);
-			//_motionEventHelper.UpdateElement(Element);
-		}
+		//	ElementPropertyChanged?.Invoke(this, e);
+		//	//_motionEventHelper.UpdateElement(Element);
+		//}
 
-		void UpdateClippedToBounds()
-		{
-			//if (Element == null)
-			//	return;
+		//void UpdateClippedToBounds()
+		//{
+		//	//if (Element == null)
+		//	//	return;
 
-			//var shouldClip = Element.IsSet(Microsoft.Maui.Controls.Compatibility.Layout.IsClippedToBoundsProperty)
-			//		? Element.IsClippedToBounds : Element.CornerRadius > 0f;
+		//	//var shouldClip = Element.IsSet(Microsoft.Maui.Controls.Compatibility.Layout.IsClippedToBoundsProperty)
+		//	//		? Element.IsClippedToBounds : Element.CornerRadius > 0f;
 
-			//this.SetClipToOutline(shouldClip);
-		}
+		//	//this.SetClipToOutline(shouldClip);
+		//}
 
-		void UpdateBackgroundColor()
-		{
-			//if (_disposed || Element == null || _backgroundDrawable == null)
-			//	return;
+		//void UpdateBackgroundColor()
+		//{
+		//	//if (_disposed || Element == null || _backgroundDrawable == null)
+		//	//	return;
 
-			//Color bgColor = Element.BackgroundColor;
-			//_backgroundDrawable.SetColor(bgColor?.ToPlatform() ?? AColor.White);
-		}
+		//	//Color bgColor = Element.BackgroundColor;
+		//	//_backgroundDrawable.SetColor(bgColor?.ToPlatform() ?? AColor.White);
+		//}
 
-		void UpdateBackground()
-		{
-			//if (_disposed || Element == null)
-			//	return;
+		//void UpdateBackground()
+		//{
+		//	//if (_disposed || Element == null)
+		//	//	return;
 
-			//Brush background = Element.Background;
+		//	//Brush background = Element.Background;
 
-			//if (Brush.IsNullOrEmpty(background))
-			//{
-			//	if (_backgroundDrawable.UseGradients())
-			//	{
-			//		_backgroundDrawable?.Dispose();
-			//		_backgroundDrawable = null;
-			//		this.SetBackground(null);
+		//	//if (Brush.IsNullOrEmpty(background))
+		//	//{
+		//	//	if (_backgroundDrawable.UseGradients())
+		//	//	{
+		//	//		_backgroundDrawable?.Dispose();
+		//	//		_backgroundDrawable = null;
+		//	//		this.SetBackground(null);
 
-			//		_backgroundDrawable = new GradientDrawable();
-			//		_backgroundDrawable.SetShape(ShapeType.Rectangle);
-			//		this.SetBackground(_backgroundDrawable);
-			//	}
+		//	//		_backgroundDrawable = new GradientDrawable();
+		//	//		_backgroundDrawable.SetShape(ShapeType.Rectangle);
+		//	//		this.SetBackground(_backgroundDrawable);
+		//	//	}
 
-			//	UpdateBackgroundColor();
-			//}
-			//else
-			//{
-			//	_height = Control.Height;
-			//	_width = Control.Width;
-			//	_backgroundDrawable.UpdateBackground(background, _height, _width);
-			//}
-		}
+		//	//	UpdateBackgroundColor();
+		//	//}
+		//	//else
+		//	//{
+		//	//	_height = Control.Height;
+		//	//	_width = Control.Width;
+		//	//	_backgroundDrawable.UpdateBackground(background, _height, _width);
+		//	//}
+		//}
 
 		void UpdateBorderColor()
 		{
@@ -325,49 +386,49 @@ namespace Microsoft.Maui.Controls.Handlers.Compatibility
 			//AddView(platformView);
 		}
 
-		#region IPlatformViewHandler
-		bool IViewHandler.HasContainer { get => false; set { } }
+		//#region IPlatformViewHandler
+		//bool IViewHandler.HasContainer { get => false; set { } }
 
-		object? IViewHandler.ContainerView => null;
+		//object? IViewHandler.ContainerView => null;
 
-		IView? IViewHandler.VirtualView => Element;
+		//IView? IViewHandler.VirtualView => Element;
 
-		object IElementHandler.PlatformView => this;
+		//object IElementHandler.PlatformView => this;
 
-		Maui.IElement? IElementHandler.VirtualView => Element;
+		//Maui.IElement? IElementHandler.VirtualView => Element;
 
-		IMauiContext? IElementHandler.MauiContext => _mauiContext;
+		//IMauiContext? IElementHandler.MauiContext => _mauiContext;
 
-		System.Object IPlatformViewHandler.PlatformView => this;
+		//System.Object IPlatformViewHandler.PlatformView => this;
 
-		System.Object? IPlatformViewHandler.ContainerView => this;
+		//System.Object? IPlatformViewHandler.ContainerView => this;
 
-		void IViewHandler.PlatformArrange(Graphics.Rect rect) =>
-			this.PlatformArrangeHandler(rect);
+		//void IViewHandler.PlatformArrange(Graphics.Rect rect) =>
+		//	this.PlatformArrangeHandler(rect);
 
-		void IElementHandler.SetMauiContext(IMauiContext mauiContext) =>
-			_mauiContext = mauiContext;
+		//void IElementHandler.SetMauiContext(IMauiContext mauiContext) =>
+		//	_mauiContext = mauiContext;
 
-		void IElementHandler.SetVirtualView(Maui.IElement view) =>
-			_viewHandlerWrapper.SetVirtualView(view, OnElementChanged, false);
+		//void IElementHandler.SetVirtualView(Maui.IElement view) =>
+		//	_viewHandlerWrapper.SetVirtualView(view, OnElementChanged, false);
 
-		void IElementHandler.UpdateValue(string property)
-		{
-			if (Element != null)
-			{
-				OnElementPropertyChanged(Element, new PropertyChangedEventArgs(property));
-			}
-		}
+		//void IElementHandler.UpdateValue(string property)
+		//{
+		//	if (Element != null)
+		//	{
+		//		OnElementPropertyChanged(Element, new PropertyChangedEventArgs(property));
+		//	}
+		//}
 
-		void IElementHandler.Invoke(string command, object? args)
-		{
-			_viewHandlerWrapper.Invoke(command, args);
-		}
+		//void IElementHandler.Invoke(string command, object? args)
+		//{
+		//	_viewHandlerWrapper.Invoke(command, args);
+		//}
 
-		void IElementHandler.DisconnectHandler()
-		{
-			_viewHandlerWrapper.DisconnectHandler();
-		}
-		#endregion
+		//void IElementHandler.DisconnectHandler()
+		//{
+		//	_viewHandlerWrapper.DisconnectHandler();
+		//}
+		//#endregion
 	}
 }

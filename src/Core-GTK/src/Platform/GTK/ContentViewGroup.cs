@@ -18,8 +18,19 @@ namespace Microsoft.Maui.Platform
 
 		public void AddChild(System.Object widget)
 		{
-			_child = (Gtk.Widget) widget;
-			_box.Add(_child);
+			if (widget is Gtk.Widget gtkwidget)
+			{
+				_child = gtkwidget;
+				_box.Add(_child);
+
+			} else if (widget is ContentViewGroup viewGroup)
+			{
+				_child = viewGroup.GetChild();
+				if (_child != null)
+				{
+					_box.Add(_child);
+				}
+			}
 			//_box.Put((Gtk.Widget)widget, 0, 0);
 			//_fixed.Add((Gtk.Widget)widget);
 		}
