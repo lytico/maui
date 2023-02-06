@@ -1,6 +1,6 @@
 ﻿#nullable enable
 using System;
-using PlatformView = Gtk.EventBox;
+using PlatformView = Gtk.Widget;
 
 namespace Microsoft.Maui.Controls.Handlers.Compatibility
 {

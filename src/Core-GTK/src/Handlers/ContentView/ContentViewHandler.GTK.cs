@@ -38,7 +38,10 @@ namespace Microsoft.Maui.Handlers
 			// handler.PlatformView.RemoveAllViews();
 
 			if (handler.VirtualView.PresentedContent is IView view)
+			{
+				var platformChild = view.ToPlatform(handler.MauiContext);
 				handler.PlatformView.AddChild(view.ToPlatform(handler.MauiContext));
+			}
 
 			//	handler.PlatformView.AddView(view.ToPlatform(handler.MauiContext));
 		}

@@ -22,6 +22,7 @@ namespace Microsoft.Maui.Platform
 			{
 				_child = gtkwidget;
 				_box.Add(_child);
+				_child.Show();
 
 			} else if (widget is ContentViewGroup viewGroup)
 			{
@@ -29,6 +30,7 @@ namespace Microsoft.Maui.Platform
 				if (_child != null)
 				{
 					_box.Add(_child);
+					_child.Show();
 				}
 			}
 			//_box.Put((Gtk.Widget)widget, 0, 0);

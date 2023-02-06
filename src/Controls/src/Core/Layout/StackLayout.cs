@@ -3,7 +3,6 @@ using Microsoft.Maui.Layouts;
 
 namespace Microsoft.Maui.Controls
 {
-	/// <include file="../../../docs/Microsoft.Maui.Controls/StackLayout.xml" path="Type[@FullName='Microsoft.Maui.Controls.StackLayout']/Docs/*" />
 	public class StackLayout : StackBase, IStackLayout
 	{
 #if !__GTK__

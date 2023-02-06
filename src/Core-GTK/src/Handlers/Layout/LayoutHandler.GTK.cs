@@ -53,7 +53,17 @@ namespace Microsoft.Maui.Handlers
 				//hbox.PackStart(vbox, false, true, 20);
 
 				//hbox.PackStart((Gtk.Widget)child.ToPlatform(MauiContext), false, true, 0);
-				PlatformView.PackStart((Gtk.Widget)child.ToPlatform(MauiContext), false, false, 20);
+				var platformView = child.ToPlatform(MauiContext);
+				if (platformView is Gtk.Widget widget)
+				{
+					PlatformView.PackStart(widget, false, false, 20);
+				}
+				else if (platformView is Gtk.ScrolledWindow window)
+				{
+					PlatformView.PackStart(window, false, false, 20);
+				}
+				//if (platformView is Microsoft.Maui.Controls.Handlers.Compatibility.ListViewRenderer)
+				// PlatformView.PackStart((Gtk.Widget)child.ToPlatform(MauiContext), false, false, 20);
 			}
 		}
 

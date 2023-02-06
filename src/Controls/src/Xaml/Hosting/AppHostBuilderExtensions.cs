@@ -60,9 +60,7 @@ namespace Microsoft.Maui.Controls.Hosting
 #endif
 			handlersCollection.AddHandler<Application, ApplicationHandler>();
 			handlersCollection.AddHandler<ActivityIndicator, ActivityIndicatorHandler>();
-#if !__GTK__
 			handlersCollection.AddHandler<BoxView, ShapeViewHandler>();
-#endif
 			handlersCollection.AddHandler<Button, ButtonHandler>();
 			handlersCollection.AddHandler<CheckBox, CheckBoxHandler>();
 			handlersCollection.AddHandler<DatePicker, DatePickerHandler>();
@@ -121,9 +119,7 @@ namespace Microsoft.Maui.Controls.Hosting
 #pragma warning restore CA1416
 
 #if WINDOWS || ANDROID || IOS || MACCATALYST || TIZEN
-#if !__GTK__
 			handlersCollection.AddHandler(typeof(ListView), typeof(Handlers.Compatibility.ListViewRenderer));
-#endif
 #if !TIZEN
 			handlersCollection.AddHandler(typeof(Cell), typeof(Handlers.Compatibility.CellRenderer));
 			handlersCollection.AddHandler(typeof(ImageCell), typeof(Handlers.Compatibility.ImageCellRenderer));

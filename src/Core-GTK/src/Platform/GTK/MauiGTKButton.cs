@@ -31,12 +31,18 @@ namespace Microsoft.Maui.Platform.GTK
 
 		public MauiGTKButton() : base(Gtk.Orientation.Horizontal, 0) {
 			_view = null;
-			Initialize(string.Empty, string.Empty);
+			Initialize(string.Empty, string.Empty, string.Empty);
 		}
 
 		public MauiGTKButton(string label, string resFileId) : base(Gtk.Orientation.Horizontal, 0) {
 			_view = null;
-			Initialize(label, resFileId);
+			Initialize(label, resFileId, string.Empty);
+		}
+
+		public MauiGTKButton(string label, string resFileId, string stockSetImage) : base(Gtk.Orientation.Horizontal, 0)
+		{
+			_view = null;
+			Initialize(label, resFileId, stockSetImage);
 		}
 
 		public MauiGTKButton(IView button) : base(Gtk.Orientation.Horizontal, 0)
@@ -78,16 +84,16 @@ namespace Microsoft.Maui.Platform.GTK
 						// Console.WriteLine("Image: " + fileImageSource.File);
 						if (string.IsNullOrEmpty(virtualTextButton.Text))
 						{
-							Initialize(string.Empty, fileImageSource.File);
+							Initialize(string.Empty, fileImageSource.File, string.Empty);
 						}
 						else
 						{
-							Initialize(virtualTextButton.Text, fileImageSource.File);
+							Initialize(virtualTextButton.Text, fileImageSource.File, string.Empty);
 						}
 						return;
 					}
 				}
-				Initialize(virtualTextButton.Text, string.Empty);
+				Initialize(virtualTextButton.Text, string.Empty, string.Empty);
 
 				return;
 			}
@@ -100,14 +106,14 @@ namespace Microsoft.Maui.Platform.GTK
 					if (fileImageSource != null)
 					{
 						// Console.WriteLine("Image: " + fileImageSource.File);
-						Initialize(string.Empty, fileImageSource.File);
+						Initialize(string.Empty, fileImageSource.File, string.Empty);
 
 						return;
 					}
 				}
 			}
 
-			Initialize(string.Empty, string.Empty);
+			Initialize(string.Empty, string.Empty, string.Empty);
 		}
 
 		public Gdk.Color? BorderColor {  get; set; }
@@ -154,6 +160,17 @@ namespace Microsoft.Maui.Platform.GTK
 					RecreateContainer();
 				}
 				UpdateText(_label);
+			}
+		}
+
+		private string _imageSetStock = null!;
+		public string ImageSetStock
+		{
+			get { return _imageSetStock; }
+			set
+			{
+				_imageSetStock = value;
+				RecreateContainer();
 			}
 		}
 
@@ -208,7 +225,7 @@ namespace Microsoft.Maui.Platform.GTK
 			}
 		}
 
-		private void Initialize(string label, string resFileId) {
+		private void Initialize(string label, string resFileId, string stockSetImage) {
 			//_defaultBackgroundColor = new Gdk.Color(0x56, 0x2F, 0xD9); // #562FD9
 			//_defaultBorderColor = new Gdk.Color(0x26, 0x0F, 0xC9);
 			_defaultBackgroundColor = new Gdk.Color(0x80, 0x80, 0x80); // #562FD9
@@ -223,6 +240,7 @@ namespace Microsoft.Maui.Platform.GTK
 
 			_resFileId = resFileId;
 			_label = label;
+			_imageSetStock = stockSetImage;
 
 			HasWindow = false;
 			AppPaintable = true;
@@ -377,13 +395,13 @@ namespace Microsoft.Maui.Platform.GTK
 			_eventBox.Show();
 			_imageAndLabelBox.Show();
 
-			if (string.IsNullOrEmpty(_label) && !string.IsNullOrEmpty(_resFileId)) {
+			if (string.IsNullOrEmpty(_label) && (!string.IsNullOrEmpty(_resFileId) || !string.IsNullOrEmpty(_imageSetStock))) {
 				// We don't have a label but we do have an image
 				PrivateRecreateImageContainer();
-			} else if (!string.IsNullOrEmpty(_label) && string.IsNullOrEmpty(_resFileId)) {
+			} else if (!string.IsNullOrEmpty(_label) && string.IsNullOrEmpty(_resFileId) && string.IsNullOrEmpty(_imageSetStock)) {
 				// We do have a label and no image.
 				PrivateRecreateLabelContainer(false);
-			} else if (!string.IsNullOrEmpty(Label) && !string.IsNullOrEmpty(_resFileId)) {
+			} else if (!string.IsNullOrEmpty(Label) && (!string.IsNullOrEmpty(_resFileId) || !string.IsNullOrEmpty(_imageSetStock))) {
 				// We do have a label and an image.
 				PrivateRecreateImageLabelContainer();
 			}
@@ -397,8 +415,16 @@ namespace Microsoft.Maui.Platform.GTK
 		}
 
 		private void PrivateRecreateImageContainer() {
-			_image = new Gtk.Image(_resFileId);
-			_imageAndLabelBox.PackStart(_image, false, false, 0);
+			if (!string.IsNullOrEmpty(_resFileId))
+			{
+				_image = new Gtk.Image(_resFileId);
+				_imageAndLabelBox.PackStart(_image, false, false, 0);
+			}
+			else if (!string.IsNullOrEmpty(_imageSetStock))
+			{
+				_image = new Gtk.Image(_imageSetStock, IconSize.SmallToolbar);
+				_imageAndLabelBox.PackStart(_image, false, false, 0);
+			}
 		}
 
 		private void PrivateRecreateLabelContainer(bool useOffset) {

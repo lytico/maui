@@ -1,4 +1,5 @@
 ﻿using System;
+using Gdk;
 using Gtk;
 using Microsoft.Maui.Platform;
 
@@ -41,7 +42,17 @@ namespace Microsoft.Maui.Handlers
 				//hbox.PackStart(vbox, false, true, 20);
 
 				//hbox.PackStart((Gtk.Widget)child.ToPlatform(MauiContext), false, true, 0);
-				PlatformView.PackStart((Gtk.Widget)child.ToPlatform(MauiContext), false, false, 20);
+				var childPlatform = child.ToPlatform(MauiContext);
+				if (childPlatform is Gtk.Widget widget)
+				{
+					PlatformView.PackStart(widget, false, false, 20);
+					widget.Show();
+				}
+				else if (childPlatform is Gtk.ScrolledWindow window)
+				{
+					PlatformView.PackStart(window, false, false, 20);
+					window.Show();
+				}
 			}
 		}
 
@@ -54,6 +65,17 @@ namespace Microsoft.Maui.Handlers
 			//var targetIndex = VirtualView.GetLayoutHandlerIndex(child);
 			//PlatformView.Add(child.ToPlatform(MauiContext), targetIndex);
 			//PlatformView.PackStart(child.ToPlatform(MauiContext));
+			var childPlatform = child.ToPlatform(MauiContext);
+			if (childPlatform is Gtk.Widget widget)
+			{
+				PlatformView.PackStart(widget, false, false, 20);
+				widget.Show();
+			}
+			else if (childPlatform is Gtk.ScrolledWindow window)
+			{
+				PlatformView.PackStart(window, false, false, 20);
+				window.Show();
+			}
 		}
 
 		public void Remove(IView child)
