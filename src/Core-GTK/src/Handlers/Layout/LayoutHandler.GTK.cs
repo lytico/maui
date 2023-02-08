@@ -32,6 +32,8 @@ namespace Microsoft.Maui.Handlers
 			// var viewGroup = new LayoutViewGroup();
 			var view = new Gtk.Box(Gtk.Orientation.Vertical, 0);
 
+			view.ShowAll();
+
 			return view;
 		}
 
@@ -56,11 +58,11 @@ namespace Microsoft.Maui.Handlers
 				var platformView = child.ToPlatform(MauiContext);
 				if (platformView is Gtk.Widget widget)
 				{
-					PlatformView.PackStart(widget, false, false, 20);
+					PlatformView.PackStart(widget, false, false, 0);
 				}
 				else if (platformView is Gtk.ScrolledWindow window)
 				{
-					PlatformView.PackStart(window, false, false, 20);
+					PlatformView.PackStart(window, false, false, 0);
 				}
 				//if (platformView is Microsoft.Maui.Controls.Handlers.Compatibility.ListViewRenderer)
 				// PlatformView.PackStart((Gtk.Widget)child.ToPlatform(MauiContext), false, false, 20);

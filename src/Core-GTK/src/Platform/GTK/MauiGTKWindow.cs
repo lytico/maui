@@ -42,7 +42,8 @@ namespace Microsoft.Maui
 		public void AddPage(ContentViewGroup RootView)
 		{
 			//var child = RootView.GetChild();
-			Add(RootView.GetView());
+
+			Add(RootView.GetChild());
 			ShowAll();
 			//if (child != null)
 			//{

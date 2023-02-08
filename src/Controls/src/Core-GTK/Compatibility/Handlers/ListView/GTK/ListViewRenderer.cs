@@ -220,6 +220,7 @@ namespace Microsoft.Maui.Controls.Handlers.Compatibility
 				var cell = GetCell(item);
 
 				_cells.Add(cell);
+				cell.ShowAll();
 			}
 
 			_listView.Items = _cells;
@@ -525,13 +526,37 @@ namespace Microsoft.Maui.Controls.Handlers.Compatibility
 
 		private CellBase GetCell(Cell cell)
 		{
-			var renderer = cell.ToPlatform();
-				// (Cells.CellRenderer)Registrar.Registered.GetHandlerForObject<IRegisterable>(cell);
+			//var renderer = cell.ToPlatform();
+			//	// (Cells.CellRenderer)Registrar.Registered.GetHandlerForObject<IRegisterable>(cell);
+			//
+			//// var realCell = renderer.GetCell(cell, null, _listView);
+			//
+			//return (CellBase)renderer;
+			////return realCell;
 
-			// var realCell = renderer.GetCell(cell, null, _listView);
+			CellRenderer renderer = CellRenderer.GetRenderer(cell);
+			if (renderer == null)
+			{
+				renderer = Registrar.Registered.GetHandlerForObject<CellRenderer>(cell);
+				renderer.ParentView = Element;
+			}
 
-			return (CellBase)renderer;
-			//return realCell;
+			if (renderer != null)
+			{
+				var result = renderer.GetCell(cell, Control);
+				return (CellBase)result;
+			}
+
+			return null;
+
+			//AView result = renderer.GetCell(item, convertView, parent, context);
+
+			//if (view is TableView)
+			//	UpdateMinimumHeightFromParent(context, result, (TableView)view);
+			//else if (view is ListView)
+			//	UpdateMinimumHeightFromParent(context, result, (ListView)view);
+
+			//return result;
 		}
 
 		private void OnCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)

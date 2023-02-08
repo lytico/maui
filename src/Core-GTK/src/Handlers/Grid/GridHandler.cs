@@ -55,10 +55,21 @@ namespace Microsoft.Maui.Handlers
 			//var width = VirtualView.Width;
 			//var height = VirtualView.Height;
 			var view = new Gtk.Grid();
+			view.ColumnHomogeneous = false;
+			view.RowHomogeneous = false;
 			view.WidthRequest = width;
 			view.HeightRequest = height;
 			Gtk.Widget widget = view;
 			SetMargins(layout, ref widget);
+			if (VirtualView.RowSpacing > 0)
+			{
+				view.RowSpacing = (uint)VirtualView.RowSpacing;
+			}
+
+			if (VirtualView.ColumnSpacing > 0)
+			{
+				view.ColumnSpacing = (uint)VirtualView.ColumnSpacing;
+			}
 
 			view.ShowAll();
 
@@ -146,6 +157,7 @@ namespace Microsoft.Maui.Handlers
 							}
 						}
 						PlatformView.Attach(widget, col, row, colSpan, rowSpan);
+						widget.ShowAll();
 					}
 					else if (platformChild is ContentViewGroup viewGroup)
 					{
@@ -203,6 +215,7 @@ namespace Microsoft.Maui.Handlers
 							}
 							PlatformView.Attach(widgetCVG, col, row, colSpan, rowSpan);
 						}
+						viewGroup.GetChild()?.ShowAll();
 					}
 					//var widget = (Gtk.Widget)child.ToPlatform(MauiContext);
 				}

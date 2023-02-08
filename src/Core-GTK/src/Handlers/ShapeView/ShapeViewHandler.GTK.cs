@@ -58,6 +58,7 @@ namespace Microsoft.Maui.Handlers
 			var plat = new Gtk.Box(Gtk.Orientation.Vertical, 0);
 			Gtk.Widget widget = (Gtk.Widget)plat;
 			SetMargins(button, ref widget);
+			plat.ShowAll();
 			return plat;
 		}
 		//protected override Gtk.Box CreatePlatformView()

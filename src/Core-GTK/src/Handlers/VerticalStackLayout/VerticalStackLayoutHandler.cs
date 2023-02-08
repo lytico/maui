@@ -5,7 +5,7 @@ using Microsoft.Maui.Platform;
 
 namespace Microsoft.Maui.Handlers
 {
-	public class VerticalStackLayoutHandler : ViewHandler<ILayout, Gtk.Box>, IVerticalStackLayoutHandler
+	public class VerticalStackLayoutHandler : ViewHandler<IStackLayout, Gtk.Box>, IVerticalStackLayoutHandler
 	{
 		protected override Gtk.Box CreatePlatformView(IView layout)
 		{
@@ -15,12 +15,18 @@ namespace Microsoft.Maui.Handlers
 			}
 
 			// var viewGroup = new LayoutViewGroup();
-			var view = new Gtk.Box(Gtk.Orientation.Vertical, 0);
+			int spacing = 0;
+			if (VirtualView.Spacing > 0)
+			{
+				spacing = (int)VirtualView.Spacing;
+			}
+			var view = new Gtk.Box(Gtk.Orientation.Vertical, spacing);
 
 			Gtk.Widget widget = view;
 			SetMargins(layout, ref widget);
+			view.Homogeneous = false;
 
-			view.Show();
+			view.ShowAll();
 			return view;
 		}
 
@@ -45,13 +51,22 @@ namespace Microsoft.Maui.Handlers
 				var childPlatform = child.ToPlatform(MauiContext);
 				if (childPlatform is Gtk.Widget widget)
 				{
-					PlatformView.PackStart(widget, false, false, 20);
-					widget.Show();
+					PlatformView.PackStart(widget, false, false, 0);
+					widget.ShowAll();
 				}
 				else if (childPlatform is Gtk.ScrolledWindow window)
 				{
-					PlatformView.PackStart(window, false, false, 20);
-					window.Show();
+					PlatformView.PackStart(window, false, false, 0);
+					window.ShowAll();
+				}
+				else if (childPlatform is ContentViewGroup viewGroup)
+				{
+					var viewGroupChild = viewGroup.GetChild();
+					if (viewGroupChild != null)
+					{
+						PlatformView.PackStart(viewGroupChild, false, false, 0);
+						viewGroupChild.ShowAll();
+					}
 				}
 			}
 		}
@@ -68,13 +83,22 @@ namespace Microsoft.Maui.Handlers
 			var childPlatform = child.ToPlatform(MauiContext);
 			if (childPlatform is Gtk.Widget widget)
 			{
-				PlatformView.PackStart(widget, false, false, 20);
+				PlatformView.PackStart(widget, false, false, 0);
 				widget.Show();
 			}
 			else if (childPlatform is Gtk.ScrolledWindow window)
 			{
-				PlatformView.PackStart(window, false, false, 20);
+				PlatformView.PackStart(window, false, false, 0);
 				window.Show();
+			}
+			else if (childPlatform is ContentViewGroup viewGroup)
+			{
+				var viewGroupChild = viewGroup.GetChild();
+				if (viewGroupChild != null)
+				{
+					PlatformView.PackStart(viewGroupChild, false, false, 0);
+					viewGroupChild.ShowAll();
+				}
 			}
 		}
 

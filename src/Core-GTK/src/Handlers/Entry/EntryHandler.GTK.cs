@@ -97,7 +97,10 @@ namespace Microsoft.Maui.Handlers
 			{
 				if (sender is Gtk.Entry entry)
 				{
-					VirtualView.Text = entry.Text;
+					if (!string.IsNullOrEmpty(entry.Text))
+					{
+						VirtualView.Text = entry.Text;
+					}
 				}
 			}
 		}
@@ -114,7 +117,10 @@ namespace Microsoft.Maui.Handlers
 					platformEntry.Visibility = false;
 				}
 
-				platformEntry.Text = entry.Text;
+				if (!string.IsNullOrEmpty(entry.Text))
+				{
+					platformEntry.Text = entry.Text;
+				}
 			}
 
 			// Any text update requires that we update any attributed string formatting

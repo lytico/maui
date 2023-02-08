@@ -15,7 +15,7 @@ namespace Microsoft.Maui.Handlers
 			var scroller = new Gtk.ScrolledWindow();
 			Gtk.Widget widget = scroller;
 			SetMargins(scrollView, ref widget);
-			scroller.Show();
+			scroller.ShowAll();
 			return scroller;
 		}
 

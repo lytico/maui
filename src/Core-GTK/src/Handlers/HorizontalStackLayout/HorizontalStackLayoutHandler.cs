@@ -3,7 +3,7 @@ using Gtk;
 
 namespace Microsoft.Maui.Handlers
 {
-	public class HorizontalStackLayoutHandler : ViewHandler<ILayout, Gtk.Box>, IHorizontalStackLayoutHandler
+	public class HorizontalStackLayoutHandler : ViewHandler<IStackLayout, Gtk.Box>, IHorizontalStackLayoutHandler
 	{
 		protected override Gtk.Box CreatePlatformView(IView layout)
 		{
@@ -13,11 +13,17 @@ namespace Microsoft.Maui.Handlers
 			}
 
 			// var viewGroup = new LayoutViewGroup();
-			var view = new Gtk.Box(Gtk.Orientation.Horizontal, 0);
+			int spacing = 0;
+			if (VirtualView.Spacing > 0)
+			{
+				spacing = (int)VirtualView.Spacing;
+			}
+			var view = new Gtk.Box(Gtk.Orientation.Horizontal, spacing);
 			Gtk.Widget widget = view;
 			SetMargins(layout, ref widget);
+			view.Homogeneous = false;
 
-			view.Show();
+			view.ShowAll();
 
 			return view;
 		}
@@ -43,13 +49,31 @@ namespace Microsoft.Maui.Handlers
 				var childPlatform = child.ToPlatform(MauiContext);
 				if (childPlatform is Gtk.Widget widget)
 				{
-					PlatformView.PackStart(widget, false, false, 20);
-					widget.Show();
+					PlatformView.PackStart(widget, false, false, 0);
+					widget.ShowAll();
 				}
 				else if (childPlatform is Gtk.ScrolledWindow window)
 				{
-					PlatformView.PackStart(window, false, false, 20);
-					window.Show();
+					PlatformView.PackStart(window, false, false, 0);
+					window.ShowAll();
+				}
+				else if (childPlatform is ContentViewGroup viewGroup)
+				{
+					var viewGroupChild = viewGroup.GetChild();
+					if (viewGroupChild != null)
+					{
+						//var widge = viewGroup.GetChild();
+						//if (widge != null)
+						//{
+						//	if (viewGroup.RemoveChildOnly(widge))
+						//	{
+								PlatformView.PackStart(viewGroupChild, false, false, 0);
+						//	}
+						//	PlatformView.PackStart(widge, false, false, 20);
+						//	widge.ShowAll();
+						//}
+						viewGroupChild.ShowAll();
+					}
 				}
 			}
 		}
@@ -66,13 +90,45 @@ namespace Microsoft.Maui.Handlers
 			var childPlatform = child.ToPlatform(MauiContext);
 			if (childPlatform is Gtk.Widget widget)
 			{
-				PlatformView.PackStart(widget, false, false, 20);
-				widget.Show();
+				PlatformView.PackStart(widget, false, false, 0);
+				widget.ShowAll();
 			}
 			else if (childPlatform is Gtk.ScrolledWindow window)
 			{
-				PlatformView.PackStart(window, false, false, 20);
-				window.Show();
+				PlatformView.PackStart(window, false, false, 0);
+				window.ShowAll();
+			}
+			else if (childPlatform is ContentViewGroup viewGroup)
+			{
+				var viewGroupChild = viewGroup.GetChild();
+				if (viewGroupChild != null)
+				{
+					//var widge = viewGroup.GetChild();
+					//if (widge != null)
+					//{
+					//	if (viewGroup.RemoveChildOnly(widge))
+					//	{
+					PlatformView.PackStart(viewGroupChild, false, false, 0);
+					//	}
+					//	PlatformView.PackStart(widge, false, false, 20);
+					//	widge.ShowAll();
+					//}
+					viewGroupChild.ShowAll();
+				}
+				//if (viewGroup.GetChild() != null)
+				//{
+				//	var widge = viewGroup.GetChild();
+				//	if (widge != null)
+				//	{
+				//		if (viewGroup.RemoveChildOnly(widge))
+				//		{
+				//			PlatformView.PackStart(viewGroup.GetChild(), false, false, 20);
+				//		}
+				//		PlatformView.PackStart(widge, false, false, 20);
+				//		widge.ShowAll();
+				//		// viewGroup.ShowAllGroup();
+				//	}
+				//}
 			}
 		}
 

@@ -150,7 +150,10 @@ namespace Microsoft.Maui.Handlers
 						System.Threading.Thread.CurrentThread.IsBackground = true;
 
 						//Gdk.Threads.AddIdle(1, display_status_textbuffer, data);
-						platformTextView.TextView.Buffer.Text = newText;
+						if (!string.IsNullOrEmpty(newText))
+						{
+							platformTextView.TextView.Buffer.Text = newText;
+						}
 
 						platformTextView.TextView.Buffer.GetBounds(out start, out newEndIter);
 

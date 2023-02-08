@@ -8,7 +8,7 @@ namespace Microsoft.Maui.Handlers
 		{
 			if (VirtualView == null)
 			{
-				throw new InvalidOperationException($"{nameof(VirtualView)} must be set to create a ContentViewGroup");
+				throw new InvalidOperationException($"{nameof(VirtualView)} must be set to create a Border");
 			}
 
 			var viewGroup = new MauiBorder();

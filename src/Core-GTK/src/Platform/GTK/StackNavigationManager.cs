@@ -92,7 +92,7 @@ namespace Microsoft.Maui.Platform
 				// Type destinationPageType = GetDestinationPageType();
 				NavigationStack = newPageStack;
 				// NavigationFrame.Navigate(destinationPageType, null, transition);
-				_navigationFrame.RemoveChild();
+				//_navigationFrame.RemoveChild();
 				if (_currentPage is IContentView contentView)
 				{
 					if (contentView.PresentedContent is IView view)
@@ -106,7 +106,7 @@ namespace Microsoft.Maui.Platform
 				// Type destinationPageType = GetDestinationPageType();
 				NavigationStack = newPageStack;
 				// NavigationFrame.Navigate(destinationPageType, null, transition);
-				_navigationFrame.RemoveChild();
+				//_navigationFrame.RemoveChild();
 				if (_currentPage is IContentView contentView)
 				{
 					if (contentView.PresentedContent is IView view)
@@ -118,7 +118,7 @@ namespace Microsoft.Maui.Platform
 			else
 			{
 				NavigationStack = newPageStack;
-				_navigationFrame.RemoveChild();
+				//_navigationFrame.RemoveChild();
 				if (_currentPage is IContentView contentView)
 				{
 					if (contentView.PresentedContent is IView view)
