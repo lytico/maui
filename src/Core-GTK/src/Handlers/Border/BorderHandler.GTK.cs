@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Runtime.InteropServices;
 
 namespace Microsoft.Maui.Handlers
 {
@@ -24,36 +25,56 @@ namespace Microsoft.Maui.Handlers
 			return viewGroup;
 		}
 
-		//public override void SetVirtualView(IView view)
-		//{
-		//	base.SetVirtualView(view);
-		//	_ = VirtualView ?? throw new InvalidOperationException($"{nameof(VirtualView)} should have been set by base class.");
-		//	_ = PlatformView ?? throw new InvalidOperationException($"{nameof(PlatformView)} should have been set by base class.");
+		public override void SetVirtualView(IView view)
+		{
+			base.SetVirtualView(view);
+			_ = VirtualView ?? throw new InvalidOperationException($"{nameof(VirtualView)} should have been set by base class.");
+			_ = PlatformView ?? throw new InvalidOperationException($"{nameof(PlatformView)} should have been set by base class.");
+			_ = MauiContext ?? throw new InvalidOperationException($"{nameof(MauiContext)} should have been set by base class.");
 
-		//	PlatformView.CrossPlatformMeasure = VirtualView.CrossPlatformMeasure;
-		//	PlatformView.CrossPlatformArrange = VirtualView.CrossPlatformArrange;
-		//}
+			//PlatformView.CrossPlatformMeasure = VirtualView.CrossPlatformMeasure;
+			//PlatformView.CrossPlatformArrange = VirtualView.CrossPlatformArrange;
+
+			foreach (var child in PlatformView.Children)
+			{
+				PlatformView.Remove(child);
+			}
+
+			if (VirtualView.PresentedContent is IView contentView)
+				PlatformView.Add((Gtk.Widget)contentView.ToPlatform(MauiContext));
+		}
 
 		static void UpdateContent(IBorderHandler handler)
 		{
-			//_ = handler.PlatformView ?? throw new InvalidOperationException($"{nameof(PlatformView)} should have been set by base class.");
-			//_ = handler.MauiContext ?? throw new InvalidOperationException($"{nameof(MauiContext)} should have been set by base class.");
-			//_ = handler.VirtualView ?? throw new InvalidOperationException($"{nameof(VirtualView)} should have been set by base class.");
+			_ = handler.PlatformView ?? throw new InvalidOperationException($"{nameof(PlatformView)} should have been set by base class.");
+			_ = handler.MauiContext ?? throw new InvalidOperationException($"{nameof(MauiContext)} should have been set by base class.");
+			_ = handler.VirtualView ?? throw new InvalidOperationException($"{nameof(VirtualView)} should have been set by base class.");
 
-			//handler.PlatformView.RemoveAllViews();
+			foreach (var child in handler.PlatformView.Children)
+			{
+				handler.PlatformView.Remove(child);
+			}
 
-			//if (handler.VirtualView.PresentedContent is IView view)
-			//	handler.PlatformView.AddView(view.ToPlatform(handler.MauiContext));
+			if (handler.VirtualView.PresentedContent is IView view)
+				handler.PlatformView.Add((Gtk.Widget)view.ToPlatform(handler.MauiContext));
 		}
 
 		public static void MapHeight(IBorderHandler handler, IBorderView border)
 		{
+			if (handler.PlatformView != null)
+			{
+				handler.PlatformView.HeightRequest = (int)border.Height;
+			}
 			//handler.PlatformView?.UpdateHeight(border);
 			//handler.PlatformView?.InvalidateBorderStrokeBounds();
 		}
 
 		public static void MapWidth(IBorderHandler handler, IBorderView border)
 		{
+			if (handler.PlatformView != null)
+			{
+				handler.PlatformView.WidthRequest = (int)border.Width;
+			}
 			//handler.PlatformView?.UpdateWidth(border);
 			//handler.PlatformView?.InvalidateBorderStrokeBounds();
 		}
@@ -63,12 +84,15 @@ namespace Microsoft.Maui.Handlers
 			UpdateContent(handler);
 		}
 
-		//protected override void DisconnectHandler(Gtk.Fixed platformView)
-		//{
-		//	// If we're being disconnected from the xplat element, then we should no longer be managing its chidren
-		//	platformView.RemoveAllViews();
+		protected override void DisconnectHandler(MauiBorder platformView)
+		{
+			// If we're being disconnected from the xplat element, then we should no longer be managing its chidren
+			foreach (var child in PlatformView.Children)
+			{
+				PlatformView.Remove(child);
+			}
 
-		//	base.DisconnectHandler(platformView);
-		//}
+			base.DisconnectHandler(platformView);
+		}
 	}
 }

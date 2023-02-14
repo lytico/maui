@@ -4,14 +4,10 @@ using Gtk;
 
 namespace Microsoft.Maui.Platform
 {
-	public class MauiBorder : MauiView
+	public class MauiBorder : Gtk.Frame
 	{
-		Fixed _fixed = null!;
-
-		public MauiBorder()
+		public MauiBorder() : base()
 		{
-			_fixed = new Fixed();
-			Add(_fixed);
 		}
 
 		public void UpdateBackground(IBorderView handler)
