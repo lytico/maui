@@ -37,12 +37,20 @@ namespace Microsoft.Maui.Handlers
 					var platformChild = viewContent.ToPlatform(MauiContext);
 					if (platformChild is Gtk.Widget widget)
 					{
-						PlatformView.AddChild(widget);
+						if (PlatformView.GetChild() != widget)
+						{
+							PlatformView.RemoveChildAndNulify();
+							PlatformView.AddChild(widget);
+						}
 						widget.ShowAll();
 					}
 					else if (platformChild is Gtk.ScrolledWindow window)
 					{
-						PlatformView.AddChild(window);
+						if (PlatformView.GetChild() != window)
+						{
+							PlatformView.RemoveChildAndNulify();
+							PlatformView.AddChild(window);
+						}
 						window.ShowAll();
 					}
 					else if (platformChild is ContentViewGroup viewGroup)
@@ -55,7 +63,11 @@ namespace Microsoft.Maui.Handlers
 
 								if (viewGroupChild != null)
 								{
-									PlatformView.AddChild((Gtk.Widget)viewGroupChild);
+									if (PlatformView.GetChild() != viewGroupChild)
+									{
+										PlatformView.RemoveChildAndNulify();
+										PlatformView.AddChild(viewGroupChild);
+									}
 									viewGroupChild.ShowAll();
 								}
 							}
@@ -101,12 +113,20 @@ namespace Microsoft.Maui.Handlers
 					var platformChild = viewContent.ToPlatform(handler.MauiContext);
 					if (platformChild is Gtk.Widget widget)
 					{
-						handler.PlatformView.AddChild(widget);
+						if (handler.PlatformView.GetChild() != widget)
+						{
+							handler.PlatformView.RemoveChildAndNulify();
+							handler.PlatformView.AddChild(widget);
+						}
 						widget.ShowAll();
 					}
 					else if (platformChild is Gtk.ScrolledWindow window)
 					{
-						handler.PlatformView.AddChild(window);
+						if (handler.PlatformView.GetChild() != window)
+						{
+							handler.PlatformView.RemoveChildAndNulify();
+							handler.PlatformView.AddChild(window);
+						}
 						window.ShowAll();
 					}
 					else if (platformChild is ContentViewGroup viewGroup)
@@ -118,7 +138,11 @@ namespace Microsoft.Maui.Handlers
 							{
 								if (viewGroupChild != null)
 								{
-									handler.PlatformView.AddChild((Gtk.Widget)viewGroupChild);
+									if (handler.PlatformView.GetChild() != viewGroupChild)
+									{
+										handler.PlatformView.RemoveChildAndNulify();
+										handler.PlatformView.AddChild(viewGroupChild);
+									}
 									viewGroupChild.ShowAll();
 								}
 							}

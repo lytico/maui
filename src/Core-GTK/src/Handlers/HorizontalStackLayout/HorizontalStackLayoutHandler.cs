@@ -62,6 +62,7 @@ namespace Microsoft.Maui.Handlers
 					var viewGroupChild = viewGroup.GetChild();
 					if (viewGroupChild != null)
 					{
+						viewGroup.RemoveChild();
 						//var widge = viewGroup.GetChild();
 						//if (widge != null)
 						//{
@@ -103,6 +104,7 @@ namespace Microsoft.Maui.Handlers
 				var viewGroupChild = viewGroup.GetChild();
 				if (viewGroupChild != null)
 				{
+					viewGroup.RemoveChild();
 					//var widge = viewGroup.GetChild();
 					//if (widge != null)
 					//{

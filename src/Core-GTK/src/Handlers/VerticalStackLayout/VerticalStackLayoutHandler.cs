@@ -64,6 +64,7 @@ namespace Microsoft.Maui.Handlers
 					var viewGroupChild = viewGroup.GetChild();
 					if (viewGroupChild != null)
 					{
+						viewGroup.RemoveChild();
 						PlatformView.PackStart(viewGroupChild, false, false, 0);
 						viewGroupChild.ShowAll();
 					}
@@ -96,6 +97,7 @@ namespace Microsoft.Maui.Handlers
 				var viewGroupChild = viewGroup.GetChild();
 				if (viewGroupChild != null)
 				{
+					viewGroup.RemoveChild();
 					PlatformView.PackStart(viewGroupChild, false, false, 0);
 					viewGroupChild.ShowAll();
 				}

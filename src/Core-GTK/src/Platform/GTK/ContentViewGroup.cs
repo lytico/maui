@@ -3,7 +3,7 @@ using Gtk;
 
 namespace Microsoft.Maui.Platform
 {
-	public class ContentViewGroup : System.Object
+	public class ContentViewGroup : Gtk.EventBox
 	{
 		//EventBox _box;
 		//IBorderStroke? _clip;
@@ -14,6 +14,7 @@ namespace Microsoft.Maui.Platform
 			_child = null;
 			//_box = new EventBox();
 			////Add(_fixed);
+			ShowAll();
 		}
 
 		public void AddChild(System.Object widget)
@@ -22,6 +23,7 @@ namespace Microsoft.Maui.Platform
 			{
 				_child = gtkwidget;
 				//_box.Add(_child);
+				Add(_child);
 				_child.Show();
 
 			} else if (widget is ContentViewGroup viewGroup)
@@ -29,22 +31,33 @@ namespace Microsoft.Maui.Platform
 				_child = viewGroup.GetChild();
 				if (_child != null)
 				{
+					Add(_child);
 					// _box.Add(_child);
 					_child.Show();
 				}
 			}
 			//_box.Put((Gtk.Widget)widget, 0, 0);
 			//_fixed.Add((Gtk.Widget)widget);
+			ShowAll();
 		}
 
-		//public void RemoveChild()
-		//{
-		//	if (_child != null)
-		//	{
-		//		//_box.Remove(_child);
-		//		_child = null;
-		//	}
-		//}
+		public void RemoveChild()
+		{
+			if (_child != null)
+			{
+				Remove(_child);
+			}
+		}
+
+		public void RemoveChildAndNulify()
+		{
+			if (_child != null)
+			{
+				//_box.Remove(_child);
+				Remove(_child);
+				_child = null;
+			}
+		}
 
 		//public Gtk.EventBox GetView()
 		//{

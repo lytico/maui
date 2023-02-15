@@ -88,145 +88,16 @@ namespace Microsoft.Maui.Handlers
 
 			foreach (var child in VirtualView.OrderByZIndex())
 			{
-				if (child != null)
-				{
-					// var widget = (Gtk.Widget)child.ToPlatform(MauiContext);
-					//var hbox = new Gtk.HBox();
-					//var vbox = new Gtk.VBox();
-					//hbox.PackStart(vbox, false, true, 20);
-
-					//hbox.PackStart((Gtk.Widget)child.ToPlatform(MauiContext), false, true, 0);
-
-					// PlatformView.PackStart((Gtk.Widget)child.ToPlatform(MauiContext), false, false, 20);
-					int col = VirtualView.GetColumn(child);
-					int row = VirtualView.GetRow(child);
-					int colSpan = VirtualView.GetColumnSpan(child);
-					int rowSpan = VirtualView.GetRowSpan(child);
-					int colSpacing = (int)VirtualView.ColumnSpacing;
-					int rowSpacing = (int)VirtualView.RowSpacing;
-					var platformChild = child.ToPlatform(MauiContext);
-					if (platformChild is Gtk.Widget widget)
-					{
-						if (colWidth != null && rowHeight != null)
-						{
-							var colWide = 0;
-							var rowHigh = 0;
-							if (colWidth.Count() > col)
-							{
-								colWide = colWidth[col];
-							}
-							if (rowHeight.Count() > row)
-							{
-								rowHigh = rowHeight[row];
-							}
-							//if ((VirtualView.ColumnDefinitions.Count > col)
-							//	&& ((VirtualView.ColumnDefinitions[col].Width.GridUnitType == GridUnitType.Auto)
-							//		|| (VirtualView.ColumnDefinitions[col].Width.GridUnitType == GridUnitType.Star)))
-							//{
-							//	widget.Hexpand = true;
-							//}
-							//else
-							//{
-							if (colWide > 0)
-							{
-								widget.WidthRequest = colWide;
-							}
-							//}
-							if (colSpacing > 0)
-							{
-								widget.MarginStart = colSpacing;
-							}
-
-							//if ((VirtualView.RowDefinitions.Count > row)
-							//	&& ((VirtualView.RowDefinitions[row].Height.GridUnitType == GridUnitType.Auto)
-							//		|| (VirtualView.RowDefinitions[row].Height.GridUnitType == GridUnitType.Star)))
-							//{
-							//	widget.Vexpand = true;
-							//}
-							//else
-							//{
-							if (rowHigh > 0)
-							{
-								widget.HeightRequest = rowHigh;
-							}
-							//}
-
-							if (rowSpacing > 0)
-							{
-								widget.MarginTop = rowSpacing;
-							}
-						}
-						PlatformView.Attach(widget, col, row, colSpan, rowSpan);
-						widget.ShowAll();
-					}
-					else if (platformChild is ContentViewGroup viewGroup)
-					{
-						var widgetCVG = viewGroup.GetChild();
-						if (widgetCVG != null)
-						{
-							if (colWidth != null && rowHeight != null)
-							{
-								var colWide = 0;
-								var rowHigh = 0;
-								if (colWidth.Count() > col)
-								{
-									colWide = colWidth[col];
-								}
-								if (rowHeight.Count() > row)
-								{
-									rowHigh = rowHeight[row];
-								}
-								//if ((VirtualView.ColumnDefinitions.Count > col)
-								//	&& ((VirtualView.ColumnDefinitions[col].Width.GridUnitType == GridUnitType.Auto)
-								//		|| (VirtualView.ColumnDefinitions[col].Width.GridUnitType == GridUnitType.Star)))
-								//{
-								//	widget.Hexpand = true;
-								//}
-								//else
-								//{
-								if (colWide > 0)
-								{
-									widgetCVG.WidthRequest = colWide;
-								}
-								//}
-								if (colSpacing > 0)
-								{
-									widgetCVG.MarginStart = colSpacing;
-								}
-
-								//if ((VirtualView.RowDefinitions.Count > row)
-								//	&& ((VirtualView.RowDefinitions[row].Height.GridUnitType == GridUnitType.Auto)
-								//		|| (VirtualView.RowDefinitions[row].Height.GridUnitType == GridUnitType.Star)))
-								//{
-								//	widget.Vexpand = true;
-								//}
-								//else
-								//{
-								if (rowHigh > 0)
-								{
-									widgetCVG.HeightRequest = rowHigh;
-								}
-								//}
-
-								if (rowSpacing > 0)
-								{
-									widgetCVG.MarginTop = rowSpacing;
-								}
-							}
-							PlatformView.Attach(widgetCVG, col, row, colSpan, rowSpan);
-						}
-						viewGroup.GetChild()?.ShowAll();
-					}
-					//var widget = (Gtk.Widget)child.ToPlatform(MauiContext);
-				}
+				PlaceOneChild(child);
 			}
 		}
 
 		public void Add(IView child)
 		{
-			_ = PlatformView ?? throw new InvalidOperationException($"{nameof(PlatformView)} should have been set by base class.");
-			_ = VirtualView ?? throw new InvalidOperationException($"{nameof(VirtualView)} should have been set by base class.");
-			_ = MauiContext ?? throw new InvalidOperationException($"{nameof(MauiContext)} should have been set by base class.");
+			//_ = PlatformView ?? throw new InvalidOperationException($"{nameof(PlatformView)} should have been set by base class.");
+			//_ = VirtualView ?? throw new InvalidOperationException($"{nameof(VirtualView)} should have been set by base class.");
+			//_ = MauiContext ?? throw new InvalidOperationException($"{nameof(MauiContext)} should have been set by base class.");
+			PlaceOneChild(child);
 
 			//var targetIndex = VirtualView.GetLayoutHandlerIndex(child);
 			//PlatformView.Add(child.ToPlatform(MauiContext), targetIndex);
@@ -290,6 +161,146 @@ namespace Microsoft.Maui.Handlers
 			// If we're being disconnected from the xplat element, then we should no longer be managing its chidren
 			Clear(platformView);
 			base.DisconnectHandler(platformView);
+		}
+
+		private void PlaceOneChild(IView child)
+		{
+			_ = PlatformView ?? throw new InvalidOperationException($"{nameof(PlatformView)} should have been set by base class.");
+			_ = VirtualView ?? throw new InvalidOperationException($"{nameof(VirtualView)} should have been set by base class.");
+			_ = MauiContext ?? throw new InvalidOperationException($"{nameof(MauiContext)} should have been set by base class.");
+
+			if (child != null)
+			{
+				// var widget = (Gtk.Widget)child.ToPlatform(MauiContext);
+				//var hbox = new Gtk.HBox();
+				//var vbox = new Gtk.VBox();
+				//hbox.PackStart(vbox, false, true, 20);
+
+				//hbox.PackStart((Gtk.Widget)child.ToPlatform(MauiContext), false, true, 0);
+
+				// PlatformView.PackStart((Gtk.Widget)child.ToPlatform(MauiContext), false, false, 20);
+				int col = VirtualView.GetColumn(child);
+				int row = VirtualView.GetRow(child);
+				int colSpan = VirtualView.GetColumnSpan(child);
+				int rowSpan = VirtualView.GetRowSpan(child);
+				int colSpacing = (int)VirtualView.ColumnSpacing;
+				int rowSpacing = (int)VirtualView.RowSpacing;
+				var platformChild = child.ToPlatform(MauiContext);
+				if (platformChild is Gtk.Widget widget)
+				{
+					if (colWidth != null && rowHeight != null)
+					{
+						var colWide = 0;
+						var rowHigh = 0;
+						if (colWidth.Count() > col)
+						{
+							colWide = colWidth[col];
+						}
+						if (rowHeight.Count() > row)
+						{
+							rowHigh = rowHeight[row];
+						}
+						//if ((VirtualView.ColumnDefinitions.Count > col)
+						//	&& ((VirtualView.ColumnDefinitions[col].Width.GridUnitType == GridUnitType.Auto)
+						//		|| (VirtualView.ColumnDefinitions[col].Width.GridUnitType == GridUnitType.Star)))
+						//{
+						//	widget.Hexpand = true;
+						//}
+						//else
+						//{
+						if (colWide > 0)
+						{
+							widget.WidthRequest = colWide;
+						}
+						//}
+						if (colSpacing > 0)
+						{
+							widget.MarginStart = colSpacing;
+						}
+
+						//if ((VirtualView.RowDefinitions.Count > row)
+						//	&& ((VirtualView.RowDefinitions[row].Height.GridUnitType == GridUnitType.Auto)
+						//		|| (VirtualView.RowDefinitions[row].Height.GridUnitType == GridUnitType.Star)))
+						//{
+						//	widget.Vexpand = true;
+						//}
+						//else
+						//{
+						if (rowHigh > 0)
+						{
+							widget.HeightRequest = rowHigh;
+						}
+						//}
+
+						if (rowSpacing > 0)
+						{
+							widget.MarginTop = rowSpacing;
+						}
+					}
+					PlatformView.Attach(widget, col, row, colSpan, rowSpan);
+					widget.ShowAll();
+				}
+				else if (platformChild is ContentViewGroup viewGroup)
+				{
+					var widgetCVG = viewGroup.GetChild();
+					if (widgetCVG != null)
+					{
+						viewGroup.RemoveChild();
+						if (colWidth != null && rowHeight != null)
+						{
+							var colWide = 0;
+							var rowHigh = 0;
+							if (colWidth.Count() > col)
+							{
+								colWide = colWidth[col];
+							}
+							if (rowHeight.Count() > row)
+							{
+								rowHigh = rowHeight[row];
+							}
+							//if ((VirtualView.ColumnDefinitions.Count > col)
+							//	&& ((VirtualView.ColumnDefinitions[col].Width.GridUnitType == GridUnitType.Auto)
+							//		|| (VirtualView.ColumnDefinitions[col].Width.GridUnitType == GridUnitType.Star)))
+							//{
+							//	widget.Hexpand = true;
+							//}
+							//else
+							//{
+							if (colWide > 0)
+							{
+								widgetCVG.WidthRequest = colWide;
+							}
+							//}
+							if (colSpacing > 0)
+							{
+								widgetCVG.MarginStart = colSpacing;
+							}
+
+							//if ((VirtualView.RowDefinitions.Count > row)
+							//	&& ((VirtualView.RowDefinitions[row].Height.GridUnitType == GridUnitType.Auto)
+							//		|| (VirtualView.RowDefinitions[row].Height.GridUnitType == GridUnitType.Star)))
+							//{
+							//	widget.Vexpand = true;
+							//}
+							//else
+							//{
+							if (rowHigh > 0)
+							{
+								widgetCVG.HeightRequest = rowHigh;
+							}
+							//}
+
+							if (rowSpacing > 0)
+							{
+								widgetCVG.MarginTop = rowSpacing;
+							}
+						}
+						PlatformView.Attach(widgetCVG, col, row, colSpan, rowSpan);
+					}
+					viewGroup.GetChild()?.ShowAll();
+				}
+				//var widget = (Gtk.Widget)child.ToPlatform(MauiContext);
+			}
 		}
 
 		void EnsureZIndexOrder(IView child)

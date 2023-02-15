@@ -82,7 +82,12 @@ namespace Microsoft.Maui.Handlers
 			{
 				if (handlerWin.PlatformView is ContentViewGroup viewGroup)
 				{
-					rootWin.Add(viewGroup.GetChild());
+					var child = viewGroup.GetChild();
+					if (child != null)
+					{
+						viewGroup.RemoveChild();
+					}
+					rootWin.Add(child);
 				}
 			}
 			return rootManager.RootView;
