@@ -44,6 +44,40 @@ namespace Microsoft.Maui.Handlers
 			}
 		}
 
+		public void SetAlignment(IView view, ref Gtk.Widget widget)
+		{
+			if (view is ILabel virtualLabel)
+			{
+				if (virtualLabel.HorizontalTextAlignment == TextAlignment.Start)
+				{
+					if (widget is Gtk.Label widgetLabel)
+					{
+						// widgetLabel.Halign = Align.Start;
+						widgetLabel.Xalign = 0.0f;
+						widgetLabel.Justify = Justification.Left;
+					}
+				}
+				else if (virtualLabel.HorizontalTextAlignment == TextAlignment.Center)
+				{
+					if (widget is Gtk.Label widgetLabel)
+					{
+						//widgetLabel.Halign = Align.Center;
+						widgetLabel.Xalign = 0.5f;
+						widgetLabel.Justify = Justification.Center;
+					}
+				}
+				else if (virtualLabel.HorizontalTextAlignment == TextAlignment.End)
+				{
+					if (widget is Gtk.Label widgetLabel)
+					{
+						//widgetLabel.Halign = Align.End;
+						widgetLabel.Xalign = 1.0f;
+						widgetLabel.Justify = Justification.Right;
+					}
+				}
+			}
+		}
+
 		protected override void SetupContainer()
 		{
 		//	if (PlatformView == null || ContainerView != null)

@@ -25,7 +25,7 @@ namespace Microsoft.Maui.Handlers
 			Gtk.Widget widget = view;
 			SetMargins(layout, ref widget);
 			view.Homogeneous = false;
-
+			view.Valign = Align.Start;
 			view.ShowAll();
 			return view;
 		}

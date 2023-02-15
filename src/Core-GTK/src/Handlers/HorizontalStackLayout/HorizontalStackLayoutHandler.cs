@@ -21,6 +21,7 @@ namespace Microsoft.Maui.Handlers
 			var view = new Gtk.Box(Gtk.Orientation.Horizontal, spacing);
 			Gtk.Widget widget = view;
 			SetMargins(layout, ref widget);
+			view.Halign = Align.Start;
 			view.Homogeneous = false;
 
 			view.ShowAll();

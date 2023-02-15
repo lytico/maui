@@ -11,6 +11,7 @@ namespace Microsoft.Maui.Handlers
 			var plat = new MauiGTKLabel(label);
 			Gtk.Widget widget = plat;
 			SetMargins(label, ref widget);
+			SetAlignment(label, ref widget);
 			plat.Show();
 			return plat;
 		}
