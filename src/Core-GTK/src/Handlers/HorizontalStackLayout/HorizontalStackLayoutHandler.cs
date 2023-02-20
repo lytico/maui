@@ -23,8 +23,13 @@ namespace Microsoft.Maui.Handlers
 			SetMargins(layout, ref widget);
 			view.Halign = Align.Start;
 			view.Homogeneous = false;
-
-			view.ShowAll();
+			if (layout is IStackLayout layoutView)
+			{
+				if (layoutView.Visibility == Visibility.Visible)
+				{
+					view.Show();
+				}
+			}
 
 			return view;
 		}
@@ -38,7 +43,6 @@ namespace Microsoft.Maui.Handlers
 			_ = MauiContext ?? throw new InvalidOperationException($"{nameof(MauiContext)} should have been set by base class.");
 
 			// PlatformView.RemoveAllViews();
-
 			foreach (var child in VirtualView.OrderByZIndex())
 			{
 				// var widget = (Gtk.Widget)child.ToPlatform(MauiContext);
@@ -51,12 +55,10 @@ namespace Microsoft.Maui.Handlers
 				if (childPlatform is Gtk.Widget widget)
 				{
 					PlatformView.PackStart(widget, false, false, 0);
-					widget.ShowAll();
 				}
 				else if (childPlatform is Gtk.ScrolledWindow window)
 				{
 					PlatformView.PackStart(window, false, false, 0);
-					window.ShowAll();
 				}
 				else if (childPlatform is ContentViewGroup viewGroup)
 				{
@@ -74,7 +76,6 @@ namespace Microsoft.Maui.Handlers
 						//	PlatformView.PackStart(widge, false, false, 20);
 						//	widge.ShowAll();
 						//}
-						viewGroupChild.ShowAll();
 					}
 				}
 			}
@@ -93,12 +94,10 @@ namespace Microsoft.Maui.Handlers
 			if (childPlatform is Gtk.Widget widget)
 			{
 				PlatformView.PackStart(widget, false, false, 0);
-				widget.ShowAll();
 			}
 			else if (childPlatform is Gtk.ScrolledWindow window)
 			{
 				PlatformView.PackStart(window, false, false, 0);
-				window.ShowAll();
 			}
 			else if (childPlatform is ContentViewGroup viewGroup)
 			{
@@ -116,7 +115,6 @@ namespace Microsoft.Maui.Handlers
 					//	PlatformView.PackStart(widge, false, false, 20);
 					//	widge.ShowAll();
 					//}
-					viewGroupChild.ShowAll();
 				}
 				//if (viewGroup.GetChild() != null)
 				//{

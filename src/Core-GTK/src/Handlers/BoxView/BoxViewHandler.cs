@@ -24,14 +24,20 @@ namespace Microsoft.Maui.Handlers.BoxView
 
 		Gtk.Box IBoxViewHandler.PlatformView => PlatformView;
 
-		protected override Gtk.Box CreatePlatformView(IView boxView)
+		protected override Gtk.Box CreatePlatformView(IView box)
 		{
 			var plat = new Gtk.Box(Gtk.Orientation.Vertical, 0);
 
 			Gtk.Widget widget = plat;
-			SetMargins(boxView, ref widget);
+			SetMargins(box, ref widget);
 
-			plat.Show();
+			if (box is IBoxView boxView)
+			{
+				if (boxView.Visibility == Visibility.Visible)
+				{
+					plat.Show();
+				}
+			}
 
 			return plat;
 		}

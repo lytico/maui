@@ -7,7 +7,13 @@
 			var plat = new MauiView();
 			plat.AddChildWidget(new Gtk.ProgressBar());
 
-			plat.Show();
+			if (progressBar is IProgress progressBarView)
+			{
+				if (progressBarView.Visibility == Visibility.Visible)
+				{
+					plat.Show();
+				}
+			}
 			return plat;
 		}
 

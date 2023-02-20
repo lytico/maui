@@ -166,10 +166,10 @@ namespace Microsoft.Maui.Platform
 
 			if ((Child != null))
 			{
-				Child.ShowAll();
+				Child.Show();
 			}
 
-			Show();
+			// Show();
 
 			ButtonPressEvent += new ButtonPressEventHandler(OnButtonPressEvent);
 			_calendar.ButtonPressEvent += new ButtonPressEventHandler(OnCalendarButtonPressEvent);
@@ -412,10 +412,10 @@ namespace Microsoft.Maui.Platform
 
 			if ((Child != null))
 			{
-				Child.ShowAll();
+				Child.Show();
 			}
 
-			Show();
+			// Show();
 		}
 
 		void UpdateEntryText()

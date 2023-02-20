@@ -12,7 +12,13 @@ namespace Microsoft.Maui.Handlers
 			Gtk.Widget widget = plat;
 			SetMargins(label, ref widget);
 			SetAlignment(label, ref widget);
-			plat.Show();
+			if (label is ILabel labelView)
+			{
+				if (labelView.Visibility == Visibility.Visible)
+				{
+					plat.Show();
+				}
+			}
 			return plat;
 		}
 

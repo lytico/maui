@@ -15,7 +15,13 @@ namespace Microsoft.Maui.Handlers
 			Gtk.Widget widget = stepperLayout;
 			SetMargins(stepper, ref widget);
 
-			stepperLayout.Show();
+			if (stepper is IStepper stepperView)
+			{
+				if (stepperView.Visibility == Visibility.Visible)
+				{
+					stepperLayout.Show();
+				}
+			}
 			return stepperLayout;
 		}
 

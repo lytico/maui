@@ -20,7 +20,13 @@ namespace Microsoft.Maui.Handlers
 			//editText.SetHorizontallyScrolling(false);
 			_ignoreBufferWhileInputing = false;
 
-			editText.Show();
+			if (editor is IEditor editorView)
+			{
+				if (editorView.Visibility == Visibility.Visible)
+				{
+					editText.Show();
+				}
+			}
 
 			return editText;
 		}

@@ -42,7 +42,13 @@ namespace Microsoft.Maui.Handlers
 							PlatformView.RemoveChildAndNulify();
 							PlatformView.AddChild(widget);
 						}
-						widget.ShowAll();
+						if (viewContent is IContentView viewContentView)
+						{
+							if (viewContentView.Visibility == Visibility.Visible)
+							{
+								widget.Show();
+							}
+						}
 					}
 					else if (platformChild is Gtk.ScrolledWindow window)
 					{
@@ -51,7 +57,13 @@ namespace Microsoft.Maui.Handlers
 							PlatformView.RemoveChildAndNulify();
 							PlatformView.AddChild(window);
 						}
-						window.ShowAll();
+						if (viewContent is IContentView viewContentView)
+						{
+							if (viewContentView.Visibility == Visibility.Visible)
+							{
+								window.Show();
+							}
+						}
 					}
 					else if (platformChild is ContentViewGroup viewGroup)
 					{
@@ -68,7 +80,13 @@ namespace Microsoft.Maui.Handlers
 										PlatformView.RemoveChildAndNulify();
 										PlatformView.AddChild(viewGroupChild);
 									}
-									viewGroupChild.ShowAll();
+									if (viewContent is IContentView viewContentView)
+									{
+										if (viewContentView.Visibility == Visibility.Visible)
+										{
+											viewGroupChild.Show();
+										}
+									}
 								}
 							}
 							//if (viewGroup.RemoveChildOnly(widge))
@@ -118,7 +136,13 @@ namespace Microsoft.Maui.Handlers
 							handler.PlatformView.RemoveChildAndNulify();
 							handler.PlatformView.AddChild(widget);
 						}
-						widget.ShowAll();
+						if (viewContent is IContentView viewContentView)
+						{
+							if (viewContentView.Visibility == Visibility.Visible)
+							{
+								widget.Show();
+							}
+						}
 					}
 					else if (platformChild is Gtk.ScrolledWindow window)
 					{
@@ -127,7 +151,13 @@ namespace Microsoft.Maui.Handlers
 							handler.PlatformView.RemoveChildAndNulify();
 							handler.PlatformView.AddChild(window);
 						}
-						window.ShowAll();
+						if (viewContent is IContentView viewContentView)
+						{
+							if (viewContentView.Visibility == Visibility.Visible)
+							{
+								window.Show();
+							}
+						}
 					}
 					else if (platformChild is ContentViewGroup viewGroup)
 					{
@@ -143,7 +173,13 @@ namespace Microsoft.Maui.Handlers
 										handler.PlatformView.RemoveChildAndNulify();
 										handler.PlatformView.AddChild(viewGroupChild);
 									}
-									viewGroupChild.ShowAll();
+									if (viewContent is IContentView viewContentView)
+									{
+										if (viewContentView.Visibility == Visibility.Visible)
+										{
+											viewGroupChild.Show();
+										}
+									}
 								}
 							}
 							//if (viewGroup.RemoveChildOnly(widge))

@@ -188,10 +188,10 @@ namespace Microsoft.Maui.Platform
 
 			if ((Child != null))
 			{
-				Child.ShowAll();
+				Child.Show();
 			}
 
-			Show();
+			//Show();
 
 			ButtonPressEvent += new Gtk.ButtonPressEventHandler(OnButtonPressEvent);
 			_txtHour.ValueChanged += new EventHandler(OnTxtHourValueChanged);
@@ -381,7 +381,7 @@ namespace Microsoft.Maui.Platform
 
 			if ((Child != null))
 			{
-				Child.ShowAll();
+				Child.Show();
 			}
 
 			Show();

@@ -13,7 +13,13 @@ namespace Microsoft.Maui.Handlers
 			Gtk.Widget widget = _timePicker;
 			SetMargins(picker, ref widget);
 
-			_timePicker.Show();
+			if (picker is ITimePicker pickerView)
+			{
+				if (pickerView.Visibility == Visibility.Visible)
+				{
+					_timePicker.Show();
+				}
+			}
 			return _timePicker;
 		}
 

@@ -8,14 +8,21 @@ namespace Microsoft.Maui.Handlers
 	{
 		const string InsetPanelTag = "MAUIContentInsetPanel";
 
-		protected override Gtk.ScrolledWindow CreatePlatformView(IView scrollView)
+		protected override Gtk.ScrolledWindow CreatePlatformView(IView scroll)
 		{
 			//var plat = new MauiView();
 			//plat.Add(new Gtk.ScrolledWindow());
 			var scroller = new Gtk.ScrolledWindow();
 			Gtk.Widget widget = scroller;
-			SetMargins(scrollView, ref widget);
-			scroller.ShowAll();
+			SetMargins(scroll, ref widget);
+
+			if (scroll is IScrollView scrollView)
+			{
+				if (scrollView.Visibility == Visibility.Visible)
+				{
+					scroller.Show();
+				}
+			}
 			return scroller;
 		}
 
@@ -171,7 +178,14 @@ namespace Microsoft.Maui.Handlers
 				{
 					// currentPaddingLayer.Children.R();
 					currentPaddingLayer.Add((Gtk.Widget)nativeContent);
+<<<<<<< HEAD
 
+=======
+					if (scrollView.Visibility == Visibility.Visible)
+					{
+						((Gtk.Widget)nativeContent).Show();
+					}
+>>>>>>> 5855e550d (Repaired Visibility for all controls)
 				}
 			}
 			else
@@ -197,6 +211,13 @@ namespace Microsoft.Maui.Handlers
 			if (scrollViewer.Child is Gtk.ScrolledWindow scroller)
 			{
 				scroller.Add(nativeContent);
+<<<<<<< HEAD
+=======
+				if (scrollView.Visibility == Visibility.Visible)
+				{
+					nativeContent.Show();
+				}
+>>>>>>> 5855e550d (Repaired Visibility for all controls)
 			}
 
 			//scrollViewer.Content = null;

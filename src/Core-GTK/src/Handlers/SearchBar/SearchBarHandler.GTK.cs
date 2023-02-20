@@ -16,7 +16,13 @@ namespace Microsoft.Maui.Handlers
 			QueryEditor = searchView.Entry;
 			Gtk.Widget widget = searchView;
 			SetMargins(searchBar, ref widget);
-			searchView.Show();
+			if (searchBar is ISearchBar searchBarView)
+			{
+				if (searchBarView.Visibility == Visibility.Visible)
+				{
+					searchView.Show();
+				}
+			}
 			return searchView;
 		}
 

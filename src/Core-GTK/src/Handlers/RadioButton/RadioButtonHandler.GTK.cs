@@ -14,6 +14,7 @@ namespace Microsoft.Maui.Handlers
 		protected override MauiView CreatePlatformView(IView radioButtonView)
 		{
 			var plat = new MauiView();
+			bool bShow = false;
 			if (radioButtonView is IRadioButton radioButton)
 			{
 				var radioButtonText = string.Empty;
@@ -67,11 +68,19 @@ namespace Microsoft.Maui.Handlers
 
 					plat.AddChildWidget(platformRadioButton);
 				}
+
+				if (radioButton.Visibility == Visibility.Visible)
+				{
+					bShow = true;
+				}
 			}
 			Gtk.Widget widget = plat;
 			SetMargins(radioButtonView, ref widget);
 
-			plat.ShowAll();
+			if (bShow)
+			{
+				plat.Show();
+			}
 			return plat;
 		}
 

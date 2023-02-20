@@ -6,14 +6,20 @@ namespace Microsoft.Maui.Handlers
 	{
 		protected override MauiImage CreatePlatformView(IView image)
 		{
-			var imageView = new MauiImage();
+			var imageElement = new MauiImage();
 
-			Gtk.Widget widget = imageView;
+			Gtk.Widget widget = imageElement;
 			SetMargins(image, ref widget);
 
-			imageView.Show();
+			if (image is IImage imageView)
+			{
+				if (imageView.Visibility == Visibility.Visible)
+				{
+					imageElement.Show();
+				}
+			}
 
-			return imageView;
+			return imageElement;
 		}
 
 		protected override void DisconnectHandler(MauiImage platformView)

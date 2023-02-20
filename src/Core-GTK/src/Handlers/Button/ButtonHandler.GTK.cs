@@ -22,7 +22,13 @@ namespace Microsoft.Maui.Handlers
 			Gtk.Widget widget = platformButton;
 			SetMargins(button, ref widget);
 
-			platformButton.Show();
+			if (button is IButton buttonView)
+			{
+				if (buttonView.Visibility == Visibility.Visible)
+				{
+					platformButton.Show();
+				}
+			}
 
 			return platformButton;
 		}

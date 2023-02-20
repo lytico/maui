@@ -5,15 +5,21 @@ namespace Microsoft.Maui.Handlers
 {
 	public partial class SwitchHandler : ViewHandler<ISwitch, MauiSwitch>
 	{
-		protected override MauiSwitch CreatePlatformView(IView switchView)
+		protected override MauiSwitch CreatePlatformView(IView mauiSwitch)
 		{
 			var aSwitch = new MauiSwitch();
 			aSwitch.SwitchWidget.Toggled += ASwitch_Toggled;
 
 			Gtk.Widget widget = aSwitch;
-			SetMargins(switchView, ref widget);
+			SetMargins(mauiSwitch, ref widget);
 
-			aSwitch.Show();
+			if (mauiSwitch is ISwitch switchView)
+			{
+				if (switchView.Visibility == Visibility.Visible)
+				{
+					aSwitch.Show();
+				}
+			}
 			return aSwitch;
 		}
 

@@ -15,7 +15,13 @@ namespace Microsoft.Maui.Handlers
 			Gtk.Widget widget = aSlider;
 			SetMargins(slider, ref widget);
 
-			aSlider.Show();
+			if (slider is ISlider sliderView)
+			{
+				if (sliderView.Visibility == Visibility.Visible)
+				{
+					aSlider.Show();
+				}
+			}
 
 			return aSlider;
 		}

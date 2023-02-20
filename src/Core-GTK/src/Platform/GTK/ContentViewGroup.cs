@@ -14,7 +14,7 @@ namespace Microsoft.Maui.Platform
 			_child = null;
 			//_box = new EventBox();
 			////Add(_fixed);
-			ShowAll();
+			//ShowAll();
 		}
 
 		public void AddChild(System.Object widget)
@@ -24,7 +24,7 @@ namespace Microsoft.Maui.Platform
 				_child = gtkwidget;
 				//_box.Add(_child);
 				Add(_child);
-				_child.Show();
+				//_child.Show();
 
 			} else if (widget is ContentViewGroup viewGroup)
 			{
@@ -33,12 +33,12 @@ namespace Microsoft.Maui.Platform
 				{
 					Add(_child);
 					// _box.Add(_child);
-					_child.Show();
+					//_child.Show();
 				}
 			}
 			//_box.Put((Gtk.Widget)widget, 0, 0);
 			//_fixed.Add((Gtk.Widget)widget);
-			ShowAll();
+			//ShowAll();
 		}
 
 		public void RemoveChild()

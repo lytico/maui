@@ -32,7 +32,7 @@ namespace Microsoft.Maui.Platform
 			_table.Attach(_entry, 0, 1, 1, 1);
 			_table.Attach(_placeholderContainer, 0, 1, 1, 1);
 
-			Show();
+			// Show();
 			_table.Show();
 			_entry.Show();
 			_placeholderContainer.Show();

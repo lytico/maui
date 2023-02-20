@@ -18,12 +18,20 @@ namespace Microsoft.Maui.Handlers
 				if (stackLayout.Orientation == StackOrientation.Horizontal)
 				{
 					var viewHoriz = new Gtk.Box(Gtk.Orientation.Horizontal, 0);
+					if (stackLayout.Visibility == Visibility.Visible)
+					{
+						viewHoriz.Show();
+					}
 
 					return viewHoriz;
 				}
 				else if (stackLayout.Orientation == StackOrientation.Vertical)
 				{
 					var viewVert = new Gtk.Box(Gtk.Orientation.Horizontal, 0);
+					if (stackLayout.Visibility == Visibility.Visible)
+					{
+						viewVert.Show();
+					}
 
 					return viewVert;
 				}
@@ -32,7 +40,13 @@ namespace Microsoft.Maui.Handlers
 			// var viewGroup = new LayoutViewGroup();
 			var view = new Gtk.Box(Gtk.Orientation.Vertical, 0);
 
-			view.ShowAll();
+			if (layout is ILayout layoutView)
+			{
+				if (layoutView.Visibility == Visibility.Visible)
+				{
+					view.Show();
+				}
+			}
 
 			return view;
 		}

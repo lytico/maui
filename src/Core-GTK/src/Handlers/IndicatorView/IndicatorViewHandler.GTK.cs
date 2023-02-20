@@ -7,7 +7,13 @@ namespace Microsoft.Maui.Handlers
 		protected override MauiPageControl CreatePlatformView(IView indicator)
 		{
 			var view =  new MauiPageControl();
-			view.Show();
+			if (indicator is IIndicatorView indicatorView)
+			{
+				if (indicatorView.Visibility == Visibility.Visible)
+				{
+					view.Show();
+				}
+			}
 			return view;
 
 		}

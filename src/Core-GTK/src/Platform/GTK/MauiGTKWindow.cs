@@ -46,8 +46,8 @@ namespace Microsoft.Maui
 			{
 				RootView.RemoveChild();
 				Add(child);
-				child.ShowAll();
-				ShowAll();
+				child.Show();
+				Show();
 			}
 			//if (child != null)
 			//{

@@ -26,7 +26,13 @@ namespace Microsoft.Maui.Handlers
 			SetMargins(layout, ref widget);
 			view.Homogeneous = false;
 			view.Valign = Align.Start;
-			view.ShowAll();
+			if (layout is IStackLayout layoutView)
+			{
+				if (layoutView.Visibility == Visibility.Visible)
+				{
+					view.Show();
+				}
+			}
 			return view;
 		}
 
@@ -46,18 +52,15 @@ namespace Microsoft.Maui.Handlers
 				//var hbox = new Gtk.HBox();
 				//var vbox = new Gtk.VBox();
 				//hbox.PackStart(vbox, false, true, 20);
-
 				//hbox.PackStart((Gtk.Widget)child.ToPlatform(MauiContext), false, true, 0);
 				var childPlatform = child.ToPlatform(MauiContext);
 				if (childPlatform is Gtk.Widget widget)
 				{
 					PlatformView.PackStart(widget, false, false, 0);
-					widget.ShowAll();
 				}
 				else if (childPlatform is Gtk.ScrolledWindow window)
 				{
 					PlatformView.PackStart(window, false, false, 0);
-					window.ShowAll();
 				}
 				else if (childPlatform is ContentViewGroup viewGroup)
 				{
@@ -66,7 +69,6 @@ namespace Microsoft.Maui.Handlers
 					{
 						viewGroup.RemoveChild();
 						PlatformView.PackStart(viewGroupChild, false, false, 0);
-						viewGroupChild.ShowAll();
 					}
 				}
 			}
@@ -85,12 +87,10 @@ namespace Microsoft.Maui.Handlers
 			if (childPlatform is Gtk.Widget widget)
 			{
 				PlatformView.PackStart(widget, false, false, 0);
-				widget.Show();
 			}
 			else if (childPlatform is Gtk.ScrolledWindow window)
 			{
 				PlatformView.PackStart(window, false, false, 0);
-				window.Show();
 			}
 			else if (childPlatform is ContentViewGroup viewGroup)
 			{
@@ -99,7 +99,6 @@ namespace Microsoft.Maui.Handlers
 				{
 					viewGroup.RemoveChild();
 					PlatformView.PackStart(viewGroupChild, false, false, 0);
-					viewGroupChild.ShowAll();
 				}
 			}
 		}

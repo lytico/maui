@@ -10,7 +10,13 @@ namespace Microsoft.Maui.Handlers
 			var plat = new MauiView();
 			plat.AddChildWidget(new Gtk.ComboBox());
 
-			plat.Show();
+			if (picker is IPicker pickerView)
+			{
+				if (pickerView.Visibility == Visibility.Visible)
+				{
+					plat.Show();
+				}
+			}
 			return plat;
 		}
 

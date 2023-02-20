@@ -15,8 +15,14 @@ namespace Microsoft.Maui.Handlers
 
 			plat.AddChildWidget(platformCheckBox);
 
-			platformCheckBox.Show();
-			plat.Show();
+			if (checkBox is ICheckBox checkBoxView)
+			{
+				if (checkBoxView.Visibility == Visibility.Visible)
+				{
+					platformCheckBox.Show();
+					plat.Show();
+				}
+			}
 
 			return plat;
 		}
