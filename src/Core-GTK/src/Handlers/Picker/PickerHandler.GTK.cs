@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Specialized;
+using System.Linq;
 
 namespace Microsoft.Maui.Handlers
 {
@@ -8,16 +9,51 @@ namespace Microsoft.Maui.Handlers
 		protected override MauiView CreatePlatformView(IView picker)
 		{
 			var plat = new MauiView();
-			plat.AddChildWidget(new Gtk.ComboBox());
+			Gtk.ComboBox platformChild = null!;
 
-			if (picker is IPicker pickerView)
-			{
+			if (picker is IPicker pickerView) {
+				if (pickerView.Items != null) {
+					platformChild = new Gtk.ComboBox(pickerView.Items.ToArray());
+					// name_combo.set_entry_text_column(1)
+					platformChild.EntryTextColumn = 0;
+					platformChild.Active = 1;
+					platformChild.Changed += PlatformChild_Changed;
+					plat.AddChildWidget(platformChild);
+				} else {
+					platformChild = new Gtk.ComboBox();
+					// name_combo.set_entry_text_column(1)
+					platformChild.EntryTextColumn = 0;
+					platformChild.Changed += PlatformChild_Changed;
+					platformChild.Active = 1;
+					plat.AddChildWidget(platformChild);
+				}
+
+				//if (pickerView.Items.Count > 0) {
+				//	var name_store = new Gtk.ListStore(typeof(int), typeof(string));
+				//	for (int i = 0; i < pickerView.Items.Count; i++) {
+				//		var item = pickerView.Items[i];
+				//		name_store.AppendValues(i, item);
+				//	}
+				//	platformChild.Model = name_store;
+				//}
+				 
 				if (pickerView.Visibility == Visibility.Visible)
 				{
+					if (platformChild != null!) {
+						platformChild.Show();
+					}
 					plat.Show();
 				}
 			}
+
 			return plat;
+		}
+
+		private void PlatformChild_Changed(object sender, EventArgs e)
+		{
+			if (sender is Gtk.ComboBox comboBox) {
+				this.VirtualView.SelectedIndex = comboBox.Active;
+			}
 		}
 
 		protected override void ConnectHandler(MauiView platformView)
@@ -43,9 +79,9 @@ namespace Microsoft.Maui.Handlers
 		}
 
 		// Uncomment me on NET7 [Obsolete]
-		public static void MapReload(IPickerHandler handler, IPicker picker, object? args) => Reload(handler);
+		public static void MapReload(IPickerHandler handler, IPicker picker, object? args) => Reload(handler, picker);
 
-		internal static void MapItems(IPickerHandler handler, IPicker picker) => Reload(handler);
+		internal static void MapItems(IPickerHandler handler, IPicker picker) => Reload(handler, picker);
 
 		public static void MapTitle(IPickerHandler handler, IPicker picker)
 		{
@@ -59,6 +95,11 @@ namespace Microsoft.Maui.Handlers
 
 		public static void MapSelectedIndex(IPickerHandler handler, IPicker picker)
 		{
+			if (handler.PlatformView is MauiView mView) {
+				if (mView.GetChildWidget() is Gtk.ComboBox comboBox) {
+					comboBox.Active = picker.SelectedIndex;
+				}
+			}
 			//handler.PlatformView?.UpdateSelectedIndex(picker);
 		}
 
@@ -162,9 +203,19 @@ namespace Microsoft.Maui.Handlers
 		//			}
 		//		}
 
-		static void Reload(IPickerHandler handler)
+		static void Reload(IPickerHandler handler, IPicker picker)
 		{
-			//handler.PlatformView.UpdatePicker(handler.VirtualView);
+			if (handler.PlatformView.GetChildWidget() is Gtk.ComboBox childComboBox) {
+				if (picker.Items.Count > 0) {
+					var name_store = new Gtk.ListStore(typeof(string));
+					for (int i = 0; i < picker.Items.Count; i++) {
+						var item = picker.Items[i];
+						name_store.AppendValues(item);
+					}
+					childComboBox.Model = name_store;
+				}
+				childComboBox.Active = 1;
+			}
 		}
 	}
 }

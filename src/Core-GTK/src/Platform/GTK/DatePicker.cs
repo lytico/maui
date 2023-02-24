@@ -415,7 +415,7 @@ namespace Microsoft.Maui.Platform
 				Child.Show();
 			}
 
-			// Show();
+			Show();
 		}
 
 		void UpdateEntryText()

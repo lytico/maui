@@ -20,7 +20,7 @@ namespace Microsoft.Maui.Handlers
 				var radioButtonText = string.Empty;
 				var radioButtonGroupName = "NULL";
 
-				if (radioButton.Value is string valueText)
+				if (radioButton.Content is string valueText)
 				{
 					radioButtonText = valueText;
 				}
@@ -28,6 +28,11 @@ namespace Microsoft.Maui.Handlers
 				if (radioButton.GroupName is string foundGroupName)
 				{
 					radioButtonGroupName = foundGroupName;
+				}
+
+				if (radioButton.Visibility == Visibility.Visible)
+				{
+					bShow = true;
 				}
 
 				if (RadioButtonGrouping.ContainsValue(radioButtonGroupName))
@@ -42,6 +47,11 @@ namespace Microsoft.Maui.Handlers
 						}
 
 						plat.AddChildWidget(platformRadioButton);
+
+						if (bShow)
+						{
+							platformRadioButton.Show();
+						}
 					}
 					else
 					{
@@ -54,6 +64,11 @@ namespace Microsoft.Maui.Handlers
 						RadioButtonGrouping.Add(platformRadioButton, radioButtonGroupName);
 
 						plat.AddChildWidget(platformRadioButton);
+
+						if (bShow)
+						{
+							platformRadioButton.Show();
+						}
 					}
 				}
 				else
@@ -67,11 +82,11 @@ namespace Microsoft.Maui.Handlers
 					RadioButtonGrouping.Add(platformRadioButton, radioButtonGroupName);
 
 					plat.AddChildWidget(platformRadioButton);
-				}
 
-				if (radioButton.Visibility == Visibility.Visible)
-				{
-					bShow = true;
+					if (bShow)
+					{
+						platformRadioButton.Show();
+					}
 				}
 			}
 			Gtk.Widget widget = plat;

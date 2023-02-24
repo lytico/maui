@@ -13,6 +13,12 @@ namespace Microsoft.Maui.Handlers
 
 			var date = VirtualView?.Date;
 
+			if (picker is IDatePicker datePicker) {
+				if (datePicker.Visibility == Visibility.Visible) {
+					mauiDatePicker.ShowAll();
+				}
+			}
+
 			//if (date != null)
 			//	_dialog = CreateDatePickerDialog(date.Value.Year, date.Value.Month, date.Value.Day);
 
