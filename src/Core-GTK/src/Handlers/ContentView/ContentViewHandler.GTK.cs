@@ -42,13 +42,13 @@ namespace Microsoft.Maui.Handlers
 							PlatformView.RemoveChildAndNulify();
 							PlatformView.AddChild(widget);
 						}
-						if (viewContent is IContentView viewContentView)
-						{
-							if (viewContentView.Visibility == Visibility.Visible)
-							{
-								widget.Show();
-							}
-						}
+						//if (viewContent is IContentView viewContentView)
+						//{
+						//	if (viewContentView.Visibility == Visibility.Visible)
+						//	{
+						//		widget.Show();
+						//	}
+						//}
 					}
 					else if (platformChild is Gtk.ScrolledWindow window)
 					{
@@ -57,13 +57,13 @@ namespace Microsoft.Maui.Handlers
 							PlatformView.RemoveChildAndNulify();
 							PlatformView.AddChild(window);
 						}
-						if (viewContent is IContentView viewContentView)
-						{
-							if (viewContentView.Visibility == Visibility.Visible)
-							{
-								window.Show();
-							}
-						}
+						//if (viewContent is IContentView viewContentView)
+						//{
+						//	if (viewContentView.Visibility == Visibility.Visible)
+						//	{
+						//		window.Show();
+						//	}
+						//}
 					}
 					else if (platformChild is ContentViewGroup viewGroup)
 					{
@@ -80,13 +80,13 @@ namespace Microsoft.Maui.Handlers
 										PlatformView.RemoveChildAndNulify();
 										PlatformView.AddChild(viewGroupChild);
 									}
-									if (viewContent is IContentView viewContentView)
-									{
-										if (viewContentView.Visibility == Visibility.Visible)
-										{
-											viewGroupChild.Show();
-										}
-									}
+									//if (viewContent is IContentView viewContentView)
+									//{
+									//	if (viewContentView.Visibility == Visibility.Visible)
+									//	{
+									//		viewGroupChild.Show();
+									//	}
+									//}
 								}
 							}
 							//if (viewGroup.RemoveChildOnly(widge))
@@ -136,13 +136,13 @@ namespace Microsoft.Maui.Handlers
 							handler.PlatformView.RemoveChildAndNulify();
 							handler.PlatformView.AddChild(widget);
 						}
-						if (viewContent is IContentView viewContentView)
-						{
-							if (viewContentView.Visibility == Visibility.Visible)
-							{
-								widget.Show();
-							}
-						}
+						//if (viewContent is IContentView viewContentView)
+						//{
+						//	if (viewContentView.Visibility == Visibility.Visible)
+						//	{
+						//		widget.Show();
+						//	}
+						//}
 					}
 					else if (platformChild is Gtk.ScrolledWindow window)
 					{
@@ -151,13 +151,13 @@ namespace Microsoft.Maui.Handlers
 							handler.PlatformView.RemoveChildAndNulify();
 							handler.PlatformView.AddChild(window);
 						}
-						if (viewContent is IContentView viewContentView)
-						{
-							if (viewContentView.Visibility == Visibility.Visible)
-							{
-								window.Show();
-							}
-						}
+						//if (viewContent is IContentView viewContentView)
+						//{
+						//	if (viewContentView.Visibility == Visibility.Visible)
+						//	{
+						//		window.Show();
+						//	}
+						//}
 					}
 					else if (platformChild is ContentViewGroup viewGroup)
 					{
@@ -173,13 +173,13 @@ namespace Microsoft.Maui.Handlers
 										handler.PlatformView.RemoveChildAndNulify();
 										handler.PlatformView.AddChild(viewGroupChild);
 									}
-									if (viewContent is IContentView viewContentView)
-									{
-										if (viewContentView.Visibility == Visibility.Visible)
-										{
-											viewGroupChild.Show();
-										}
-									}
+									//if (viewContent is IContentView viewContentView)
+									//{
+									//	if (viewContentView.Visibility == Visibility.Visible)
+									//	{
+									//		viewGroupChild.Show();
+									//	}
+									//}
 								}
 							}
 							//if (viewGroup.RemoveChildOnly(widge))
