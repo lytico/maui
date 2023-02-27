@@ -53,14 +53,14 @@
                 </CheckBox>
             </StackLayout>
 
-            <RadioButton Value="One" IsChecked="{Binding RadioButtonOneChecked}" GroupName="Start">
+            <RadioButton Content="One" IsChecked="{Binding RadioButtonOneChecked}" GroupName="Start">
                 <RadioButton.Behaviors>
                     <prism:EventToCommandBehavior 
                         EventName="CheckedChanged"
                         Command="{Binding RadioButtonOne_CheckedChanged}"/>
                 </RadioButton.Behaviors>
             </RadioButton>
-            <RadioButton  Value="Two" GroupName="Start" IsChecked="{Binding RadioButtonTwoChecked}">
+            <RadioButton  Content="Two" GroupName="Start" IsChecked="{Binding RadioButtonTwoChecked}">
                 <RadioButton.Behaviors>
                     <prism:EventToCommandBehavior 
                         EventName="CheckedChanged"
@@ -68,14 +68,14 @@
                 </RadioButton.Behaviors>
             </RadioButton>
 
-            <RadioButton Value="Three" IsChecked="{Binding RadioButtonThreeChecked}" GroupName="Three">
+            <RadioButton Content="Three" IsChecked="{Binding RadioButtonThreeChecked}" GroupName="Three">
                 <RadioButton.Behaviors>
                     <prism:EventToCommandBehavior 
                         EventName="CheckedChanged"
                         Command="{Binding RadioButtonThree_CheckedChanged}"/>
                 </RadioButton.Behaviors>
             </RadioButton>
-            <RadioButton  Value="Four" GroupName="Three" IsChecked="{Binding RadioButtonFourChecked}">
+            <RadioButton  Content="Four" GroupName="Three" IsChecked="{Binding RadioButtonFourChecked}">
                 <RadioButton.Behaviors>
                     <prism:EventToCommandBehavior 
                         EventName="CheckedChanged"
@@ -83,14 +83,14 @@
                 </RadioButton.Behaviors>
             </RadioButton>
 
-            <RadioButton Value="Five" IsChecked="{Binding RadioButtonFiveChecked}">
+            <RadioButton Content="Five" IsChecked="{Binding RadioButtonFiveChecked}">
                 <RadioButton.Behaviors>
                     <prism:EventToCommandBehavior 
                     EventName="CheckedChanged"
                     Command="{Binding RadioButtonFive_CheckedChanged}"/>
                 </RadioButton.Behaviors>
             </RadioButton>
-            <RadioButton  Value="Six" IsChecked="{Binding RadioButtonSixChecked}">
+            <RadioButton  Content="Six" IsChecked="{Binding RadioButtonSixChecked}" IsVisible="{Binding RadioButtonSixVisible}">
                 <RadioButton.Behaviors>
                     <prism:EventToCommandBehavior 
                     EventName="CheckedChanged"

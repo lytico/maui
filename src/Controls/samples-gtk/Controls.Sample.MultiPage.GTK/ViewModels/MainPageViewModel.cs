@@ -65,6 +65,8 @@ namespace Maui.Controls.Sample.MultiPage.GTK.ViewModels
 
 			// Radio Button 5
 			this.RadioButtonFiveChecked = true;
+
+			this.SecondLabelVisible = false;
 		}
 
 		private string _buttonText;
@@ -72,6 +74,13 @@ namespace Maui.Controls.Sample.MultiPage.GTK.ViewModels
 		{
 			get => _buttonText;
 			set => SetProperty(ref _buttonText, value);
+		}
+
+		private bool _secondLabelVisible;
+		public bool SecondLabelVisible
+		{
+			get => _secondLabelVisible;
+			set => SetProperty(ref _secondLabelVisible, value);
 		}
 
 		private bool _counterBtn2Visible;
@@ -171,6 +180,7 @@ namespace Maui.Controls.Sample.MultiPage.GTK.ViewModels
 
 		public void OnNavigatedTo(INavigationParameters parameters)
 		{
+			this.SecondLabelVisible = true;
 		}
 
 		public void OnAppearing()
