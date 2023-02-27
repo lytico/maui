@@ -48,7 +48,7 @@ namespace Maui.Controls.Sample.MultiPage.GTK.ViewModels
 			this.Editor1Text = "Hello from editor";
 			this.Grid2Label2Text = "Test Label 2";
 
-			this.RadioButtonSixVisible = true;
+			this.RadioButtonSixVisible = false;
 		}
 
 		private bool _isCheckBoxChecked;
@@ -154,11 +154,13 @@ namespace Maui.Controls.Sample.MultiPage.GTK.ViewModels
 
 		public void OnNavigatedTo(INavigationParameters parameters)
 		{
+			Console.WriteLine("OnNavigatedTo");
 			this.RadioButtonSixVisible = true;
 		}
 
 		public void OnAppearing()
 		{
+			Console.WriteLine("OnAppearing");
 		}
 
 		public void OnDisappearing()

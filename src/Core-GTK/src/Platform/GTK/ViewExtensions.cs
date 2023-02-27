@@ -86,11 +86,31 @@ namespace Microsoft.Maui.Platform
 			{
 				platformView.Visible = true;
 				platformView.Show();
+				if (platformView is MauiView mauiView) {
+					if (mauiView.GetChildEntry() != null) {
+						mauiView.GetChildEntry().Visible = true;
+						mauiView.GetChildEntry().Show();
+					}
+					if (mauiView.GetChildWidget() != null) {
+						mauiView.GetChildWidget().Visible = true;
+						mauiView.GetChildWidget().Show();
+					}
+				}
 			}
 			else
 			{
 				platformView.Visible = false;
 				platformView.Hide();
+				if (platformView is MauiView mauiView) {
+					if (mauiView.GetChildEntry() != null) {
+						mauiView.GetChildEntry().Visible = false;
+						mauiView.GetChildEntry().Hide();
+					}
+					if (mauiView.GetChildWidget() != null) {
+						mauiView.GetChildWidget().Visible = false;
+						mauiView.GetChildWidget().Hide();
+					}
+				}
 			}
 		}
 
