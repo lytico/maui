@@ -48,6 +48,14 @@ namespace Microsoft.Maui.Handlers
 
 						plat.AddChildWidget(platformRadioButton);
 
+						if (radioButton.Height > 0) {
+							platformRadioButton.HeightRequest = (int)radioButton.Height;
+						}
+
+						if (radioButton.Width > 0) {
+							platformRadioButton.WidthRequest = (int)radioButton.Width;
+						}
+
 						if (bShow)
 						{
 							platformRadioButton.Show();
@@ -64,6 +72,14 @@ namespace Microsoft.Maui.Handlers
 						RadioButtonGrouping.Add(platformRadioButton, radioButtonGroupName);
 
 						plat.AddChildWidget(platformRadioButton);
+
+						if (radioButton.Height > 0) {
+							platformRadioButton.HeightRequest = (int)radioButton.Height;
+						}
+
+						if (radioButton.Width > 0) {
+							platformRadioButton.WidthRequest = (int)radioButton.Width;
+						}
 
 						if (bShow)
 						{
@@ -82,6 +98,14 @@ namespace Microsoft.Maui.Handlers
 					RadioButtonGrouping.Add(platformRadioButton, radioButtonGroupName);
 
 					plat.AddChildWidget(platformRadioButton);
+
+					if (radioButton.Height > 0) {
+						platformRadioButton.HeightRequest = (int)radioButton.Height;
+					}
+
+					if (radioButton.Width > 0) {
+						platformRadioButton.WidthRequest = (int)radioButton.Width;
+					}
 
 					if (bShow)
 					{

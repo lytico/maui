@@ -28,24 +28,25 @@ namespace Microsoft.Maui.Platform.GTK
 		private string _resFileId = null!;
 		private int _fontSize = 16;
 		private IView? _view;
+		private string _name = null!;
 
-		public MauiGTKButton() : base(Gtk.Orientation.Horizontal, 0) {
+		public MauiGTKButton(string name = null!) : base(Gtk.Orientation.Horizontal, 0) {
 			_view = null;
-			Initialize(string.Empty, string.Empty, string.Empty);
+			Initialize(string.Empty, string.Empty, string.Empty, name);
 		}
 
-		public MauiGTKButton(string label, string resFileId) : base(Gtk.Orientation.Horizontal, 0) {
+		public MauiGTKButton(string label, string resFileId, string name = null!) : base(Gtk.Orientation.Horizontal, 0) {
 			_view = null;
-			Initialize(label, resFileId, string.Empty);
+			Initialize(label, resFileId, string.Empty, name);
 		}
 
-		public MauiGTKButton(string label, string resFileId, string stockSetImage) : base(Gtk.Orientation.Horizontal, 0)
+		public MauiGTKButton(string label, string resFileId, string stockSetImage, string name = null!) : base(Gtk.Orientation.Horizontal, 0)
 		{
 			_view = null;
-			Initialize(label, resFileId, stockSetImage);
+			Initialize(label, resFileId, stockSetImage, name);
 		}
 
-		public MauiGTKButton(IView button) : base(Gtk.Orientation.Horizontal, 0)
+		public MauiGTKButton(IView button, string name = null!) : base(Gtk.Orientation.Horizontal, 0)
 		{
 			_view = button;
 			if ((_view != null) && (_view.Width > 0))
@@ -84,16 +85,16 @@ namespace Microsoft.Maui.Platform.GTK
 						// Console.WriteLine("Image: " + fileImageSource.File);
 						if (string.IsNullOrEmpty(virtualTextButton.Text))
 						{
-							Initialize(string.Empty, fileImageSource.File, string.Empty);
+							Initialize(string.Empty, fileImageSource.File, string.Empty, name);
 						}
 						else
 						{
-							Initialize(virtualTextButton.Text, fileImageSource.File, string.Empty);
+							Initialize(virtualTextButton.Text, fileImageSource.File, string.Empty, name);
 						}
 						return;
 					}
 				}
-				Initialize(virtualTextButton.Text, string.Empty, string.Empty);
+				Initialize(virtualTextButton.Text, string.Empty, string.Empty, name);
 
 				return;
 			}
@@ -106,14 +107,14 @@ namespace Microsoft.Maui.Platform.GTK
 					if (fileImageSource != null)
 					{
 						// Console.WriteLine("Image: " + fileImageSource.File);
-						Initialize(string.Empty, fileImageSource.File, string.Empty);
+						Initialize(string.Empty, fileImageSource.File, string.Empty, name);
 
 						return;
 					}
 				}
 			}
 
-			Initialize(string.Empty, string.Empty, string.Empty);
+			Initialize(string.Empty, string.Empty, string.Empty, name);
 		}
 
 		public Gdk.Color? BorderColor {  get; set; }
@@ -225,13 +226,14 @@ namespace Microsoft.Maui.Platform.GTK
 			}
 		}
 
-		private void Initialize(string label, string resFileId, string stockSetImage) {
+		private void Initialize(string label, string resFileId, string stockSetImage, string name) {
 			//_defaultBackgroundColor = new Gdk.Color(0x56, 0x2F, 0xD9); // #562FD9
 			//_defaultBorderColor = new Gdk.Color(0x26, 0x0F, 0xC9);
 			_defaultBackgroundColor = new Gdk.Color(0x80, 0x80, 0x80); // #562FD9
 			_defaultBorderColor = new Gdk.Color(0x80, 0x80, 0x80);
 			BackgroundColor = _defaultBackgroundColor;
 			BorderColor = _defaultBorderColor;
+			_name = name;
 			//_offsetXSet = false;
 			//_offsetX = 0;
 
@@ -383,6 +385,7 @@ namespace Microsoft.Maui.Platform.GTK
 			}
 
 			_imageAndLabelBox = new Gtk.Box(Gtk.Orientation.Horizontal, 0);
+			_imageAndLabelBox.Name = _name;
 			if ((_view != null) && (_view.Width > 0))
 			{
 				_imageAndLabelBox.WidthRequest = (int)_view.Width;

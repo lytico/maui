@@ -55,7 +55,8 @@ namespace Microsoft.Maui.Platform
 
 			applicationContext.Services.InvokeLifecycleEvents<GTKLifecycle.OnWindowCreated>(del => del(winuiWndow));
 
-			winuiWndow.ShowAll();
+			winuiWndow.Show();
+			// winuiWndow.ShowAll();
 			//winuiWndow.ModifyBg(StateType.Normal, new Gdk.Color(200, 0, 200));
 		}
 	}
