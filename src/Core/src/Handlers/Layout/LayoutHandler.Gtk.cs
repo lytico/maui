@@ -126,7 +126,7 @@ namespace Microsoft.Maui.Handlers
 
 		[MissingMapper]
 		public void UpdateZIndex(IView view) => throw new NotImplementedException();
-		
+
 	}
 
 }

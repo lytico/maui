@@ -5,7 +5,7 @@ namespace Microsoft.Maui.Graphics.Platform.Gtk;
 public partial class PlatformCanvas : AbstractCanvas<PlatformCanvasState>
 {
 	public PlatformCanvas()
-		: base(new PlatformCanvasStateService(), new PlatformStringSizeService ())
+		: base(new PlatformCanvasStateService(), new PlatformStringSizeService())
 	{
 	}
 

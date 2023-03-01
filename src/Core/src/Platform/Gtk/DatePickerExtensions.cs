@@ -9,7 +9,7 @@ namespace Microsoft.Maui
 			nativeDatePicker.Date = datePicker.Date;
 
 		}
-		
+
 		public static void UpdateFormat(this MauiDatePicker nativeDatePicker, IDatePicker datePicker)
 		{
 			nativeDatePicker.Format = datePicker.Format;
