@@ -27,15 +27,18 @@
                 IsVisible="{Binding SecondLabelVisible}"/>
 
             <Button
+                x:Name="purple_button" x:FieldModifier="PUBLIC"
                 SemanticProperties.Hint="Counts the number of times you click"
                 Command="{Binding Path=CounterClickedCommand}"
                 BackgroundColor="#512BD4"
                 Text="{Binding Path=ButtonText}"
                 FontSize="18"
                 TextColor="#FFFFFF"
+                WidthRequest="120"
                 HorizontalOptions="Center" />
 
             <Button
+                x:Name="purple_button2"
                 IsVisible="{Binding CounterBtn2Visible}"
                 SemanticProperties.Hint="Counts the number of times you click"
                 Command="{Binding Path=Counter2ClickedCommand}"
@@ -43,26 +46,31 @@
                 Text="{Binding Button2Text}"
                 FontSize="18"
                 TextColor="#FFFFFF"
+                WidthRequest="120"
                 HorizontalOptions="Center" />
 
-            <Button
-                Command="{Binding Path=OnCounter2ClickedCommand}"
+            <ImageButton
+                Command="{Binding Path=Counter2ClickedCommand}"
                 IsVisible="{Binding CounterBtn2ImageVisible}"
-                ImageSource="click_me.gif"
+                Source="click_me.gif"
+                WidthRequest="120"
                 HorizontalOptions="Center" />
             
             <ImageButton
                 Command="{Binding Path=Counter3ClickedCommand}"
                 Source="click_me.gif"
+                WidthRequest="120"
                 HorizontalOptions="Center" />
 
             <Button
                 Text="Go To Page2"
                 Command="{Binding Path=Button4ClickedCommand}"
+                WidthRequest="120"
                 HorizontalOptions="Center" />
 
             <Button
                 Text="Test"
+                WidthRequest="120"
                 HorizontalOptions="Center" />
 
             <Entry
@@ -78,7 +86,8 @@
 
             <Image
                 Source="click_me.gif"
-                HorizontalOptions="Center" WidthRequest="180" />
+                HorizontalOptions="Center"
+                WidthRequest="180" />
 
             <HorizontalStackLayout>
                 <Label
@@ -157,7 +166,7 @@
 
                 <Editor
                     Grid.Row="0" Grid.Column="1"
-                    x:Name="Editor1" Text="Hello from editor" FontSize="14" WidthRequest="180"/>
+                    Text="{Binding EditorText}" FontSize="14" WidthRequest="180"/>
                 <Label
                     Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2"
                     Text="Above is an Editor. This is a span of 2 columns. This gives a long label."

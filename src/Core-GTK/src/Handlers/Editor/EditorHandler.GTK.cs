@@ -24,7 +24,7 @@ namespace Microsoft.Maui.Handlers
 			{
 				if (editorView.Visibility == Visibility.Visible)
 				{
-					editText.Show();
+					editText.ShowAll();
 				}
 			}
 

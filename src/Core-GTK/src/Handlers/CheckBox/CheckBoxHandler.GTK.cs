@@ -3,23 +3,19 @@ using Gtk;
 
 namespace Microsoft.Maui.Handlers
 {
-	public partial class CheckBoxHandler : ViewHandler<ICheckBox, MauiView>
+	public partial class CheckBoxHandler : ViewHandler<ICheckBox, Gtk.CheckButton>
 	{
-		protected override MauiView CreatePlatformView(IView checkBox)
+		protected override Gtk.CheckButton CreatePlatformView(IView checkBox)
 		{
-			var plat = new MauiView();
-			var platformCheckBox = new Gtk.CheckButton();
+			var plat = new Gtk.CheckButton();
 
-			Gtk.Widget widget = platformCheckBox;
+			Gtk.Widget widget = plat;
 			SetMargins(checkBox, ref widget);
-
-			plat.AddChildWidget(platformCheckBox);
 
 			if (checkBox is ICheckBox checkBoxView)
 			{
 				if (checkBoxView.Visibility == Visibility.Visible)
 				{
-					platformCheckBox.Show();
 					plat.Show();
 				}
 			}
@@ -27,9 +23,9 @@ namespace Microsoft.Maui.Handlers
 			return plat;
 		}
 
-		protected override void ConnectHandler(MauiView platformView)
+		protected override void ConnectHandler(Gtk.CheckButton platformView)
 		{
-			if (platformView.GetChildWidget() is Gtk.CheckButton checkButton)
+			if (platformView is Gtk.CheckButton checkButton)
 			{
 				checkButton.Clicked += CheckButton_Clicked;
 			}
@@ -51,9 +47,9 @@ namespace Microsoft.Maui.Handlers
 			}
 		}
 
-		protected override void DisconnectHandler(MauiView platformView)
+		protected override void DisconnectHandler(Gtk.CheckButton platformView)
 		{
-			if (platformView.GetChildWidget() is Gtk.CheckButton checkButton)
+			if (platformView is Gtk.CheckButton checkButton)
 			{
 				checkButton.Clicked -= CheckButton_Clicked;
 			}
@@ -68,7 +64,7 @@ namespace Microsoft.Maui.Handlers
 
 		public static void MapIsChecked(ICheckBoxHandler handler, ICheckBox check)
 		{
-			if (handler.PlatformView?.GetChildWidget() is Gtk.CheckButton checkBox)
+			if (handler.PlatformView is Gtk.CheckButton checkBox)
 			{
 				if (check.IsChecked)
 				{

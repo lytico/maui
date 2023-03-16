@@ -7,15 +7,15 @@ namespace Microsoft.Maui.Controls.Platform
 {
 	public static class EntryExtensions
 	{
-		public static void UpdateText(this EntryWrapper platformControl, Entry entry)
+		public static void UpdateText(this Gtk.Entry platformControl, Entry entry)
 		{
 			if (entry.IsPassword)
 			{
-				platformControl.Entry.InputPurpose = Gtk.InputPurpose.Password;
-				platformControl.Entry.Visibility = false;
+				platformControl.InputPurpose = Gtk.InputPurpose.Password;
+				platformControl.Visibility = false;
 			}
 
-			platformControl.Entry.Text = entry.Text;
+			platformControl.Text = entry.Text;
 		}
 	}
 }

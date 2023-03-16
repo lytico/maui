@@ -2,12 +2,10 @@
 using PlatformView = Microsoft.Maui.Platform.MauiTextField;
 #elif MONOANDROID
 using PlatformView = AndroidX.AppCompat.Widget.AppCompatEditText;
-#elif WINDOWS
-#if __GTK__
-using PlatformView = Microsoft.Maui.Platform.EntryWrapper;
-#else
+#elif WINDOWS && __GTK__
+using PlatformView = Gtk.Entry;
+#elif WINDOWS && !__GTK__
 using PlatformView = Microsoft.UI.Xaml.Controls.TextBox;
-#endif
 #elif TIZEN
 using PlatformView = Tizen.UIExtensions.NUI.Entry;
 #elif (NETSTANDARD || !PLATFORM) || (NET6_0_OR_GREATER && !IOS && !ANDROID && !TIZEN)

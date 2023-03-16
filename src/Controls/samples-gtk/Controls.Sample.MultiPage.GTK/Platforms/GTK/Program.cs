@@ -36,6 +36,7 @@ namespace Maui.Controls.Sample.MultiPage.GTK.Platforms.GTK
 	{
 		protected override MauiApp CreateMauiApp()
 		{
+			WindowCssFileName = "Resources/Styles/GeorgeGtk.css";
 			return MauiProgram.CreateMauiApp();
 		}
 	}

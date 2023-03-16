@@ -4,7 +4,7 @@ using PlatformView = Microsoft.Maui.Platform.ContentView;
 using PlatformView = Android.Views.View;
 #elif WINDOWS
 #if __GTK__
-using PlatformView = Microsoft.Maui.Platform.MauiView;
+using PlatformView = Gtk.RadioButton;
 #else
 using PlatformView = Microsoft.UI.Xaml.Controls.RadioButton;
 #endif

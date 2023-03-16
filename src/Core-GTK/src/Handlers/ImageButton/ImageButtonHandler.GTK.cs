@@ -4,22 +4,109 @@ using Microsoft.Maui.Platform.GTK;
 
 namespace Microsoft.Maui.Handlers
 {
-	public partial class ImageButtonHandler : ViewHandler<IImageButton, MauiGTKButton>
+	public partial class ImageButtonHandler : ViewHandler<IImageButton, Gtk.Button>
 	{
-		protected override MauiGTKButton CreatePlatformView(IView imageButton)
+		protected override Gtk.Button CreatePlatformView(IView imageButton)
 		{
-			var platformView = new MauiGTKButton(imageButton);
+			Gtk.Button platformView = null!;
+
+			var _view = imageButton;
+			//if ((_view is ITextButton virtualTextButton) && (_view is IImageButton virtualImageButton))
+			if (_view is IImageButton virtualImageButton)
+			{
+				//_fontSize = Convert.ToInt32(virtualTextButton.Font.Size);
+				//if (virtualTextButton.TextColor != null)
+				//{
+				//	var red = Convert.ToByte(virtualTextButton.TextColor.Red * 255);
+				//	var green = Convert.ToByte(virtualTextButton.TextColor.Green * 255);
+				//	var blue = Convert.ToByte(virtualTextButton.TextColor.Blue * 255);
+				//	FontColor = new Gdk.Color(red, green, blue);
+				//}
+				//else if (virtualTextButton.StrokeColor != null)
+				//{
+				//	var red = Convert.ToByte(virtualTextButton.StrokeColor.Red * 255);
+				//	var green = Convert.ToByte(virtualTextButton.StrokeColor.Green * 255);
+				//	var blue = Convert.ToByte(virtualTextButton.StrokeColor.Blue * 255);
+				//	FontColor = new Gdk.Color(red, green, blue);
+				//}
+
+				if (virtualImageButton.Source != null)
+				{
+					var fileImageSource = (IFileImageSource)virtualImageButton.Source;
+
+					if (fileImageSource != null)
+					{
+						var imageElement = new Gtk.Image(fileImageSource.File);
+						imageElement.Show();
+						platformView = new Gtk.Button(imageElement);
+						// Console.WriteLine("Image: " + fileImageSource.File);
+						//if (string.IsNullOrEmpty(virtualTextButton.Text))
+						//{
+						//	imageElement = new Gtk.Image(fileImageSource.File);
+						//	//Initialize(string.Empty, fileImageSource.File, string.Empty, name);
+						//}
+						//else
+						//{
+						//	Initialize(virtualTextButton.Text, fileImageSource.File, string.Empty, name);
+						//}
+						//return;
+					}
+				}
+				//Initialize(virtualTextButton.Text, string.Empty, string.Empty, name);
+
+				//return;
+			}
+			//else if (!(_view is ITextButton) && (_view is IImageButton virtualImageButtonButton))
+			//{
+			//	if (virtualImageButtonButton.Source != null)
+			//	{
+			//		var fileImageSource = (IFileImageSource)virtualImageButtonButton.Source;
+
+			//		if (fileImageSource != null)
+			//		{
+			//			// Console.WriteLine("Image: " + fileImageSource.File);
+			//			imageElement = new Gtk.Image(fileImageSource.File);
+			//			// Initialize(string.Empty, fileImageSource.File, string.Empty, name);
+
+			//			// return;
+			//		}
+			//	}
+			//}
+
+			if (platformView == null!) {
+				return null!;
+			}
+
+			if ((_view != null) && (_view.Width > 0))
+			{
+				platformView.WidthRequest = (int)_view.Width;
+			}
+			if ((_view != null) && (_view.Height > 0))
+			{
+				platformView.HeightRequest = (int)_view.Height;
+			}
 
 			Gtk.Widget widget = platformView;
 			SetMargins(imageButton, ref widget);
 
-			if (imageButton is IImageButton imageButtonView)
+			if (imageButton is IImageButton imageView)
 			{
-				if (imageButtonView.Visibility == Visibility.Visible)
+				if (imageView.Visibility == Visibility.Visible)
 				{
 					platformView.Show();
 				}
 			}
+
+			//Gtk.Widget widget = platformView;
+			//SetMargins(imageButton, ref widget);
+
+			//if (imageButton is IImageButton imageButtonView)
+			//{
+			//	if (imageButtonView.Visibility == Visibility.Visible)
+			//	{
+			//		platformView.Show();
+			//	}
+			//}
 
 			return platformView;
 		}
@@ -47,7 +134,7 @@ namespace Microsoft.Maui.Handlers
 
 		private protected override void OnConnectHandler(object platformView)
 		{
-			if (platformView is MauiGTKButton imageButton)
+			if (platformView is Gtk.Button imageButton)
 			{
 				//imageButton.ButtonWidget.Clicked += ButtonWidget_Clicked;
 				imageButton.Clicked += ButtonWidget_Clicked;
@@ -64,7 +151,7 @@ namespace Microsoft.Maui.Handlers
 
 		private protected override void OnDisconnectHandler(object platformView)
 		{
-			if (platformView is MauiGTKButton button)
+			if (platformView is Gtk.Button button)
 			{
 				button.Clicked -= ButtonWidget_Clicked;
 			}
@@ -105,7 +192,7 @@ namespace Microsoft.Maui.Handlers
 
 		public static void MapImageSource(IImageButtonHandler handler, IImageButton image)
 		{
-			if (handler.PlatformView is MauiGTKButton buttonHandler)
+			if (handler.PlatformView is Gtk.Button buttonHandler)
 			{
 				// buttonHandler.Image = new Gtk.Image(source);
 				if (image.Source == null)

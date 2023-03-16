@@ -135,6 +135,8 @@ namespace Microsoft.Maui.Platform
 		private void InsertText(object o, InsertTextArgs args)
 		{
 			// args.RetVal = args.Length <= _maxLength;
+			//TextIter argsIter = args.Pos;
+			//TextView.Buffer.Insert(ref argsIter, args.NewText);
 		}
 
 		private void FocusedOut(object o, FocusOutEventArgs args)

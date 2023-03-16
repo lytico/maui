@@ -6,14 +6,15 @@ using Gtk;
 
 namespace Microsoft.Maui.Handlers
 {
-	public partial class RadioButtonHandler : ViewHandler<IRadioButton, MauiView>
+	public partial class RadioButtonHandler : ViewHandler<IRadioButton, Gtk.RadioButton>
 	{
-		static MauiView? GetPlatformRadioButton(IRadioButtonHandler handler) => handler.PlatformView as MauiView;
+		static Gtk.RadioButton? GetPlatformRadioButton(IRadioButtonHandler handler) => handler.PlatformView as Gtk.RadioButton;
 		static Dictionary<Gtk.RadioButton, string> RadioButtonGrouping = new Dictionary<Gtk.RadioButton, string>();
 
-		protected override MauiView CreatePlatformView(IView radioButtonView)
+		protected override Gtk.RadioButton CreatePlatformView(IView radioButtonView)
 		{
-			var plat = new MauiView();
+			//var plat = new MauiView();
+			Gtk.RadioButton platformRadioButton = null!;
 			bool bShow = false;
 			if (radioButtonView is IRadioButton radioButton)
 			{
@@ -40,13 +41,13 @@ namespace Microsoft.Maui.Handlers
 					var radioButtonGroup = RadioButtonGrouping.FirstOrDefault(x => x.Value.Equals(radioButtonGroupName));
 					if (radioButtonGroup.Value.Equals(radioButtonGroupName))
 					{
-						var platformRadioButton = new Gtk.RadioButton(radioButtonGroup.Key);
+						platformRadioButton = new Gtk.RadioButton(radioButtonGroup.Key);
 						if (!string.IsNullOrEmpty(radioButtonText))
 						{
 							platformRadioButton.Label = radioButtonText;
 						}
 
-						plat.AddChildWidget(platformRadioButton);
+						//plat.AddChildWidget(platformRadioButton);
 
 						if (radioButton.Height > 0) {
 							platformRadioButton.HeightRequest = (int)radioButton.Height;
@@ -63,7 +64,7 @@ namespace Microsoft.Maui.Handlers
 					}
 					else
 					{
-						var platformRadioButton = new Gtk.RadioButton((Gtk.RadioButton)null!);
+						platformRadioButton = new Gtk.RadioButton((Gtk.RadioButton)null!);
 						if (!string.IsNullOrEmpty(radioButtonText))
 						{
 							platformRadioButton.Label = radioButtonText;
@@ -71,7 +72,7 @@ namespace Microsoft.Maui.Handlers
 
 						RadioButtonGrouping.Add(platformRadioButton, radioButtonGroupName);
 
-						plat.AddChildWidget(platformRadioButton);
+						//plat.AddChildWidget(platformRadioButton);
 
 						if (radioButton.Height > 0) {
 							platformRadioButton.HeightRequest = (int)radioButton.Height;
@@ -89,7 +90,7 @@ namespace Microsoft.Maui.Handlers
 				}
 				else
 				{
-					var platformRadioButton = new Gtk.RadioButton((Gtk.RadioButton)null!);
+					platformRadioButton = new Gtk.RadioButton((Gtk.RadioButton)null!);
 					if (!string.IsNullOrEmpty(radioButtonText))
 					{
 						platformRadioButton.Label = radioButtonText;
@@ -97,7 +98,7 @@ namespace Microsoft.Maui.Handlers
 
 					RadioButtonGrouping.Add(platformRadioButton, radioButtonGroupName);
 
-					plat.AddChildWidget(platformRadioButton);
+					//plat.AddChildWidget(platformRadioButton);
 
 					if (radioButton.Height > 0) {
 						platformRadioButton.HeightRequest = (int)radioButton.Height;
@@ -113,19 +114,19 @@ namespace Microsoft.Maui.Handlers
 					}
 				}
 			}
-			Gtk.Widget widget = plat;
+			Gtk.Widget widget = platformRadioButton;
 			SetMargins(radioButtonView, ref widget);
 
 			if (bShow)
 			{
-				plat.Show();
+				platformRadioButton.Show();
 			}
-			return plat;
+			return platformRadioButton;
 		}
 
-		protected override void ConnectHandler(MauiView platformView)
+		protected override void ConnectHandler(Gtk.RadioButton platformView)
 		{
-			if (platformView.GetChildWidget() is Gtk.RadioButton radioButton)
+			if (platformView is Gtk.RadioButton radioButton)
 			{
 				//radioButton.Clicked += RadioButton_Clicked;
 				radioButton.Released += RadioButton_Released;
@@ -180,9 +181,9 @@ namespace Microsoft.Maui.Handlers
 			//}
 		}
 
-		protected override void DisconnectHandler(MauiView platformView)
+		protected override void DisconnectHandler(Gtk.RadioButton platformView)
 		{
-			if (platformView.GetChildWidget() is Gtk.RadioButton radioButton)
+			if (platformView is Gtk.RadioButton radioButton)
 			{
 				//radioButton.Clicked -= RadioButton_Clicked;
 				radioButton.Released -= RadioButton_Released;
@@ -202,7 +203,7 @@ namespace Microsoft.Maui.Handlers
 
 		public static void MapIsChecked(IRadioButtonHandler handler, IRadioButton radio)
 		{
-			if (handler.PlatformView?.GetChildWidget() is Gtk.RadioButton radioButton)
+			if (handler.PlatformView is Gtk.RadioButton radioButton)
 			{
 				if (radio.IsChecked)
 				{

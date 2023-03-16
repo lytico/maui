@@ -4,7 +4,7 @@ using PlatformView = Microsoft.Maui.Platform.MauiCheckBox;
 #elif __ANDROID__
 using PlatformView = AndroidX.AppCompat.Widget.AppCompatCheckBox;
 #elif WINDOWS && __GTK__
-using PlatformView = Microsoft.Maui.Platform.MauiView;
+using PlatformView = Gtk.CheckButton;
 #elif WINDOWS && !__GTK__
 using PlatformView = Microsoft.UI.Xaml.Controls.CheckBox;
 #elif TIZEN

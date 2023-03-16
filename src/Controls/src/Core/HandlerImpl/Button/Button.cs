@@ -42,7 +42,9 @@ namespace Microsoft.Maui.Controls
 		/// <param name="button">The abstract control that is being mapped.</param>
 		public static void MapContentLayout(IButtonHandler handler, Button button)
 		{
-#if !__GTK__
+#if __GTK__
+			handler.PlatformView.Name = button.StyleId;
+#else
 			handler.PlatformView.UpdateContentLayout(button);
 #endif
 		}

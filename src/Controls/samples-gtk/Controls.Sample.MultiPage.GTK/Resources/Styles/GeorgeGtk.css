@@ -1,0 +1,50 @@
+﻿window {
+    background-image: url("Resources/Images/geno_vectr.png");
+    background-repeat: no-repeat; /* Do not repeat the image */
+    background-size: cover; /* Resize the background image to cover the entire container */
+}
+
+frame {
+    border-style: solid;
+    border-color: black;
+    border-width: 1px;
+    background-color: white;
+}
+
+progressbar > text {
+    font-size: 18px;
+    font-weight: bold;
+    color: black;
+}
+
+radiobutton {
+    font-size: 24px;
+    font-weight: bold;
+    color: black;
+}
+
+#george_entry {
+    font-size: 24px;
+}
+
+radio:checked {
+    -gtk-icon-source: url("Resources/Images/radio_button_ticked.png");
+}
+
+radio:indeterminate {
+    -gtk-icon-source: url("Resources/Images/radio_button_untick.png");
+}
+
+#purple_button > label {
+    font-size: 18px;
+    font-weight: bold;
+    color: white;
+    background-color: #512BD4;
+}
+
+#purple_button2 > label {
+    font-size: 18px;
+    font-weight: bold;
+    color: white;
+    background-color: #512BD4;
+}

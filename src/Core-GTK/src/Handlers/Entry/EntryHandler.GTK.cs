@@ -7,15 +7,15 @@ namespace Microsoft.Maui.Handlers
 {
 	// TODO: NET7 issoto - Change the TPlatformView generic type to MauiAppCompatEditText
 	// This type adds support to the SelectionChanged event
-	public partial class EntryHandler : ViewHandler<IEntry, EntryWrapper>
+	public partial class EntryHandler : ViewHandler<IEntry, Gtk.Entry>
 	{
-		protected override EntryWrapper CreatePlatformView(IView entry)
+		protected override Gtk.Entry CreatePlatformView(IView entry)
 		{
-			var nativeEntry = new EntryWrapper(entry);
+			var nativeEntry = new Gtk.Entry();
 			Gtk.Widget widget = nativeEntry;
 			SetMargins(entry, ref widget);
-			Gtk.Widget widget2 = nativeEntry.Entry;
-			SetMargins(entry, ref widget2);
+			//Gtk.Widget widget2 = nativeEntry.Entry;
+			//SetMargins(entry, ref widget2);
 			if (entry is IEntry entryView)
 			{
 				if (entryView.Visibility == Visibility.Visible)
@@ -42,9 +42,9 @@ namespace Microsoft.Maui.Handlers
 		}
 
 		// TODO: NET7 issoto - Change the return type to MauiAppCompatEditText
-		protected override void ConnectHandler(EntryWrapper platformView)
+		protected override void ConnectHandler(Gtk.Entry platformView)
 		{
-			if (platformView.Entry is Gtk.Entry platformEntry)
+			if (platformView is Gtk.Entry platformEntry)
 			{
 				platformEntry.Changed += PlatformEntry_Changed;
 				platformEntry.KeyReleaseEvent += PlatformEntry_KeyReleaseEvent;
@@ -56,9 +56,9 @@ namespace Microsoft.Maui.Handlers
 		}
 
 		// TODO: NET7 issoto - Change the return type to MauiAppCompatEditText
-		protected override void DisconnectHandler(EntryWrapper platformView)
+		protected override void DisconnectHandler(Gtk.Entry platformView)
 		{
-			if (platformView.Entry is Gtk.Entry platformEntry)
+			if (platformView is Gtk.Entry platformEntry)
 			{
 				platformEntry.Changed -= PlatformEntry_Changed;
 				platformEntry.KeyReleaseEvent -= PlatformEntry_KeyReleaseEvent;
@@ -115,7 +115,7 @@ namespace Microsoft.Maui.Handlers
 			// handler.PlatformView?.UpdateBackground(entry);
 
 		public static void MapText(IEntryHandler handler, IEntry entry) {
-			if (handler.PlatformView.Entry is Gtk.Entry platformEntry)
+			if (handler.PlatformView is Gtk.Entry platformEntry)
 			{
 				if (entry.IsPassword)
 				{

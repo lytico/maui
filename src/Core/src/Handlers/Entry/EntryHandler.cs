@@ -4,7 +4,7 @@ using PlatformView = Microsoft.Maui.Platform.MauiTextField;
 #elif MONOANDROID
 using PlatformView = AndroidX.AppCompat.Widget.AppCompatEditText;
 #elif WINDOWS && __GTK__
-using PlatformView = Microsoft.Maui.Platform.EntryWrapper;
+using PlatformView = Gtk.Entry;
 #elif WINDOWS && !__GTK__
 using PlatformView = Microsoft.UI.Xaml.Controls.TextBox;
 #elif TIZEN

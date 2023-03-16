@@ -10,7 +10,11 @@ using PlatformView = Google.Android.Material.ImageView.ShapeableImageView;
 #if __GTK__
 using PlatformImage = Gdk.Pixbuf;
 using PlatformImageView = Gtk.Image;
+<<<<<<< HEAD
 using PlatformView = Microsoft.Maui.Platform.GTK.MauiGTKButton;
+=======
+using PlatformView = Gtk.Button;
+>>>>>>> 403b43973 (All native controls now, no drawn controls)
 #else
 using System;
 using PlatformImage = Microsoft.UI.Xaml.Media.ImageSource;
@@ -75,7 +79,7 @@ namespace Microsoft.Maui.Handlers
 			PlatformView.ImageView;
 #elif WINDOWS
 #if __GTK__
-			PlatformView.Image;
+			(PlatformImageView)PlatformView.Image;
 #else
 			PlatformView.GetContent<PlatformImageView>() ?? throw new InvalidOperationException("ImageButton did not contain an Image element.");
 #endif

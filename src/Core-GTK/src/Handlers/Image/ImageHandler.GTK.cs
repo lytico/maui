@@ -2,11 +2,85 @@
 
 namespace Microsoft.Maui.Handlers
 {
-	public partial class ImageHandler : ViewHandler<IImage, MauiImage>
+	public partial class ImageHandler : ViewHandler<IImage, Gtk.Image>
 	{
-		protected override MauiImage CreatePlatformView(IView image)
+		protected override Gtk.Image CreatePlatformView(IView image)
 		{
-			var imageElement = new MauiImage();
+			Gtk.Image imageElement = null!;
+
+			var _view = image;
+			//if ((_view is ITextButton virtualTextButton) && (_view is IImageButton virtualImageButton))
+			if (_view is IImage virtualImageButton)
+			{
+				//_fontSize = Convert.ToInt32(virtualTextButton.Font.Size);
+				//if (virtualTextButton.TextColor != null)
+				//{
+				//	var red = Convert.ToByte(virtualTextButton.TextColor.Red * 255);
+				//	var green = Convert.ToByte(virtualTextButton.TextColor.Green * 255);
+				//	var blue = Convert.ToByte(virtualTextButton.TextColor.Blue * 255);
+				//	FontColor = new Gdk.Color(red, green, blue);
+				//}
+				//else if (virtualTextButton.StrokeColor != null)
+				//{
+				//	var red = Convert.ToByte(virtualTextButton.StrokeColor.Red * 255);
+				//	var green = Convert.ToByte(virtualTextButton.StrokeColor.Green * 255);
+				//	var blue = Convert.ToByte(virtualTextButton.StrokeColor.Blue * 255);
+				//	FontColor = new Gdk.Color(red, green, blue);
+				//}
+
+				if (virtualImageButton.Source != null)
+				{
+					var fileImageSource = (IFileImageSource)virtualImageButton.Source;
+
+					if (fileImageSource != null)
+					{
+						imageElement = new Gtk.Image(fileImageSource.File);
+						// Console.WriteLine("Image: " + fileImageSource.File);
+						//if (string.IsNullOrEmpty(virtualTextButton.Text))
+						//{
+						//	imageElement = new Gtk.Image(fileImageSource.File);
+						//	//Initialize(string.Empty, fileImageSource.File, string.Empty, name);
+						//}
+						//else
+						//{
+						//	Initialize(virtualTextButton.Text, fileImageSource.File, string.Empty, name);
+						//}
+						//return;
+					}
+				}
+				//Initialize(virtualTextButton.Text, string.Empty, string.Empty, name);
+
+				//return;
+			}
+			//else if (!(_view is ITextButton) && (_view is IImageButton virtualImageButtonButton))
+			//{
+			//	if (virtualImageButtonButton.Source != null)
+			//	{
+			//		var fileImageSource = (IFileImageSource)virtualImageButtonButton.Source;
+
+			//		if (fileImageSource != null)
+			//		{
+			//			// Console.WriteLine("Image: " + fileImageSource.File);
+			//			imageElement = new Gtk.Image(fileImageSource.File);
+			//			// Initialize(string.Empty, fileImageSource.File, string.Empty, name);
+
+			//			// return;
+			//		}
+			//	}
+			//}
+
+			if (imageElement == null!) {
+				return null!;
+			}
+
+			if ((_view != null) && (_view.Width > 0))
+			{
+				imageElement.WidthRequest = (int)_view.Width;
+			}
+			if ((_view != null) && (_view.Height > 0))
+			{
+				imageElement.HeightRequest = (int)_view.Height;
+			}
 
 			Gtk.Widget widget = imageElement;
 			SetMargins(image, ref widget);
@@ -22,7 +96,7 @@ namespace Microsoft.Maui.Handlers
 			return imageElement;
 		}
 
-		protected override void DisconnectHandler(MauiImage platformView)
+		protected override void DisconnectHandler(Gtk.Image platformView)
 		{
 			base.DisconnectHandler(platformView);
 			SourceLoader.Reset();

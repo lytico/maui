@@ -14,6 +14,7 @@ using Microsoft.Maui.Controls;
 using Prism.Navigation.Xaml;
 using System.Windows.Input;
 using GLib;
+using Microsoft.Maui;
 
 namespace Maui.Controls.Sample.MultiPage.GTK.ViewModels
 {
@@ -67,6 +68,8 @@ namespace Maui.Controls.Sample.MultiPage.GTK.ViewModels
 			this.RadioButtonFiveChecked = true;
 
 			this.SecondLabelVisible = false;
+
+			EditorText = "Hello from editor";
 		}
 
 		private string _buttonText;
@@ -151,6 +154,13 @@ namespace Maui.Controls.Sample.MultiPage.GTK.ViewModels
 		{
 			get => _radioButtonSixChecked;
 			set => SetProperty(ref _radioButtonSixChecked, value);
+		}
+
+		private string _editorText;
+		public string EditorText
+		{
+			get => _editorText;
+			set => SetProperty(ref _editorText, value);
 		}
 
 		public ICommand CounterClickedCommand { get; private set; }
@@ -326,6 +336,8 @@ namespace Maui.Controls.Sample.MultiPage.GTK.ViewModels
 			{
 				Console.WriteLine("CheckBox_CheckedChanged NOT CHECKED");
 			}
+
+			Console.WriteLine("Here is the contents of the Editor: " + EditorText);
 		}
 
 		private bool OnCheckBoxCanSubmit(object arg)

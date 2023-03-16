@@ -21,6 +21,10 @@
   <ItemGroup>
     <MauiXaml Include="**\*.xaml" />
     <MauiCss Include="**\*.css" />
+    <MauiCss Remove="Resources\Styles\GeorgeGtk.css" />
+    <None Remove="Resources\Images\radio_button_ticked.png" />
+    <None Remove="Resources\Images\radio_button_untick.png" />
+    <None Remove="Resources\Styles\GeorgeGtk.css" />
 	<AvailableItemName Include="MauiXaml" />
 	<AvailableItemName Include="MauiCss" />
   </ItemGroup>
@@ -143,6 +147,15 @@
 
   <ItemGroup>
     <EmbeddedResource Include="click_me.gif">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\Images\radio_button_ticked.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\Images\radio_button_untick.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\Styles\GeorgeGtk.css">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </EmbeddedResource>
   </ItemGroup>

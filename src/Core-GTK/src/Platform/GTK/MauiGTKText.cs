@@ -36,77 +36,77 @@ namespace Microsoft.Maui.Platform.GTK
 			//return markup;
 		}
 
-		public static void SetMarkupAttributes(object handler, ITextStyle button, string buttonText = "")
-		{
-			string chosenText = string.Empty;
+		//public static void SetMarkupAttributes(object handler, ITextStyle button, string buttonText = "")
+		//{
+		//	string chosenText = string.Empty;
 
-			if (handler is IButtonHandler buttonHandler)
-			{
-				if (buttonHandler.PlatformView is MauiGTKButton handlerButtonBox)
-				{
-					if (handlerButtonBox.GetInternalLabel == null)
-					{
-						if (string.IsNullOrEmpty(buttonText))
-						{
-							return;
-						}
-						else
-						{
-							handlerButtonBox.Label = buttonText;
-						}
-					}
+		//	if (handler is IButtonHandler buttonHandler)
+		//	{
+		//		if (buttonHandler.PlatformView is MauiGTKButton handlerButtonBox)
+		//		{
+		//			if (handlerButtonBox.GetInternalLabel == null)
+		//			{
+		//				if (string.IsNullOrEmpty(buttonText))
+		//				{
+		//					return;
+		//				}
+		//				else
+		//				{
+		//					handlerButtonBox.Label = buttonText;
+		//				}
+		//			}
 
-					if (handlerButtonBox.GetInternalLabel == null)
-					{
-						return;
-					}
+		//			if (handlerButtonBox.GetInternalLabel == null)
+		//			{
+		//				return;
+		//			}
 
-					chosenText = handlerButtonBox.GetInternalLabel.Text;
-				}
-			}
-			else if (handler is ILabelHandler labelHandler)
-			{
-				if (labelHandler.PlatformView is MauiGTKLabel handlerLabelBox)
-				{
-					if (handlerLabelBox == null)
-					{
-						if (string.IsNullOrEmpty(buttonText))
-						{
-							return;
-						}
-						return;
-					}
-					else
-					{
-						handlerLabelBox.Text = buttonText;
-					}
+		//			chosenText = handlerButtonBox.GetInternalLabel.Text;
+		//		}
+		//	}
+		//	else if (handler is ILabelHandler labelHandler)
+		//	{
+		//		if (labelHandler.PlatformView is MauiGTKLabel handlerLabelBox)
+		//		{
+		//			if (handlerLabelBox == null)
+		//			{
+		//				if (string.IsNullOrEmpty(buttonText))
+		//				{
+		//					return;
+		//				}
+		//				return;
+		//			}
+		//			else
+		//			{
+		//				handlerLabelBox.Text = buttonText;
+		//			}
 
-					if (handlerLabelBox.Text == null)
-					{
-						return;
-					}
+		//			if (handlerLabelBox.Text == null)
+		//			{
+		//				return;
+		//			}
 
-					chosenText = handlerLabelBox.Text;
-				}
-			}
+		//			chosenText = handlerLabelBox.Text;
+		//		}
+		//	}
 
-			var markup = CalculateMarkupAttributes(chosenText, button);
+		//	var markup = CalculateMarkupAttributes(chosenText, button);
 
-			if (handler is IButtonHandler buttonHandlerWriter)
-			{
-				if (buttonHandlerWriter.PlatformView is MauiGTKButton handlerButtonBox)
-				{
-					handlerButtonBox.GetInternalLabel.Markup = markup;
-				}
-			}
-			else if (handler is ILabelHandler labelHandlerWriter)
-			{
-				if (labelHandlerWriter.PlatformView is MauiGTKLabel handlerLabelBox)
-				{
-					handlerLabelBox.Markup = markup;
-				}
-			}
-		}
+		//	if (handler is IButtonHandler buttonHandlerWriter)
+		//	{
+		//		if (buttonHandlerWriter.PlatformView is MauiGTKButton handlerButtonBox)
+		//		{
+		//			handlerButtonBox.GetInternalLabel.Markup = markup;
+		//		}
+		//	}
+		//	else if (handler is ILabelHandler labelHandlerWriter)
+		//	{
+		//		if (labelHandlerWriter.PlatformView is MauiGTKLabel handlerLabelBox)
+		//		{
+		//			handlerLabelBox.Markup = markup;
+		//		}
+		//	}
+		//}
 
 		public static string CalculateMarkupAttributes(string chosenText, ITextStyle button)
 		{
