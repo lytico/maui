@@ -8,8 +8,8 @@ namespace Microsoft.Maui.Handlers
 {
 	public class GridHandler : ViewHandler<IGridLayout, Gtk.Grid>, IGridHandler
 	{
-		private int[]? colWidth;
-		private int[]? rowHeight;
+		//private int[]? colWidth;
+		//private int[]? rowHeight;
 
 		protected override Gtk.Grid CreatePlatformView(IView layout)
 		{
@@ -22,43 +22,43 @@ namespace Microsoft.Maui.Handlers
 			// var bounds = VirtualView.Page;
 
 			// var viewGroup = new LayoutViewGroup();
-			var width = 0;
-			var colCount = 0;
-			colWidth = new int[VirtualView.ColumnDefinitions.Count];
-			foreach (var col in VirtualView.ColumnDefinitions)
-			{
-				if (col is IGridColumnDefinition def)
-				{
-					if (def.Width.GridUnitType == GridUnitType.Absolute)
-					{
-						colWidth[colCount] = (int)def.Width.Value;
-						width += colWidth[colCount];
-						colCount++;
-					}
-				}
-			}
-			var height = 0;
-			var rowCount = 0;
-			rowHeight = new int[VirtualView.RowDefinitions.Count];
-			foreach (var row in VirtualView.RowDefinitions)
-			{
-				if (row is IGridRowDefinition def)
-				{
-					if (def.Height.GridUnitType == GridUnitType.Absolute)
-					{
-						rowHeight[rowCount] = (int)def.Height.Value;
-						height += rowHeight[rowCount];
-						rowCount++;
-					}
-				}
-			}
+			//var width = 0;
+			//var colCount = 0;
+			//colWidth = new int[VirtualView.ColumnDefinitions.Count];
+			//foreach (var col in VirtualView.ColumnDefinitions)
+			//{
+			//	if (col is IGridColumnDefinition def)
+			//	{
+			//		if (def.Width.GridUnitType == GridUnitType.Absolute)
+			//		{
+			//			colWidth[colCount] = (int)def.Width.Value;
+			//			width += colWidth[colCount];
+			//			colCount++;
+			//		}
+			//	}
+			//}
+			//var height = 0;
+			//var rowCount = 0;
+			//rowHeight = new int[VirtualView.RowDefinitions.Count];
+			//foreach (var row in VirtualView.RowDefinitions)
+			//{
+			//	if (row is IGridRowDefinition def)
+			//	{
+			//		if (def.Height.GridUnitType == GridUnitType.Absolute)
+			//		{
+			//			rowHeight[rowCount] = (int)def.Height.Value;
+			//			height += rowHeight[rowCount];
+			//			rowCount++;
+			//		}
+			//	}
+			//}
 			//var width = VirtualView.Width;
 			//var height = VirtualView.Height;
 			var view = new Gtk.Grid();
-			view.ColumnHomogeneous = false;
-			view.RowHomogeneous = false;
-			view.WidthRequest = width;
-			view.HeightRequest = height;
+			//view.ColumnHomogeneous = false;
+			//view.RowHomogeneous = false;
+			//view.WidthRequest = width;
+			//view.HeightRequest = height;
 			Gtk.Widget widget = view;
 			SetMargins(layout, ref widget);
 			if (VirtualView.RowSpacing > 0)
@@ -115,9 +115,12 @@ namespace Microsoft.Maui.Handlers
 			_ = PlatformView ?? throw new InvalidOperationException($"{nameof(PlatformView)} should have been set by base class.");
 			_ = VirtualView ?? throw new InvalidOperationException($"{nameof(VirtualView)} should have been set by base class.");
 
-			if (child?.ToPlatform() is MauiView view)
+			if (child?.ToPlatform() is Gtk.Widget widget)
 			{
-				PlatformView.Remove(view);
+				if (PlatformView.Children.Contains(widget))
+				{
+					PlatformView.Remove(widget);
+				}
 			}
 		}
 
@@ -155,11 +158,11 @@ namespace Microsoft.Maui.Handlers
 
 		public void UpdateZIndex(IView child)
 		{
-			_ = PlatformView ?? throw new InvalidOperationException($"{nameof(PlatformView)} should have been set by base class.");
-			_ = VirtualView ?? throw new InvalidOperationException($"{nameof(VirtualView)} should have been set by base class.");
-			_ = MauiContext ?? throw new InvalidOperationException($"{nameof(MauiContext)} should have been set by base class.");
+			//_ = PlatformView ?? throw new InvalidOperationException($"{nameof(PlatformView)} should have been set by base class.");
+			//_ = VirtualView ?? throw new InvalidOperationException($"{nameof(VirtualView)} should have been set by base class.");
+			//_ = MauiContext ?? throw new InvalidOperationException($"{nameof(MauiContext)} should have been set by base class.");
 
-			EnsureZIndexOrder(child);
+			//EnsureZIndexOrder(child);
 		}
 
 		protected override void DisconnectHandler(Gtk.Grid platformView)
@@ -187,60 +190,63 @@ namespace Microsoft.Maui.Handlers
 			int row = VirtualView.GetRow(child);
 			int colSpan = VirtualView.GetColumnSpan(child);
 			int rowSpan = VirtualView.GetRowSpan(child);
-			int colSpacing = (int)VirtualView.ColumnSpacing;
-			int rowSpacing = (int)VirtualView.RowSpacing;
+			//int colSpacing = (int)VirtualView.ColumnSpacing;
+			//int rowSpacing = (int)VirtualView.RowSpacing;
 			var platformChild = child.ToPlatform(MauiContext);
 			if (platformChild is Gtk.Widget widget)
 			{
-				if (colWidth != null && rowHeight != null)
-				{
-					var colWide = 0;
-					var rowHigh = 0;
-					if (colWidth.Count() > col)
-					{
-						colWide = colWidth[col];
-					}
-					if (rowHeight.Count() > row)
-					{
-						rowHigh = rowHeight[row];
-					}
-					//if ((VirtualView.ColumnDefinitions.Count > col)
-					//	&& ((VirtualView.ColumnDefinitions[col].Width.GridUnitType == GridUnitType.Auto)
-					//		|| (VirtualView.ColumnDefinitions[col].Width.GridUnitType == GridUnitType.Star)))
-					//{
-					//	widget.Hexpand = true;
-					//}
-					//else
-					//{
-					if (colWide > 0)
-					{
-						widget.WidthRequest = colWide;
-					}
-					//}
-					if (colSpacing > 0)
-					{
-						widget.MarginStart = colSpacing;
-					}
+				//if (colWidth != null && rowHeight != null)
+				//{
+				//	//var colWide = 0;
+				//	//var rowHigh = 0;
+				//	//if (colWidth.Count() > col)
+				//	//{
+				//	//	colWide = colWidth[col];
+				//	//}
+				//	//if (rowHeight.Count() > row)
+				//	//{
+				//	//	rowHigh = rowHeight[row];
+				//	//}
+				//	////if ((VirtualView.ColumnDefinitions.Count > col)
+				//	////	&& ((VirtualView.ColumnDefinitions[col].Width.GridUnitType == GridUnitType.Auto)
+				//	////		|| (VirtualView.ColumnDefinitions[col].Width.GridUnitType == GridUnitType.Star)))
+				//	////{
+				//	////	widget.Hexpand = true;
+				//	////}
+				//	////else
+				//	////{
+				//	//if (colWide > 0)
+				//	//{
+				//	//	widget.WidthRequest = colWide;
+				//	//}
+				//	////}
+				//	//if (colSpacing > 0)
+				//	//{
+				//	//	widget.MarginStart = colSpacing;
+				//	//}
 
-					//if ((VirtualView.RowDefinitions.Count > row)
-					//	&& ((VirtualView.RowDefinitions[row].Height.GridUnitType == GridUnitType.Auto)
-					//		|| (VirtualView.RowDefinitions[row].Height.GridUnitType == GridUnitType.Star)))
-					//{
-					//	widget.Vexpand = true;
-					//}
-					//else
-					//{
-					if (rowHigh > 0)
-					{
-						widget.HeightRequest = rowHigh;
-					}
-					//}
+				//	////if ((VirtualView.RowDefinitions.Count > row)
+				//	////	&& ((VirtualView.RowDefinitions[row].Height.GridUnitType == GridUnitType.Auto)
+				//	////		|| (VirtualView.RowDefinitions[row].Height.GridUnitType == GridUnitType.Star)))
+				//	////{
+				//	////	widget.Vexpand = true;
+				//	////}
+				//	////else
+				//	////{
+				//	//if (rowHigh > 0)
+				//	//{
+				//	//	widget.HeightRequest = rowHigh;
+				//	//}
+				//	//}
 
-					if (rowSpacing > 0)
-					{
-						widget.MarginTop = rowSpacing;
-					}
-				}
+				//	//if (rowSpacing > 0)
+				//	//{
+				//	//	widget.MarginTop = rowSpacing;
+				//	//}
+				//}
+				//if (PlatformView.Children.Contains(widget)) {
+				//	PlatformView.Remove(widget);
+				//}
 				PlatformView.Attach(widget, col, row, colSpan, rowSpan);
 			}
 			else if (platformChild is ContentViewGroup viewGroup)
@@ -249,84 +255,84 @@ namespace Microsoft.Maui.Handlers
 				if (widgetCVG != null)
 				{
 					viewGroup.RemoveChild();
-					if (colWidth != null && rowHeight != null)
-					{
-						var colWide = 0;
-						var rowHigh = 0;
-						if (colWidth.Count() > col)
-						{
-							colWide = colWidth[col];
-						}
-						if (rowHeight.Count() > row)
-						{
-							rowHigh = rowHeight[row];
-						}
-						//if ((VirtualView.ColumnDefinitions.Count > col)
-						//	&& ((VirtualView.ColumnDefinitions[col].Width.GridUnitType == GridUnitType.Auto)
-						//		|| (VirtualView.ColumnDefinitions[col].Width.GridUnitType == GridUnitType.Star)))
-						//{
-						//	widget.Hexpand = true;
-						//}
-						//else
-						//{
-						if (colWide > 0)
-						{
-							widgetCVG.WidthRequest = colWide;
-						}
-						//}
-						if (colSpacing > 0)
-						{
-							widgetCVG.MarginStart = colSpacing;
-						}
+					//if (colWidth != null && rowHeight != null)
+					//{
+					//	var colWide = 0;
+					//	var rowHigh = 0;
+					//	if (colWidth.Count() > col)
+					//	{
+					//		colWide = colWidth[col];
+					//	}
+					//	if (rowHeight.Count() > row)
+					//	{
+					//		rowHigh = rowHeight[row];
+					//	}
+					//	//if ((VirtualView.ColumnDefinitions.Count > col)
+					//	//	&& ((VirtualView.ColumnDefinitions[col].Width.GridUnitType == GridUnitType.Auto)
+					//	//		|| (VirtualView.ColumnDefinitions[col].Width.GridUnitType == GridUnitType.Star)))
+					//	//{
+					//	//	widget.Hexpand = true;
+					//	//}
+					//	//else
+					//	//{
+					//	if (colWide > 0)
+					//	{
+					//		widgetCVG.WidthRequest = colWide;
+					//	}
+					//	//}
+					//	if (colSpacing > 0)
+					//	{
+					//		widgetCVG.MarginStart = colSpacing;
+					//	}
 
-						//if ((VirtualView.RowDefinitions.Count > row)
-						//	&& ((VirtualView.RowDefinitions[row].Height.GridUnitType == GridUnitType.Auto)
-						//		|| (VirtualView.RowDefinitions[row].Height.GridUnitType == GridUnitType.Star)))
-						//{
-						//	widget.Vexpand = true;
-						//}
-						//else
-						//{
-						if (rowHigh > 0)
-						{
-							widgetCVG.HeightRequest = rowHigh;
-						}
-						//}
+					//	//if ((VirtualView.RowDefinitions.Count > row)
+					//	//	&& ((VirtualView.RowDefinitions[row].Height.GridUnitType == GridUnitType.Auto)
+					//	//		|| (VirtualView.RowDefinitions[row].Height.GridUnitType == GridUnitType.Star)))
+					//	//{
+					//	//	widget.Vexpand = true;
+					//	//}
+					//	//else
+					//	//{
+					//	if (rowHigh > 0)
+					//	{
+					//		widgetCVG.HeightRequest = rowHigh;
+					//	}
+					//	//}
 
-						if (rowSpacing > 0)
-						{
-							widgetCVG.MarginTop = rowSpacing;
-						}
-					}
+					//	if (rowSpacing > 0)
+					//	{
+					//		widgetCVG.MarginTop = rowSpacing;
+					//	}
+					//}
 					PlatformView.Attach(widgetCVG, col, row, colSpan, rowSpan);
 				}
 			}
 			//var widget = (Gtk.Widget)child.ToPlatform(MauiContext);
 		}
 
-		void EnsureZIndexOrder(IView child)
-		{
-			//if (PlatformView.ChildCount == 0)
-			//{
-			//	return;
-			//}
+		//void EnsureZIndexOrder(IView child)
+		//{
+		//	//if (PlatformView.ChildCount == 0)
+		//	//{
+		//	//	return;
+		//	//}
 
-			//AView platformChildView = child.ToPlatform(MauiContext!);
-			//var currentIndex = IndexOf(PlatformView, platformChildView);
+		//	//AView platformChildView = child.ToPlatform(MauiContext!);
+		//	//var currentIndex = IndexOf(PlatformView, platformChildView);
 
-			//if (currentIndex == -1)
-			//{
-			//	return;
-			//}
+		//	//if (currentIndex == -1)
+		//	//{
+		//	//	return;
+		//	//}
 
-			//var targetIndex = VirtualView.GetLayoutHandlerIndex(child);
+		//	//var targetIndex = VirtualView.GetLayoutHandlerIndex(child);
 
-			//if (currentIndex != targetIndex)
-			//{
-			//	PlatformView.RemoveViewAt(currentIndex);
-			//	PlatformView.AddView(platformChildView, targetIndex);
-			//}
-		}
+		//	//if (currentIndex != targetIndex)
+		//	//{
+		//	//	PlatformView.RemoveViewAt(currentIndex);
+		//	//	PlatformView.AddView(platformChildView, targetIndex);
+		//	//}
+		//}
 
 		//static int IndexOf(ViewGroup viewGroup, AView view)
 		//{
@@ -370,8 +376,8 @@ namespace Microsoft.Maui.Handlers
 
 		public GridHandler() : base(Mapper, CommandMapper)
 		{
-			colWidth = null;
-			rowHeight = null;
+			//colWidth = null;
+			//rowHeight = null;
 		}
 
 		public GridHandler(IPropertyMapper? mapper = null, CommandMapper? commandMapper = null)
@@ -386,13 +392,7 @@ namespace Microsoft.Maui.Handlers
 
 		public static void MapBackground(IGridHandler handler, ILayout layout)
 		{
-#if TIZEN
-			handler.UpdateValue(nameof(handler.ContainerView));
-			handler.ToPlatform()?.UpdateBackground(layout);
-#endif
-#if !__GTK__
-			((PlatformView?)handler.PlatformView)?.UpdateBackground(layout);
-#endif
+			// Use CSS for GTK
 		}
 
 		public static void MapClipsToBounds(IGridHandler handler, ILayout layout)
@@ -439,10 +439,10 @@ namespace Microsoft.Maui.Handlers
 
 		static void MapUpdateZIndex(IGridHandler handler, ILayout layout, object? arg)
 		{
-			if (arg is IView view)
-			{
-				handler.UpdateZIndex(view);
-			}
+			//if (arg is IView view)
+			//{
+			//	handler.UpdateZIndex(view);
+			//}
 		}
 
 		/// <summary>
@@ -452,13 +452,9 @@ namespace Microsoft.Maui.Handlers
 		/// <returns>The FlowDirection to assume for cross-platform layout</returns>
 		internal static FlowDirection GetLayoutFlowDirection(FlowDirection flowDirection)
 		{
-#if WINDOWS
 			// The native LayoutPanel in Windows will automagically flip our layout coordinates if it's in RTL mode.
 			// So for cross-platform layout purposes, we just always treat things as being LTR and let the Panel sort out the rest.
 			return FlowDirection.LeftToRight;
-#else
-			return flowDirection;
-#endif
 		}
 	}
 }

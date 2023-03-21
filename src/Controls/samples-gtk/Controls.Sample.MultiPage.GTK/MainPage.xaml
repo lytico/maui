@@ -4,40 +4,68 @@
     xmlns:prism="http://prismlibrary.com"
     x:Class="Maui.Controls.Sample.MultiPage.GTK.MainPage"
     xmlns:local="clr-namespace:Maui.Controls.Sample.MultiPage.GTK"
-    WidthRequest="600" HeightRequest="600" >
+    WidthRequest="780" HeightRequest="600" >
     
     <ScrollView>
-        <VerticalStackLayout
-            Spacing="25"
-            Padding="30,0"
-            VerticalOptions="Center">
+        <Grid RowSpacing="5" ColumnSpacing="5">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="60" />
+                <RowDefinition Height="60" />
+                <RowDefinition Height="60" />
+                <RowDefinition Height="60" />
+                <RowDefinition Height="60" />
+                <RowDefinition Height="60" />
+                <RowDefinition Height="60" />
+                <RowDefinition Height="60" />
+                <RowDefinition Height="60" />
+                <RowDefinition Height="60" />
+                <RowDefinition Height="60" />
+                <RowDefinition Height="60" />
+                <RowDefinition Height="60" />
+                <RowDefinition Height="60" />
+                <RowDefinition Height="60" />
+                <RowDefinition Height="60" />
+                <RowDefinition Height="60" />
+                <RowDefinition Height="60" />
+                <RowDefinition Height="180" />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="120" />
+                <ColumnDefinition Width="180" />
+                <ColumnDefinition Width="120" />
+            </Grid.ColumnDefinitions>
 
             <Label
+                Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3"
                 Text="Hello, World!"
                 SemanticProperties.HeadingLevel="Level1"
                 FontSize="32"
+                HorizontalTextAlignment="Center"
                 HorizontalOptions="Center" />
 
             <Label
+                Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3"
                 Text="Welcome to .NET Multi-platform App UI for GTK"
                 SemanticProperties.HeadingLevel="Level2"
                 SemanticProperties.Description="Welcome to dot net Multi platform App U I"
                 FontSize="18"
+                HorizontalTextAlignment="Center"
                 HorizontalOptions="Center"
                 IsVisible="{Binding SecondLabelVisible}"/>
 
             <Button
-                x:Name="purple_button" x:FieldModifier="PUBLIC"
+                Grid.Row="2" Grid.Column="1"
+                x:Name="purple_button"
                 SemanticProperties.Hint="Counts the number of times you click"
                 Command="{Binding Path=CounterClickedCommand}"
                 BackgroundColor="#512BD4"
                 Text="{Binding Path=ButtonText}"
                 FontSize="18"
                 TextColor="#FFFFFF"
-                WidthRequest="120"
                 HorizontalOptions="Center" />
-
+            
             <Button
+                Grid.Row="3" Grid.Column="1"
                 x:Name="purple_button2"
                 IsVisible="{Binding CounterBtn2Visible}"
                 SemanticProperties.Hint="Counts the number of times you click"
@@ -46,50 +74,47 @@
                 Text="{Binding Button2Text}"
                 FontSize="18"
                 TextColor="#FFFFFF"
-                WidthRequest="120"
                 HorizontalOptions="Center" />
 
             <ImageButton
+                Grid.Row="4" Grid.Column="1"
                 Command="{Binding Path=Counter2ClickedCommand}"
                 IsVisible="{Binding CounterBtn2ImageVisible}"
-                Source="click_me.gif"
-                WidthRequest="120"
-                HorizontalOptions="Center" />
+                Source="click_me.gif" />
             
             <ImageButton
+                Grid.Row="5" Grid.Column="1"
                 Command="{Binding Path=Counter3ClickedCommand}"
-                Source="click_me.gif"
-                WidthRequest="120"
-                HorizontalOptions="Center" />
+                Source="click_me.gif" />
 
             <Button
+                Grid.Row="6" Grid.Column="1"
                 Text="Go To Page2"
                 Command="{Binding Path=Button4ClickedCommand}"
-                WidthRequest="120"
                 HorizontalOptions="Center" />
 
             <Button
+                Grid.Row="7" Grid.Column="1"
                 Text="Test"
-                WidthRequest="120"
                 HorizontalOptions="Center" />
-
+    
             <Entry
+                Grid.Row="8" Grid.Column="0" Grid.ColumnSpan="3"
                 HorizontalOptions="Center"
                 Text="Hello"
-                IsPassword="True"
-                WidthRequest="180" />
+                IsPassword="True" />
 
             <Entry
+                Grid.Row="9" Grid.Column="0" Grid.ColumnSpan="3"
                 HorizontalOptions="Center"
-                Text="Hello"
-                WidthRequest="180" />
+                Text="Hello" />
 
             <Image
+                Grid.Row="10" Grid.Column="0"
                 Source="click_me.gif"
-                HorizontalOptions="Center"
-                WidthRequest="180" />
+                HorizontalOptions="Center" />
 
-            <HorizontalStackLayout>
+            <HorizontalStackLayout Grid.Row="11" Grid.Column="0" Grid.ColumnSpan="3">
                 <Label
                     Text="Test a CheckBox: "
                     FontSize="10" />
@@ -103,52 +128,52 @@
                 </CheckBox>
             </HorizontalStackLayout>
 
-            <RadioButton Content="One" IsChecked="{Binding RadioButtonOneChecked}" GroupName="Start">
+            <RadioButton Content="One" IsChecked="{Binding RadioButtonOneChecked}" GroupName="Start" Grid.Row="12" Grid.Column="0">
                 <RadioButton.Behaviors>
                     <prism:EventToCommandBehavior 
                         EventName="CheckedChanged"
-                        Command="{Binding RadioButtonOne_CheckedChanged}"/>
+                        Command="{Binding RadioButtonOne_CheckedChanged}" />
                 </RadioButton.Behaviors>
             </RadioButton>
-            <RadioButton Content="Two" GroupName="Start" IsChecked="{Binding RadioButtonTwoChecked}">
+            <RadioButton Content="Two" GroupName="Start" IsChecked="{Binding RadioButtonTwoChecked}" Grid.Row="13" Grid.Column="0">
                 <RadioButton.Behaviors>
                     <prism:EventToCommandBehavior 
                         EventName="CheckedChanged"
-                        Command="{Binding RadioButtonTwo_CheckedChanged}"/>
-                </RadioButton.Behaviors>
-            </RadioButton>
-
-            <RadioButton Content="Three" IsChecked="{Binding RadioButtonThreeChecked}" GroupName="Three">
-                <RadioButton.Behaviors>
-                    <prism:EventToCommandBehavior 
-                        EventName="CheckedChanged"
-                        Command="{Binding RadioButtonThree_CheckedChanged}"/>
-                </RadioButton.Behaviors>
-            </RadioButton>
-            <RadioButton Content="Four" GroupName="Three" IsChecked="{Binding RadioButtonFourChecked}">
-                <RadioButton.Behaviors>
-                    <prism:EventToCommandBehavior 
-                        EventName="CheckedChanged"
-                        Command="{Binding RadioButtonFour_CheckedChanged}"/>
+                        Command="{Binding RadioButtonTwo_CheckedChanged}" />
                 </RadioButton.Behaviors>
             </RadioButton>
 
-            <RadioButton Content="Five" IsChecked="{Binding RadioButtonFiveChecked}">
+            <RadioButton Content="Three" IsChecked="{Binding RadioButtonThreeChecked}" GroupName="Three" Grid.Row="14" Grid.Column="0">
                 <RadioButton.Behaviors>
                     <prism:EventToCommandBehavior 
                         EventName="CheckedChanged"
-                        Command="{Binding RadioButtonFive_CheckedChanged}"/>
+                        Command="{Binding RadioButtonThree_CheckedChanged}" />
                 </RadioButton.Behaviors>
             </RadioButton>
-            <RadioButton Content="Six" IsChecked="{Binding RadioButtonSixChecked}">
+            <RadioButton Content="Four" GroupName="Three" IsChecked="{Binding RadioButtonFourChecked}" Grid.Row="15" Grid.Column="0">
                 <RadioButton.Behaviors>
                     <prism:EventToCommandBehavior 
                         EventName="CheckedChanged"
-                        Command="{Binding RadioButtonSix_CheckedChanged}"/>
+                        Command="{Binding RadioButtonFour_CheckedChanged}" />
                 </RadioButton.Behaviors>
             </RadioButton>
 
-            <Grid>
+            <RadioButton Content="Five" IsChecked="{Binding RadioButtonFiveChecked}" Grid.Row="16" Grid.Column="0">
+                <RadioButton.Behaviors>
+                    <prism:EventToCommandBehavior 
+                        EventName="CheckedChanged"
+                        Command="{Binding RadioButtonFive_CheckedChanged}" />
+                </RadioButton.Behaviors>
+            </RadioButton>
+            <RadioButton Content="Six" IsChecked="{Binding RadioButtonSixChecked}" Grid.Row="17" Grid.Column="0">
+                <RadioButton.Behaviors>
+                    <prism:EventToCommandBehavior 
+                        EventName="CheckedChanged"
+                        Command="{Binding RadioButtonSix_CheckedChanged}" />
+                </RadioButton.Behaviors>
+            </RadioButton>
+
+            <Grid Grid.Row="18" Grid.Column="0">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="60" />
                     <RowDefinition Height="30" />
@@ -166,7 +191,7 @@
 
                 <Editor
                     Grid.Row="0" Grid.Column="1"
-                    Text="{Binding EditorText}" FontSize="14" WidthRequest="180"/>
+                    Text="{Binding EditorText}" FontSize="14" />
                 <Label
                     Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2"
                     Text="Above is an Editor. This is a span of 2 columns. This gives a long label."
@@ -184,7 +209,7 @@
                 
                 </Grid>
             </Grid>
-        </VerticalStackLayout>
+        </Grid>
     </ScrollView>
 
 </ContentPage>

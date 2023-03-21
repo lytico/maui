@@ -37,8 +37,9 @@ namespace Microsoft.Maui.Handlers
 					if (fileImageSource != null)
 					{
 						var imageElement = new Gtk.Image(fileImageSource.File);
-						imageElement.Show();
-						platformView = new Gtk.Button(imageElement);
+						// imageElement.Show();
+						platformView = new Gtk.Button();
+						platformView.Image = imageElement;
 						// Console.WriteLine("Image: " + fileImageSource.File);
 						//if (string.IsNullOrEmpty(virtualTextButton.Text))
 						//{
