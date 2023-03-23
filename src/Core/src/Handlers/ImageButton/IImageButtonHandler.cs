@@ -4,11 +4,7 @@ using PlatformView = UIKit.UIButton;
 using PlatformView = Google.Android.Material.ImageView.ShapeableImageView;
 #elif WINDOWS
 #if __GTK__
-<<<<<<< HEAD
-using PlatformView = Microsoft.Maui.Platform.GTK.MauiGTKButton;
-=======
 using PlatformView = Gtk.Button;
->>>>>>> 403b43973 (All native controls now, no drawn controls)
 #else
 using PlatformView = Microsoft.UI.Xaml.Controls.Button;
 #endif

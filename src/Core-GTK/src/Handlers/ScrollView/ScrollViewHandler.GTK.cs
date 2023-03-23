@@ -178,14 +178,10 @@ namespace Microsoft.Maui.Handlers
 				{
 					// currentPaddingLayer.Children.R();
 					currentPaddingLayer.Add((Gtk.Widget)nativeContent);
-<<<<<<< HEAD
-
-=======
 					if (scrollView.Visibility == Visibility.Visible)
 					{
 						((Gtk.Widget)nativeContent).Show();
 					}
->>>>>>> 5855e550d (Repaired Visibility for all controls)
 				}
 			}
 			else
@@ -211,13 +207,10 @@ namespace Microsoft.Maui.Handlers
 			if (scrollViewer.Child is Gtk.ScrolledWindow scroller)
 			{
 				scroller.Add(nativeContent);
-<<<<<<< HEAD
-=======
 				if (scrollView.Visibility == Visibility.Visible)
 				{
 					nativeContent.Show();
 				}
->>>>>>> 5855e550d (Repaired Visibility for all controls)
 			}
 
 			//scrollViewer.Content = null;
