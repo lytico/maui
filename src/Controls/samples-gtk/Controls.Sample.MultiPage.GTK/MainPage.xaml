@@ -67,7 +67,6 @@
             <Button
                 Grid.Row="3" Grid.Column="1"
                 x:Name="purple_button2"
-                IsVisible="{Binding CounterBtn2Visible}"
                 SemanticProperties.Hint="Counts the number of times you click"
                 Command="{Binding Path=Counter2ClickedCommand}"
                 BackgroundColor="#512BD4"
@@ -75,17 +74,6 @@
                 FontSize="18"
                 TextColor="#FFFFFF"
                 HorizontalOptions="Center" />
-
-            <ImageButton
-                Grid.Row="4" Grid.Column="1"
-                Command="{Binding Path=Counter2ClickedCommand}"
-                IsVisible="{Binding CounterBtn2ImageVisible}"
-                Source="click_me.gif" />
-            
-            <ImageButton
-                Grid.Row="5" Grid.Column="1"
-                Command="{Binding Path=Counter3ClickedCommand}"
-                Source="click_me.gif" />
 
             <Button
                 Grid.Row="6" Grid.Column="1"

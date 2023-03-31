@@ -41,9 +41,6 @@ namespace Maui.Controls.Sample.MultiPage.GTK.ViewModels
 			// Button 2 Image
 			this.CounterBtn2ImageVisible = true;
 
-			// Button 3
-			this.Counter3ClickedCommand = new DelegateCommand<object>(this.OnCounter3Clicked, this.OnCounter3CanSubmit);
-
 			// Button 4
 			this.Button4ClickedCommand = new DelegateCommand<object>(this.OnButton4Clicked, this.OnButton4CanSubmit);
 
@@ -167,8 +164,6 @@ namespace Maui.Controls.Sample.MultiPage.GTK.ViewModels
 
 		public ICommand Counter2ClickedCommand { get; private set; }
 
-		public ICommand Counter3ClickedCommand { get; private set; }
-
 		public ICommand Button4ClickedCommand { get; private set; }
 
 		public ICommand CheckBoxCheckedChanged { get; }
@@ -270,31 +265,6 @@ namespace Maui.Controls.Sample.MultiPage.GTK.ViewModels
 		}
 
 		private bool OnCounter2CanSubmit(object arg)
-		{
-			return true;
-		}
-
-		private void OnCounter3Clicked(object arg)
-		{
-			count3++;
-
-			//if (count3 == 1)
-			//{
-			//	// Console.WriteLine("Count2 = 1");
-
-			//	CounterBtn3Image.Text = $"Clicked {count3} time";
-			//}
-			//else
-			//{
-			//	// Console.WriteLine("Count2 > 1");
-
-			//	CounterBtn3Image.Text = $"Clicked {count2} times";
-			//}
-
-			Console.WriteLine("Image Button " + count3.ToString("D") + " Clicked");
-		}
-
-		private bool OnCounter3CanSubmit(object arg)
 		{
 			return true;
 		}
