@@ -24,7 +24,7 @@ namespace Maui.Controls.Sample.MultiPage.GTK
 						containerRegistry.RegisterForNavigation<Page2, Page2ViewModel>();
 					})
 					.OnAppStart(navigationService => navigationService.CreateBuilder()
-										.AddSegment<MainPageViewModel>()
+										.AddSegment<MainPage>()
 										.NavigateAsync(HandleNavigationError))
 				)
 			.Build();
