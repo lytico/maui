@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Runtime.CompilerServices;
+using Gdk;
 using Microsoft.Maui.Platform.GTK;
 
 namespace Microsoft.Maui.Handlers
@@ -8,74 +10,28 @@ namespace Microsoft.Maui.Handlers
 	{
 		protected override Gtk.Button CreatePlatformView(IView imageButton)
 		{
-			Gtk.Button platformView = null!;
+			Gtk.Button platformView = new Gtk.Button();
 
 			var _view = imageButton;
-			//if ((_view is ITextButton virtualTextButton) && (_view is IImageButton virtualImageButton))
 			if (_view is IImageButton virtualImageButton)
 			{
-				//_fontSize = Convert.ToInt32(virtualTextButton.Font.Size);
-				//if (virtualTextButton.TextColor != null)
-				//{
-				//	var red = Convert.ToByte(virtualTextButton.TextColor.Red * 255);
-				//	var green = Convert.ToByte(virtualTextButton.TextColor.Green * 255);
-				//	var blue = Convert.ToByte(virtualTextButton.TextColor.Blue * 255);
-				//	FontColor = new Gdk.Color(red, green, blue);
-				//}
-				//else if (virtualTextButton.StrokeColor != null)
-				//{
-				//	var red = Convert.ToByte(virtualTextButton.StrokeColor.Red * 255);
-				//	var green = Convert.ToByte(virtualTextButton.StrokeColor.Green * 255);
-				//	var blue = Convert.ToByte(virtualTextButton.StrokeColor.Blue * 255);
-				//	FontColor = new Gdk.Color(red, green, blue);
-				//}
-
 				if (virtualImageButton.Source != null)
 				{
 					var fileImageSource = (IFileImageSource)virtualImageButton.Source;
 
 					if (fileImageSource != null)
 					{
-						var imageElement = new Gtk.Image(fileImageSource.File);
-						// imageElement.Show();
-						platformView = new Gtk.Button();
+						var imageElement = new Gtk.Image();
+						imageElement.File = fileImageSource.File;
+
+						var pixbufReturned = new Gdk.Pixbuf(fileImageSource.File);
+						using (var drawableScaled = pixbufReturned.ScaleSimple((int)_view.Width, (int)_view.Height, InterpType.Bilinear)) {
+							imageElement.Pixbuf = drawableScaled;
+						}
+
 						platformView.Image = imageElement;
-						// Console.WriteLine("Image: " + fileImageSource.File);
-						//if (string.IsNullOrEmpty(virtualTextButton.Text))
-						//{
-						//	imageElement = new Gtk.Image(fileImageSource.File);
-						//	//Initialize(string.Empty, fileImageSource.File, string.Empty, name);
-						//}
-						//else
-						//{
-						//	Initialize(virtualTextButton.Text, fileImageSource.File, string.Empty, name);
-						//}
-						//return;
 					}
 				}
-				//Initialize(virtualTextButton.Text, string.Empty, string.Empty, name);
-
-				//return;
-			}
-			//else if (!(_view is ITextButton) && (_view is IImageButton virtualImageButtonButton))
-			//{
-			//	if (virtualImageButtonButton.Source != null)
-			//	{
-			//		var fileImageSource = (IFileImageSource)virtualImageButtonButton.Source;
-
-			//		if (fileImageSource != null)
-			//		{
-			//			// Console.WriteLine("Image: " + fileImageSource.File);
-			//			imageElement = new Gtk.Image(fileImageSource.File);
-			//			// Initialize(string.Empty, fileImageSource.File, string.Empty, name);
-
-			//			// return;
-			//		}
-			//	}
-			//}
-
-			if (platformView == null!) {
-				return null!;
 			}
 
 			if ((_view != null) && (_view.Width > 0))
@@ -98,17 +54,6 @@ namespace Microsoft.Maui.Handlers
 				}
 			}
 
-			//Gtk.Widget widget = platformView;
-			//SetMargins(imageButton, ref widget);
-
-			//if (imageButton is IImageButton imageButtonView)
-			//{
-			//	if (imageButtonView.Visibility == Visibility.Visible)
-			//	{
-			//		platformView.Show();
-			//	}
-			//}
-
 			return platformView;
 		}
 
@@ -117,27 +62,10 @@ namespace Microsoft.Maui.Handlers
 			Console.WriteLine("OnSetImageSource");
 		}
 
-		//protected override void DisconnectHandler(MauiGTKButton platformView)
-		//{
-		//	platformView.ButtonWidget.Clicked -= PlatformView_Clicked;
-
-		//	base.DisconnectHandler(platformView);
-
-		//	SourceLoader.Reset();
-		//}
-
-		//protected override void ConnectHandler(MauiGTKButton platformView)
-		//{
-		//	platformView.ButtonWidget.Clicked += PlatformView_Clicked;
-
-		//	base.ConnectHandler(platformView);
-		//}
-
 		private protected override void OnConnectHandler(object platformView)
 		{
 			if (platformView is Gtk.Button imageButton)
 			{
-				//imageButton.ButtonWidget.Clicked += ButtonWidget_Clicked;
 				imageButton.Clicked += ButtonWidget_Clicked;
 			}
 
@@ -146,7 +74,6 @@ namespace Microsoft.Maui.Handlers
 
 		private void ButtonWidget_Clicked(object? sender, System.EventArgs e)
 		{
-			// Debug.WriteLine("Clicked");
 			VirtualView?.Clicked();
 		}
 
@@ -159,11 +86,6 @@ namespace Microsoft.Maui.Handlers
 
 			base.OnDisconnectHandler(platformView);
 		}
-
-		//private void PlatformView_Clicked(object? sender, EventArgs e)
-		//{
-		//	VirtualView?.Clicked();
-		//}
 
 		// TODO: NET7 make this public
 		internal static void MapBackground(IImageButtonHandler handler, IImageButton imageButton)
@@ -193,51 +115,100 @@ namespace Microsoft.Maui.Handlers
 
 		public static void MapImageSource(IImageButtonHandler handler, IImageButton image)
 		{
-			if (handler.PlatformView is Gtk.Button buttonHandler)
-			{
-				// buttonHandler.Image = new Gtk.Image(source);
-				if (image.Source == null)
-				{
-					buttonHandler.Image = null!;
-				}
-				else
-				{
-					var fileImageSource = (IFileImageSource)image.Source;
+			if (image == null) {
+				return;
+			}
 
-					if (fileImageSource != null)
-					{
-						// Console.WriteLine("MapImageSource Image: " + fileImageSource.File);
-						buttonHandler.Image = new Gtk.Image(fileImageSource.File);
+			if (image.Source != null)
+			{
+				var fileImageSource = (IFileImageSource)image.Source;
+
+				if (fileImageSource != null)
+				{
+					var imageElement = new Gtk.Image();
+					imageElement.File = fileImageSource.File;
+
+					var pixbufReturned = new Gdk.Pixbuf(fileImageSource.File);
+					using (var drawableScaled = pixbufReturned.ScaleSimple((int)image.Width, (int)image.Height, InterpType.Bilinear)) {
+						imageElement.Pixbuf = drawableScaled;
 					}
+
+					handler.PlatformView.Image = imageElement;
 				}
 			}
+
+			if ((image != null) && (image.Width > 0))
+			{
+				handler.PlatformView.WidthRequest = (int)image.Width;
+			}
+			if ((image != null) && (image.Height > 0))
+			{
+				handler.PlatformView.HeightRequest = (int)image.Height;
+			}
+
+			if (image != null) {
+				Gtk.Widget widget = handler.PlatformView;
+				((IPlatformViewHandler)handler).SetMargins((IView)image, ref widget);
+
+				if (image.Visibility == Visibility.Visible)
+				{
+					handler.PlatformView.Show();
+				}
+			}
+
+
+			//if (handler.PlatformView is Gtk.Button buttonHandler)
+			//{
+			//	if (image.Source == null)
+			//	{
+			//		buttonHandler.Image = null!;
+			//	}
+			//	else
+			//	{
+			//		var fileImageSource = (IFileImageSource)image.Source;
+
+			//		if (fileImageSource != null)
+			//		{
+			//			buttonHandler.Image = new Gtk.Image(fileImageSource.File);
+			//		}
+			//	}
+			//}
 		}
 
-		//void OnFocusChange(object? sender, View.FocusChangeEventArgs e)
-		//{
-		//	if (VirtualView != null)
-		//		VirtualView.IsFocused = e.HasFocus;
-		//}
+		public override void PlatformArrange(Graphics.Rect frame)
+		{
+			var platformImageElement = this.PlatformView.Image as Gtk.Image;
+			if (platformImageElement == null) {
+				platformImageElement = new Gtk.Image();
+			}
 
-		//void OnTouch(object? sender, View.TouchEventArgs e)
-		//{
-		//	var motionEvent = e.Event;
-		//	switch (motionEvent?.ActionMasked)
-		//	{
-		//		case MotionEventActions.Down:
-		//			VirtualView?.Pressed();
-		//			break;
-		//		case MotionEventActions.Up:
-		//			VirtualView?.Released();
-		//			break;
-		//	}
+			if (platformImageElement != null) {
+				if (!string.IsNullOrEmpty(platformImageElement.File)) {
+					var pixbufReturned = new Gdk.Pixbuf(platformImageElement.File);
+					using (var drawableScaled = pixbufReturned.ScaleSimple((int)frame.Width, (int)frame.Height, InterpType.Bilinear)) {
+						platformImageElement.Pixbuf = drawableScaled;
+					}
+				}
 
-		//	e.Handled = false;
-		//}
+				if ((frame != null) && (frame.Width > 0))
+				{
+					this.PlatformView.WidthRequest = (int)frame.Width;
+				}
+				if ((frame != null) && (frame.Height > 0))
+				{
+					this.PlatformView.HeightRequest = (int)frame.Height;
+				}
 
-		//void OnClick(object? sender, EventArgs e)
-		//{
-		//	VirtualView?.Clicked();
-		//}
+				Gtk.Widget widget = this.PlatformView;
+				((IPlatformViewHandler)this).SetMargins(this.VirtualView, ref widget);
+
+				if (this.VirtualView.Visibility == Visibility.Visible)
+				{
+					this.PlatformView.Show();
+				}
+			}
+
+			base.PlatformArrange(frame);
+		}
 	}
 }

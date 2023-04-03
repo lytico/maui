@@ -11,65 +11,24 @@ namespace Microsoft.Maui.Handlers
 			Gtk.Image imageElement = null!;
 
 			var _view = image;
-			//if ((_view is ITextButton virtualTextButton) && (_view is IImageButton virtualImageButton))
 			if (_view is IImage virtualImageButton)
 			{
-				//_fontSize = Convert.ToInt32(virtualTextButton.Font.Size);
-				//if (virtualTextButton.TextColor != null)
-				//{
-				//	var red = Convert.ToByte(virtualTextButton.TextColor.Red * 255);
-				//	var green = Convert.ToByte(virtualTextButton.TextColor.Green * 255);
-				//	var blue = Convert.ToByte(virtualTextButton.TextColor.Blue * 255);
-				//	FontColor = new Gdk.Color(red, green, blue);
-				//}
-				//else if (virtualTextButton.StrokeColor != null)
-				//{
-				//	var red = Convert.ToByte(virtualTextButton.StrokeColor.Red * 255);
-				//	var green = Convert.ToByte(virtualTextButton.StrokeColor.Green * 255);
-				//	var blue = Convert.ToByte(virtualTextButton.StrokeColor.Blue * 255);
-				//	FontColor = new Gdk.Color(red, green, blue);
-				//}
-
 				if (virtualImageButton.Source != null)
 				{
 					var fileImageSource = (IFileImageSource)virtualImageButton.Source;
 
 					if (fileImageSource != null)
 					{
-						imageElement = new Gtk.Image(fileImageSource.File);
-						// Console.WriteLine("Image: " + fileImageSource.File);
-						//if (string.IsNullOrEmpty(virtualTextButton.Text))
-						//{
-						//	imageElement = new Gtk.Image(fileImageSource.File);
-						//	//Initialize(string.Empty, fileImageSource.File, string.Empty, name);
-						//}
-						//else
-						//{
-						//	Initialize(virtualTextButton.Text, fileImageSource.File, string.Empty, name);
-						//}
-						//return;
+						imageElement = new Gtk.Image();
+						imageElement.File = fileImageSource.File;
+
+						var pixbufReturned = new Gdk.Pixbuf(fileImageSource.File);
+						using (var drawableScaled = pixbufReturned.ScaleSimple((int)_view.Width, (int)_view.Height, InterpType.Bilinear)) {
+							imageElement.Pixbuf = drawableScaled;
+						}
 					}
 				}
-				//Initialize(virtualTextButton.Text, string.Empty, string.Empty, name);
-
-				//return;
 			}
-			//else if (!(_view is ITextButton) && (_view is IImageButton virtualImageButtonButton))
-			//{
-			//	if (virtualImageButtonButton.Source != null)
-			//	{
-			//		var fileImageSource = (IFileImageSource)virtualImageButtonButton.Source;
-
-			//		if (fileImageSource != null)
-			//		{
-			//			// Console.WriteLine("Image: " + fileImageSource.File);
-			//			imageElement = new Gtk.Image(fileImageSource.File);
-			//			// Initialize(string.Empty, fileImageSource.File, string.Empty, name);
-
-			//			// return;
-			//		}
-			//	}
-			//}
 
 			if (imageElement == null!) {
 				imageElement = new Gtk.Image();
@@ -124,80 +83,23 @@ namespace Microsoft.Maui.Handlers
 
 		public static void MapSource(IImageHandler handler, IImage image) {
 			var _view = image;
-			//if ((_view is ITextButton virtualTextButton) && (_view is IImageButton virtualImageButton))
 			if (_view is IImage virtualImageButton)
 			{
-				//_fontSize = Convert.ToInt32(virtualTextButton.Font.Size);
-				//if (virtualTextButton.TextColor != null)
-				//{
-				//	var red = Convert.ToByte(virtualTextButton.TextColor.Red * 255);
-				//	var green = Convert.ToByte(virtualTextButton.TextColor.Green * 255);
-				//	var blue = Convert.ToByte(virtualTextButton.TextColor.Blue * 255);
-				//	FontColor = new Gdk.Color(red, green, blue);
-				//}
-				//else if (virtualTextButton.StrokeColor != null)
-				//{
-				//	var red = Convert.ToByte(virtualTextButton.StrokeColor.Red * 255);
-				//	var green = Convert.ToByte(virtualTextButton.StrokeColor.Green * 255);
-				//	var blue = Convert.ToByte(virtualTextButton.StrokeColor.Blue * 255);
-				//	FontColor = new Gdk.Color(red, green, blue);
-				//}
-
 				if (virtualImageButton.Source != null)
 				{
 					var fileImageSource = (IFileImageSource)virtualImageButton.Source;
 
 					if (fileImageSource != null)
 					{
-						// this.image1.Pixbuf = new Gdk.Pixbuf ("/home/whoami/Pictures/1.png");
-						// widget.WidthRequest = (int)view.Width;
 						handler.PlatformView.File = fileImageSource.File;
 
 						var pixbufReturned = new Gdk.Pixbuf(fileImageSource.File);
 						using (var drawableScaled = pixbufReturned.ScaleSimple((int)_view.Width, (int)_view.Height, InterpType.Bilinear)) {
-							// only set if we are still on the same image
 							handler.PlatformView.Pixbuf = drawableScaled;
 						}
-
-						// handler.PlatformView.File = fileImageSource.File;
-						//imageElement = new Gtk.Image(fileImageSource.File);
-						// Console.WriteLine("Image: " + fileImageSource.File);
-						//if (string.IsNullOrEmpty(virtualTextButton.Text))
-						//{
-						//	imageElement = new Gtk.Image(fileImageSource.File);
-						//	//Initialize(string.Empty, fileImageSource.File, string.Empty, name);
-						//}
-						//else
-						//{
-						//	Initialize(virtualTextButton.Text, fileImageSource.File, string.Empty, name);
-						//}
-						//return;
 					}
 				}
-				//Initialize(virtualTextButton.Text, string.Empty, string.Empty, name);
-
-				//return;
 			}
-			//else if (!(_view is ITextButton) && (_view is IImageButton virtualImageButtonButton))
-			//{
-			//	if (virtualImageButtonButton.Source != null)
-			//	{
-			//		var fileImageSource = (IFileImageSource)virtualImageButtonButton.Source;
-
-			//		if (fileImageSource != null)
-			//		{
-			//			// Console.WriteLine("Image: " + fileImageSource.File);
-			//			imageElement = new Gtk.Image(fileImageSource.File);
-			//			// Initialize(string.Empty, fileImageSource.File, string.Empty, name);
-
-			//			// return;
-			//		}
-			//	}
-			//}
-
-			//if (imageElement == null!) {
-			//	imageElement = new Gtk.Image();
-			//}
 
 			if ((_view != null) && (_view.Width > 0))
 			{
@@ -227,19 +129,30 @@ namespace Microsoft.Maui.Handlers
 
 		public override void PlatformArrange(Graphics.Rect frame)
 		{
-			//if (PlatformView.GetScaleType() == ImageView.ScaleType.CenterCrop)
-			//{
-			//	// If the image is center cropped (AspectFill), then the size of the image likely exceeds
-			//	// the view size in some dimension. So we need to clip to the view's bounds.
+			if (!string.IsNullOrEmpty(this.PlatformView.File)) {
+				var pixbufReturned = new Gdk.Pixbuf(this.PlatformView.File);
+				using (var drawableScaled = pixbufReturned.ScaleSimple((int)frame.Width, (int)frame.Height, InterpType.Bilinear)) {
+					this.PlatformView.Pixbuf = drawableScaled;
+				}
 
-			//	var (left, top, right, bottom) = PlatformView.Context!.ToPixels(frame);
-			//	var clipRect = new Android.Graphics.Rect(0, 0, right - left, bottom - top);
-			//	PlatformView.ClipBounds = clipRect;
-			//}
-			//else
-			//{
-			//	PlatformView.ClipBounds = null;
-			//}
+			}
+
+			if ((frame != null) && (frame.Width > 0))
+			{
+				this.PlatformView.WidthRequest = (int)frame.Width;
+			}
+			if ((frame != null) && (frame.Height > 0))
+			{
+				this.PlatformView.HeightRequest = (int)frame.Height;
+			}
+
+			Gtk.Widget widget = this.PlatformView;
+			((IPlatformViewHandler)this).SetMargins(this.VirtualView, ref widget);
+
+			if (this.VirtualView.Visibility == Visibility.Visible)
+			{
+				this.PlatformView.Show();
+			}
 
 			base.PlatformArrange(frame);
 		}
