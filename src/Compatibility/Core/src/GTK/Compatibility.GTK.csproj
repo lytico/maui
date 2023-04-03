@@ -16,19 +16,19 @@
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <DefineConstants>WINDOWS</DefineConstants>
+    <DefineConstants>WINDOWS;DEBUG;TRACE</DefineConstants>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-    <DefineConstants>WINDOWS</DefineConstants>
+    <DefineConstants>WINDOWS;TRACE</DefineConstants>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x86'">
-    <DefineConstants>WINDOWS</DefineConstants>
+    <DefineConstants>WINDOWS;DEBUG;TRACE</DefineConstants>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x86'">
-    <DefineConstants>WINDOWS</DefineConstants>
+    <DefineConstants>WINDOWS;TRACE</DefineConstants>
   </PropertyGroup>
 
   <ItemGroup>
@@ -92,10 +92,159 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Include="ExportCellAttribute.cs" />
-    <None Include="ExportImageSourceHandlerAttribute.cs" />
-    <None Include="ExportRendererAttribute.cs" />
-    <None Include="Forms.cs" />
+    <Compile Include="Animations\BaseAnimation.cs" />
+    <Compile Include="Animations\FloatAnimation.cs" />
+    <Compile Include="Cells\CellBase.cs" />
+    <Compile Include="Cells\CellRenderer.cs" />
+    <Compile Include="Cells\EntryCell.cs" />
+    <Compile Include="Cells\EntryCellRenderer.cs" />
+    <Compile Include="Cells\ImageCell.cs" />
+    <Compile Include="Cells\ImageCellRenderer.cs" />
+    <Compile Include="Cells\SwitchCell.cs" />
+    <Compile Include="Cells\SwitchCellRenderer.cs" />
+    <Compile Include="Cells\TextCell.cs" />
+    <Compile Include="Cells\TextCellRenderer.cs" />
+    <Compile Include="Cells\ViewCell.cs" />
+    <Compile Include="Cells\ViewCellRenderer.cs" />
+    <Compile Include="Controls\ActivityIndicator.cs" />
+    <Compile Include="Controls\BoxView.cs" />
+    <Compile Include="Controls\Carousel.cs" />
+    <Compile Include="Controls\CustomComboBox.cs" />
+    <Compile Include="Controls\CustomFrame.cs" />
+    <Compile Include="Controls\DatePicker.cs" />
+    <Compile Include="Controls\EntryWrapper.cs" />
+    <Compile Include="Controls\FlyoutPage.cs" />
+    <Compile Include="Controls\GLWidget\GLWidget.cs" />
+    <Compile Include="Controls\GLWidget\OSX\OSXWindowInfoInitializer.cs" />
+    <Compile Include="Controls\GLWidget\Win\WinWindowsInfoInitializer.cs" />
+    <Compile Include="Controls\GLWidget\X11\XWindowInfoInitializer.cs" />
+    <Compile Include="Controls\ImageButton.cs" />
+    <Compile Include="Controls\ImageControl.cs" />
+    <Compile Include="Controls\ListView.cs" />
+    <Compile Include="Controls\NavigationChildPage.cs" />
+    <Compile Include="Controls\NotebookWrapper.cs" />
+    <Compile Include="Controls\ScrolledTextView.cs" />
+    <Compile Include="Controls\PageContainer.cs" />
+    <Compile Include="Controls\SearchEntry.cs" />
+    <Compile Include="Controls\TabbedPageHeader.cs" />
+    <Compile Include="Controls\TableView.cs" />
+    <Compile Include="Controls\TimePicker.cs" />
+    <Compile Include="Controls\Page.cs" />
+    <Compile Include="Controls\WebView.cs" />
+    <Compile Include="ElementChangedEventArgs.cs" />
+    <Compile Include="ExportCellAttribute.cs" />
+    <Compile Include="ExportImageSourceHandlerAttribute.cs" />
+    <Compile Include="ExportRendererAttribute.cs" />
+    <Compile Include="Extensions\AlignmentExtensions.cs" />
+    <Compile Include="Extensions\ButtonContentLayoutExtensions.cs" />
+    <Compile Include="Extensions\ColorExtensions.cs" />
+    <Compile Include="Extensions\GtkRectangleExtensions.cs" />
+    <Compile Include="Extensions\ImageExtensions.cs" />
+    <Compile Include="Extensions\LabelExtensions.cs" />
+    <Compile Include="Extensions\PageExtensions.cs" />
+    <Compile Include="Extensions\VisualElementExtensions.cs" />
+    <Compile Include="Extensions\WidgetExtensions.cs" />
+    <Compile Include="Forms.cs" />
+    <Compile Include="FormsWindow.cs" />
+    <Compile Include="GtkDeviceInfo.cs" />
+    <Compile Include="GtkExpressionSearch.cs" />
+    <Compile Include="GtkIsolatedStorageFile.cs" />
+    <Compile Include="GtkOpenGL.cs" />
+    <Compile Include="GtkPlatformServices.cs" />
+    <Compile Include="GtkSerializer.cs" />
+    <Compile Include="GtkSynchronizationContext.cs" />
+    <Compile Include="GtkThemes.cs" />
+    <Compile Include="GtkTicker.cs" />
+    <Compile Include="GtkToolbarConstants.cs" />
+    <Compile Include="Helpers\DialogHelper.cs" />
+    <Compile Include="Helpers\FontDescriptionHelper.cs" />
+    <Compile Include="Helpers\GrabHelper.cs" />
+    <Compile Include="Helpers\PlatformHelper.cs" />
+    <Compile Include="IDesiredSizeProvider.cs" />
+    <Compile Include="IVisualElementRenderer.cs" />
+    <Compile Include="GtkToolbarTracker.cs" />
+    <Compile Include="IVisualNativeElementRenderer.cs" />
+    <Compile Include="Packagers\LayoutElementPackager.cs" />
+    <Compile Include="Packagers\PageElementPackager.cs" />
+    <Compile Include="Packagers\VisualElementPackager.cs" />
+    <Compile Include="Platform.cs" />
+    <Compile Include="PlatformConfigurationExtensions.cs" />
+    <Compile Include="PlatformEffect.cs" />
+    <Compile Include="PlatformRenderer.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RendererFactory.cs" />
+    <Compile Include="Renderers\AbstractPageRenderer.cs" />
+    <Compile Include="Renderers\ActivityIndicatorRenderer.cs" />
+    <Compile Include="Renderers\BoxViewRenderer.cs" />
+    <Compile Include="Renderers\ButtonRenderer.cs" />
+    <Compile Include="Renderers\CarouselPageRenderer.cs" />
+    <Compile Include="Renderers\DatePickerRenderer.cs" />
+    <Compile Include="Renderers\EditorRenderer.cs" />
+    <Compile Include="Renderers\EntryRenderer.cs" />
+    <Compile Include="Renderers\FlyoutPageRenderer.cs" />
+    <Compile Include="Renderers\FrameRenderer.cs" />
+    <Compile Include="Renderers\ImageRenderer.cs" />
+    <Compile Include="Renderers\IPageControl.cs" />
+    <Compile Include="Renderers\IToolbarTracker.cs" />
+    <Compile Include="Renderers\LabelRenderer.cs" />
+    <Compile Include="Renderers\LayoutRenderer.cs" />
+    <Compile Include="Renderers\ListViewRenderer.cs" />
+    <Compile Include="Renderers\NavigationPageRenderer.cs" />
+    <Compile Include="Renderers\PageRenderer.cs" />
+    <Compile Include="Renderers\PickerRenderer.cs" />
+    <Compile Include="Renderers\ProgressBarRenderer.cs" />
+    <Compile Include="Renderers\ScrollViewRenderer.cs" />
+    <Compile Include="Renderers\SearchBarRenderer.cs" />
+    <Compile Include="Renderers\SliderRenderer.cs" />
+    <Compile Include="Renderers\StepperRenderer.cs" />
+    <Compile Include="Renderers\SwitchRenderer.cs" />
+    <Compile Include="Renderers\TabbedPageRenderer.cs" />
+    <Compile Include="Renderers\TableViewRenderer.cs" />
+    <Compile Include="Renderers\TimePickerRenderer.cs" />
+    <Compile Include="Renderers\WebViewRenderer.cs" />
+    <Compile Include="ResourcesProvider.cs" />
+    <Compile Include="ViewRenderer.cs" />
+    <Compile Include="VisualElementRenderer.cs" />
+    <Compile Include="VisualElementTracker.cs" />
+    <Compile Include="GtkFormsContainer.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Xamarin.Forms.Core\Xamarin.Forms.Core.csproj">
+      <Project>{57b8b73d-c3b5-4c42-869e-7b2f17d354ac}</Project>
+      <Name>Xamarin.Forms.Core</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
+    <Content Include="Libs\GMaps\GMap.NET.Core.dll" />
+    <Content Include="Libs\GMaps\GMap.NET.GTK.dll" />
+    <Content Include="Libs\gtk-sharp\gtk-sharp-2.0\atk-sharp.dll" />
+    <Content Include="Libs\gtk-sharp\gtk-sharp-2.0\atk-sharp.pdb" />
+    <Content Include="Libs\gtk-sharp\gtk-sharp-2.0\gdk-sharp.dll" />
+    <Content Include="Libs\gtk-sharp\gtk-sharp-2.0\gdk-sharp.pdb" />
+    <Content Include="Libs\gtk-sharp\gtk-sharp-2.0\glade-sharp.dll" />
+    <Content Include="Libs\gtk-sharp\gtk-sharp-2.0\glade-sharp.pdb" />
+    <Content Include="Libs\gtk-sharp\gtk-sharp-2.0\glib-sharp.dll" />
+    <Content Include="Libs\gtk-sharp\gtk-sharp-2.0\glib-sharp.pdb" />
+    <Content Include="Libs\gtk-sharp\gtk-sharp-2.0\gtk-dotnet.dll" />
+    <Content Include="Libs\gtk-sharp\gtk-sharp-2.0\gtk-dotnet.pdb" />
+    <Content Include="Libs\gtk-sharp\gtk-sharp-2.0\gtk-sharp.dll" />
+    <Content Include="Libs\gtk-sharp\gtk-sharp-2.0\pango-sharp.dll" />
+    <Content Include="Libs\gtk-sharp\gtk-sharp-2.0\pango-sharp.pdb" />
+    <Content Include="Libs\gtk-sharp\Mono.Cairo\Mono.Cairo.dll" />
+    <Content Include="Libs\gtk-sharp\Mono.Posix\Mono.Posix.dll" />
+    <Content Include="Libs\gtk-sharp\README.txt" />
+    <Content Include="Libs\webkit-sharp\webkit-sharp.dll.config" />
+    <None Include="webkit-sharp.dll.config">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Libs\webkit-sharp\README.txt" />
+    <Content Include="Libs\webkit-sharp\webkit-sharp.dll" />
+    <Content Include="Resources\hamburger.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
 
 </Project>

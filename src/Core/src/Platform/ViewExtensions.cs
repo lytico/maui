@@ -107,7 +107,37 @@ namespace Microsoft.Maui.Platform
 		}
 #endif
 
-#if PLATFORM && !__GTK__
+		internal static IDisposable OnUnloaded(this IElement element, Action action)
+		{
+#if PLATFORM
+			if (element.Handler is IPlatformViewHandler platformViewHandler &&
+				platformViewHandler.PlatformView != null)
+			{
+				return platformViewHandler.PlatformView.OnUnloaded(action);
+			}
+
+			throw new InvalidOperationException("Handler is not set on element");
+#else
+			throw new NotImplementedException();
+#endif
+		}
+
+		internal static IDisposable OnLoaded(this IElement element, Action action)
+		{
+#if PLATFORM
+			if (element.Handler is IPlatformViewHandler platformViewHandler &&
+				platformViewHandler.PlatformView != null)
+			{
+				return platformViewHandler.PlatformView.OnLoaded(action);
+			}
+
+			throw new InvalidOperationException("Handler is not set on element");
+#else
+			throw new NotImplementedException();
+#endif
+		}
+
+#if PLATFORM
 		internal static Task OnUnloadedAsync(this PlatformView platformView, TimeSpan? timeOut = null)
 		{
 			timeOut = timeOut ?? TimeSpan.FromSeconds(2);
@@ -124,5 +154,17 @@ namespace Microsoft.Maui.Platform
 			return taskCompletionSource.Task.WaitAsync(timeOut.Value);
 		}
 #endif
+		internal static bool IsLoadedOnPlatform(this IElement element)
+		{
+			if (element.Handler is not IPlatformViewHandler pvh)
+				return false;
+
+#if PLATFORM
+			return pvh.PlatformView?.IsLoaded() == true;
+#else
+			return true;
+#endif
+
+		}
 	}
 }

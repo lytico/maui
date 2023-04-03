@@ -41,9 +41,12 @@ namespace Microsoft.Maui.Handlers
 
 		public static CommandMapper<IEditor, IEditorHandler> CommandMapper = new(ViewCommandMapper)
 		{
+#if ANDROID
+			[nameof(IEditor.Focus)] = MapFocus
+#endif
 		};
 
-		public EditorHandler() : base(Mapper)
+		public EditorHandler() : this(Mapper)
 		{
 		}
 

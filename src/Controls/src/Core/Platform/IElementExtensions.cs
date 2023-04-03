@@ -1,4 +1,3 @@
-#nullable enable
 using System;
 #if !__GTK__
 using Microsoft.Maui.Controls.PlatformConfiguration.WindowsSpecific;
