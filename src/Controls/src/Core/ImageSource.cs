@@ -66,7 +66,7 @@ namespace Microsoft.Maui.Controls
 		/// <include file="../../docs/Microsoft.Maui.Controls/ImageSource.xml" path="//Member[@MemberName='FromFile']/Docs/*" />
 		public static ImageSource FromFile(string file)
 		{
-			return new FileImageSource { File = file };
+			return new FileImageSource { File = Path.Combine("Resources/Images/", file) };
 		}
 
 		/// <include file="../../docs/Microsoft.Maui.Controls/ImageSource.xml" path="//Member[@MemberName='FromResource'][2]/Docs/*" />

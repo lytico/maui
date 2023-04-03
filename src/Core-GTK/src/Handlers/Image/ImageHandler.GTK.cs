@@ -1,4 +1,6 @@
-﻿using System.Threading.Tasks;
+﻿using System.Runtime.InteropServices;
+using System.Threading.Tasks;
+using Gdk;
 
 namespace Microsoft.Maui.Handlers
 {
@@ -70,7 +72,7 @@ namespace Microsoft.Maui.Handlers
 			//}
 
 			if (imageElement == null!) {
-				return null!;
+				imageElement = new Gtk.Image();
 			}
 
 			if ((_view != null) && (_view.Width > 0))
@@ -120,17 +122,107 @@ namespace Microsoft.Maui.Handlers
 		public static void MapIsAnimationPlaying(IImageHandler handler, IImage image) { }
 			// handler.PlatformView?.UpdateIsAnimationPlaying(image);
 
-		public static void MapSource(IImageHandler handler, IImage image) { }
-			// MapSourceAsync(handler, image).FireAndForget(handler);
+		public static void MapSource(IImageHandler handler, IImage image) {
+			var _view = image;
+			//if ((_view is ITextButton virtualTextButton) && (_view is IImageButton virtualImageButton))
+			if (_view is IImage virtualImageButton)
+			{
+				//_fontSize = Convert.ToInt32(virtualTextButton.Font.Size);
+				//if (virtualTextButton.TextColor != null)
+				//{
+				//	var red = Convert.ToByte(virtualTextButton.TextColor.Red * 255);
+				//	var green = Convert.ToByte(virtualTextButton.TextColor.Green * 255);
+				//	var blue = Convert.ToByte(virtualTextButton.TextColor.Blue * 255);
+				//	FontColor = new Gdk.Color(red, green, blue);
+				//}
+				//else if (virtualTextButton.StrokeColor != null)
+				//{
+				//	var red = Convert.ToByte(virtualTextButton.StrokeColor.Red * 255);
+				//	var green = Convert.ToByte(virtualTextButton.StrokeColor.Green * 255);
+				//	var blue = Convert.ToByte(virtualTextButton.StrokeColor.Blue * 255);
+				//	FontColor = new Gdk.Color(red, green, blue);
+				//}
 
-		public static Task MapSourceAsync(IImageHandler handler, IImage image) {
-			// handler.SourceLoader.UpdateImageSourceAsync();
+				if (virtualImageButton.Source != null)
+				{
+					var fileImageSource = (IFileImageSource)virtualImageButton.Source;
 
-			return Task.FromResult(0);
+					if (fileImageSource != null)
+					{
+						// this.image1.Pixbuf = new Gdk.Pixbuf ("/home/whoami/Pictures/1.png");
+						// widget.WidthRequest = (int)view.Width;
+						handler.PlatformView.File = fileImageSource.File;
+
+						var pixbufReturned = new Gdk.Pixbuf(fileImageSource.File);
+						using (var drawableScaled = pixbufReturned.ScaleSimple((int)_view.Width, (int)_view.Height, InterpType.Bilinear)) {
+							// only set if we are still on the same image
+							handler.PlatformView.Pixbuf = drawableScaled;
+						}
+
+						// handler.PlatformView.File = fileImageSource.File;
+						//imageElement = new Gtk.Image(fileImageSource.File);
+						// Console.WriteLine("Image: " + fileImageSource.File);
+						//if (string.IsNullOrEmpty(virtualTextButton.Text))
+						//{
+						//	imageElement = new Gtk.Image(fileImageSource.File);
+						//	//Initialize(string.Empty, fileImageSource.File, string.Empty, name);
+						//}
+						//else
+						//{
+						//	Initialize(virtualTextButton.Text, fileImageSource.File, string.Empty, name);
+						//}
+						//return;
+					}
+				}
+				//Initialize(virtualTextButton.Text, string.Empty, string.Empty, name);
+
+				//return;
+			}
+			//else if (!(_view is ITextButton) && (_view is IImageButton virtualImageButtonButton))
+			//{
+			//	if (virtualImageButtonButton.Source != null)
+			//	{
+			//		var fileImageSource = (IFileImageSource)virtualImageButtonButton.Source;
+
+			//		if (fileImageSource != null)
+			//		{
+			//			// Console.WriteLine("Image: " + fileImageSource.File);
+			//			imageElement = new Gtk.Image(fileImageSource.File);
+			//			// Initialize(string.Empty, fileImageSource.File, string.Empty, name);
+
+			//			// return;
+			//		}
+			//	}
+			//}
+
+			//if (imageElement == null!) {
+			//	imageElement = new Gtk.Image();
+			//}
+
+			if ((_view != null) && (_view.Width > 0))
+			{
+				handler.PlatformView.WidthRequest = (int)_view.Width;
+			}
+			if ((_view != null) && (_view.Height > 0))
+			{
+				handler.PlatformView.HeightRequest = (int)_view.Height;
+			}
+
+			Gtk.Widget widget = handler.PlatformView;
+			((IPlatformViewHandler)handler).SetMargins(image, ref widget);
+
+			if (image is IImage imageView)
+			{
+				if (imageView.Visibility == Visibility.Visible)
+				{
+					handler.PlatformView.Show();
+				}
+			}
 		}
 
 		void OnSetImageSource(Gdk.Pixbuf? obj)
 		{
+			this.PlatformView.Pixbuf = obj;
 		}
 
 		public override void PlatformArrange(Graphics.Rect frame)
