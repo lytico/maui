@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using Gdk;
+using Gtk;
 using Microsoft.Maui.Platform.GTK;
 
 namespace Microsoft.Maui.Handlers
@@ -175,9 +176,16 @@ namespace Microsoft.Maui.Handlers
 			//}
 		}
 
-		public override void PlatformArrange(Graphics.Rect frame)
-		{
-			var platformImageElement = this.PlatformView.Image as Gtk.Image;
+		public static void MapWidth(IImageButtonHandler handler, IImageButton image) {
+			HandleMapSizes(handler, image);
+		}
+
+		public static void MapHeight(IImageButtonHandler handler, IImageButton image) {
+			HandleMapSizes(handler, image);
+		}
+
+		private static void HandleMapSizes(IImageButtonHandler handler, IImageButton image) {
+			var platformImageElement = handler.PlatformView.Image as Gtk.Image;
 			if (platformImageElement == null) {
 				platformImageElement = new Gtk.Image();
 			}
@@ -185,30 +193,28 @@ namespace Microsoft.Maui.Handlers
 			if (platformImageElement != null) {
 				if (!string.IsNullOrEmpty(platformImageElement.File)) {
 					var pixbufReturned = new Gdk.Pixbuf(platformImageElement.File);
-					using (var drawableScaled = pixbufReturned.ScaleSimple((int)frame.Width, (int)frame.Height, InterpType.Bilinear)) {
+					using (var drawableScaled = pixbufReturned.ScaleSimple((int)image.Width, (int)image.Height, InterpType.Bilinear)) {
 						platformImageElement.Pixbuf = drawableScaled;
 					}
 				}
 
-				if ((frame != null) && (frame.Width > 0))
+				if ((image != null) && (image.Width > 0))
 				{
-					this.PlatformView.WidthRequest = (int)frame.Width;
+					handler.PlatformView.WidthRequest = (int)image.Width;
 				}
-				if ((frame != null) && (frame.Height > 0))
+				if ((image != null) && (image.Height > 0))
 				{
-					this.PlatformView.HeightRequest = (int)frame.Height;
+					handler.PlatformView.HeightRequest = (int)image.Height;
 				}
 
-				Gtk.Widget widget = this.PlatformView;
-				((IPlatformViewHandler)this).SetMargins(this.VirtualView, ref widget);
+				Gtk.Widget widget = handler.PlatformView;
+				((IPlatformViewHandler)handler).SetMargins(handler.VirtualView, ref widget);
 
-				if (this.VirtualView.Visibility == Visibility.Visible)
+				if (image != null && image.Visibility == Visibility.Visible)
 				{
-					this.PlatformView.Show();
+					handler.PlatformView.Show();
 				}
 			}
-
-			base.PlatformArrange(frame);
 		}
 	}
 }

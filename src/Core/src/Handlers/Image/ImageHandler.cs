@@ -28,6 +28,10 @@ namespace Microsoft.Maui.Handlers
 			[nameof(IImage.Aspect)] = MapAspect,
 			[nameof(IImage.IsAnimationPlaying)] = MapIsAnimationPlaying,
 			[nameof(IImage.Source)] = MapSource,
+#if __GTK__
+			[nameof(IImage.Width)] = MapWidth,
+			[nameof(IImage.Height)] = MapHeight
+#endif
 		};
 
 		public static CommandMapper<IImage, IImageHandler> CommandMapper = new(ViewHandler.ViewCommandMapper)

@@ -1,6 +1,7 @@
 ﻿using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 using Gdk;
+using Gtk;
 
 namespace Microsoft.Maui.Handlers
 {
@@ -127,34 +128,38 @@ namespace Microsoft.Maui.Handlers
 			this.PlatformView.Pixbuf = obj;
 		}
 
-		public override void PlatformArrange(Graphics.Rect frame)
-		{
-			if (!string.IsNullOrEmpty(this.PlatformView.File)) {
-				var pixbufReturned = new Gdk.Pixbuf(this.PlatformView.File);
-				using (var drawableScaled = pixbufReturned.ScaleSimple((int)frame.Width, (int)frame.Height, InterpType.Bilinear)) {
-					this.PlatformView.Pixbuf = drawableScaled;
+		public static void MapWidth(IImageHandler handler, IImage image) {
+			HandleMapSizes(handler, image);
+		}
+
+		public static void MapHeight(IImageHandler handler, IImage image) {
+			HandleMapSizes(handler, image);
+		}
+
+		private static void HandleMapSizes(IImageHandler handler, IImage image) {
+			if (!string.IsNullOrEmpty(handler.PlatformView.File)) {
+				var pixbufReturned = new Gdk.Pixbuf(handler.PlatformView.File);
+				using (var drawableScaled = pixbufReturned.ScaleSimple((int)image.Width, (int)image.Height, InterpType.Bilinear)) {
+					handler.PlatformView.Pixbuf = drawableScaled;
 				}
-
 			}
 
-			if ((frame != null) && (frame.Width > 0))
+			if ((image != null) && (image.Width > 0))
 			{
-				this.PlatformView.WidthRequest = (int)frame.Width;
+				handler.PlatformView.WidthRequest = (int)image.Width;
 			}
-			if ((frame != null) && (frame.Height > 0))
+			if ((image != null) && (image.Height > 0))
 			{
-				this.PlatformView.HeightRequest = (int)frame.Height;
+				handler.PlatformView.HeightRequest = (int)image.Height;
 			}
 
-			Gtk.Widget widget = this.PlatformView;
-			((IPlatformViewHandler)this).SetMargins(this.VirtualView, ref widget);
+			Gtk.Widget widget = handler.PlatformView;
+			((IPlatformViewHandler)handler).SetMargins(handler.VirtualView, ref widget);
 
-			if (this.VirtualView.Visibility == Visibility.Visible)
+			if (handler.VirtualView.Visibility == Visibility.Visible)
 			{
-				this.PlatformView.Show();
+				handler.PlatformView.Show();
 			}
-
-			base.PlatformArrange(frame);
 		}
 	}
 }
