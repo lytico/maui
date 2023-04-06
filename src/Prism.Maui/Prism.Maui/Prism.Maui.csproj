@@ -108,6 +108,12 @@
 			XamlC;
 		</CompileDependsOn>
 	</PropertyGroup>
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+	  <WarningsNotAsErrors>CA1815</WarningsNotAsErrors>
+	</PropertyGroup>
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+	  <WarningsNotAsErrors>CA1815</WarningsNotAsErrors>
+	</PropertyGroup>
 
 	<Target Name="XamlC" AfterTargets="AfterCompile" Inputs="$(IntermediateOutputPath)$(TargetFileName)-GTK" Outputs="$(IntermediateOutputPath)XamlC.stamp" Condition=" '$(DesignTimeBuild)' != 'True' AND '@(MauiXaml)' != ''">
 	    <PropertyGroup>

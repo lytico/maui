@@ -205,9 +205,14 @@ namespace Microsoft.Maui.Controls.Platform
 				CurrentPage?.SendAppearing();
 			}
 
+#if __GTK__
+			Task popTask =
+				(!syncing) ? PopModalPlatformAsync(animated) : Task.CompletedTask;
+#else
 			bool isPlatformReady = IsModalReady;
 			Task popTask =
 				(isPlatformReady && !syncing) ? PopModalPlatformAsync(animated) : Task.CompletedTask;
+#endif
 
 			await popTask;
 			modal.Parent = null;
@@ -219,7 +224,9 @@ namespace Microsoft.Maui.Controls.Platform
 				CurrentPage?.SendNavigatedTo(new NavigatedToEventArgs(modal));
 			}
 
+#if !__GTK__
 			if (!isPlatformReady)
+#endif
 				SyncModalStackWhenPlatformIsReady();
 
 			return modal;
@@ -240,8 +247,12 @@ namespace Microsoft.Maui.Controls.Platform
 				CurrentPage?.SendAppearing();
 			}
 
+#if __GTK__
+			if (!syncing)
+#else
 			bool isPlatformReady = IsModalReady;
 			if (isPlatformReady && !syncing)
+#endif
 			{
 				if (ModalStack.Count == 0)
 				{
@@ -263,7 +274,9 @@ namespace Microsoft.Maui.Controls.Platform
 
 			_window.OnModalPushed(modal);
 
+#if !__GTK__
 			if (!isPlatformReady)
+#endif
 				SyncModalStackWhenPlatformIsReady();
 		}
 
