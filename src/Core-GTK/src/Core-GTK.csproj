@@ -28,6 +28,7 @@
     <Compile Include="..\..\Core\src\Animations\Lerp.cs" Link="Animations\Lerp.cs" />
     <Compile Include="..\..\Core\src\Animations\LerpingAnimation.cs" Link="Animations\LerpingAnimation.cs" />
     <Compile Include="..\..\Core\src\Animations\Ticker.cs" Link="Animations\Ticker.cs" />
+    <Compile Include="..\..\Core\src\Attributes\MaybeNullWhenAttribute.cs" Link="Attributes\MaybeNullWhenAttribute.cs" />
     <Compile Include="..\..\Core\src\Attributes\MissingMapperAttribute.cs" Link="Attributes\MissingMapperAttribute.cs" />
     <Compile Include="..\..\Core\src\Attributes\PortHandlerAttribute.cs" Link="Attributes\PortHandlerAttribute.cs" />
     <Compile Include="..\..\Core\src\CommandMapper.cs" Link="CommandMapper.cs" />
@@ -227,6 +228,7 @@
     <Compile Include="..\..\Core\src\Handlers\TimePicker\ITimePickerHandler.cs" Link="Handlers\TimePicker\ITimePickerHandler.cs" />
     <Compile Include="..\..\Core\src\Handlers\TimePicker\TimePickerHandler.cs" Link="Handlers\TimePicker\TimePickerHandler.cs" />
     <Compile Include="..\..\Core\src\Handlers\Toolbar\IToolbarHandler.cs" Link="Handlers\Toolbar\IToolbarHandler.cs" />
+    <Compile Include="..\..\Core\src\Handlers\View\DataFlowDirection.cs" Link="Handlers\View\DataFlowDirection.cs" />
     <Compile Include="..\..\Core\src\Handlers\View\ViewHandlerOfT.cs" Link="Handlers\View\ViewHandlerOfT.cs" />
     <Compile Include="..\..\Core\src\Handlers\WebView\IWebViewHandler.cs" Link="Handlers\WebView\IWebViewHandler.cs" />
     <Compile Include="..\..\Core\src\Handlers\Window\IWindowHandler.cs" Link="Handlers\Window\IWindowHandler.cs" />
@@ -265,7 +267,6 @@
     <Compile Include="..\..\Core\src\HotReload\IHotReloadableView.cs" Link="HotReload\IHotReloadableView.cs" />
     <Compile Include="..\..\Core\src\HotReload\IReloadHandler.cs" Link="HotReload\IReloadHandler.cs" />
     <Compile Include="..\..\Core\src\HotReload\OnHotReloadAttribute.cs" Link="HotReload\OnHotReloadAttribute.cs" />
-    <Compile Include="..\..\Core\src\HotReload\WeakList.cs" Link="HotReload\WeakList.cs" />
     <Compile Include="..\..\Core\src\IActivationState.cs" Link="IActivationState.cs" />
     <Compile Include="..\..\Core\src\IFlyout.cs" Link="IFlyout.cs" />
     <Compile Include="..\..\Core\src\ImageSources\FileImageSourceService\FileImageSourceService.cs" Link="ImageSources\FileImageSourceService\FileImageSourceService.cs" />
@@ -391,6 +392,7 @@
     <Compile Include="..\..\Core\src\TaskExtensions.cs" Link="TaskExtensions.cs" />
     <Compile Include="..\..\Core\src\ViewExtensions.cs" Link="ViewExtensions.cs" />
     <Compile Include="..\..\Core\src\VisualDiagnostics\AdornerModel.cs" Link="VisualDiagnostics\AdornerModel.cs" />
+    <Compile Include="..\..\Core\src\VisualDiagnostics\BootstrapHelper.cs" Link="VisualDiagnostics\BootstrapHelper.cs" />
     <Compile Include="..\..\Core\src\VisualDiagnostics\DebuggerHelper.cs" Link="VisualDiagnostics\DebuggerHelper.cs" />
     <Compile Include="..\..\Core\src\VisualDiagnostics\RectangleAdorner.cs" Link="VisualDiagnostics\RectangleAdorner.cs" />
     <Compile Include="..\..\Core\src\VisualDiagnostics\RectangleGridAdorner.cs" Link="VisualDiagnostics\RectangleGridAdorner.cs" />
@@ -400,6 +402,7 @@
     <Compile Include="..\..\Core\src\VisualDiagnostics\VisualTreeChangeEventArgs.cs" Link="VisualDiagnostics\VisualTreeChangeEventArgs.cs" />
     <Compile Include="..\..\Core\src\VisualDiagnostics\VisualTreeChangeType.cs" Link="VisualDiagnostics\VisualTreeChangeType.cs" />
     <Compile Include="..\..\Core\src\WeakEventManager.cs" Link="WeakEventManager.cs" />
+    <Compile Include="..\..\Core\src\WeakList.cs" Link="WeakList.cs" />
     <Compile Include="..\..\Core\src\WindowExtensions.cs" Link="WindowExtensions.cs" />
     <Compile Include="..\..\Core\src\WindowOverlay\WindowOverlay.cs" Link="WindowOverlay\WindowOverlay.cs" />
   </ItemGroup>

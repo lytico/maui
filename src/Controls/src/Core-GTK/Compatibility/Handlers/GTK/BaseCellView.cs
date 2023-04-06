@@ -1,4 +1,5 @@
-﻿using System;
+﻿#nullable disable
+using System;
 using Microsoft.Extensions.Logging;
 using Microsoft.Maui.Controls.Compatibility;
 using Microsoft.Maui.Controls.Internals;
@@ -182,7 +183,7 @@ namespace Microsoft.Maui.Controls.Handlers.Compatibility
 			//LayoutParameters = new LayoutParams(ViewGroup.LayoutParams.MatchParent, (int)(height == -1 ? ViewGroup.LayoutParams.WrapContent : height));
 		}
 
-		void UpdateBitmap(ImageSource source, ImageSource previousSource = null)
+		void UpdateBitmap(ImageSource source, ImageSource previousSource = null!)
 		{
 			//if (source == previousSource)
 			//	return;

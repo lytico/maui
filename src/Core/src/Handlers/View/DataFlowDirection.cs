@@ -2,8 +2,10 @@
 using PlatformView = UIKit.UIView;
 #elif __ANDROID__
 using PlatformView = Android.Views.View;
-#elif WINDOWS
+#elif WINDOWS && !__GTK__
 using PlatformView = Microsoft.UI.Xaml.FrameworkElement;
+#elif WINDOWS && __GTK__
+using PlatformView = Gtk.Widget;
 #elif TIZEN
 using PlatformView = Tizen.NUI.BaseComponents.View;
 #elif (NETSTANDARD || !PLATFORM)

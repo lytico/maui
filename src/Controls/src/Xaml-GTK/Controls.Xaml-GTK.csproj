@@ -9,6 +9,8 @@
 		<NoWarn>$(NoWarn);CA2200;CS1591;RS0041</NoWarn>
 		<PackageId>Microsoft.Maui.Controls.Xaml</PackageId>
 		<GenerateDocumentationFile>true</GenerateDocumentationFile>
+		<RunAnalyzersDuringBuild>False</RunAnalyzersDuringBuild>
+		<RunAnalyzersDuringLiveAnalysis>False</RunAnalyzersDuringLiveAnalysis>
 	</PropertyGroup>
 
 	<PropertyGroup Condition="$(TargetFramework.Contains('-windows')) == true ">

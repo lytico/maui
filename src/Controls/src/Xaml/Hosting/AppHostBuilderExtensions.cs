@@ -19,6 +19,7 @@ using Microsoft.Maui.Controls.Compatibility.Platform.Android;
 #elif WINDOWS && __GTK__
 using ResourcesProvider = Microsoft.Maui.Controls.Compatibility.Platform.GTK.ResourcesProvider;
 using Microsoft.Maui.Controls.Compatibility.Platform.GTK;
+using Microsoft.Maui.Handlers.BoxView;
 #elif WINDOWS && !__GTK__
 using ResourcesProvider = Microsoft.Maui.Controls.Compatibility.Platform.UWP.WindowsResourcesProvider;
 using Microsoft.Maui.Controls.Compatibility.Platform.UWP;

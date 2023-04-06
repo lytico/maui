@@ -84,7 +84,9 @@ namespace Microsoft.Maui.Controls
 
 		protected internal View()
 		{
+#if !__GTK__
 			_gestureManager = new GestureManager(this);
+#endif
 			_gestureRecognizers.CollectionChanged += (sender, args) =>
 			{
 				void AddItems(IEnumerable<IElementDefinition> elements)

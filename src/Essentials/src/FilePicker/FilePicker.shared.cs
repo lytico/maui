@@ -203,7 +203,7 @@ namespace Microsoft.Maui.Storage
 		/// <remarks>
 		/// On Android and iOS the files not matching this list are shown in the file picker,
 		/// but will be grayed out and cannot be selected.
-		/// When the <see cref="FilePickerFileType.Value"/> array is <see langword="null"/> or empty,
+		/// When the FilePickerFileType array is null or empty,
 		/// all file types can be selected while picking.
 		/// The contents of this array is platform specific; every platform has its own way to
 		/// specify the file types.

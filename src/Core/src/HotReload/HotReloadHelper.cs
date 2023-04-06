@@ -154,23 +154,23 @@ namespace Microsoft.Maui.HotReload
 
 		public static void TriggerReload()
 		{
-			List<IHotReloadableView>? roots = null;
-			while (roots == null)
-			{
-				try
-				{
-					roots = ActiveViews.Where(x => x != null && x.Parent == null).ToList();
-				}
-				catch
-				{
-					//Sometimes we get list changed exception.
-				}
-			}
+			//List<IHotReloadableView>? roots = null;
+			//while (roots == null)
+			//{
+			//	try
+			//	{
+			//		roots = ActiveViews.Where(x => x != null && x.Parent == null).ToList();
+			//	}
+			//	catch
+			//	{
+			//		//Sometimes we get list changed exception.
+			//	}
+			//}
 
-			foreach (var view in roots)
-			{
-				view!.Reload();
-			}
+			//foreach (var view in roots)
+			//{
+			//	view!.Reload();
+			//}
 		}
 		#region Metadata Update Handler
 		public static void UpdateApplication(Type[] types)

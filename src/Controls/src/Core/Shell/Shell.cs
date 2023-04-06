@@ -1535,8 +1535,10 @@ namespace Microsoft.Maui.Controls
 
 		internal void SendPageAppearing(Page page)
 		{
+#if !__GTK__
 			if (Toolbar is ShellToolbar shellToolbar)
 				shellToolbar.ApplyChanges();
+#endif
 
 			page.SendAppearing();
 		}

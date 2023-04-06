@@ -7,7 +7,7 @@ namespace Microsoft.Maui.Controls
 		{
 #if IOS
 			[PlatformConfiguration.iOSSpecific.Picker.UpdateModeProperty.PropertyName] = MapUpdateMode,
-#elif WINDOWS
+#elif WINDOWS && !__GTK__
 			[nameof(Picker.HorizontalOptions)] = MapHorizontalOptions,
 			[nameof(Picker.VerticalOptions)] = MapVerticalOptions,
 #endif

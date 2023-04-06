@@ -1,3 +1,4 @@
+#nullable disable
 namespace Microsoft.Maui.Controls.Handlers.Compatibility
 {
 	public class SwitchCellView : BaseCellView

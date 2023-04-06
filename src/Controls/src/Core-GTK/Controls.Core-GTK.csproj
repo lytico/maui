@@ -3,7 +3,7 @@
     <TargetFrameworks>netstandard2.0</TargetFrameworks>
     <RootNamespace>Microsoft.Maui.Controls</RootNamespace>
     <AssemblyName>Microsoft.Maui.Controls-GTK</AssemblyName>
-    <Nullable>disable</Nullable>
+    <Nullable>enable</Nullable>
     <IsPackable>false</IsPackable>
     <_MauiDesignDllBuild Condition=" '$(OS)' != 'Unix' ">True</_MauiDesignDllBuild>
     <GitInfoReportImportance>high</GitInfoReportImportance>
@@ -12,6 +12,11 @@
     <RunAnalyzersDuringBuild>False</RunAnalyzersDuringBuild>
     <RunAnalyzersDuringLiveAnalysis>False</RunAnalyzersDuringLiveAnalysis>
   </PropertyGroup>
+  <ItemGroup>
+    <Compile Remove="Handlers\**" />
+    <EmbeddedResource Remove="Handlers\**" />
+    <None Remove="Handlers\**" />
+  </ItemGroup>
   <ItemGroup>
     <Compile Remove="HandlerImpl\RadioButton\RadioButton.GTK.cs" />
   </ItemGroup>
@@ -77,6 +82,7 @@
     <Compile Include="..\Core\ColumnDefinitionCollection.cs" Link="ColumnDefinitionCollection.cs" />
     <Compile Include="..\Core\ColumnDefinitionCollectionTypeConverter.cs" Link="ColumnDefinitionCollectionTypeConverter.cs" />
     <Compile Include="..\Core\Command.cs" Link="Command.cs" />
+    <Compile Include="..\Core\CommandElement.cs" Link="CommandElement.cs" />
     <Compile Include="..\Core\CompareStateTrigger.cs" Link="CompareStateTrigger.cs" />
     <Compile Include="..\Core\Compatibility\Handlers\ViewHandlerDelegator.cs" Link="Compatibility\Handlers\ViewHandlerDelegator.cs" />
     <Compile Include="..\Core\Compatibility\Handlers\VisualElementRenderer.cs" Link="Compatibility\Handlers\VisualElementRenderer.cs" />
@@ -133,7 +139,8 @@
     <Compile Include="..\Core\ElementEventArgs.cs" Link="ElementEventArgs.cs" />
     <Compile Include="..\Core\ElementTemplate.cs" Link="ElementTemplate.cs" />
     <Compile Include="..\Core\Element_StyleSheets.cs" Link="Element_StyleSheets.cs" />
-    <Compile Include="..\Core\Entry.cs" Link="Entry.cs" />
+    <Compile Include="..\Core\Entry\Entry.Controls.cs" Link="Entry\Entry.Controls.cs" />
+    <Compile Include="..\Core\Entry\Entry.Mapper.cs" Link="Entry\Entry.Mapper.cs" />
     <Compile Include="..\Core\EnumerableExtensions.cs" Link="EnumerableExtensions.cs" />
     <Compile Include="..\Core\EventArg.cs" Link="EventArg.cs" />
     <Compile Include="..\Core\ExportEffectAttribute.cs" Link="ExportEffectAttribute.cs" />
@@ -182,13 +189,10 @@
     <Compile Include="..\Core\HandlerImpl\Element\Element.cs" Link="HandlerImpl\Element\Element.cs" />
     <Compile Include="..\Core\HandlerImpl\Element\Element.Impl.cs" Link="HandlerImpl\Element\Element.Impl.cs" />
     <Compile Include="..\Core\HandlerImpl\Ellipse.Impl.cs" Link="HandlerImpl\Ellipse.Impl.cs" />
-    <Compile Include="..\Core\HandlerImpl\Entry\Entry.cs" Link="HandlerImpl\Entry\Entry.cs" />
-    <Compile Include="..\Core\HandlerImpl\Entry\Entry.Impl.cs" Link="HandlerImpl\Entry\Entry.Impl.cs" />
     <Compile Include="..\Core\HandlerImpl\Frame.Impl.cs" Link="HandlerImpl\Frame.Impl.cs" />
     <Compile Include="..\Core\HandlerImpl\GraphicsView.Impl.cs" Link="HandlerImpl\GraphicsView.Impl.cs" />
     <Compile Include="..\Core\HandlerImpl\Image.Impl.cs" Link="HandlerImpl\Image.Impl.cs" />
     <Compile Include="..\Core\HandlerImpl\ImageButton\ImageButton.Impl.cs" Link="HandlerImpl\ImageButton\ImageButton.Impl.cs" />
-    <Compile Include="..\Core\HandlerImpl\IMapColorPropertyToPaint.cs" Link="HandlerImpl\IMapColorPropertyToPaint.cs" />
     <Compile Include="..\Core\HandlerImpl\IndicatorView.Impl.cs" Link="HandlerImpl\IndicatorView.Impl.cs" />
     <Compile Include="..\Core\HandlerImpl\Label\Label.cs" Link="HandlerImpl\Label\Label.cs" />
     <Compile Include="..\Core\HandlerImpl\Label\Label.Impl.cs" Link="HandlerImpl\Label\Label.Impl.cs" />
@@ -227,7 +231,6 @@
     <Compile Include="..\Core\HandlerImpl\WebView\WebView.Impl.cs" Link="HandlerImpl\WebView\WebView.Impl.cs" />
     <Compile Include="..\Core\HandlerImpl\Window\Window.cs" Link="HandlerImpl\Window\Window.cs" />
     <Compile Include="..\Core\HandlerImpl\Window\Window.Impl.cs" Link="HandlerImpl\Window\Window.Impl.cs" />
-    <Compile Include="..\Core\Handlers\Shell\ShellHandler.cs" Link="Handlers\Shell\ShellHandler.cs" />
     <Compile Include="..\Core\Hosting\Effects\AppHostBuilderExtensions.cs" Link="Hosting\Effects\AppHostBuilderExtensions.cs" />
     <Compile Include="..\Core\Hosting\Effects\IEffectsBuilder.cs" Link="Hosting\Effects\IEffectsBuilder.cs" />
     <Compile Include="..\Core\HtmlWebViewSource.cs" Link="HtmlWebViewSource.cs" />
@@ -241,8 +244,12 @@
     <Compile Include="..\Core\IButtonController.cs" Link="IButtonController.cs" />
     <Compile Include="..\Core\IButtonElement.cs" Link="IButtonElement.cs" />
     <Compile Include="..\Core\IColorElement.cs" Link="IColorElement.cs" />
+    <Compile Include="..\Core\ICommandElement.cs" Link="ICommandElement.cs" />
     <Compile Include="..\Core\IConfigElement.cs" Link="IConfigElement.cs" />
     <Compile Include="..\Core\IConfigPlatform.cs" Link="IConfigPlatform.cs" />
+    <Compile Include="..\Core\IControlsElement.cs" Link="IControlsElement.cs" />
+    <Compile Include="..\Core\IControlsView.cs" Link="IControlsView.cs" />
+    <Compile Include="..\Core\IControlsVisualElement.cs" Link="IControlsVisualElement.cs" />
     <Compile Include="..\Core\IControlTemplated.cs" Link="IControlTemplated.cs" />
     <Compile Include="..\Core\IConverterOptions.cs" Link="IConverterOptions.cs" />
     <Compile Include="..\Core\ICornerElement.cs" Link="ICornerElement.cs" />
@@ -328,9 +335,9 @@
     <Compile Include="..\Core\Internals\PropertyPropagationExtensions.cs" Link="Internals\PropertyPropagationExtensions.cs" />
     <Compile Include="..\Core\Internals\ResourceLoader.cs" Link="Internals\ResourceLoader.cs" />
     <Compile Include="..\Core\Internals\TextTransformUtilites.cs" Link="Internals\TextTransformUtilites.cs" />
+    <Compile Include="..\Core\Internals\WeakEventProxy.cs" Link="Internals\WeakEventProxy.cs" />
     <Compile Include="..\Core\InvalidationEventArgs.cs" Link="InvalidationEventArgs.cs" />
     <Compile Include="..\Core\InvalidNavigationException.cs" Link="InvalidNavigationException.cs" />
-    <Compile Include="..\Core\IOpenGlViewController.cs" Link="IOpenGlViewController.cs" />
     <Compile Include="..\Core\IPaddingElement.cs" Link="IPaddingElement.cs" />
     <Compile Include="..\Core\IPageContainer.cs" Link="IPageContainer.cs" />
     <Compile Include="..\Core\IPageController.cs" Link="IPageController.cs" />
@@ -463,13 +470,13 @@
     <Compile Include="..\Core\NavigationModel.cs" Link="NavigationModel.cs" />
     <Compile Include="..\Core\NavigationPage.cs" Link="NavigationPage.cs" />
     <Compile Include="..\Core\NavigationProxy.cs" Link="NavigationProxy.cs" />
+    <Compile Include="..\Core\NavigationStepRequest.cs" Link="NavigationStepRequest.cs" />
     <Compile Include="..\Core\NullEffect.cs" Link="NullEffect.cs" />
     <Compile Include="..\Core\NumericExtensions.cs" Link="NumericExtensions.cs" />
     <Compile Include="..\Core\ObservableList.cs" Link="ObservableList.cs" />
     <Compile Include="..\Core\ObservableWrapper.cs" Link="ObservableWrapper.cs" />
     <Compile Include="..\Core\OnIdiom.cs" Link="OnIdiom.cs" />
     <Compile Include="..\Core\OnPlatform.cs" Link="OnPlatform.cs" />
-    <Compile Include="..\Core\OpenGLView.cs" Link="OpenGLView.cs" />
     <Compile Include="..\Core\OrderedDictionary.cs" Link="OrderedDictionary.cs" />
     <Compile Include="..\Core\OrientationStateTrigger.cs" Link="OrientationStateTrigger.cs" />
     <Compile Include="..\Core\PaddingElement.cs" Link="PaddingElement.cs" />
@@ -674,7 +681,6 @@
     <Compile Include="..\Core\TableView.cs" Link="TableView.cs" />
     <Compile Include="..\Core\TapGestureRecognizer.cs" Link="TapGestureRecognizer.cs" />
     <Compile Include="..\Core\TappedEventArgs.cs" Link="TappedEventArgs.cs" />
-    <Compile Include="..\Core\TargetIdiom.cs" Link="TargetIdiom.cs" />
     <Compile Include="..\Core\TemplateBinding.cs" Link="TemplateBinding.cs" />
     <Compile Include="..\Core\TemplatedItemsList.cs" Link="TemplatedItemsList.cs" />
     <Compile Include="..\Core\TemplatedPage.cs" Link="TemplatedPage.cs" />
@@ -773,7 +779,6 @@
     <Folder Include="HandlerImpl\ContentView\" />
     <Folder Include="HandlerImpl\DatePicker\" />
     <Folder Include="HandlerImpl\Editor\" />
-    <Folder Include="HandlerImpl\Entry\" />
     <Folder Include="HandlerImpl\ImageButton\" />
     <Folder Include="HandlerImpl\NavigationPage\" />
     <Folder Include="HandlerImpl\SearchBar\" />
@@ -786,7 +791,6 @@
     <Folder Include="HandlerImpl\ScrollView\" />
     <Folder Include="HandlerImpl\RefreshView\" />
     <Folder Include="HandlerImpl\Picker\" />
-    <Folder Include="Handlers\Shell\" />
     <Folder Include="Hosting\Effects\" />
     <Folder Include="Interactivity\" />
     <Folder Include="Internals\" />

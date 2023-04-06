@@ -1,5 +1,4 @@
-﻿#nullable enable
-using System;
+﻿using System;
 using System.Threading.Tasks;
 using Microsoft.Maui.Graphics;
 
@@ -10,22 +9,46 @@ namespace Microsoft.Maui.Controls.Platform
 		MauiGTKWindow Container =>
 			_window.NativeWindow;
 
-		public Task<Page> PopModalAsync(bool animated)
+		Task<Page> PopModalPlatformAsync(bool animated)
 		{
+			return PopModalAsyncInternal(animated);
+		}
+
+		Task PushModalPlatformAsync(Page modal, bool animated)
+		{
+			return PushModalAsyncInternal(modal, animated);
+		}
+
+		private Task<Page> PopModalAsyncInternal(bool animated)
+		{
+			//var tcs = new TaskCompletionSource<Page>();
+			//var currentPage = _navModel.CurrentPage;
+			//Page result = _navModel.PopModal();
+			//SetCurrent(_navModel.CurrentPage, currentPage, true, () => tcs.SetResult(result));
+			//return tcs.Task;
+
 			var tcs = new TaskCompletionSource<Page>();
-			var currentPage = _navModel.CurrentPage;
-			Page result = _navModel.PopModal();
-			SetCurrent(_navModel.CurrentPage, currentPage, true, () => tcs.SetResult(result));
+			var poppedPage = CurrentPlatformModalPage;
+			_platformModalPages.Remove(poppedPage);
+			SetCurrent(CurrentPlatformPage, poppedPage, true, () => tcs.SetResult(poppedPage));
 			return tcs.Task;
 		}
 
-		public Task PushModalAsync(Page modal, bool animated)
+		private Task PushModalAsyncInternal(Page modal, bool animated)
 		{
+			//_ = modal ?? throw new ArgumentNullException(nameof(modal));
+
+			//var tcs = new TaskCompletionSource<bool>();
+			//var currentPage = _navModel.CurrentPage;
+			//_navModel.PushModal(modal);
+			//SetCurrent(modal, currentPage, false, () => tcs.SetResult(true));
+			//return tcs.Task;
+
 			_ = modal ?? throw new ArgumentNullException(nameof(modal));
 
 			var tcs = new TaskCompletionSource<bool>();
-			var currentPage = _navModel.CurrentPage;
-			_navModel.PushModal(modal);
+			var currentPage = CurrentPlatformPage;
+			_platformModalPages.Add(modal);
 			SetCurrent(modal, currentPage, false, () => tcs.SetResult(true));
 			return tcs.Task;
 		}

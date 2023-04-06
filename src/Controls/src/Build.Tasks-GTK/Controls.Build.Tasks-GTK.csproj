@@ -69,6 +69,7 @@
 	  <Compile Include="..\Build.Tasks\TypeDefinitionExtensions.cs" Link="TypeDefinitionExtensions.cs" />
 	  <Compile Include="..\Build.Tasks\TypeReferenceExtensions.cs" Link="TypeReferenceExtensions.cs" />
 	  <Compile Include="..\Build.Tasks\VariableDefinitionExtensions.cs" Link="VariableDefinitionExtensions.cs" />
+	  <Compile Include="..\Build.Tasks\XamlCache.cs" Link="XamlCache.cs" />
 	  <Compile Include="..\Build.Tasks\XamlCAssemblyResolver.cs" Link="XamlCAssemblyResolver.cs" />
 	  <Compile Include="..\Build.Tasks\XamlCTask.cs" Link="XamlCTask.cs" />
 	  <Compile Include="..\Build.Tasks\XamlTask.cs" Link="XamlTask.cs" />
