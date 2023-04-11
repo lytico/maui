@@ -22,6 +22,8 @@ namespace Microsoft.Maui.Handlers
 			// the view will invalidate several times the Drawable (Draw).
 			// viewGroup.SetLayerType(Android.Views.LayerType.Hardware, null);
 
+			viewGroup.Show();
+
 			return viewGroup;
 		}
 
