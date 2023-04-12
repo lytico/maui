@@ -16,7 +16,7 @@ namespace Microsoft.Maui.Platform
 		// Tapping either of the DatePicker displays invokes the platform date picker
 		Gtk.Calendar? _calendar;
 #pragma warning restore 169
-		
+
 		DateTime _time;
 
 		public DateTime Date

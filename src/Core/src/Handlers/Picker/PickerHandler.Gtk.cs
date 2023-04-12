@@ -76,7 +76,7 @@ namespace Microsoft.Maui.Handlers
 
 		internal static void MapItems(IPickerHandler handler, IPicker picker)
 		{
-			SetValues(handler.PlatformView,picker);
+			SetValues(handler.PlatformView, picker);
 		}
 
 		public static void MapSelectedIndex(PickerHandler handler, IPicker view)

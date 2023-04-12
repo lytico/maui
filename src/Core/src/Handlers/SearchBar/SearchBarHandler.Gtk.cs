@@ -50,7 +50,7 @@ namespace Microsoft.Maui.Handlers
 		}
 
 		public Gtk.Entry? QueryEditor => PlatformView?.Entry;
-		
+
 		public static void MapFont(ISearchBarHandler handler, ISearchBar searchBar)
 		{
 			var fontManager = handler.GetRequiredService<IFontManager>();
@@ -68,7 +68,7 @@ namespace Microsoft.Maui.Handlers
 		public static void MapVerticalTextAlignment(ISearchBarHandler handler, ISearchBar searchBar)
 		{
 		}
-		
+
 		public static void MapTextColor(ISearchBarHandler handler, ISearchBar searchBar)
 		{
 			handler.PlatformView?.Entry?.UpdateTextColor(searchBar.TextColor);

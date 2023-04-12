@@ -3,7 +3,8 @@ using System.Linq;
 
 namespace Microsoft.Maui.Graphics.Platform.Gtk;
 
-public static class HardwareInformations {
+public static class HardwareInformations
+{
 
 	public static Gdk.Screen DefaultScreen => Gdk.Screen.Default;
 
@@ -42,9 +43,11 @@ public static class HardwareInformations {
 
 	public static int CurrentScaleFaktor = CurrentMonitor.ScaleFactor;
 
-	public static IEnumerable<Gdk.Monitor> GetMonitors() {
+	public static IEnumerable<Gdk.Monitor> GetMonitors()
+	{
 
-		for (var i = 0; i < DefaultDisplay.NMonitors; i++) {
+		for (var i = 0; i < DefaultDisplay.NMonitors; i++)
+		{
 			yield return DefaultDisplay.GetMonitor(i);
 		}
 

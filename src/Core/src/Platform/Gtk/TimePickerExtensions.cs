@@ -9,7 +9,7 @@ namespace Microsoft.Maui
 			nativeTimePicker.Time = timePicker.Time;
 
 		}
-		
+
 		public static void UpdateFormat(this MauiTimePicker nativeTimePicker, ITimePicker timePicker)
 		{
 			nativeTimePicker.Format = timePicker.Format;
