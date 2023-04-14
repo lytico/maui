@@ -12,7 +12,9 @@
 		<AvailableItemName Include="MauiCss" />
 	</ItemGroup>
 
-    <UsingTask TaskName="Microsoft.Maui.Controls.Build.Tasks.XamlCTask" AssemblyFile="$(MauiSourceGTKAssemblyDirectory)Controls\src\Build.Tasks-GTK\bin\$(Configuration)\netstandard2.0\Microsoft.Maui.Controls.Build.Tasks-GTK.dll" />
+    <UsingTask Condition=" '$(Configuration)' == 'Debug'" TaskName="Microsoft.Maui.Controls.Build.Tasks.XamlCTask" AssemblyFile="$(MauiSourceGTKAssemblyDirectory)Controls\src\Build.Tasks-GTK\bin\$(Configuration)\netstandard2.0\Microsoft.Maui.Controls.Build.Tasks-GTK.dll" />
+    <UsingTask Condition=" '$(Configuration)' == 'Release'" TaskName="Microsoft.Maui.Controls.Build.Tasks.XamlCTask" AssemblyFile="$(MauiSourceGTKAssemblyDirectory)Controls\src\Build.Tasks-GTK\bin\$(Configuration)\netstandard2.0\Microsoft.Maui.Controls.Build.Tasks-GTK.dll" />
+    <UsingTask Condition=" '$(Configuration)' == 'NoServer'" TaskName="Microsoft.Maui.Controls.Build.Tasks.XamlCTask" AssemblyFile="$(MauiSourceGTKAssemblyDirectory)Controls\src\Build.Tasks-GTK\bin\Debug\netstandard2.0\Microsoft.Maui.Controls.Build.Tasks-GTK.dll" />
 
 	<ItemGroup>
 		<ProjectReference Include="$(MauiSourceGTKDirectory)Core-GTK\src\Core-GTK.csproj" />
