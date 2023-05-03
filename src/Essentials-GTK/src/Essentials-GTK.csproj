@@ -22,7 +22,7 @@
     <PackageReference Include="Microsoft.WindowsAppSDK" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="GtkSharp" Version="3.24.24.65" />
+    <PackageReference Include="GtkSharp" Version="3.24.24.38" />
     <Compile Include="..\..\Essentials\src\AppActions\AppActions.shared.cs" Link="AppActions\AppActions.shared.cs" />
     <Compile Include="..\..\Essentials\src\AppInfo\AppInfo.shared.cs" Link="AppInfo\AppInfo.shared.cs" />
     <Compile Include="..\..\Essentials\src\AppInfo\AppTheme.shared.cs" Link="AppInfo\AppTheme.shared.cs" />

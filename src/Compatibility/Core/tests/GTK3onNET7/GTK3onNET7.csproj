@@ -22,7 +22,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="GtkSharp" Version="3.24.24.65" />
+    <PackageReference Include="GtkSharp" Version="3.24.24.38" />
   </ItemGroup>
 
 </Project>

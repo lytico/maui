@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
-    <TargetFrameworks>net6.0-windows10.0.19041.0;net6.0-windows10.0.20348.0</TargetFrameworks>
+    <TargetFrameworks>net7.0</TargetFrameworks>
 	<MauiSourceGTKDirectory>..\..\..\</MauiSourceGTKDirectory>
 	<MauiSourceGTKAssemblyDirectory></MauiSourceGTKAssemblyDirectory>
     <!-- <UseWindowsForms>true</UseWindowsForms> -->

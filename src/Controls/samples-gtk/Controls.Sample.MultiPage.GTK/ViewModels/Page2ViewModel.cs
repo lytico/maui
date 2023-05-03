@@ -15,7 +15,6 @@ using Prism.Navigation.Xaml;
 using System.Windows.Input;
 using GLib;
 using Microsoft.Maui;
-using System.Windows.Forms;
 
 namespace Maui.Controls.Sample.MultiPage.GTK.ViewModels
 {
