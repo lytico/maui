@@ -14,6 +14,7 @@ This Fork is used for building a GTK 3 app.
 * Then Open Microsoft.Maui-GTK.sln
 * The controls samples-gtk show how to use this. Specifically Maui.Controls.Sample.OnePage.GTK
 * You must put your project inside the branch, or create your own branch from that.  But in that case, please do not Push to GitHub!
+* XAML editor does not work in GTK, create an Android Maui and use the XAML editor there.
 
 Code is still under development.
 If you improve the code here, then please Push to GitHub.
