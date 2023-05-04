@@ -2,146 +2,63 @@
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
-    <TargetFrameworks>net6.0;net7.0</TargetFrameworks>
+    <TargetFrameworks>net7.0</TargetFrameworks>
+    <MauiSourceGTKDirectory>..\..\..\</MauiSourceGTKDirectory>
+    <MauiSourceGTKAssemblyDirectory></MauiSourceGTKAssemblyDirectory>
     <!-- <UseWindowsForms>true</UseWindowsForms> -->
     <ImplicitUsings>enable</ImplicitUsings>
-    <Platforms>AnyCPU</Platforms>
+    <Platforms>AnyCPU;x86</Platforms>
   </PropertyGroup>
-  
+
   <ItemGroup>
-    <PackageReference Include="Microsoft.Extensions.DependencyInjection" />
+    <PackageReference Include="Microsoft.Bcl.AsyncInterfaces" Version="7.0.0"/>
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection"/>
   </ItemGroup>
 
-  <ItemDefinitionGroup>
-    <MauiXaml>
-      <SubType>Designer</SubType>
-    </MauiXaml>
-  </ItemDefinitionGroup>
+  <Import Project="..\..\..\Maui.In.GTK.props"/>
 
   <ItemGroup>
-    <MauiXaml Include="**\*.xaml" />
-    <MauiCss Include="**\*.css" />
-	<AvailableItemName Include="MauiXaml" />
-	<AvailableItemName Include="MauiCss" />
+    <None Remove="Resources\Images\click_me.gif"/>
   </ItemGroup>
 
 
-  <ItemGroup>
-    <ProjectReference Include="..\..\..\Core-GTK\src\Core-GTK.csproj" />
-    <ProjectReference Include="..\..\src\Build.Tasks-GTK\Controls.Build.Tasks-GTK.csproj" />
-    <ProjectReference Include="..\..\src\Core-GTK\Controls.Core-GTK.csproj" />
-	<ProjectReference Include="..\..\..\Controls\src\SourceGen-GTK\Controls.SourceGen-GTK.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
-	<ProjectReference Include="..\..\src\Xaml-GTK\Controls.Xaml-GTK.csproj" />
-  </ItemGroup>
-
-  <UsingTask TaskName="Microsoft.Maui.Controls.Build.Tasks.XamlCTask" AssemblyFile="..\..\src\Build.Tasks-GTK\bin\Debug\netstandard2.0\Microsoft.Maui.Controls.Build.Tasks-GTK.dll" />
-
-  <!-- Inject MauiXaml and MauiCss as AdditionalFiles for partial type generation-->
-  <Target Name="_MauiInjectXamlCssAdditionalFiles" BeforeTargets="GenerateMSBuildEditorConfigFileShouldRun" DependsOnTargets="$(CreateManifestResourceNamesDependsOn)">
-    <ItemGroup>
-      <_MauiXamlWithResourceNames Remove="@(_MauiXamlWithResourceNames)" />
-      <_MauiXamlWithTargetPath Remove="@(_MauiXamlWithTargetPath)" />
-      <_MauiCssWithResourceNames Remove="@(_MauiCssWithResourceNames)" />
-      <_MauiCssWithTargetPath Remove="@(_MauiCssWithTargetPath)" />
-    </ItemGroup>
-
-    <AssignTargetPath Files="@(MauiXaml)" RootFolder="$(MSBuildProjectDirectory)">
-      <Output TaskParameter="AssignedFiles" ItemName="_MauiXamlWithTargetPath" />
-    </AssignTargetPath>
-
-    <AssignTargetPath Files="@(MauiCss)" RootFolder="$(MSBuildProjectDirectory)">
-      <Output TaskParameter="AssignedFiles" ItemName="_MauiCssWithTargetPath" />
-    </AssignTargetPath>
-
-    <CreateCSharpManifestResourceName ResourceFiles="@(_MauiXamlWithTargetPath -> '%(FullPath)')" RootNamespace="$(RootNamespace)" UseDependentUponConvention="$(EmbeddedResourceUseDependentUponConvention)">
-      <Output TaskParameter="ResourceFilesWithManifestResourceNames" ItemName="_MauiXamlWithResourceNames" />
-    </CreateCSharpManifestResourceName>
-
-    <CreateCSharpManifestResourceName ResourceFiles="@(_MauiCssWithTargetPath -> '%(FullPath)')" RootNamespace="$(RootNamespace)" UseDependentUponConvention="$(EmbeddedResourceUseDependentUponConvention)">
-      <Output TaskParameter="ResourceFilesWithManifestResourceNames" ItemName="_MauiCssWithResourceNames" />
-    </CreateCSharpManifestResourceName>
-    <ItemGroup>
-      <AdditionalFiles Condition="%(_MauiXamlWithResourceNames.TargetPath) != ''" Include="@(_MauiXamlWithResourceNames)" ManifestResourceName="%(_MauiXamlWithResourceNames.ManifestResourceName)" TargetPath="%(_MauiXamlWithResourceNames.TargetPath)" RelativePath="$([MSBuild]::MakeRelative($(MSBuildProjectDirectory), %(_MauiXamlWithResourceNames.TargetPath)))" ItemSpec="%(_MauiXamlWithResourceNames.OriginalItemSpec)" GenKind="Xaml" />
-      <AdditionalFiles Condition="%(_MauiCssWithResourceNames.TargetPath) != ''" Include="@(_MauiCssWithResourceNames)" ManifestResourceName="%(_MauiCssWithResourceNames.ManifestResourceName)" TargetPath="%(_MauiCssWithResourceNames.TargetPath)" RelativePath="$([MSBuild]::MakeRelative($(MSBuildProjectDirectory), %(_MauiCssWithResourceNames.TargetPath)))" ItemSpec="%(_MauiCssWithResourceNames.OriginalItemSpec)" GenKind="Css" />
-      <_MauiXamlWithResourceNames Remove="@(_MauiXamlWithResourceNames)" />
-      <_MauiXamlWithTargetPath Remove="@(_MauiXamlWithTargetPath)" />
-      <_MauiCssWithResourceNames Remove="@(_MauiCssWithResourceNames)" />
-      <_MauiCssWithTargetPath Remove="@(_MauiCssWithTargetPath)" />
-    </ItemGroup>
-  </Target>
-
-
-  <!-- re-add MauiXaml and MauiCss as EmbeddedResources -->
-  <PropertyGroup>
-    <PrepareResourcesDependsOn>
-      _MauiAddXamlEmbeddedResources;
-      $(PrepareResourcesDependsOn);
-    </PrepareResourcesDependsOn>
+  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net6.0-windows10.0.19041.0|AnyCPU'">
+    <TreatWarningsAsErrors>False</TreatWarningsAsErrors>
+    <NoWarn>1701;1702;2002</NoWarn>
   </PropertyGroup>
-  <Target Name="_MauiAddXamlEmbeddedResources">
-    <ItemGroup>
-      <EmbeddedResource Include="@(MauiXaml)" />
-      <EmbeddedResource Include="@(MauiCss)" />
-    </ItemGroup>
-  </Target>
-
-	<!-- XamlC -->
-	<PropertyGroup>
-		<CompileDependsOn>
-			$(CompileDependsOn);
-			XamlC;
-		</CompileDependsOn>
-	</PropertyGroup>
-	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net6.0-windows10.0.19041.0|AnyCPU'">
-	  <TreatWarningsAsErrors>False</TreatWarningsAsErrors>
-	  <NoWarn>1701;1702;2002</NoWarn>
-	</PropertyGroup>
-	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net6.0-windows10.0.19041.0|AnyCPU'">
-	  <TreatWarningsAsErrors>False</TreatWarningsAsErrors>
-	  <NoWarn>1701;1702;2002</NoWarn>
-	</PropertyGroup>
-	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net6.0-windows10.0.19041.0|x86'">
-	  <TreatWarningsAsErrors>False</TreatWarningsAsErrors>
-	  <NoWarn>1701;1702;2002</NoWarn>
-	</PropertyGroup>
-	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net6.0-windows10.0.19041.0|x86'">
-	  <TreatWarningsAsErrors>False</TreatWarningsAsErrors>
-	  <NoWarn>1701;1702;2002</NoWarn>
-	</PropertyGroup>
-	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net6.0-windows10.0.20348.0|AnyCPU'">
-	  <TreatWarningsAsErrors>False</TreatWarningsAsErrors>
-	  <NoWarn>1701;1702;2002</NoWarn>
-	</PropertyGroup>
-	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net6.0-windows10.0.20348.0|AnyCPU'">
-	  <TreatWarningsAsErrors>False</TreatWarningsAsErrors>
-	  <NoWarn>1701;1702;2002</NoWarn>
-	</PropertyGroup>
-	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net6.0-windows10.0.20348.0|x86'">
-	  <TreatWarningsAsErrors>False</TreatWarningsAsErrors>
-	  <NoWarn>1701;1702;2002</NoWarn>
-	</PropertyGroup>
-	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net6.0-windows10.0.20348.0|x86'">
-	  <TreatWarningsAsErrors>False</TreatWarningsAsErrors>
-	  <NoWarn>1701;1702;2002</NoWarn>
-	</PropertyGroup>
-
-	<Target Name="XamlC" AfterTargets="AfterCompile" Inputs="$(IntermediateOutputPath)$(TargetFileName)-GTK" Outputs="$(IntermediateOutputPath)XamlC.stamp" Condition=" '$(DesignTimeBuild)' != 'True' AND '@(MauiXaml)' != ''">
-	    <PropertyGroup>
-		<_MauiXamlCValidateOnly>$(MauiXamlCValidateOnly)</_MauiXamlCValidateOnly>
-		<_MauiXamlCValidateOnly Condition="'$(Configuration)' != 'Release' AND '$(_MauiForceXamlCForDebug)' != 'True'">True</_MauiXamlCValidateOnly>
-		<_MauiXamlCValidateOnly Condition="'$(BuildingForLiveUnitTesting)' == 'True' ">True</_MauiXamlCValidateOnly>
-	    </PropertyGroup>
-		<XamlCTask Assembly="$(IntermediateOutputPath)$(TargetFileName)-GTK" ReferencePath="@(ReferencePath)" OptimizeIL="true" DebugSymbols="$(DebugSymbols)" DebugType="$(DebugType)" DefaultCompile="true" ValidateOnly="$(_MauiXamlCValidateOnly)" TargetFramework="$(TargetFramework)" KeepXamlResources="$(MauiKeepXamlResources)" />
-		<Touch Files="$(IntermediateOutputPath)XamlC.stamp" AlwaysCreate="True" />
-		<ItemGroup>
-			<FileWrites Include="$(IntermediateOutputPath)XamlC.stamp" />
-		</ItemGroup>
-	</Target>
+  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net6.0-windows10.0.19041.0|AnyCPU'">
+    <TreatWarningsAsErrors>False</TreatWarningsAsErrors>
+    <NoWarn>1701;1702;2002</NoWarn>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net6.0-windows10.0.19041.0|x86'">
+    <TreatWarningsAsErrors>False</TreatWarningsAsErrors>
+    <NoWarn>1701;1702;2002</NoWarn>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net6.0-windows10.0.19041.0|x86'">
+    <TreatWarningsAsErrors>False</TreatWarningsAsErrors>
+    <NoWarn>1701;1702;2002</NoWarn>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net6.0-windows10.0.20348.0|AnyCPU'">
+    <TreatWarningsAsErrors>False</TreatWarningsAsErrors>
+    <NoWarn>1701;1702;2002</NoWarn>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net6.0-windows10.0.20348.0|AnyCPU'">
+    <TreatWarningsAsErrors>False</TreatWarningsAsErrors>
+    <NoWarn>1701;1702;2002</NoWarn>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net6.0-windows10.0.20348.0|x86'">
+    <TreatWarningsAsErrors>False</TreatWarningsAsErrors>
+    <NoWarn>1701;1702;2002</NoWarn>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net6.0-windows10.0.20348.0|x86'">
+    <TreatWarningsAsErrors>False</TreatWarningsAsErrors>
+    <NoWarn>1701;1702;2002</NoWarn>
+  </PropertyGroup>
 
   <ItemGroup>
-    <EmbeddedResource Include="click_me.gif">
+    <EmbeddedResource Include="Resources\Images\click_me.gif">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </EmbeddedResource>
   </ItemGroup>
 
-  </Project>
+</Project>

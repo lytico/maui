@@ -48,12 +48,16 @@
                 x:Name="CounterBtn2Image"
                 Clicked="OnCounter2Clicked"
                 ImageSource="click_me.gif"
+                HeightRequest="40"
+                WidthRequest="84"
                 HorizontalOptions="Center" />
             
             <ImageButton
                 x:Name="CounterBtn3Image"
                 Clicked="OnCounter3Clicked"
                 Source="click_me.gif"
+                HeightRequest="40"
+                WidthRequest="84"
                 HorizontalOptions="Center" />
 
             <Entry
@@ -72,7 +76,9 @@
             <Image
                 x:Name="PlainImage"
                 Source="click_me.gif"
-                HorizontalOptions="Center" WidthRequest="180" />
+                HeightRequest="40"
+                WidthRequest="84"
+                HorizontalOptions="Center" />
 
             <HorizontalStackLayout>
                 <Label

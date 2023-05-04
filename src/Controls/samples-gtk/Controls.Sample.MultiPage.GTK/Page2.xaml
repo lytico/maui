@@ -37,7 +37,9 @@
 
             <Image
                 Source="click_me.gif"
-                HorizontalOptions="Center" WidthRequest="180" />
+                HeightRequest="40"
+                WidthRequest="84"
+                HorizontalOptions="Center" />
 
             <StackLayout Orientation="Horizontal">
                 <Label

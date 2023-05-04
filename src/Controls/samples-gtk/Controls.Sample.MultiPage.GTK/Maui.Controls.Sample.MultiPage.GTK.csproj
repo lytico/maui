@@ -11,15 +11,18 @@
   </PropertyGroup>
   
   <ItemGroup>
+    <PackageReference Include="Microsoft.Bcl.AsyncInterfaces" Version="7.0.0" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" />
   </ItemGroup>
 
-  <Import Project="..\..\..\Maui.In.GTK.props"/>
+  <Import Project="..\..\..\Maui.In.GTK.props" />
 
   <ItemGroup>
     <MauiCss Remove="Resources\Styles\GeorgeGtk.css" />
+    <None Remove="Resources\Images\click_me.gif" />
     <None Remove="Resources\Images\radio_button_ticked.png" />
     <None Remove="Resources\Images\radio_button_untick.png" />
+    <None Remove="Resources\Images\unused_background.png" />
     <None Remove="Resources\Styles\GeorgeGtk.css" />
   </ItemGroup>
 
@@ -57,13 +60,16 @@
 	</PropertyGroup>
 
   <ItemGroup>
-    <EmbeddedResource Include="click_me.gif">
+    <EmbeddedResource Include="Resources\Images\click_me.gif">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </EmbeddedResource>
     <EmbeddedResource Include="Resources\Images\radio_button_ticked.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </EmbeddedResource>
     <EmbeddedResource Include="Resources\Images\radio_button_untick.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\Images\unused_background.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </EmbeddedResource>
     <EmbeddedResource Include="Resources\Styles\GeorgeGtk.css">

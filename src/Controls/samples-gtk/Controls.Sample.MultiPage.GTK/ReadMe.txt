@@ -3,5 +3,5 @@
 Uses more than one page with navigation.
 
 
-Build event to generate xaml to cs:
-D:\Source\maui\src\Controls\tests\GenerateXamlRunner\bin\Debug\net6.0\GenerateXamlRunner.exe $(ProjectDir) $(ProjectDir)$(BaseIntermediateOutputPath)$(Configuration)\prebuilt
+Note:
+I put BackgroundImageSource into MainPage.xaml to show that it does not generate an error, however it is not supposed to work because GTK 3.0 uses CSS for that.
