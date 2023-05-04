@@ -66,7 +66,7 @@
     <Compile Include="**\*.macos.*.cs" Exclude="$(DefaultItemExcludes);$(DefaultExcludesInProjectFolder)" />
   </ItemGroup> -->
   <ItemGroup Condition=" '$(TargetPlatformIdentifier)' == 'gtk' ">
-    <PackageReference Include="GtkSharp"/>
+<!--    <PackageReference Include="GtkSharp"/>-->
     <Compile Include="**\*.Gtk.cs" />
     <Compile Include="**\*.Gtk.*.cs" />
   </ItemGroup>
