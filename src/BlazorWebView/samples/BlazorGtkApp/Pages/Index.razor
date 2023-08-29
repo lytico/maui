@@ -1,0 +1,16 @@
+@page "/"
+
+@using System.Diagnostics
+
+
+<p>@nameof(StartupTime) @StartupTime</p>
+
+@code {
+    string StartupTime
+    {
+        get
+        {
+            return (Process.GetCurrentProcess().StartTime - DateTime.Now).ToString() + "x";
+        }
+    }
+}
