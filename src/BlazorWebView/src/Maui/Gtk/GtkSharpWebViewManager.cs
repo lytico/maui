@@ -23,15 +23,19 @@ public class GtkSharpWebViewManager : Microsoft.AspNetCore.Components.WebView.We
     const string _scheme = "app";
     readonly static Uri _baseUri = new Uri($"{_scheme}://localhost/");
 
+#pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
     public GtkSharpWebViewManager(WebView webView, IServiceProvider serviceProvider)
-        : base(serviceProvider, Dispatcher.CreateDefault(), _baseUri
+#pragma warning restore CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
+	    : base(serviceProvider, Dispatcher.CreateDefault(), _baseUri
             , new PhysicalFileProvider(serviceProvider.GetRequiredService<BlazorWebViewOptions>().ContentRoot)
             , new()
             , serviceProvider.GetRequiredService<BlazorWebViewOptions>().RelativeHostPath)
     {
         var options = serviceProvider.GetRequiredService<BlazorWebViewOptions>();
         _relativeHostPath = options.RelativeHostPath;
+#pragma warning disable CS8601 // Possible null reference assignment.
         _rootComponent = options.RootComponent;
+#pragma warning restore CS8601 // Possible null reference assignment.
         _logger = serviceProvider.GetService<ILogger<BlazorWebView>>();
 
         WebView = webView;
@@ -44,7 +48,9 @@ public class GtkSharpWebViewManager : Microsoft.AspNetCore.Components.WebView.We
 
         Dispatcher.InvokeAsync(async () =>
         {
-            await AddRootComponentAsync(_rootComponent, "#app", ParameterView.Empty);
+#pragma warning disable CS8604 // Possible null reference argument.
+	        await AddRootComponentAsync(_rootComponent, "#app", ParameterView.Empty);
+#pragma warning restore CS8604 // Possible null reference argument.
         });
 
         var script = new global::WebKit.Upstream.UserScript(
