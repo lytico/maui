@@ -31,6 +31,10 @@
     <ProjectReference Include="..\..\..\Core\src\Core.csproj" PrivateAssets="all" />
   </ItemGroup>
 
+  <ItemGroup Condition=" '$(TargetPlatformIdentifier)' == 'gtk' ">
+    <ProjectReference Include="..\GtkSharp.BlazorWebView\GtkSharp.BlazorWebView.csproj" />
+  </ItemGroup>
+  
   <Import Project="$(MauiSrcDirectory)PublicAPI.targets" />
   <Import Project="$(MauiRootDirectory)src\Workload\Shared\LibraryPacks.targets" />
 
