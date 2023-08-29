@@ -3,12 +3,17 @@ using System.IO;
 
 namespace GtkSharp.BlazorWebKit;
 
-public record BlazorWebViewOptions
+public class BlazorWebViewOptions
 {
 
-	public Type? RootComponent { get; init; }
+	static string _scheme = "app";
+	static Uri _baseUri = new Uri($"{_scheme}://localhost/");
 
-	public string HostPath { get; init; } = Path.Combine("wwwroot", "index.html");
+	public Uri BaseUri { get; set; } = _baseUri;
+
+	public Type? RootComponent { get; set; }
+
+	public string HostPath { get; set; } = Path.Combine("wwwroot", "index.html");
 
 	public string ContentRoot { get => Path.GetDirectoryName(Path.GetFullPath(HostPath))!; }
 
