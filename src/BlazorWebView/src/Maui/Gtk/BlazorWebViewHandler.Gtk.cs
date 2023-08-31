@@ -67,7 +67,7 @@ namespace Microsoft.AspNetCore.Components.WebView.Maui
 			var fileProvider = VirtualView.CreateFileProvider(contentRootDir);
 
 			Uri missingAppBaseUri = new Uri(contentRootDir);
-			_webviewManager = new GtkSharpWebViewManager(
+			_webviewManager = new GtkWebViewManager(
 				this.PlatformView,
 				new BlazorWebViewOptions(),
 				Services!,

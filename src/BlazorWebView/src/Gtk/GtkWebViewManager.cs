@@ -6,7 +6,7 @@ using Microsoft.Extensions.FileProviders;
 namespace Microsoft.AspNetCore.Components.WebView.Gtk;
 #pragma warning disable CS0649 // Field is never assigned to, and will always have its default value
 
-public class GtkSharpWebViewManager : GtkSharp.BlazorWebKit.GtkSharpWebViewManager
+public class GtkWebViewManager : GtkSharp.BlazorWebKit.GtkWebViewManager
 {
 
 	#region CopiedFromWebView2WebViewManager
@@ -25,8 +25,7 @@ public class GtkSharpWebViewManager : GtkSharp.BlazorWebKit.GtkSharpWebViewManag
 
 	#endregion
 
-	public GtkSharpWebViewManager(WebKit.WebView webView, IServiceProvider serviceProvider) : base(webView, serviceProvider) { }
-
-	public GtkSharpWebViewManager(WebKit.WebView webView, BlazorWebViewOptions options, IServiceProvider provider, Dispatcher dispatcher, Uri appBaseUri, IFileProvider fileProvider, JSComponentConfigurationStore jsComponents, string hostPageRelativePath) : base(webView, options, provider, dispatcher, appBaseUri, fileProvider, jsComponents, hostPageRelativePath) { }
+	public GtkWebViewManager(WebKit.WebView webView, Type rootComponent, string scheme, IServiceProvider provider, Dispatcher dispatcher, Uri appBaseUri, IFileProvider fileProvider, JSComponentConfigurationStore jsComponents, string hostPageRelativePath) : 
+		base(webView, rootComponent, scheme, provider, dispatcher, appBaseUri, fileProvider, jsComponents, hostPageRelativePath) { }
 
 }

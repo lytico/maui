@@ -6,17 +6,8 @@ namespace GtkSharp.BlazorWebKit;
 public class BlazorWebViewOptions
 {
 
-	static string _scheme = "app";
-	static Uri _baseUri = new Uri($"{_scheme}://localhost/");
+	public Type RootComponent { get; init; }
 
-	public Uri BaseUri { get; set; } = _baseUri;
-
-	public Type? RootComponent { get; set; }
-
-	public string HostPath { get; set; } = Path.Combine("wwwroot", "index.html");
-
-	public string ContentRoot { get => Path.GetDirectoryName(Path.GetFullPath(HostPath))!; }
-
-	public string RelativeHostPath { get => Path.GetRelativePath(ContentRoot, HostPath); }
+	public string HostPath { get; init; } = Path.Combine("wwwroot", "index.html");
 
 }
