@@ -5,11 +5,47 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.FileProviders;
+using WebKit;
 
 namespace GtkSharp.BlazorWebKit;
 
 public partial class GtkWebViewManager
 {
+
+	public static GtkWebViewManager NewForWebView(WebView webView, IServiceProvider serviceProvider)
+	{
+		var options = serviceProvider.GetRequiredService<BlazorWebViewOptions>();
+		var hostPath = options.HostPath;
+		var rootComponent = options.RootComponent;
+		var contentRoot = Path.GetDirectoryName(Path.GetFullPath(hostPath))!;
+		const string scheme = "app";
+		var baseUri = new Uri($"{scheme}://localhost/");
+
+		var relativePath = Path.GetRelativePath(contentRoot, hostPath);
+		var dispatcher = Microsoft.AspNetCore.Components.Dispatcher.CreateDefault();
+
+		var webViewManager = new GtkWebViewManager(webView,
+			scheme,
+			serviceProvider,
+			dispatcher,
+			baseUri,
+			new PhysicalFileProvider(contentRoot),
+			new(),
+			relativePath);
+
+		webViewManager.Attach();
+
+		dispatcher.InvokeAsync(async () =>
+		{
+			await webViewManager.AddRootComponentAsync(rootComponent, "#app", Microsoft.AspNetCore.Components.ParameterView.Empty);
+		});
+
+		webViewManager.Navigate("/");
+
+		return webViewManager;
+	}
 
 	#region CopiedFromWebView2WebViewManager
 
@@ -25,8 +61,8 @@ public partial class GtkWebViewManager
 
 	protected static readonly Uri AppOriginUri = new(AppOrigin);
 
-	protected readonly Task<bool> _webviewReadyTask;
-	protected readonly string _contentRootRelativeToAppRoot;
+	protected Task<bool> _webviewReadyTask;
+	protected string _contentRootRelativeToAppRoot;
 
 	protected static string GetHeaderString(IDictionary<string, string> headers) =>
 		string.Join(Environment.NewLine, headers.Select(kvp => $"{kvp.Key}: {kvp.Value}"));
