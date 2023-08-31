@@ -28,7 +28,7 @@ namespace Microsoft.AspNetCore.Components.WebView.Gtk
 		/// </summary>
 		public BlazorWebView()
 		{
-			Controls = new WidgetCollection(this);
+			Widgets = CreateWidgetsInstance();
 			ComponentsDispatcher = Dispatcher.CreateDefault();
 
 			RootComponents.CollectionChanged += HandleRootComponentsCollectionChanged;
@@ -55,7 +55,7 @@ namespace Microsoft.AspNetCore.Components.WebView.Gtk
 
 			_webview.LoadFailedWithTlsErrors += (o, args) => { };
 			
-			((BlazorWebViewControlCollection)Controls).AddInternal(_webview);
+			((BlazorWebViewWidgetCollection)Widgets).AddInternal(_webview);
 		}
 
 		/// <summary>
@@ -71,7 +71,7 @@ namespace Microsoft.AspNetCore.Components.WebView.Gtk
 
 		private Dispatcher ComponentsDispatcher { get; }
 
-		WidgetCollection Controls { get; set; }
+		WidgetCollection Widgets { get; set; }
 
 		bool Created { get; set; }
 
@@ -290,19 +290,19 @@ namespace Microsoft.AspNetCore.Components.WebView.Gtk
 		}
 
 		/// <inheritdoc />
-		protected WidgetCollection CreateControlsInstance()
+		protected WidgetCollection CreateWidgetsInstance()
 		{
-			return new BlazorWebViewControlCollection(this);
+			return new BlazorWebViewWidgetCollection(this);
 		}
 
 		/// <summary>
 		/// Custom control collection that ensures that only the owning <see cref="BlazorWebView"/> can add
 		/// controls to it.
 		/// </summary>
-		private sealed class BlazorWebViewControlCollection : WidgetCollection
+		private sealed class BlazorWebViewWidgetCollection : WidgetCollection
 		{
 
-			public BlazorWebViewControlCollection(BlazorWebView owner) : base(owner)
+			public BlazorWebViewWidgetCollection(BlazorWebView owner) : base(owner)
 			{ }
 
 			/// <summary>
