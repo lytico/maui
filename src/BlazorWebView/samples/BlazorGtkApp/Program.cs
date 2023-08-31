@@ -3,7 +3,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Gtk;
 using GtkSharp.BlazorWebKit;
-        
+
 Application.Init();
 
 // Create the parent window
@@ -34,7 +34,10 @@ var serviceProvider = new ServiceCollection()
         .SetMinimumLevel(LogLevel.Information);
     })
     .BuildServiceProvider();
-var webView = new BlazorWebView(serviceProvider);
+
+var webView = new BlazorWebView();
+var manager = GtkWebViewManager.NewForWebView(webView, serviceProvider);
+
 window.Add(webView);
 
 // Allow opening developer tools
