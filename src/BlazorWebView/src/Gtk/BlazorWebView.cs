@@ -11,13 +11,11 @@ using Widget = global::Gtk.Widget;
 
 namespace Microsoft.AspNetCore.Components.WebView.Gtk
 {
-
 	/// <summary>
 	/// A Gtk Widget for hosting Razor components locally in Windows desktop applications.
 	/// </summary>
 	public class BlazorWebView : global::Gtk.Bin
 	{
-
 		private readonly WebKit.WebView _webview;
 		private GtkWebViewManager? _webviewManager;
 		private string? _hostPage;
@@ -183,11 +181,14 @@ namespace Microsoft.AspNetCore.Components.WebView.Gtk
 			string appRootDir;
 			var entryAssemblyLocation = Assembly.GetEntryAssembly()?.Location;
 
+#if !DEBUG
 			if (!string.IsNullOrEmpty(entryAssemblyLocation))
 			{
 				appRootDir = System.IO.Path.GetDirectoryName(entryAssemblyLocation)!;
 			}
 			else
+#endif
+
 			{
 				appRootDir = Environment.CurrentDirectory;
 			}
@@ -202,9 +203,10 @@ namespace Microsoft.AspNetCore.Components.WebView.Gtk
 			if (_webviewManager != null)
 			{
 				_webviewManager.DisposeAsync()
-				   .AsTask()
-				   .GetAwaiter()
-				   .GetResult();;
+					.AsTask()
+					.GetAwaiter()
+					.GetResult();
+				;
 			}
 
 			_webviewManager = new GtkWebViewManager(
@@ -285,10 +287,10 @@ namespace Microsoft.AspNetCore.Components.WebView.Gtk
 				// the WebView2 control. This order is critical because once the WebView2 is disposed it will prevent
 				// Razor component code from working because it requires the WebView to exist.
 				_webviewManager?
-				   .DisposeAsync()
-				   .AsTask()
-				   .GetAwaiter()
-				   .GetResult();
+					.DisposeAsync()
+					.AsTask()
+					.GetAwaiter()
+					.GetResult();
 			}
 
 			base.Dispose(disposing);
@@ -306,9 +308,7 @@ namespace Microsoft.AspNetCore.Components.WebView.Gtk
 		/// </summary>
 		private sealed class BlazorWebViewWidgetCollection : WidgetCollection
 		{
-
-			public BlazorWebViewWidgetCollection(BlazorWebView owner) : base(owner)
-			{ }
+			public BlazorWebViewWidgetCollection(BlazorWebView owner) : base(owner) { }
 
 			/// <summary>
 			/// This is the only API we use; everything else is blocked.
@@ -326,9 +326,6 @@ namespace Microsoft.AspNetCore.Components.WebView.Gtk
 			public override void Remove(Widget? value) => throw new NotSupportedException();
 
 			public override void SetChildIndex(Widget child, int newIndex) => throw new NotSupportedException();
-
 		}
-
 	}
-
 }

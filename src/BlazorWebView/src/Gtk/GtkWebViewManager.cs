@@ -10,7 +10,6 @@ namespace Microsoft.AspNetCore.Components.WebView.Gtk;
 
 public class GtkWebViewManager : GtkSharp.BlazorWebKit.GtkWebViewManager
 {
-
 	#region CopiedFromWebView2WebViewManager
 
 	protected readonly Action<UrlLoadingEventArgs>? _urlLoading;
@@ -19,15 +18,16 @@ public class GtkWebViewManager : GtkSharp.BlazorWebKit.GtkWebViewManager
 
 	internal readonly BlazorWebViewDeveloperTools? _developerTools;
 
-	internal void ApplyDefaultWebViewSettings(BlazorWebViewDeveloperTools devTools)
+	internal void ApplyDefaultWebViewSettings(BlazorWebViewDeveloperTools? devTools)
 	{
+		if (devTools is not { })
+			return;
+		
 		WebView.Settings.EnableDeveloperExtras = devTools.Enabled;
-
 	}
 
 	private void CoreWebView2_NavigationStarting(object? sender, LoadChangedArgs args)
 	{
-
 		if (args.LoadEvent != LoadEvent.Started)
 		{
 			return;
@@ -51,7 +51,6 @@ public class GtkWebViewManager : GtkSharp.BlazorWebKit.GtkWebViewManager
 
 			if (callbackArgs.UrlLoadingStrategy != UrlLoadingStrategy.OpenInWebView)
 				WebView.StopLoading();
-
 		}
 	}
 
@@ -114,16 +113,15 @@ public class GtkWebViewManager : GtkSharp.BlazorWebKit.GtkWebViewManager
 		// Unfortunately the WebView can only be instantiated asynchronously.
 		// We want the external API to behave as if initalization is synchronous,
 		// so keep track of a task we can await during LoadUri.
-		_webviewReadyTask = TryInitializeWebView2();
+		_webviewReadyTask = TryInitializeWebView();
 	}
 
-	Task<bool> TryInitializeWebView2()
+	Task<bool> TryInitializeWebView()
 	{
-		_blazorWebViewInitializing?.Invoke(new BlazorWebViewInitializingEventArgs{});
+		_blazorWebViewInitializing?.Invoke(new BlazorWebViewInitializingEventArgs { });
 		Attach();
 		_blazorWebViewInitialized?.Invoke(new BlazorWebViewInitializedEventArgs { WebView = WebView });
-
+		this.ApplyDefaultWebViewSettings(_developerTools);
 		return Task.FromResult(false);
 	}
-
 }
