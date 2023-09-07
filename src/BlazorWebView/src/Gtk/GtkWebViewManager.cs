@@ -102,6 +102,8 @@ public class GtkWebViewManager : GtkSharp.BlazorWebKit.GtkWebViewManager
 			}
 #endif
 
+		//TODO: missing: scheme!
+		_scheme = "app";
 		WebView = webview;
 		_urlLoading = urlLoading;
 		_blazorWebViewInitializing = blazorWebViewInitializing;

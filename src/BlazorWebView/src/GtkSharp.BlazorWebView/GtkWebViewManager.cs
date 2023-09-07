@@ -23,7 +23,7 @@ namespace GtkSharp.BlazorWebKit;
 public partial class GtkWebViewManager : Microsoft.AspNetCore.Components.WebView.WebViewManager
 {
 
-	string _scheme;
+	protected string _scheme;
 	string _hostPageRelativePath;
 	Uri _appBaseUri;
 
