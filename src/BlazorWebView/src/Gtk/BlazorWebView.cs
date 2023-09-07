@@ -13,9 +13,9 @@ namespace Microsoft.AspNetCore.Components.WebView.Gtk
 {
 
 	/// <summary>
-	/// A Windows Forms control for hosting Razor components locally in Windows desktop applications.
+	/// A Gtk Widget for hosting Razor components locally in Windows desktop applications.
 	/// </summary>
-	public class BlazorWebView : global::Gtk.Container
+	public class BlazorWebView : global::Gtk.Bin
 	{
 
 		private readonly WebKit.WebView _webview;
@@ -40,10 +40,13 @@ namespace Microsoft.AspNetCore.Components.WebView.Gtk
 
 			_webview.Create += (o, args) =>
 			{
-				Created = true;
+				;
 			};
 
-			_webview.ReadyToShow += (sender, args) => { };
+			_webview.ReadyToShow += (sender, args) =>
+			{
+				;
+			};
 
 			_webview.LoadChanged += (o, args) => { };
 			_webview.ResourceLoadStarted += (o, args) => { };
@@ -54,8 +57,10 @@ namespace Microsoft.AspNetCore.Components.WebView.Gtk
 			_webview.Close += (o, args) => { };
 
 			_webview.LoadFailedWithTlsErrors += (o, args) => { };
-			
+
+			this.Child = _webview;
 			((BlazorWebViewWidgetCollection)Widgets).AddInternal(_webview);
+			Created = true;
 		}
 
 		/// <summary>
