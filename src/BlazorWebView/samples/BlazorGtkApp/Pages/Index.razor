@@ -1,18 +1,25 @@
-@page "/"
+﻿@page "/"
+@inject AppState AppState
+@using WebViewAppShared
 
-@namespace BlazorGtkApp
-@using System.Diagnostics
+<h3>Hello, world!</h3>
 
-<Counter />
+<p>The current count is <strong>@AppState.Counter</strong></p>
 
-<p>@nameof(StartupTime) @StartupTime</p>
+<button @onclick="IncrementCount">Increment</button>
+<button @onclick="TriggerException">Throw</button>
+
+<p>This is a shared component</p>
+<SharedComponent />
 
 @code {
-    string StartupTime
+    void IncrementCount()
     {
-        get
-        {
-            return (Process.GetCurrentProcess().StartTime - DateTime.Now).ToString() + "x";
-        }
+        AppState.Counter++;
+    }
+
+    void TriggerException()
+    {
+        throw new InvalidTimeZoneException("This is an exception from an event handler");
     }
 }

@@ -2,7 +2,11 @@
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Gtk;
-using GtkSharp.BlazorWebKit;
+using Microsoft.AspNetCore.Components.Web;
+using Microsoft.AspNetCore.Components.WebView.Gtk;
+using WebViewAppShared;
+
+AppState _appState = new();
 
 Application.Init();
 
@@ -12,36 +16,38 @@ window.DefaultSize = new Gdk.Size(1024, 768);
 
 window.DeleteEvent += (o, e) =>
 {
-    Application.Quit();
+	Application.Quit();
 };
 
-// Add the BlazorWebView
-var serviceProvider = new ServiceCollection()
-    .AddBlazorWebViewOptions(new BlazorWebViewOptions() 
-    { 
-        RootComponent = typeof(App),
-        HostPath = "wwwroot/index.html"
-    })
-    .AddLogging((lb) =>
-    {
-        lb.AddSimpleConsole(options =>
-        {
-            //options.ColorBehavior = Microsoft.Extensions.Logging.Console.LoggerColorBehavior.Disabled;
-            //options.IncludeScopes = false;
-            //options.SingleLine = true;
-            options.TimestampFormat = "hh:mm:ss ";
-        })
-        .SetMinimumLevel(LogLevel.Information);
-    })
-    .BuildServiceProvider();
+// Add the BlazorWebViews
+var services1 = new ServiceCollection();
+services1.AddGtkBlazorWebView();
+#if DEBUG
+services1.AddBlazorWebViewDeveloperTools();
+#endif
+services1.AddSingleton<AppState>(_appState);
 
-var webView = new BlazorWebView();
-var manager = GtkWebViewManager.NewForWebView(webView, serviceProvider);
+var services2 = new ServiceCollection();
+services2.AddGtkBlazorWebView();
+#if DEBUG
+services2.AddBlazorWebViewDeveloperTools();
+#endif
 
-window.Add(webView);
+services2.AddSingleton<AppState>(_appState);
 
-// Allow opening developer tools
-webView.Settings.EnableDeveloperExtras = true;
+var blazorWebView1 = new BlazorWebView();
+blazorWebView1.HostPage = @"wwwroot\index.html";
+blazorWebView1.Services = services1.BuildServiceProvider();
+blazorWebView1.RootComponents.Add<BlazorGtkApp.Main>("#app");
+blazorWebView1.RootComponents.RegisterForJavaScript<MyDynamicComponent>("my-dynamic-root-component");
+
+var customFilesBlazorWebView = new BlazorWebView();
+customFilesBlazorWebView.HostPage = @"wwwroot\customindex.html";
+customFilesBlazorWebView.Services = services2.BuildServiceProvider();
+customFilesBlazorWebView.RootComponents.Add<BlazorGtkApp.Main>("#app");
+
+window.Add(blazorWebView1);
+
 
 window.ShowAll();
 
