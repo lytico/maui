@@ -35,7 +35,10 @@ public partial class GtkWebViewManager : Microsoft.AspNetCore.Components.WebView
 
 	protected GtkWebViewManager(IServiceProvider provider, Dispatcher dispatcher, Uri appBaseUri, IFileProvider fileProvider, JSComponentConfigurationStore jsComponents, string hostPageRelativePath) :
 		base(provider, dispatcher, appBaseUri, fileProvider, jsComponents, hostPageRelativePath)
-	{ }
+	{
+		_appBaseUri = appBaseUri;
+		_hostPageRelativePath = hostPageRelativePath;
+	}
 
 	// This is necessary to automatically serve the files in the `_framework` virtual folder.
 	// Using `file://` will cause the webview to look for the `_framework` files on the file system,
