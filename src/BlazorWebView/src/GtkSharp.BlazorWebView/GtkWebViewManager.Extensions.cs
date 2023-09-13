@@ -52,7 +52,7 @@ public partial class GtkWebViewManager
 	// Using an IP address means that WebView doesn't wait for any DNS resolution,
 	// making it substantially faster. Note that this isn't real HTTP traffic, since
 	// we intercept all the requests within this origin.
-	protected static readonly string AppHostAddress = "0.0.0.0";
+	protected static readonly string AppHostAddress = "localhost";
 
 	/// <summary>
 	/// Gets the application's base URI. Defaults to <c>https://0.0.0.0/</c>
