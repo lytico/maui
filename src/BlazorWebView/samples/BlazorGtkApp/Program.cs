@@ -1,4 +1,5 @@
-﻿using BlazorGtkApp;
+﻿using System.IO;
+using BlazorGtkApp;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Gtk;
@@ -38,14 +39,14 @@ services2.AddBlazorWebViewDeveloperTools();
 services2.AddSingleton<AppState>(_appState);
 
 var blazorWebView1 = new BlazorWebView();
-blazorWebView1.HostPage = @"wwwroot\index.html";
+blazorWebView1.HostPage = Path.Combine("wwwroot","index.html");
 blazorWebView1.Services = services1.BuildServiceProvider();
 blazorWebView1.RootComponents.Add<BlazorGtkApp.Main>("#app");
 blazorWebView1.RootComponents.RegisterForJavaScript<MyDynamicComponent>("my-dynamic-root-component");
 
 
 var customFilesBlazorWebView = new BlazorWebView();
-customFilesBlazorWebView.HostPage = @"wwwroot\customindex.html";
+customFilesBlazorWebView.HostPage = Path.Combine("wwwroot","customindex.html");
 customFilesBlazorWebView.Services = services2.BuildServiceProvider();
 customFilesBlazorWebView.RootComponents.Add<BlazorGtkApp.Main>("#app");
 
