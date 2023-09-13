@@ -9,6 +9,8 @@ using Microsoft.AspNetCore.Components.WebView.Gtk;
 using WebViewAppShared;
 using GtkWebViewManager = Microsoft.AspNetCore.Components.WebView.Gtk.GtkWebViewManager;
 
+#pragma warning disable CS0162 // Unreachable code detected
+
 AppState _appState = new();
 
 Application.Init();
@@ -38,46 +40,52 @@ services2.AddBlazorWebViewDeveloperTools();
 
 services2.AddSingleton<AppState>(_appState);
 
-var blazorWebView1 = new BlazorWebView();
-blazorWebView1.HostPage = Path.Combine("wwwroot","index.html");
-blazorWebView1.Services = services1.BuildServiceProvider();
-blazorWebView1.RootComponents.Add<BlazorGtkApp.Main>("#app");
-blazorWebView1.RootComponents.RegisterForJavaScript<MyDynamicComponent>("my-dynamic-root-component");
-
-
-var customFilesBlazorWebView = new BlazorWebView();
-customFilesBlazorWebView.HostPage = Path.Combine("wwwroot","customindex.html");
-customFilesBlazorWebView.Services = services2.BuildServiceProvider();
-customFilesBlazorWebView.RootComponents.Add<BlazorGtkApp.Main>("#app");
-
 var nb = new Gtk.Notebook();
-var tab1 = nb.AppendPage(blazorWebView1, new Label(nameof(blazorWebView1)));
-var tab2 = nb.AppendPage(customFilesBlazorWebView, new Label(nameof(customFilesBlazorWebView)));
-
-
+if (true)
+{
 // this is the old stuff
-var serviceProvider = new ServiceCollection()
-	.AddBlazorWebViewOptions(new BlazorWebViewOptions() 
-	{ 
-		RootComponent = typeof(BlazorGtkApp.Main),
-		HostPath = "wwwroot/index.html"
-	})
-	.AddLogging((lb) =>
-	{
-		lb.AddSimpleConsole(options =>
-			{
-				//options.ColorBehavior = Microsoft.Extensions.Logging.Console.LoggerColorBehavior.Disabled;
-				//options.IncludeScopes = false;
-				//options.SingleLine = true;
-				options.TimestampFormat = "hh:mm:ss ";
-			})
-			.SetMinimumLevel(LogLevel.Information);
-	})
-	.BuildServiceProvider();
+	var serviceProvider = new ServiceCollection()
+		.AddBlazorWebViewOptions(new BlazorWebViewOptions() { 
+			RootComponent = typeof(BlazorGtkApp.Main), 
+			HostPath = Path.Combine("wwwroot", "index.html") })
+		.AddLogging((lb) =>
+		{
+			lb.AddSimpleConsole(options =>
+				{
+					//options.ColorBehavior = Microsoft.Extensions.Logging.Console.LoggerColorBehavior.Disabled;
+					//options.IncludeScopes = false;
+					//options.SingleLine = true;
+					options.TimestampFormat = "hh:mm:ss ";
+				})
+				.SetMinimumLevel(LogLevel.Information);
+		})
+		.BuildServiceProvider();
 
-var webViewRaw = new WebKit.WebView();
-var manager = GtkWebViewManager.NewForWebView(webViewRaw, serviceProvider);
-var tab3 = nb.AppendPage(webViewRaw, new Label(nameof(webViewRaw)));
+	var webViewRaw = new WebKit.WebView();
+	webViewRaw.Settings.EnableDeveloperExtras = true;
+	var manager = GtkWebViewManager.NewForWebView(webViewRaw, serviceProvider);
+	var tab3 = nb.AppendPage(webViewRaw, new Label(nameof(webViewRaw)));
+}
+
+if (true)
+{
+	var blazorWebView1 = new BlazorWebView();
+	blazorWebView1.HostPage = Path.Combine("wwwroot", "index.html");
+	blazorWebView1.Services = services1.BuildServiceProvider();
+	blazorWebView1.RootComponents.Add<BlazorGtkApp.Main>("#app");
+	blazorWebView1.RootComponents.RegisterForJavaScript<MyDynamicComponent>("my-dynamic-root-component");
+	var tab1 = nb.AppendPage(blazorWebView1, new Label(nameof(blazorWebView1)));
+}
+
+if (false)
+{
+	var customFilesBlazorWebView = new BlazorWebView();
+	customFilesBlazorWebView.HostPage = Path.Combine("wwwroot", "customindex.html");
+	customFilesBlazorWebView.Services = services2.BuildServiceProvider();
+	customFilesBlazorWebView.RootComponents.Add<BlazorGtkApp.Main>("#app");
+
+	var tab2 = nb.AppendPage(customFilesBlazorWebView, new Label(nameof(customFilesBlazorWebView)));
+}
 
 
 window.Add(nb);
