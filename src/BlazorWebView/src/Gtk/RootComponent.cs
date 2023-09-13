@@ -4,6 +4,7 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using GtkSharp.BlazorWebKit;
 
 namespace Microsoft.AspNetCore.Components.WebView.Gtk
 {
@@ -48,7 +49,7 @@ namespace Microsoft.AspNetCore.Components.WebView.Gtk
 			return webViewManager.AddRootComponentAsync(ComponentType, Selector, parameterView);
 		}
 
-		internal Task RemoveFromWebViewManagerAsync(GtkWebViewManager webviewManager)
+		internal Task RemoveFromWebViewManagerAsync(WebViewManager webviewManager)
 		{
 			return webviewManager.RemoveRootComponentAsync(Selector);
 		}

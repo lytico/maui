@@ -8,7 +8,7 @@ using WebKit;
 namespace Microsoft.AspNetCore.Components.WebView.Gtk;
 #pragma warning disable CS0649 // Field is never assigned to, and will always have its default value
 
-public class GtkWebViewManager : GtkSharp.BlazorWebKit.GtkWebViewManager
+public class GtkWebViewManager_x : GtkSharp.BlazorWebKit.GtkWebViewManager
 {
 	#region CopiedFromWebView2WebViewManager
 
@@ -57,7 +57,7 @@ public class GtkWebViewManager : GtkSharp.BlazorWebKit.GtkWebViewManager
 	#endregion
 
 	/// <summary>
-	/// Constructs an instance of <see cref="GtkWebViewManager"/>.
+	/// Constructs an instance of <see cref="GtkWebViewManager_x"/>.
 	/// </summary>
 	/// <param name="webview">A <see cref="WebKit.WebView"/> to access platform-specific WebView2 APIs.</param>
 	/// <param name="services">A service provider containing services to be used by this class and also by application code.</param>
@@ -69,7 +69,7 @@ public class GtkWebViewManager : GtkSharp.BlazorWebKit.GtkWebViewManager
 	/// <param name="urlLoading">Callback invoked when a url is about to load.</param>
 	/// <param name="blazorWebViewInitializing">Callback invoked before the webview is initialized.</param>
 	/// <param name="blazorWebViewInitialized">Callback invoked after the webview is initialized.</param>
-	internal GtkWebViewManager(
+	internal GtkWebViewManager_x(
 		WebKit.WebView webview,
 		IServiceProvider services,
 		Dispatcher dispatcher,
@@ -110,18 +110,14 @@ public class GtkWebViewManager : GtkSharp.BlazorWebKit.GtkWebViewManager
 		_developerTools = services.GetRequiredService<BlazorWebViewDeveloperTools>();
 		_contentRootRelativeToAppRoot = contentRootRelativeToAppRoot;
 
-		// Unfortunately the WebView can only be instantiated asynchronously.
-		// We want the external API to behave as if initalization is synchronous,
-		// so keep track of a task we can await during LoadUri.
-		_webviewReadyTask = TryInitializeWebView();
 	}
 
-	Task<bool> TryInitializeWebView()
+	internal Task<bool> TryInitializeWebView()
 	{
 		_blazorWebViewInitializing?.Invoke(new BlazorWebViewInitializingEventArgs { });
 		Attach();
 		_blazorWebViewInitialized?.Invoke(new BlazorWebViewInitializedEventArgs { WebView = WebView });
 		this.ApplyDefaultWebViewSettings(_developerTools);
-		return Task.FromResult(false);
+		return Task.FromResult(true);
 	}
 }

@@ -13,10 +13,8 @@ namespace GtkSharp.BlazorWebKit;
 
 public partial class GtkWebViewManager
 {
-
-	public static GtkWebViewManager NewForWebView(WebView webView, IServiceProvider serviceProvider)
+	public static GtkWebViewManager NewForWebView(WebView webView, BlazorWebViewOptions options, IServiceProvider serviceProvider)
 	{
-		var options = serviceProvider.GetRequiredService<BlazorWebViewOptions>();
 		var hostPath = options.HostPath;
 		var rootComponent = options.RootComponent;
 		var contentRoot = Path.GetDirectoryName(Path.GetFullPath(hostPath))!;
@@ -37,14 +35,21 @@ public partial class GtkWebViewManager
 
 		webViewManager.Attach();
 
-		dispatcher.InvokeAsync(async () =>
-		{
-			await webViewManager.AddRootComponentAsync(rootComponent, "#app", Microsoft.AspNetCore.Components.ParameterView.Empty);
-		});
+		if (rootComponent != null)
+			dispatcher.InvokeAsync(async () =>
+			{
+				await webViewManager.AddRootComponentAsync(rootComponent, "#app", Microsoft.AspNetCore.Components.ParameterView.Empty);
+			});
 
 		webViewManager.Navigate("/");
 
 		return webViewManager;
+	}
+
+	public static GtkWebViewManager NewForWebView(WebView webView, IServiceProvider serviceProvider)
+	{
+		var options = serviceProvider.GetRequiredService<BlazorWebViewOptions>();
+		return NewForWebView(webView, options, serviceProvider);
 	}
 
 	#region CopiedFromWebView2WebViewManager
@@ -93,9 +98,7 @@ public partial class GtkWebViewManager
 		launchBrowser.StartInfo.UseShellExecute = true;
 		launchBrowser.StartInfo.FileName = uri.ToString();
 		launchBrowser.Start();
-
 	}
 
 	#endregion
-
 }
