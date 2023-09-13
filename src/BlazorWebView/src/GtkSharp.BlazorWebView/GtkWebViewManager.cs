@@ -1,10 +1,6 @@
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
-using System.Linq;
-using System.Reflection;
-using System.Text.Encodings.Web;
 using System.Threading.Tasks;
 using System.Web;
 using GtkSharpUpstream;
@@ -22,7 +18,6 @@ namespace GtkSharp.BlazorWebKit;
 
 public partial class GtkWebViewManager : Microsoft.AspNetCore.Components.WebView.WebViewManager
 {
-
 	protected string _scheme;
 	string _hostPageRelativePath;
 	Uri _appBaseUri;
@@ -38,6 +33,22 @@ public partial class GtkWebViewManager : Microsoft.AspNetCore.Components.WebView
 	{
 		_appBaseUri = appBaseUri;
 		_hostPageRelativePath = hostPageRelativePath;
+	}
+
+
+	public GtkWebViewManager(
+		WebView webView, string scheme,
+		IServiceProvider provider, Dispatcher dispatcher, Uri appBaseUri,
+		IFileProvider fileProvider,
+		JSComponentConfigurationStore jsComponents, string hostPageRelativePath) : base(provider, dispatcher, appBaseUri, fileProvider, jsComponents, hostPageRelativePath)
+
+	{
+		_scheme = scheme;
+		_hostPageRelativePath = hostPageRelativePath;
+		_appBaseUri = appBaseUri;
+		_logger = provider.GetService<ILogger<GtkWebViewManager>>();
+
+		WebView = webView;
 	}
 
 	// This is necessary to automatically serve the files in the `_framework` virtual folder.
@@ -61,10 +72,8 @@ public partial class GtkWebViewManager : Microsoft.AspNetCore.Components.WebView
 
 		if (TryGetResponseContent(uri, false, out int statusCode, out string statusMessage, out Stream content, out IDictionary<string, string> headers))
 		{
-
 			using var inputStream = content.AsInputStream();
 			request.Finish(inputStream, content.Length, headers["Content-Type"]);
-
 		}
 		else
 		{
@@ -74,7 +83,6 @@ public partial class GtkWebViewManager : Microsoft.AspNetCore.Components.WebView
 
 	void SignalHandler(IntPtr contentManager, IntPtr jsResultHandle, IntPtr arg)
 	{
-
 		var jsResult = new global::WebKit.Upstream.JavascriptResult(jsResultHandle);
 
 		var jsValue = jsResult.JsValue;
@@ -91,8 +99,7 @@ public partial class GtkWebViewManager : Microsoft.AspNetCore.Components.WebView
 			{
 				MessageReceived(_appBaseUri, s);
 			}
-			finally
-			{ }
+			finally { }
 		}
 	}
 
@@ -124,9 +131,8 @@ public partial class GtkWebViewManager : Microsoft.AspNetCore.Components.WebView
 
 	global::WebKit.Upstream.UserScript _script;
 
-	protected void Attach()
+	protected virtual void Attach()
 	{
-
 		WebView.Context.RegisterUriScheme(_scheme, RegisterUriScheme);
 
 		var jsScript = JsScript(MessageQueueId);
@@ -146,29 +152,13 @@ public partial class GtkWebViewManager : Microsoft.AspNetCore.Components.WebView
 		WebView.UserContentManager.RegisterScriptMessageHandler(MessageQueueId);
 	}
 
-	protected void Detach()
+	protected virtual void Detach()
 	{
 		WebView.Context.RemoveSignalHandler($"script-message-received::{MessageQueueId}", SignalHandler);
 		WebView.UserContentManager.UnregisterScriptMessageHandler(MessageQueueId);
 		WebView.UserContentManager.RemoveScript(_script);
-
 	}
 
-	public GtkWebViewManager(
-		WebView webView, string scheme,
-		IServiceProvider provider, Dispatcher dispatcher, Uri appBaseUri,
-		IFileProvider fileProvider,
-		JSComponentConfigurationStore jsComponents, string hostPageRelativePath) : base(provider, dispatcher, appBaseUri, fileProvider, jsComponents, hostPageRelativePath)
-
-	{
-		_scheme = scheme;
-		_hostPageRelativePath = hostPageRelativePath;
-		_appBaseUri = appBaseUri;
-		_logger = provider.GetService<ILogger<GtkWebViewManager>>();
-
-		WebView = webView;
-
-	}
 
 	protected override void NavigateCore(Uri absoluteUri)
 	{
@@ -191,5 +181,4 @@ public partial class GtkWebViewManager : Microsoft.AspNetCore.Components.WebView
 		Detach();
 		await base.DisposeAsyncCore();
 	}
-
 }

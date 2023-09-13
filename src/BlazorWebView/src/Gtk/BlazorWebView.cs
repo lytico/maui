@@ -32,45 +32,10 @@ namespace Microsoft.AspNetCore.Components.WebView.Gtk
 
 			RootComponents.CollectionChanged += HandleRootComponentsCollectionChanged;
 
-			_webview = new WebKit.WebView()
-			{
-
-			};
-
-			_webview.Create += (o, args) =>
-			{
-				;
-			};
-
-			_webview.ReadyToShow += (sender, args) =>
-			{
-				;
-			};
-
-			_webview.LoadChanged += (o, args) =>
-			{
-				;
-			};
-			_webview.ResourceLoadStarted += (o, args) =>
-			{
-				;
-			};
-			_webview.LoadFailed += (o, args) =>
-			{
-				;
-			};
-			_webview.RunFileChooser += (o, args) => { };
-
-			_webview.Close += (o, args) => { };
-
-			_webview.LoadFailedWithTlsErrors += (o, args) =>
-			{
-				;
-			};
+			_webview = new WebKit.WebView();
 
 			this.Child = _webview;
 			((BlazorWebViewWidgetCollection)Widgets).AddInternal(_webview);
-			Created = true;
 		}
 
 		/// <summary>
@@ -94,6 +59,7 @@ namespace Microsoft.AspNetCore.Components.WebView.Gtk
 		protected override void OnShown()
 		{
 			base.OnShown();
+			Created = true;
 
 			StartWebViewCoreIfPossible();
 		}
@@ -163,9 +129,9 @@ namespace Microsoft.AspNetCore.Components.WebView.Gtk
 		[Category("Action")] [Description("Allows customizing the web view after it is created.")]
 		public EventHandler<BlazorWebViewInitializedEventArgs>? BlazorWebViewInitialized;
 
-		private void OnHostPagePropertyChanged() { } //=> StartWebViewCoreIfPossible();
+		private void OnHostPagePropertyChanged() => StartWebViewCoreIfPossible();
 
-		private void OnServicesPropertyChanged() { } //=> StartWebViewCoreIfPossible();
+		private void OnServicesPropertyChanged() => StartWebViewCoreIfPossible();
 
 		private bool RequiredStartupPropertiesSet =>
 			Created &&
@@ -221,23 +187,17 @@ namespace Microsoft.AspNetCore.Components.WebView.Gtk
 				;
 			}
 
-			// _webviewManager = new GtkWebViewManager(
-			// 	_webview,
-			// 	Services,
-			// 	ComponentsDispatcher,
-			// 	fileProvider,
-			// 	RootComponents.JSComponents,
-			// 	contentRootRelativePath,
-			// 	hostPageRelativePath,
-			// 	(args) => UrlLoading?.Invoke(this, args),
-			// 	(args) => BlazorWebViewInitializing?.Invoke(this, args),
-			// 	(args) => BlazorWebViewInitialized?.Invoke(this, args));
-
-			_webviewManager = GtkWebViewManager.NewForWebView(_webview, new BlazorWebViewOptions
-			{
-				HostPath = hostPageRelativePath
-			}, Services);
-			// var started = _webviewManager.TryInitializeWebView().Result;
+			_webviewManager = new GtkWebViewManager(
+				_webview,
+				Services,
+				ComponentsDispatcher,
+				fileProvider,
+				RootComponents.JSComponents,
+				contentRootRelativePath,
+				hostPageRelativePath,
+				(args) => UrlLoading?.Invoke(this, args),
+				(args) => BlazorWebViewInitializing?.Invoke(this, args),
+				(args) => BlazorWebViewInitialized?.Invoke(this, args));
 
 			StaticContentHotReloadManager.AttachToWebViewManagerIfEnabled(_webviewManager);
 

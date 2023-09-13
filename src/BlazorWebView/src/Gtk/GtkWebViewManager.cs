@@ -8,7 +8,7 @@ using WebKit;
 namespace Microsoft.AspNetCore.Components.WebView.Gtk;
 #pragma warning disable CS0649 // Field is never assigned to, and will always have its default value
 
-public class GtkWebViewManager_x : GtkSharp.BlazorWebKit.GtkWebViewManager
+public class GtkWebViewManager : GtkSharp.BlazorWebKit.GtkWebViewManager
 {
 	#region CopiedFromWebView2WebViewManager
 
@@ -22,11 +22,11 @@ public class GtkWebViewManager_x : GtkSharp.BlazorWebKit.GtkWebViewManager
 	{
 		if (devTools is not { })
 			return;
-		
+
 		WebView.Settings.EnableDeveloperExtras = devTools.Enabled;
 	}
 
-	private void CoreWebView2_NavigationStarting(object? sender, LoadChangedArgs args)
+	private void NavigationStarting(object? sender, LoadChangedArgs args)
 	{
 		if (args.LoadEvent != LoadEvent.Started)
 		{
@@ -57,7 +57,7 @@ public class GtkWebViewManager_x : GtkSharp.BlazorWebKit.GtkWebViewManager
 	#endregion
 
 	/// <summary>
-	/// Constructs an instance of <see cref="GtkWebViewManager_x"/>.
+	/// Constructs an instance of <see cref="GtkWebViewManager"/>.
 	/// </summary>
 	/// <param name="webview">A <see cref="WebKit.WebView"/> to access platform-specific WebView2 APIs.</param>
 	/// <param name="services">A service provider containing services to be used by this class and also by application code.</param>
@@ -69,7 +69,7 @@ public class GtkWebViewManager_x : GtkSharp.BlazorWebKit.GtkWebViewManager
 	/// <param name="urlLoading">Callback invoked when a url is about to load.</param>
 	/// <param name="blazorWebViewInitializing">Callback invoked before the webview is initialized.</param>
 	/// <param name="blazorWebViewInitialized">Callback invoked after the webview is initialized.</param>
-	internal GtkWebViewManager_x(
+	internal GtkWebViewManager(
 		WebKit.WebView webview,
 		IServiceProvider services,
 		Dispatcher dispatcher,
@@ -85,39 +85,23 @@ public class GtkWebViewManager_x : GtkSharp.BlazorWebKit.GtkWebViewManager
 	{
 		ArgumentNullException.ThrowIfNull(webview);
 
-#if WEBVIEW2_WINFORMS
-			if (services.GetService<WindowsFormsBlazorMarkerService>() is null)
-			{
-				throw new InvalidOperationException(
-					"Unable to find the required services. " +
-					$"Please add all the required services by calling '{nameof(IServiceCollection)}.{nameof(BlazorWebViewServiceCollectionExtensions.AddWindowsFormsBlazorWebView)}' in the application startup code.");
-			}
-#elif WEBVIEW2_WPF
-			if (services.GetService<WpfBlazorMarkerService>() is null)
-			{
-				throw new InvalidOperationException(
-					"Unable to find the required services. " +
-					$"Please add all the required services by calling '{nameof(IServiceCollection)}.{nameof(BlazorWebViewServiceCollectionExtensions.AddWpfBlazorWebView)}' in the application startup code.");
-			}
-#endif
+		_contentRootRelativeToAppRoot = contentRootRelativeToAppRoot;
 
-		//TODO: missing: scheme!
-		_scheme = "app";
+		_scheme = AppHostScheme;
 		WebView = webview;
 		_urlLoading = urlLoading;
 		_blazorWebViewInitializing = blazorWebViewInitializing;
 		_blazorWebViewInitialized = blazorWebViewInitialized;
 		_developerTools = services.GetRequiredService<BlazorWebViewDeveloperTools>();
-		_contentRootRelativeToAppRoot = contentRootRelativeToAppRoot;
-
+		
+		Attach();
 	}
 
-	internal Task<bool> TryInitializeWebView()
+	protected override void Attach()
 	{
 		_blazorWebViewInitializing?.Invoke(new BlazorWebViewInitializingEventArgs { });
-		Attach();
+		base.Attach();
 		_blazorWebViewInitialized?.Invoke(new BlazorWebViewInitializedEventArgs { WebView = WebView });
 		this.ApplyDefaultWebViewSettings(_developerTools);
-		return Task.FromResult(true);
 	}
 }

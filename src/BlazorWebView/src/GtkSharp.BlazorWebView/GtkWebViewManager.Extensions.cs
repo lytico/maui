@@ -19,7 +19,7 @@ public partial class GtkWebViewManager
 		var rootComponent = options.RootComponent;
 		var contentRoot = Path.GetDirectoryName(Path.GetFullPath(hostPath))!;
 		const string scheme = "app";
-		var baseUri = new Uri($"{scheme}://localhost/");
+		var appBaseUri = new Uri($"{scheme}://localhost/");
 
 		var relativePath = Path.GetRelativePath(contentRoot, hostPath);
 		var dispatcher = Microsoft.AspNetCore.Components.Dispatcher.CreateDefault();
@@ -28,7 +28,7 @@ public partial class GtkWebViewManager
 			scheme,
 			serviceProvider,
 			dispatcher,
-			baseUri,
+			appBaseUri,
 			new PhysicalFileProvider(contentRoot),
 			new(),
 			relativePath);
@@ -54,15 +54,14 @@ public partial class GtkWebViewManager
 
 	#region CopiedFromWebView2WebViewManager
 
-	// Using an IP address means that WebView doesn't wait for any DNS resolution,
-	// making it substantially faster. Note that this isn't real HTTP traffic, since
-	// we intercept all the requests within this origin.
 	protected static readonly string AppHostAddress = "localhost";
 
+	protected static readonly string AppHostScheme = "app";
+
 	/// <summary>
-	/// Gets the application's base URI. Defaults to <c>https://0.0.0.0/</c>
+	/// Gets the application's base URI. Defaults to <c>app://localhost/</c>
 	/// </summary>
-	protected static readonly string AppOrigin = $"https://{AppHostAddress}/";
+	protected static readonly string AppOrigin = $"{AppHostScheme}://{AppHostAddress}/";
 
 	protected static readonly Uri AppOriginUri = new(AppOrigin);
 
