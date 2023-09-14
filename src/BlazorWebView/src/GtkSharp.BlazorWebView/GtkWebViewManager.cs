@@ -189,6 +189,7 @@ public partial class GtkWebViewManager : Microsoft.AspNetCore.Components.WebView
 		WebView.Context.RemoveSignalHandler($"script-message-received::{MessageQueueId}", SignalHandler);
 		WebView.UserContentManager.UnregisterScriptMessageHandler(MessageQueueId);
 		WebView.UserContentManager.RemoveScript(_script);
+		UriSchemeRequestHandlers.Remove(WebView.Handle);
 	}
 
 	protected override void SendMessage(string message)
