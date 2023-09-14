@@ -51,26 +51,35 @@ public partial class GtkWebViewManager : Microsoft.AspNetCore.Components.WebView
 		WebView = webView;
 	}
 
-	// This is necessary to automatically serve the files in the `_framework` virtual folder.
-	// Using `file://` will cause the webview to look for the `_framework` files on the file system,
-	// and it won't find them.
-	void RegisterUriScheme(URISchemeRequest request)
+	delegate bool TryGetResponseContentHandler(string uri, bool allowFallbackOnHostPage, out int statusCode, out string statusMessage, out Stream content, out IDictionary<string, string> headers);
+
+	static readonly Dictionary<IntPtr, (string _hostPageRelativePath, TryGetResponseContentHandler tryGetResponseContent)> UriSchemeRequestHandlers = new();
+
+	static bool HandleUriSchemeRequestIsRegistered = false;
+
+	/// <summary>
+	/// RegisterUriScheme can only called once per scheme
+	/// so it's needed to have a list of all WebViews registered
+	/// </summary>
+	/// <param name="request"></param>
+	/// <exception cref="Exception"></exception>
+	static void HandleUriSchemeRequest(URISchemeRequest request)
 	{
-		if (request.Scheme != _scheme)
+		if (!UriSchemeRequestHandlers.TryGetValue(request.WebView.Handle, out var uriSchemeHandler))
 		{
 			throw new Exception($"Invalid scheme \"{request.Scheme}\"");
 		}
+
 
 		var uri = request.Uri;
 
 		if (request.Path == "/")
 		{
-			uri += _hostPageRelativePath;
+			uri += uriSchemeHandler._hostPageRelativePath;
 		}
 
-		_logger?.LogInformation($"Fetching \"{uri}\"");
 
-		if (TryGetResponseContent(uri, false, out int statusCode, out string statusMessage, out Stream content, out IDictionary<string, string> headers))
+		if (uriSchemeHandler.tryGetResponseContent(uri, false, out int statusCode, out string statusMessage, out Stream content, out IDictionary<string, string> headers))
 		{
 			using var inputStream = content.AsInputStream();
 			request.Finish(inputStream, content.Length, headers["Content-Type"]);
@@ -79,6 +88,22 @@ public partial class GtkWebViewManager : Microsoft.AspNetCore.Components.WebView
 		{
 			throw new Exception($"Failed to serve \"{uri}\". {statusCode} - {statusMessage}");
 		}
+	}
+
+	void RegisterUriSchemeRequestHandler()
+	{
+		if (!UriSchemeRequestHandlers.TryGetValue(WebView.Handle, out var uriSchemeHandler))
+		{
+			UriSchemeRequestHandlers.Add(WebView.Handle, (_hostPageRelativePath, TryGetResponseContent));
+		}
+	}
+
+	protected override void NavigateCore(Uri absoluteUri)
+	{
+		_logger?.LogInformation($"Navigating to \"{absoluteUri}\"");
+		var loadUri = absoluteUri.ToString();
+
+		WebView.LoadUri(loadUri);
 	}
 
 	void SignalHandler(IntPtr contentManager, IntPtr jsResultHandle, IntPtr arg)
@@ -133,7 +158,13 @@ public partial class GtkWebViewManager : Microsoft.AspNetCore.Components.WebView
 
 	protected virtual void Attach()
 	{
-		WebView.Context.RegisterUriScheme(_scheme, RegisterUriScheme);
+		if (!HandleUriSchemeRequestIsRegistered)
+		{
+			WebView.Context.RegisterUriScheme(AppHostScheme, HandleUriSchemeRequest);
+			HandleUriSchemeRequestIsRegistered = true;
+		}
+
+		RegisterUriSchemeRequestHandler();
 
 		var jsScript = JsScript(MessageQueueId);
 
@@ -152,19 +183,12 @@ public partial class GtkWebViewManager : Microsoft.AspNetCore.Components.WebView
 		WebView.UserContentManager.RegisterScriptMessageHandler(MessageQueueId);
 	}
 
+
 	protected virtual void Detach()
 	{
 		WebView.Context.RemoveSignalHandler($"script-message-received::{MessageQueueId}", SignalHandler);
 		WebView.UserContentManager.UnregisterScriptMessageHandler(MessageQueueId);
 		WebView.UserContentManager.RemoveScript(_script);
-	}
-
-
-	protected override void NavigateCore(Uri absoluteUri)
-	{
-		_logger?.LogInformation($"Navigating to \"{absoluteUri}\"");
-
-		WebView.LoadUri(absoluteUri.ToString());
 	}
 
 	protected override void SendMessage(string message)

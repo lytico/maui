@@ -24,6 +24,8 @@ public class GtkWebViewManager : GtkSharp.BlazorWebKit.GtkWebViewManager
 			return;
 
 		WebView.Settings.EnableDeveloperExtras = devTools.Enabled;
+		WebView.Settings.EnablePageCache = false;
+		WebView.Settings.EnableOfflineWebApplicationCache = false;
 	}
 
 	private void NavigationStarting(object? sender, LoadChangedArgs args)

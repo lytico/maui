@@ -54,16 +54,16 @@ public partial class GtkWebViewManager
 
 	#region CopiedFromWebView2WebViewManager
 
-	protected static readonly string AppHostAddress = "localhost";
+	protected const string AppHostAddress = "localhost";
 
 	protected static readonly string AppHostScheme = "app";
 
 	/// <summary>
 	/// Gets the application's base URI. Defaults to <c>app://localhost/</c>
 	/// </summary>
-	protected static readonly string AppOrigin = $"{AppHostScheme}://{AppHostAddress}/";
+	protected static string AppOrigin(string appHostScheme, string appHostAddress = AppHostAddress) => $"{appHostScheme}://{appHostAddress}/";
 
-	protected static readonly Uri AppOriginUri = new(AppOrigin);
+	protected static readonly Uri AppOriginUri = new(AppOrigin(AppHostScheme, AppHostAddress));
 
 	protected Task<bool> _webviewReadyTask;
 	protected string _contentRootRelativeToAppRoot;
