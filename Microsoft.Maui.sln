@@ -265,8 +265,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlazorGtkApp", "src\BlazorW
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Microsoft.AspNetCore.Components.WebView.Gtk", "src\BlazorWebView\src\Gtk\Microsoft.AspNetCore.Components.WebView.Gtk.csproj", "{6158696F-1BAC-4939-A387-AE0A13324EC0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GtkSharp.BlazorWebKit", "src\BlazorWebView\src\GtkSharp.BlazorWebKit\GtkSharp.BlazorWebKit.csproj", "{1CB1D938-301A-4CCD-AC0A-77095D315418}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -669,10 +667,6 @@ Global
 		{6158696F-1BAC-4939-A387-AE0A13324EC0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6158696F-1BAC-4939-A387-AE0A13324EC0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6158696F-1BAC-4939-A387-AE0A13324EC0}.Release|Any CPU.Build.0 = Release|Any CPU
-		{1CB1D938-301A-4CCD-AC0A-77095D315418}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{1CB1D938-301A-4CCD-AC0A-77095D315418}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{1CB1D938-301A-4CCD-AC0A-77095D315418}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{1CB1D938-301A-4CCD-AC0A-77095D315418}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -796,7 +790,6 @@ Global
 		{E3FD165E-E0BE-4263-AC0E-260BA6713AD3} = {E1082E26-D700-4127-9329-66D673FD2D55}
 		{C105B25E-CB14-449E-8E65-6D5B36CB1B1C} = {A8E9400E-70DD-421F-8609-1C2FA4AE8E71}
 		{6158696F-1BAC-4939-A387-AE0A13324EC0} = {ED7F28E0-D0AF-417D-983D-3D874EEE8554}
-		{1CB1D938-301A-4CCD-AC0A-77095D315418} = {ED7F28E0-D0AF-417D-983D-3D874EEE8554}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {0B8ABEAD-D2B5-4370-A187-62B5ABE4EE50}
