@@ -46,7 +46,7 @@ public partial class GtkWebViewManager : Microsoft.AspNetCore.Components.WebView
 	Uri _appBaseUri;
 
 	UserScript? _script;
-	
+
 	public delegate void WebMessageHandler(IntPtr contentManager, IntPtr jsResult, IntPtr arg);
 
 	public WebView? WebView { get; protected set; }
@@ -189,6 +189,8 @@ public partial class GtkWebViewManager : Microsoft.AspNetCore.Components.WebView
 			null, null);
 #pragma warning restore CS8625 // Cannot convert null literal to non-nullable reference type.
 
+		WebView.DestroyEvent += (o, args) => Detach();
+
 		WebView.UserContentManager.AddScript(_script);
 
 		WebView.UserContentManager.SignalConnectData<WebMessageHandler>($"script-message-received::{MessageQueueId}",
@@ -198,15 +200,22 @@ public partial class GtkWebViewManager : Microsoft.AspNetCore.Components.WebView
 		WebView.UserContentManager.RegisterScriptMessageHandler(MessageQueueId);
 	}
 
+	bool _detached = false;
+
 	protected virtual void Detach()
 	{
 		if (WebView is not { })
+			return;
+
+		if (_detached)
 			return;
 
 		WebView.Context.RemoveSignalHandler($"script-message-received::{MessageQueueId}", SignalHandler);
 		WebView.UserContentManager.UnregisterScriptMessageHandler(MessageQueueId);
 		WebView.UserContentManager.RemoveScript(_script);
 		UriSchemeRequestHandlers.Remove(WebView.Handle);
+
+		_detached = true;
 	}
 
 	protected override void SendMessage(string message)
