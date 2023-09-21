@@ -1,5 +1,5 @@
 using System;
-using GtkSharp.BlazorWebKit;
+using Microsoft.AspNetCore.Components.WebView.Gtk;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.FileProviders;
 using Microsoft.Maui.Dispatching;
@@ -58,7 +58,7 @@ namespace Microsoft.AspNetCore.Components.WebView.Maui
 			{
 				throw new InvalidOperationException($"Can't start {nameof(BlazorWebView)} without platform web view instance.");
 			}
-			
+
 			// We assume the host page is always in the root of the content directory, because it's
 			// unclear there's any other use case. We can add more options later if so.
 			var contentRootDir = System.IO.Path.GetDirectoryName(HostPage!) ?? string.Empty;
@@ -66,24 +66,20 @@ namespace Microsoft.AspNetCore.Components.WebView.Maui
 
 			var fileProvider = VirtualView.CreateFileProvider(contentRootDir);
 
-			Uri missingAppBaseUri = new Uri(contentRootDir);
 			_webviewManager = new GtkWebViewManager(
 				this.PlatformView,
-				new BlazorWebViewOptions(),
 				Services!,
 				new MauiDispatcher(Services!.GetRequiredService<IDispatcher>()),
-				missingAppBaseUri,
 				fileProvider,
 				VirtualView.JSComponents,
-				hostPageRelativePath);
+				contentRootDir,
+				hostPageRelativePath,
+				UrlLoading,
+				(args) => VirtualView.BlazorWebViewInitializing(args),
+				(args) => VirtualView.BlazorWebViewInitialized(args)
+			);
 
 			StaticContentHotReloadManager.AttachToWebViewManagerIfEnabled(_webviewManager);
-
-			VirtualView.BlazorWebViewInitializing(new BlazorWebViewInitializingEventArgs());
-			VirtualView.BlazorWebViewInitialized(new BlazorWebViewInitializedEventArgs
-			{
-				WebView = PlatformView,
-			});
 
 			if (RootComponents != null)
 			{
@@ -93,6 +89,7 @@ namespace Microsoft.AspNetCore.Components.WebView.Maui
 					_ = rootComponent.AddToWebViewManagerAsync(_webviewManager);
 				}
 			}
+
 			_webviewManager.Navigate("/");
 
 		}
