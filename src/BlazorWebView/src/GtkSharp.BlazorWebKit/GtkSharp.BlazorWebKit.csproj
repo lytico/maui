@@ -9,6 +9,7 @@
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <NoWarn>$(NoWarn);CS1591;RS0041;RS0026;RS0027;RS0016;CS8625;CS8618</NoWarn>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <RootNamespace>GtkSharp.BlazorWebView</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>

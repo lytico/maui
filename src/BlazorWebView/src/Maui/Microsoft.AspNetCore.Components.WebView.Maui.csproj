@@ -32,7 +32,7 @@
   </ItemGroup>
 
   <ItemGroup Condition=" '$(TargetPlatformIdentifier)' == 'gtk' ">
-    <ProjectReference Include="..\GtkSharp.BlazorWebView\GtkSharp.BlazorWebView.csproj" />
+    <ProjectReference Include="..\GtkSharp.BlazorWebKit\GtkSharp.BlazorWebKit.csproj" />
   </ItemGroup>
   
   <Import Project="$(MauiSrcDirectory)PublicAPI.targets" />

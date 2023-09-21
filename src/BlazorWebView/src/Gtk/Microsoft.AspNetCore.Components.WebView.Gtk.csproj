@@ -24,7 +24,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\GtkSharp.BlazorWebView\GtkSharp.BlazorWebView.csproj" />
+    <ProjectReference Include="..\GtkSharp.BlazorWebKit\GtkSharp.BlazorWebKit.csproj" />
   </ItemGroup>
 
 </Project>

@@ -88,9 +88,9 @@ public class GtkWebViewManager : GtkSharp.BlazorWebKit.GtkWebViewManager
 	{
 		ArgumentNullException.ThrowIfNull(webview);
 
-		_contentRootRelativeToAppRoot = contentRootRelativeToAppRoot;
+		ContentRootRelativeToAppRoot = contentRootRelativeToAppRoot;
 
-		_scheme = AppHostScheme;
+		Scheme = AppHostScheme;
 		WebView = webview;
 		_urlLoading = urlLoading;
 		_blazorWebViewInitializing = blazorWebViewInitializing;

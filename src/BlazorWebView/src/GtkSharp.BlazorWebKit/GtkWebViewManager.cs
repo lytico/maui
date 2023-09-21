@@ -9,7 +9,6 @@ using System.Web;
 using GtkSharpUpstream;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Logging;
 using WebKit;
@@ -22,7 +21,23 @@ namespace GtkSharp.BlazorWebKit;
 public partial class GtkWebViewManager : Microsoft.AspNetCore.Components.WebView.WebViewManager
 {
 
-	protected string _scheme;
+	protected const string AppHostAddress = "localhost";
+
+	protected static readonly string AppHostScheme = "app";
+
+	/// <summary>
+	/// Gets the application's base URI. Defaults to <c>app://localhost/</c>
+	/// </summary>
+	protected static string AppOrigin(string appHostScheme, string appHostAddress = AppHostAddress) => $"{appHostScheme}://{appHostAddress}/";
+
+	protected static readonly Uri AppOriginUri = new(AppOrigin(AppHostScheme, AppHostAddress));
+
+	protected Task<bool> WebviewReadyTask;
+	protected string ContentRootRelativeToAppRoot;
+
+	protected string Scheme;
+	protected string MessageQueueId = "webview";
+
 	string _hostPageRelativePath;
 	Uri _appBaseUri;
 
@@ -30,28 +45,13 @@ public partial class GtkWebViewManager : Microsoft.AspNetCore.Components.WebView
 
 	public WebView WebView { get; protected set; }
 
-	protected ILogger<GtkWebViewManager>? _logger;
+	protected ILogger<GtkWebViewManager>? Logger;
 
 	protected GtkWebViewManager(IServiceProvider provider, Dispatcher dispatcher, Uri appBaseUri, IFileProvider fileProvider, JSComponentConfigurationStore jsComponents, string hostPageRelativePath) :
 		base(provider, dispatcher, appBaseUri, fileProvider, jsComponents, hostPageRelativePath)
 	{
 		_appBaseUri = appBaseUri;
 		_hostPageRelativePath = hostPageRelativePath;
-	}
-
-	public GtkWebViewManager(
-		WebView webView, string scheme,
-		IServiceProvider provider, Dispatcher dispatcher, Uri appBaseUri,
-		IFileProvider fileProvider,
-		JSComponentConfigurationStore jsComponents, string hostPageRelativePath) : base(provider, dispatcher, appBaseUri, fileProvider, jsComponents, hostPageRelativePath)
-
-	{
-		_scheme = scheme;
-		_hostPageRelativePath = hostPageRelativePath;
-		_appBaseUri = appBaseUri;
-		_logger = provider.GetService<ILogger<GtkWebViewManager>>();
-
-		WebView = webView;
 	}
 
 	delegate bool TryGetResponseContentHandler(string uri, bool allowFallbackOnHostPage, out int statusCode, out string statusMessage, out Stream content, out IDictionary<string, string> headers);
@@ -101,7 +101,7 @@ public partial class GtkWebViewManager : Microsoft.AspNetCore.Components.WebView
 
 	protected override void NavigateCore(Uri absoluteUri)
 	{
-		_logger?.LogInformation($"Navigating to \"{absoluteUri}\"");
+		Logger?.LogInformation($"Navigating to \"{absoluteUri}\"");
 		var loadUri = absoluteUri.ToString();
 
 		WebView.LoadUri(loadUri);
@@ -109,7 +109,7 @@ public partial class GtkWebViewManager : Microsoft.AspNetCore.Components.WebView
 
 	void SignalHandler(IntPtr contentManager, IntPtr jsResultHandle, IntPtr arg)
 	{
-		var jsResult = new global::WebKit.Upstream.JavascriptResult(jsResultHandle);
+		var jsResult = new WebKit.Upstream.JavascriptResult(jsResultHandle);
 
 		var jsValue = jsResult.JsValue;
 
@@ -119,17 +119,18 @@ public partial class GtkWebViewManager : Microsoft.AspNetCore.Components.WebView
 
 		if (s is not null)
 		{
-			_logger?.LogDebug($"Received message `{s}`");
+			Logger?.LogDebug($"Received message `{s}`");
 
 			try
 			{
 				MessageReceived(_appBaseUri, s);
 			}
-			finally { }
+			finally
+			{
+
+			}
 		}
 	}
-
-	public string MessageQueueId = "webview";
 
 	public string JsScript(string messageQueueId) =>
 		"""
@@ -155,7 +156,7 @@ public partial class GtkWebViewManager : Microsoft.AspNetCore.Components.WebView
 		};
 		""";
 
-	global::WebKit.Upstream.UserScript _script;
+	WebKit.Upstream.UserScript _script;
 
 	protected virtual void Attach()
 	{
@@ -169,7 +170,7 @@ public partial class GtkWebViewManager : Microsoft.AspNetCore.Components.WebView
 
 		var jsScript = JsScript(MessageQueueId);
 
-		_script = new global::WebKit.Upstream.UserScript(
+		_script = new WebKit.Upstream.UserScript(
 			jsScript,
 			UserContentInjectedFrames.AllFrames,
 			UserScriptInjectionTime.Start,
@@ -194,7 +195,7 @@ public partial class GtkWebViewManager : Microsoft.AspNetCore.Components.WebView
 
 	protected override void SendMessage(string message)
 	{
-		_logger?.LogDebug($"Dispatching `{message}`");
+		Logger?.LogDebug($"Dispatching `{message}`");
 
 		var script = $"__dispatchMessageCallback(\"{HttpUtility.JavaScriptStringEncode(message)}\")";
 
@@ -206,20 +207,6 @@ public partial class GtkWebViewManager : Microsoft.AspNetCore.Components.WebView
 		Detach();
 		await base.DisposeAsyncCore();
 	}
-
-	protected const string AppHostAddress = "localhost";
-
-	protected static readonly string AppHostScheme = "app";
-
-	/// <summary>
-	/// Gets the application's base URI. Defaults to <c>app://localhost/</c>
-	/// </summary>
-	protected static string AppOrigin(string appHostScheme, string appHostAddress = AppHostAddress) => $"{appHostScheme}://{appHostAddress}/";
-
-	protected static readonly Uri AppOriginUri = new(AppOrigin(AppHostScheme, AppHostAddress));
-
-	protected Task<bool> _webviewReadyTask;
-	protected string _contentRootRelativeToAppRoot;
 
 	protected static string GetHeaderString(IDictionary<string, string> headers) =>
 		string.Join(Environment.NewLine, headers.Select(kvp => $"{kvp.Key}: {kvp.Value}"));

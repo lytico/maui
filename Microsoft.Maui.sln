@@ -265,7 +265,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlazorGtkApp", "src\BlazorW
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Microsoft.AspNetCore.Components.WebView.Gtk", "src\BlazorWebView\src\Gtk\Microsoft.AspNetCore.Components.WebView.Gtk.csproj", "{6158696F-1BAC-4939-A387-AE0A13324EC0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GtkSharp.BlazorWebView", "src\BlazorWebView\src\GtkSharp.BlazorWebView\GtkSharp.BlazorWebView.csproj", "{1CB1D938-301A-4CCD-AC0A-77095D315418}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GtkSharp.BlazorWebKit", "src\BlazorWebView\src\GtkSharp.BlazorWebKit\GtkSharp.BlazorWebKit.csproj", "{1CB1D938-301A-4CCD-AC0A-77095D315418}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -5,17 +5,15 @@ using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using GtkSharp.BlazorWebKit;
-using Microsoft.Extensions.DependencyInjection;
+using Gtk;
 using Microsoft.Extensions.FileProviders;
-using Widget = global::Gtk.Widget;
 
 namespace Microsoft.AspNetCore.Components.WebView.Gtk
 {
 	/// <summary>
 	/// A Gtk Widget for hosting Razor components locally in Windows desktop applications.
 	/// </summary>
-	public class BlazorWebView : global::Gtk.Bin
+	public class BlazorWebView : Bin
 	{
 		private readonly WebKit.WebView _webview;
 		private GtkWebViewManager? _webviewManager;
@@ -47,7 +45,7 @@ namespace Microsoft.AspNetCore.Components.WebView.Gtk
 		/// </remarks>
 		[Browsable(false)]
 		[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-		public global::WebKit.WebView WebView => _webview;
+		public WebKit.WebView WebView => _webview;
 
 		private Dispatcher ComponentsDispatcher { get; }
 
