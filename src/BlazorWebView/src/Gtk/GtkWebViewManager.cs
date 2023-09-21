@@ -8,8 +8,9 @@ using WebKit;
 namespace Microsoft.AspNetCore.Components.WebView.Gtk;
 #pragma warning disable CS0649 // Field is never assigned to, and will always have its default value
 
-public class GtkWebViewManager : GtkSharp.BlazorWebKit.GtkWebViewManager
+public partial class GtkWebViewManager : GtkSharp.BlazorWebKit.GtkWebViewManager
 {
+
 	#region CopiedFromWebView2WebViewManager
 
 	protected readonly Action<UrlLoadingEventArgs>? _urlLoading;
@@ -23,6 +24,9 @@ public class GtkWebViewManager : GtkSharp.BlazorWebKit.GtkWebViewManager
 		if (devTools is not { })
 			return;
 
+		if (WebView is not { })
+			return;
+
 		WebView.Settings.EnableDeveloperExtras = devTools.Enabled;
 		WebView.Settings.EnablePageCache = false;
 		WebView.Settings.EnableOfflineWebApplicationCache = false;
@@ -30,6 +34,9 @@ public class GtkWebViewManager : GtkSharp.BlazorWebKit.GtkWebViewManager
 
 	private void NavigationStarting(object? sender, LoadChangedArgs args)
 	{
+		if (WebView is not { })
+			return;
+
 		if (args.LoadEvent != LoadEvent.Started)
 		{
 			return;
@@ -87,15 +94,12 @@ public class GtkWebViewManager : GtkSharp.BlazorWebKit.GtkWebViewManager
 	{
 		ArgumentNullException.ThrowIfNull(webview);
 
-		ContentRootRelativeToAppRoot = contentRootRelativeToAppRoot;
-
-		Scheme = AppHostScheme;
 		WebView = webview;
 		_urlLoading = urlLoading;
 		_blazorWebViewInitializing = blazorWebViewInitializing;
 		_blazorWebViewInitialized = blazorWebViewInitialized;
 		_developerTools = services.GetRequiredService<BlazorWebViewDeveloperTools>();
-		
+
 		Attach();
 	}
 
@@ -106,4 +110,5 @@ public class GtkWebViewManager : GtkSharp.BlazorWebKit.GtkWebViewManager
 		_blazorWebViewInitialized?.Invoke(new BlazorWebViewInitializedEventArgs { WebView = WebView });
 		this.ApplyDefaultWebViewSettings(_developerTools);
 	}
+
 }

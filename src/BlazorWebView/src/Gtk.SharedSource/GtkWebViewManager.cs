@@ -1,23 +1,29 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 using System.Web;
+using Gtk;
 using GtkSharpUpstream;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Logging;
 using WebKit;
+using UserScript = WebKit.Upstream.UserScript;
+
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
 
 #pragma warning disable CS8601 // Possible null reference assignment.
 #pragma warning disable CS8604 // Possible null reference argument.
 
 namespace GtkSharp.BlazorWebKit;
 
+[SuppressMessage("ApiDesign", "RS0016:Öffentliche Typen und Member der deklarierten API hinzufügen")]
 public partial class GtkWebViewManager : Microsoft.AspNetCore.Components.WebView.WebViewManager
 {
 
@@ -32,18 +38,18 @@ public partial class GtkWebViewManager : Microsoft.AspNetCore.Components.WebView
 
 	protected static readonly Uri AppOriginUri = new(AppOrigin(AppHostScheme, AppHostAddress));
 
-	protected Task<bool> WebviewReadyTask;
-	protected string ContentRootRelativeToAppRoot;
+	protected Task<bool>? WebviewReadyTask;
 
-	protected string Scheme;
 	protected string MessageQueueId = "webview";
 
 	string _hostPageRelativePath;
 	Uri _appBaseUri;
 
+	UserScript? _script;
+	
 	public delegate void WebMessageHandler(IntPtr contentManager, IntPtr jsResult, IntPtr arg);
 
-	public WebView WebView { get; protected set; }
+	public WebView? WebView { get; protected set; }
 
 	protected ILogger<GtkWebViewManager>? Logger;
 
@@ -93,6 +99,9 @@ public partial class GtkWebViewManager : Microsoft.AspNetCore.Components.WebView
 
 	void RegisterUriSchemeRequestHandler()
 	{
+		if (WebView is not { })
+			return;
+
 		if (!UriSchemeRequestHandlers.TryGetValue(WebView.Handle, out var uriSchemeHandler))
 		{
 			UriSchemeRequestHandlers.Add(WebView.Handle, (_hostPageRelativePath, TryGetResponseContent));
@@ -101,6 +110,9 @@ public partial class GtkWebViewManager : Microsoft.AspNetCore.Components.WebView
 
 	protected override void NavigateCore(Uri absoluteUri)
 	{
+		if (WebView is not { })
+			return;
+
 		Logger?.LogInformation($"Navigating to \"{absoluteUri}\"");
 		var loadUri = absoluteUri.ToString();
 
@@ -126,9 +138,7 @@ public partial class GtkWebViewManager : Microsoft.AspNetCore.Components.WebView
 				MessageReceived(_appBaseUri, s);
 			}
 			finally
-			{
-
-			}
+			{ }
 		}
 	}
 
@@ -156,10 +166,11 @@ public partial class GtkWebViewManager : Microsoft.AspNetCore.Components.WebView
 		};
 		""";
 
-	WebKit.Upstream.UserScript _script;
-
 	protected virtual void Attach()
 	{
+		if (WebView is not { })
+			throw new ArgumentException();
+
 		if (!HandleUriSchemeRequestIsRegistered)
 		{
 			WebView.Context.RegisterUriScheme(AppHostScheme, HandleUriSchemeRequest);
@@ -174,7 +185,9 @@ public partial class GtkWebViewManager : Microsoft.AspNetCore.Components.WebView
 			jsScript,
 			UserContentInjectedFrames.AllFrames,
 			UserScriptInjectionTime.Start,
+#pragma warning disable CS8625 // Cannot convert null literal to non-nullable reference type.
 			null, null);
+#pragma warning restore CS8625 // Cannot convert null literal to non-nullable reference type.
 
 		WebView.UserContentManager.AddScript(_script);
 
@@ -187,6 +200,9 @@ public partial class GtkWebViewManager : Microsoft.AspNetCore.Components.WebView
 
 	protected virtual void Detach()
 	{
+		if (WebView is not { })
+			return;
+
 		WebView.Context.RemoveSignalHandler($"script-message-received::{MessageQueueId}", SignalHandler);
 		WebView.UserContentManager.UnregisterScriptMessageHandler(MessageQueueId);
 		WebView.UserContentManager.RemoveScript(_script);
@@ -195,6 +211,9 @@ public partial class GtkWebViewManager : Microsoft.AspNetCore.Components.WebView
 
 	protected override void SendMessage(string message)
 	{
+		if (WebView is not { })
+			return;
+
 		Logger?.LogDebug($"Dispatching `{message}`");
 
 		var script = $"__dispatchMessageCallback(\"{HttpUtility.JavaScriptStringEncode(message)}\")";

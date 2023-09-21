@@ -24,7 +24,12 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\GtkSharp.BlazorWebKit\GtkSharp.BlazorWebKit.csproj" />
+    <Compile Include="..\Gtk.SharedSource\**\*.cs" Link="Gtk\SharedSource\%(Filename)%(Extension)" />
   </ItemGroup>
-
+  
+  <!-- this can be removed if GtkSharp is updated to version >= 3.24.24.114 -->
+  <PropertyGroup>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+  
 </Project>

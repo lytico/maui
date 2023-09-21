@@ -3,6 +3,7 @@ using System.IO;
 using System.Runtime.InteropServices;
 using GLib;
 using WebKit;
+using UserScript = WebKit.Upstream.UserScript;
 
 namespace GtkSharpUpstream;
 
@@ -14,7 +15,7 @@ internal static class UpstreamExtensions
 
 	internal static d_webkit_user_content_manager_add_script webkit_user_content_manager_add_script = FuncLoader.LoadFunction<d_webkit_user_content_manager_add_script>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Webkit), "webkit_user_content_manager_add_script"));
 
-	internal static void AddScript(this UserContentManager it, global::WebKit.Upstream.UserScript script)
+	internal static void AddScript(this UserContentManager it, UserScript? script)
 	{
 
 		webkit_user_content_manager_add_script(it.Handle, script == null ? IntPtr.Zero : script.Handle);
@@ -26,7 +27,7 @@ internal static class UpstreamExtensions
 
 	static d_webkit_user_content_manager_remove_script webkit_user_content_manager_remove_script = FuncLoader.LoadFunction<d_webkit_user_content_manager_remove_script>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Webkit), "webkit_user_content_manager_remove_script"));
 
-	public static void RemoveScript(this UserContentManager it, global::WebKit.Upstream.UserScript script)
+	public static void RemoveScript(this UserContentManager it, UserScript? script)
 	{
 		webkit_user_content_manager_remove_script(it.Handle, script == null ? IntPtr.Zero : script.Handle);
 	}

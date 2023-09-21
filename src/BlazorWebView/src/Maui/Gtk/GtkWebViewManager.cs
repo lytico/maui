@@ -27,6 +27,9 @@ public class GtkWebViewManager : GtkSharp.BlazorWebKit.GtkWebViewManager
 		if (devTools is not { })
 			return;
 
+		if (WebView is not { })
+			return;
+
 		WebView.Settings.EnableDeveloperExtras = devTools.Enabled;
 		WebView.Settings.EnablePageCache = false;
 		WebView.Settings.EnableOfflineWebApplicationCache = false;
@@ -38,6 +41,9 @@ public class GtkWebViewManager : GtkSharp.BlazorWebKit.GtkWebViewManager
 		{
 			return;
 		}
+
+		if (WebView is not { })
+			return;
 
 		var argsUri = WebView.Uri;
 
@@ -88,9 +94,6 @@ public class GtkWebViewManager : GtkSharp.BlazorWebKit.GtkWebViewManager
 	{
 		ArgumentNullException.ThrowIfNull(webview);
 
-		ContentRootRelativeToAppRoot = contentRootRelativeToAppRoot;
-
-		Scheme = AppHostScheme;
 		WebView = webview;
 		_urlLoading = urlLoading;
 		_blazorWebViewInitializing = blazorWebViewInitializing;

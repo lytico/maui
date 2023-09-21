@@ -1,9 +1,12 @@
 using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Runtime.InteropServices;
+#pragma warning disable CS1591 
 
 namespace WebKit.Upstream
 {
 
+	[SuppressMessage("ApiDesign", "RS0016:Öffentliche Typen und Member der deklarierten API hinzufügen")]
 	public partial class JavascriptResult
 	{
 
