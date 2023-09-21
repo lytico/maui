@@ -21,6 +21,7 @@ namespace GtkSharp.BlazorWebKit;
 
 public partial class GtkWebViewManager : Microsoft.AspNetCore.Components.WebView.WebViewManager
 {
+
 	protected string _scheme;
 	string _hostPageRelativePath;
 	Uri _appBaseUri;
@@ -37,7 +38,6 @@ public partial class GtkWebViewManager : Microsoft.AspNetCore.Components.WebView
 		_appBaseUri = appBaseUri;
 		_hostPageRelativePath = hostPageRelativePath;
 	}
-
 
 	public GtkWebViewManager(
 		WebView webView, string scheme,
@@ -73,14 +73,12 @@ public partial class GtkWebViewManager : Microsoft.AspNetCore.Components.WebView
 			throw new Exception($"Invalid scheme \"{request.Scheme}\"");
 		}
 
-
 		var uri = request.Uri;
 
 		if (request.Path == "/")
 		{
 			uri += uriSchemeHandler._hostPageRelativePath;
 		}
-
 
 		if (uriSchemeHandler.tryGetResponseContent(uri, false, out int statusCode, out string statusMessage, out Stream content, out IDictionary<string, string> headers))
 		{
@@ -186,7 +184,6 @@ public partial class GtkWebViewManager : Microsoft.AspNetCore.Components.WebView
 		WebView.UserContentManager.RegisterScriptMessageHandler(MessageQueueId);
 	}
 
-
 	protected virtual void Detach()
 	{
 		WebView.Context.RemoveSignalHandler($"script-message-received::{MessageQueueId}", SignalHandler);
@@ -209,8 +206,6 @@ public partial class GtkWebViewManager : Microsoft.AspNetCore.Components.WebView
 		Detach();
 		await base.DisposeAsyncCore();
 	}
-	
-	#region CopiedFromWebView2WebViewManager
 
 	protected const string AppHostAddress = "localhost";
 
@@ -234,13 +229,12 @@ public partial class GtkWebViewManager : Microsoft.AspNetCore.Components.WebView
 		if (Assembly.GetEntryAssembly() is { } mainAssembly)
 		{
 			// In case the application is running from a non-writable location (e.g., program files if you're not running
-			// elevated), use our own convention of %LocalAppData%\YourApplicationName.WebView2.
-			// We may be able to remove this if https://github.com/MicrosoftEdge/WebView2Feedback/issues/297 is fixed.
+			// elevated), use our own convention of %LocalAppData%\YourApplicationName.WebView.
 			var applicationName = mainAssembly.GetName().Name;
 
 			var result = Path.Combine(
 				Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
-				$"{applicationName}.WebView2");
+				$"{applicationName}.{nameof(WebView)}");
 
 			return result;
 		}
@@ -257,5 +251,4 @@ public partial class GtkWebViewManager : Microsoft.AspNetCore.Components.WebView
 		launchBrowser.Start();
 	}
 
-	#endregion
 }
