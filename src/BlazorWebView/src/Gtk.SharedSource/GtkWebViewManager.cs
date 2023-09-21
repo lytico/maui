@@ -189,7 +189,7 @@ public partial class GtkWebViewManager : Microsoft.AspNetCore.Components.WebView
 			null, null);
 #pragma warning restore CS8625 // Cannot convert null literal to non-nullable reference type.
 
-		WebView.DestroyEvent += (o, args) => Detach();
+		WebView.Destroyed += (o, args) => Detach();
 
 		WebView.UserContentManager.AddScript(_script);
 
