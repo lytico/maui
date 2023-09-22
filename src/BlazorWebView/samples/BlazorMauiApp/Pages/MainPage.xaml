@@ -9,48 +9,6 @@
     BackgroundColor="{DynamicResource BackgroundColor}"
     NavigationPage.IconColor="White"
     Title="Gallery">
-    <views:BasePage.Resources>
-        <ResourceDictionary>
-
-            <Style x:Key="TitleStyle" TargetType="Label">
-                <Setter Property="FontSize" Value="Title" />
-                <Setter Property="FontFamily" Value="Segoe UI Bold" />
-                <Setter Property="TextColor" Value="{DynamicResource DarkTextPrimaryColor}" />
-                <Setter Property="HorizontalOptions" Value="Center" />
-                <Setter Property="Margin" Value="0, 24, 0, 0" />
-            </Style>
-
-            <Style x:Key="SubTitleStyle" TargetType="Label">
-                <Setter Property="FontSize" Value="Small" />
-                <Setter Property="FontFamily" Value="Segoe UI" />
-                <Setter Property="TextColor" Value="{DynamicResource DarkTextPrimaryColor}" />
-                <Setter Property="HorizontalTextAlignment" Value="Center" />
-                <Setter Property="HorizontalOptions" Value="Center" />
-                <Setter Property="Margin" Value="24, 12" />
-            </Style>
-
-            <Color x:Key="SectionItemBorderColor">#C8C8C8</Color>
-
-            <Style x:Key="SectionItemContainerStyle" TargetType="Border">
-                <Setter Property="BackgroundColor" Value="{AppThemeBinding Light={StaticResource LightBackgroundSecondaryColor}, Dark={StaticResource DarkBackgroundSecondaryColor}}" />
-                <Setter Property="Stroke" Value="{StaticResource SectionItemBorderColor}" />
-                <Setter Property="HeightRequest" Value="120" />
-                <Setter Property="Padding" Value="12" />
-                <Setter Property="Margin" Value="0" />
-                <Setter Property="FlexLayout.Basis" Value="50%"/>
-                <Setter Property="FlexLayout.Grow" Value="0"/>
-            </Style>
-
-            <Style x:Key="FooterStyle" TargetType="Label">
-                <Setter Property="FontSize" Value="Small" />
-                <Setter Property="FontFamily" Value="Segoe UI" />
-                <Setter Property="HorizontalOptions" Value="Center" />
-                <Setter Property="VerticalOptions" Value="End" />
-                <Setter Property="Margin" Value="24" />
-            </Style>
-
-        </ResourceDictionary>
-    </views:BasePage.Resources>
     <ScrollView>
         <Grid
             RowDefinitions="150, *, Auto"
