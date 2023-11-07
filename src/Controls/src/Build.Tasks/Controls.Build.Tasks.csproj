@@ -1,4 +1,4 @@
-﻿<!-- NOTE: This project is temporarily replacing part of Microsoft.Maui.Sdk -->
+<!-- NOTE: This project is temporarily replacing part of Microsoft.Maui.Sdk -->
 <Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
@@ -12,7 +12,7 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="Mono.Cecil" Version="0.11.4" />
+		<PackageReference Include="Mono.Cecil" Version="0.11.5" />
 		<PackageReference Include="Microsoft.Build" Version="15.9.20" />
 		<PackageReference Include="Microsoft.Build.Framework" Version="15.9.20" />
 		<PackageReference Include="Microsoft.Build.Utilities.Core" Version="15.9.20" />
