@@ -34,7 +34,6 @@ namespace Microsoft.Maui.Controls.Handlers.Items
 				adapter.UnregisterAdapterDataObserver(this);
 			}
 
-			_adapter = IntPtr.Zero;
 			Observing = false;
 		}
 

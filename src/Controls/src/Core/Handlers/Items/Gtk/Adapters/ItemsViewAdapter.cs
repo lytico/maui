@@ -76,7 +76,7 @@ namespace Microsoft.Maui.Controls.Handlers.Items
 
 			if (viewType == ItemViewType.TextItem)
 			{
-				var view = new TextView();
+				var view = new LabelView();
 				return new TextViewHolder(view, IsSelectionEnabled(parent, viewType));
 			}
 

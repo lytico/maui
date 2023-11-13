@@ -53,7 +53,7 @@ namespace Microsoft.Maui.Controls.Handlers.Items
 			else
 			{
 				// If we want a different ScrollToPosition, we need to create a SmoothScroller which can handle it
-				var smoothScroller = new PositionalSmoothScroller(_recyclerView.Context, scrollToPosition)
+				var smoothScroller = new PositionalSmoothScroller(scrollToPosition)
 				{
 					TargetPosition = index
 				};

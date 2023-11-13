@@ -1,16 +1,15 @@
 ﻿#nullable disable
 using System;
 using System.Linq;
-
 using Microsoft.Maui.Graphics;
 
 namespace Microsoft.Maui.Controls.Handlers.Items
 {
+
 	public abstract class SelectableViewHolder : RecyclerView.ViewHolder
 	{
+
 		bool _isSelected;
-		Drawable _selectedDrawable;
-		Drawable _selectableItemDrawable;
 		readonly bool _isSelectionEnabled;
 
 		protected SelectableViewHolder(Gtk.Widget itemView, bool isSelectionEnabled = true) : base(itemView)
@@ -30,7 +29,7 @@ namespace Microsoft.Maui.Controls.Handlers.Items
 
 				SetSelectionStates(_isSelected);
 
-				ItemView.Activated = _isSelected;
+				ItemView.Sensitive = _isSelected;
 				OnSelectedChanged();
 			}
 		}
@@ -48,8 +47,7 @@ namespace Microsoft.Maui.Controls.Handlers.Items
 		public event EventHandler<int> Clicked;
 
 		protected virtual void OnSelectedChanged()
-		{
-		}
+		{ }
 
 		protected virtual void OnViewHolderClicked(int adapterPosition)
 		{
@@ -62,52 +60,11 @@ namespace Microsoft.Maui.Controls.Handlers.Items
 			{
 				return;
 			}
-			if (OperatingSystem.IsAndroidVersionAtLeast(23))
-			{
-				// We're looking for the foreground ripple effect, which is not available on older APIs
-				// Limiting this to Marshmallow and newer, because View.setForeground() is not available on lower APIs
-				_selectableItemDrawable = !isSelected ? null : (_selectableItemDrawable ?? GetSelectableItemDrawable());
 
-				ItemView.Foreground = _selectableItemDrawable;
-			}
+			ItemView.Sensitive = isSelected;
 
-			_selectedDrawable = !isSelected ? null : (_selectedDrawable ?? GetSelectedDrawable());
-
-			ItemView.Background = _selectedDrawable;
 		}
 
-		Drawable GetSelectedDrawable()
-		{
-			using (var value = new TypedValue())
-			{
-				var context = ItemView.Context;
-
-				if (!context.Theme.ResolveAttribute(global::Android.Resource.Attribute.ColorActivatedHighlight, value, true))
-				{
-					return null;
-				}
-
-				var color = Color.FromUint((uint)value.Data);
-				var colorDrawable = new ColorDrawable(color.ToPlatform());
-
-				var stateListDrawable = new StateListDrawable();
-				stateListDrawable.AddState(new[] { global::Android.Resource.Attribute.StateActivated }, colorDrawable);
-				stateListDrawable.AddState(StateSet.WildCard.ToArray(), null);
-
-				return stateListDrawable;
-			}
-		}
-
-		Drawable GetSelectableItemDrawable()
-		{
-			using (var value = new TypedValue())
-			{
-				var context = ItemView.Context;
-
-				context.Theme.ResolveAttribute(global::Android.Resource.Attribute.SelectableItemBackground, value, true);
-
-				return ContextCompat.GetDrawable(context, value.ResourceId);
-			}
-		}
 	}
+
 }

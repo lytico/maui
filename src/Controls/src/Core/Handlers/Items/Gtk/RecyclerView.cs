@@ -224,15 +224,14 @@ public class RecyclerView : Gtk.Container
 			throw new NotImplementedException();
 		}
 
-
 	}
+
 	public new class State
 	{ }
 
 	protected virtual void OnLayout(bool changed, int i, int i1, int i2, int i3)
 	{
 		throw new NotImplementedException();
-
 
 	}
 
@@ -244,10 +243,12 @@ public class RecyclerView : Gtk.Container
 	public class ViewHolder
 	{
 
+		protected Gtk.Widget ItemView { get; }
 
-		public ViewHolder() { }
-
-		public ViewHolder(Gtk.Widget widget) { }
+		public ViewHolder(Gtk.Widget widget)
+		{
+			ItemView = widget;
+		}
 
 		public int ItemViewType { get; set; }
 
@@ -285,15 +286,13 @@ public class RecyclerView : Gtk.Container
 
 		public object Orientation { get; set; }
 
-
-
 		public ItemContentView FindViewByPosition(int i)
 		{
 			throw new NotImplementedException();
 		}
 
 	}
-	
+
 	public class GridLayoutManager : LayoutManager
 	{
 
@@ -327,7 +326,7 @@ public class RecyclerView : Gtk.Container
 		Rtl
 
 	}
-	
+
 	public class OrientationHelper
 	{
 

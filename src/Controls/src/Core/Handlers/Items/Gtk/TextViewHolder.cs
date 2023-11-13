@@ -4,12 +4,12 @@ namespace Microsoft.Maui.Controls.Handlers.Items
 {
 	internal class TextViewHolder : SelectableViewHolder
 	{
-		public TextView TextView { get; }
+		public LabelView TextView { get; }
 
-		public TextViewHolder(TextView itemView, bool isSelectionEnabled = true) : base(itemView, isSelectionEnabled)
+		public TextViewHolder(LabelView itemView, bool isSelectionEnabled = true) : base(itemView, isSelectionEnabled)
 		{
 			TextView = itemView;
-			TextView.Clickable = isSelectionEnabled;
+			TextView.Selectable = isSelectionEnabled;
 		}
 	}
 }

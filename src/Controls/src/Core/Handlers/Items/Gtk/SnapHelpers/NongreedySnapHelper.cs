@@ -1,11 +1,12 @@
 ﻿#nullable disable
+using System;
 using Gtk;
 using static Microsoft.Maui.Controls.Handlers.Items.RecyclerView;
 
 namespace Microsoft.Maui.Controls.Handlers.Items
 {
 
-	public abstract class SnapHelper
+	public abstract class SnapHelper:IDisposable
 	{
 
 		public virtual void AttachToRecyclerView(RecyclerView recyclerView)
@@ -23,6 +24,10 @@ namespace Microsoft.Maui.Controls.Handlers.Items
 			throw new System.NotImplementedException();
 		}
 
+		public void Dispose()
+		{
+			Dispose(true);
+		}
 
 	}
 

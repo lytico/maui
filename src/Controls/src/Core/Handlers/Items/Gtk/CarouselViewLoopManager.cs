@@ -1,5 +1,6 @@
 ﻿#nullable disable
 using System.Collections.Generic;
+using static Microsoft.Maui.Controls.Handlers.Items.RecyclerView;
 
 namespace Microsoft.Maui.Controls.Handlers.Items
 {
