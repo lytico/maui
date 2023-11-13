@@ -61,7 +61,7 @@ namespace Microsoft.Maui.Controls.Handlers.Items
 			_size = size;
 		}
 
-		protected override void OnLayout(bool changed, int l, int t, int r, int b)
+		protected void OnLayout(bool changed, int l, int t, int r, int b)
 		{
 			if (Content == null)
 			{
@@ -82,7 +82,7 @@ namespace Microsoft.Maui.Controls.Handlers.Items
 			UpdateContentLayout();
 		}
 
-		protected override void OnMeasure(int widthMeasureSpec, int heightMeasureSpec)
+		protected virtual void OnMeasure(int widthMeasureSpec, int heightMeasureSpec)
 		{
 			if (Content == null)
 			{
