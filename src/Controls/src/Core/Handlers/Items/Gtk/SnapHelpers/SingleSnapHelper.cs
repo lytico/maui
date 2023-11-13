@@ -112,5 +112,22 @@ namespace Microsoft.Maui.Controls.Handlers.Items
 			CurrentTargetPosition = -1;
 
 		}
+
+		public virtual int[] CalculateDistanceToFinalSnap(LayoutManager layoutManager, AView targetView)
+		{
+			throw new System.NotImplementedException();
+		}
+
 	}
+
+	public class PagerSnapHelper:SnapHelper
+	{
+
+		public virtual AView FindSnapView(LayoutManager layoutManager)
+		{
+			throw new System.NotImplementedException();
+		}
+
+	}
+
 }

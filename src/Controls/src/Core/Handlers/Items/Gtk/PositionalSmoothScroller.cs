@@ -1,10 +1,11 @@
 ﻿#nullable disable
 
-
 namespace Microsoft.Maui.Controls.Handlers.Items
 {
+
 	internal class PositionalSmoothScroller : LinearSmoothScroller
 	{
+
 		readonly ScrollToPosition _scrollToPosition;
 
 		public PositionalSmoothScroller(ScrollToPosition scrollToPosition) : base()
@@ -45,5 +46,27 @@ namespace Microsoft.Maui.Controls.Handlers.Items
 				}
 			}
 		}
+
 	}
+
+	class LinearSmoothScroller
+	{
+
+		public int SnapToAny { get; set; }
+
+		public int SnapToEnd { get; set; }
+
+		public int SnapToStart { get; set; }
+
+		protected virtual int VerticalSnapPreference { get; }
+
+		protected virtual int HorizontalSnapPreference { get;  }
+
+		public virtual int CalculateDtToFit(int viewStart, int viewEnd, int boxStart, int boxEnd, int snapPreference)
+		{
+			throw new System.NotImplementedException();
+		}
+
+	}
+
 }

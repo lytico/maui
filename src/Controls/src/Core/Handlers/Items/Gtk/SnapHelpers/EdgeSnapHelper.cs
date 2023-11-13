@@ -64,7 +64,6 @@ namespace Microsoft.Maui.Controls.Handlers.Items
 
 		public abstract int[] CalculateDistanceToFinalSnap(LayoutManager layoutManager, AView targetView);
 
-		public abstract AView FindSnapView(LayoutManager layoutManager);
 
 	}
 

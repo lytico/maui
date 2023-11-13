@@ -618,6 +618,16 @@ namespace Microsoft.Maui.Controls.Handlers.Items
 			throw new NotImplementedException();
 		}
 
+		public virtual bool OnInterceptTouchEvent(MotionEvent ev)
+		{
+			throw new NotImplementedException();
+		}
+
+		public virtual bool OnTouchEvent(MotionEvent e)
+		{
+			throw new NotImplementedException();
+		}
+
 	}
 
 
@@ -638,6 +648,19 @@ namespace Microsoft.Maui.Controls.Handlers.Items
 				throw new NotImplementedException();
 			}
 
+			public virtual void OnSwiped(RecyclerView.ViewHolder viewHolder, int direction)
+			{
+				throw new NotImplementedException();
+			}
+
+			public virtual bool OnMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target)
+			{
+				throw new NotImplementedException();
+			}
+			public int MakeMovementFlags(int p0, int p1)
+			{
+				throw new System.NotImplementedException();
+			}
 		}
 
 	}

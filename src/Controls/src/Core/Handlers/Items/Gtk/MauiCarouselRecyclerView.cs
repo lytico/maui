@@ -594,7 +594,10 @@ namespace Microsoft.Maui.Controls.Handlers.Items
 		}
 	}
 
-	class CarouselViewwOnGlobalLayoutListener : Java.Lang.Object, ViewTreeObserver.IOnGlobalLayoutListener
+	public class MotionEvent
+	{ }
+
+	class CarouselViewwOnGlobalLayoutListener 
 	{
 		public EventHandler<EventArgs> LayoutReady;
 		public void OnGlobalLayout()

@@ -3,6 +3,7 @@ using System;
 using ARect = Gdk.Rectangle;
 using AViewCompat = Gtk.Widget;
 using AView = Gtk.Widget;
+using static Microsoft.Maui.Controls.Handlers.Items.RecyclerView;
 
 namespace Microsoft.Maui.Controls.Handlers.Items;
 
@@ -218,16 +219,21 @@ public class RecyclerView : Gtk.Container
 	public class ItemDecoration
 	{
 
-		protected void GetItemOffsets(ARect outRect, AView view, RecyclerView parent, State state)
+		public virtual void GetItemOffsets(ARect outRect, AView view, RecyclerView parent, State state)
 		{
 			throw new NotImplementedException();
 		}
 
+
 	}
+	public new class State
+	{ }
 
 	protected virtual void OnLayout(bool changed, int i, int i1, int i2, int i3)
 	{
 		throw new NotImplementedException();
+
+
 	}
 
 	object GetRecycledViewPool()
@@ -242,6 +248,10 @@ public class RecyclerView : Gtk.Container
 		public ViewHolder() { }
 
 		public ViewHolder(Gtk.Widget widget) { }
+
+		public int ItemViewType { get; set; }
+
+		public int BindingAdapterPosition { get; set; }
 
 	}
 
@@ -275,10 +285,7 @@ public class RecyclerView : Gtk.Container
 
 		public object Orientation { get; set; }
 
-		public bool CanScrollVertically()
-		{
-			throw new NotImplementedException();
-		}
+
 
 		public ItemContentView FindViewByPosition(int i)
 		{
@@ -339,5 +346,23 @@ public class RecyclerView : Gtk.Container
 			throw new NotImplementedException();
 		}
 
+		public int GetDecoratedEnd(AViewCompat targetView)
+		{
+			throw new NotImplementedException();
+		}
+
+		public int GetDecoratedStart(AViewCompat targetView)
+		{
+			throw new NotImplementedException();
+		}
+
+		public int TotalSpace { get; set; }
+
 	}
+
+	public void RemoveOnScrollListener(OnScrollListener initialScrollListener)
+	{
+		throw new NotImplementedException();
+	}
+
 }

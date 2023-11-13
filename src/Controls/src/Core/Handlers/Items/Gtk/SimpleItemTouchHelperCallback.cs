@@ -26,6 +26,8 @@ namespace Microsoft.Maui.Controls.Handlers.Items
 			return MakeMovementFlags(dragFlags, 0);
 		}
 
+	
+
 		public override bool OnMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target)
 		{
 			if (viewHolder.ItemViewType != target.ItemViewType)

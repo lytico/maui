@@ -1,10 +1,37 @@
 ﻿#nullable disable
+using Gtk;
 using static Microsoft.Maui.Controls.Handlers.Items.RecyclerView;
 
 namespace Microsoft.Maui.Controls.Handlers.Items
 {
+
+	public abstract class SnapHelper
+	{
+
+		public virtual void AttachToRecyclerView(RecyclerView recyclerView)
+		{
+			throw new System.NotImplementedException();
+		}
+
+		protected virtual void Dispose(bool disposing)
+		{
+			throw new System.NotImplementedException();
+		}
+
+		public virtual int FindTargetSnapPosition(LayoutManager layoutManager, int velocityX, int velocityY)
+		{
+			throw new System.NotImplementedException();
+		}
+
+
+	}
+
+	public abstract class LinearSnapHelper : SnapHelper
+	{ }
+
 	internal abstract class NongreedySnapHelper : LinearSnapHelper
 	{
+
 		// Flag to indicate that the user has scrolled the view, so we can start snapping
 		// (otherwise, this would start trying to snap the view as soon as we attached it to the RecyclerView)
 		protected bool CanSnap { get; set; }
@@ -62,6 +89,7 @@ namespace Microsoft.Maui.Controls.Handlers.Items
 
 		class InitialScrollListener : RecyclerView.OnScrollListener
 		{
+
 			readonly NongreedySnapHelper _helper;
 
 			public InitialScrollListener(NongreedySnapHelper helper) => _helper = helper;
@@ -72,6 +100,14 @@ namespace Microsoft.Maui.Controls.Handlers.Items
 				_helper.CanSnap = true;
 				_helper.StopListeningForScroll();
 			}
+
 		}
+
+		public virtual Widget FindSnapView(LayoutManager layoutManager)
+		{
+			throw new System.NotImplementedException();
+		}
+
 	}
+
 }
