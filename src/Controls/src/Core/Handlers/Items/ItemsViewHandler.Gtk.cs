@@ -2,19 +2,21 @@
 using System.Collections.Generic;
 using System.Text;
 using Microsoft.Maui.Handlers;
+using TCollectionView = Gtk.UIExtensions.NUI.CollectionView;
 
 namespace Microsoft.Maui.Controls.Handlers.Items
 {
-	public abstract partial class ItemsViewHandler<TItemsView> : ViewHandler<TItemsView, NotImplementedView> where TItemsView : ItemsView
+	public abstract partial class ItemsViewHandler<TItemsView> : ViewHandler<TItemsView, TCollectionView> where TItemsView : ItemsView
 	{
-		protected override NotImplementedView CreatePlatformView()
+		protected override TCollectionView CreatePlatformView()
 		{
-			return new(nameof(TItemsView));
+			return new();
 		}
 
 		[MissingMapper]
 		public static void MapItemsSource(ItemsViewHandler<TItemsView> handler, ItemsView itemsView)
 		{
+			;
 		}
 
 		[MissingMapper]
@@ -30,16 +32,28 @@ namespace Microsoft.Maui.Controls.Handlers.Items
 		[MissingMapper]
 		public static void MapItemTemplate(ItemsViewHandler<TItemsView> handler, ItemsView itemsView)
 		{
+			var template = itemsView.ItemTemplate;
+			var rview = template.CreateContent();
+
+			if (rview is IView view)
+			{
+				if (handler.MauiContext != null && view.ToPlatform(handler.MauiContext) is { } p)
+				{
+					;
+				}
+			}
 		}
 
 		[MissingMapper]
 		public static void MapEmptyView(ItemsViewHandler<TItemsView> handler, ItemsView itemsView)
 		{
+			;
 		}
 
 		[MissingMapper]
 		public static void MapEmptyViewTemplate(ItemsViewHandler<TItemsView> handler, ItemsView itemsView)
 		{
+			;
 		}
 
 		[MissingMapper]

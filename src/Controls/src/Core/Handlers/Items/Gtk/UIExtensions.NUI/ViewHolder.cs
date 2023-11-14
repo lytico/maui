@@ -131,9 +131,9 @@ namespace Gtk.UIExtensions.NUI
             OnFocused(this, e);
         }
 
-        bool OnKeyEvent(object? source, KeyEventArgs e)
+        bool OnKeyEvent(object? source, KeyPressEventArgs e)
         {
-            if (e.Key.IsAcceptKeyEvent())
+            if (e.Event.SendEvent)
             {
                 RequestSelected?.Invoke(this, EventArgs.Empty);
                 return true;
@@ -142,7 +142,7 @@ namespace Gtk.UIExtensions.NUI
             return false;
         }
 
-        bool OnTouchEvent(object? source, TouchEventArgs e)
+        void OnTouchEvent(object source, TouchEventArgs e)
         {
             if (e.Touch.GetState(0) == PointStateType.Down)
             {
