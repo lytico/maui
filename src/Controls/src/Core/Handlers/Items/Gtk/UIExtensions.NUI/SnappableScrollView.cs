@@ -305,7 +305,7 @@ internal class SnappableScrollView : ScrollableBase
 	void ScrollTo(double target)
 	{
 		// it is a ScrollTo api that do not raise ScrollAnimationStarted/Ended event
-		var scrollingSize = IsHorizontal ? ContentContainer.SizeWidth : ContentContainer.SizeHeight;
+		var scrollingSize = IsHorizontal ? ContentContainer.SizeWidth() : ContentContainer.SizeHeight();
 
 		if (scrollingSize - target < ViewPortSize)
 		{

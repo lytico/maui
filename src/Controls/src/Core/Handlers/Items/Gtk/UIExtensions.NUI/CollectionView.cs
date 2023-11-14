@@ -302,9 +302,9 @@ namespace Gtk.UIExtensions.NUI
 
 		protected override void Dispose(bool disposing)
 		{
-			if (disposing)
+			if (disposing && ScrollView is IDisposable d)
 			{
-				ScrollView.Dispose();
+				d.Dispose();
 			}
 
 			base.Dispose(disposing);
