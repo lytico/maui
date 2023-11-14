@@ -1,4 +1,5 @@
-﻿using System.Collections.Specialized;
+﻿using System;
+using System.Collections.Specialized;
 using System.Linq;
 using Microsoft.Maui.Controls.Platform;
 using Gtk.UIExtensions.NUI;
@@ -11,17 +12,29 @@ using TSnapPointsType = Gtk.UIExtensions.NUI.SnapPointsType;
 
 namespace Microsoft.Maui.Controls.Handlers.Items
 {
+
 	public abstract class MauiCollectionView<TItemsView> : TCollectionView, IMeasurable where TItemsView : ItemsView
 	{
+
 		INotifyCollectionChanged? _observableSource;
+
 		protected TItemsView? ItemsView { get; set; }
+
 		protected IItemsLayout? ItemsLayout { get; private set; }
 
+		public event EventHandler<EventArgs>? Relayout;
+
+		protected virtual void OnRelayout()
+		{
+			Relayout?.Invoke(this, EventArgs.Empty);
+		}
+		
 		public virtual void SetupNewElement(TItemsView newElement)
 		{
 			if (newElement == null)
 			{
 				ItemsView = null;
+
 				return;
 			}
 
@@ -37,6 +50,7 @@ namespace Microsoft.Maui.Controls.Handlers.Items
 			{
 				ItemsLayout.PropertyChanged -= OnLayoutPropertyChanged;
 			}
+
 			oldElement.ScrollToRequested -= OnScrollToRequested;
 
 			using var oldAdaptor = Adaptor;
@@ -55,9 +69,11 @@ namespace Microsoft.Maui.Controls.Handlers.Items
 				{
 					_observableSource.CollectionChanged -= OnCollectionChanged;
 				}
+
 				_observableSource = collectionChanged;
 				_observableSource.CollectionChanged += OnCollectionChanged;
 			}
+
 			UpdateAdaptor();
 		}
 
@@ -67,6 +83,7 @@ namespace Microsoft.Maui.Controls.Handlers.Items
 				return;
 
 			using var oldAdaptor = Adaptor;
+
 			if (Adaptor is ItemTemplateAdaptor old)
 			{
 				old.SelectionChanged -= OnItemSelectedFromUI;
@@ -93,11 +110,14 @@ namespace Microsoft.Maui.Controls.Handlers.Items
 			{
 				ItemsLayout.PropertyChanged -= OnLayoutPropertyChanged;
 			}
+
 			ItemsLayout = GetItemsLayout();
+
 			if (ItemsLayout != null)
 			{
 				LayoutManager = ItemsLayout.ToLayoutManager((ItemsView as StructuredItemsView)?.ItemSizingStrategy ?? ItemSizingStrategy.MeasureFirstItem);
 				ItemsLayout.PropertyChanged += OnLayoutPropertyChanged;
+
 				if (ItemsLayout is ItemsLayout itemsLayout)
 				{
 					SnapPointsType = (TSnapPointsType)itemsLayout.SnapPointsType;
@@ -136,10 +156,13 @@ namespace Microsoft.Maui.Controls.Handlers.Items
 			{
 				var scaled = Devices.DeviceDisplay.MainDisplayInfo.GetScaledScreenSize();
 				var size = new TSize(availableWidth, availableHeight);
+
 				if (size.Width == double.PositiveInfinity)
 					size.Width = scaled.Width.ToScaledPixel();
+
 				if (size.Height == double.PositiveInfinity)
 					size.Height = scaled.Height.ToScaledPixel();
+
 				return size;
 			}
 
@@ -156,10 +179,10 @@ namespace Microsoft.Maui.Controls.Handlers.Items
 				return;
 
 			if (e.PropertyName == nameof(LinearItemsLayout.ItemSpacing)
-				|| e.PropertyName == nameof(GridItemsLayout.VerticalItemSpacing)
-				|| e.PropertyName == nameof(GridItemsLayout.HorizontalItemSpacing)
-				|| e.PropertyName == nameof(Controls.ItemsLayout.SnapPointsType)
-				|| e.PropertyName == nameof(Controls.ItemsLayout.SnapPointsAlignment))
+			    || e.PropertyName == nameof(GridItemsLayout.VerticalItemSpacing)
+			    || e.PropertyName == nameof(GridItemsLayout.HorizontalItemSpacing)
+			    || e.PropertyName == nameof(Controls.ItemsLayout.SnapPointsType)
+			    || e.PropertyName == nameof(Controls.ItemsLayout.SnapPointsAlignment))
 			{
 				UpdateLayoutManager();
 			}
@@ -230,18 +253,22 @@ namespace Microsoft.Maui.Controls.Handlers.Items
 				ScrollTo(e.Item, (TScrollToPosition)e.ScrollToPosition, e.IsAnimated);
 			}
 		}
+
 	}
 
 	public class MauiStructuredItemsView<TItemsView> : MauiCollectionView<TItemsView> where TItemsView : StructuredItemsView
 	{
+
 		public override IItemsLayout GetItemsLayout()
 		{
 			return ItemsView!.ItemsLayout;
 		}
+
 	}
 
 	public class MauiSelectableItemsView<TItemsView> : MauiStructuredItemsView<TItemsView> where TItemsView : SelectableItemsView
 	{
+
 		bool _updateSelection;
 		bool _updateFromUI;
 
@@ -258,14 +285,15 @@ namespace Microsoft.Maui.Controls.Handlers.Items
 
 			_updateSelection = true;
 
-			if (SelectionMode != ItemsView.SelectionMode.ToNative())
+			if (SelectionMode != ItemsView.SelectionMode)
 			{
-				SelectionMode = ItemsView.SelectionMode.ToNative();
+				SelectionMode = ItemsView.SelectionMode;
 			}
 
 			if (Adaptor == null)
 			{
 				_updateSelection = false;
+
 				return;
 			}
 
@@ -273,11 +301,13 @@ namespace Microsoft.Maui.Controls.Handlers.Items
 			if (ItemsView.SelectionMode == Controls.SelectionMode.Single)
 			{
 				var selected = Adaptor.GetItemIndex(ItemsView.SelectedItem);
+
 				foreach (var index in SelectedItems.ToList())
 				{
 					if (selected != index)
 						RequestItemUnselect(index);
 				}
+
 				if (selected != -1)
 					RequestItemSelect(selected);
 
@@ -285,6 +315,7 @@ namespace Microsoft.Maui.Controls.Handlers.Items
 			else if (ItemsView.SelectionMode == Controls.SelectionMode.Multiple)
 			{
 				var selectedItemIndexes = ItemsView.SelectedItems.Select(d => Adaptor.GetItemIndex(d)).ToHashSet();
+
 				foreach (var index in SelectedItems.ToList())
 				{
 					if (index < 0 || Adaptor.Count <= index)
@@ -295,7 +326,9 @@ namespace Microsoft.Maui.Controls.Handlers.Items
 						RequestItemUnselect(index);
 					}
 				}
+
 				var alreadySelected = SelectedItems.ToHashSet();
+
 				foreach (var selected in selectedItemIndexes)
 				{
 					if (!alreadySelected.Contains(selected))
@@ -328,16 +361,19 @@ namespace Microsoft.Maui.Controls.Handlers.Items
 
 			_updateFromUI = false;
 		}
+
 	}
 
 	public class MauiGroupableItemsView<TItemsView> : MauiSelectableItemsView<TItemsView> where TItemsView : GroupableItemsView
 	{
+
 		protected override ItemTemplateAdaptor CreateItemAdaptor(ItemsView view)
 		{
 			if (view is GroupableItemsView groupableItemsView && groupableItemsView.IsGrouped)
 			{
 				return new GroupItemTemplateAdaptor(groupableItemsView, new GroupItemSource(groupableItemsView));
 			}
+
 			return base.CreateItemAdaptor(view);
 		}
 
@@ -347,7 +383,10 @@ namespace Microsoft.Maui.Controls.Handlers.Items
 			{
 				return groupAdaptor.GetAbsoluteIndex(request.GroupIndex, request.Index);
 			}
+
 			return base.GetIndex(request);
 		}
+
 	}
+
 }

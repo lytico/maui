@@ -10,13 +10,17 @@ using XLabel = Microsoft.Maui.Controls.Label;
 
 namespace Microsoft.Maui.Controls.Handlers.Items
 {
+
 	public class CollectionViewSelectionChangedEventArgs : EventArgs
 	{
+
 		public IList<object>? SelectedItems { get; set; }
+
 	}
 
 	public class ItemTemplateAdaptor : ItemAdaptor
 	{
+
 		Dictionary<NView, View> _nativeMauiTable = new Dictionary<NView, View>();
 		Dictionary<object, View?> _dataBindedViewTable = new Dictionary<object, View?>();
 		protected View? _headerCache;
@@ -45,31 +49,32 @@ namespace Microsoft.Maui.Controls.Handlers.Items
 		{
 			if (this[index] == null)
 				throw new InvalidOperationException("No data");
+
 			return this[index]!;
 		}
 
 		public override void SendItemSelected(IEnumerable<int> selected)
 		{
 			var items = new List<object>();
+
 			foreach (var idx in selected)
 			{
 				if (idx < 0 || Count <= idx)
 					continue;
 
 				var selectedObject = this[idx];
+
 				if (selectedObject != null)
 					items.Add(selectedObject);
 			}
 
-			SelectionChanged?.Invoke(this, new CollectionViewSelectionChangedEventArgs
-			{
-				SelectedItems = items
-			});
+			SelectionChanged?.Invoke(this, new CollectionViewSelectionChangedEventArgs { SelectedItems = items });
 		}
 
 		public override void UpdateViewState(NView view, ViewHolderState state)
 		{
 			base.UpdateViewState(view, state);
+
 			if (_nativeMauiTable.TryGetValue(view, out View? formsView))
 			{
 				switch (state)
@@ -77,14 +82,17 @@ namespace Microsoft.Maui.Controls.Handlers.Items
 					case ViewHolderState.Focused:
 						VisualStateManager.GoToState(formsView, VisualStateManager.CommonStates.Focused);
 						formsView.SetValue(VisualElement.IsFocusedPropertyKey, true);
+
 						break;
 					case ViewHolderState.Normal:
 						VisualStateManager.GoToState(formsView, VisualStateManager.CommonStates.Normal);
 						formsView.SetValue(VisualElement.IsFocusedPropertyKey, false);
+
 						break;
 					case ViewHolderState.Selected:
 						if (IsSelectable)
 							VisualStateManager.GoToState(formsView, VisualStateManager.CommonStates.Selected);
+
 						break;
 				}
 			}
@@ -98,10 +106,12 @@ namespace Microsoft.Maui.Controls.Handlers.Items
 		public View? GetTemplatedView(int index)
 		{
 			var item = this[index];
+
 			if (item != null && Count > index && _dataBindedViewTable.TryGetValue(item, out View? view))
 			{
 				return view;
 			}
+
 			return null;
 		}
 
@@ -111,12 +121,14 @@ namespace Microsoft.Maui.Controls.Handlers.Items
 			{
 				return selector.SelectTemplate(this[index], Element);
 			}
+
 			return base.GetViewCategory(index);
 		}
 
 		public override NView CreateNativeView(int index)
 		{
 			View view;
+
 			if (ItemTemplate is DataTemplateSelector selector)
 			{
 				view = (View)selector.SelectTemplate(GetData(index), Element).CreateContent();
@@ -125,8 +137,10 @@ namespace Microsoft.Maui.Controls.Handlers.Items
 			{
 				view = (View)ItemTemplate.CreateContent();
 			}
+
 			var native = view.ToPlatform(MauiContext);
 			_nativeMauiTable[native] = view;
+
 			return native;
 		}
 
@@ -143,17 +157,22 @@ namespace Microsoft.Maui.Controls.Handlers.Items
 			{
 				_headerCache.MeasureInvalidated -= OnHeaderFooterMeasureInvalidated;
 			}
+
 			_headerCache = CreateHeaderView();
+
 			if (_headerCache != null)
 			{
 				_headerCache.Parent = Element;
 
-				if (_headerCache.Handler is IPlatformViewHandler nativeHandler)
+				if (_headerCache.Handler is IDisposable nativeHandler)
 					nativeHandler.Dispose();
+
 				_headerCache.Handler = null;
 				_headerCache.MeasureInvalidated += OnHeaderFooterMeasureInvalidated;
+
 				return _headerCache.ToPlatform(MauiContext);
 			}
+
 			return null;
 		}
 
@@ -165,28 +184,38 @@ namespace Microsoft.Maui.Controls.Handlers.Items
 			{
 				_footerCache.MeasureInvalidated -= OnHeaderFooterMeasureInvalidated;
 			}
+
 			_footerCache = CreateFooterView();
+
 			if (_footerCache != null)
 			{
 				_footerCache.Parent = Element;
-				if (_footerCache.Handler is IPlatformViewHandler nativeHandler)
+
+				if (_footerCache.Handler is IDisposable nativeHandler)
 					nativeHandler.Dispose();
+
 				_footerCache.Handler = null;
 				_footerCache.MeasureInvalidated += OnHeaderFooterMeasureInvalidated;
+
 				return _footerCache.ToPlatform(MauiContext);
 			}
+
 			return null;
 		}
 
 		public override void RemoveNativeView(NView native)
 		{
 			UnBinding(native);
+
 			if (_nativeMauiTable.TryGetValue(native, out View? view))
 			{
 				if (view.Handler is IPlatformViewHandler handler)
 				{
 					_nativeMauiTable.Remove(handler.PlatformView!);
-					handler.Dispose();
+
+					if (handler is IDisposable d)
+						d.Dispose();
+
 					view.Handler = null;
 				}
 			}
@@ -240,6 +269,7 @@ namespace Microsoft.Maui.Controls.Handlers.Items
 			}
 
 			View view;
+
 			if (ItemTemplate is DataTemplateSelector selector)
 			{
 				view = (View)selector.SelectTemplate(GetData(index), Element).CreateContent();
@@ -249,19 +279,22 @@ namespace Microsoft.Maui.Controls.Handlers.Items
 				view = (View)ItemTemplate.CreateContent();
 			}
 
-			using var handler = (IPlatformViewHandler)view.Handler!;
+			var handler = (IPlatformViewHandler)view.Handler!;
+
 			if (Count > index)
 				view.BindingContext = this[index];
+
 			view.Parent = Element;
 
 			view.ToPlatform(MauiContext);
+
 			return (view as IView).Measure(widthConstraint, heightConstraint).ToPixel();
 		}
 
 		public override TSize MeasureHeader(double widthConstraint, double heightConstraint)
 		{
 			// TODO. It is workaround code, if update Tizen.UIExtensions.NUI, this code will be removed
-			if (CollectionView is Tizen.UIExtensions.NUI.CollectionView cv)
+			if (CollectionView is Gtk.UIExtensions.NUI.CollectionView cv)
 			{
 				if (cv.LayoutManager != null)
 				{
@@ -287,6 +320,7 @@ namespace Microsoft.Maui.Controls.Handlers.Items
 				if (structuredItemsView.Header != null)
 				{
 					View? header = null;
+
 					if (structuredItemsView.Header is View view)
 					{
 						header = view;
@@ -298,11 +332,16 @@ namespace Microsoft.Maui.Controls.Handlers.Items
 					}
 					else if (structuredItemsView.Header is string str)
 					{
-						header = new XLabel { Text = str, };
+						header = new XLabel
+						{
+							Text = str,
+						};
 					}
+
 					return header;
 				}
 			}
+
 			return null;
 		}
 
@@ -313,6 +352,7 @@ namespace Microsoft.Maui.Controls.Handlers.Items
 				if (structuredItemsView.Footer != null)
 				{
 					View? footer = null;
+
 					if (structuredItemsView.Footer is View view)
 					{
 						footer = view;
@@ -324,11 +364,16 @@ namespace Microsoft.Maui.Controls.Handlers.Items
 					}
 					else if (structuredItemsView.Footer is string str)
 					{
-						footer = new XLabel { Text = str, };
+						footer = new XLabel
+						{
+							Text = str,
+						};
 					}
+
 					return footer;
 				}
 			}
+
 			return null;
 		}
 
@@ -340,11 +385,13 @@ namespace Microsoft.Maui.Controls.Handlers.Items
 				{
 					_headerCache.MeasureInvalidated -= OnHeaderFooterMeasureInvalidated;
 				}
+
 				if (_footerCache != null)
 				{
 					_footerCache.MeasureInvalidated -= OnHeaderFooterMeasureInvalidated;
 				}
 			}
+
 			base.Dispose(disposing);
 		}
 
@@ -402,6 +449,7 @@ namespace Microsoft.Maui.Controls.Handlers.Items
 
 	public class CarouselViewItemTemplateAdaptor : ItemTemplateAdaptor
 	{
+
 		public CarouselViewItemTemplateAdaptor(ItemsView itemsView) : base(itemsView) { }
 
 		public override TSize MeasureItem(double widthConstraint, double heightConstraint)
@@ -411,22 +459,26 @@ namespace Microsoft.Maui.Controls.Handlers.Items
 
 		public override TSize MeasureItem(int index, double widthConstraint, double heightConstraint)
 		{
-			return (CollectionView as NView)!.Size.ToCommon();
+			return (CollectionView as NView)!.Size();
 		}
+
 	}
 
 	class DefaultItemTemplate : DataTemplate
 	{
+
 		public DefaultItemTemplate() : base(CreateView) { }
 
 		class ToTextConverter : IValueConverter
 		{
+
 			public object? Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
 			{
 				return value?.ToString() ?? string.Empty;
 			}
 
 			public object? ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture) => throw new NotImplementedException();
+
 		}
 
 		static View CreateView()
@@ -435,17 +487,17 @@ namespace Microsoft.Maui.Controls.Handlers.Items
 			{
 				TextColor = Colors.Black,
 			};
+
 			label.SetBinding(XLabel.TextProperty, new Binding(".", converter: new ToTextConverter()));
 
 			return new Controls.StackLayout
 			{
 				BackgroundColor = Colors.White,
 				Padding = 30,
-				Children =
-					{
-						label
-					}
+				Children = { label }
 			};
 		}
+
 	}
+
 }

@@ -38,7 +38,8 @@ namespace Gtk.UIExtensions.NUI
                 {
                     _content.FocusGained -= OnContentFocused;
                     _content.FocusLost -= OnContentUnfocused;
-                    Children.Remove(_content);
+                    // Children.
+	                    Remove(_content);
                 }
 
                 _content = value;
@@ -53,7 +54,8 @@ namespace Gtk.UIExtensions.NUI
                     _content.FocusGained += OnContentFocused;
                     _content.FocusLost += OnContentUnfocused;
 
-                    Children.Add(_content);
+                    // Children.
+	                    Add(_content);
                 }
             }
         }
@@ -144,16 +146,16 @@ namespace Gtk.UIExtensions.NUI
 
         void OnTouchEvent(object source, TouchEventArgs e)
         {
-            if (e.Touch.GetState(0) == PointStateType.Down)
-            {
-                return true;
-            }
-            else if (e.Touch.GetState(0) == PointStateType.Up && this.IsInside(e.Touch.GetLocalPosition(0)))
-            {
-                RequestSelected?.Invoke(this, EventArgs.Empty);
-                return true;
-            }
-            return false;
+            // if (e.Touch.GetState(0) == PointStateType.Down)
+            // {
+            //     return true;
+            // }
+            // else if (e.Touch.GetState(0) == PointStateType.Up && this.IsInside(e.Touch.GetLocalPosition(0)))
+            // {
+            //     RequestSelected?.Invoke(this, EventArgs.Empty);
+            //     return true;
+            // }
+            // return false;
         }
 
         protected virtual void UpdateState()
@@ -163,7 +165,7 @@ namespace Gtk.UIExtensions.NUI
             else if (State == ViewHolderState.Normal)
                 _isSelected = false;
             else if (State == ViewHolderState.Focused)
-                RaiseToTop();
+                this.RaiseToTop();
 
             StateUpdated?.Invoke(this, EventArgs.Empty);
         }

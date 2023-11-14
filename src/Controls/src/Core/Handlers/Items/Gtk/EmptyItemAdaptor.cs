@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Gtk.UIExtensions.NUI;
@@ -44,7 +45,7 @@ namespace Microsoft.Maui.Controls.Handlers.Items
 		{
 			View emptyView = (View)ItemTemplate.CreateContent();
 
-			if (emptyView.Handler is IPlatformViewHandler platformHandler)
+			if (emptyView.Handler is IDisposable platformHandler)
 				platformHandler.Dispose();
 
 			emptyView.Handler = null;
@@ -54,7 +55,7 @@ namespace Microsoft.Maui.Controls.Handlers.Items
 			var header = CreateHeaderView();
 			if (header != null)
 			{
-				if (header.Handler is IPlatformViewHandler nativeHandler)
+				if (header.Handler is IDisposable nativeHandler)
 					nativeHandler.Dispose();
 				header.Handler = null;
 			}
@@ -62,14 +63,14 @@ namespace Microsoft.Maui.Controls.Handlers.Items
 			var footer = CreateFooterView();
 			if (footer != null)
 			{
-				if (footer.Handler is IPlatformViewHandler nativeHandler)
+				if (footer.Handler is IDisposable nativeHandler)
 					nativeHandler.Dispose();
 				footer.Handler = null;
 			}
 
 			bool isHorizontal = false;
 
-			if (CollectionView is Tizen.UIExtensions.NUI.CollectionView cv)
+			if (CollectionView is Gtk.UIExtensions.NUI.CollectionView cv)
 			{
 				if (cv.LayoutManager != null)
 				{
@@ -136,7 +137,7 @@ namespace Microsoft.Maui.Controls.Handlers.Items
 
 		public override TSize MeasureHeader(double widthConstraint, double heightConstraint)
 		{
-			return (CollectionView as NView)!.Size.ToCommon();
+			return (CollectionView as NView)!.Size();
 		}
 
 		public override TSize MeasureItem(double widthConstraint, double heightConstraint)

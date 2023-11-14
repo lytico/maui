@@ -23,6 +23,7 @@ namespace Microsoft.Maui.Controls.Handlers.Items
 			_itemLayouted = false;
 		}
 
+
 		public override void TearDownOldElement(CarouselView oldElement)
 		{
 			base.TearDownOldElement(oldElement);
@@ -37,7 +38,8 @@ namespace Microsoft.Maui.Controls.Handlers.Items
 
 		void OnRelayout(object? sender, EventArgs e)
 		{
-			if (Size.Width > 0 && Size.Height > 0)
+			var size = this.Size();
+			if (size.Width > 0 && size.Height > 0)
 			{
 				Application.Current?.Dispatcher.Dispatch(() =>
 				{
@@ -95,7 +97,8 @@ namespace Microsoft.Maui.Controls.Handlers.Items
 			if (_updateCurrentItemFromUI)
 				return;
 
-			if (ItemsView == null || Adaptor == null || LayoutManager == null || Size.Width == 0 || Size.Height == 0)
+			var size = this.Size();
+			if (ItemsView == null || Adaptor == null || LayoutManager == null || size.Width == 0 || size.Height == 0)
 				return;
 
 			if (!_itemLayouted)
@@ -113,7 +116,8 @@ namespace Microsoft.Maui.Controls.Handlers.Items
 			if (!_itemLayouted)
 				return;
 
-			if (ItemsView == null || Adaptor == null || LayoutManager == null || Size.Width == 0 || Size.Height == 0)
+			var size = this.Size();
+			if (ItemsView == null || Adaptor == null || LayoutManager == null || size.Width == 0 || size.Height == 0)
 				return;
 
 			ScrollTo(ItemsView.Position);
