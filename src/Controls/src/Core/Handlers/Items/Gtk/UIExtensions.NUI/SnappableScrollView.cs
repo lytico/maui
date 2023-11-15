@@ -1,6 +1,8 @@
 using System;
 using Microsoft.Maui.Controls;
 using Microsoft.Maui.Graphics;
+using Gtk;
+
 #pragma warning disable CS0067 // Event is never used
 
 namespace Gtk.UIExtensions.NUI;
@@ -10,17 +12,17 @@ namespace Gtk.UIExtensions.NUI;
 /// </summary>
 internal class SnappableScrollView : ScrollableBase
 {
-
 	delegate float UserAlphaFunctionDelegate(float progress);
 
 	UserAlphaFunctionDelegate? _customScrollingAlphaFunctionDelegate;
+
 	Func<float, float>? _scrollingAlpha;
 	// AlphaFunction? _customScrollingAlphaFunction;
 	// Animation? _snapAnimation;
 
 	int _currentItemIndex = -1;
 
-	public SnappableScrollView(CollectionView cv):base(cv)
+	public SnappableScrollView(CollectionView cv) : base(cv)
 	{
 		CollectionView = cv;
 
@@ -30,8 +32,9 @@ internal class SnappableScrollView : ScrollableBase
 		ScrollDragStarted += OnDragStart;
 
 		ScrollAnimationEnded += OnAnimationEnd;
+		CollectionView.SizeAllocated += OnLayout;
+	
 	}
-
 
 
 	public event EventHandler? SnapRequestFinished;
@@ -115,7 +118,6 @@ internal class SnappableScrollView : ScrollableBase
 		// animation.AnimateTo(ContentContainer, (ScrollingDirection == Direction.Horizontal) ? "PositionX" : "PositionY", targetPosition, _customScrollingAlphaFunction);
 		// animation.Play();
 	}
-
 
 
 	float ScrollingAlpha(float progress)
@@ -218,7 +220,6 @@ internal class SnappableScrollView : ScrollableBase
 			_currentItemIndex = CollectionView.LayoutManager!.GetVisibleItemIndex(
 				(IsHorizontal ? padding : 0) + CollectionView.ViewPort.X,
 				(IsHorizontal ? 0 : padding) + CollectionView.ViewPort.Y);
-
 		}
 		else if (CollectionView.SnapPointsAlignment == SnapPointsAlignment.Center)
 		{
@@ -324,5 +325,4 @@ internal class SnappableScrollView : ScrollableBase
 		// animation.Play();
 		// _snapAnimation = animation;
 	}
-
 }

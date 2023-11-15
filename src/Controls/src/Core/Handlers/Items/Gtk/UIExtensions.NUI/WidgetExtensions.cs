@@ -1,3 +1,4 @@
+using System;
 using Microsoft.Maui.Graphics;
 using Microsoft.Maui.Graphics.Platform.Gtk;
 using Microsoft.Maui.Platform;
@@ -6,7 +7,6 @@ namespace Gtk.UIExtensions.NUI;
 
 public static class WidgetExtensions
 {
-
 	public static float PositionX(this Widget it) => it.Allocation.X;
 
 	public static float PositionY(this Widget it) => it.Allocation.Y;
@@ -48,8 +48,7 @@ public static class WidgetExtensions
 	}
 
 	[MissingMapper]
-	public static void RaiseToTop(this Widget it)
-	{ }
+	public static void RaiseToTop(this Widget it) { }
 
 	public static void Add(this Widget it, Widget child)
 	{
@@ -62,14 +61,38 @@ public static class WidgetExtensions
 	public static int ToScaledPixel(this double it) => (int)it;
 	public static int ToScaledDP(this double it) => (int)it;
 	public static Size ToPixel(this Size it) => it;
-	
-	public static void WidthSpecification(this Widget it, LayoutParamPolicies p) { }
-	public static void HeightSpecification(this Widget it, LayoutParamPolicies p) { }
-	public static void WidthResizePolicy(this Widget it, ResizePolicyType p) { }
-		
-	public static void HeightResizePolicy(this Widget it, ResizePolicyType p) { }
-	
-	
+
+	public static void WidthSpecification(this Widget it, LayoutParamPolicies p)
+	{
+		if (p == LayoutParamPolicies.MatchParent)
+		{
+			it.Vexpand = true;
+		}
+	}
+
+	public static void HeightSpecification(this Widget it, LayoutParamPolicies p)
+	{
+		if (p == LayoutParamPolicies.MatchParent)
+		{
+			it.Hexpand = true;
+		}
+	}
+
+	public static void WidthResizePolicy(this Widget it, ResizePolicyType p)
+	{
+		if (p == ResizePolicyType.FillToParent)
+		{
+			it.Hexpand = true;
+		}
+	}
+
+	public static void HeightResizePolicy(this Widget it, ResizePolicyType p)
+	{
+		if (p == ResizePolicyType.FillToParent)
+		{
+			it.Vexpand = true;
+		}
+	}
 }
 
 /// <summary>
@@ -94,6 +117,7 @@ public enum LayoutParamPolicies
 	/// </summary>
 	/// <since_tizen> 9 </since_tizen>
 	MatchParent,
+
 	/// <summary>
 	/// Constant which indicates parent should take the smallest size possible to wrap its children with their desired size.
 	/// </summary>

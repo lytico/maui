@@ -1,0 +1,226 @@
+using System;
+using System.Data.SqlTypes;
+using Microsoft.Maui.Graphics;
+using Microsoft.Maui.Graphics.Platform.Gtk;
+using Point = Microsoft.Maui.Graphics.Point;
+using Size = Microsoft.Maui.Graphics.Size;
+using Rectangle = Microsoft.Maui.Graphics.Rect;
+
+namespace Gtk.UIExtensions.NUI;
+
+public partial class CollectionView
+{
+	protected override bool OnDrawn(Cairo.Context cr)
+	{
+		var r = base.OnDrawn(cr);
+
+		return r;
+	}
+
+	bool IsReallocating { get; set; }
+	bool IsSizeAllocating { get; set; }
+	protected IView? VirtualView { get; set; }
+
+	Rect LastAllocation { get; set; }
+	
+	const bool RestrictToMesuredAllocation = true;
+
+	protected void ClearMeasured(bool clearCache = true) { }
+
+	protected override void OnAdded(Widget widget)
+	{
+		widget.Parent = this;
+		ClearMeasured();
+	}
+
+	protected override void OnRemoved(Widget widget)
+	{
+		widget.Unparent();
+		ClearMeasured();
+		QueueResize();
+	}
+
+
+	protected override void OnSizeAllocated(Gdk.Rectangle allocation)
+	{
+		if (IsSizeAllocating)
+			return;
+
+		if (VirtualView is not { } virtualView)
+		{
+			base.OnSizeAllocated(allocation);
+
+			return;
+		}
+
+		var clearCache = true;
+
+		try
+		{
+			IsReallocating = true;
+
+			var mAllocation = allocation.ToRect();
+
+			clearCache = LastAllocation.IsEmpty || mAllocation.IsEmpty || LastAllocation != mAllocation;
+			ClearMeasured(clearCache);
+
+			LastAllocation = mAllocation;
+
+			var mesuredAllocation = Measure(allocation.Width, allocation.Height);
+
+			if (RestrictToMesuredAllocation)
+				mAllocation.Size = mesuredAllocation;
+
+			ArrangeAllocation(new Rectangle(Point.Zero, mAllocation.Size));
+			AllocateChildren(mAllocation);
+
+			if (virtualView.Frame != mAllocation)
+			{
+				IsSizeAllocating = true;
+
+				Arrange(mAllocation);
+			}
+
+			base.OnSizeAllocated(allocation);
+		}
+		finally
+		{
+			IsReallocating = false;
+			IsSizeAllocating = false;
+		}
+	}
+
+	void Arrange(Rect mAllocation) { }
+
+	void AllocateChildren(Rect mAllocation) { }
+
+	void ArrangeAllocation(Rectangle rectangle) { }
+
+	Size Measure(double allocationWidth, double allocationHeight)
+	{
+		return new Size(allocationWidth, allocationHeight);
+	}
+
+	protected override void OnUnrealized()
+	{
+		// force reallocation on next realization, since allocation may be lost
+		IsReallocating = false;
+		ClearMeasured();
+		base.OnUnrealized();
+	}
+
+	protected override void OnRealized()
+	{
+		// force reallocation, if unrealized previously
+		if (!IsReallocating)
+		{
+			try
+			{
+				LastAllocation = Allocation.ToRect();
+				Measure(Allocation.Width, Allocation.Height);
+			}
+			catch
+			{
+				IsReallocating = false;
+			}
+		}
+
+		base.OnRealized();
+	}
+
+	protected Size? MeasuredSizeH { get; set; }
+
+	protected Size? MeasuredSizeV { get; set; }
+
+	protected Size? MeasuredMinimum { get; set; }
+
+	protected Size MeasureMinimum()
+	{
+		if (MeasuredMinimum != null)
+			return MeasuredMinimum.Value;
+
+		if (VirtualView is not { } virtualView)
+			return Size.Zero;
+
+		// ensure all children have DesiredSize:
+
+		Measure(0, double.PositiveInfinity);
+
+		var desiredMinimum = virtualView.DesiredSize;
+
+		MeasuredMinimum = Measure(desiredMinimum.Width, desiredMinimum.Height);
+
+		return MeasuredMinimum.Value;
+	}
+
+	protected override void OnAdjustSizeRequest(Orientation orientation, out int minimumSize, out int naturalSize)
+	{
+		base.OnAdjustSizeRequest(orientation, out minimumSize, out naturalSize);
+
+		if (IsSizeAllocating)
+		{
+			return;
+		}
+
+		if (VirtualView is not { } virtualView)
+			return;
+
+		var measuredMinimum = MeasureMinimum();
+
+		double constraint = minimumSize;
+
+		if (orientation == Orientation.Horizontal)
+		{
+			if (RequestMode is SizeRequestMode.WidthForHeight or SizeRequestMode.ConstantSize)
+			{
+				if (MeasuredSizeV is { Width : > 0 } size && (constraint == 0))
+					constraint = size.Width;
+
+				constraint = constraint == 0 ? double.PositiveInfinity : constraint;
+			}
+			else
+			{
+				;
+			}
+
+			MeasuredSizeH = constraint != 0 ? Measure(constraint, double.PositiveInfinity) : measuredMinimum;
+
+			constraint = MeasuredSizeH.Value.Width;
+
+			minimumSize = (int)measuredMinimum.Width;
+			naturalSize = (int)constraint;
+		}
+
+		if (orientation == Orientation.Vertical)
+		{
+			var widthContraint = double.PositiveInfinity;
+
+			if (RequestMode is SizeRequestMode.HeightForWidth or SizeRequestMode.ConstantSize)
+			{
+				MeasuredSizeH ??= measuredMinimum;
+
+				if (MeasuredSizeH is { } size && constraint == 0)
+				{
+					if (size.Height > 0)
+						constraint = size.Height;
+
+					if (size.Width > 0)
+						widthContraint = size.Width;
+				}
+
+				constraint = constraint == 0 ? double.PositiveInfinity : constraint;
+			}
+			else
+			{
+				;
+			}
+
+			MeasuredSizeV = constraint != 0 ? Measure(widthContraint, constraint) : measuredMinimum;
+
+			constraint = MeasuredSizeV.Value.Height;
+
+			minimumSize = (int)measuredMinimum.Height;
+			naturalSize = (int)constraint;
+		}
+	}
+}

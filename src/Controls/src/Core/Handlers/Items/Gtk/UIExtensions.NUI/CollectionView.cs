@@ -14,7 +14,7 @@ namespace Gtk.UIExtensions.NUI
 	/// <summary>
 	/// A View that contain a templated list of items.
 	/// </summary>
-	public class CollectionView : Gtk.Container, ICollectionViewController
+	public partial class CollectionView : Gtk.Container, ICollectionViewController
 	{
 		RecyclerPool _pool = new RecyclerPool();
 		Dictionary<ViewHolder, int> _viewHolderIndexTable = new Dictionary<ViewHolder, int>();
@@ -45,6 +45,7 @@ namespace Gtk.UIExtensions.NUI
 		public CollectionView()
 #pragma warning restore CS8618
 		{
+			HasWindow = false;
 			_mainloopContext = SynchronizationContext.Current ?? throw new InvalidOperationException("Must create on main thread");
 			InitializationComponent();
 		}

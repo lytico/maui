@@ -17,8 +17,17 @@ namespace Microsoft.Maui.Controls.Handlers.Items
 	{
 
 		INotifyCollectionChanged? _observableSource;
+		TItemsView? _itemsView;
 
-		protected TItemsView? ItemsView { get; set; }
+		protected TItemsView? ItemsView
+		{
+			get => _itemsView;
+			set
+			{
+				_itemsView = value;
+				base.VirtualView = value;
+			}
+		}
 
 		protected IItemsLayout? ItemsLayout { get; private set; }
 

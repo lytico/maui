@@ -51,6 +51,14 @@ public class ScrollableBase
 
 	public event EventHandler<EventArgs>? Relayout;
 	
+	protected void OnLayout(object? sender, SizeAllocatedArgs e)
+	{
+		if (sender is not Widget w)
+			return;
+		
+		Relayout?.Invoke(sender,new EventArgs());
+	}
+	
 	/// <summary>
 	/// The direction axis to scroll.
 	/// </summary>
