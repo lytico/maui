@@ -3,7 +3,7 @@
     /// <summary>
     /// Enum for ItemSizingStrategy
     /// </summary>
-    public enum ItemSizingStrategy
+    public enum ItemSizingStrategy_
     {
         /// <summary>
         /// Measuring all items

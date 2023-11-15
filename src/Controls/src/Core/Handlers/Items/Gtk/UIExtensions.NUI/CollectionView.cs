@@ -7,17 +7,15 @@ using Gtk;
 using Microsoft.Maui.Controls;
 using Rect = Microsoft.Maui.Graphics.Rect;
 using Size = Microsoft.Maui.Graphics.Size;
-using CollectionViewSelectionMode=Microsoft.Maui.Controls.SelectionMode;
+using CollectionViewSelectionMode = Microsoft.Maui.Controls.SelectionMode;
 
 namespace Gtk.UIExtensions.NUI
 {
-
 	/// <summary>
 	/// A View that contain a templated list of items.
 	/// </summary>
 	public class CollectionView : Gtk.Container, ICollectionViewController
 	{
-
 		RecyclerPool _pool = new RecyclerPool();
 		Dictionary<ViewHolder, int> _viewHolderIndexTable = new Dictionary<ViewHolder, int>();
 
@@ -264,12 +262,7 @@ namespace Gtk.UIExtensions.NUI
 		/// <returns>A ScrollView instance</returns>
 		protected virtual ScrollableBase CreateScrollView()
 		{
-			return new SnappableScrollView(this)
-			{
-				UseCostomScrolling = true,
-				MaximumVelocity = 8.5f,
-				Friction = 0.015f
-			};
+			return new SnappableScrollView(this) { UseCostomScrolling = true, MaximumVelocity = 8.5f, Friction = 0.015f };
 		}
 
 		/// <summary>
@@ -277,15 +270,15 @@ namespace Gtk.UIExtensions.NUI
 		/// </summary>
 		protected virtual void InitializationComponent()
 		{
-			Layout = new AbsoluteLayout();
-			WidthSpecification = LayoutParamPolicies.MatchParent;
-			HeightSpecification = LayoutParamPolicies.MatchParent;
+			//Layout = new AbsoluteLayout();
+			this.WidthSpecification(LayoutParamPolicies.MatchParent);
+			this.HeightSpecification(LayoutParamPolicies.MatchParent);
 
 			ScrollView = CreateScrollView();
-			ScrollView.WidthSpecification = LayoutParamPolicies.MatchParent;
-			ScrollView.HeightSpecification = LayoutParamPolicies.MatchParent;
-			ScrollView.WidthResizePolicy = ResizePolicyType.FillToParent;
-			ScrollView.HeightResizePolicy = ResizePolicyType.FillToParent;
+			ScrollView.WidthSpecification(LayoutParamPolicies.MatchParent);
+			ScrollView.HeightSpecification(LayoutParamPolicies.MatchParent);
+			ScrollView.WidthResizePolicy(ResizePolicyType.FillToParent);
+			ScrollView.HeightResizePolicy(ResizePolicyType.FillToParent);
 
 			ScrollView.ScrollingEventThreshold = 10;
 			ScrollView.Scrolling += OnScrolling;
@@ -749,7 +742,7 @@ namespace Gtk.UIExtensions.NUI
 			}
 
 			var viewport = ViewPort;
-			var viewportFromEvent = new Rect(-e.Position.X, -e.Position.Y, viewport.Width, viewport.Height);
+			var viewportFromEvent = new Rect(-e.Event.X, -e.Event.Y, viewport.Width, viewport.Height);
 
 			LayoutManager?.LayoutItems(ExtendViewPort(viewportFromEvent));
 		}
@@ -786,7 +779,6 @@ namespace Gtk.UIExtensions.NUI
 				LayoutManager.SetFooter(_footerView,
 					_footerView != null ? Adaptor!.MeasureFooter(widthConstraint, heightConstraint) : new Size(0, 0));
 			}
-
 		}
 
 		void UpdateSelectionMode()
@@ -894,7 +886,5 @@ namespace Gtk.UIExtensions.NUI
 
 			return viewport;
 		}
-
 	}
-
 }

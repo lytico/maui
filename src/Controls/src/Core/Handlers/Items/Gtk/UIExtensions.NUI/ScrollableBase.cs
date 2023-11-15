@@ -18,9 +18,10 @@ public class ScrollableBase
 
 	public Gtk.Widget ContentContainer { get; set; }
 
+	[MissingMapper]
 	protected virtual void Decelerating(float velocity, Animation animation)
 	{
-		throw new System.NotImplementedException();
+	
 	}
 	
 	public float DecelerationRate { get; set; }
@@ -35,14 +36,15 @@ public class ScrollableBase
 
 	public event EventHandler<ScrollEventArgs>? ScrollDragStarted;
 
+	[MissingMapper]
 	public Rect GetScrollBound()
 	{
-		throw new NotImplementedException();
+		return default;
 	}
 
+	[MissingMapper]
 	public void ScrollTo(float itemBoundX, bool animate)
 	{
-		throw new NotImplementedException();
 	}
 
 	public event EventHandler<ScrollEventArgs>? Scrolling;
@@ -72,13 +74,35 @@ public class ScrollableBase
 
 	public event EventHandler<EventArgs>? ScrollAnimationStarted;
 
+	[MissingMapper]
 	public float SizeWidth()
 	{
-		throw new NotImplementedException();
+		return default;
 	}
 	
+	[MissingMapper]
 	public float SizeHeight()
 	{
-		throw new NotImplementedException();
+		return default;
+	}
+
+	[MissingMapper]
+	public void WidthSpecification(LayoutParamPolicies matchParent)
+	{
+	}
+
+	[MissingMapper]
+	public void HeightSpecification(LayoutParamPolicies matchParent)
+	{
+	}
+
+	[MissingMapper]
+	public void WidthResizePolicy(ResizePolicyType fillToParent)
+	{
+	}
+
+	[MissingMapper]
+	public void HeightResizePolicy(ResizePolicyType fillToParent)
+	{
 	}
 }

@@ -1,7 +1,7 @@
 #nullable disable
 using Gtk.UIExtensions.NUI;
 using TCollectionViewSelectionMode = Gtk.UIExtensions.NUI.CollectionViewSelectionMode;
-using TItemSizingStrategy = Gtk.UIExtensions.NUI.ItemSizingStrategy;
+using TItemSizingStrategy = Microsoft.Maui.Controls.ItemSizingStrategy;
 using Microsoft.Maui.Controls;
 
 namespace Gtk.UIExtensions.NUI
