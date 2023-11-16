@@ -1,5 +1,4 @@
 using System;
-using View = Gtk.Widget;
 using Gtk;
 using Microsoft.Maui.Graphics;
 using Microsoft.Maui.Graphics.Platform.Gtk;
@@ -13,13 +12,13 @@ namespace Gtk.UIExtensions.NUI
 		Focused,
 	}
 
-	public class ViewHolder : Gtk.Container
+	public class ViewHolder : Gtk.Bin
 	{
 		ViewHolderState _state;
 		bool _isSelected;
 		bool _isFocused;
 
-		View? _content;
+		Widget? _content;
 
 		public ViewHolder()
 		{
@@ -28,7 +27,7 @@ namespace Gtk.UIExtensions.NUI
 
 		public object? ViewCategory { get; set; }
 
-		public View? Content
+		public Widget? Content
 		{
 			get
 			{
@@ -40,7 +39,6 @@ namespace Gtk.UIExtensions.NUI
 				{
 					_content.FocusInEvent -= OnContentFocused;
 					_content.FocusOutEvent -= OnContentUnfocused;
-					// Children.
 					Remove(_content);
 				}
 
@@ -56,8 +54,7 @@ namespace Gtk.UIExtensions.NUI
 					_content.FocusInEvent += OnContentFocused;
 					_content.FocusOutEvent += OnContentUnfocused;
 
-					// Children.
-					Add(_content);
+					Child = _content;
 				}
 			}
 		}
@@ -99,19 +96,14 @@ namespace Gtk.UIExtensions.NUI
 			KeyPressEvent += OnKeyEvent;
 			FocusInEvent += OnFocused;
 			FocusOutEvent += OnUnfocused;
-			SizeAllocated += OnLayout;
+			// no need for that:
+			//SizeAllocated += OnLayout;
 		}
+
 
 		void OnLayout(object? sender, SizeAllocatedArgs e)
 		{
-			if (sender is not Widget w)
-				return;
-			OnLayout(sender, new Common.LayoutEventArgs { Geometry = e.Allocation.ToRect() });
-		}
-
-		void OnLayout(object? sender, Common.LayoutEventArgs e)
-		{
-			var bounds = this.GetBounds();
+			var bounds = e.Allocation.ToRect();
 			bounds.X = 0;
 			bounds.Y = 0;
 			foreach (var child in Children)

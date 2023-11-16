@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading;
 using Gtk;
 using Microsoft.Maui.Controls;
+using Microsoft.Maui.Graphics.Platform.Gtk;
 using Rect = Microsoft.Maui.Graphics.Rect;
 using Size = Microsoft.Maui.Graphics.Size;
 using CollectionViewSelectionMode = Microsoft.Maui.Controls.SelectionMode;
@@ -717,10 +718,10 @@ namespace Gtk.UIExtensions.NUI
 			SendScrolledEvent();
 		}
 
-		void OnLayout(object? sender, EventArgs e)
+		void OnLayout(object? sender, SizeAllocatedArgs e)
 		{
 			//called when resized
-			AllocatedSize = this.Size();
+			AllocatedSize = e.Allocation.ToRect().Size;
 			_itemSize = new Size(-1, -1);
 
 			if (Adaptor != null && LayoutManager != null)

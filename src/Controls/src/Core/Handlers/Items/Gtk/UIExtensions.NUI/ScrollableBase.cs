@@ -1,6 +1,7 @@
 using System;
 using Microsoft.Maui.Controls;
 using Microsoft.Maui.Graphics;
+using Microsoft.Maui.Graphics.Platform.Gtk;
 
 #pragma warning disable CS0067 // Event is never used
 
@@ -39,7 +40,7 @@ public class ScrollableBase
 	[MissingMapper]
 	public Rect GetScrollBound()
 	{
-		return default;
+		return new Rect(0,0,ContentContainer.Allocation.Width,ContentContainer.Allocation.Height);
 	}
 
 	[MissingMapper]
@@ -49,14 +50,14 @@ public class ScrollableBase
 
 	public event EventHandler<ScrollEventArgs>? Scrolling;
 
-	public event EventHandler<EventArgs>? Relayout;
+	public event EventHandler<SizeAllocatedArgs>? Relayout;
 	
 	protected void OnLayout(object? sender, SizeAllocatedArgs e)
 	{
 		if (sender is not Widget w)
 			return;
 		
-		Relayout?.Invoke(sender,new EventArgs());
+		Relayout?.Invoke(sender,e);
 	}
 	
 	/// <summary>
@@ -83,13 +84,13 @@ public class ScrollableBase
 	public event EventHandler<EventArgs>? ScrollAnimationStarted;
 
 	[MissingMapper]
-	public float SizeWidth()
+	public virtual float SizeWidth()
 	{
 		return default;
 	}
 	
 	[MissingMapper]
-	public float SizeHeight()
+	public virtual float SizeHeight()
 	{
 		return default;
 	}

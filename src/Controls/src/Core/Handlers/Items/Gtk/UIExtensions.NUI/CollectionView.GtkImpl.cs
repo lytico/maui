@@ -1,5 +1,7 @@
 using System;
+using System.Collections.Generic;
 using System.Data.SqlTypes;
+using System.Linq;
 using Microsoft.Maui.Graphics;
 using Microsoft.Maui.Graphics.Platform.Gtk;
 using Point = Microsoft.Maui.Graphics.Point;
@@ -17,15 +19,44 @@ public partial class CollectionView
 		return r;
 	}
 
+
 	bool IsReallocating { get; set; }
 	bool IsSizeAllocating { get; set; }
 	protected IView? VirtualView { get; set; }
 
 	Rect LastAllocation { get; set; }
-	
+
 	const bool RestrictToMesuredAllocation = true;
 
-	protected void ClearMeasured(bool clearCache = true) { }
+	protected Size? MeasuredSizeH { get; set; }
+
+	protected Size? MeasuredSizeV { get; set; }
+
+	protected Size? MeasuredMinimum { get; set; }
+
+	protected void ClearMeasured(bool clearCache = true)
+	{
+		MeasuredSizeH = null;
+		MeasuredSizeV = null;
+		MeasuredMinimum = null;
+	}
+
+	List<Widget> _children = new();
+
+	protected override void ForAll(bool include_internals, Callback callback)
+	{
+		base.ForAll(include_internals, callback);
+		foreach (var w in _children)
+		{
+			callback(w);
+		}
+	}
+
+	public new void Add(Widget widget)
+	{
+		_children.Add(widget);
+		base.Add(widget);
+	}
 
 	protected override void OnAdded(Widget widget)
 	{
@@ -36,6 +67,7 @@ public partial class CollectionView
 	protected override void OnRemoved(Widget widget)
 	{
 		widget.Unparent();
+		_children.Remove(widget);
 		ClearMeasured();
 		QueueResize();
 	}
@@ -90,7 +122,6 @@ public partial class CollectionView
 		}
 	}
 
-	void Arrange(Rect mAllocation) { }
 
 	void AllocateChildren(Rect mAllocation) { }
 
@@ -128,11 +159,6 @@ public partial class CollectionView
 		base.OnRealized();
 	}
 
-	protected Size? MeasuredSizeH { get; set; }
-
-	protected Size? MeasuredSizeV { get; set; }
-
-	protected Size? MeasuredMinimum { get; set; }
 
 	protected Size MeasureMinimum()
 	{
@@ -222,5 +248,27 @@ public partial class CollectionView
 			minimumSize = (int)measuredMinimum.Height;
 			naturalSize = (int)constraint;
 		}
+	}
+
+	const bool RestrictToMeasuredArrange = true;
+
+	public void Arrange(Rectangle rect)
+	{
+		if (rect.IsEmpty)
+			return;
+
+		if (rect == Allocation.ToRect()) return;
+
+		if (IsSizeAllocating)
+		{
+			SizeAllocate(rect.ToNative());
+
+			return;
+		}
+
+		var measuredArrange = Measure(rect.Width, rect.Height);
+		var alloc = new Rectangle(rect.Location, RestrictToMeasuredArrange ? measuredArrange : rect.Size);
+		SizeAllocate(alloc.ToNative());
+		QueueAllocate();
 	}
 }

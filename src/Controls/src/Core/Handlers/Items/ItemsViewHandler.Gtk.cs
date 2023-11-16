@@ -4,7 +4,7 @@ using TCollectionView = Gtk.UIExtensions.NUI.CollectionView;
 
 namespace Microsoft.Maui.Controls.Handlers.Items
 {
-	public abstract partial class ItemsViewHandler<TItemsView> : ViewHandler<TItemsView, TCollectionView> where TItemsView : ItemsView
+	public abstract partial class ItemsViewHandler<TItemsView> : ViewHandler<TItemsView, Gtk.UIExtensions.NUI.CollectionView> where TItemsView : ItemsView
 	{
 		protected override void ConnectHandler(TCollectionView nativeView)
 		{
@@ -62,5 +62,22 @@ namespace Microsoft.Maui.Controls.Handlers.Items
 		public static void MapItemsUpdatingScrollMode(ItemsViewHandler<TItemsView> handler, ItemsView itemsView)
 		{
 		}
+		
+		public override void PlatformArrange(Rect rect)
+		{
+			PlatformView?.Arrange(rect);
+		}
+		
+#if DEBUG
+
+		public override Size GetDesiredSize(double widthConstraint, double heightConstraint)
+		{
+			if (PlatformView is not { } nativeView)
+				return Size.Zero;
+
+			return nativeView.GetDesiredSize(widthConstraint, heightConstraint);
+		}
+
+#endif
 	}
 }

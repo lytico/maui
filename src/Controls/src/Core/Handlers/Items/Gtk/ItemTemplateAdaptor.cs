@@ -10,17 +10,13 @@ using XLabel = Microsoft.Maui.Controls.Label;
 
 namespace Microsoft.Maui.Controls.Handlers.Items
 {
-
 	public class CollectionViewSelectionChangedEventArgs : EventArgs
 	{
-
 		public IList<object>? SelectedItems { get; set; }
-
 	}
 
 	public class ItemTemplateAdaptor : ItemAdaptor
 	{
-
 		Dictionary<NView, View> _nativeMauiTable = new Dictionary<NView, View>();
 		Dictionary<object, View?> _dataBindedViewTable = new Dictionary<object, View?>();
 		protected View? _headerCache;
@@ -279,16 +275,24 @@ namespace Microsoft.Maui.Controls.Handlers.Items
 				view = (View)ItemTemplate.CreateContent();
 			}
 
-			var handler = (IPlatformViewHandler)view.Handler!;
 
 			if (Count > index)
 				view.BindingContext = this[index];
 
 			view.Parent = Element;
 
-			view.ToPlatform(MauiContext);
+			var platformView = view.ToPlatform(MauiContext);
+			var handler = view.Handler!;
 
-			return (view as IView).Measure(widthConstraint, heightConstraint).ToPixel();
+			try
+			{
+				return (view as IView).Measure(widthConstraint, heightConstraint).ToPixel();
+			}
+			finally
+			{
+				if (handler is IDisposable d)
+					d.Dispose();
+			}
 		}
 
 		public override TSize MeasureHeader(double widthConstraint, double heightConstraint)
@@ -332,10 +336,7 @@ namespace Microsoft.Maui.Controls.Handlers.Items
 					}
 					else if (structuredItemsView.Header is string str)
 					{
-						header = new XLabel
-						{
-							Text = str,
-						};
+						header = new XLabel { Text = str, };
 					}
 
 					return header;
@@ -364,10 +365,7 @@ namespace Microsoft.Maui.Controls.Handlers.Items
 					}
 					else if (structuredItemsView.Footer is string str)
 					{
-						footer = new XLabel
-						{
-							Text = str,
-						};
+						footer = new XLabel { Text = str, };
 					}
 
 					return footer;
@@ -444,12 +442,10 @@ namespace Microsoft.Maui.Controls.Handlers.Items
 				element.Parent = null;
 			}
 		}
-
 	}
 
 	public class CarouselViewItemTemplateAdaptor : ItemTemplateAdaptor
 	{
-
 		public CarouselViewItemTemplateAdaptor(ItemsView itemsView) : base(itemsView) { }
 
 		public override TSize MeasureItem(double widthConstraint, double heightConstraint)
@@ -461,44 +457,30 @@ namespace Microsoft.Maui.Controls.Handlers.Items
 		{
 			return (CollectionView as NView)!.Size();
 		}
-
 	}
 
 	class DefaultItemTemplate : DataTemplate
 	{
-
 		public DefaultItemTemplate() : base(CreateView) { }
 
 		class ToTextConverter : IValueConverter
 		{
-
 			public object? Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
 			{
 				return value?.ToString() ?? string.Empty;
 			}
 
-			public object? ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture) 
+			public object? ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture)
 				=> throw new NotImplementedException();
-
 		}
 
 		static View CreateView()
 		{
-			var label = new XLabel
-			{
-				TextColor = Colors.Black,
-			};
+			var label = new XLabel { TextColor = Colors.Black, };
 
 			label.SetBinding(XLabel.TextProperty, new Binding(".", converter: new ToTextConverter()));
 
-			return new Controls.StackLayout
-			{
-				BackgroundColor = Colors.White,
-				Padding = 30,
-				Children = { label }
-			};
+			return new Controls.StackLayout { BackgroundColor = Colors.White, Padding = 30, Children = { label } };
 		}
-
 	}
-
 }

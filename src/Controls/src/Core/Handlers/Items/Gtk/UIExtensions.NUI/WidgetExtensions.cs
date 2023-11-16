@@ -29,7 +29,7 @@ public static class WidgetExtensions
 		var widthRequest = Microsoft.Maui.WidgetExtensions.Request(size.Width);
 		var doResize = false;
 
-		if (widthRequest != -1 && widthRequest != nativeView.WidthRequest && widthRequest != nativeView.AllocatedWidth)
+		if (widthRequest != -1 && widthRequest != nativeView.AllocatedWidth)
 		{
 			nativeView.WidthRequest = widthRequest;
 			doResize = true;
@@ -37,7 +37,7 @@ public static class WidgetExtensions
 
 		var heightRequest = Microsoft.Maui.WidgetExtensions.Request(size.Height);
 
-		if (heightRequest != -1 && heightRequest != nativeView.HeightRequest && heightRequest != nativeView.AllocatedHeight)
+		if (heightRequest != -1 && heightRequest != nativeView.AllocatedHeight)
 		{
 			nativeView.HeightRequest = heightRequest;
 			doResize = true;
@@ -52,14 +52,37 @@ public static class WidgetExtensions
 
 	public static void Add(this Widget it, Widget child)
 	{
-		if (child is Container c)
+		if (it is CollectionView cw)
+		{
+			cw.Add(child);
+			return;
+		}
+
+		if (it is Container c)
 		{
 			c.Add(child);
 		}
 	}
 
-	public static int ToScaledPixel(this double it) => (int)it;
-	public static int ToScaledDP(this double it) => (int)it;
+	public static class DeviceInfo
+	{
+		public static double ScalingFactor = 1;
+	}
+
+	public static int ToScaledPixel(this double it) => (int)Math.Round(it * DeviceInfo.ScalingFactor);
+
+	public static double ToScaledDP(this int pixel)
+	{
+		if (pixel == int.MaxValue)
+			return double.PositiveInfinity;
+		return pixel / DeviceInfo.ScalingFactor;
+	}
+
+	public static double ToScaledDP(this double pixel)
+	{
+		return pixel / DeviceInfo.ScalingFactor;
+	}
+
 	public static Size ToPixel(this Size it) => it;
 
 	public static void WidthSpecification(this Widget it, LayoutParamPolicies p)
