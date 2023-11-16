@@ -159,9 +159,10 @@ public partial class CollectionView
 
 	void ArrangeAllocation(Rectangle allocation)
 	{
-		if (VirtualView is not { } virtualView)
+		if (VirtualView is not { } virtualView || LayoutManager is not { })
 			return;
 
+		LayoutManager.LayoutItems(allocation, true);
 		foreach (var cr in GetVisibleChildren())
 		{
 			var (w, v) = cr;
@@ -183,7 +184,7 @@ public partial class CollectionView
 			var size = new Size(widthConstraint, heightConstraint);
 			LayoutManager.SizeAllocated(size);
 			var measured = LayoutManager.GetScrollCanvasSize();
-			return Clamp(measured,size);
+			return Clamp(measured, size);
 		}
 		finally
 		{
@@ -195,9 +196,9 @@ public partial class CollectionView
 	{
 		var w = mesured.Width;
 		var h = mesured.Height;
-		if (double.IsPositiveInfinity (mesured.Width))
+		if (double.IsPositiveInfinity(mesured.Width))
 			w = constraint.Width;
-		if (double.IsPositiveInfinity (mesured.Height))
+		if (double.IsPositiveInfinity(mesured.Height))
 			h = constraint.Height;
 		return new(w, h);
 	}
