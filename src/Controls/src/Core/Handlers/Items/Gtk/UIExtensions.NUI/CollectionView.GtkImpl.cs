@@ -122,14 +122,63 @@ public partial class CollectionView
 		}
 	}
 
-
-	void AllocateChildren(Rect mAllocation) { }
-
-	void ArrangeAllocation(Rectangle rectangle) { }
-
-	Size Measure(double allocationWidth, double allocationHeight)
+	IEnumerable<(Widget w, IView view)> GetVisibleChildren()
 	{
-		return new Size(allocationWidth, allocationHeight);
+		if (Adaptor is not { })
+			yield break;
+
+		foreach (var cr in _children.ToArray())
+		{
+			var w = cr;
+			if (w is ViewHolder vw && Adaptor.GetTemplatedView(vw.Child) is { } v)
+			{
+				yield return (w, v);
+			}
+		}
+	}
+
+	void AllocateChildren(Rect allocation)
+	{
+		if (Adaptor is not { })
+			return;
+
+		foreach (var cr in GetVisibleChildren())
+		{
+			var (w, v) = cr;
+			var r = v.Frame;
+
+			if (r.IsEmpty)
+				continue;
+
+			var cAlloc = new Gdk.Rectangle((int)(allocation.X + r.X), (int)(allocation.Y + r.Y), (int)r.Width, (int)r.Height);
+
+			// if (cAlloc != w.Allocation) // it's always needed to implicit arrange children:
+			w.SizeAllocate(cAlloc);
+		}
+	}
+
+	void ArrangeAllocation(Rectangle allocation)
+	{
+		if (VirtualView is not { } virtualView)
+			return;
+		
+		foreach (var cr in GetVisibleChildren())
+		{
+			var (w, v) = cr;
+		}
+
+		VirtualView.Arrange(allocation);
+	}
+
+	Size Measure(double widthConstraint, double heightConstraint)
+	{
+		if (VirtualView is not { } virtualView|| LayoutManager is not {})
+			return new Size(widthConstraint, heightConstraint);
+
+		var size = new Size(widthConstraint, heightConstraint);
+		LayoutManager.SizeAllocated(size);
+		var measured = LayoutManager.GetScrollCanvasSize();
+		return measured;
 	}
 
 	protected override void OnUnrealized()
@@ -172,7 +221,9 @@ public partial class CollectionView
 
 		Measure(0, double.PositiveInfinity);
 
-		var desiredMinimum = virtualView.DesiredSize;
+		var desiredMinimum = GetVisibleChildren().Select(c => c.view)
+			.Aggregate(new Size(), (s, c) => new Size(Math.Max(s.Width, c.DesiredSize.Width), s.Height + c.DesiredSize.Height));
+
 
 		MeasuredMinimum = Measure(desiredMinimum.Width, desiredMinimum.Height);
 

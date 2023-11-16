@@ -94,9 +94,9 @@ namespace Microsoft.Maui.Controls.Handlers.Items
 			}
 		}
 
-		public View? GetTemplatedView(NView view)
+		public override IView? GetTemplatedView(NView view)
 		{
-			return _nativeMauiTable.ContainsKey(view) ? _nativeMauiTable[view] : null;
+			return _nativeMauiTable.TryGetValue (view, out View? value) ? value : null;
 		}
 
 		public View? GetTemplatedView(int index)

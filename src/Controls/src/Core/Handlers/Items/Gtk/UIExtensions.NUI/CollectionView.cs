@@ -352,7 +352,11 @@ namespace Gtk.UIExtensions.NUI
 
 		void ContentSizeUpdated()
 		{
-			ScrollView.ContentContainer.UpdateSize(LayoutManager?.GetScrollCanvasSize() ?? AllocatedSize);
+			var size = LayoutManager?.GetScrollCanvasSize() ?? AllocatedSize;
+			if (!IsSizeAllocating)
+			{
+				ScrollView.ContentContainer.UpdateSize(size);
+			}
 		}
 
 		Size ICollectionViewController.GetItemSize()
@@ -426,6 +430,12 @@ namespace Gtk.UIExtensions.NUI
 				holder.UpdateSelected();
 			}
 
+			if (Adaptor.GetTemplatedView(holder.Content!) is { } view)
+			{
+				view.Arrange(view.Frame);
+			}
+
+			
 			return holder;
 		}
 

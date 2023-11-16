@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Collections.Specialized;
 using Rect = Microsoft.Maui.Graphics.Rect;
 using Size = Microsoft.Maui.Graphics.Size;
-using View = Gtk.Widget;
+using NView = Gtk.Widget;
 
 namespace Gtk.UIExtensions.NUI
 {
@@ -97,7 +97,7 @@ namespace Gtk.UIExtensions.NUI
         /// </summary>
         /// <param name="view">A view to update</param>
         /// <param name="state">State of view</param>
-        public virtual void UpdateViewState(View view, ViewHolderState state)
+        public virtual void UpdateViewState(NView view, ViewHolderState state)
         {
         }
 
@@ -125,26 +125,28 @@ namespace Gtk.UIExtensions.NUI
         /// Create a new view
         /// </summary>
         /// <returns>Created view</returns>
-        public abstract View CreateNativeView();
+        public abstract NView CreateNativeView();
 
         /// <summary>
         /// Create a new view
         /// </summary>
         /// <param name="index">To used item when create a view</param>
         /// <returns>Created view</returns>
-        public abstract View CreateNativeView(int index);
+        public abstract NView CreateNativeView(int index);
 
         /// <summary>
         /// Create a header view, if header is not existed, null will be returned
         /// </summary>
         /// <returns>A created view</returns>
-        public abstract View? GetHeaderView();
+        public abstract NView? GetHeaderView();
 
+        public abstract IView? GetTemplatedView(NView view);
+        
         /// <summary>
         /// Remove header view, a created view by Adaptor, should be removed by Adaptor
         /// </summary>
         /// <param name="header">A view to remove</param>
-        public virtual void RemoveHeaderView(View header)
+        public virtual void RemoveHeaderView(NView header)
         {
             header.Dispose();
         }
@@ -153,13 +155,13 @@ namespace Gtk.UIExtensions.NUI
         /// Create a footer view, if footer is not existed, null will be returned
         /// </summary>
         /// <returns>A created view</returns>
-        public abstract View? GetFooterView();
+        public abstract NView? GetFooterView();
 
         /// <summary>
         /// Remove footer view, a created view by Adaptor, should be removed by Adaptor
         /// </summary>
         /// <param name="footer">A view to remove</param>
-        public virtual void RemoveFooterView(View footer)
+        public virtual void RemoveFooterView(NView footer)
         {
             footer.Dispose();
         }
@@ -168,20 +170,20 @@ namespace Gtk.UIExtensions.NUI
         /// Remove view, a created view by Adaptor, should be removed by Adaptor
         /// </summary>
         /// <param name="native">A view to remove</param>
-        public abstract void RemoveNativeView(View native);
+        public abstract void RemoveNativeView(NView native);
 
         /// <summary>
         /// Set data binding between view and item
         /// </summary>
         /// <param name="view">A target view</param>
         /// <param name="index">A target item</param>
-        public abstract void SetBinding(View view, int index);
+        public abstract void SetBinding(NView view, int index);
 
         /// <summary>
         /// Unset data binding on view
         /// </summary>
         /// <param name="view">A view to unbinding</param>
-        public abstract void UnBinding(View view);
+        public abstract void UnBinding(NView view);
 
         /// <summary>
         /// Measure item size
