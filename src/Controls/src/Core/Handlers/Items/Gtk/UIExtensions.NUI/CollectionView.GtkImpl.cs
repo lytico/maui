@@ -161,7 +161,7 @@ public partial class CollectionView
 	{
 		if (VirtualView is not { } virtualView)
 			return;
-		
+
 		foreach (var cr in GetVisibleChildren())
 		{
 			var (w, v) = cr;
@@ -170,15 +170,36 @@ public partial class CollectionView
 		VirtualView.Arrange(allocation);
 	}
 
+	bool IsMeasuring { get; set; }
+
 	Size Measure(double widthConstraint, double heightConstraint)
 	{
-		if (VirtualView is not { } virtualView|| LayoutManager is not {})
-			return new Size(widthConstraint, heightConstraint);
+		IsMeasuring = true;
+		try
+		{
+			if (VirtualView is not { } virtualView || LayoutManager is not { })
+				return new Size(widthConstraint, heightConstraint);
 
-		var size = new Size(widthConstraint, heightConstraint);
-		LayoutManager.SizeAllocated(size);
-		var measured = LayoutManager.GetScrollCanvasSize();
-		return measured;
+			var size = new Size(widthConstraint, heightConstraint);
+			LayoutManager.SizeAllocated(size);
+			var measured = LayoutManager.GetScrollCanvasSize();
+			return Clamp(measured,size);
+		}
+		finally
+		{
+			IsMeasuring = false;
+		}
+	}
+
+	public Size Clamp(Size mesured, Size constraint)
+	{
+		var w = mesured.Width;
+		var h = mesured.Height;
+		if (double.IsPositiveInfinity (mesured.Width))
+			w = constraint.Width;
+		if (double.IsPositiveInfinity (mesured.Height))
+			h = constraint.Height;
+		return new(w, h);
 	}
 
 	protected override void OnUnrealized()

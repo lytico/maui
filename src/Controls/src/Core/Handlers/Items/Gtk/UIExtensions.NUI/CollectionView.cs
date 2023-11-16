@@ -353,7 +353,7 @@ namespace Gtk.UIExtensions.NUI
 		void ContentSizeUpdated()
 		{
 			var size = LayoutManager?.GetScrollCanvasSize() ?? AllocatedSize;
-			if (!IsSizeAllocating)
+			if (!IsSizeAllocating && !IsMeasuring)
 			{
 				ScrollView.ContentContainer.UpdateSize(size);
 			}
