@@ -98,7 +98,7 @@ public class CollectionViewController : ICollectionViewController
 
 		if (holder != null)
 		{
-			holder.Show();
+			holder.Visible = true;
 		}
 		else
 		{
@@ -121,7 +121,7 @@ public class CollectionViewController : ICollectionViewController
 
 		if (Adaptor.GetTemplatedView(holder.Content!) is { } view)
 		{
-			view.Arrange(view.Frame);
+			view.Arrange(new Rect(view.AnchorX,view.AnchorY,view.DesiredSize.Width,view.DesiredSize.Height));
 		}
 
 		return holder;
