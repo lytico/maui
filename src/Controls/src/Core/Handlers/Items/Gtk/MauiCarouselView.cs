@@ -162,7 +162,7 @@ namespace Microsoft.Maui.Controls.Handlers.Items
 			{
 				UpdatePositionFromUI(scrolledIndex);
 				UpdateCurrentItemFromUI(Adaptor[scrolledIndex]!);
-				RequestItemSelect(scrolledIndex);
+				CollectionViewController.RequestItemSelect(scrolledIndex);
 			}
 
 			ItemsView.IsScrolling = false;

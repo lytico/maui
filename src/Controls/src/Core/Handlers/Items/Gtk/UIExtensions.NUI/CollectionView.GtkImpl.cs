@@ -236,18 +236,18 @@ public partial class CollectionView
 		if (MeasuredMinimum != null)
 			return MeasuredMinimum.Value;
 
-		if (VirtualView is not { } virtualView)
+		if (VirtualView is not { } virtualView || LayoutManager is not {})
 			return Size.Zero;
 
-		// ensure all children have DesiredSize:
+		var itemSize = CollectionViewController.GetItemSize();
 
-		Measure(0, double.PositiveInfinity);
-
+		LayoutManager.LayoutItems(new Rect(Point.Zero, itemSize),true);
+		
 		var desiredMinimum = GetVisibleChildren().Select(c => c.view)
 			.Aggregate(new Size(), (s, c) => new Size(Math.Max(s.Width, c.DesiredSize.Width), s.Height + c.DesiredSize.Height));
 
 
-		MeasuredMinimum = Measure(desiredMinimum.Width, desiredMinimum.Height);
+		MeasuredMinimum = Measure(Math.Max(itemSize.Width,desiredMinimum.Width),Math.Max(itemSize.Height,desiredMinimum.Height));
 
 		return MeasuredMinimum.Value;
 	}

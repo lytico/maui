@@ -311,38 +311,38 @@ namespace Microsoft.Maui.Controls.Handlers.Items
 			{
 				var selected = Adaptor.GetItemIndex(ItemsView.SelectedItem);
 
-				foreach (var index in SelectedItems.ToList())
+				foreach (var index in CollectionViewController.SelectedItems.ToList())
 				{
 					if (selected != index)
-						RequestItemUnselect(index);
+						CollectionViewController.RequestItemUnselect(index);
 				}
 
 				if (selected != -1)
-					RequestItemSelect(selected);
+					CollectionViewController.RequestItemSelect(selected);
 
 			}
 			else if (ItemsView.SelectionMode == Controls.SelectionMode.Multiple)
 			{
 				var selectedItemIndexes = ItemsView.SelectedItems.Select(d => Adaptor.GetItemIndex(d)).ToHashSet();
 
-				foreach (var index in SelectedItems.ToList())
+				foreach (var index in CollectionViewController.SelectedItems.ToList())
 				{
 					if (index < 0 || Adaptor.Count <= index)
 						continue;
 
 					if (!selectedItemIndexes.Contains(index))
 					{
-						RequestItemUnselect(index);
+						CollectionViewController.RequestItemUnselect(index);
 					}
 				}
 
-				var alreadySelected = SelectedItems.ToHashSet();
+				var alreadySelected = CollectionViewController.SelectedItems.ToHashSet();
 
 				foreach (var selected in selectedItemIndexes)
 				{
 					if (!alreadySelected.Contains(selected))
 					{
-						RequestItemSelect(selected);
+						CollectionViewController.RequestItemSelect(selected);
 					}
 				}
 			}
