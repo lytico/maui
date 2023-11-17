@@ -140,6 +140,8 @@ namespace Gtk.UIExtensions.NUI
         /// <returns>A created view</returns>
         public abstract NView? GetHeaderView();
 
+        public abstract IView? GetTemplatedView(int index);
+        
         public abstract IView? GetTemplatedView(NView view);
         
         /// <summary>

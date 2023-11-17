@@ -4,8 +4,10 @@ using Gtk.UIExtensions.NUI;
 
 namespace Microsoft.Maui.Controls.Handlers.Items
 {
+
 	public class MauiCarouselView : MauiCollectionView<CarouselView>
 	{
+
 		List<View> _oldViews = new List<View>();
 		bool _updatePositionFromUI;
 		bool _updateCurrentItemFromUI;
@@ -23,7 +25,6 @@ namespace Microsoft.Maui.Controls.Handlers.Items
 			_itemLayouted = false;
 		}
 
-
 		public override void TearDownOldElement(CarouselView oldElement)
 		{
 			base.TearDownOldElement(oldElement);
@@ -39,6 +40,7 @@ namespace Microsoft.Maui.Controls.Handlers.Items
 		void OnRelayout(object? sender, EventArgs e)
 		{
 			var size = this.Size();
+
 			if (size.Width > 0 && size.Height > 0)
 			{
 				Application.Current?.Dispatcher.Dispatch(() =>
@@ -91,13 +93,13 @@ namespace Microsoft.Maui.Controls.Handlers.Items
 			_updateCurrentItemFromUI = false;
 		}
 
-
 		public void UpdateCurrentItem()
 		{
 			if (_updateCurrentItemFromUI)
 				return;
 
 			var size = this.Size();
+
 			if (ItemsView == null || Adaptor == null || LayoutManager == null || size.Width == 0 || size.Height == 0)
 				return;
 
@@ -117,6 +119,7 @@ namespace Microsoft.Maui.Controls.Handlers.Items
 				return;
 
 			var size = this.Size();
+
 			if (ItemsView == null || Adaptor == null || LayoutManager == null || size.Width == 0 || size.Height == 0)
 				return;
 
@@ -178,8 +181,8 @@ namespace Microsoft.Maui.Controls.Handlers.Items
 				{
 					if (i < 0 || i >= Adaptor.Count)
 						continue;
-					var itemView = adaptor.GetTemplatedView(i);
-					if (itemView == null)
+
+					if (adaptor.GetTemplatedView(i) is not View itemView)
 					{
 						continue;
 					}
@@ -214,12 +217,14 @@ namespace Microsoft.Maui.Controls.Handlers.Items
 					if (!newViews.Contains(itemView))
 					{
 						VisualStateManager.GoToState(itemView, CarouselView.DefaultItemVisualState);
+
 						if (ItemsView.VisibleViews.Contains(itemView))
 						{
 							ItemsView.VisibleViews.Remove(itemView);
 						}
 					}
 				}
+
 				_oldViews = newViews;
 			}
 		}
@@ -249,5 +254,7 @@ namespace Microsoft.Maui.Controls.Handlers.Items
 
 			ItemsView.IsScrolling = true;
 		}
+
 	}
+
 }

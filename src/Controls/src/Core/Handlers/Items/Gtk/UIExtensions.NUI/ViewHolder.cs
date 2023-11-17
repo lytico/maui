@@ -27,6 +27,13 @@ namespace Gtk.UIExtensions.NUI
 
 		public object? ViewCategory { get; set; }
 
+		public Rect Bounds { get; set; }
+
+		public void UpdateBounds(Rect bounds)
+		{
+			Bounds = bounds;
+		}
+
 		public Widget? Content
 		{
 			get

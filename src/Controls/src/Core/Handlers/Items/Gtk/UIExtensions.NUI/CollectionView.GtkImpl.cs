@@ -155,6 +155,11 @@ public partial class CollectionView
 
 			var cAlloc = new Gdk.Rectangle((int)(allocation.X + r.X), (int)(allocation.Y + r.Y), (int)r.Width, (int)r.Height);
 
+			if (w is ViewHolder holder)
+			{
+				cAlloc = holder.Bounds.ToNative();
+			}
+
 			// if (cAlloc != w.Allocation) // it's always needed to implicit arrange children:
 			w.SizeAllocate(cAlloc);
 		}

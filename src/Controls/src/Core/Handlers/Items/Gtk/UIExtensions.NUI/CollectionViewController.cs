@@ -61,7 +61,6 @@ public class CollectionViewController : ICollectionViewController
 	/// </summary>
 	public float RedundancyLayoutBoundRatio { get; set; } = 2f;
 
-
 	/// <summary>
 	/// The number of items on CollectionView
 	/// </summary>
@@ -94,6 +93,9 @@ public class CollectionViewController : ICollectionViewController
 		if (Adaptor == null)
 			throw new InvalidOperationException("No Adaptor");
 
+		if (LayoutManager == null)
+			throw new InvalidOperationException("No LayoutManager");
+
 		var holder = _pool.GetRecyclerView(Adaptor.GetViewCategory(index));
 
 		if (holder != null)
@@ -119,10 +121,16 @@ public class CollectionViewController : ICollectionViewController
 			holder.UpdateSelected();
 		}
 
+		var bounds = LayoutManager.GetItemBound(index);
+
 		if (Adaptor.GetTemplatedView(holder.Content!) is { } view)
 		{
-			view.Arrange(new Rect(view.AnchorX,view.AnchorY,view.DesiredSize.Width,view.DesiredSize.Height));
+			var viewSize = new Size(view.DesiredSize.Width, view.DesiredSize.Height);
+			view.Arrange(new Rect(view.AnchorX, view.AnchorY, viewSize.Width,viewSize.Height));
+			bounds.Size = viewSize;
 		}
+
+		holder.Bounds = bounds;
 
 		return holder;
 	}
@@ -207,13 +215,13 @@ public class CollectionViewController : ICollectionViewController
 
 			// _mainloopContext.Post((s) =>
 			// {
-				_requestLayoutItems = false;
+			_requestLayoutItems = false;
 
-				if (Adaptor != null && LayoutManager != null)
-				{
-					ContentSizeUpdated();
-					LayoutManager.LayoutItems(ExtendViewPort(ViewPort), true);
-				}
+			if (Adaptor != null && LayoutManager != null)
+			{
+				ContentSizeUpdated();
+				LayoutManager.LayoutItems(ExtendViewPort(ViewPort), true);
+			}
 			// }, null);
 		}
 	}

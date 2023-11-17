@@ -7,6 +7,7 @@ namespace Gtk.UIExtensions.NUI;
 
 public static class WidgetExtensions
 {
+
 	public static float PositionX(this Widget it) => it.Allocation.X;
 
 	public static float PositionY(this Widget it) => it.Allocation.Y;
@@ -19,10 +20,25 @@ public static class WidgetExtensions
 
 	public static void UpdateBounds(this Widget it, Rect bounds)
 	{
+		if (it is ViewHolder holder)
+		{
+			holder.Bounds = bounds;
+
+			return;
+		}
+
 		it.Arrange(bounds);
 	}
 
-	public static Rect GetBounds(this Widget it) => it.Allocation.ToRect();
+	public static Rect GetBounds(this Widget it)
+	{
+		if (it is ViewHolder holder)
+		{
+			return holder.Bounds;
+		}
+
+		return it.Allocation.ToRect();
+	}
 
 	public static void UpdateSize(this Widget nativeView, Size size)
 	{
@@ -55,6 +71,7 @@ public static class WidgetExtensions
 		if (it is CollectionView cw)
 		{
 			cw.Add(child);
+
 			return;
 		}
 
@@ -66,7 +83,9 @@ public static class WidgetExtensions
 
 	public static class DeviceInfo
 	{
+
 		public static double ScalingFactor = 1;
+
 	}
 
 	public static int ToScaledPixel(this double it) => (int)Math.Round(it * DeviceInfo.ScalingFactor);
@@ -75,6 +94,7 @@ public static class WidgetExtensions
 	{
 		if (pixel == int.MaxValue)
 			return double.PositiveInfinity;
+
 		return pixel / DeviceInfo.ScalingFactor;
 	}
 
@@ -116,6 +136,7 @@ public static class WidgetExtensions
 			it.Vexpand = true;
 		}
 	}
+
 }
 
 /// <summary>
@@ -135,6 +156,7 @@ public static class WidgetExtensions
 /// <since_tizen> 9 </since_tizen>
 public enum LayoutParamPolicies
 {
+
 	/// <summary>
 	/// Constant which indicates child size should match parent size.
 	/// </summary>
@@ -145,9 +167,12 @@ public enum LayoutParamPolicies
 	/// Constant which indicates parent should take the smallest size possible to wrap its children with their desired size.
 	/// </summary>
 	WrapContent
+
 }
 
 public enum ResizePolicyType
 {
+
 	FillToParent
+
 }

@@ -99,7 +99,7 @@ namespace Microsoft.Maui.Controls.Handlers.Items
 			return _nativeMauiTable.TryGetValue (view, out View? value) ? value : null;
 		}
 
-		public View? GetTemplatedView(int index)
+		public override IView? GetTemplatedView(int index)
 		{
 			var item = this[index];
 
