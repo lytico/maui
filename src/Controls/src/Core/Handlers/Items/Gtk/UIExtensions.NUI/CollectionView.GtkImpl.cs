@@ -12,6 +12,7 @@ namespace Gtk.UIExtensions.NUI;
 
 public partial class CollectionView
 {
+
 	protected override bool OnDrawn(Cairo.Context cr)
 	{
 		var r = base.OnDrawn(cr);
@@ -19,9 +20,10 @@ public partial class CollectionView
 		return r;
 	}
 
-
 	bool IsReallocating { get; set; }
+
 	bool IsSizeAllocating { get; set; }
+
 	protected IView? VirtualView { get; set; }
 
 	Rect LastAllocation { get; set; }
@@ -46,6 +48,7 @@ public partial class CollectionView
 	protected override void ForAll(bool include_internals, Callback callback)
 	{
 		base.ForAll(include_internals, callback);
+
 		foreach (var w in _children)
 		{
 			callback(w);
@@ -71,7 +74,6 @@ public partial class CollectionView
 		ClearMeasured();
 		QueueResize();
 	}
-
 
 	protected override void OnSizeAllocated(Gdk.Rectangle allocation)
 	{
@@ -130,6 +132,7 @@ public partial class CollectionView
 		foreach (var cr in _children.ToArray())
 		{
 			var w = cr;
+
 			if (w is ViewHolder vw && Adaptor.GetTemplatedView(vw.Child) is { } v)
 			{
 				yield return (w, v);
@@ -163,6 +166,7 @@ public partial class CollectionView
 			return;
 
 		LayoutManager.LayoutItems(allocation, true);
+
 		foreach (var cr in GetVisibleChildren())
 		{
 			var (w, v) = cr;
@@ -176,6 +180,7 @@ public partial class CollectionView
 	Size Measure(double widthConstraint, double heightConstraint)
 	{
 		IsMeasuring = true;
+
 		try
 		{
 			if (VirtualView is not { } virtualView || LayoutManager is not { })
@@ -184,6 +189,7 @@ public partial class CollectionView
 			var size = new Size(widthConstraint, heightConstraint);
 			LayoutManager.SizeAllocated(size);
 			var measured = LayoutManager.GetScrollCanvasSize();
+
 			return Clamp(measured, size);
 		}
 		finally
@@ -196,10 +202,13 @@ public partial class CollectionView
 	{
 		var w = mesured.Width;
 		var h = mesured.Height;
+
 		if (double.IsPositiveInfinity(mesured.Width))
 			w = constraint.Width;
+
 		if (double.IsPositiveInfinity(mesured.Height))
 			h = constraint.Height;
+
 		return new(w, h);
 	}
 
@@ -230,24 +239,23 @@ public partial class CollectionView
 		base.OnRealized();
 	}
 
-
 	protected Size MeasureMinimum()
 	{
 		if (MeasuredMinimum != null)
 			return MeasuredMinimum.Value;
 
-		if (VirtualView is not { } virtualView || LayoutManager is not {})
+		if (VirtualView is not { } virtualView || LayoutManager is not { })
 			return Size.Zero;
 
 		var itemSize = CollectionViewController.GetItemSize();
 
-		LayoutManager.LayoutItems(new Rect(Point.Zero, itemSize),true);
-		
+		LayoutManager.LayoutItems(new Rect(Point.Zero, itemSize), true);
+
 		var desiredMinimum = GetVisibleChildren().Select(c => c.view)
-			.Aggregate(new Size(), (s, c) => new Size(Math.Max(s.Width, c.DesiredSize.Width), s.Height + c.DesiredSize.Height));
+		   .Aggregate(new Size(), 
+				(s, c) => new Size(Math.Max(s.Width, c.DesiredSize.Width), s.Height + c.DesiredSize.Height));
 
-
-		MeasuredMinimum = Measure(Math.Max(itemSize.Width,desiredMinimum.Width),Math.Max(itemSize.Height,desiredMinimum.Height));
+		MeasuredMinimum = Measure(Math.Max(itemSize.Width, desiredMinimum.Width), Math.Max(itemSize.Height, desiredMinimum.Height));
 
 		return MeasuredMinimum.Value;
 	}
@@ -344,4 +352,5 @@ public partial class CollectionView
 		SizeAllocate(alloc.ToNative());
 		QueueAllocate();
 	}
+
 }

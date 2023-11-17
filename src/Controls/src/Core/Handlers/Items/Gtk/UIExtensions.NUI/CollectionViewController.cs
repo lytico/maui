@@ -205,8 +205,8 @@ public class CollectionViewController : ICollectionViewController
 		{
 			_requestLayoutItems = true;
 
-			_mainloopContext.Post((s) =>
-			{
+			// _mainloopContext.Post((s) =>
+			// {
 				_requestLayoutItems = false;
 
 				if (Adaptor != null && LayoutManager != null)
@@ -214,7 +214,7 @@ public class CollectionViewController : ICollectionViewController
 					ContentSizeUpdated();
 					LayoutManager.LayoutItems(ExtendViewPort(ViewPort), true);
 				}
-			}, null);
+			// }, null);
 		}
 	}
 
