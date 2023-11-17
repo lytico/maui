@@ -230,7 +230,10 @@ namespace Gtk.UIExtensions.NUI
 			{
 				SelectionMode = this.SelectionMode,
 				GetViewPort = () => ViewPort,
+				
 				AddToContainer = holder => Add(holder),
+				RemoveFromContainer = holder => Remove(holder),
+				
 				ScrollTo = args => ScrollTo(args.index, args.position, args.animate),
 
 			};

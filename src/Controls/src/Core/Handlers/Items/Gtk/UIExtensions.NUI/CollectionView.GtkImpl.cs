@@ -195,9 +195,20 @@ public partial class CollectionView
 
 			var size = new Size(widthConstraint, heightConstraint);
 			LayoutManager.SizeAllocated(size);
-			var measured = LayoutManager.GetScrollCanvasSize();
+			LayoutManager.LayoutItems(new Rect(Point.Zero, size), false);
 
-			return Clamp(measured, size);
+			var measured = LayoutManager.GetScrollCanvasSize();
+			var blockSize = LayoutManager.GetScrollBlockSize();
+
+			var width = LayoutManager.GetScrollColumnSize();
+
+			if (double.IsPositiveInfinity(measured.Width))
+				measured.Width = width;
+			
+			if (double.IsPositiveInfinity(measured.Height))
+				measured.Height = blockSize;
+			
+			return measured;
 		}
 		finally
 		{
@@ -251,7 +262,7 @@ public partial class CollectionView
 		if (MeasuredMinimum != null)
 			return MeasuredMinimum.Value;
 
-		if (VirtualView is not { } virtualView || LayoutManager is not { })
+		if (VirtualView is not { } virtualView || LayoutManager is not { } || Adaptor is not { })
 			return Size.Zero;
 
 		IsMeasuring = true;
@@ -259,27 +270,14 @@ public partial class CollectionView
 		var firstAlloc = new Size(double.PositiveInfinity, itemSize.Height);
 		LayoutManager.SizeAllocated(firstAlloc);
 		LayoutManager.LayoutItems(new Rect(Point.Zero, firstAlloc), false);
+
 		var blockSize = LayoutManager.GetScrollBlockSize();
-		var size = LayoutManager.GetScrollCanvasSize();
 
-		var width = 0d;
+		var width = LayoutManager.GetScrollColumnSize();
 
-		for (int i = 0; i < Count; i++)
-		{
-			var b = LayoutManager.GetItemBound(i);
-			width = Math.Max(b.Right, width);
-		}
-
-		width = LayoutManager.GetScrollColumnSize();
-
-		// LayoutManager.LayoutItems(new Rect(Point.Zero, itemSize), false);
-		//
-		var desiredSize = GetChildrensView().Select(c => c.view)
-		   .Aggregate(new Size(),
-				(s, c) => new Size(Math.Max(s.Width, c.DesiredSize.Width), s.Height + c.DesiredSize.Height));
-		//
-		// var maxSize = new Size(Math.Max(itemSize.Width, desiredSize.Width), Math.Max(itemSize.Height, desiredSize.Height));
-		// MeasuredMinimum = Measure(itemSize.Width,itemSize.Height);
+		// var desiredSize = GetChildrensView().Select(c => c.view)
+		//  .Aggregate(new Size(),
+		// (s, c) => new Size(Math.Max(s.Width, c.DesiredSize.Width), s.Height + c.DesiredSize.Height));
 
 		IsMeasuring = false;
 		MeasuredMinimum = new Size(width, blockSize);

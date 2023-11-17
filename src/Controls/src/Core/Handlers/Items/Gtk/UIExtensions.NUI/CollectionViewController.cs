@@ -192,12 +192,12 @@ public class CollectionViewController : ICollectionViewController
 		else
 		{
 			var content = view.Content;
-			view.Content = null;
 
 			if (content != null)
 				Adaptor.RemoveNativeView(content);
 
-			view.Unparent();
+			view.Content = null;
+			RemoveFromContainer?.Invoke(view);
 			view.Dispose();
 		}
 	}
@@ -631,6 +631,8 @@ public class CollectionViewController : ICollectionViewController
 	public Func<Rect>? GetViewPort { get; set; }
 
 	public Action<ViewHolder>? AddToContainer { get; set; }
+
+	public Action<ViewHolder>? RemoveFromContainer { get; set; }
 
 	public Action<(int index, ScrollToPosition position, bool animate)>? ScrollTo { get; set; }
 
