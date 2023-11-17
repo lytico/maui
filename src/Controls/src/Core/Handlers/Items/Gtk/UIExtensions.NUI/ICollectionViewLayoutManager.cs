@@ -30,7 +30,7 @@ namespace Gtk.UIExtensions.NUI
         /// </summary>
         /// <returns>scrolling area size</returns>
 		Size GetScrollCanvasSize();
-
+       
         /// <summary>
         /// Layout items
         /// </summary>
@@ -92,6 +92,12 @@ namespace Gtk.UIExtensions.NUI
         /// </summary>
         /// <returns></returns>
 		double GetScrollBlockSize();
+
+        /// <summary>
+        /// Get Item size to scroll at once
+        /// </summary>
+        /// <returns></returns>
+        double GetScrollColumnSize();
 
         /// <summary>
         /// Sets header on layout

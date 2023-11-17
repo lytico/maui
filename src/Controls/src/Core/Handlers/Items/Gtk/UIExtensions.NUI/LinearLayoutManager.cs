@@ -20,7 +20,7 @@ namespace Gtk.UIExtensions.NUI
         List<double> _accumulatedItemSizes = new List<double>();
 
         bool _hasUnevenRows;
-        double _baseItemSize;
+        Size _baseItemBound;
 
         Size _headerSize;
         View? _header;
@@ -70,18 +70,24 @@ namespace Gtk.UIExtensions.NUI
 
         double BaseItemSize
         {
-            get
-            {
-                if (_baseItemSize == 0)
-                {
-                    if (_allocatedSize.Width <= 0 || _allocatedSize.Height <= 0)
-                        return 0;
+	        get => IsHorizontal ? BaseItemBound.Width : BaseItemBound.Height;
+        }
 
-                    var itemBound = CollectionView!.GetItemSize(ItemWidthConstraint, ItemHeightConstraint);
-                    _baseItemSize = IsHorizontal ? itemBound.Width : itemBound.Height;
-                }
-                return _baseItemSize;
-            }
+        Size BaseItemBound
+        {
+	        get
+	        {
+		        if (_baseItemBound == Size.Zero)
+		        {
+			        if (_allocatedSize.Width <= 0 || _allocatedSize.Height <= 0)
+				        return Size.Zero;
+
+			        var itembound = CollectionView!.GetItemSize(ItemWidthConstraint, ItemHeightConstraint);
+			        _baseItemBound = itembound;
+		        }
+
+		        return _baseItemBound;
+	        }
         }
 
         double ItemWidthConstraint => IsHorizontal ? double.PositiveInfinity : _allocatedSize.Width;
@@ -382,6 +388,11 @@ namespace Gtk.UIExtensions.NUI
             return BaseItemSize + ItemSpacing;
         }
 
+        public double GetScrollColumnSize()
+        {
+	        return (IsHorizontal ? BaseItemBound.Height : BaseItemBound.Width);
+        }
+        
         public void SetHeader(View? header, Size size)
         {
             bool contentSizeChanged = false;
@@ -485,7 +496,7 @@ namespace Gtk.UIExtensions.NUI
 
         void InitializeMeasureCache()
         {
-            _baseItemSize = 0;
+            _baseItemBound = Size.Zero;
             _scrollCanvasSize = new Size(0, 0);
 
             if (_allocatedSize.Width <= 0 || _allocatedSize.Height <= 0)

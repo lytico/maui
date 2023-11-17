@@ -237,10 +237,9 @@ namespace Gtk.UIExtensions.NUI
 
 			CollectionViewController.HasContentSizeUpdated += (sender, size) =>
 			{
-				if (!(IsSizeAllocating || IsMeasuring))
-				{
-					ScrollView.ContentContainer.UpdateSize(size);
-				}
+				if (IsSizeAllocating || IsMeasuring || IsReallocating) return;
+
+				ScrollView.ContentContainer.UpdateSize(size);
 			};
 
 			CollectionViewController.UpdateHeaderFooter += (sender, args) => UpdateHeaderFooter();

@@ -125,9 +125,7 @@ public class CollectionViewController : ICollectionViewController
 
 		if (Adaptor.GetTemplatedView(holder.Content!) is { } view)
 		{
-			var viewSize = new Size(view.DesiredSize.Width, view.DesiredSize.Height);
-			view.Arrange(new Rect(view.AnchorX, view.AnchorY, viewSize.Width,viewSize.Height));
-			bounds.Size = viewSize;
+			view.Arrange(new Rect(Point.Zero, bounds.Size));
 		}
 
 		holder.Bounds = bounds;

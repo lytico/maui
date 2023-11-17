@@ -28,7 +28,7 @@ public partial class CollectionView
 
 	Rect LastAllocation { get; set; }
 
-	const bool RestrictToMesuredAllocation = true;
+	const bool RestrictToMesuredAllocation = false;
 
 	protected Size? MeasuredSizeH { get; set; }
 
@@ -100,10 +100,13 @@ public partial class CollectionView
 
 			LastAllocation = mAllocation;
 
-			var mesuredAllocation = Measure(allocation.Width, allocation.Height);
-
 			if (RestrictToMesuredAllocation)
+#pragma warning disable CS0162 // Unreachable code detected
+			{
+				var mesuredAllocation = Measure(allocation.Width, allocation.Height);
 				mAllocation.Size = mesuredAllocation;
+			}
+#pragma warning restore CS0162 // Unreachable code detected
 
 			ArrangeAllocation(new Rectangle(Point.Zero, mAllocation.Size));
 			AllocateChildren(mAllocation);
@@ -124,7 +127,7 @@ public partial class CollectionView
 		}
 	}
 
-	IEnumerable<(Widget w, IView view)> GetVisibleChildren()
+	IEnumerable<(Widget w, IView view)> GetChildrensView()
 	{
 		if (Adaptor is not { })
 			yield break;
@@ -145,7 +148,7 @@ public partial class CollectionView
 		if (Adaptor is not { })
 			return;
 
-		foreach (var cr in GetVisibleChildren())
+		foreach (var cr in GetChildrensView())
 		{
 			var (w, v) = cr;
 			var r = v.Frame;
@@ -170,14 +173,13 @@ public partial class CollectionView
 		if (VirtualView is not { } virtualView || LayoutManager is not { })
 			return;
 
-		LayoutManager.LayoutItems(allocation, true);
+		LayoutManager.LayoutItems(allocation, false);
 
-		foreach (var cr in GetVisibleChildren())
+		foreach (var cr in GetChildrensView())
 		{
 			var (w, v) = cr;
 		}
 
-		VirtualView.Arrange(allocation);
 	}
 
 	bool IsMeasuring { get; set; }
@@ -252,15 +254,35 @@ public partial class CollectionView
 		if (VirtualView is not { } virtualView || LayoutManager is not { })
 			return Size.Zero;
 
-		var itemSize = CollectionViewController.GetItemSize();
+		IsMeasuring = true;
+		var itemSize = CollectionViewController.GetItemSize(double.PositiveInfinity, double.PositiveInfinity);
+		var firstAlloc = new Size(double.PositiveInfinity, itemSize.Height);
+		LayoutManager.SizeAllocated(firstAlloc);
+		LayoutManager.LayoutItems(new Rect(Point.Zero, firstAlloc), false);
+		var blockSize = LayoutManager.GetScrollBlockSize();
+		var size = LayoutManager.GetScrollCanvasSize();
 
-		LayoutManager.LayoutItems(new Rect(Point.Zero, itemSize), true);
+		var width = 0d;
 
-		var desiredMinimum = GetVisibleChildren().Select(c => c.view)
-		   .Aggregate(new Size(), 
+		for (int i = 0; i < Count; i++)
+		{
+			var b = LayoutManager.GetItemBound(i);
+			width = Math.Max(b.Right, width);
+		}
+
+		width = LayoutManager.GetScrollColumnSize();
+
+		// LayoutManager.LayoutItems(new Rect(Point.Zero, itemSize), false);
+		//
+		var desiredSize = GetChildrensView().Select(c => c.view)
+		   .Aggregate(new Size(),
 				(s, c) => new Size(Math.Max(s.Width, c.DesiredSize.Width), s.Height + c.DesiredSize.Height));
+		//
+		// var maxSize = new Size(Math.Max(itemSize.Width, desiredSize.Width), Math.Max(itemSize.Height, desiredSize.Height));
+		// MeasuredMinimum = Measure(itemSize.Width,itemSize.Height);
 
-		MeasuredMinimum = Measure(Math.Max(itemSize.Width, desiredMinimum.Width), Math.Max(itemSize.Height, desiredMinimum.Height));
+		IsMeasuring = false;
+		MeasuredMinimum = new Size(width, blockSize);
 
 		return MeasuredMinimum.Value;
 	}
@@ -336,7 +358,7 @@ public partial class CollectionView
 		}
 	}
 
-	const bool RestrictToMeasuredArrange = true;
+	const bool RestrictToMeasuredArrange = false;
 
 	public void Arrange(Rectangle rect)
 	{

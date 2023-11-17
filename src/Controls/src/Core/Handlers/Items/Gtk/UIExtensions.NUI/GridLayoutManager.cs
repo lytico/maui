@@ -203,6 +203,11 @@ namespace Gtk.UIExtensions.NUI
 			return BaseItemSize + ItemSpacing;
 		}
 
+		public double GetScrollColumnSize()
+		{
+			return (IsHorizontal ? BaseItemBound.Height : BaseItemBound.Width) * Span + ColumnSpacing * (Span - 1);
+		}
+
 		public void LayoutItems(Rect bound, bool force)
 		{
 			if (_allocatedSize.Width <= 0 || _allocatedSize.Height <= 0)
@@ -244,6 +249,7 @@ namespace Gtk.UIExtensions.NUI
 				else
 				{
 					itemView = _realizedItem[i].Holder;
+					itemView.Visible = true;
 				}
 
 				var itemBound = GetItemBound(i);
