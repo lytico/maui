@@ -10,9 +10,9 @@ namespace Microsoft.Maui.Platform
 
 		public ContentView() : base(Orientation.Horizontal, 0) { }
 
-		internal Func<double, double, Size>? CrossPlatformMeasure { get; set; }
+		protected internal Func<double, double, Size>? CrossPlatformMeasure { get; set; }
 
-		internal Func<Rect, Size>? CrossPlatformArrange { get; set; }
+		protected internal Func<Rect, Size>? CrossPlatformArrange { get; set; }
 
 		Widget? _content;
 
