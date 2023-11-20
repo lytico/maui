@@ -44,6 +44,7 @@ public partial class CollectionView
 	}
 
 	List<Widget> _children = new();
+	List<Widget> _items = new();
 
 	protected override void ForAll(bool include_internals, Callback callback)
 	{
@@ -53,6 +54,23 @@ public partial class CollectionView
 		{
 			callback(w);
 		}
+
+		foreach (var w in _items)
+		{
+			callback(w);
+		}
+	}
+
+	public void AddItem(Widget widget)
+	{
+		_items.Add(widget);
+		widget.Parent = this;
+	}
+
+	public void RemoveItem(Widget widget)
+	{
+		widget.Unparent();
+		_items.Remove(widget);
 	}
 
 	public new void Add(Widget widget)
@@ -127,12 +145,12 @@ public partial class CollectionView
 		}
 	}
 
-	IEnumerable<(Widget w, IView view)> GetChildrensView()
+	IEnumerable<(Widget w, IView view)> GetItemViews()
 	{
 		if (Adaptor is not { })
 			yield break;
 
-		foreach (var cr in _children.ToArray())
+		foreach (var cr in _items.ToArray())
 		{
 			var w = cr;
 
@@ -148,7 +166,7 @@ public partial class CollectionView
 		if (Adaptor is not { })
 			return;
 
-		foreach (var cr in GetChildrensView())
+		foreach (var cr in GetItemViews())
 		{
 			var (w, v) = cr;
 			var r = v.Frame;
@@ -160,7 +178,8 @@ public partial class CollectionView
 
 			if (w is ViewHolder holder)
 			{
-				cAlloc = holder.Bounds.ToNative();
+				cAlloc = new Rect(new Point(holder.Bounds.X + allocation.X, holder.Bounds.Y + allocation.Y), holder.Bounds.Size).ToNative();
+
 			}
 
 			// if (cAlloc != w.Allocation) // it's always needed to implicit arrange children:
@@ -173,9 +192,10 @@ public partial class CollectionView
 		if (VirtualView is not { } virtualView || LayoutManager is not { })
 			return;
 
-		LayoutManager.LayoutItems(allocation, false);
+		LayoutManager.SizeAllocated(allocation.Size);
+		LayoutManager.LayoutItems(new Rect(Point.Zero, allocation.Size), false);
 
-		foreach (var cr in GetChildrensView())
+		foreach (var cr in GetItemViews())
 		{
 			var (w, v) = cr;
 		}
@@ -194,6 +214,7 @@ public partial class CollectionView
 				return new Size(widthConstraint, heightConstraint);
 
 			var size = new Size(widthConstraint, heightConstraint);
+			// LayoutManager.Reset();
 			LayoutManager.SizeAllocated(size);
 			LayoutManager.LayoutItems(new Rect(Point.Zero, size), false);
 
@@ -204,10 +225,10 @@ public partial class CollectionView
 
 			if (double.IsPositiveInfinity(measured.Width))
 				measured.Width = width;
-			
+
 			if (double.IsPositiveInfinity(measured.Height))
 				measured.Height = blockSize;
-			
+
 			return measured;
 		}
 		finally
@@ -283,6 +304,13 @@ public partial class CollectionView
 		MeasuredMinimum = new Size(width, blockSize);
 
 		return MeasuredMinimum.Value;
+	}
+
+	protected override Gtk.SizeRequestMode OnGetRequestMode()
+	{
+		// dirty fix: unwrapped labels report fixed sizes, forcing parents to fixed mode
+		//            -> report always width_for_height, since we don't support angles
+		return Gtk.SizeRequestMode.WidthForHeight;
 	}
 
 	protected override void OnAdjustSizeRequest(Orientation orientation, out int minimumSize, out int naturalSize)

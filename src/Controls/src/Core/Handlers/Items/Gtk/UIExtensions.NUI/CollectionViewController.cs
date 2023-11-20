@@ -125,7 +125,12 @@ public class CollectionViewController : ICollectionViewController
 
 		if (Adaptor.GetTemplatedView(holder.Content!) is { } view)
 		{
-			view.Arrange(new Rect(Point.Zero, bounds.Size));
+			var size= view.Arrange(new Rect(Point.Zero, bounds.Size));
+
+			if (size != bounds.Size)
+			{
+				;
+			}
 		}
 
 		holder.Bounds = bounds;

@@ -225,7 +225,6 @@ namespace Microsoft.Maui.Controls.Handlers.Items
 				view.BindingContext = this[index];
 				_dataBindedViewTable[this[index]!] = view;
 				view.MeasureInvalidated += OnItemMeasureInvalidated;
-				view.Parent = Element;
 
 				AddLogicalChild(view);
 			}

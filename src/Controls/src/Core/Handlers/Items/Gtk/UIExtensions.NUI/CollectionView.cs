@@ -231,8 +231,8 @@ namespace Gtk.UIExtensions.NUI
 				SelectionMode = this.SelectionMode,
 				GetViewPort = () => ViewPort,
 				
-				AddToContainer = holder => Add(holder),
-				RemoveFromContainer = holder => Remove(holder),
+				AddToContainer = holder => AddItem(holder),
+				RemoveFromContainer = holder => RemoveItem(holder),
 				
 				ScrollTo = args => ScrollTo(args.index, args.position, args.animate),
 

@@ -347,6 +347,9 @@ namespace Gtk.UIExtensions.NUI
 			int columnIndex = index % Span;
 			double columnSize = ColumnSize;
 
+			if (double.IsInfinity(columnSize))
+				columnSize = BaseItemSize;
+
 			double rowStartPoint = 0;
 			double columnStartPoint = 0;
 			double itemSize = 0;
@@ -406,6 +409,7 @@ namespace Gtk.UIExtensions.NUI
 				}
 
 				rowStartPoint = _accumulatedItemSizes[rowIndex] - updatedMaxItemSize + (updatedMaxItemSize - itemSize) / 2;
+
 				columnStartPoint = columnIndex * (columnSize + ColumnSpacing);
 
 				_cached[index] = true;
