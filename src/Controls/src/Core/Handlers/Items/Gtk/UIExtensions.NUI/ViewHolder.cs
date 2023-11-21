@@ -12,7 +12,7 @@ namespace Gtk.UIExtensions.NUI
 		Focused,
 	}
 
-	public class ViewHolder : Gtk.Bin
+	public class ViewHolder : Gtk.EventBox
 	{
 		ViewHolderState _state;
 		bool _isSelected;
@@ -44,8 +44,11 @@ namespace Gtk.UIExtensions.NUI
 			{
 				if (_content != null)
 				{
+					_content.CanFocus = false;
+					_content.FocusOnClick = false;
 					_content.FocusInEvent -= OnContentFocused;
 					_content.FocusOutEvent -= OnContentUnfocused;
+					
 					Remove(_content);
 				}
 
@@ -53,17 +56,26 @@ namespace Gtk.UIExtensions.NUI
 
 				if (_content != null)
 				{
+					_content.AddEvents ((int)Gdk.EventMask.ButtonPressMask);
+					_content.CanFocus = true;
+					_content.FocusOnClick = true;
 					_content.WidthSpecification(LayoutParamPolicies.MatchParent);
 					_content.HeightSpecification(LayoutParamPolicies.MatchParent);
 					_content.WidthResizePolicy(ResizePolicyType.FillToParent);
 					_content.HeightResizePolicy(ResizePolicyType.FillToParent);
 
-					_content.FocusInEvent += OnContentFocused;
+					// _content.FocusInEvent += OnContentFocused;
 					_content.FocusOutEvent += OnContentUnfocused;
-
+					_content.ButtonPressEvent+=OnContentOnButtonPressEvent;
+					// _content.FocusGrabbed += OnContentFocused;
 					Child = _content;
 				}
 			}
+		}
+
+		void OnContentOnButtonPressEvent(object o, ButtonPressEventArgs args)
+		{
+			State = ViewHolderState.Focused;
 		}
 
 		public new ViewHolderState State
@@ -99,14 +111,23 @@ namespace Gtk.UIExtensions.NUI
 		protected void Initialize()
 		{
 			CanFocus = true;
+
+			this.AddEvents ((int)Gdk.EventMask.ButtonPressMask);
+			this.AddEvents ((int)Gdk.EventMask.FocusChangeMask);
 			TouchEvent += OnTouchEvent;
 			KeyPressEvent += OnKeyEvent;
-			FocusInEvent += OnFocused;
+			FocusGrabbed += OnFocused;
 			FocusOutEvent += OnUnfocused;
+			ButtonPressEvent+=OnButtonPressEvent;
 			// no need for that:
 			//SizeAllocated += OnLayout;
 		}
 
+		void OnButtonPressEvent(object o, ButtonPressEventArgs args)
+		{
+			_isSelected = !_isSelected;
+			State = ViewHolderState.Focused;
+		}
 
 		void OnLayout(object? sender, SizeAllocatedArgs e)
 		{
@@ -121,24 +142,24 @@ namespace Gtk.UIExtensions.NUI
 
 		void OnUnfocused(object? sender, EventArgs e)
 		{
-			_isFocused = false;
-			State = _isSelected ? ViewHolderState.Selected : ViewHolderState.Normal;
+			;
 		}
 
 		void OnFocused(object? sender, EventArgs e)
 		{
-			_isFocused = true;
-			State = ViewHolderState.Focused;
+			;
 		}
 
 		void OnContentUnfocused(object? sender, EventArgs e)
 		{
-			OnUnfocused(this, e);
+			_isFocused = false;
+			State = _isSelected ? ViewHolderState.Selected : ViewHolderState.Normal;
 		}
 
 		void OnContentFocused(object? sender, EventArgs e)
 		{
-			OnFocused(this, e);
+			_isFocused = true;
+			State = ViewHolderState.Focused;
 		}
 
 		void OnKeyEvent(object source, KeyPressEventArgs e)

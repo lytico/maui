@@ -290,11 +290,16 @@ public partial class CollectionView
 		var itemSize = CollectionViewController.GetItemSize(double.PositiveInfinity, double.PositiveInfinity);
 		var firstAlloc = new Size(double.PositiveInfinity, itemSize.Height);
 		LayoutManager.SizeAllocated(firstAlloc);
-		LayoutManager.LayoutItems(new Rect(Point.Zero, firstAlloc), false);
-
 		var blockSize = LayoutManager.GetScrollBlockSize();
 
 		var width = LayoutManager.GetScrollColumnSize();
+		firstAlloc.Width = width;
+		LayoutManager.SizeAllocated(firstAlloc);
+		LayoutManager.LayoutItems(new Rect(Point.Zero, firstAlloc), false);
+
+		blockSize = LayoutManager.GetScrollBlockSize();
+
+		width = LayoutManager.GetScrollColumnSize();
 
 		// var desiredSize = GetChildrensView().Select(c => c.view)
 		//  .Aggregate(new Size(),
@@ -306,12 +311,12 @@ public partial class CollectionView
 		return MeasuredMinimum.Value;
 	}
 
-	protected override Gtk.SizeRequestMode OnGetRequestMode()
-	{
-		// dirty fix: unwrapped labels report fixed sizes, forcing parents to fixed mode
-		//            -> report always width_for_height, since we don't support angles
-		return Gtk.SizeRequestMode.WidthForHeight;
-	}
+	// protected override Gtk.SizeRequestMode OnGetRequestMode()
+	// {
+	// 	// dirty fix: unwrapped labels report fixed sizes, forcing parents to fixed mode
+	// 	//            -> report always width_for_height, since we don't support angles
+	// 	return Gtk.SizeRequestMode.WidthForHeight;
+	// }
 
 	protected override void OnAdjustSizeRequest(Orientation orientation, out int minimumSize, out int naturalSize)
 	{

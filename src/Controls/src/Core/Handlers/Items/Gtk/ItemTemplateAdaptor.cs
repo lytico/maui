@@ -252,12 +252,6 @@ namespace Microsoft.Maui.Controls.Handlers.Items
 			widthConstraint = widthConstraint.ToScaledDP();
 			heightConstraint = heightConstraint.ToScaledDP();
 
-			// TODO. It is hack code, it should be updated by Tizen.UIExtensions
-			if (widthConstraint > heightConstraint)
-				widthConstraint = double.PositiveInfinity;
-			else
-				heightConstraint = double.PositiveInfinity;
-
 			if (_dataBindedViewTable.TryGetValue(GetData(index), out View? createdView) && createdView != null)
 			{
 				return (createdView as IView).Measure(widthConstraint, heightConstraint).ToPixel();
