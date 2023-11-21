@@ -168,7 +168,7 @@ public class CollectionViewController : ICollectionViewController
 		ViewHolder holder = (ViewHolder)sender;
 
 		// Hack, in NUI, equal was override and even though not null, if it has no Body , it treat as null
-		if (!object.ReferenceEquals(holder.Content, null))
+		if (holder.Content is {})
 		{
 			Adaptor?.UpdateViewState(holder.Content, holder.State);
 

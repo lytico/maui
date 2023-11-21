@@ -125,8 +125,7 @@ namespace Gtk.UIExtensions.NUI
 
 		void OnButtonPressEvent(object o, ButtonPressEventArgs args)
 		{
-			_isSelected = !_isSelected;
-			State = ViewHolderState.Focused;
+			RequestSelected?.Invoke(this, EventArgs.Empty);
 		}
 
 		void OnLayout(object? sender, SizeAllocatedArgs e)
@@ -142,24 +141,24 @@ namespace Gtk.UIExtensions.NUI
 
 		void OnUnfocused(object? sender, EventArgs e)
 		{
-			;
-		}
-
-		void OnFocused(object? sender, EventArgs e)
-		{
-			;
-		}
-
-		void OnContentUnfocused(object? sender, EventArgs e)
-		{
 			_isFocused = false;
 			State = _isSelected ? ViewHolderState.Selected : ViewHolderState.Normal;
 		}
 
-		void OnContentFocused(object? sender, EventArgs e)
+		void OnFocused(object? sender, EventArgs e)
 		{
 			_isFocused = true;
 			State = ViewHolderState.Focused;
+		}
+
+		void OnContentUnfocused(object? sender, EventArgs e)
+		{
+			OnUnfocused(this, e);
+		}
+
+		void OnContentFocused(object? sender, EventArgs e)
+		{
+			OnFocused(this, e);
 		}
 
 		void OnKeyEvent(object source, KeyPressEventArgs e)
