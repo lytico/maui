@@ -168,7 +168,7 @@ public class CollectionViewController : ICollectionViewController
 		ViewHolder holder = (ViewHolder)sender;
 
 		// Hack, in NUI, equal was override and even though not null, if it has no Body , it treat as null
-		if (holder.Content is {})
+		if (holder.Content is { })
 		{
 			Adaptor?.UpdateViewState(holder.Content, holder.State);
 
@@ -216,16 +216,16 @@ public class CollectionViewController : ICollectionViewController
 		{
 			_requestLayoutItems = true;
 
-			// _mainloopContext.Post((s) =>
-			// {
-			_requestLayoutItems = false;
-
-			if (Adaptor != null && LayoutManager != null)
+			_mainloopContext.Post((s) =>
 			{
-				ContentSizeUpdated();
-				LayoutManager.LayoutItems(ExtendViewPort(ViewPort), true);
-			}
-			// }, null);
+				_requestLayoutItems = false;
+
+				if (Adaptor != null && LayoutManager != null)
+				{
+					ContentSizeUpdated();
+					LayoutManager.LayoutItems(ExtendViewPort(ViewPort), true);
+				}
+			}, null);
 		}
 	}
 
