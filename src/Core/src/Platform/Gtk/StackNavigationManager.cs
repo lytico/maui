@@ -5,7 +5,6 @@ namespace Microsoft.Maui.Platform;
 
 public class StackNavigationManager
 {
-
 	public StackNavigationManager(IMauiContext? mauiContext)
 	{
 		Context = mauiContext ?? throw new ArgumentNullException(nameof(mauiContext));
@@ -21,7 +20,6 @@ public class StackNavigationManager
 	{
 		NavigationView = virtualView;
 		PlatformView = platformView;
-
 	}
 
 	public void Disconnect(IStackNavigation virtualView, NavigationView platformView)
@@ -34,11 +32,14 @@ public class StackNavigationManager
 	public void NavigateTo(NavigationRequest request)
 	{
 		_ = PlatformView ?? throw new InvalidOperationException($"{nameof(PlatformView)} must not be null");
+		_ = NavigationView ?? throw new InvalidOperationException($"{nameof(NavigationView)} must not be null");
+
 
 		if (request.NavigationStack.FirstOrDefault() is { } firstOrDefault && firstOrDefault.ToPlatform(Context) is { } s)
 		{
 			PlatformView.Content = s;
 		}
-	}
 
+		NavigationView.NavigationFinished(request.NavigationStack);
+	}
 }
