@@ -6,6 +6,4 @@ https://github.com/Samsung/Tizen.UIExtensions/tree/main/src/Tizen.UIExtensions.C
 
 State:
 
-currently hangs on
-
-src/Controls/src/Core/NavigationPage/NavigationPage.cs SendHandlerUpdateAsync await SemaphoreSlim.WaitAsync();
+need to handle 

@@ -12,7 +12,6 @@ namespace Gtk.UIExtensions.NUI;
 
 public partial class CollectionView
 {
-
 	protected override bool OnDrawn(Cairo.Context cr)
 	{
 		var r = base.OnDrawn(cr);
@@ -179,7 +178,6 @@ public partial class CollectionView
 			if (w is ViewHolder holder)
 			{
 				cAlloc = new Rect(new Point(holder.Bounds.X + allocation.X, holder.Bounds.Y + allocation.Y), holder.Bounds.Size).ToNative();
-
 			}
 
 			// if (cAlloc != w.Allocation) // it's always needed to implicit arrange children:
@@ -199,7 +197,6 @@ public partial class CollectionView
 		{
 			var (w, v) = cr;
 		}
-
 	}
 
 	bool IsMeasuring { get; set; }
@@ -405,10 +402,9 @@ public partial class CollectionView
 			return;
 		}
 
-		var measuredArrange = Measure(rect.Width, rect.Height);
-		var alloc = new Rectangle(rect.Location, RestrictToMeasuredArrange ? measuredArrange : rect.Size);
+		var arrangeSize = RestrictToMeasuredArrange ? Measure(rect.Width, rect.Height) : rect.Size;
+		var alloc = new Rectangle(rect.Location, arrangeSize);
 		SizeAllocate(alloc.ToNative());
 		QueueAllocate();
 	}
-
 }

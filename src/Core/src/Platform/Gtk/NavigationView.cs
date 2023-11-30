@@ -2,10 +2,8 @@ using Gtk;
 
 namespace Microsoft.Maui.Platform
 {
-
 	public class NavigationView : Gtk.Box
 	{
-
 		public NavigationView() : base()
 		{
 			Orientation = Orientation.Horizontal;
@@ -18,7 +16,13 @@ namespace Microsoft.Maui.Platform
 			get => _content;
 			set
 			{
-				_content?.Unparent();
+				if (_content == value)
+					return;
+
+				if (_content is { })
+					Remove(_content);
+
+				// _content?.Unparent();
 
 				_content = value;
 
@@ -28,7 +32,5 @@ namespace Microsoft.Maui.Platform
 				}
 			}
 		}
-
 	}
-
 }
