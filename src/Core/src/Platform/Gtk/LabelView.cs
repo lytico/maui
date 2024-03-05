@@ -20,6 +20,8 @@ namespace Microsoft.Maui.Platform
 
 		public LineBreakMode LineBreakMode { get; set; } = LineBreakMode.TailTruncation;
 
+		internal bool _perfectSizeValid;
+
 		protected override void OnAdjustSizeRequest(Orientation orientation, out int minimum_size, out int natural_size)
 		{
 			SetLayout(Layout, this);
@@ -101,7 +103,7 @@ namespace Microsoft.Maui.Platform
 					layout.Height = (int)lh;
 				}
 			}
-			
+
 			if (!heightForWidth && heightConstrained && widthConstrained)
 			{
 				layout.Width = Math.Max((widthConstraint - hMargin).ScaledToPango(), -1);
@@ -115,15 +117,15 @@ namespace Microsoft.Maui.Platform
 					layout.Width = desiredSize.ScaledToPango();
 				else
 					layout.Height = desiredSize.ScaledToPango();
-			
+
 			}
 
 			layout.SetText(text);
 			layout.GetPixelSize(out var textWidth, out var textHeight);
-			
+
 			width = textWidth;
 			height = textHeight;
-			
+
 			if (lh > 0)
 			{
 				height = Math.Min((int)lh.ScaledFromPango(), height);

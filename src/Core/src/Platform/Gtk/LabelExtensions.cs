@@ -9,10 +9,12 @@ namespace Microsoft.Maui
 	public static class LabelExtensions
 	{
 
-		public static void UpdateText(this Label platformView, ILabel label, TextType type = TextType.Text)
+		public static void UpdateText(this LabelView platformView, ILabel label, TextType type = TextType.Text)
 		{
 			// https://docs.gtk.org/gtk3/method.Label.set_use_markup.html
 
+			platformView._perfectSizeValid = false;
+			
 			if (type == TextType.Html)
 			{
 				platformView.Markup = HtmlToPangoMarkup(label.Text);
