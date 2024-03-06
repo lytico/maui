@@ -7,9 +7,9 @@ using Gdk;
 using Gtk;
 using Microsoft.Maui.Controls;
 using Microsoft.Maui.Graphics.Platform.Gtk;
+using CollectionViewSelectionMode = Microsoft.Maui.Controls.SelectionMode;
 using Rect = Microsoft.Maui.Graphics.Rect;
 using Size = Microsoft.Maui.Graphics.Size;
-using CollectionViewSelectionMode = Microsoft.Maui.Controls.SelectionMode;
 
 namespace Gtk.UIExtensions.NUI
 {
@@ -255,7 +255,8 @@ namespace Gtk.UIExtensions.NUI
 
 			CollectionViewController.HasContentSizeUpdated += (sender, size) =>
 			{
-				if (CollectionContainer.IsSizeAllocating || CollectionContainer.IsMeasuring || CollectionContainer.IsReallocating) return;
+				if (CollectionContainer.IsSizeAllocating || CollectionContainer.IsMeasuring || CollectionContainer.IsReallocating)
+					return;
 
 				CollectionContainer.UpdateSize(size);
 

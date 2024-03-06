@@ -1,7 +1,7 @@
 using System;
+using Gtk;
 using Microsoft.Maui.Controls;
 using Microsoft.Maui.Graphics;
-using Gtk;
 
 #pragma warning disable CS0067 // Event is never used
 
@@ -33,7 +33,7 @@ internal class SnappableScrollView : ScrollableBase
 
 		ScrollAnimationEnded += OnAnimationEnd;
 		// CollectionView.SizeAllocated += OnLayout;
-	
+
 	}
 
 

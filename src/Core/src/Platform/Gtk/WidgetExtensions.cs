@@ -192,47 +192,47 @@ namespace Microsoft.Maui
 
 					break;
 				case Gtk.Notebook notebook:
-				{
-					Gtk.Notebook.NotebookChild nc = (Gtk.Notebook.NotebookChild)notebook[oldWidget];
-					var detachable = nc.Detachable;
-					var pos = nc.Position;
-					var reorderable = nc.Reorderable;
-					var tabExpand = nc.TabExpand;
-					var tabFill = nc.TabFill;
-					var label = notebook.GetTabLabel(oldWidget);
-					notebook.Remove(oldWidget);
-					notebook.InsertPage(newWidget, label, pos);
+					{
+						Gtk.Notebook.NotebookChild nc = (Gtk.Notebook.NotebookChild)notebook[oldWidget];
+						var detachable = nc.Detachable;
+						var pos = nc.Position;
+						var reorderable = nc.Reorderable;
+						var tabExpand = nc.TabExpand;
+						var tabFill = nc.TabFill;
+						var label = notebook.GetTabLabel(oldWidget);
+						notebook.Remove(oldWidget);
+						notebook.InsertPage(newWidget, label, pos);
 
-					nc = (Gtk.Notebook.NotebookChild)notebook[newWidget];
-					nc.Detachable = detachable;
-					nc.Reorderable = reorderable;
-					nc.TabExpand = tabExpand;
-					nc.TabFill = tabFill;
+						nc = (Gtk.Notebook.NotebookChild)notebook[newWidget];
+						nc.Detachable = detachable;
+						nc.Reorderable = reorderable;
+						nc.TabExpand = tabExpand;
+						nc.TabFill = tabFill;
 
-					break;
-				}
+						break;
+					}
 				case Gtk.Paned paned:
-				{
-					var pc = (Gtk.Paned.PanedChild)paned[oldWidget];
-					var resize = pc.Resize;
-					var shrink = pc.Shrink;
-					var pos = paned.Position;
-
-					if (paned.Child1 == oldWidget)
 					{
-						paned.Remove(oldWidget);
-						paned.Pack1(newWidget, resize, shrink);
-					}
-					else
-					{
-						paned.Remove(oldWidget);
-						paned.Pack2(newWidget, resize, shrink);
-					}
+						var pc = (Gtk.Paned.PanedChild)paned[oldWidget];
+						var resize = pc.Resize;
+						var shrink = pc.Shrink;
+						var pos = paned.Position;
 
-					paned.Position = pos;
+						if (paned.Child1 == oldWidget)
+						{
+							paned.Remove(oldWidget);
+							paned.Pack1(newWidget, resize, shrink);
+						}
+						else
+						{
+							paned.Remove(oldWidget);
+							paned.Pack2(newWidget, resize, shrink);
+						}
 
-					break;
-				}
+						paned.Position = pos;
+
+						break;
+					}
 				case Gtk.Bin bin:
 					bin.Remove(oldWidget);
 					bin.Child = newWidget;
