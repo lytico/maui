@@ -33,7 +33,9 @@ namespace Microsoft.Maui.Controls
 			bool value = (bool)newValue;
 
 			if (!value)
+			{
 				return;
+			}
 
 			var refreshView = (RefreshView)bindable;
 			refreshView.Refreshing?.Invoke(bindable, EventArgs.Empty);
@@ -47,13 +49,19 @@ namespace Microsoft.Maui.Controls
 
 			// IsRefreshing can always be toggled to false
 			if (!newValue)
+			{
 				return value;
+			}
 
 			if (!view.IsEnabled)
+			{
 				return false;
+			}
 
 			if (view.Command == null)
+			{
 				return value;
+			}
 
 			return value;
 		}
@@ -73,10 +81,14 @@ namespace Microsoft.Maui.Controls
 		{
 			RefreshView refreshView = (RefreshView)bindable;
 			if (oldValue is ICommand oldCommand)
+			{
 				oldCommand.CanExecuteChanged -= refreshView.RefreshCommandCanExecuteChanged;
+			}
 
 			if (newValue is ICommand newCommand)
+			{
 				newCommand.CanExecuteChanged += refreshView.RefreshCommandCanExecuteChanged;
+			}
 
 			refreshView.RefreshCommandCanExecuteChanged(bindable, EventArgs.Empty);
 		}
@@ -106,7 +118,9 @@ namespace Microsoft.Maui.Controls
 		void RefreshCommandCanExecuteChanged(object sender, EventArgs eventArgs)
 		{
 			if (IsRefreshing)
+			{
 				return;
+			}
 
 			if (Command != null)
 			{

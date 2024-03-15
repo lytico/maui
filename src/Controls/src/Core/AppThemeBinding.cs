@@ -25,7 +25,9 @@ namespace Microsoft.Maui.Controls
 			};
 
 			if (DebuggerHelper.DebuggerIsAttached && VisualDiagnostics.GetSourceInfo(this) is SourceInfo info)
+			{
 				VisualDiagnostics.RegisterSourceInfo(clone, info.SourceUri, info.LineNumber, info.LinePosition);
+			}
 
 			return clone;
 		}
@@ -67,15 +69,62 @@ namespace Microsoft.Maui.Controls
 			}
 
 			if (dispatch)
+			{
 				target.Dispatcher.DispatchIfRequired(Set);
+			}
 			else
+			{
 				Set();
+			}
 
 			void Set()
 			{
 				var value = GetValue();
 				if (value is DynamicResource dynamicResource)
+
+/* Unmerged change from project 'Controls.Core(net8.0)'
+Before:
 					target.SetDynamicResource(_targetProperty, dynamicResource.Key, specificity);
+After:
+				{
+					target.SetDynamicResource(_targetProperty, dynamicResource.Key, specificity);
+*/
+
+/* Unmerged change from project 'Controls.Core(net8.0-maccatalyst)'
+Before:
+					target.SetDynamicResource(_targetProperty, dynamicResource.Key, specificity);
+After:
+				{
+					target.SetDynamicResource(_targetProperty, dynamicResource.Key, specificity);
+*/
+
+/* Unmerged change from project 'Controls.Core(net8.0-android)'
+Before:
+					target.SetDynamicResource(_targetProperty, dynamicResource.Key, specificity);
+After:
+				{
+					target.SetDynamicResource(_targetProperty, dynamicResource.Key, specificity);
+*/
+
+/* Unmerged change from project 'Controls.Core(net8.0-windows10.0.19041.0)'
+Before:
+					target.SetDynamicResource(_targetProperty, dynamicResource.Key, specificity);
+After:
+				{
+					target.SetDynamicResource(_targetProperty, dynamicResource.Key, specificity);
+*/
+
+/* Unmerged change from project 'Controls.Core(net8.0-windows10.0.20348.0)'
+Before:
+					target.SetDynamicResource(_targetProperty, dynamicResource.Key, specificity);
+After:
+				{
+					target.SetDynamicResource(_targetProperty, dynamicResource.Key, specificity);
+*/
+				{
+					target.SetDynamicResource(_targetProperty, dynamicResource.Key, specificity);
+				}
+				}
 				else
 				{
 					if (!BindingExpression.TryConvert(ref value, _targetProperty, _targetProperty.ReturnType, true))
@@ -137,9 +186,13 @@ namespace Microsoft.Maui.Controls
 
 			AppTheme appTheme;
 			if (app == null)
+			{
 				appTheme = AppInfo.RequestedTheme;
+			}
 			else
+			{
 				appTheme = app.RequestedTheme;
+			}
 
 			return appTheme switch
 			{

@@ -43,9 +43,103 @@ namespace Microsoft.Maui
 			void newMethod(IElementHandler handler, IElement view)
 			{
 				if ((handler is null || handler is TViewHandler) && view is TVirtualView v)
+
+/* Unmerged change from project 'Core(net8.0)'
+Before:
 					method((TViewHandler)handler!, v, previousMethod);
 				else
 					previousMethod?.Invoke(handler!, view);
+After:
+				{
+					method((TViewHandler)handler!, v, previousMethod);
+				}
+				else
+				{
+					previousMethod?.Invoke(handler!, view);
+				}
+*/
+
+/* Unmerged change from project 'Core(net8.0-ios)'
+Before:
+					method((TViewHandler)handler!, v, previousMethod);
+				else
+					previousMethod?.Invoke(handler!, view);
+After:
+				{
+					method((TViewHandler)handler!, v, previousMethod);
+				}
+				else
+				{
+					previousMethod?.Invoke(handler!, view);
+				}
+*/
+
+/* Unmerged change from project 'Core(net8.0-maccatalyst)'
+Before:
+					method((TViewHandler)handler!, v, previousMethod);
+				else
+					previousMethod?.Invoke(handler!, view);
+After:
+				{
+					method((TViewHandler)handler!, v, previousMethod);
+				}
+				else
+				{
+					previousMethod?.Invoke(handler!, view);
+				}
+*/
+
+/* Unmerged change from project 'Core(net8.0-android)'
+Before:
+					method((TViewHandler)handler!, v, previousMethod);
+				else
+					previousMethod?.Invoke(handler!, view);
+After:
+				{
+					method((TViewHandler)handler!, v, previousMethod);
+				}
+				else
+				{
+					previousMethod?.Invoke(handler!, view);
+				}
+*/
+
+/* Unmerged change from project 'Core(net8.0-windows10.0.19041.0)'
+Before:
+					method((TViewHandler)handler!, v, previousMethod);
+				else
+					previousMethod?.Invoke(handler!, view);
+After:
+				{
+					method((TViewHandler)handler!, v, previousMethod);
+				}
+				else
+				{
+					previousMethod?.Invoke(handler!, view);
+				}
+*/
+
+/* Unmerged change from project 'Core(net8.0-windows10.0.20348.0)'
+Before:
+					method((TViewHandler)handler!, v, previousMethod);
+				else
+					previousMethod?.Invoke(handler!, view);
+After:
+				{
+					method((TViewHandler)handler!, v, previousMethod);
+				}
+				else
+				{
+					previousMethod?.Invoke(handler!, view);
+				}
+*/
+				{
+					method((TViewHandler)handler!, v, previousMethod);
+				}
+				else
+				{
+					previousMethod?.Invoke(handler!, view);
+				}
 			}
 
 			propertyMapper.Add(key, newMethod);
@@ -102,7 +196,9 @@ namespace Microsoft.Maui
 				action?.Invoke(handler, view);
 
 				if ((handler is null || handler is TViewHandler) && view is TVirtualView v)
+				{
 					method((TViewHandler)handler!, v);
+				}
 			});
 		}
 
@@ -140,7 +236,9 @@ namespace Microsoft.Maui
 			propertyMapper.ModifyMapping(key, (handler, view, action) =>
 			{
 				if ((handler is null || handler is TViewHandler) && view is TVirtualView v)
+				{
 					method((TViewHandler)handler!, v);
+				}
 
 				action?.Invoke(handler!, view);
 			});

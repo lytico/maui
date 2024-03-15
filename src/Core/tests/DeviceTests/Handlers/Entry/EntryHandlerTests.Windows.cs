@@ -131,7 +131,11 @@ namespace Microsoft.Maui.DeviceTests
 		bool IsInputScopeEquals(InputScope inputScope, InputScopeNameValue nameValue)
 		{
 			if (inputScope == null || inputScope.Names.Count == 0)
+			{
+			{
 				return false;
+			}
+			}
 
 			return inputScope.Names[0].NameValue == nameValue;
 		}

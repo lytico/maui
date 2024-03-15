@@ -31,12 +31,17 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.iOS
 #endif
 				var view = bindable as VisualElement;
 				if (view != null)
+				{
 					view.IsPlatformEnabled = newvalue != null;
+				}
 
 				if (bindable is IView mauiView)
 				{
 					if (mauiView.Handler == null && newvalue is IVisualElementRenderer ver)
+					{
+					{
 						mauiView.Handler = new RendererToHandlerShim(ver);
+					}
 				}
 			});
 
@@ -95,7 +100,11 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.iOS
 			get
 			{
 				if (_disposed)
+				{
+				{
 					return new List<Page>();
+				}
+				}
 
 				return _modals;
 			}
@@ -130,14 +139,39 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.iOS
 			var controller = GetRenderer(modal) as UIViewController;
 
 			if (_modals.Count >= 1 && controller != null)
+
+/* Unmerged change from project 'Compatibility(net8.0-maccatalyst)'
+Before:
 				await controller.DismissViewControllerAsync(animated);
-			else
+After:
+			{
+				await controller.DismissViewControllerAsync(animated);
+			}
+*/
+			
+/* Unmerged change from project 'Compatibility(net8.0-maccatalyst)'
+Before:
 				await _renderer.DismissViewControllerAsync(animated);
+
+			modal.DisposeModalAndChildRenderers();
+After:
+			{
+				await _renderer.DisposeModalAndChildRenderers();
+*/
+{
+				await controller.DismissViewControllerAsync(animated);
+			}
+			else
+			{
+				await _renderer.DismissViewControllerAsync(animated);
+			}
 
 			modal.DisposeModalAndChildRenderers();
 
 			if (!IsModalPresentedFullScreen(modal))
+			{
 				Page.GetCurrentPage()?.SendAppearing();
+			}
 
 			return modal;
 		}
@@ -180,7 +214,9 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.iOS
 			if (Forms.IsiOS13OrNewer)
 			{
 				if (presentationStyle == UIKit.UIModalPresentationStyle.FullScreen)
+				{
 					shouldFire = false; // This is mainly for backwards compatibility
+				}
 			}
 			else
 			{
@@ -189,22 +225,34 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.iOS
 				// for readability I decided to only take this part out
 #pragma warning disable CA1416 // TODO: 'UIModalPresentationStyle.Automatic' is only supported on: 'ios' 13.0 and later
 				if (presentationStyle == UIKit.UIModalPresentationStyle.Automatic)
+				{
 #pragma warning restore CA1416
 					shouldFire = false;
+				}
 
 				if (presentationStyle == UIKit.UIModalPresentationStyle.FullScreen)
+				{
 					shouldFire = false; // This is mainly for backwards compatibility
+				}
 			}
 
 			if (_appeared && shouldFire)
+			{
 				Page.GetCurrentPage()?.SendDisappearing();
+			}
 
 			_modals.Add(modal);
 
 			modal.DescendantRemoved += HandleChildRemoved;
 
 			if (_appeared)
+			{
+			{
 				return PresentModal(modal, _animateModals && animated);
+			}
+
+			}
+
 			return Task.FromResult<object>(null);
 		}
 
@@ -284,7 +332,9 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.iOS
 					}
 				}
 				else if (handler is IVisualElementRenderer ver)
+				{
 					renderer = ver;
+				}
 				else if (handler is IPlatformViewHandler vh)
 				{
 					renderer = new HandlerToRendererShim(vh);
@@ -322,15 +372,24 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.iOS
 				UIEdgeInsets safeAreaInsets;
 
 				if (!Forms.IsiOS11OrNewer)
+				{
 					safeAreaInsets = new UIEdgeInsets(UIApplication.SharedApplication.StatusBarFrame.Size.Height, 0, 0, 0);
+				}
+				}
 				else if (UIApplication.SharedApplication.GetKeyWindow() != null)
+				{
 					safeAreaInsets = UIApplication.SharedApplication.GetKeyWindow().SafeAreaInsets;
+				}
 #pragma warning disable CA1416, CA1422  // TODO: UIApplication.Windows is unsupported on: 'ios' 15.0 and later
 				else if (UIApplication.SharedApplication.Windows.Length > 0)
+				{
 					safeAreaInsets = UIApplication.SharedApplication.Windows[0].SafeAreaInsets;
+				}
 #pragma warning restore CA1416, CA1422
 				else
+				{
 					safeAreaInsets = UIEdgeInsets.Zero;
+				}
 
 				return safeAreaInsets;
 			}
@@ -346,12 +405,16 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.iOS
 		internal void LayoutSubviews()
 		{
 			if (Page == null)
+			{
 				return;
+			}
 
 			var rootRenderer = GetRenderer(Page);
 
 			if (rootRenderer == null)
+			{
 				return;
+			}
 
 			rootRenderer.SetElementSize(new Size(_renderer.View.Bounds.Width, _renderer.View.Bounds.Height));
 		}
@@ -359,13 +422,21 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.iOS
 		internal void SetPage(Page newRoot)
 		{
 			if (newRoot == null)
+			{
 				return;
+			}
+
 			if (Page != null)
+			{
 				throw new NotImplementedException();
+			}
+
 			Page = newRoot;
 
 			if (_appeared == false)
+			{
 				return;
+			}
 
 			AddChild(Page);
 
@@ -377,7 +448,9 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.iOS
 		internal void WillAppear()
 		{
 			if (_appeared)
+			{
 				return;
+			}
 
 			_renderer.View.BackgroundColor = ColorExtensions.BackgroundColor;
 			_renderer.View.ContentMode = UIViewContentMode.Redraw;
@@ -392,7 +465,18 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.iOS
 		void AddChild(VisualElement view)
 		{
 			if (!Application.IsApplicationOrNull(view.RealParent))
+
+/* Unmerged change from project 'Compatibility(net8.0-maccatalyst)'
+Before:
 				Console.Error.WriteLine("Tried to add parented view to canvas directly");
+After:
+			{
+				Console.Error.WriteLine("Tried to add parented view to canvas directly");
+			}
+*/
+			{
+				Console.Error.WriteLine("Tried to add parented view to canvas directly");
+			}
 
 			if (GetRenderer(view) == null)
 			{
@@ -403,12 +487,27 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.iOS
 
 				_renderer.View.AddSubview(nativeView);
 				if (viewRenderer.ViewController != null)
+
+/* Unmerged change from project 'Compatibility(net8.0-maccatalyst)'
+Before:
 					_renderer.AddChildViewController(viewRenderer.ViewController);
+After:
+				{
+					_renderer.AddChildViewController(viewRenderer.ViewController);
+				}
+*/
+				{
+					_renderer.AddChildViewController(viewRenderer.ViewController);
+				}
+
 				viewRenderer.NativeView.Frame = new CGRect(0, 0, _renderer.View.Bounds.Width, _renderer.View.Bounds.Height);
 				viewRenderer.SetElementSize(new Size(_renderer.View.Bounds.Width, _renderer.View.Bounds.Height));
 			}
 			else
+			{
+			{
 				Console.Error.WriteLine("Potential view double add");
+			}
 		}
 
 		static void HandleChildRemoved(object sender, ElementEventArgs e)
@@ -497,7 +596,9 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.iOS
 			foreach (var label in arguments.Buttons)
 			{
 				if (label == null)
+				{
 					continue;
+				}
 
 				var blabel = label;
 
@@ -663,7 +764,11 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.iOS
 			MessagingCenter.Subscribe(this, Page.BusySetSignalName, (Page sender, bool enabled) =>
 			{
 				if (!PageIsChildOfPlatform(sender))
+				{
+				{
 					return;
+				}
+
 				busyCount = Math.Max(0, enabled ? busyCount + 1 : busyCount - 1);
 #pragma warning disable CA1416, CA1422  // TODO: 'UIApplication.NetworkActivityIndicatorVisible' is unsupported on: 'ios' 13.0 and later
 				UIApplication.SharedApplication.NetworkActivityIndicatorVisible = busyCount > 0;
@@ -673,21 +778,30 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.iOS
 			MessagingCenter.Subscribe(this, Page.AlertSignalName, (Page sender, AlertArguments arguments) =>
 			{
 				if (!PageIsChildOfPlatform(sender))
+				{
+				{
 					return;
+				}
+
 				PresentAlert(arguments);
 			});
 
 			MessagingCenter.Subscribe(this, Page.PromptSignalName, (Page sender, PromptArguments arguments) =>
 			{
 				if (!PageIsChildOfPlatform(sender))
+				{
 					return;
+				}
+
 				PresentPrompt(arguments);
 			});
 
 			MessagingCenter.Subscribe(this, Page.ActionSheetSignalName, (Page sender, ActionSheetArguments arguments) =>
 			{
 				if (!PageIsChildOfPlatform(sender))
+				{
 					return;
+				}
 
 				PresentActionSheet(arguments);
 			});
@@ -721,7 +835,9 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.iOS
 			Page.DisposeModalAndChildRenderers();
 
 			foreach (var modal in (_previousModals ?? _modals))
+			{
 				modal.DisposeModalAndChildRenderers();
+			}
 
 			_previousModals?.Clear();
 			_modals.Clear();

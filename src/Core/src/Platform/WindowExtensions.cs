@@ -19,10 +19,65 @@ namespace Microsoft.Maui.Platform
 		internal static IReadOnlyList<IWindow> GetWindows()
 		{
 			if (IPlatformApplication.Current is not IPlatformApplication platformApplication)
+
+/* Unmerged change from project 'Core(net8.0)'
+Before:
 				return new List<IWindow>();
 
 			if (platformApplication.Application is not IApplication application)
+After:
+			{
+*/
+
+/* Unmerged change from project 'Core(net8.0-maccatalyst)'
+Before:
 				return new List<IWindow>();
+
+			if (platformApplication.Application is not IApplication application)
+After:
+			{
+*/
+
+/* Unmerged change from project 'Core(net8.0-android)'
+Before:
+				return new List<IWindow>();
+
+			if (platformApplication.Application is not IApplication application)
+After:
+			{
+*/
+
+/* Unmerged change from project 'Core(net8.0-windows10.0.19041.0)'
+Before:
+				return new List<IWindow>();
+
+			if (platformApplication.Application is not IApplication application)
+After:
+			{
+*/
+
+/* Unmerged change from project 'Core(net8.0-windows10.0.20348.0)'
+Before:
+				return new List<IWindow>();
+
+			if (platformApplication.Application is not IApplication application)
+After:
+			{
+*/
+			{
+				return new List<IWindow>();
+			}
+
+			if (platformApplication.Application is not IApplication application)
+			{
+				return new List<IWindow>();
+			}
+			}
+
+			if (platformApplication.Application is not IApplication application)
+			{
+				return new List<IWindow>();
+			}
 
 			return application.Windows;
 		}

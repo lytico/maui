@@ -82,9 +82,61 @@ namespace Microsoft.Maui.Hosting
 					foreach (var font in fontsBuilder)
 					{
 						if (font.Assembly == null)
+
+/* Unmerged change from project 'Core(net8.0-maccatalyst)'
+Before:
 							_fontRegistrar.Register(font.Filename, font.Alias);
 						else
+After:
+						{
+							_fontRegistrar.Register(font.Filename, font.Alias);
+						}
+						else
+						{
+*/
+
+/* Unmerged change from project 'Core(net8.0-android)'
+Before:
+							_fontRegistrar.Register(font.Filename, font.Alias);
+						else
+After:
+						{
+							_fontRegistrar.Register(font.Filename, font.Alias);
+						}
+						else
+						{
+*/
+
+/* Unmerged change from project 'Core(net8.0-windows10.0.19041.0)'
+Before:
+							_fontRegistrar.Register(font.Filename, font.Alias);
+						else
+After:
+						{
+							_fontRegistrar.Register(font.Filename, font.Alias);
+						}
+						else
+						{
+*/
+
+/* Unmerged change from project 'Core(net8.0-windows10.0.20348.0)'
+Before:
+							_fontRegistrar.Register(font.Filename, font.Alias);
+						else
+After:
+						{
+							_fontRegistrar.Register(font.Filename, font.Alias);
+						}
+						else
+						{
+*/
+						{
+							_fontRegistrar.Register(font.Filename, font.Alias);
+						}
+						else
+						{
 							_fontRegistrar.Register(font.Filename, font.Alias, font.Assembly);
+						}
 					}
 				}
 			}

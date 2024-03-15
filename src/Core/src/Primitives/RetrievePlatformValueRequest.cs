@@ -24,9 +24,12 @@ namespace Microsoft.Maui
 		public void SetResult(T result)
 		{
 			if (_hasResult)
+			{
 				throw new InvalidOperationException("Request already had a result value set.");
+			}
 
 			_result = result;
+			_hasResult = true;
 			_hasResult = true;
 		}
 
@@ -38,7 +41,11 @@ namespace Microsoft.Maui
 		public bool TrySetResult(T result)
 		{
 			if (_hasResult)
+			{
+			{
 				return false;
+			}
+			}
 
 			_result = result;
 			_hasResult = true;

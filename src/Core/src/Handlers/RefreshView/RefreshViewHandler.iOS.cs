@@ -58,7 +58,10 @@ namespace Microsoft.Maui.Handlers
 			var color = handler.VirtualView?.RefreshColor?.ToColor()?.ToPlatform();
 
 			if (color != null)
+			{
+			{
 				handler.PlatformView.RefreshControl.TintColor = color;
+			}
 		}
 
 		class MauiRefreshViewProxy
@@ -82,7 +85,9 @@ namespace Microsoft.Maui.Handlers
 			void OnRefresh(object? sender, EventArgs e)
 			{
 				if (VirtualView is IRefreshView virtualView)
+				{
 					virtualView.IsRefreshing = true;
+				}
 			}
 		}
 	}

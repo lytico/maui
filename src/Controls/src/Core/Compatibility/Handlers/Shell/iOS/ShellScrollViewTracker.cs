@@ -31,6 +31,9 @@ namespace Microsoft.Maui.Controls.Handlers.Compatibility
 			_renderer = renderer;
 
 			if (_renderer.PlatformView is UIScrollView scrollView)
+
+/* Unmerged change from project 'Controls.Core(net8.0-maccatalyst)'
+Before:
 				_scrollView = scrollView;
 			else if (_renderer.PlatformView.Subviews.Length > 0 && _renderer.PlatformView.Subviews[0] is UIScrollView nestedScrollView)
 				_scrollView = nestedScrollView;
@@ -59,15 +62,100 @@ namespace Microsoft.Maui.Controls.Handlers.Compatibility
 
 					break;
 				}
+After:
+			{
+				_scrollView = scrollView;
+*/
+			{
+				_scrollView = scrollView;
+			}
+			else if (_renderer.PlatformView.Subviews.Length > 0 && _renderer.PlatformView.Subviews[0] is UIScrollView nestedScrollView)
+			{
+				_scrollView = nestedScrollView;
+			}
+
+			if (_scrollView == null)
+			{
+				return;
+			}
+
+			var parent = _renderer.VirtualView.Parent;
+
+			while (!Application.IsApplicationOrWindowOrNull(parent))
+			{
+				if (parent is ScrollView || parent is ListView || parent is TableView || parent is CollectionView)
+				{
+					break;
+				}
+
+				parent = parent.Parent;
+
+				// Currently ShellContents are not pushable onto the stack so we know we are not being pushed
+				// on the stack if we are in a ShellContent
+				if (parent is ShellContent)
+				{
+					_isInItems = true;
+				}
+
+				if (parent is ShellSection shellSection)
+				{
+					_isInShell = true;
+					_shellSection = shellSection;
+					((IShellSectionController)_shellSection).AddContentInsetObserver(this);
+
+					break;
+				}
+			}
+			else if (_renderer.PlatformView.Subviews.Length > 0 && _renderer.PlatformView.Subviews[0] is UIScrollView nestedScrollView)
+			{
+				_scrollView = nestedScrollView;
+			}
+
+			if (_scrollView == null)
+			{
+				return;
+			}
+
+			var parent = _renderer.VirtualView.Parent;
+
+			while (!Application.IsApplicationOrWindowOrNull(parent))
+			{
+				if (parent is ScrollView || parent is ListView || parent is TableView || parent is CollectionView)
+				{
+					break;
+				}
+
+				parent = parent.Parent;
+
+				// Currently ShellContents are not pushable onto the stack so we know we are not being pushed
+				// on the stack if we are in a ShellContent
+				if (parent is ShellContent)
+				{
+					_isInItems = true;
+				}
+
+				if (parent is ShellSection shellSection)
+				{
+					_isInShell = true;
+					_shellSection = shellSection;
+					((IShellSectionController)_shellSection).AddContentInsetObserver(this);
+
+					break;
+				}
 			}
 
 			if (_isInShell)
+			{
 				UpdateVerticalBounce();
+			}
 		}
 
 		public void OnLayoutSubviews()
 		{
 			if (!_isInShell)
+
+/* Unmerged change from project 'Controls.Core(net8.0-maccatalyst)'
+Before:
 				return;
 
 			if (OperatingSystem.IsIOSVersionAtLeast(11) || OperatingSystem.IsMacCatalystVersionAtLeast(11)
@@ -81,6 +169,42 @@ namespace Microsoft.Maui.Controls.Handlers.Compatibility
 				newBounds.Y = 0;
 				if (_renderer.VirtualView is ScrollView scrollView)
 					scrollView.LayoutAreaOverride = newBounds;
+After:
+			{
+				return;
+*/
+			{
+				return;
+			}
+
+			if (OperatingSystem.IsIOSVersionAtLeast(11) || OperatingSystem.IsMacCatalystVersionAtLeast(11)
+#if TVOS
+				|| OperatingSystem.IsTvOSVersionAtLeast(11)
+#endif
+				)
+			{
+				var newBounds = _scrollView.AdjustedContentInset.InsetRect(_scrollView.Bounds).ToRectangle();
+				newBounds.X = 0;
+				newBounds.Y = 0;
+				if (_renderer.VirtualView is ScrollView scrollView)
+				{
+					scrollView.LayoutAreaOverride = newBounds;
+				}
+			}
+
+			if (OperatingSystem.IsIOSVersionAtLeast(11) || OperatingSystem.IsMacCatalystVersionAtLeast(11)
+#if TVOS
+				|| OperatingSystem.IsTvOSVersionAtLeast(11)
+#endif
+				)
+			{
+				var newBounds = _scrollView.AdjustedContentInset.InsetRect(_scrollView.Bounds).ToRectangle();
+				newBounds.X = 0;
+				newBounds.Y = 0;
+				if (_renderer.VirtualView is ScrollView scrollView)
+				{
+					scrollView.LayoutAreaOverride = newBounds;
+				}
 			}
 		}
 
@@ -90,10 +214,54 @@ namespace Microsoft.Maui.Controls.Handlers.Compatibility
 		public bool Reset()
 		{
 			if (!_isInShell)
+
+/* Unmerged change from project 'Controls.Core(net8.0-maccatalyst)'
+Before:
 				return false;
 
 			if (_lastInset == 0 && _tabThickness == 0)
+After:
+			{
+*/
+			
+/* Unmerged change from project 'Controls.Core(net8.0-maccatalyst)'
+Before:
+			if (!(OperatingSystem.IsIOSVersionAtLeast(11) || OperatingSystem.IsTvOSVersionAtLeast(11)))
+			{
+				UpdateContentInset(_lastInset, _tabThickness);
+				return true;
+			}
+After:
+			}
+*/
+{
 				return false;
+			}
+
+			if (_lastInset == 0 && _tabThickness == 0)
+			{
+
+/* Unmerged change from project 'Controls.Core(net8.0-maccatalyst)'
+Before:
+				UpdateContentInset(_lastInset, _tabThickness);
+				return true;
+After:
+				return true;
+*/
+				return false;
+			}
+
+			if (!(OperatingSystem.IsIOSVersionAtLeast(11) || OperatingSystem.IsTvOSVersionAtLeast(11)))
+			{
+				UpdateContentInset(_lastInset, _tabThickness);
+				return true;
+			}
+
+			if (ShellSectionController.GetItems().Count > 1 && _isInItems)
+			{
+				UpdateContentInset(_lastInset, _tabThickness);
+				return false;
+			}
 
 			if (!(OperatingSystem.IsIOSVersionAtLeast(11) || OperatingSystem.IsTvOSVersionAtLeast(11)))
 			{
@@ -143,7 +311,18 @@ namespace Microsoft.Maui.Controls.Handlers.Compatibility
 				var top = (float)(inset.Top);
 
 				if (_isInItems)
+
+/* Unmerged change from project 'Controls.Core(net8.0-maccatalyst)'
+Before:
 					top += (float)tabThickness;
+After:
+				{
+					top += (float)tabThickness;
+*/
+				{
+					top += (float)tabThickness;
+				}
+				}
 
 				var delta = _scrollView.ContentInset.Top - top;
 				var newInset = new UIEdgeInsets(top, (float)inset.Left, (float)inset.Bottom, (float)inset.Right);
@@ -167,7 +346,18 @@ namespace Microsoft.Maui.Controls.Handlers.Compatibility
 			// the search goes in the TitleView so there is nothing to collapse/expand.
 			if (!(OperatingSystem.IsIOSVersionAtLeast(11) || OperatingSystem.IsTvOSVersionAtLeast(11)) ||
 				(_renderer.VirtualView is ScrollView scrollView && scrollView.Orientation == ScrollOrientation.Horizontal))
+
+/* Unmerged change from project 'Controls.Core(net8.0-maccatalyst)'
+Before:
 				return;
+After:
+			{
+				return;
+			}
+*/
+			{
+				return;
+			}
 
 			var parent = _renderer.VirtualView.Parent;
 			while (!Application.IsApplicationOrNull(parent))
@@ -176,7 +366,10 @@ namespace Microsoft.Maui.Controls.Handlers.Compatibility
 				{
 					var searchHandler = Shell.GetSearchHandler(page);
 					if (searchHandler?.SearchBoxVisibility == SearchBoxVisibility.Collapsible)
+					{
 						_scrollView.AlwaysBounceVertical = true;
+					}
+
 					return;
 				}
 				parent = parent.Parent;

@@ -324,7 +324,9 @@ namespace Microsoft.Maui.Layouts.Flex
 			set
 			{
 				if ((order = value) != 0 && Parent != null)
+				{
 					Parent.ShouldOrderChildren = true;
+				}
 			}
 		}
 
@@ -433,7 +435,10 @@ namespace Microsoft.Maui.Layouts.Flex
 			{
 				var root = this;
 				while (root.Parent != null)
+				{
 					root = root.Parent;
+				}
+
 				return root;
 			}
 		}
@@ -441,11 +446,20 @@ namespace Microsoft.Maui.Layouts.Flex
 		public void Layout()
 		{
 			if (Parent != null)
+			{
 				throw new InvalidOperationException("Layout() must be called on a root item (that hasn't been added to another item)");
+			}
+
 			if (Double.IsNaN(Width) || Double.IsNaN(Height))
+			{
 				throw new InvalidOperationException("Layout() must be called on an item that has proper values for the Width and Height properties");
+			}
+
 			if (SelfSizing != null)
+			{
 				throw new InvalidOperationException("Layout() cannot be called on an item that has the SelfSizing property set");
+			}
+
 			layout_item(this, Width, Height);
 		}
 
@@ -462,15 +476,28 @@ namespace Microsoft.Maui.Layouts.Flex
 		void ValidateChild(Item child)
 		{
 			if (this == child)
+			{
 				throw new ArgumentException("cannot add item into self");
+			}
+
 			if (child.Parent != null)
+			{
 				throw new ArgumentException("child already has a parent");
+			}
+			}
+
+			if (child.Parent != null)
+			{
+				throw new ArgumentException("child already has a parent");
+			}
 		}
 
 		static void layout_item(Item item, float width, float height)
 		{
 			if (item.Children == null || item.Children.Count == 0)
+			{
 				return;
+			}
 
 			var layout = new flex_layout();
 			layout.init(item, width, height);
@@ -482,29 +509,16 @@ namespace Microsoft.Maui.Layouts.Flex
 			{
 				var child = layout.child_at(item, i);
 				if (!child.IsVisible)
-					continue;
-
-				// Items with an absolute position have their frames determined
-				// directly and are skipped during layout.
-				if (child.Position == Position.Absolute)
 				{
-					child.Frame[2] = absolute_size(child.Width, child.Left, child.Right, width);
-					child.Frame[3] = absolute_size(child.Height, child.Top, child.Bottom, height);
-					child.Frame[0] = absolute_pos(child.Left, child.Right, child.Frame[2], width);
-					child.Frame[1] = absolute_pos(child.Top, child.Bottom, child.Frame[3], height);
-
-					// Now that the item has a frame, we can layout its children.
-					layout_item(child, child.Frame[2], child.Frame[3]);
+				{
 					continue;
 				}
 
-				// Initialize frame.
-				child.Frame[0] = 0;
-				child.Frame[1] = 0;
-				child.Frame[2] = child.Width;
-				child.Frame[3] = child.Height;
+				// Items with an absolute position have their frames determined
+				// directly and are skipped during layout.
 
-				// Main axis size defaults to 0.
+/* Unmerged change from project 'Core(net8.0)'
+Before:
 				if (float.IsNaN(child.Frame[layout.frame_size_i]))
 					child.Frame[layout.frame_size_i] = 0;
 
@@ -976,6 +990,5152 @@ namespace Microsoft.Maui.Layouts.Flex
 					|| item.PaddingTop < 0
 					|| item.PaddingBottom < 0)
 					throw new ArgumentException();
+After:
+				if (child.Position == Position.Absolute)
+				{
+					child.Frame[2] = absolute_size(child.Width, child.Left, child.Right, width);
+					child.Frame[3] = absolute_size(child.Height, child.Top, child.Bottom, height);
+					child.Frame[0] = absolute_pos(child.Left, child.Right, child.Frame[2], width);
+					child.Frame[1] = absolute_pos(child.Top, child.Bottom, child.Frame[3], height);
+
+					// Now that the item has a frame, we can layout its children.
+					layout_item(child, child.Frame[2], child.Frame[3]);
+					continue;
+				}
+
+				// Initialize frame.
+				child.Frame[0] = 0;
+				child.Frame[1] = 0;
+				child.Frame[2] = child.Width;
+				child.Frame[3] = child.Height;
+
+				// Main axis size defaults to 0.
+				if (float.IsNaN(child.Frame[layout.frame_size_i]))
+				{
+					child.Frame[layout.frame_size_i] = 0;
+				}
+
+				// Cross axis size defaults to the parent's size (or line size in wrap
+				// mode, which is calculated later on).
+				if (float.IsNaN(child.Frame[layout.frame_size2_i]))
+				{
+					if (layout.wrap)
+					{
+						layout.need_lines = true;
+					}
+					else
+					{
+						child.Frame[layout.frame_size2_i] = (layout.vertical ? width : height) - child.MarginThickness(!layout.vertical);
+					}
+				}
+
+				// Call the self_sizing callback if provided. Only non-NAN values
+				// are taken into account. If the item's cross-axis align property
+				// is set to stretch, ignore the value returned by the callback.
+				if (child.SelfSizing != null)
+				{
+					float[] size = { child.Frame[2], child.Frame[3] };
+
+					child.SelfSizing(child, ref size[0], ref size[1]);
+
+					for (int j = 0; j < 2; j++)
+					{
+						int size_off = j + 2;
+						if (size_off == layout.frame_size2_i && child_align(child, item) == AlignItems.Stretch && layout.align_dim > 0)
+						{
+							continue;
+						}
+
+						float val = size[j];
+						if (!float.IsNaN(val))
+						{
+							child.Frame[size_off] = val;
+						}
+					}
+				}
+
+				// Honor the `basis' property which overrides the main-axis size.
+				if (!child.Basis.IsAuto)
+				{
+					if (child.Basis.Length < 0)
+					{
+						throw new Exception("basis should >=0");
+					}
+
+					if (child.Basis.IsRelative && child.Basis.Length > 1)
+					{
+						throw new Exception("relative basis should be <=1");
+					}
+
+					float basis = child.Basis.Length;
+					if (child.Basis.IsRelative)
+					{
+						basis *= (layout.vertical ? height : width);
+					}
+
+					child.Frame[layout.frame_size_i] = basis - child.MarginThickness(layout.vertical);
+				}
+
+				float child_size = child.Frame[layout.frame_size_i];
+				if (layout.wrap)
+				{
+					if (layout.flex_dim < child_size)
+					{
+						// Not enough space for this child on this line, layout the
+						// remaining items and move it to a new line.
+						layout_items(item, last_layout_child, i, relative_children_count, ref layout);
+
+						layout.reset();
+						last_layout_child = i;
+						relative_children_count = 0;
+					}
+
+					float child_size2 = child.Frame[layout.frame_size2_i];
+					if (!float.IsNaN(child_size2) && child_size2 + child.MarginThickness(!layout.vertical) > layout.line_dim)
+					{
+						layout.line_dim = child_size2 + child.MarginThickness(!layout.vertical);
+					}
+				}
+
+				if (child.Grow < 0
+					|| child.Shrink < 0)
+				{
+					throw new Exception("shrink and grow should be >= 0");
+				}
+
+				layout.flex_grows += child.Grow;
+				layout.flex_shrinks += child.Shrink;
+
+				if (layout.flex_dim > 0)
+				{
+					// If flex_dim is zero, it's because we're measuring unconstrained in that direction
+					// So we don't need to keep a running tally of available space
+
+					layout.flex_dim -= child_size + child.MarginThickness(layout.vertical);
+				}
+
+				relative_children_count++;
+
+				if (child_size > 0 && child.Grow > 0)
+				{
+					layout.extra_flex_dim += child_size;
+				}
+			}
+
+			// Layout remaining items in wrap mode, or everything otherwise.
+			layout_items(item, last_layout_child, item.Count, relative_children_count, ref layout);
+
+			// In wrap mode we may need to tweak the position of each line according to
+			// the align_content property as well as the cross-axis size of items that
+			// haven't been set yet.
+			if (layout.need_lines && (layout.lines?.Length ?? 0) > 0)
+			{
+				float pos = 0;
+				float spacing = 0;
+				float flex_dim = layout.align_dim - layout.lines_sizes;
+				if (flex_dim > 0)
+				{
+					layout_align(item.AlignContent, flex_dim, (uint)(layout.lines?.Length ?? 0), ref pos, ref spacing);
+				}
+
+				float old_pos = 0;
+				if (layout.reverse2)
+				{
+					pos = layout.align_dim - pos;
+					old_pos = layout.align_dim;
+				}
+
+				for (uint i = 0; i < (layout.lines?.Length ?? 0); i++)
+				{
+
+					flex_layout.flex_layout_line line = layout.lines![i];
+
+					if (layout.reverse2)
+					{
+						pos -= line.size;
+						pos -= spacing;
+						old_pos -= line.size;
+					}
+
+					// Re-position the children of this line, honoring any child
+					// alignment previously set within the line.
+					for (int j = line.child_begin; j < line.child_end; j++)
+					{
+						Item child = layout.child_at(item, j);
+						if (child.Position == Position.Absolute)
+						{
+							// Should not be re-positioned.
+							continue;
+						}
+						if (float.IsNaN(child.Frame[layout.frame_size2_i]))
+						{
+							// If the child's cross axis size hasn't been set it, it
+							// defaults to the line size.
+							child.Frame[layout.frame_size2_i] = line.size
+								+ (item.AlignContent == AlignContent.Stretch
+								   ? spacing : 0);
+						}
+						child.Frame[layout.frame_pos2_i] = pos + (child.Frame[layout.frame_pos2_i] - old_pos);
+					}
+
+					if (!layout.reverse2)
+					{
+						pos += line.size;
+						pos += spacing;
+						old_pos += line.size;
+					}
+				}
+			}
+
+			layout.cleanup();
+		}
+
+		float MarginThickness(bool vertical) =>
+			vertical ? MarginTop + MarginBottom : MarginLeft + MarginRight;
+
+		static void layout_align(Justify align, float flex_dim, int children_count, ref float pos_p, ref float spacing_p)
+		{
+			if (flex_dim < 0)
+			{
+				throw new ArgumentException();
+			}
+
+			pos_p = 0;
+			spacing_p = 0;
+
+			switch (align)
+			{
+				case Justify.Start:
+					return;
+				case Justify.End:
+					pos_p = flex_dim;
+					return;
+				case Justify.Center:
+					pos_p = flex_dim / 2;
+					return;
+				case Justify.SpaceBetween:
+					if (children_count > 0)
+					{
+						spacing_p = flex_dim / (children_count - 1);
+					}
+
+					return;
+				case Justify.SpaceAround:
+					if (children_count > 0)
+					{
+						spacing_p = flex_dim / children_count;
+						pos_p = spacing_p / 2;
+					}
+					return;
+				case Justify.SpaceEvenly:
+					if (children_count > 0)
+					{
+						spacing_p = flex_dim / (children_count + 1);
+						pos_p = spacing_p;
+					}
+					return;
+				default:
+					throw new ArgumentException();
+			}
+		}
+
+		static void layout_align(AlignContent align, float flex_dim, uint children_count, ref float pos_p, ref float spacing_p)
+		{
+			if (flex_dim < 0)
+			{
+				throw new ArgumentException();
+			}
+
+			pos_p = 0;
+			spacing_p = 0;
+
+			switch (align)
+			{
+				case AlignContent.Start:
+					return;
+				case AlignContent.End:
+					pos_p = flex_dim;
+					return;
+				case AlignContent.Center:
+					pos_p = flex_dim / 2;
+					return;
+				case AlignContent.SpaceBetween:
+					if (children_count > 0)
+					{
+						spacing_p = flex_dim / (children_count - 1);
+					}
+
+					return;
+				case AlignContent.SpaceAround:
+					if (children_count > 0)
+					{
+						spacing_p = flex_dim / children_count;
+						pos_p = spacing_p / 2;
+					}
+					return;
+				case AlignContent.SpaceEvenly:
+					if (children_count > 0)
+					{
+						spacing_p = flex_dim / (children_count + 1);
+						pos_p = spacing_p;
+					}
+					return;
+				case AlignContent.Stretch:
+					spacing_p = flex_dim / children_count;
+					return;
+				default:
+					throw new ArgumentException();
+			}
+		}
+
+		static void layout_items(Item item, int child_begin, int child_end, int children_count, ref flex_layout layout)
+		{
+			if (children_count > (child_end - child_begin))
+			{
+				throw new ArgumentException();
+			}
+
+			if (children_count <= 0)
+			{
+				return;
+			}
+
+			if (layout.flex_dim > 0 && layout.extra_flex_dim > 0)
+			{
+				// If the container has a positive flexible space, let's add to it
+				// the sizes of all flexible children.
+				layout.flex_dim += layout.extra_flex_dim;
+			}
+
+			// Determine the main axis initial position and optional spacing.
+			float pos = 0;
+			float spacing = 0;
+			if (layout.flex_grows == 0 && layout.flex_dim > 0)
+			{
+				layout_align(item.JustifyContent, layout.flex_dim, children_count, ref pos, ref spacing);
+			}
+
+			if (layout.reverse)
+			{
+				pos = layout.size_dim - pos;
+			}
+
+			if (layout.reverse)
+			{
+				pos -= layout.vertical ? item.PaddingBottom : item.PaddingRight;
+			}
+			else
+			{
+				pos += layout.vertical ? item.PaddingTop : item.PaddingLeft;
+			}
+			if (layout.wrap && layout.reverse2)
+			{
+				layout.pos2 -= layout.line_dim;
+			}
+
+			for (int i = child_begin; i < child_end; i++)
+			{
+				Item child = layout.child_at(item, i);
+				if (!child.IsVisible)
+				{
+					continue;
+				}
+
+				if (child.Position == Position.Absolute)
+				{
+					// Already positioned.
+					continue;
+				}
+
+				// Grow or shrink the main axis item size if needed.
+				float flex_size = 0;
+				if (layout.flex_dim > 0)
+				{
+					if (child.Grow != 0)
+					{
+						child.Frame[layout.frame_size_i] = 0; // Ignore previous size when growing.
+						flex_size = (layout.flex_dim / layout.flex_grows) * child.Grow;
+					}
+				}
+				else if (layout.flex_dim < 0)
+				{
+					if (child.Shrink != 0)
+					{
+						flex_size = (layout.flex_dim / layout.flex_shrinks) * child.Shrink;
+					}
+				}
+				child.Frame[layout.frame_size_i] += flex_size;
+
+				// Set the cross axis position (and stretch the cross axis size if
+				// needed).
+				float align_size = child.Frame[layout.frame_size2_i];
+				float align_pos = layout.pos2 + 0;
+				switch (child_align(child, item))
+				{
+					case AlignItems.End:
+						align_pos += layout.line_dim - align_size - (layout.vertical ? child.MarginRight : child.MarginBottom);
+						break;
+
+					case AlignItems.Center:
+						align_pos += (layout.line_dim / 2) - (align_size / 2)
+							+ ((layout.vertical ? child.MarginLeft : child.MarginTop)
+							   - (layout.vertical ? child.MarginRight : child.MarginBottom));
+						break;
+
+					case AlignItems.Stretch:
+						if (align_size == 0)
+						{
+							child.Frame[layout.frame_size2_i] = layout.line_dim
+								- ((layout.vertical ? child.MarginLeft : child.MarginTop)
+								   + (layout.vertical ? child.MarginRight : child.MarginBottom));
+						}
+						align_pos += (layout.vertical ? child.MarginLeft : child.MarginTop);
+						break;
+					case AlignItems.Start:
+						align_pos += (layout.vertical ? child.MarginLeft : child.MarginTop);
+						break;
+
+					default:
+						throw new Exception();
+				}
+				child.Frame[layout.frame_pos2_i] = align_pos;
+
+				// Set the main axis position.
+				if (layout.reverse)
+				{
+					pos -= (layout.vertical ? child.MarginBottom : child.MarginRight);
+					pos -= child.Frame[layout.frame_size_i];
+					child.Frame[layout.frame_pos_i] = pos;
+					pos -= spacing;
+					pos -= (layout.vertical ? child.MarginTop : child.MarginLeft);
+				}
+				else
+				{
+					pos += (layout.vertical ? child.MarginTop : child.MarginLeft);
+					child.Frame[layout.frame_pos_i] = pos;
+					pos += child.Frame[layout.frame_size_i];
+					pos += spacing;
+					pos += (layout.vertical ? child.MarginBottom : child.MarginRight);
+				}
+
+				// Now that the item has a frame, we can layout its children.
+				layout_item(child, child.Frame[2], child.Frame[3]);
+			}
+
+			if (layout.wrap && !layout.reverse2)
+			{
+				layout.pos2 += layout.line_dim;
+			}
+
+			if (layout.need_lines)
+			{
+				Array.Resize(ref layout.lines, (layout.lines?.Length ?? 0) + 1);
+
+				ref flex_layout.flex_layout_line line = ref layout.lines[layout.lines.Length - 1];
+
+				line.child_begin = child_begin;
+				line.child_end = child_end;
+				line.size = layout.line_dim;
+
+				layout.lines_sizes += line.size;
+			}
+
+			if (layout.reverse && layout.size_dim == 0)
+			{
+				// Handle reversed layouts when there was no fixed size in the first place. All of the positions will be flipped
+				// across the axis. Luckily the pos variable is already tracking how far negative the values were in this situation,
+				// so we can just offset the distance by that amount and get the desired value
+
+				for (int i = child_begin; i < child_end; i++)
+				{
+					Item child = layout.child_at(item, i);
+					if (!child.IsVisible)
+					{
+						continue;
+					}
+
+					if (child.Position == Position.Absolute)
+					{
+						// Not helpful for this
+						continue;
+					}
+
+					child.Frame[layout.frame_pos_i] = child.Frame[layout.frame_pos_i] - pos;
+				}
+			}
+		}
+
+		static float absolute_size(float val, float pos1, float pos2, float dim) =>
+			!float.IsNaN(val) ? val : (!float.IsNaN(pos1) && !float.IsNaN(pos2) ? dim - pos2 - pos1 : 0);
+
+		static float absolute_pos(float pos1, float pos2, float size, float dim) =>
+			!float.IsNaN(pos1) ? pos1 : (!float.IsNaN(pos2) ? dim - size - pos2 : 0);
+
+		static AlignItems child_align(Item child, Item parent) =>
+			child.AlignSelf == AlignSelf.Auto ? parent.AlignItems : (AlignItems)child.AlignSelf;
+
+		struct flex_layout
+		{
+			// Set during init.
+			public bool wrap;
+			public bool reverse;                // whether main axis is reversed
+			public bool reverse2;               // whether cross axis is reversed (wrap only)
+			public bool vertical;
+			public float size_dim;              // main axis parent size
+			public float align_dim;             // cross axis parent size
+			public uint frame_pos_i;            // main axis position
+			public uint frame_pos2_i;           // cross axis position
+			public uint frame_size_i;           // main axis size
+			public uint frame_size2_i;          // cross axis size
+			int[]? ordered_indices;
+
+			// Set for each line layout.
+			public float line_dim;              // the cross axis size
+			public float flex_dim;              // the flexible part of the main axis size
+			public float extra_flex_dim;        // sizes of flexible items
+			public float flex_grows;
+			public float flex_shrinks;
+			public float pos2;                  // cross axis position
+
+			// Calculated layout lines - only tracked when needed:
+			//   - if the root's align_content property isn't set to FLEX_ALIGN_START
+			//   - or if any child item doesn't have a cross-axis size set
+			public bool need_lines;
+			public struct flex_layout_line
+			{
+				public int child_begin;
+				public int child_end;
+				public float size;
+			};
+
+			public flex_layout_line[]? lines;
+			public float lines_sizes;
+
+			//LAYOUT_RESET
+			public void reset()
+			{
+				line_dim = wrap ? 0 : align_dim;
+				flex_dim = size_dim;
+				extra_flex_dim = 0;
+				flex_grows = 0;
+				flex_shrinks = 0;
+			}
+
+			//layout_init
+			public void init(Item item, float width, float height)
+			{
+				if (item.PaddingLeft < 0
+					|| item.PaddingRight < 0
+					|| item.PaddingTop < 0
+					|| item.PaddingBottom < 0)
+				{
+					throw new ArgumentException();
+				}
+*/
+
+/* Unmerged change from project 'Core(net8.0-maccatalyst)'
+Before:
+				if (float.IsNaN(child.Frame[layout.frame_size_i]))
+					child.Frame[layout.frame_size_i] = 0;
+
+				// Cross axis size defaults to the parent's size (or line size in wrap
+				// mode, which is calculated later on).
+				if (float.IsNaN(child.Frame[layout.frame_size2_i]))
+				{
+					if (layout.wrap)
+						layout.need_lines = true;
+					else
+						child.Frame[layout.frame_size2_i] = (layout.vertical ? width : height) - child.MarginThickness(!layout.vertical);
+				}
+
+				// Call the self_sizing callback if provided. Only non-NAN values
+				// are taken into account. If the item's cross-axis align property
+				// is set to stretch, ignore the value returned by the callback.
+				if (child.SelfSizing != null)
+				{
+					float[] size = { child.Frame[2], child.Frame[3] };
+
+					child.SelfSizing(child, ref size[0], ref size[1]);
+
+					for (int j = 0; j < 2; j++)
+					{
+						int size_off = j + 2;
+						if (size_off == layout.frame_size2_i && child_align(child, item) == AlignItems.Stretch && layout.align_dim > 0)
+							continue;
+						float val = size[j];
+						if (!float.IsNaN(val))
+							child.Frame[size_off] = val;
+					}
+				}
+
+				// Honor the `basis' property which overrides the main-axis size.
+				if (!child.Basis.IsAuto)
+				{
+					if (child.Basis.Length < 0)
+						throw new Exception("basis should >=0");
+					if (child.Basis.IsRelative && child.Basis.Length > 1)
+						throw new Exception("relative basis should be <=1");
+					float basis = child.Basis.Length;
+					if (child.Basis.IsRelative)
+						basis *= (layout.vertical ? height : width);
+					child.Frame[layout.frame_size_i] = basis - child.MarginThickness(layout.vertical);
+				}
+
+				float child_size = child.Frame[layout.frame_size_i];
+				if (layout.wrap)
+				{
+					if (layout.flex_dim < child_size)
+					{
+						// Not enough space for this child on this line, layout the
+						// remaining items and move it to a new line.
+						layout_items(item, last_layout_child, i, relative_children_count, ref layout);
+
+						layout.reset();
+						last_layout_child = i;
+						relative_children_count = 0;
+					}
+
+					float child_size2 = child.Frame[layout.frame_size2_i];
+					if (!float.IsNaN(child_size2) && child_size2 + child.MarginThickness(!layout.vertical) > layout.line_dim)
+					{
+						layout.line_dim = child_size2 + child.MarginThickness(!layout.vertical);
+					}
+				}
+
+				if (child.Grow < 0
+					|| child.Shrink < 0)
+					throw new Exception("shrink and grow should be >= 0");
+
+				layout.flex_grows += child.Grow;
+				layout.flex_shrinks += child.Shrink;
+
+				if (layout.flex_dim > 0)
+				{
+					// If flex_dim is zero, it's because we're measuring unconstrained in that direction
+					// So we don't need to keep a running tally of available space
+
+					layout.flex_dim -= child_size + child.MarginThickness(layout.vertical);
+				}
+
+				relative_children_count++;
+
+				if (child_size > 0 && child.Grow > 0)
+				{
+					layout.extra_flex_dim += child_size;
+				}
+			}
+
+			// Layout remaining items in wrap mode, or everything otherwise.
+			layout_items(item, last_layout_child, item.Count, relative_children_count, ref layout);
+
+			// In wrap mode we may need to tweak the position of each line according to
+			// the align_content property as well as the cross-axis size of items that
+			// haven't been set yet.
+			if (layout.need_lines && (layout.lines?.Length ?? 0) > 0)
+			{
+				float pos = 0;
+				float spacing = 0;
+				float flex_dim = layout.align_dim - layout.lines_sizes;
+				if (flex_dim > 0)
+					layout_align(item.AlignContent, flex_dim, (uint)(layout.lines?.Length ?? 0), ref pos, ref spacing);
+
+				float old_pos = 0;
+				if (layout.reverse2)
+				{
+					pos = layout.align_dim - pos;
+					old_pos = layout.align_dim;
+				}
+
+				for (uint i = 0; i < (layout.lines?.Length ?? 0); i++)
+				{
+
+					flex_layout.flex_layout_line line = layout.lines![i];
+
+					if (layout.reverse2)
+					{
+						pos -= line.size;
+						pos -= spacing;
+						old_pos -= line.size;
+					}
+
+					// Re-position the children of this line, honoring any child
+					// alignment previously set within the line.
+					for (int j = line.child_begin; j < line.child_end; j++)
+					{
+						Item child = layout.child_at(item, j);
+						if (child.Position == Position.Absolute)
+						{
+							// Should not be re-positioned.
+							continue;
+						}
+						if (float.IsNaN(child.Frame[layout.frame_size2_i]))
+						{
+							// If the child's cross axis size hasn't been set it, it
+							// defaults to the line size.
+							child.Frame[layout.frame_size2_i] = line.size
+								+ (item.AlignContent == AlignContent.Stretch
+								   ? spacing : 0);
+						}
+						child.Frame[layout.frame_pos2_i] = pos + (child.Frame[layout.frame_pos2_i] - old_pos);
+					}
+
+					if (!layout.reverse2)
+					{
+						pos += line.size;
+						pos += spacing;
+						old_pos += line.size;
+					}
+				}
+			}
+
+			layout.cleanup();
+		}
+
+		float MarginThickness(bool vertical) =>
+			vertical ? MarginTop + MarginBottom : MarginLeft + MarginRight;
+
+		static void layout_align(Justify align, float flex_dim, int children_count, ref float pos_p, ref float spacing_p)
+		{
+			if (flex_dim < 0)
+				throw new ArgumentException();
+			pos_p = 0;
+			spacing_p = 0;
+
+			switch (align)
+			{
+				case Justify.Start:
+					return;
+				case Justify.End:
+					pos_p = flex_dim;
+					return;
+				case Justify.Center:
+					pos_p = flex_dim / 2;
+					return;
+				case Justify.SpaceBetween:
+					if (children_count > 0)
+						spacing_p = flex_dim / (children_count - 1);
+					return;
+				case Justify.SpaceAround:
+					if (children_count > 0)
+					{
+						spacing_p = flex_dim / children_count;
+						pos_p = spacing_p / 2;
+					}
+					return;
+				case Justify.SpaceEvenly:
+					if (children_count > 0)
+					{
+						spacing_p = flex_dim / (children_count + 1);
+						pos_p = spacing_p;
+					}
+					return;
+				default:
+					throw new ArgumentException();
+			}
+		}
+
+		static void layout_align(AlignContent align, float flex_dim, uint children_count, ref float pos_p, ref float spacing_p)
+		{
+			if (flex_dim < 0)
+				throw new ArgumentException();
+			pos_p = 0;
+			spacing_p = 0;
+
+			switch (align)
+			{
+				case AlignContent.Start:
+					return;
+				case AlignContent.End:
+					pos_p = flex_dim;
+					return;
+				case AlignContent.Center:
+					pos_p = flex_dim / 2;
+					return;
+				case AlignContent.SpaceBetween:
+					if (children_count > 0)
+						spacing_p = flex_dim / (children_count - 1);
+					return;
+				case AlignContent.SpaceAround:
+					if (children_count > 0)
+					{
+						spacing_p = flex_dim / children_count;
+						pos_p = spacing_p / 2;
+					}
+					return;
+				case AlignContent.SpaceEvenly:
+					if (children_count > 0)
+					{
+						spacing_p = flex_dim / (children_count + 1);
+						pos_p = spacing_p;
+					}
+					return;
+				case AlignContent.Stretch:
+					spacing_p = flex_dim / children_count;
+					return;
+				default:
+					throw new ArgumentException();
+			}
+		}
+
+		static void layout_items(Item item, int child_begin, int child_end, int children_count, ref flex_layout layout)
+		{
+			if (children_count > (child_end - child_begin))
+				throw new ArgumentException();
+			if (children_count <= 0)
+				return;
+			if (layout.flex_dim > 0 && layout.extra_flex_dim > 0)
+			{
+				// If the container has a positive flexible space, let's add to it
+				// the sizes of all flexible children.
+				layout.flex_dim += layout.extra_flex_dim;
+			}
+
+			// Determine the main axis initial position and optional spacing.
+			float pos = 0;
+			float spacing = 0;
+			if (layout.flex_grows == 0 && layout.flex_dim > 0)
+			{
+				layout_align(item.JustifyContent, layout.flex_dim, children_count, ref pos, ref spacing);
+			}
+
+			if (layout.reverse)
+				pos = layout.size_dim - pos;
+
+
+			if (layout.reverse)
+			{
+				pos -= layout.vertical ? item.PaddingBottom : item.PaddingRight;
+			}
+			else
+			{
+				pos += layout.vertical ? item.PaddingTop : item.PaddingLeft;
+			}
+			if (layout.wrap && layout.reverse2)
+			{
+				layout.pos2 -= layout.line_dim;
+			}
+
+			for (int i = child_begin; i < child_end; i++)
+			{
+				Item child = layout.child_at(item, i);
+				if (!child.IsVisible)
+					continue;
+				if (child.Position == Position.Absolute)
+				{
+					// Already positioned.
+					continue;
+				}
+
+				// Grow or shrink the main axis item size if needed.
+				float flex_size = 0;
+				if (layout.flex_dim > 0)
+				{
+					if (child.Grow != 0)
+					{
+						child.Frame[layout.frame_size_i] = 0; // Ignore previous size when growing.
+						flex_size = (layout.flex_dim / layout.flex_grows) * child.Grow;
+					}
+				}
+				else if (layout.flex_dim < 0)
+				{
+					if (child.Shrink != 0)
+					{
+						flex_size = (layout.flex_dim / layout.flex_shrinks) * child.Shrink;
+					}
+				}
+				child.Frame[layout.frame_size_i] += flex_size;
+
+				// Set the cross axis position (and stretch the cross axis size if
+				// needed).
+				float align_size = child.Frame[layout.frame_size2_i];
+				float align_pos = layout.pos2 + 0;
+				switch (child_align(child, item))
+				{
+					case AlignItems.End:
+						align_pos += layout.line_dim - align_size - (layout.vertical ? child.MarginRight : child.MarginBottom);
+						break;
+
+					case AlignItems.Center:
+						align_pos += (layout.line_dim / 2) - (align_size / 2)
+							+ ((layout.vertical ? child.MarginLeft : child.MarginTop)
+							   - (layout.vertical ? child.MarginRight : child.MarginBottom));
+						break;
+
+					case AlignItems.Stretch:
+						if (align_size == 0)
+						{
+							child.Frame[layout.frame_size2_i] = layout.line_dim
+								- ((layout.vertical ? child.MarginLeft : child.MarginTop)
+								   + (layout.vertical ? child.MarginRight : child.MarginBottom));
+						}
+						align_pos += (layout.vertical ? child.MarginLeft : child.MarginTop);
+						break;
+					case AlignItems.Start:
+						align_pos += (layout.vertical ? child.MarginLeft : child.MarginTop);
+						break;
+
+					default:
+						throw new Exception();
+				}
+				child.Frame[layout.frame_pos2_i] = align_pos;
+
+				// Set the main axis position.
+				if (layout.reverse)
+				{
+					pos -= (layout.vertical ? child.MarginBottom : child.MarginRight);
+					pos -= child.Frame[layout.frame_size_i];
+					child.Frame[layout.frame_pos_i] = pos;
+					pos -= spacing;
+					pos -= (layout.vertical ? child.MarginTop : child.MarginLeft);
+				}
+				else
+				{
+					pos += (layout.vertical ? child.MarginTop : child.MarginLeft);
+					child.Frame[layout.frame_pos_i] = pos;
+					pos += child.Frame[layout.frame_size_i];
+					pos += spacing;
+					pos += (layout.vertical ? child.MarginBottom : child.MarginRight);
+				}
+
+				// Now that the item has a frame, we can layout its children.
+				layout_item(child, child.Frame[2], child.Frame[3]);
+			}
+
+			if (layout.wrap && !layout.reverse2)
+			{
+				layout.pos2 += layout.line_dim;
+			}
+
+			if (layout.need_lines)
+			{
+				Array.Resize(ref layout.lines, (layout.lines?.Length ?? 0) + 1);
+
+				ref flex_layout.flex_layout_line line = ref layout.lines[layout.lines.Length - 1];
+
+				line.child_begin = child_begin;
+				line.child_end = child_end;
+				line.size = layout.line_dim;
+
+				layout.lines_sizes += line.size;
+			}
+
+			if (layout.reverse && layout.size_dim == 0)
+			{
+				// Handle reversed layouts when there was no fixed size in the first place. All of the positions will be flipped
+				// across the axis. Luckily the pos variable is already tracking how far negative the values were in this situation,
+				// so we can just offset the distance by that amount and get the desired value
+
+				for (int i = child_begin; i < child_end; i++)
+				{
+					Item child = layout.child_at(item, i);
+					if (!child.IsVisible)
+						continue;
+
+					if (child.Position == Position.Absolute)
+					{
+						// Not helpful for this
+						continue;
+					}
+
+					child.Frame[layout.frame_pos_i] = child.Frame[layout.frame_pos_i] - pos;
+				}
+			}
+		}
+
+		static float absolute_size(float val, float pos1, float pos2, float dim) =>
+			!float.IsNaN(val) ? val : (!float.IsNaN(pos1) && !float.IsNaN(pos2) ? dim - pos2 - pos1 : 0);
+
+		static float absolute_pos(float pos1, float pos2, float size, float dim) =>
+			!float.IsNaN(pos1) ? pos1 : (!float.IsNaN(pos2) ? dim - size - pos2 : 0);
+
+		static AlignItems child_align(Item child, Item parent) =>
+			child.AlignSelf == AlignSelf.Auto ? parent.AlignItems : (AlignItems)child.AlignSelf;
+
+		struct flex_layout
+		{
+			// Set during init.
+			public bool wrap;
+			public bool reverse;                // whether main axis is reversed
+			public bool reverse2;               // whether cross axis is reversed (wrap only)
+			public bool vertical;
+			public float size_dim;              // main axis parent size
+			public float align_dim;             // cross axis parent size
+			public uint frame_pos_i;            // main axis position
+			public uint frame_pos2_i;           // cross axis position
+			public uint frame_size_i;           // main axis size
+			public uint frame_size2_i;          // cross axis size
+			int[]? ordered_indices;
+
+			// Set for each line layout.
+			public float line_dim;              // the cross axis size
+			public float flex_dim;              // the flexible part of the main axis size
+			public float extra_flex_dim;        // sizes of flexible items
+			public float flex_grows;
+			public float flex_shrinks;
+			public float pos2;                  // cross axis position
+
+			// Calculated layout lines - only tracked when needed:
+			//   - if the root's align_content property isn't set to FLEX_ALIGN_START
+			//   - or if any child item doesn't have a cross-axis size set
+			public bool need_lines;
+			public struct flex_layout_line
+			{
+				public int child_begin;
+				public int child_end;
+				public float size;
+			};
+
+			public flex_layout_line[]? lines;
+			public float lines_sizes;
+
+			//LAYOUT_RESET
+			public void reset()
+			{
+				line_dim = wrap ? 0 : align_dim;
+				flex_dim = size_dim;
+				extra_flex_dim = 0;
+				flex_grows = 0;
+				flex_shrinks = 0;
+			}
+
+			//layout_init
+			public void init(Item item, float width, float height)
+			{
+				if (item.PaddingLeft < 0
+					|| item.PaddingRight < 0
+					|| item.PaddingTop < 0
+					|| item.PaddingBottom < 0)
+					throw new ArgumentException();
+After:
+				if (child.Position == Position.Absolute)
+				{
+					child.Frame[2] = absolute_size(child.Width, child.Left, child.Right, width);
+					child.Frame[3] = absolute_size(child.Height, child.Top, child.Bottom, height);
+					child.Frame[0] = absolute_pos(child.Left, child.Right, child.Frame[2], width);
+					child.Frame[1] = absolute_pos(child.Top, child.Bottom, child.Frame[3], height);
+
+					// Now that the item has a frame, we can layout its children.
+					layout_item(child, child.Frame[2], child.Frame[3]);
+					continue;
+				}
+
+				// Initialize frame.
+				child.Frame[0] = 0;
+				child.Frame[1] = 0;
+				child.Frame[2] = child.Width;
+				child.Frame[3] = child.Height;
+
+				// Main axis size defaults to 0.
+				if (float.IsNaN(child.Frame[layout.frame_size_i]))
+				{
+					child.Frame[layout.frame_size_i] = 0;
+				}
+
+				// Cross axis size defaults to the parent's size (or line size in wrap
+				// mode, which is calculated later on).
+				if (float.IsNaN(child.Frame[layout.frame_size2_i]))
+				{
+					if (layout.wrap)
+					{
+						layout.need_lines = true;
+					}
+					else
+					{
+						child.Frame[layout.frame_size2_i] = (layout.vertical ? width : height) - child.MarginThickness(!layout.vertical);
+					}
+				}
+
+				// Call the self_sizing callback if provided. Only non-NAN values
+				// are taken into account. If the item's cross-axis align property
+				// is set to stretch, ignore the value returned by the callback.
+				if (child.SelfSizing != null)
+				{
+					float[] size = { child.Frame[2], child.Frame[3] };
+
+					child.SelfSizing(child, ref size[0], ref size[1]);
+
+					for (int j = 0; j < 2; j++)
+					{
+						int size_off = j + 2;
+						if (size_off == layout.frame_size2_i && child_align(child, item) == AlignItems.Stretch && layout.align_dim > 0)
+						{
+							continue;
+						}
+
+						float val = size[j];
+						if (!float.IsNaN(val))
+						{
+							child.Frame[size_off] = val;
+						}
+					}
+				}
+
+				// Honor the `basis' property which overrides the main-axis size.
+				if (!child.Basis.IsAuto)
+				{
+					if (child.Basis.Length < 0)
+					{
+						throw new Exception("basis should >=0");
+					}
+
+					if (child.Basis.IsRelative && child.Basis.Length > 1)
+					{
+						throw new Exception("relative basis should be <=1");
+					}
+
+					float basis = child.Basis.Length;
+					if (child.Basis.IsRelative)
+					{
+						basis *= (layout.vertical ? height : width);
+					}
+
+					child.Frame[layout.frame_size_i] = basis - child.MarginThickness(layout.vertical);
+				}
+
+				float child_size = child.Frame[layout.frame_size_i];
+				if (layout.wrap)
+				{
+					if (layout.flex_dim < child_size)
+					{
+						// Not enough space for this child on this line, layout the
+						// remaining items and move it to a new line.
+						layout_items(item, last_layout_child, i, relative_children_count, ref layout);
+
+						layout.reset();
+						last_layout_child = i;
+						relative_children_count = 0;
+					}
+
+					float child_size2 = child.Frame[layout.frame_size2_i];
+					if (!float.IsNaN(child_size2) && child_size2 + child.MarginThickness(!layout.vertical) > layout.line_dim)
+					{
+						layout.line_dim = child_size2 + child.MarginThickness(!layout.vertical);
+					}
+				}
+
+				if (child.Grow < 0
+					|| child.Shrink < 0)
+				{
+					throw new Exception("shrink and grow should be >= 0");
+				}
+
+				layout.flex_grows += child.Grow;
+				layout.flex_shrinks += child.Shrink;
+
+				if (layout.flex_dim > 0)
+				{
+					// If flex_dim is zero, it's because we're measuring unconstrained in that direction
+					// So we don't need to keep a running tally of available space
+
+					layout.flex_dim -= child_size + child.MarginThickness(layout.vertical);
+				}
+
+				relative_children_count++;
+
+				if (child_size > 0 && child.Grow > 0)
+				{
+					layout.extra_flex_dim += child_size;
+				}
+			}
+
+			// Layout remaining items in wrap mode, or everything otherwise.
+			layout_items(item, last_layout_child, item.Count, relative_children_count, ref layout);
+
+			// In wrap mode we may need to tweak the position of each line according to
+			// the align_content property as well as the cross-axis size of items that
+			// haven't been set yet.
+			if (layout.need_lines && (layout.lines?.Length ?? 0) > 0)
+			{
+				float pos = 0;
+				float spacing = 0;
+				float flex_dim = layout.align_dim - layout.lines_sizes;
+				if (flex_dim > 0)
+				{
+					layout_align(item.AlignContent, flex_dim, (uint)(layout.lines?.Length ?? 0), ref pos, ref spacing);
+				}
+
+				float old_pos = 0;
+				if (layout.reverse2)
+				{
+					pos = layout.align_dim - pos;
+					old_pos = layout.align_dim;
+				}
+
+				for (uint i = 0; i < (layout.lines?.Length ?? 0); i++)
+				{
+
+					flex_layout.flex_layout_line line = layout.lines![i];
+
+					if (layout.reverse2)
+					{
+						pos -= line.size;
+						pos -= spacing;
+						old_pos -= line.size;
+					}
+
+					// Re-position the children of this line, honoring any child
+					// alignment previously set within the line.
+					for (int j = line.child_begin; j < line.child_end; j++)
+					{
+						Item child = layout.child_at(item, j);
+						if (child.Position == Position.Absolute)
+						{
+							// Should not be re-positioned.
+							continue;
+						}
+						if (float.IsNaN(child.Frame[layout.frame_size2_i]))
+						{
+							// If the child's cross axis size hasn't been set it, it
+							// defaults to the line size.
+							child.Frame[layout.frame_size2_i] = line.size
+								+ (item.AlignContent == AlignContent.Stretch
+								   ? spacing : 0);
+						}
+						child.Frame[layout.frame_pos2_i] = pos + (child.Frame[layout.frame_pos2_i] - old_pos);
+					}
+
+					if (!layout.reverse2)
+					{
+						pos += line.size;
+						pos += spacing;
+						old_pos += line.size;
+					}
+				}
+			}
+
+			layout.cleanup();
+		}
+
+		float MarginThickness(bool vertical) =>
+			vertical ? MarginTop + MarginBottom : MarginLeft + MarginRight;
+
+		static void layout_align(Justify align, float flex_dim, int children_count, ref float pos_p, ref float spacing_p)
+		{
+			if (flex_dim < 0)
+			{
+				throw new ArgumentException();
+			}
+
+			pos_p = 0;
+			spacing_p = 0;
+
+			switch (align)
+			{
+				case Justify.Start:
+					return;
+				case Justify.End:
+					pos_p = flex_dim;
+					return;
+				case Justify.Center:
+					pos_p = flex_dim / 2;
+					return;
+				case Justify.SpaceBetween:
+					if (children_count > 0)
+					{
+						spacing_p = flex_dim / (children_count - 1);
+					}
+
+					return;
+				case Justify.SpaceAround:
+					if (children_count > 0)
+					{
+						spacing_p = flex_dim / children_count;
+						pos_p = spacing_p / 2;
+					}
+					return;
+				case Justify.SpaceEvenly:
+					if (children_count > 0)
+					{
+						spacing_p = flex_dim / (children_count + 1);
+						pos_p = spacing_p;
+					}
+					return;
+				default:
+					throw new ArgumentException();
+			}
+		}
+
+		static void layout_align(AlignContent align, float flex_dim, uint children_count, ref float pos_p, ref float spacing_p)
+		{
+			if (flex_dim < 0)
+			{
+				throw new ArgumentException();
+			}
+
+			pos_p = 0;
+			spacing_p = 0;
+
+			switch (align)
+			{
+				case AlignContent.Start:
+					return;
+				case AlignContent.End:
+					pos_p = flex_dim;
+					return;
+				case AlignContent.Center:
+					pos_p = flex_dim / 2;
+					return;
+				case AlignContent.SpaceBetween:
+					if (children_count > 0)
+					{
+						spacing_p = flex_dim / (children_count - 1);
+					}
+
+					return;
+				case AlignContent.SpaceAround:
+					if (children_count > 0)
+					{
+						spacing_p = flex_dim / children_count;
+						pos_p = spacing_p / 2;
+					}
+					return;
+				case AlignContent.SpaceEvenly:
+					if (children_count > 0)
+					{
+						spacing_p = flex_dim / (children_count + 1);
+						pos_p = spacing_p;
+					}
+					return;
+				case AlignContent.Stretch:
+					spacing_p = flex_dim / children_count;
+					return;
+				default:
+					throw new ArgumentException();
+			}
+		}
+
+		static void layout_items(Item item, int child_begin, int child_end, int children_count, ref flex_layout layout)
+		{
+			if (children_count > (child_end - child_begin))
+			{
+				throw new ArgumentException();
+			}
+
+			if (children_count <= 0)
+			{
+				return;
+			}
+
+			if (layout.flex_dim > 0 && layout.extra_flex_dim > 0)
+			{
+				// If the container has a positive flexible space, let's add to it
+				// the sizes of all flexible children.
+				layout.flex_dim += layout.extra_flex_dim;
+			}
+
+			// Determine the main axis initial position and optional spacing.
+			float pos = 0;
+			float spacing = 0;
+			if (layout.flex_grows == 0 && layout.flex_dim > 0)
+			{
+				layout_align(item.JustifyContent, layout.flex_dim, children_count, ref pos, ref spacing);
+			}
+
+			if (layout.reverse)
+			{
+				pos = layout.size_dim - pos;
+			}
+
+			if (layout.reverse)
+			{
+				pos -= layout.vertical ? item.PaddingBottom : item.PaddingRight;
+			}
+			else
+			{
+				pos += layout.vertical ? item.PaddingTop : item.PaddingLeft;
+			}
+			if (layout.wrap && layout.reverse2)
+			{
+				layout.pos2 -= layout.line_dim;
+			}
+
+			for (int i = child_begin; i < child_end; i++)
+			{
+				Item child = layout.child_at(item, i);
+				if (!child.IsVisible)
+				{
+					continue;
+				}
+
+				if (child.Position == Position.Absolute)
+				{
+					// Already positioned.
+					continue;
+				}
+
+				// Grow or shrink the main axis item size if needed.
+				float flex_size = 0;
+				if (layout.flex_dim > 0)
+				{
+					if (child.Grow != 0)
+					{
+						child.Frame[layout.frame_size_i] = 0; // Ignore previous size when growing.
+						flex_size = (layout.flex_dim / layout.flex_grows) * child.Grow;
+					}
+				}
+				else if (layout.flex_dim < 0)
+				{
+					if (child.Shrink != 0)
+					{
+						flex_size = (layout.flex_dim / layout.flex_shrinks) * child.Shrink;
+					}
+				}
+				child.Frame[layout.frame_size_i] += flex_size;
+
+				// Set the cross axis position (and stretch the cross axis size if
+				// needed).
+				float align_size = child.Frame[layout.frame_size2_i];
+				float align_pos = layout.pos2 + 0;
+				switch (child_align(child, item))
+				{
+					case AlignItems.End:
+						align_pos += layout.line_dim - align_size - (layout.vertical ? child.MarginRight : child.MarginBottom);
+						break;
+
+					case AlignItems.Center:
+						align_pos += (layout.line_dim / 2) - (align_size / 2)
+							+ ((layout.vertical ? child.MarginLeft : child.MarginTop)
+							   - (layout.vertical ? child.MarginRight : child.MarginBottom));
+						break;
+
+					case AlignItems.Stretch:
+						if (align_size == 0)
+						{
+							child.Frame[layout.frame_size2_i] = layout.line_dim
+								- ((layout.vertical ? child.MarginLeft : child.MarginTop)
+								   + (layout.vertical ? child.MarginRight : child.MarginBottom));
+						}
+						align_pos += (layout.vertical ? child.MarginLeft : child.MarginTop);
+						break;
+					case AlignItems.Start:
+						align_pos += (layout.vertical ? child.MarginLeft : child.MarginTop);
+						break;
+
+					default:
+						throw new Exception();
+				}
+				child.Frame[layout.frame_pos2_i] = align_pos;
+
+				// Set the main axis position.
+				if (layout.reverse)
+				{
+					pos -= (layout.vertical ? child.MarginBottom : child.MarginRight);
+					pos -= child.Frame[layout.frame_size_i];
+					child.Frame[layout.frame_pos_i] = pos;
+					pos -= spacing;
+					pos -= (layout.vertical ? child.MarginTop : child.MarginLeft);
+				}
+				else
+				{
+					pos += (layout.vertical ? child.MarginTop : child.MarginLeft);
+					child.Frame[layout.frame_pos_i] = pos;
+					pos += child.Frame[layout.frame_size_i];
+					pos += spacing;
+					pos += (layout.vertical ? child.MarginBottom : child.MarginRight);
+				}
+
+				// Now that the item has a frame, we can layout its children.
+				layout_item(child, child.Frame[2], child.Frame[3]);
+			}
+
+			if (layout.wrap && !layout.reverse2)
+			{
+				layout.pos2 += layout.line_dim;
+			}
+
+			if (layout.need_lines)
+			{
+				Array.Resize(ref layout.lines, (layout.lines?.Length ?? 0) + 1);
+
+				ref flex_layout.flex_layout_line line = ref layout.lines[layout.lines.Length - 1];
+
+				line.child_begin = child_begin;
+				line.child_end = child_end;
+				line.size = layout.line_dim;
+
+				layout.lines_sizes += line.size;
+			}
+
+			if (layout.reverse && layout.size_dim == 0)
+			{
+				// Handle reversed layouts when there was no fixed size in the first place. All of the positions will be flipped
+				// across the axis. Luckily the pos variable is already tracking how far negative the values were in this situation,
+				// so we can just offset the distance by that amount and get the desired value
+
+				for (int i = child_begin; i < child_end; i++)
+				{
+					Item child = layout.child_at(item, i);
+					if (!child.IsVisible)
+					{
+						continue;
+					}
+
+					if (child.Position == Position.Absolute)
+					{
+						// Not helpful for this
+						continue;
+					}
+
+					child.Frame[layout.frame_pos_i] = child.Frame[layout.frame_pos_i] - pos;
+				}
+			}
+		}
+
+		static float absolute_size(float val, float pos1, float pos2, float dim) =>
+			!float.IsNaN(val) ? val : (!float.IsNaN(pos1) && !float.IsNaN(pos2) ? dim - pos2 - pos1 : 0);
+
+		static float absolute_pos(float pos1, float pos2, float size, float dim) =>
+			!float.IsNaN(pos1) ? pos1 : (!float.IsNaN(pos2) ? dim - size - pos2 : 0);
+
+		static AlignItems child_align(Item child, Item parent) =>
+			child.AlignSelf == AlignSelf.Auto ? parent.AlignItems : (AlignItems)child.AlignSelf;
+
+		struct flex_layout
+		{
+			// Set during init.
+			public bool wrap;
+			public bool reverse;                // whether main axis is reversed
+			public bool reverse2;               // whether cross axis is reversed (wrap only)
+			public bool vertical;
+			public float size_dim;              // main axis parent size
+			public float align_dim;             // cross axis parent size
+			public uint frame_pos_i;            // main axis position
+			public uint frame_pos2_i;           // cross axis position
+			public uint frame_size_i;           // main axis size
+			public uint frame_size2_i;          // cross axis size
+			int[]? ordered_indices;
+
+			// Set for each line layout.
+			public float line_dim;              // the cross axis size
+			public float flex_dim;              // the flexible part of the main axis size
+			public float extra_flex_dim;        // sizes of flexible items
+			public float flex_grows;
+			public float flex_shrinks;
+			public float pos2;                  // cross axis position
+
+			// Calculated layout lines - only tracked when needed:
+			//   - if the root's align_content property isn't set to FLEX_ALIGN_START
+			//   - or if any child item doesn't have a cross-axis size set
+			public bool need_lines;
+			public struct flex_layout_line
+			{
+				public int child_begin;
+				public int child_end;
+				public float size;
+			};
+
+			public flex_layout_line[]? lines;
+			public float lines_sizes;
+
+			//LAYOUT_RESET
+			public void reset()
+			{
+				line_dim = wrap ? 0 : align_dim;
+				flex_dim = size_dim;
+				extra_flex_dim = 0;
+				flex_grows = 0;
+				flex_shrinks = 0;
+			}
+
+			//layout_init
+			public void init(Item item, float width, float height)
+			{
+				if (item.PaddingLeft < 0
+					|| item.PaddingRight < 0
+					|| item.PaddingTop < 0
+					|| item.PaddingBottom < 0)
+				{
+					throw new ArgumentException();
+				}
+*/
+
+/* Unmerged change from project 'Core(net8.0-android)'
+Before:
+				if (float.IsNaN(child.Frame[layout.frame_size_i]))
+					child.Frame[layout.frame_size_i] = 0;
+
+				// Cross axis size defaults to the parent's size (or line size in wrap
+				// mode, which is calculated later on).
+				if (float.IsNaN(child.Frame[layout.frame_size2_i]))
+				{
+					if (layout.wrap)
+						layout.need_lines = true;
+					else
+						child.Frame[layout.frame_size2_i] = (layout.vertical ? width : height) - child.MarginThickness(!layout.vertical);
+				}
+
+				// Call the self_sizing callback if provided. Only non-NAN values
+				// are taken into account. If the item's cross-axis align property
+				// is set to stretch, ignore the value returned by the callback.
+				if (child.SelfSizing != null)
+				{
+					float[] size = { child.Frame[2], child.Frame[3] };
+
+					child.SelfSizing(child, ref size[0], ref size[1]);
+
+					for (int j = 0; j < 2; j++)
+					{
+						int size_off = j + 2;
+						if (size_off == layout.frame_size2_i && child_align(child, item) == AlignItems.Stretch && layout.align_dim > 0)
+							continue;
+						float val = size[j];
+						if (!float.IsNaN(val))
+							child.Frame[size_off] = val;
+					}
+				}
+
+				// Honor the `basis' property which overrides the main-axis size.
+				if (!child.Basis.IsAuto)
+				{
+					if (child.Basis.Length < 0)
+						throw new Exception("basis should >=0");
+					if (child.Basis.IsRelative && child.Basis.Length > 1)
+						throw new Exception("relative basis should be <=1");
+					float basis = child.Basis.Length;
+					if (child.Basis.IsRelative)
+						basis *= (layout.vertical ? height : width);
+					child.Frame[layout.frame_size_i] = basis - child.MarginThickness(layout.vertical);
+				}
+
+				float child_size = child.Frame[layout.frame_size_i];
+				if (layout.wrap)
+				{
+					if (layout.flex_dim < child_size)
+					{
+						// Not enough space for this child on this line, layout the
+						// remaining items and move it to a new line.
+						layout_items(item, last_layout_child, i, relative_children_count, ref layout);
+
+						layout.reset();
+						last_layout_child = i;
+						relative_children_count = 0;
+					}
+
+					float child_size2 = child.Frame[layout.frame_size2_i];
+					if (!float.IsNaN(child_size2) && child_size2 + child.MarginThickness(!layout.vertical) > layout.line_dim)
+					{
+						layout.line_dim = child_size2 + child.MarginThickness(!layout.vertical);
+					}
+				}
+
+				if (child.Grow < 0
+					|| child.Shrink < 0)
+					throw new Exception("shrink and grow should be >= 0");
+
+				layout.flex_grows += child.Grow;
+				layout.flex_shrinks += child.Shrink;
+
+				if (layout.flex_dim > 0)
+				{
+					// If flex_dim is zero, it's because we're measuring unconstrained in that direction
+					// So we don't need to keep a running tally of available space
+
+					layout.flex_dim -= child_size + child.MarginThickness(layout.vertical);
+				}
+
+				relative_children_count++;
+
+				if (child_size > 0 && child.Grow > 0)
+				{
+					layout.extra_flex_dim += child_size;
+				}
+			}
+
+			// Layout remaining items in wrap mode, or everything otherwise.
+			layout_items(item, last_layout_child, item.Count, relative_children_count, ref layout);
+
+			// In wrap mode we may need to tweak the position of each line according to
+			// the align_content property as well as the cross-axis size of items that
+			// haven't been set yet.
+			if (layout.need_lines && (layout.lines?.Length ?? 0) > 0)
+			{
+				float pos = 0;
+				float spacing = 0;
+				float flex_dim = layout.align_dim - layout.lines_sizes;
+				if (flex_dim > 0)
+					layout_align(item.AlignContent, flex_dim, (uint)(layout.lines?.Length ?? 0), ref pos, ref spacing);
+
+				float old_pos = 0;
+				if (layout.reverse2)
+				{
+					pos = layout.align_dim - pos;
+					old_pos = layout.align_dim;
+				}
+
+				for (uint i = 0; i < (layout.lines?.Length ?? 0); i++)
+				{
+
+					flex_layout.flex_layout_line line = layout.lines![i];
+
+					if (layout.reverse2)
+					{
+						pos -= line.size;
+						pos -= spacing;
+						old_pos -= line.size;
+					}
+
+					// Re-position the children of this line, honoring any child
+					// alignment previously set within the line.
+					for (int j = line.child_begin; j < line.child_end; j++)
+					{
+						Item child = layout.child_at(item, j);
+						if (child.Position == Position.Absolute)
+						{
+							// Should not be re-positioned.
+							continue;
+						}
+						if (float.IsNaN(child.Frame[layout.frame_size2_i]))
+						{
+							// If the child's cross axis size hasn't been set it, it
+							// defaults to the line size.
+							child.Frame[layout.frame_size2_i] = line.size
+								+ (item.AlignContent == AlignContent.Stretch
+								   ? spacing : 0);
+						}
+						child.Frame[layout.frame_pos2_i] = pos + (child.Frame[layout.frame_pos2_i] - old_pos);
+					}
+
+					if (!layout.reverse2)
+					{
+						pos += line.size;
+						pos += spacing;
+						old_pos += line.size;
+					}
+				}
+			}
+
+			layout.cleanup();
+		}
+
+		float MarginThickness(bool vertical) =>
+			vertical ? MarginTop + MarginBottom : MarginLeft + MarginRight;
+
+		static void layout_align(Justify align, float flex_dim, int children_count, ref float pos_p, ref float spacing_p)
+		{
+			if (flex_dim < 0)
+				throw new ArgumentException();
+			pos_p = 0;
+			spacing_p = 0;
+
+			switch (align)
+			{
+				case Justify.Start:
+					return;
+				case Justify.End:
+					pos_p = flex_dim;
+					return;
+				case Justify.Center:
+					pos_p = flex_dim / 2;
+					return;
+				case Justify.SpaceBetween:
+					if (children_count > 0)
+						spacing_p = flex_dim / (children_count - 1);
+					return;
+				case Justify.SpaceAround:
+					if (children_count > 0)
+					{
+						spacing_p = flex_dim / children_count;
+						pos_p = spacing_p / 2;
+					}
+					return;
+				case Justify.SpaceEvenly:
+					if (children_count > 0)
+					{
+						spacing_p = flex_dim / (children_count + 1);
+						pos_p = spacing_p;
+					}
+					return;
+				default:
+					throw new ArgumentException();
+			}
+		}
+
+		static void layout_align(AlignContent align, float flex_dim, uint children_count, ref float pos_p, ref float spacing_p)
+		{
+			if (flex_dim < 0)
+				throw new ArgumentException();
+			pos_p = 0;
+			spacing_p = 0;
+
+			switch (align)
+			{
+				case AlignContent.Start:
+					return;
+				case AlignContent.End:
+					pos_p = flex_dim;
+					return;
+				case AlignContent.Center:
+					pos_p = flex_dim / 2;
+					return;
+				case AlignContent.SpaceBetween:
+					if (children_count > 0)
+						spacing_p = flex_dim / (children_count - 1);
+					return;
+				case AlignContent.SpaceAround:
+					if (children_count > 0)
+					{
+						spacing_p = flex_dim / children_count;
+						pos_p = spacing_p / 2;
+					}
+					return;
+				case AlignContent.SpaceEvenly:
+					if (children_count > 0)
+					{
+						spacing_p = flex_dim / (children_count + 1);
+						pos_p = spacing_p;
+					}
+					return;
+				case AlignContent.Stretch:
+					spacing_p = flex_dim / children_count;
+					return;
+				default:
+					throw new ArgumentException();
+			}
+		}
+
+		static void layout_items(Item item, int child_begin, int child_end, int children_count, ref flex_layout layout)
+		{
+			if (children_count > (child_end - child_begin))
+				throw new ArgumentException();
+			if (children_count <= 0)
+				return;
+			if (layout.flex_dim > 0 && layout.extra_flex_dim > 0)
+			{
+				// If the container has a positive flexible space, let's add to it
+				// the sizes of all flexible children.
+				layout.flex_dim += layout.extra_flex_dim;
+			}
+
+			// Determine the main axis initial position and optional spacing.
+			float pos = 0;
+			float spacing = 0;
+			if (layout.flex_grows == 0 && layout.flex_dim > 0)
+			{
+				layout_align(item.JustifyContent, layout.flex_dim, children_count, ref pos, ref spacing);
+			}
+
+			if (layout.reverse)
+				pos = layout.size_dim - pos;
+
+
+			if (layout.reverse)
+			{
+				pos -= layout.vertical ? item.PaddingBottom : item.PaddingRight;
+			}
+			else
+			{
+				pos += layout.vertical ? item.PaddingTop : item.PaddingLeft;
+			}
+			if (layout.wrap && layout.reverse2)
+			{
+				layout.pos2 -= layout.line_dim;
+			}
+
+			for (int i = child_begin; i < child_end; i++)
+			{
+				Item child = layout.child_at(item, i);
+				if (!child.IsVisible)
+					continue;
+				if (child.Position == Position.Absolute)
+				{
+					// Already positioned.
+					continue;
+				}
+
+				// Grow or shrink the main axis item size if needed.
+				float flex_size = 0;
+				if (layout.flex_dim > 0)
+				{
+					if (child.Grow != 0)
+					{
+						child.Frame[layout.frame_size_i] = 0; // Ignore previous size when growing.
+						flex_size = (layout.flex_dim / layout.flex_grows) * child.Grow;
+					}
+				}
+				else if (layout.flex_dim < 0)
+				{
+					if (child.Shrink != 0)
+					{
+						flex_size = (layout.flex_dim / layout.flex_shrinks) * child.Shrink;
+					}
+				}
+				child.Frame[layout.frame_size_i] += flex_size;
+
+				// Set the cross axis position (and stretch the cross axis size if
+				// needed).
+				float align_size = child.Frame[layout.frame_size2_i];
+				float align_pos = layout.pos2 + 0;
+				switch (child_align(child, item))
+				{
+					case AlignItems.End:
+						align_pos += layout.line_dim - align_size - (layout.vertical ? child.MarginRight : child.MarginBottom);
+						break;
+
+					case AlignItems.Center:
+						align_pos += (layout.line_dim / 2) - (align_size / 2)
+							+ ((layout.vertical ? child.MarginLeft : child.MarginTop)
+							   - (layout.vertical ? child.MarginRight : child.MarginBottom));
+						break;
+
+					case AlignItems.Stretch:
+						if (align_size == 0)
+						{
+							child.Frame[layout.frame_size2_i] = layout.line_dim
+								- ((layout.vertical ? child.MarginLeft : child.MarginTop)
+								   + (layout.vertical ? child.MarginRight : child.MarginBottom));
+						}
+						align_pos += (layout.vertical ? child.MarginLeft : child.MarginTop);
+						break;
+					case AlignItems.Start:
+						align_pos += (layout.vertical ? child.MarginLeft : child.MarginTop);
+						break;
+
+					default:
+						throw new Exception();
+				}
+				child.Frame[layout.frame_pos2_i] = align_pos;
+
+				// Set the main axis position.
+				if (layout.reverse)
+				{
+					pos -= (layout.vertical ? child.MarginBottom : child.MarginRight);
+					pos -= child.Frame[layout.frame_size_i];
+					child.Frame[layout.frame_pos_i] = pos;
+					pos -= spacing;
+					pos -= (layout.vertical ? child.MarginTop : child.MarginLeft);
+				}
+				else
+				{
+					pos += (layout.vertical ? child.MarginTop : child.MarginLeft);
+					child.Frame[layout.frame_pos_i] = pos;
+					pos += child.Frame[layout.frame_size_i];
+					pos += spacing;
+					pos += (layout.vertical ? child.MarginBottom : child.MarginRight);
+				}
+
+				// Now that the item has a frame, we can layout its children.
+				layout_item(child, child.Frame[2], child.Frame[3]);
+			}
+
+			if (layout.wrap && !layout.reverse2)
+			{
+				layout.pos2 += layout.line_dim;
+			}
+
+			if (layout.need_lines)
+			{
+				Array.Resize(ref layout.lines, (layout.lines?.Length ?? 0) + 1);
+
+				ref flex_layout.flex_layout_line line = ref layout.lines[layout.lines.Length - 1];
+
+				line.child_begin = child_begin;
+				line.child_end = child_end;
+				line.size = layout.line_dim;
+
+				layout.lines_sizes += line.size;
+			}
+
+			if (layout.reverse && layout.size_dim == 0)
+			{
+				// Handle reversed layouts when there was no fixed size in the first place. All of the positions will be flipped
+				// across the axis. Luckily the pos variable is already tracking how far negative the values were in this situation,
+				// so we can just offset the distance by that amount and get the desired value
+
+				for (int i = child_begin; i < child_end; i++)
+				{
+					Item child = layout.child_at(item, i);
+					if (!child.IsVisible)
+						continue;
+
+					if (child.Position == Position.Absolute)
+					{
+						// Not helpful for this
+						continue;
+					}
+
+					child.Frame[layout.frame_pos_i] = child.Frame[layout.frame_pos_i] - pos;
+				}
+			}
+		}
+
+		static float absolute_size(float val, float pos1, float pos2, float dim) =>
+			!float.IsNaN(val) ? val : (!float.IsNaN(pos1) && !float.IsNaN(pos2) ? dim - pos2 - pos1 : 0);
+
+		static float absolute_pos(float pos1, float pos2, float size, float dim) =>
+			!float.IsNaN(pos1) ? pos1 : (!float.IsNaN(pos2) ? dim - size - pos2 : 0);
+
+		static AlignItems child_align(Item child, Item parent) =>
+			child.AlignSelf == AlignSelf.Auto ? parent.AlignItems : (AlignItems)child.AlignSelf;
+
+		struct flex_layout
+		{
+			// Set during init.
+			public bool wrap;
+			public bool reverse;                // whether main axis is reversed
+			public bool reverse2;               // whether cross axis is reversed (wrap only)
+			public bool vertical;
+			public float size_dim;              // main axis parent size
+			public float align_dim;             // cross axis parent size
+			public uint frame_pos_i;            // main axis position
+			public uint frame_pos2_i;           // cross axis position
+			public uint frame_size_i;           // main axis size
+			public uint frame_size2_i;          // cross axis size
+			int[]? ordered_indices;
+
+			// Set for each line layout.
+			public float line_dim;              // the cross axis size
+			public float flex_dim;              // the flexible part of the main axis size
+			public float extra_flex_dim;        // sizes of flexible items
+			public float flex_grows;
+			public float flex_shrinks;
+			public float pos2;                  // cross axis position
+
+			// Calculated layout lines - only tracked when needed:
+			//   - if the root's align_content property isn't set to FLEX_ALIGN_START
+			//   - or if any child item doesn't have a cross-axis size set
+			public bool need_lines;
+			public struct flex_layout_line
+			{
+				public int child_begin;
+				public int child_end;
+				public float size;
+			};
+
+			public flex_layout_line[]? lines;
+			public float lines_sizes;
+
+			//LAYOUT_RESET
+			public void reset()
+			{
+				line_dim = wrap ? 0 : align_dim;
+				flex_dim = size_dim;
+				extra_flex_dim = 0;
+				flex_grows = 0;
+				flex_shrinks = 0;
+			}
+
+			//layout_init
+			public void init(Item item, float width, float height)
+			{
+				if (item.PaddingLeft < 0
+					|| item.PaddingRight < 0
+					|| item.PaddingTop < 0
+					|| item.PaddingBottom < 0)
+					throw new ArgumentException();
+After:
+				if (child.Position == Position.Absolute)
+				{
+					child.Frame[2] = absolute_size(child.Width, child.Left, child.Right, width);
+					child.Frame[3] = absolute_size(child.Height, child.Top, child.Bottom, height);
+					child.Frame[0] = absolute_pos(child.Left, child.Right, child.Frame[2], width);
+					child.Frame[1] = absolute_pos(child.Top, child.Bottom, child.Frame[3], height);
+
+					// Now that the item has a frame, we can layout its children.
+					layout_item(child, child.Frame[2], child.Frame[3]);
+					continue;
+				}
+
+				// Initialize frame.
+				child.Frame[0] = 0;
+				child.Frame[1] = 0;
+				child.Frame[2] = child.Width;
+				child.Frame[3] = child.Height;
+
+				// Main axis size defaults to 0.
+				if (float.IsNaN(child.Frame[layout.frame_size_i]))
+				{
+					child.Frame[layout.frame_size_i] = 0;
+				}
+
+				// Cross axis size defaults to the parent's size (or line size in wrap
+				// mode, which is calculated later on).
+				if (float.IsNaN(child.Frame[layout.frame_size2_i]))
+				{
+					if (layout.wrap)
+					{
+						layout.need_lines = true;
+					}
+					else
+					{
+						child.Frame[layout.frame_size2_i] = (layout.vertical ? width : height) - child.MarginThickness(!layout.vertical);
+					}
+				}
+
+				// Call the self_sizing callback if provided. Only non-NAN values
+				// are taken into account. If the item's cross-axis align property
+				// is set to stretch, ignore the value returned by the callback.
+				if (child.SelfSizing != null)
+				{
+					float[] size = { child.Frame[2], child.Frame[3] };
+
+					child.SelfSizing(child, ref size[0], ref size[1]);
+
+					for (int j = 0; j < 2; j++)
+					{
+						int size_off = j + 2;
+						if (size_off == layout.frame_size2_i && child_align(child, item) == AlignItems.Stretch && layout.align_dim > 0)
+						{
+							continue;
+						}
+
+						float val = size[j];
+						if (!float.IsNaN(val))
+						{
+							child.Frame[size_off] = val;
+						}
+					}
+				}
+
+				// Honor the `basis' property which overrides the main-axis size.
+				if (!child.Basis.IsAuto)
+				{
+					if (child.Basis.Length < 0)
+					{
+						throw new Exception("basis should >=0");
+					}
+
+					if (child.Basis.IsRelative && child.Basis.Length > 1)
+					{
+						throw new Exception("relative basis should be <=1");
+					}
+
+					float basis = child.Basis.Length;
+					if (child.Basis.IsRelative)
+					{
+						basis *= (layout.vertical ? height : width);
+					}
+
+					child.Frame[layout.frame_size_i] = basis - child.MarginThickness(layout.vertical);
+				}
+
+				float child_size = child.Frame[layout.frame_size_i];
+				if (layout.wrap)
+				{
+					if (layout.flex_dim < child_size)
+					{
+						// Not enough space for this child on this line, layout the
+						// remaining items and move it to a new line.
+						layout_items(item, last_layout_child, i, relative_children_count, ref layout);
+
+						layout.reset();
+						last_layout_child = i;
+						relative_children_count = 0;
+					}
+
+					float child_size2 = child.Frame[layout.frame_size2_i];
+					if (!float.IsNaN(child_size2) && child_size2 + child.MarginThickness(!layout.vertical) > layout.line_dim)
+					{
+						layout.line_dim = child_size2 + child.MarginThickness(!layout.vertical);
+					}
+				}
+
+				if (child.Grow < 0
+					|| child.Shrink < 0)
+				{
+					throw new Exception("shrink and grow should be >= 0");
+				}
+
+				layout.flex_grows += child.Grow;
+				layout.flex_shrinks += child.Shrink;
+
+				if (layout.flex_dim > 0)
+				{
+					// If flex_dim is zero, it's because we're measuring unconstrained in that direction
+					// So we don't need to keep a running tally of available space
+
+					layout.flex_dim -= child_size + child.MarginThickness(layout.vertical);
+				}
+
+				relative_children_count++;
+
+				if (child_size > 0 && child.Grow > 0)
+				{
+					layout.extra_flex_dim += child_size;
+				}
+			}
+
+			// Layout remaining items in wrap mode, or everything otherwise.
+			layout_items(item, last_layout_child, item.Count, relative_children_count, ref layout);
+
+			// In wrap mode we may need to tweak the position of each line according to
+			// the align_content property as well as the cross-axis size of items that
+			// haven't been set yet.
+			if (layout.need_lines && (layout.lines?.Length ?? 0) > 0)
+			{
+				float pos = 0;
+				float spacing = 0;
+				float flex_dim = layout.align_dim - layout.lines_sizes;
+				if (flex_dim > 0)
+				{
+					layout_align(item.AlignContent, flex_dim, (uint)(layout.lines?.Length ?? 0), ref pos, ref spacing);
+				}
+
+				float old_pos = 0;
+				if (layout.reverse2)
+				{
+					pos = layout.align_dim - pos;
+					old_pos = layout.align_dim;
+				}
+
+				for (uint i = 0; i < (layout.lines?.Length ?? 0); i++)
+				{
+
+					flex_layout.flex_layout_line line = layout.lines![i];
+
+					if (layout.reverse2)
+					{
+						pos -= line.size;
+						pos -= spacing;
+						old_pos -= line.size;
+					}
+
+					// Re-position the children of this line, honoring any child
+					// alignment previously set within the line.
+					for (int j = line.child_begin; j < line.child_end; j++)
+					{
+						Item child = layout.child_at(item, j);
+						if (child.Position == Position.Absolute)
+						{
+							// Should not be re-positioned.
+							continue;
+						}
+						if (float.IsNaN(child.Frame[layout.frame_size2_i]))
+						{
+							// If the child's cross axis size hasn't been set it, it
+							// defaults to the line size.
+							child.Frame[layout.frame_size2_i] = line.size
+								+ (item.AlignContent == AlignContent.Stretch
+								   ? spacing : 0);
+						}
+						child.Frame[layout.frame_pos2_i] = pos + (child.Frame[layout.frame_pos2_i] - old_pos);
+					}
+
+					if (!layout.reverse2)
+					{
+						pos += line.size;
+						pos += spacing;
+						old_pos += line.size;
+					}
+				}
+			}
+
+			layout.cleanup();
+		}
+
+		float MarginThickness(bool vertical) =>
+			vertical ? MarginTop + MarginBottom : MarginLeft + MarginRight;
+
+		static void layout_align(Justify align, float flex_dim, int children_count, ref float pos_p, ref float spacing_p)
+		{
+			if (flex_dim < 0)
+			{
+				throw new ArgumentException();
+			}
+
+			pos_p = 0;
+			spacing_p = 0;
+
+			switch (align)
+			{
+				case Justify.Start:
+					return;
+				case Justify.End:
+					pos_p = flex_dim;
+					return;
+				case Justify.Center:
+					pos_p = flex_dim / 2;
+					return;
+				case Justify.SpaceBetween:
+					if (children_count > 0)
+					{
+						spacing_p = flex_dim / (children_count - 1);
+					}
+
+					return;
+				case Justify.SpaceAround:
+					if (children_count > 0)
+					{
+						spacing_p = flex_dim / children_count;
+						pos_p = spacing_p / 2;
+					}
+					return;
+				case Justify.SpaceEvenly:
+					if (children_count > 0)
+					{
+						spacing_p = flex_dim / (children_count + 1);
+						pos_p = spacing_p;
+					}
+					return;
+				default:
+					throw new ArgumentException();
+			}
+		}
+
+		static void layout_align(AlignContent align, float flex_dim, uint children_count, ref float pos_p, ref float spacing_p)
+		{
+			if (flex_dim < 0)
+			{
+				throw new ArgumentException();
+			}
+
+			pos_p = 0;
+			spacing_p = 0;
+
+			switch (align)
+			{
+				case AlignContent.Start:
+					return;
+				case AlignContent.End:
+					pos_p = flex_dim;
+					return;
+				case AlignContent.Center:
+					pos_p = flex_dim / 2;
+					return;
+				case AlignContent.SpaceBetween:
+					if (children_count > 0)
+					{
+						spacing_p = flex_dim / (children_count - 1);
+					}
+
+					return;
+				case AlignContent.SpaceAround:
+					if (children_count > 0)
+					{
+						spacing_p = flex_dim / children_count;
+						pos_p = spacing_p / 2;
+					}
+					return;
+				case AlignContent.SpaceEvenly:
+					if (children_count > 0)
+					{
+						spacing_p = flex_dim / (children_count + 1);
+						pos_p = spacing_p;
+					}
+					return;
+				case AlignContent.Stretch:
+					spacing_p = flex_dim / children_count;
+					return;
+				default:
+					throw new ArgumentException();
+			}
+		}
+
+		static void layout_items(Item item, int child_begin, int child_end, int children_count, ref flex_layout layout)
+		{
+			if (children_count > (child_end - child_begin))
+			{
+				throw new ArgumentException();
+			}
+
+			if (children_count <= 0)
+			{
+				return;
+			}
+
+			if (layout.flex_dim > 0 && layout.extra_flex_dim > 0)
+			{
+				// If the container has a positive flexible space, let's add to it
+				// the sizes of all flexible children.
+				layout.flex_dim += layout.extra_flex_dim;
+			}
+
+			// Determine the main axis initial position and optional spacing.
+			float pos = 0;
+			float spacing = 0;
+			if (layout.flex_grows == 0 && layout.flex_dim > 0)
+			{
+				layout_align(item.JustifyContent, layout.flex_dim, children_count, ref pos, ref spacing);
+			}
+
+			if (layout.reverse)
+			{
+				pos = layout.size_dim - pos;
+			}
+
+			if (layout.reverse)
+			{
+				pos -= layout.vertical ? item.PaddingBottom : item.PaddingRight;
+			}
+			else
+			{
+				pos += layout.vertical ? item.PaddingTop : item.PaddingLeft;
+			}
+			if (layout.wrap && layout.reverse2)
+			{
+				layout.pos2 -= layout.line_dim;
+			}
+
+			for (int i = child_begin; i < child_end; i++)
+			{
+				Item child = layout.child_at(item, i);
+				if (!child.IsVisible)
+				{
+					continue;
+				}
+
+				if (child.Position == Position.Absolute)
+				{
+					// Already positioned.
+					continue;
+				}
+
+				// Grow or shrink the main axis item size if needed.
+				float flex_size = 0;
+				if (layout.flex_dim > 0)
+				{
+					if (child.Grow != 0)
+					{
+						child.Frame[layout.frame_size_i] = 0; // Ignore previous size when growing.
+						flex_size = (layout.flex_dim / layout.flex_grows) * child.Grow;
+					}
+				}
+				else if (layout.flex_dim < 0)
+				{
+					if (child.Shrink != 0)
+					{
+						flex_size = (layout.flex_dim / layout.flex_shrinks) * child.Shrink;
+					}
+				}
+				child.Frame[layout.frame_size_i] += flex_size;
+
+				// Set the cross axis position (and stretch the cross axis size if
+				// needed).
+				float align_size = child.Frame[layout.frame_size2_i];
+				float align_pos = layout.pos2 + 0;
+				switch (child_align(child, item))
+				{
+					case AlignItems.End:
+						align_pos += layout.line_dim - align_size - (layout.vertical ? child.MarginRight : child.MarginBottom);
+						break;
+
+					case AlignItems.Center:
+						align_pos += (layout.line_dim / 2) - (align_size / 2)
+							+ ((layout.vertical ? child.MarginLeft : child.MarginTop)
+							   - (layout.vertical ? child.MarginRight : child.MarginBottom));
+						break;
+
+					case AlignItems.Stretch:
+						if (align_size == 0)
+						{
+							child.Frame[layout.frame_size2_i] = layout.line_dim
+								- ((layout.vertical ? child.MarginLeft : child.MarginTop)
+								   + (layout.vertical ? child.MarginRight : child.MarginBottom));
+						}
+						align_pos += (layout.vertical ? child.MarginLeft : child.MarginTop);
+						break;
+					case AlignItems.Start:
+						align_pos += (layout.vertical ? child.MarginLeft : child.MarginTop);
+						break;
+
+					default:
+						throw new Exception();
+				}
+				child.Frame[layout.frame_pos2_i] = align_pos;
+
+				// Set the main axis position.
+				if (layout.reverse)
+				{
+					pos -= (layout.vertical ? child.MarginBottom : child.MarginRight);
+					pos -= child.Frame[layout.frame_size_i];
+					child.Frame[layout.frame_pos_i] = pos;
+					pos -= spacing;
+					pos -= (layout.vertical ? child.MarginTop : child.MarginLeft);
+				}
+				else
+				{
+					pos += (layout.vertical ? child.MarginTop : child.MarginLeft);
+					child.Frame[layout.frame_pos_i] = pos;
+					pos += child.Frame[layout.frame_size_i];
+					pos += spacing;
+					pos += (layout.vertical ? child.MarginBottom : child.MarginRight);
+				}
+
+				// Now that the item has a frame, we can layout its children.
+				layout_item(child, child.Frame[2], child.Frame[3]);
+			}
+
+			if (layout.wrap && !layout.reverse2)
+			{
+				layout.pos2 += layout.line_dim;
+			}
+
+			if (layout.need_lines)
+			{
+				Array.Resize(ref layout.lines, (layout.lines?.Length ?? 0) + 1);
+
+				ref flex_layout.flex_layout_line line = ref layout.lines[layout.lines.Length - 1];
+
+				line.child_begin = child_begin;
+				line.child_end = child_end;
+				line.size = layout.line_dim;
+
+				layout.lines_sizes += line.size;
+			}
+
+			if (layout.reverse && layout.size_dim == 0)
+			{
+				// Handle reversed layouts when there was no fixed size in the first place. All of the positions will be flipped
+				// across the axis. Luckily the pos variable is already tracking how far negative the values were in this situation,
+				// so we can just offset the distance by that amount and get the desired value
+
+				for (int i = child_begin; i < child_end; i++)
+				{
+					Item child = layout.child_at(item, i);
+					if (!child.IsVisible)
+					{
+						continue;
+					}
+
+					if (child.Position == Position.Absolute)
+					{
+						// Not helpful for this
+						continue;
+					}
+
+					child.Frame[layout.frame_pos_i] = child.Frame[layout.frame_pos_i] - pos;
+				}
+			}
+		}
+
+		static float absolute_size(float val, float pos1, float pos2, float dim) =>
+			!float.IsNaN(val) ? val : (!float.IsNaN(pos1) && !float.IsNaN(pos2) ? dim - pos2 - pos1 : 0);
+
+		static float absolute_pos(float pos1, float pos2, float size, float dim) =>
+			!float.IsNaN(pos1) ? pos1 : (!float.IsNaN(pos2) ? dim - size - pos2 : 0);
+
+		static AlignItems child_align(Item child, Item parent) =>
+			child.AlignSelf == AlignSelf.Auto ? parent.AlignItems : (AlignItems)child.AlignSelf;
+
+		struct flex_layout
+		{
+			// Set during init.
+			public bool wrap;
+			public bool reverse;                // whether main axis is reversed
+			public bool reverse2;               // whether cross axis is reversed (wrap only)
+			public bool vertical;
+			public float size_dim;              // main axis parent size
+			public float align_dim;             // cross axis parent size
+			public uint frame_pos_i;            // main axis position
+			public uint frame_pos2_i;           // cross axis position
+			public uint frame_size_i;           // main axis size
+			public uint frame_size2_i;          // cross axis size
+			int[]? ordered_indices;
+
+			// Set for each line layout.
+			public float line_dim;              // the cross axis size
+			public float flex_dim;              // the flexible part of the main axis size
+			public float extra_flex_dim;        // sizes of flexible items
+			public float flex_grows;
+			public float flex_shrinks;
+			public float pos2;                  // cross axis position
+
+			// Calculated layout lines - only tracked when needed:
+			//   - if the root's align_content property isn't set to FLEX_ALIGN_START
+			//   - or if any child item doesn't have a cross-axis size set
+			public bool need_lines;
+			public struct flex_layout_line
+			{
+				public int child_begin;
+				public int child_end;
+				public float size;
+			};
+
+			public flex_layout_line[]? lines;
+			public float lines_sizes;
+
+			//LAYOUT_RESET
+			public void reset()
+			{
+				line_dim = wrap ? 0 : align_dim;
+				flex_dim = size_dim;
+				extra_flex_dim = 0;
+				flex_grows = 0;
+				flex_shrinks = 0;
+			}
+
+			//layout_init
+			public void init(Item item, float width, float height)
+			{
+				if (item.PaddingLeft < 0
+					|| item.PaddingRight < 0
+					|| item.PaddingTop < 0
+					|| item.PaddingBottom < 0)
+				{
+					throw new ArgumentException();
+				}
+*/
+
+/* Unmerged change from project 'Core(net8.0-windows10.0.19041.0)'
+Before:
+				if (float.IsNaN(child.Frame[layout.frame_size_i]))
+					child.Frame[layout.frame_size_i] = 0;
+
+				// Cross axis size defaults to the parent's size (or line size in wrap
+				// mode, which is calculated later on).
+				if (float.IsNaN(child.Frame[layout.frame_size2_i]))
+				{
+					if (layout.wrap)
+						layout.need_lines = true;
+					else
+						child.Frame[layout.frame_size2_i] = (layout.vertical ? width : height) - child.MarginThickness(!layout.vertical);
+				}
+
+				// Call the self_sizing callback if provided. Only non-NAN values
+				// are taken into account. If the item's cross-axis align property
+				// is set to stretch, ignore the value returned by the callback.
+				if (child.SelfSizing != null)
+				{
+					float[] size = { child.Frame[2], child.Frame[3] };
+
+					child.SelfSizing(child, ref size[0], ref size[1]);
+
+					for (int j = 0; j < 2; j++)
+					{
+						int size_off = j + 2;
+						if (size_off == layout.frame_size2_i && child_align(child, item) == AlignItems.Stretch && layout.align_dim > 0)
+							continue;
+						float val = size[j];
+						if (!float.IsNaN(val))
+							child.Frame[size_off] = val;
+					}
+				}
+
+				// Honor the `basis' property which overrides the main-axis size.
+				if (!child.Basis.IsAuto)
+				{
+					if (child.Basis.Length < 0)
+						throw new Exception("basis should >=0");
+					if (child.Basis.IsRelative && child.Basis.Length > 1)
+						throw new Exception("relative basis should be <=1");
+					float basis = child.Basis.Length;
+					if (child.Basis.IsRelative)
+						basis *= (layout.vertical ? height : width);
+					child.Frame[layout.frame_size_i] = basis - child.MarginThickness(layout.vertical);
+				}
+
+				float child_size = child.Frame[layout.frame_size_i];
+				if (layout.wrap)
+				{
+					if (layout.flex_dim < child_size)
+					{
+						// Not enough space for this child on this line, layout the
+						// remaining items and move it to a new line.
+						layout_items(item, last_layout_child, i, relative_children_count, ref layout);
+
+						layout.reset();
+						last_layout_child = i;
+						relative_children_count = 0;
+					}
+
+					float child_size2 = child.Frame[layout.frame_size2_i];
+					if (!float.IsNaN(child_size2) && child_size2 + child.MarginThickness(!layout.vertical) > layout.line_dim)
+					{
+						layout.line_dim = child_size2 + child.MarginThickness(!layout.vertical);
+					}
+				}
+
+				if (child.Grow < 0
+					|| child.Shrink < 0)
+					throw new Exception("shrink and grow should be >= 0");
+
+				layout.flex_grows += child.Grow;
+				layout.flex_shrinks += child.Shrink;
+
+				if (layout.flex_dim > 0)
+				{
+					// If flex_dim is zero, it's because we're measuring unconstrained in that direction
+					// So we don't need to keep a running tally of available space
+
+					layout.flex_dim -= child_size + child.MarginThickness(layout.vertical);
+				}
+
+				relative_children_count++;
+
+				if (child_size > 0 && child.Grow > 0)
+				{
+					layout.extra_flex_dim += child_size;
+				}
+			}
+
+			// Layout remaining items in wrap mode, or everything otherwise.
+			layout_items(item, last_layout_child, item.Count, relative_children_count, ref layout);
+
+			// In wrap mode we may need to tweak the position of each line according to
+			// the align_content property as well as the cross-axis size of items that
+			// haven't been set yet.
+			if (layout.need_lines && (layout.lines?.Length ?? 0) > 0)
+			{
+				float pos = 0;
+				float spacing = 0;
+				float flex_dim = layout.align_dim - layout.lines_sizes;
+				if (flex_dim > 0)
+					layout_align(item.AlignContent, flex_dim, (uint)(layout.lines?.Length ?? 0), ref pos, ref spacing);
+
+				float old_pos = 0;
+				if (layout.reverse2)
+				{
+					pos = layout.align_dim - pos;
+					old_pos = layout.align_dim;
+				}
+
+				for (uint i = 0; i < (layout.lines?.Length ?? 0); i++)
+				{
+
+					flex_layout.flex_layout_line line = layout.lines![i];
+
+					if (layout.reverse2)
+					{
+						pos -= line.size;
+						pos -= spacing;
+						old_pos -= line.size;
+					}
+
+					// Re-position the children of this line, honoring any child
+					// alignment previously set within the line.
+					for (int j = line.child_begin; j < line.child_end; j++)
+					{
+						Item child = layout.child_at(item, j);
+						if (child.Position == Position.Absolute)
+						{
+							// Should not be re-positioned.
+							continue;
+						}
+						if (float.IsNaN(child.Frame[layout.frame_size2_i]))
+						{
+							// If the child's cross axis size hasn't been set it, it
+							// defaults to the line size.
+							child.Frame[layout.frame_size2_i] = line.size
+								+ (item.AlignContent == AlignContent.Stretch
+								   ? spacing : 0);
+						}
+						child.Frame[layout.frame_pos2_i] = pos + (child.Frame[layout.frame_pos2_i] - old_pos);
+					}
+
+					if (!layout.reverse2)
+					{
+						pos += line.size;
+						pos += spacing;
+						old_pos += line.size;
+					}
+				}
+			}
+
+			layout.cleanup();
+		}
+
+		float MarginThickness(bool vertical) =>
+			vertical ? MarginTop + MarginBottom : MarginLeft + MarginRight;
+
+		static void layout_align(Justify align, float flex_dim, int children_count, ref float pos_p, ref float spacing_p)
+		{
+			if (flex_dim < 0)
+				throw new ArgumentException();
+			pos_p = 0;
+			spacing_p = 0;
+
+			switch (align)
+			{
+				case Justify.Start:
+					return;
+				case Justify.End:
+					pos_p = flex_dim;
+					return;
+				case Justify.Center:
+					pos_p = flex_dim / 2;
+					return;
+				case Justify.SpaceBetween:
+					if (children_count > 0)
+						spacing_p = flex_dim / (children_count - 1);
+					return;
+				case Justify.SpaceAround:
+					if (children_count > 0)
+					{
+						spacing_p = flex_dim / children_count;
+						pos_p = spacing_p / 2;
+					}
+					return;
+				case Justify.SpaceEvenly:
+					if (children_count > 0)
+					{
+						spacing_p = flex_dim / (children_count + 1);
+						pos_p = spacing_p;
+					}
+					return;
+				default:
+					throw new ArgumentException();
+			}
+		}
+
+		static void layout_align(AlignContent align, float flex_dim, uint children_count, ref float pos_p, ref float spacing_p)
+		{
+			if (flex_dim < 0)
+				throw new ArgumentException();
+			pos_p = 0;
+			spacing_p = 0;
+
+			switch (align)
+			{
+				case AlignContent.Start:
+					return;
+				case AlignContent.End:
+					pos_p = flex_dim;
+					return;
+				case AlignContent.Center:
+					pos_p = flex_dim / 2;
+					return;
+				case AlignContent.SpaceBetween:
+					if (children_count > 0)
+						spacing_p = flex_dim / (children_count - 1);
+					return;
+				case AlignContent.SpaceAround:
+					if (children_count > 0)
+					{
+						spacing_p = flex_dim / children_count;
+						pos_p = spacing_p / 2;
+					}
+					return;
+				case AlignContent.SpaceEvenly:
+					if (children_count > 0)
+					{
+						spacing_p = flex_dim / (children_count + 1);
+						pos_p = spacing_p;
+					}
+					return;
+				case AlignContent.Stretch:
+					spacing_p = flex_dim / children_count;
+					return;
+				default:
+					throw new ArgumentException();
+			}
+		}
+
+		static void layout_items(Item item, int child_begin, int child_end, int children_count, ref flex_layout layout)
+		{
+			if (children_count > (child_end - child_begin))
+				throw new ArgumentException();
+			if (children_count <= 0)
+				return;
+			if (layout.flex_dim > 0 && layout.extra_flex_dim > 0)
+			{
+				// If the container has a positive flexible space, let's add to it
+				// the sizes of all flexible children.
+				layout.flex_dim += layout.extra_flex_dim;
+			}
+
+			// Determine the main axis initial position and optional spacing.
+			float pos = 0;
+			float spacing = 0;
+			if (layout.flex_grows == 0 && layout.flex_dim > 0)
+			{
+				layout_align(item.JustifyContent, layout.flex_dim, children_count, ref pos, ref spacing);
+			}
+
+			if (layout.reverse)
+				pos = layout.size_dim - pos;
+
+
+			if (layout.reverse)
+			{
+				pos -= layout.vertical ? item.PaddingBottom : item.PaddingRight;
+			}
+			else
+			{
+				pos += layout.vertical ? item.PaddingTop : item.PaddingLeft;
+			}
+			if (layout.wrap && layout.reverse2)
+			{
+				layout.pos2 -= layout.line_dim;
+			}
+
+			for (int i = child_begin; i < child_end; i++)
+			{
+				Item child = layout.child_at(item, i);
+				if (!child.IsVisible)
+					continue;
+				if (child.Position == Position.Absolute)
+				{
+					// Already positioned.
+					continue;
+				}
+
+				// Grow or shrink the main axis item size if needed.
+				float flex_size = 0;
+				if (layout.flex_dim > 0)
+				{
+					if (child.Grow != 0)
+					{
+						child.Frame[layout.frame_size_i] = 0; // Ignore previous size when growing.
+						flex_size = (layout.flex_dim / layout.flex_grows) * child.Grow;
+					}
+				}
+				else if (layout.flex_dim < 0)
+				{
+					if (child.Shrink != 0)
+					{
+						flex_size = (layout.flex_dim / layout.flex_shrinks) * child.Shrink;
+					}
+				}
+				child.Frame[layout.frame_size_i] += flex_size;
+
+				// Set the cross axis position (and stretch the cross axis size if
+				// needed).
+				float align_size = child.Frame[layout.frame_size2_i];
+				float align_pos = layout.pos2 + 0;
+				switch (child_align(child, item))
+				{
+					case AlignItems.End:
+						align_pos += layout.line_dim - align_size - (layout.vertical ? child.MarginRight : child.MarginBottom);
+						break;
+
+					case AlignItems.Center:
+						align_pos += (layout.line_dim / 2) - (align_size / 2)
+							+ ((layout.vertical ? child.MarginLeft : child.MarginTop)
+							   - (layout.vertical ? child.MarginRight : child.MarginBottom));
+						break;
+
+					case AlignItems.Stretch:
+						if (align_size == 0)
+						{
+							child.Frame[layout.frame_size2_i] = layout.line_dim
+								- ((layout.vertical ? child.MarginLeft : child.MarginTop)
+								   + (layout.vertical ? child.MarginRight : child.MarginBottom));
+						}
+						align_pos += (layout.vertical ? child.MarginLeft : child.MarginTop);
+						break;
+					case AlignItems.Start:
+						align_pos += (layout.vertical ? child.MarginLeft : child.MarginTop);
+						break;
+
+					default:
+						throw new Exception();
+				}
+				child.Frame[layout.frame_pos2_i] = align_pos;
+
+				// Set the main axis position.
+				if (layout.reverse)
+				{
+					pos -= (layout.vertical ? child.MarginBottom : child.MarginRight);
+					pos -= child.Frame[layout.frame_size_i];
+					child.Frame[layout.frame_pos_i] = pos;
+					pos -= spacing;
+					pos -= (layout.vertical ? child.MarginTop : child.MarginLeft);
+				}
+				else
+				{
+					pos += (layout.vertical ? child.MarginTop : child.MarginLeft);
+					child.Frame[layout.frame_pos_i] = pos;
+					pos += child.Frame[layout.frame_size_i];
+					pos += spacing;
+					pos += (layout.vertical ? child.MarginBottom : child.MarginRight);
+				}
+
+				// Now that the item has a frame, we can layout its children.
+				layout_item(child, child.Frame[2], child.Frame[3]);
+			}
+
+			if (layout.wrap && !layout.reverse2)
+			{
+				layout.pos2 += layout.line_dim;
+			}
+
+			if (layout.need_lines)
+			{
+				Array.Resize(ref layout.lines, (layout.lines?.Length ?? 0) + 1);
+
+				ref flex_layout.flex_layout_line line = ref layout.lines[layout.lines.Length - 1];
+
+				line.child_begin = child_begin;
+				line.child_end = child_end;
+				line.size = layout.line_dim;
+
+				layout.lines_sizes += line.size;
+			}
+
+			if (layout.reverse && layout.size_dim == 0)
+			{
+				// Handle reversed layouts when there was no fixed size in the first place. All of the positions will be flipped
+				// across the axis. Luckily the pos variable is already tracking how far negative the values were in this situation,
+				// so we can just offset the distance by that amount and get the desired value
+
+				for (int i = child_begin; i < child_end; i++)
+				{
+					Item child = layout.child_at(item, i);
+					if (!child.IsVisible)
+						continue;
+
+					if (child.Position == Position.Absolute)
+					{
+						// Not helpful for this
+						continue;
+					}
+
+					child.Frame[layout.frame_pos_i] = child.Frame[layout.frame_pos_i] - pos;
+				}
+			}
+		}
+
+		static float absolute_size(float val, float pos1, float pos2, float dim) =>
+			!float.IsNaN(val) ? val : (!float.IsNaN(pos1) && !float.IsNaN(pos2) ? dim - pos2 - pos1 : 0);
+
+		static float absolute_pos(float pos1, float pos2, float size, float dim) =>
+			!float.IsNaN(pos1) ? pos1 : (!float.IsNaN(pos2) ? dim - size - pos2 : 0);
+
+		static AlignItems child_align(Item child, Item parent) =>
+			child.AlignSelf == AlignSelf.Auto ? parent.AlignItems : (AlignItems)child.AlignSelf;
+
+		struct flex_layout
+		{
+			// Set during init.
+			public bool wrap;
+			public bool reverse;                // whether main axis is reversed
+			public bool reverse2;               // whether cross axis is reversed (wrap only)
+			public bool vertical;
+			public float size_dim;              // main axis parent size
+			public float align_dim;             // cross axis parent size
+			public uint frame_pos_i;            // main axis position
+			public uint frame_pos2_i;           // cross axis position
+			public uint frame_size_i;           // main axis size
+			public uint frame_size2_i;          // cross axis size
+			int[]? ordered_indices;
+
+			// Set for each line layout.
+			public float line_dim;              // the cross axis size
+			public float flex_dim;              // the flexible part of the main axis size
+			public float extra_flex_dim;        // sizes of flexible items
+			public float flex_grows;
+			public float flex_shrinks;
+			public float pos2;                  // cross axis position
+
+			// Calculated layout lines - only tracked when needed:
+			//   - if the root's align_content property isn't set to FLEX_ALIGN_START
+			//   - or if any child item doesn't have a cross-axis size set
+			public bool need_lines;
+			public struct flex_layout_line
+			{
+				public int child_begin;
+				public int child_end;
+				public float size;
+			};
+
+			public flex_layout_line[]? lines;
+			public float lines_sizes;
+
+			//LAYOUT_RESET
+			public void reset()
+			{
+				line_dim = wrap ? 0 : align_dim;
+				flex_dim = size_dim;
+				extra_flex_dim = 0;
+				flex_grows = 0;
+				flex_shrinks = 0;
+			}
+
+			//layout_init
+			public void init(Item item, float width, float height)
+			{
+				if (item.PaddingLeft < 0
+					|| item.PaddingRight < 0
+					|| item.PaddingTop < 0
+					|| item.PaddingBottom < 0)
+					throw new ArgumentException();
+After:
+				if (child.Position == Position.Absolute)
+				{
+					child.Frame[2] = absolute_size(child.Width, child.Left, child.Right, width);
+					child.Frame[3] = absolute_size(child.Height, child.Top, child.Bottom, height);
+					child.Frame[0] = absolute_pos(child.Left, child.Right, child.Frame[2], width);
+					child.Frame[1] = absolute_pos(child.Top, child.Bottom, child.Frame[3], height);
+
+					// Now that the item has a frame, we can layout its children.
+					layout_item(child, child.Frame[2], child.Frame[3]);
+					continue;
+				}
+
+				// Initialize frame.
+				child.Frame[0] = 0;
+				child.Frame[1] = 0;
+				child.Frame[2] = child.Width;
+				child.Frame[3] = child.Height;
+
+				// Main axis size defaults to 0.
+				if (float.IsNaN(child.Frame[layout.frame_size_i]))
+				{
+					child.Frame[layout.frame_size_i] = 0;
+				}
+
+				// Cross axis size defaults to the parent's size (or line size in wrap
+				// mode, which is calculated later on).
+				if (float.IsNaN(child.Frame[layout.frame_size2_i]))
+				{
+					if (layout.wrap)
+					{
+						layout.need_lines = true;
+					}
+					else
+					{
+						child.Frame[layout.frame_size2_i] = (layout.vertical ? width : height) - child.MarginThickness(!layout.vertical);
+					}
+				}
+
+				// Call the self_sizing callback if provided. Only non-NAN values
+				// are taken into account. If the item's cross-axis align property
+				// is set to stretch, ignore the value returned by the callback.
+				if (child.SelfSizing != null)
+				{
+					float[] size = { child.Frame[2], child.Frame[3] };
+
+					child.SelfSizing(child, ref size[0], ref size[1]);
+
+					for (int j = 0; j < 2; j++)
+					{
+						int size_off = j + 2;
+						if (size_off == layout.frame_size2_i && child_align(child, item) == AlignItems.Stretch && layout.align_dim > 0)
+						{
+							continue;
+						}
+
+						float val = size[j];
+						if (!float.IsNaN(val))
+						{
+							child.Frame[size_off] = val;
+						}
+					}
+				}
+
+				// Honor the `basis' property which overrides the main-axis size.
+				if (!child.Basis.IsAuto)
+				{
+					if (child.Basis.Length < 0)
+					{
+						throw new Exception("basis should >=0");
+					}
+
+					if (child.Basis.IsRelative && child.Basis.Length > 1)
+					{
+						throw new Exception("relative basis should be <=1");
+					}
+
+					float basis = child.Basis.Length;
+					if (child.Basis.IsRelative)
+					{
+						basis *= (layout.vertical ? height : width);
+					}
+
+					child.Frame[layout.frame_size_i] = basis - child.MarginThickness(layout.vertical);
+				}
+
+				float child_size = child.Frame[layout.frame_size_i];
+				if (layout.wrap)
+				{
+					if (layout.flex_dim < child_size)
+					{
+						// Not enough space for this child on this line, layout the
+						// remaining items and move it to a new line.
+						layout_items(item, last_layout_child, i, relative_children_count, ref layout);
+
+						layout.reset();
+						last_layout_child = i;
+						relative_children_count = 0;
+					}
+
+					float child_size2 = child.Frame[layout.frame_size2_i];
+					if (!float.IsNaN(child_size2) && child_size2 + child.MarginThickness(!layout.vertical) > layout.line_dim)
+					{
+						layout.line_dim = child_size2 + child.MarginThickness(!layout.vertical);
+					}
+				}
+
+				if (child.Grow < 0
+					|| child.Shrink < 0)
+				{
+					throw new Exception("shrink and grow should be >= 0");
+				}
+
+				layout.flex_grows += child.Grow;
+				layout.flex_shrinks += child.Shrink;
+
+				if (layout.flex_dim > 0)
+				{
+					// If flex_dim is zero, it's because we're measuring unconstrained in that direction
+					// So we don't need to keep a running tally of available space
+
+					layout.flex_dim -= child_size + child.MarginThickness(layout.vertical);
+				}
+
+				relative_children_count++;
+
+				if (child_size > 0 && child.Grow > 0)
+				{
+					layout.extra_flex_dim += child_size;
+				}
+			}
+
+			// Layout remaining items in wrap mode, or everything otherwise.
+			layout_items(item, last_layout_child, item.Count, relative_children_count, ref layout);
+
+			// In wrap mode we may need to tweak the position of each line according to
+			// the align_content property as well as the cross-axis size of items that
+			// haven't been set yet.
+			if (layout.need_lines && (layout.lines?.Length ?? 0) > 0)
+			{
+				float pos = 0;
+				float spacing = 0;
+				float flex_dim = layout.align_dim - layout.lines_sizes;
+				if (flex_dim > 0)
+				{
+					layout_align(item.AlignContent, flex_dim, (uint)(layout.lines?.Length ?? 0), ref pos, ref spacing);
+				}
+
+				float old_pos = 0;
+				if (layout.reverse2)
+				{
+					pos = layout.align_dim - pos;
+					old_pos = layout.align_dim;
+				}
+
+				for (uint i = 0; i < (layout.lines?.Length ?? 0); i++)
+				{
+
+					flex_layout.flex_layout_line line = layout.lines![i];
+
+					if (layout.reverse2)
+					{
+						pos -= line.size;
+						pos -= spacing;
+						old_pos -= line.size;
+					}
+
+					// Re-position the children of this line, honoring any child
+					// alignment previously set within the line.
+					for (int j = line.child_begin; j < line.child_end; j++)
+					{
+						Item child = layout.child_at(item, j);
+						if (child.Position == Position.Absolute)
+						{
+							// Should not be re-positioned.
+							continue;
+						}
+						if (float.IsNaN(child.Frame[layout.frame_size2_i]))
+						{
+							// If the child's cross axis size hasn't been set it, it
+							// defaults to the line size.
+							child.Frame[layout.frame_size2_i] = line.size
+								+ (item.AlignContent == AlignContent.Stretch
+								   ? spacing : 0);
+						}
+						child.Frame[layout.frame_pos2_i] = pos + (child.Frame[layout.frame_pos2_i] - old_pos);
+					}
+
+					if (!layout.reverse2)
+					{
+						pos += line.size;
+						pos += spacing;
+						old_pos += line.size;
+					}
+				}
+			}
+
+			layout.cleanup();
+		}
+
+		float MarginThickness(bool vertical) =>
+			vertical ? MarginTop + MarginBottom : MarginLeft + MarginRight;
+
+		static void layout_align(Justify align, float flex_dim, int children_count, ref float pos_p, ref float spacing_p)
+		{
+			if (flex_dim < 0)
+			{
+				throw new ArgumentException();
+			}
+
+			pos_p = 0;
+			spacing_p = 0;
+
+			switch (align)
+			{
+				case Justify.Start:
+					return;
+				case Justify.End:
+					pos_p = flex_dim;
+					return;
+				case Justify.Center:
+					pos_p = flex_dim / 2;
+					return;
+				case Justify.SpaceBetween:
+					if (children_count > 0)
+					{
+						spacing_p = flex_dim / (children_count - 1);
+					}
+
+					return;
+				case Justify.SpaceAround:
+					if (children_count > 0)
+					{
+						spacing_p = flex_dim / children_count;
+						pos_p = spacing_p / 2;
+					}
+					return;
+				case Justify.SpaceEvenly:
+					if (children_count > 0)
+					{
+						spacing_p = flex_dim / (children_count + 1);
+						pos_p = spacing_p;
+					}
+					return;
+				default:
+					throw new ArgumentException();
+			}
+		}
+
+		static void layout_align(AlignContent align, float flex_dim, uint children_count, ref float pos_p, ref float spacing_p)
+		{
+			if (flex_dim < 0)
+			{
+				throw new ArgumentException();
+			}
+
+			pos_p = 0;
+			spacing_p = 0;
+
+			switch (align)
+			{
+				case AlignContent.Start:
+					return;
+				case AlignContent.End:
+					pos_p = flex_dim;
+					return;
+				case AlignContent.Center:
+					pos_p = flex_dim / 2;
+					return;
+				case AlignContent.SpaceBetween:
+					if (children_count > 0)
+					{
+						spacing_p = flex_dim / (children_count - 1);
+					}
+
+					return;
+				case AlignContent.SpaceAround:
+					if (children_count > 0)
+					{
+						spacing_p = flex_dim / children_count;
+						pos_p = spacing_p / 2;
+					}
+					return;
+				case AlignContent.SpaceEvenly:
+					if (children_count > 0)
+					{
+						spacing_p = flex_dim / (children_count + 1);
+						pos_p = spacing_p;
+					}
+					return;
+				case AlignContent.Stretch:
+					spacing_p = flex_dim / children_count;
+					return;
+				default:
+					throw new ArgumentException();
+			}
+		}
+
+		static void layout_items(Item item, int child_begin, int child_end, int children_count, ref flex_layout layout)
+		{
+			if (children_count > (child_end - child_begin))
+			{
+				throw new ArgumentException();
+			}
+
+			if (children_count <= 0)
+			{
+				return;
+			}
+
+			if (layout.flex_dim > 0 && layout.extra_flex_dim > 0)
+			{
+				// If the container has a positive flexible space, let's add to it
+				// the sizes of all flexible children.
+				layout.flex_dim += layout.extra_flex_dim;
+			}
+
+			// Determine the main axis initial position and optional spacing.
+			float pos = 0;
+			float spacing = 0;
+			if (layout.flex_grows == 0 && layout.flex_dim > 0)
+			{
+				layout_align(item.JustifyContent, layout.flex_dim, children_count, ref pos, ref spacing);
+			}
+
+			if (layout.reverse)
+			{
+				pos = layout.size_dim - pos;
+			}
+
+			if (layout.reverse)
+			{
+				pos -= layout.vertical ? item.PaddingBottom : item.PaddingRight;
+			}
+			else
+			{
+				pos += layout.vertical ? item.PaddingTop : item.PaddingLeft;
+			}
+			if (layout.wrap && layout.reverse2)
+			{
+				layout.pos2 -= layout.line_dim;
+			}
+
+			for (int i = child_begin; i < child_end; i++)
+			{
+				Item child = layout.child_at(item, i);
+				if (!child.IsVisible)
+				{
+					continue;
+				}
+
+				if (child.Position == Position.Absolute)
+				{
+					// Already positioned.
+					continue;
+				}
+
+				// Grow or shrink the main axis item size if needed.
+				float flex_size = 0;
+				if (layout.flex_dim > 0)
+				{
+					if (child.Grow != 0)
+					{
+						child.Frame[layout.frame_size_i] = 0; // Ignore previous size when growing.
+						flex_size = (layout.flex_dim / layout.flex_grows) * child.Grow;
+					}
+				}
+				else if (layout.flex_dim < 0)
+				{
+					if (child.Shrink != 0)
+					{
+						flex_size = (layout.flex_dim / layout.flex_shrinks) * child.Shrink;
+					}
+				}
+				child.Frame[layout.frame_size_i] += flex_size;
+
+				// Set the cross axis position (and stretch the cross axis size if
+				// needed).
+				float align_size = child.Frame[layout.frame_size2_i];
+				float align_pos = layout.pos2 + 0;
+				switch (child_align(child, item))
+				{
+					case AlignItems.End:
+						align_pos += layout.line_dim - align_size - (layout.vertical ? child.MarginRight : child.MarginBottom);
+						break;
+
+					case AlignItems.Center:
+						align_pos += (layout.line_dim / 2) - (align_size / 2)
+							+ ((layout.vertical ? child.MarginLeft : child.MarginTop)
+							   - (layout.vertical ? child.MarginRight : child.MarginBottom));
+						break;
+
+					case AlignItems.Stretch:
+						if (align_size == 0)
+						{
+							child.Frame[layout.frame_size2_i] = layout.line_dim
+								- ((layout.vertical ? child.MarginLeft : child.MarginTop)
+								   + (layout.vertical ? child.MarginRight : child.MarginBottom));
+						}
+						align_pos += (layout.vertical ? child.MarginLeft : child.MarginTop);
+						break;
+					case AlignItems.Start:
+						align_pos += (layout.vertical ? child.MarginLeft : child.MarginTop);
+						break;
+
+					default:
+						throw new Exception();
+				}
+				child.Frame[layout.frame_pos2_i] = align_pos;
+
+				// Set the main axis position.
+				if (layout.reverse)
+				{
+					pos -= (layout.vertical ? child.MarginBottom : child.MarginRight);
+					pos -= child.Frame[layout.frame_size_i];
+					child.Frame[layout.frame_pos_i] = pos;
+					pos -= spacing;
+					pos -= (layout.vertical ? child.MarginTop : child.MarginLeft);
+				}
+				else
+				{
+					pos += (layout.vertical ? child.MarginTop : child.MarginLeft);
+					child.Frame[layout.frame_pos_i] = pos;
+					pos += child.Frame[layout.frame_size_i];
+					pos += spacing;
+					pos += (layout.vertical ? child.MarginBottom : child.MarginRight);
+				}
+
+				// Now that the item has a frame, we can layout its children.
+				layout_item(child, child.Frame[2], child.Frame[3]);
+			}
+
+			if (layout.wrap && !layout.reverse2)
+			{
+				layout.pos2 += layout.line_dim;
+			}
+
+			if (layout.need_lines)
+			{
+				Array.Resize(ref layout.lines, (layout.lines?.Length ?? 0) + 1);
+
+				ref flex_layout.flex_layout_line line = ref layout.lines[layout.lines.Length - 1];
+
+				line.child_begin = child_begin;
+				line.child_end = child_end;
+				line.size = layout.line_dim;
+
+				layout.lines_sizes += line.size;
+			}
+
+			if (layout.reverse && layout.size_dim == 0)
+			{
+				// Handle reversed layouts when there was no fixed size in the first place. All of the positions will be flipped
+				// across the axis. Luckily the pos variable is already tracking how far negative the values were in this situation,
+				// so we can just offset the distance by that amount and get the desired value
+
+				for (int i = child_begin; i < child_end; i++)
+				{
+					Item child = layout.child_at(item, i);
+					if (!child.IsVisible)
+					{
+						continue;
+					}
+
+					if (child.Position == Position.Absolute)
+					{
+						// Not helpful for this
+						continue;
+					}
+
+					child.Frame[layout.frame_pos_i] = child.Frame[layout.frame_pos_i] - pos;
+				}
+			}
+		}
+
+		static float absolute_size(float val, float pos1, float pos2, float dim) =>
+			!float.IsNaN(val) ? val : (!float.IsNaN(pos1) && !float.IsNaN(pos2) ? dim - pos2 - pos1 : 0);
+
+		static float absolute_pos(float pos1, float pos2, float size, float dim) =>
+			!float.IsNaN(pos1) ? pos1 : (!float.IsNaN(pos2) ? dim - size - pos2 : 0);
+
+		static AlignItems child_align(Item child, Item parent) =>
+			child.AlignSelf == AlignSelf.Auto ? parent.AlignItems : (AlignItems)child.AlignSelf;
+
+		struct flex_layout
+		{
+			// Set during init.
+			public bool wrap;
+			public bool reverse;                // whether main axis is reversed
+			public bool reverse2;               // whether cross axis is reversed (wrap only)
+			public bool vertical;
+			public float size_dim;              // main axis parent size
+			public float align_dim;             // cross axis parent size
+			public uint frame_pos_i;            // main axis position
+			public uint frame_pos2_i;           // cross axis position
+			public uint frame_size_i;           // main axis size
+			public uint frame_size2_i;          // cross axis size
+			int[]? ordered_indices;
+
+			// Set for each line layout.
+			public float line_dim;              // the cross axis size
+			public float flex_dim;              // the flexible part of the main axis size
+			public float extra_flex_dim;        // sizes of flexible items
+			public float flex_grows;
+			public float flex_shrinks;
+			public float pos2;                  // cross axis position
+
+			// Calculated layout lines - only tracked when needed:
+			//   - if the root's align_content property isn't set to FLEX_ALIGN_START
+			//   - or if any child item doesn't have a cross-axis size set
+			public bool need_lines;
+			public struct flex_layout_line
+			{
+				public int child_begin;
+				public int child_end;
+				public float size;
+			};
+
+			public flex_layout_line[]? lines;
+			public float lines_sizes;
+
+			//LAYOUT_RESET
+			public void reset()
+			{
+				line_dim = wrap ? 0 : align_dim;
+				flex_dim = size_dim;
+				extra_flex_dim = 0;
+				flex_grows = 0;
+				flex_shrinks = 0;
+			}
+
+			//layout_init
+			public void init(Item item, float width, float height)
+			{
+				if (item.PaddingLeft < 0
+					|| item.PaddingRight < 0
+					|| item.PaddingTop < 0
+					|| item.PaddingBottom < 0)
+				{
+					throw new ArgumentException();
+				}
+*/
+
+/* Unmerged change from project 'Core(net8.0-windows10.0.20348.0)'
+Before:
+				if (float.IsNaN(child.Frame[layout.frame_size_i]))
+					child.Frame[layout.frame_size_i] = 0;
+
+				// Cross axis size defaults to the parent's size (or line size in wrap
+				// mode, which is calculated later on).
+				if (float.IsNaN(child.Frame[layout.frame_size2_i]))
+				{
+					if (layout.wrap)
+						layout.need_lines = true;
+					else
+						child.Frame[layout.frame_size2_i] = (layout.vertical ? width : height) - child.MarginThickness(!layout.vertical);
+				}
+
+				// Call the self_sizing callback if provided. Only non-NAN values
+				// are taken into account. If the item's cross-axis align property
+				// is set to stretch, ignore the value returned by the callback.
+				if (child.SelfSizing != null)
+				{
+					float[] size = { child.Frame[2], child.Frame[3] };
+
+					child.SelfSizing(child, ref size[0], ref size[1]);
+
+					for (int j = 0; j < 2; j++)
+					{
+						int size_off = j + 2;
+						if (size_off == layout.frame_size2_i && child_align(child, item) == AlignItems.Stretch && layout.align_dim > 0)
+							continue;
+						float val = size[j];
+						if (!float.IsNaN(val))
+							child.Frame[size_off] = val;
+					}
+				}
+
+				// Honor the `basis' property which overrides the main-axis size.
+				if (!child.Basis.IsAuto)
+				{
+					if (child.Basis.Length < 0)
+						throw new Exception("basis should >=0");
+					if (child.Basis.IsRelative && child.Basis.Length > 1)
+						throw new Exception("relative basis should be <=1");
+					float basis = child.Basis.Length;
+					if (child.Basis.IsRelative)
+						basis *= (layout.vertical ? height : width);
+					child.Frame[layout.frame_size_i] = basis - child.MarginThickness(layout.vertical);
+				}
+
+				float child_size = child.Frame[layout.frame_size_i];
+				if (layout.wrap)
+				{
+					if (layout.flex_dim < child_size)
+					{
+						// Not enough space for this child on this line, layout the
+						// remaining items and move it to a new line.
+						layout_items(item, last_layout_child, i, relative_children_count, ref layout);
+
+						layout.reset();
+						last_layout_child = i;
+						relative_children_count = 0;
+					}
+
+					float child_size2 = child.Frame[layout.frame_size2_i];
+					if (!float.IsNaN(child_size2) && child_size2 + child.MarginThickness(!layout.vertical) > layout.line_dim)
+					{
+						layout.line_dim = child_size2 + child.MarginThickness(!layout.vertical);
+					}
+				}
+
+				if (child.Grow < 0
+					|| child.Shrink < 0)
+					throw new Exception("shrink and grow should be >= 0");
+
+				layout.flex_grows += child.Grow;
+				layout.flex_shrinks += child.Shrink;
+
+				if (layout.flex_dim > 0)
+				{
+					// If flex_dim is zero, it's because we're measuring unconstrained in that direction
+					// So we don't need to keep a running tally of available space
+
+					layout.flex_dim -= child_size + child.MarginThickness(layout.vertical);
+				}
+
+				relative_children_count++;
+
+				if (child_size > 0 && child.Grow > 0)
+				{
+					layout.extra_flex_dim += child_size;
+				}
+			}
+
+			// Layout remaining items in wrap mode, or everything otherwise.
+			layout_items(item, last_layout_child, item.Count, relative_children_count, ref layout);
+
+			// In wrap mode we may need to tweak the position of each line according to
+			// the align_content property as well as the cross-axis size of items that
+			// haven't been set yet.
+			if (layout.need_lines && (layout.lines?.Length ?? 0) > 0)
+			{
+				float pos = 0;
+				float spacing = 0;
+				float flex_dim = layout.align_dim - layout.lines_sizes;
+				if (flex_dim > 0)
+					layout_align(item.AlignContent, flex_dim, (uint)(layout.lines?.Length ?? 0), ref pos, ref spacing);
+
+				float old_pos = 0;
+				if (layout.reverse2)
+				{
+					pos = layout.align_dim - pos;
+					old_pos = layout.align_dim;
+				}
+
+				for (uint i = 0; i < (layout.lines?.Length ?? 0); i++)
+				{
+
+					flex_layout.flex_layout_line line = layout.lines![i];
+
+					if (layout.reverse2)
+					{
+						pos -= line.size;
+						pos -= spacing;
+						old_pos -= line.size;
+					}
+
+					// Re-position the children of this line, honoring any child
+					// alignment previously set within the line.
+					for (int j = line.child_begin; j < line.child_end; j++)
+					{
+						Item child = layout.child_at(item, j);
+						if (child.Position == Position.Absolute)
+						{
+							// Should not be re-positioned.
+							continue;
+						}
+						if (float.IsNaN(child.Frame[layout.frame_size2_i]))
+						{
+							// If the child's cross axis size hasn't been set it, it
+							// defaults to the line size.
+							child.Frame[layout.frame_size2_i] = line.size
+								+ (item.AlignContent == AlignContent.Stretch
+								   ? spacing : 0);
+						}
+						child.Frame[layout.frame_pos2_i] = pos + (child.Frame[layout.frame_pos2_i] - old_pos);
+					}
+
+					if (!layout.reverse2)
+					{
+						pos += line.size;
+						pos += spacing;
+						old_pos += line.size;
+					}
+				}
+			}
+
+			layout.cleanup();
+		}
+
+		float MarginThickness(bool vertical) =>
+			vertical ? MarginTop + MarginBottom : MarginLeft + MarginRight;
+
+		static void layout_align(Justify align, float flex_dim, int children_count, ref float pos_p, ref float spacing_p)
+		{
+			if (flex_dim < 0)
+				throw new ArgumentException();
+			pos_p = 0;
+			spacing_p = 0;
+
+			switch (align)
+			{
+				case Justify.Start:
+					return;
+				case Justify.End:
+					pos_p = flex_dim;
+					return;
+				case Justify.Center:
+					pos_p = flex_dim / 2;
+					return;
+				case Justify.SpaceBetween:
+					if (children_count > 0)
+						spacing_p = flex_dim / (children_count - 1);
+					return;
+				case Justify.SpaceAround:
+					if (children_count > 0)
+					{
+						spacing_p = flex_dim / children_count;
+						pos_p = spacing_p / 2;
+					}
+					return;
+				case Justify.SpaceEvenly:
+					if (children_count > 0)
+					{
+						spacing_p = flex_dim / (children_count + 1);
+						pos_p = spacing_p;
+					}
+					return;
+				default:
+					throw new ArgumentException();
+			}
+		}
+
+		static void layout_align(AlignContent align, float flex_dim, uint children_count, ref float pos_p, ref float spacing_p)
+		{
+			if (flex_dim < 0)
+				throw new ArgumentException();
+			pos_p = 0;
+			spacing_p = 0;
+
+			switch (align)
+			{
+				case AlignContent.Start:
+					return;
+				case AlignContent.End:
+					pos_p = flex_dim;
+					return;
+				case AlignContent.Center:
+					pos_p = flex_dim / 2;
+					return;
+				case AlignContent.SpaceBetween:
+					if (children_count > 0)
+						spacing_p = flex_dim / (children_count - 1);
+					return;
+				case AlignContent.SpaceAround:
+					if (children_count > 0)
+					{
+						spacing_p = flex_dim / children_count;
+						pos_p = spacing_p / 2;
+					}
+					return;
+				case AlignContent.SpaceEvenly:
+					if (children_count > 0)
+					{
+						spacing_p = flex_dim / (children_count + 1);
+						pos_p = spacing_p;
+					}
+					return;
+				case AlignContent.Stretch:
+					spacing_p = flex_dim / children_count;
+					return;
+				default:
+					throw new ArgumentException();
+			}
+		}
+
+		static void layout_items(Item item, int child_begin, int child_end, int children_count, ref flex_layout layout)
+		{
+			if (children_count > (child_end - child_begin))
+				throw new ArgumentException();
+			if (children_count <= 0)
+				return;
+			if (layout.flex_dim > 0 && layout.extra_flex_dim > 0)
+			{
+				// If the container has a positive flexible space, let's add to it
+				// the sizes of all flexible children.
+				layout.flex_dim += layout.extra_flex_dim;
+			}
+
+			// Determine the main axis initial position and optional spacing.
+			float pos = 0;
+			float spacing = 0;
+			if (layout.flex_grows == 0 && layout.flex_dim > 0)
+			{
+				layout_align(item.JustifyContent, layout.flex_dim, children_count, ref pos, ref spacing);
+			}
+
+			if (layout.reverse)
+				pos = layout.size_dim - pos;
+
+
+			if (layout.reverse)
+			{
+				pos -= layout.vertical ? item.PaddingBottom : item.PaddingRight;
+			}
+			else
+			{
+				pos += layout.vertical ? item.PaddingTop : item.PaddingLeft;
+			}
+			if (layout.wrap && layout.reverse2)
+			{
+				layout.pos2 -= layout.line_dim;
+			}
+
+			for (int i = child_begin; i < child_end; i++)
+			{
+				Item child = layout.child_at(item, i);
+				if (!child.IsVisible)
+					continue;
+				if (child.Position == Position.Absolute)
+				{
+					// Already positioned.
+					continue;
+				}
+
+				// Grow or shrink the main axis item size if needed.
+				float flex_size = 0;
+				if (layout.flex_dim > 0)
+				{
+					if (child.Grow != 0)
+					{
+						child.Frame[layout.frame_size_i] = 0; // Ignore previous size when growing.
+						flex_size = (layout.flex_dim / layout.flex_grows) * child.Grow;
+					}
+				}
+				else if (layout.flex_dim < 0)
+				{
+					if (child.Shrink != 0)
+					{
+						flex_size = (layout.flex_dim / layout.flex_shrinks) * child.Shrink;
+					}
+				}
+				child.Frame[layout.frame_size_i] += flex_size;
+
+				// Set the cross axis position (and stretch the cross axis size if
+				// needed).
+				float align_size = child.Frame[layout.frame_size2_i];
+				float align_pos = layout.pos2 + 0;
+				switch (child_align(child, item))
+				{
+					case AlignItems.End:
+						align_pos += layout.line_dim - align_size - (layout.vertical ? child.MarginRight : child.MarginBottom);
+						break;
+
+					case AlignItems.Center:
+						align_pos += (layout.line_dim / 2) - (align_size / 2)
+							+ ((layout.vertical ? child.MarginLeft : child.MarginTop)
+							   - (layout.vertical ? child.MarginRight : child.MarginBottom));
+						break;
+
+					case AlignItems.Stretch:
+						if (align_size == 0)
+						{
+							child.Frame[layout.frame_size2_i] = layout.line_dim
+								- ((layout.vertical ? child.MarginLeft : child.MarginTop)
+								   + (layout.vertical ? child.MarginRight : child.MarginBottom));
+						}
+						align_pos += (layout.vertical ? child.MarginLeft : child.MarginTop);
+						break;
+					case AlignItems.Start:
+						align_pos += (layout.vertical ? child.MarginLeft : child.MarginTop);
+						break;
+
+					default:
+						throw new Exception();
+				}
+				child.Frame[layout.frame_pos2_i] = align_pos;
+
+				// Set the main axis position.
+				if (layout.reverse)
+				{
+					pos -= (layout.vertical ? child.MarginBottom : child.MarginRight);
+					pos -= child.Frame[layout.frame_size_i];
+					child.Frame[layout.frame_pos_i] = pos;
+					pos -= spacing;
+					pos -= (layout.vertical ? child.MarginTop : child.MarginLeft);
+				}
+				else
+				{
+					pos += (layout.vertical ? child.MarginTop : child.MarginLeft);
+					child.Frame[layout.frame_pos_i] = pos;
+					pos += child.Frame[layout.frame_size_i];
+					pos += spacing;
+					pos += (layout.vertical ? child.MarginBottom : child.MarginRight);
+				}
+
+				// Now that the item has a frame, we can layout its children.
+				layout_item(child, child.Frame[2], child.Frame[3]);
+			}
+
+			if (layout.wrap && !layout.reverse2)
+			{
+				layout.pos2 += layout.line_dim;
+			}
+
+			if (layout.need_lines)
+			{
+				Array.Resize(ref layout.lines, (layout.lines?.Length ?? 0) + 1);
+
+				ref flex_layout.flex_layout_line line = ref layout.lines[layout.lines.Length - 1];
+
+				line.child_begin = child_begin;
+				line.child_end = child_end;
+				line.size = layout.line_dim;
+
+				layout.lines_sizes += line.size;
+			}
+
+			if (layout.reverse && layout.size_dim == 0)
+			{
+				// Handle reversed layouts when there was no fixed size in the first place. All of the positions will be flipped
+				// across the axis. Luckily the pos variable is already tracking how far negative the values were in this situation,
+				// so we can just offset the distance by that amount and get the desired value
+
+				for (int i = child_begin; i < child_end; i++)
+				{
+					Item child = layout.child_at(item, i);
+					if (!child.IsVisible)
+						continue;
+
+					if (child.Position == Position.Absolute)
+					{
+						// Not helpful for this
+						continue;
+					}
+
+					child.Frame[layout.frame_pos_i] = child.Frame[layout.frame_pos_i] - pos;
+				}
+			}
+		}
+
+		static float absolute_size(float val, float pos1, float pos2, float dim) =>
+			!float.IsNaN(val) ? val : (!float.IsNaN(pos1) && !float.IsNaN(pos2) ? dim - pos2 - pos1 : 0);
+
+		static float absolute_pos(float pos1, float pos2, float size, float dim) =>
+			!float.IsNaN(pos1) ? pos1 : (!float.IsNaN(pos2) ? dim - size - pos2 : 0);
+
+		static AlignItems child_align(Item child, Item parent) =>
+			child.AlignSelf == AlignSelf.Auto ? parent.AlignItems : (AlignItems)child.AlignSelf;
+
+		struct flex_layout
+		{
+			// Set during init.
+			public bool wrap;
+			public bool reverse;                // whether main axis is reversed
+			public bool reverse2;               // whether cross axis is reversed (wrap only)
+			public bool vertical;
+			public float size_dim;              // main axis parent size
+			public float align_dim;             // cross axis parent size
+			public uint frame_pos_i;            // main axis position
+			public uint frame_pos2_i;           // cross axis position
+			public uint frame_size_i;           // main axis size
+			public uint frame_size2_i;          // cross axis size
+			int[]? ordered_indices;
+
+			// Set for each line layout.
+			public float line_dim;              // the cross axis size
+			public float flex_dim;              // the flexible part of the main axis size
+			public float extra_flex_dim;        // sizes of flexible items
+			public float flex_grows;
+			public float flex_shrinks;
+			public float pos2;                  // cross axis position
+
+			// Calculated layout lines - only tracked when needed:
+			//   - if the root's align_content property isn't set to FLEX_ALIGN_START
+			//   - or if any child item doesn't have a cross-axis size set
+			public bool need_lines;
+			public struct flex_layout_line
+			{
+				public int child_begin;
+				public int child_end;
+				public float size;
+			};
+
+			public flex_layout_line[]? lines;
+			public float lines_sizes;
+
+			//LAYOUT_RESET
+			public void reset()
+			{
+				line_dim = wrap ? 0 : align_dim;
+				flex_dim = size_dim;
+				extra_flex_dim = 0;
+				flex_grows = 0;
+				flex_shrinks = 0;
+			}
+
+			//layout_init
+			public void init(Item item, float width, float height)
+			{
+				if (item.PaddingLeft < 0
+					|| item.PaddingRight < 0
+					|| item.PaddingTop < 0
+					|| item.PaddingBottom < 0)
+					throw new ArgumentException();
+After:
+				if (child.Position == Position.Absolute)
+				{
+					child.Frame[2] = absolute_size(child.Width, child.Left, child.Right, width);
+					child.Frame[3] = absolute_size(child.Height, child.Top, child.Bottom, height);
+					child.Frame[0] = absolute_pos(child.Left, child.Right, child.Frame[2], width);
+					child.Frame[1] = absolute_pos(child.Top, child.Bottom, child.Frame[3], height);
+
+					// Now that the item has a frame, we can layout its children.
+					layout_item(child, child.Frame[2], child.Frame[3]);
+					continue;
+				}
+
+				// Initialize frame.
+				child.Frame[0] = 0;
+				child.Frame[1] = 0;
+				child.Frame[2] = child.Width;
+				child.Frame[3] = child.Height;
+
+				// Main axis size defaults to 0.
+				if (float.IsNaN(child.Frame[layout.frame_size_i]))
+				{
+					child.Frame[layout.frame_size_i] = 0;
+				}
+
+				// Cross axis size defaults to the parent's size (or line size in wrap
+				// mode, which is calculated later on).
+				if (float.IsNaN(child.Frame[layout.frame_size2_i]))
+				{
+					if (layout.wrap)
+					{
+						layout.need_lines = true;
+					}
+					else
+					{
+						child.Frame[layout.frame_size2_i] = (layout.vertical ? width : height) - child.MarginThickness(!layout.vertical);
+					}
+				}
+
+				// Call the self_sizing callback if provided. Only non-NAN values
+				// are taken into account. If the item's cross-axis align property
+				// is set to stretch, ignore the value returned by the callback.
+				if (child.SelfSizing != null)
+				{
+					float[] size = { child.Frame[2], child.Frame[3] };
+
+					child.SelfSizing(child, ref size[0], ref size[1]);
+
+					for (int j = 0; j < 2; j++)
+					{
+						int size_off = j + 2;
+						if (size_off == layout.frame_size2_i && child_align(child, item) == AlignItems.Stretch && layout.align_dim > 0)
+						{
+							continue;
+						}
+
+						float val = size[j];
+						if (!float.IsNaN(val))
+						{
+							child.Frame[size_off] = val;
+						}
+					}
+				}
+
+				// Honor the `basis' property which overrides the main-axis size.
+				if (!child.Basis.IsAuto)
+				{
+					if (child.Basis.Length < 0)
+					{
+						throw new Exception("basis should >=0");
+					}
+
+					if (child.Basis.IsRelative && child.Basis.Length > 1)
+					{
+						throw new Exception("relative basis should be <=1");
+					}
+
+					float basis = child.Basis.Length;
+					if (child.Basis.IsRelative)
+					{
+						basis *= (layout.vertical ? height : width);
+					}
+
+					child.Frame[layout.frame_size_i] = basis - child.MarginThickness(layout.vertical);
+				}
+
+				float child_size = child.Frame[layout.frame_size_i];
+				if (layout.wrap)
+				{
+					if (layout.flex_dim < child_size)
+					{
+						// Not enough space for this child on this line, layout the
+						// remaining items and move it to a new line.
+						layout_items(item, last_layout_child, i, relative_children_count, ref layout);
+
+						layout.reset();
+						last_layout_child = i;
+						relative_children_count = 0;
+					}
+
+					float child_size2 = child.Frame[layout.frame_size2_i];
+					if (!float.IsNaN(child_size2) && child_size2 + child.MarginThickness(!layout.vertical) > layout.line_dim)
+					{
+						layout.line_dim = child_size2 + child.MarginThickness(!layout.vertical);
+					}
+				}
+
+				if (child.Grow < 0
+					|| child.Shrink < 0)
+				{
+					throw new Exception("shrink and grow should be >= 0");
+				}
+
+				layout.flex_grows += child.Grow;
+				layout.flex_shrinks += child.Shrink;
+
+				if (layout.flex_dim > 0)
+				{
+					// If flex_dim is zero, it's because we're measuring unconstrained in that direction
+					// So we don't need to keep a running tally of available space
+
+					layout.flex_dim -= child_size + child.MarginThickness(layout.vertical);
+				}
+
+				relative_children_count++;
+
+				if (child_size > 0 && child.Grow > 0)
+				{
+					layout.extra_flex_dim += child_size;
+				}
+			}
+
+			// Layout remaining items in wrap mode, or everything otherwise.
+			layout_items(item, last_layout_child, item.Count, relative_children_count, ref layout);
+
+			// In wrap mode we may need to tweak the position of each line according to
+			// the align_content property as well as the cross-axis size of items that
+			// haven't been set yet.
+			if (layout.need_lines && (layout.lines?.Length ?? 0) > 0)
+			{
+				float pos = 0;
+				float spacing = 0;
+				float flex_dim = layout.align_dim - layout.lines_sizes;
+				if (flex_dim > 0)
+				{
+					layout_align(item.AlignContent, flex_dim, (uint)(layout.lines?.Length ?? 0), ref pos, ref spacing);
+				}
+
+				float old_pos = 0;
+				if (layout.reverse2)
+				{
+					pos = layout.align_dim - pos;
+					old_pos = layout.align_dim;
+				}
+
+				for (uint i = 0; i < (layout.lines?.Length ?? 0); i++)
+				{
+
+					flex_layout.flex_layout_line line = layout.lines![i];
+
+					if (layout.reverse2)
+					{
+						pos -= line.size;
+						pos -= spacing;
+						old_pos -= line.size;
+					}
+
+					// Re-position the children of this line, honoring any child
+					// alignment previously set within the line.
+					for (int j = line.child_begin; j < line.child_end; j++)
+					{
+						Item child = layout.child_at(item, j);
+						if (child.Position == Position.Absolute)
+						{
+							// Should not be re-positioned.
+							continue;
+						}
+						if (float.IsNaN(child.Frame[layout.frame_size2_i]))
+						{
+							// If the child's cross axis size hasn't been set it, it
+							// defaults to the line size.
+							child.Frame[layout.frame_size2_i] = line.size
+								+ (item.AlignContent == AlignContent.Stretch
+								   ? spacing : 0);
+						}
+						child.Frame[layout.frame_pos2_i] = pos + (child.Frame[layout.frame_pos2_i] - old_pos);
+					}
+
+					if (!layout.reverse2)
+					{
+						pos += line.size;
+						pos += spacing;
+						old_pos += line.size;
+					}
+				}
+			}
+
+			layout.cleanup();
+		}
+
+		float MarginThickness(bool vertical) =>
+			vertical ? MarginTop + MarginBottom : MarginLeft + MarginRight;
+
+		static void layout_align(Justify align, float flex_dim, int children_count, ref float pos_p, ref float spacing_p)
+		{
+			if (flex_dim < 0)
+			{
+				throw new ArgumentException();
+			}
+
+			pos_p = 0;
+			spacing_p = 0;
+
+			switch (align)
+			{
+				case Justify.Start:
+					return;
+				case Justify.End:
+					pos_p = flex_dim;
+					return;
+				case Justify.Center:
+					pos_p = flex_dim / 2;
+					return;
+				case Justify.SpaceBetween:
+					if (children_count > 0)
+					{
+						spacing_p = flex_dim / (children_count - 1);
+					}
+
+					return;
+				case Justify.SpaceAround:
+					if (children_count > 0)
+					{
+						spacing_p = flex_dim / children_count;
+						pos_p = spacing_p / 2;
+					}
+					return;
+				case Justify.SpaceEvenly:
+					if (children_count > 0)
+					{
+						spacing_p = flex_dim / (children_count + 1);
+						pos_p = spacing_p;
+					}
+					return;
+				default:
+					throw new ArgumentException();
+			}
+		}
+
+		static void layout_align(AlignContent align, float flex_dim, uint children_count, ref float pos_p, ref float spacing_p)
+		{
+			if (flex_dim < 0)
+			{
+				throw new ArgumentException();
+			}
+
+			pos_p = 0;
+			spacing_p = 0;
+
+			switch (align)
+			{
+				case AlignContent.Start:
+					return;
+				case AlignContent.End:
+					pos_p = flex_dim;
+					return;
+				case AlignContent.Center:
+					pos_p = flex_dim / 2;
+					return;
+				case AlignContent.SpaceBetween:
+					if (children_count > 0)
+					{
+						spacing_p = flex_dim / (children_count - 1);
+					}
+
+					return;
+				case AlignContent.SpaceAround:
+					if (children_count > 0)
+					{
+						spacing_p = flex_dim / children_count;
+						pos_p = spacing_p / 2;
+					}
+					return;
+				case AlignContent.SpaceEvenly:
+					if (children_count > 0)
+					{
+						spacing_p = flex_dim / (children_count + 1);
+						pos_p = spacing_p;
+					}
+					return;
+				case AlignContent.Stretch:
+					spacing_p = flex_dim / children_count;
+					return;
+				default:
+					throw new ArgumentException();
+			}
+		}
+
+		static void layout_items(Item item, int child_begin, int child_end, int children_count, ref flex_layout layout)
+		{
+			if (children_count > (child_end - child_begin))
+			{
+				throw new ArgumentException();
+			}
+
+			if (children_count <= 0)
+			{
+				return;
+			}
+
+			if (layout.flex_dim > 0 && layout.extra_flex_dim > 0)
+			{
+				// If the container has a positive flexible space, let's add to it
+				// the sizes of all flexible children.
+				layout.flex_dim += layout.extra_flex_dim;
+			}
+
+			// Determine the main axis initial position and optional spacing.
+			float pos = 0;
+			float spacing = 0;
+			if (layout.flex_grows == 0 && layout.flex_dim > 0)
+			{
+				layout_align(item.JustifyContent, layout.flex_dim, children_count, ref pos, ref spacing);
+			}
+
+			if (layout.reverse)
+			{
+				pos = layout.size_dim - pos;
+			}
+
+			if (layout.reverse)
+			{
+				pos -= layout.vertical ? item.PaddingBottom : item.PaddingRight;
+			}
+			else
+			{
+				pos += layout.vertical ? item.PaddingTop : item.PaddingLeft;
+			}
+			if (layout.wrap && layout.reverse2)
+			{
+				layout.pos2 -= layout.line_dim;
+			}
+
+			for (int i = child_begin; i < child_end; i++)
+			{
+				Item child = layout.child_at(item, i);
+				if (!child.IsVisible)
+				{
+					continue;
+				}
+
+				if (child.Position == Position.Absolute)
+				{
+					// Already positioned.
+					continue;
+				}
+
+				// Grow or shrink the main axis item size if needed.
+				float flex_size = 0;
+				if (layout.flex_dim > 0)
+				{
+					if (child.Grow != 0)
+					{
+						child.Frame[layout.frame_size_i] = 0; // Ignore previous size when growing.
+						flex_size = (layout.flex_dim / layout.flex_grows) * child.Grow;
+					}
+				}
+				else if (layout.flex_dim < 0)
+				{
+					if (child.Shrink != 0)
+					{
+						flex_size = (layout.flex_dim / layout.flex_shrinks) * child.Shrink;
+					}
+				}
+				child.Frame[layout.frame_size_i] += flex_size;
+
+				// Set the cross axis position (and stretch the cross axis size if
+				// needed).
+				float align_size = child.Frame[layout.frame_size2_i];
+				float align_pos = layout.pos2 + 0;
+				switch (child_align(child, item))
+				{
+					case AlignItems.End:
+						align_pos += layout.line_dim - align_size - (layout.vertical ? child.MarginRight : child.MarginBottom);
+						break;
+
+					case AlignItems.Center:
+						align_pos += (layout.line_dim / 2) - (align_size / 2)
+							+ ((layout.vertical ? child.MarginLeft : child.MarginTop)
+							   - (layout.vertical ? child.MarginRight : child.MarginBottom));
+						break;
+
+					case AlignItems.Stretch:
+						if (align_size == 0)
+						{
+							child.Frame[layout.frame_size2_i] = layout.line_dim
+								- ((layout.vertical ? child.MarginLeft : child.MarginTop)
+								   + (layout.vertical ? child.MarginRight : child.MarginBottom));
+						}
+						align_pos += (layout.vertical ? child.MarginLeft : child.MarginTop);
+						break;
+					case AlignItems.Start:
+						align_pos += (layout.vertical ? child.MarginLeft : child.MarginTop);
+						break;
+
+					default:
+						throw new Exception();
+				}
+				child.Frame[layout.frame_pos2_i] = align_pos;
+
+				// Set the main axis position.
+				if (layout.reverse)
+				{
+					pos -= (layout.vertical ? child.MarginBottom : child.MarginRight);
+					pos -= child.Frame[layout.frame_size_i];
+					child.Frame[layout.frame_pos_i] = pos;
+					pos -= spacing;
+					pos -= (layout.vertical ? child.MarginTop : child.MarginLeft);
+				}
+				else
+				{
+					pos += (layout.vertical ? child.MarginTop : child.MarginLeft);
+					child.Frame[layout.frame_pos_i] = pos;
+					pos += child.Frame[layout.frame_size_i];
+					pos += spacing;
+					pos += (layout.vertical ? child.MarginBottom : child.MarginRight);
+				}
+
+				// Now that the item has a frame, we can layout its children.
+				layout_item(child, child.Frame[2], child.Frame[3]);
+			}
+
+			if (layout.wrap && !layout.reverse2)
+			{
+				layout.pos2 += layout.line_dim;
+			}
+
+			if (layout.need_lines)
+			{
+				Array.Resize(ref layout.lines, (layout.lines?.Length ?? 0) + 1);
+
+				ref flex_layout.flex_layout_line line = ref layout.lines[layout.lines.Length - 1];
+
+				line.child_begin = child_begin;
+				line.child_end = child_end;
+				line.size = layout.line_dim;
+
+				layout.lines_sizes += line.size;
+			}
+
+			if (layout.reverse && layout.size_dim == 0)
+			{
+				// Handle reversed layouts when there was no fixed size in the first place. All of the positions will be flipped
+				// across the axis. Luckily the pos variable is already tracking how far negative the values were in this situation,
+				// so we can just offset the distance by that amount and get the desired value
+
+				for (int i = child_begin; i < child_end; i++)
+				{
+					Item child = layout.child_at(item, i);
+					if (!child.IsVisible)
+					{
+						continue;
+					}
+
+					if (child.Position == Position.Absolute)
+					{
+						// Not helpful for this
+						continue;
+					}
+
+					child.Frame[layout.frame_pos_i] = child.Frame[layout.frame_pos_i] - pos;
+				}
+			}
+		}
+
+		static float absolute_size(float val, float pos1, float pos2, float dim) =>
+			!float.IsNaN(val) ? val : (!float.IsNaN(pos1) && !float.IsNaN(pos2) ? dim - pos2 - pos1 : 0);
+
+		static float absolute_pos(float pos1, float pos2, float size, float dim) =>
+			!float.IsNaN(pos1) ? pos1 : (!float.IsNaN(pos2) ? dim - size - pos2 : 0);
+
+		static AlignItems child_align(Item child, Item parent) =>
+			child.AlignSelf == AlignSelf.Auto ? parent.AlignItems : (AlignItems)child.AlignSelf;
+
+		struct flex_layout
+		{
+			// Set during init.
+			public bool wrap;
+			public bool reverse;                // whether main axis is reversed
+			public bool reverse2;               // whether cross axis is reversed (wrap only)
+			public bool vertical;
+			public float size_dim;              // main axis parent size
+			public float align_dim;             // cross axis parent size
+			public uint frame_pos_i;            // main axis position
+			public uint frame_pos2_i;           // cross axis position
+			public uint frame_size_i;           // main axis size
+			public uint frame_size2_i;          // cross axis size
+			int[]? ordered_indices;
+
+			// Set for each line layout.
+			public float line_dim;              // the cross axis size
+			public float flex_dim;              // the flexible part of the main axis size
+			public float extra_flex_dim;        // sizes of flexible items
+			public float flex_grows;
+			public float flex_shrinks;
+			public float pos2;                  // cross axis position
+
+			// Calculated layout lines - only tracked when needed:
+			//   - if the root's align_content property isn't set to FLEX_ALIGN_START
+			//   - or if any child item doesn't have a cross-axis size set
+			public bool need_lines;
+			public struct flex_layout_line
+			{
+				public int child_begin;
+				public int child_end;
+				public float size;
+			};
+
+			public flex_layout_line[]? lines;
+			public float lines_sizes;
+
+			//LAYOUT_RESET
+			public void reset()
+			{
+				line_dim = wrap ? 0 : align_dim;
+				flex_dim = size_dim;
+				extra_flex_dim = 0;
+				flex_grows = 0;
+				flex_shrinks = 0;
+			}
+
+			//layout_init
+			public void init(Item item, float width, float height)
+			{
+				if (item.PaddingLeft < 0
+					|| item.PaddingRight < 0
+					|| item.PaddingTop < 0
+					|| item.PaddingBottom < 0)
+				{
+					throw new ArgumentException();
+				}
+*/
+				if (child.Position == Position.Absolute)
+				{
+					child.Frame[2] = absolute_size(child.Width, child.Left, child.Right, width);
+					child.Frame[3] = absolute_size(child.Height, child.Top, child.Bottom, height);
+					child.Frame[0] = absolute_pos(child.Left, child.Right, child.Frame[2], width);
+					child.Frame[1] = absolute_pos(child.Top, child.Bottom, child.Frame[3], height);
+
+					// Now that the item has a frame, we can layout its children.
+					layout_item(child, child.Frame[2], child.Frame[3]);
+					continue;
+				}
+
+				// Initialize frame.
+				child.Frame[0] = 0;
+				child.Frame[1] = 0;
+				child.Frame[2] = child.Width;
+				child.Frame[3] = child.Height;
+
+				// Main axis size defaults to 0.
+				if (float.IsNaN(child.Frame[layout.frame_size_i]))
+				{
+					child.Frame[layout.frame_size_i] = 0;
+				}
+
+				// Cross axis size defaults to the parent's size (or line size in wrap
+				// mode, which is calculated later on).
+				if (float.IsNaN(child.Frame[layout.frame_size2_i]))
+				{
+					if (layout.wrap)
+					{
+						layout.need_lines = true;
+					}
+					else
+					{
+						child.Frame[layout.frame_size2_i] = (layout.vertical ? width : height) - child.MarginThickness(!layout.vertical);
+					}
+				}
+
+				// Call the self_sizing callback if provided. Only non-NAN values
+				// are taken into account. If the item's cross-axis align property
+				// is set to stretch, ignore the value returned by the callback.
+				if (child.SelfSizing != null)
+				{
+					float[] size = { child.Frame[2], child.Frame[3] };
+
+					child.SelfSizing(child, ref size[0], ref size[1]);
+
+					for (int j = 0; j < 2; j++)
+					{
+						int size_off = j + 2;
+						if (size_off == layout.frame_size2_i && child_align(child, item) == AlignItems.Stretch && layout.align_dim > 0)
+						{
+							continue;
+						}
+
+						float val = size[j];
+						if (!float.IsNaN(val))
+						{
+							child.Frame[size_off] = val;
+						}
+					}
+				}
+
+				// Honor the `basis' property which overrides the main-axis size.
+				if (!child.Basis.IsAuto)
+				{
+					if (child.Basis.Length < 0)
+					{
+						throw new Exception("basis should >=0");
+					}
+
+					if (child.Basis.IsRelative && child.Basis.Length > 1)
+					{
+						throw new Exception("relative basis should be <=1");
+					}
+
+					float basis = child.Basis.Length;
+					if (child.Basis.IsRelative)
+					{
+						basis *= (layout.vertical ? height : width);
+					}
+
+					child.Frame[layout.frame_size_i] = basis - child.MarginThickness(layout.vertical);
+				}
+
+				float child_size = child.Frame[layout.frame_size_i];
+				if (layout.wrap)
+				{
+					if (layout.flex_dim < child_size)
+					{
+						// Not enough space for this child on this line, layout the
+						// remaining items and move it to a new line.
+						layout_items(item, last_layout_child, i, relative_children_count, ref layout);
+
+						layout.reset();
+						last_layout_child = i;
+						relative_children_count = 0;
+					}
+
+					float child_size2 = child.Frame[layout.frame_size2_i];
+					if (!float.IsNaN(child_size2) && child_size2 + child.MarginThickness(!layout.vertical) > layout.line_dim)
+					{
+						layout.line_dim = child_size2 + child.MarginThickness(!layout.vertical);
+					}
+				}
+
+				if (child.Grow < 0
+					|| child.Shrink < 0)
+				{
+					throw new Exception("shrink and grow should be >= 0");
+				}
+
+				layout.flex_grows += child.Grow;
+				layout.flex_shrinks += child.Shrink;
+
+				if (layout.flex_dim > 0)
+				{
+					// If flex_dim is zero, it's because we're measuring unconstrained in that direction
+					// So we don't need to keep a running tally of available space
+
+					layout.flex_dim -= child_size + child.MarginThickness(layout.vertical);
+				}
+
+				relative_children_count++;
+
+				if (child_size > 0 && child.Grow > 0)
+				{
+					layout.extra_flex_dim += child_size;
+				}
+			}
+
+			// Layout remaining items in wrap mode, or everything otherwise.
+			layout_items(item, last_layout_child, item.Count, relative_children_count, ref layout);
+
+			// In wrap mode we may need to tweak the position of each line according to
+			// the align_content property as well as the cross-axis size of items that
+			// haven't been set yet.
+			if (layout.need_lines && (layout.lines?.Length ?? 0) > 0)
+			{
+				float pos = 0;
+				float spacing = 0;
+				float flex_dim = layout.align_dim - layout.lines_sizes;
+				if (flex_dim > 0)
+				{
+					layout_align(item.AlignContent, flex_dim, (uint)(layout.lines?.Length ?? 0), ref pos, ref spacing);
+				}
+
+				float old_pos = 0;
+				if (layout.reverse2)
+				{
+					pos = layout.align_dim - pos;
+					old_pos = layout.align_dim;
+				}
+
+				for (uint i = 0; i < (layout.lines?.Length ?? 0); i++)
+				{
+
+					flex_layout.flex_layout_line line = layout.lines![i];
+
+					if (layout.reverse2)
+					{
+						pos -= line.size;
+						pos -= spacing;
+						old_pos -= line.size;
+					}
+
+					// Re-position the children of this line, honoring any child
+					// alignment previously set within the line.
+					for (int j = line.child_begin; j < line.child_end; j++)
+					{
+						Item child = layout.child_at(item, j);
+						if (child.Position == Position.Absolute)
+						{
+							// Should not be re-positioned.
+							continue;
+						}
+						if (float.IsNaN(child.Frame[layout.frame_size2_i]))
+						{
+							// If the child's cross axis size hasn't been set it, it
+							// defaults to the line size.
+							child.Frame[layout.frame_size2_i] = line.size
+								+ (item.AlignContent == AlignContent.Stretch
+								   ? spacing : 0);
+						}
+						child.Frame[layout.frame_pos2_i] = pos + (child.Frame[layout.frame_pos2_i] - old_pos);
+					}
+
+					if (!layout.reverse2)
+					{
+						pos += line.size;
+						pos += spacing;
+						old_pos += line.size;
+					}
+				}
+			}
+
+			layout.cleanup();
+		}
+
+		float MarginThickness(bool vertical) =>
+			vertical ? MarginTop + MarginBottom : MarginLeft + MarginRight;
+
+		static void layout_align(Justify align, float flex_dim, int children_count, ref float pos_p, ref float spacing_p)
+		{
+			if (flex_dim < 0)
+			{
+				throw new ArgumentException();
+			}
+
+			pos_p = 0;
+			spacing_p = 0;
+
+			switch (align)
+			{
+				case Justify.Start:
+					return;
+				case Justify.End:
+					pos_p = flex_dim;
+					return;
+				case Justify.Center:
+					pos_p = flex_dim / 2;
+					return;
+				case Justify.SpaceBetween:
+					if (children_count > 0)
+					{
+						spacing_p = flex_dim / (children_count - 1);
+					}
+
+					return;
+				case Justify.SpaceAround:
+					if (children_count > 0)
+					{
+						spacing_p = flex_dim / children_count;
+						pos_p = spacing_p / 2;
+					}
+					return;
+				case Justify.SpaceEvenly:
+					if (children_count > 0)
+					{
+						spacing_p = flex_dim / (children_count + 1);
+						pos_p = spacing_p;
+					}
+					return;
+				default:
+					throw new ArgumentException();
+			}
+		}
+
+		static void layout_align(AlignContent align, float flex_dim, uint children_count, ref float pos_p, ref float spacing_p)
+		{
+			if (flex_dim < 0)
+			{
+				throw new ArgumentException();
+			}
+
+			pos_p = 0;
+			spacing_p = 0;
+
+			switch (align)
+			{
+				case AlignContent.Start:
+					return;
+				case AlignContent.End:
+					pos_p = flex_dim;
+					return;
+				case AlignContent.Center:
+					pos_p = flex_dim / 2;
+					return;
+				case AlignContent.SpaceBetween:
+					if (children_count > 0)
+					{
+						spacing_p = flex_dim / (children_count - 1);
+					}
+
+					return;
+				case AlignContent.SpaceAround:
+					if (children_count > 0)
+					{
+						spacing_p = flex_dim / children_count;
+						pos_p = spacing_p / 2;
+					}
+					return;
+				case AlignContent.SpaceEvenly:
+					if (children_count > 0)
+					{
+						spacing_p = flex_dim / (children_count + 1);
+						pos_p = spacing_p;
+					}
+					return;
+				case AlignContent.Stretch:
+					spacing_p = flex_dim / children_count;
+					return;
+				default:
+					throw new ArgumentException();
+			}
+		}
+
+		static void layout_items(Item item, int child_begin, int child_end, int children_count, ref flex_layout layout)
+		{
+			if (children_count > (child_end - child_begin))
+			{
+				throw new ArgumentException();
+			}
+
+			if (children_count <= 0)
+			{
+				return;
+			}
+
+			if (layout.flex_dim > 0 && layout.extra_flex_dim > 0)
+			{
+				// If the container has a positive flexible space, let's add to it
+				// the sizes of all flexible children.
+				layout.flex_dim += layout.extra_flex_dim;
+			}
+
+			// Determine the main axis initial position and optional spacing.
+			float pos = 0;
+			float spacing = 0;
+			if (layout.flex_grows == 0 && layout.flex_dim > 0)
+			{
+				layout_align(item.JustifyContent, layout.flex_dim, children_count, ref pos, ref spacing);
+			}
+
+			if (layout.reverse)
+			{
+				pos = layout.size_dim - pos;
+			}
+
+			if (layout.reverse)
+			{
+				pos -= layout.vertical ? item.PaddingBottom : item.PaddingRight;
+			}
+			else
+			{
+				pos += layout.vertical ? item.PaddingTop : item.PaddingLeft;
+			}
+			if (layout.wrap && layout.reverse2)
+			{
+				layout.pos2 -= layout.line_dim;
+			}
+
+			for (int i = child_begin; i < child_end; i++)
+			{
+				Item child = layout.child_at(item, i);
+				if (!child.IsVisible)
+				{
+					continue;
+				}
+
+				if (child.Position == Position.Absolute)
+				{
+					// Already positioned.
+					continue;
+				}
+
+				// Grow or shrink the main axis item size if needed.
+				float flex_size = 0;
+				if (layout.flex_dim > 0)
+				{
+					if (child.Grow != 0)
+					{
+						child.Frame[layout.frame_size_i] = 0; // Ignore previous size when growing.
+						flex_size = (layout.flex_dim / layout.flex_grows) * child.Grow;
+					}
+				}
+				else if (layout.flex_dim < 0)
+				{
+					if (child.Shrink != 0)
+					{
+						flex_size = (layout.flex_dim / layout.flex_shrinks) * child.Shrink;
+					}
+				}
+				child.Frame[layout.frame_size_i] += flex_size;
+
+				// Set the cross axis position (and stretch the cross axis size if
+				// needed).
+				float align_size = child.Frame[layout.frame_size2_i];
+				float align_pos = layout.pos2 + 0;
+				switch (child_align(child, item))
+				{
+					case AlignItems.End:
+						align_pos += layout.line_dim - align_size - (layout.vertical ? child.MarginRight : child.MarginBottom);
+						break;
+
+					case AlignItems.Center:
+						align_pos += (layout.line_dim / 2) - (align_size / 2)
+							+ ((layout.vertical ? child.MarginLeft : child.MarginTop)
+							   - (layout.vertical ? child.MarginRight : child.MarginBottom));
+						break;
+
+					case AlignItems.Stretch:
+						if (align_size == 0)
+						{
+							child.Frame[layout.frame_size2_i] = layout.line_dim
+								- ((layout.vertical ? child.MarginLeft : child.MarginTop)
+								   + (layout.vertical ? child.MarginRight : child.MarginBottom));
+						}
+						align_pos += (layout.vertical ? child.MarginLeft : child.MarginTop);
+						break;
+					case AlignItems.Start:
+						align_pos += (layout.vertical ? child.MarginLeft : child.MarginTop);
+						break;
+
+					default:
+						throw new Exception();
+				}
+				child.Frame[layout.frame_pos2_i] = align_pos;
+
+				// Set the main axis position.
+				if (layout.reverse)
+				{
+					pos -= (layout.vertical ? child.MarginBottom : child.MarginRight);
+					pos -= child.Frame[layout.frame_size_i];
+					child.Frame[layout.frame_pos_i] = pos;
+					pos -= spacing;
+					pos -= (layout.vertical ? child.MarginTop : child.MarginLeft);
+				}
+				else
+				{
+					pos += (layout.vertical ? child.MarginTop : child.MarginLeft);
+					child.Frame[layout.frame_pos_i] = pos;
+					pos += child.Frame[layout.frame_size_i];
+					pos += spacing;
+					pos += (layout.vertical ? child.MarginBottom : child.MarginRight);
+				}
+
+				// Now that the item has a frame, we can layout its children.
+				layout_item(child, child.Frame[2], child.Frame[3]);
+			}
+
+			if (layout.wrap && !layout.reverse2)
+			{
+				layout.pos2 += layout.line_dim;
+			}
+
+			if (layout.need_lines)
+			{
+				Array.Resize(ref layout.lines, (layout.lines?.Length ?? 0) + 1);
+
+				ref flex_layout.flex_layout_line line = ref layout.lines[layout.lines.Length - 1];
+
+				line.child_begin = child_begin;
+				line.child_end = child_end;
+				line.size = layout.line_dim;
+
+				layout.lines_sizes += line.size;
+			}
+
+			if (layout.reverse && layout.size_dim == 0)
+			{
+				// Handle reversed layouts when there was no fixed size in the first place. All of the positions will be flipped
+				// across the axis. Luckily the pos variable is already tracking how far negative the values were in this situation,
+				// so we can just offset the distance by that amount and get the desired value
+
+				for (int i = child_begin; i < child_end; i++)
+				{
+					Item child = layout.child_at(item, i);
+					if (!child.IsVisible)
+					{
+						continue;
+					}
+
+					if (child.Position == Position.Absolute)
+					{
+						// Not helpful for this
+						continue;
+					}
+
+					child.Frame[layout.frame_pos_i] = child.Frame[layout.frame_pos_i] - pos;
+				}
+			}
+		}
+
+		static float absolute_size(float val, float pos1, float pos2, float dim) =>
+			!float.IsNaN(val) ? val : (!float.IsNaN(pos1) && !float.IsNaN(pos2) ? dim - pos2 - pos1 : 0);
+
+		static float absolute_pos(float pos1, float pos2, float size, float dim) =>
+			!float.IsNaN(pos1) ? pos1 : (!float.IsNaN(pos2) ? dim - size - pos2 : 0);
+
+		static AlignItems child_align(Item child, Item parent) =>
+			child.AlignSelf == AlignSelf.Auto ? parent.AlignItems : (AlignItems)child.AlignSelf;
+
+		struct flex_layout
+		{
+			// Set during init.
+			public bool wrap;
+			public bool reverse;                // whether main axis is reversed
+			public bool reverse2;               // whether cross axis is reversed (wrap only)
+			public bool vertical;
+			public float size_dim;              // main axis parent size
+			public float align_dim;             // cross axis parent size
+			public uint frame_pos_i;            // main axis position
+			public uint frame_pos2_i;           // cross axis position
+			public uint frame_size_i;           // main axis size
+			public uint frame_size2_i;          // cross axis size
+			int[]? ordered_indices;
+
+			// Set for each line layout.
+			public float line_dim;              // the cross axis size
+			public float flex_dim;              // the flexible part of the main axis size
+			public float extra_flex_dim;        // sizes of flexible items
+			public float flex_grows;
+			public float flex_shrinks;
+			public float pos2;                  // cross axis position
+
+			// Calculated layout lines - only tracked when needed:
+			//   - if the root's align_content property isn't set to FLEX_ALIGN_START
+			//   - or if any child item doesn't have a cross-axis size set
+			public bool need_lines;
+			public struct flex_layout_line
+			{
+				public int child_begin;
+				public int child_end;
+				public float size;
+			};
+
+			public flex_layout_line[]? lines;
+			public float lines_sizes;
+
+			//LAYOUT_RESET
+			public void reset()
+			{
+				line_dim = wrap ? 0 : align_dim;
+				flex_dim = size_dim;
+				extra_flex_dim = 0;
+				flex_grows = 0;
+				flex_shrinks = 0;
+			}
+
+			//layout_init
+			public void init(Item item, float width, float height)
+			{
+				if (item.PaddingLeft < 0
+					|| item.PaddingRight < 0
+					|| item.PaddingTop < 0
+					|| item.PaddingBottom < 0)
+				{
+					throw new ArgumentException();
+				}
 
 				width = Math.Max(0, width - item.PaddingLeft + item.PaddingRight);
 				height = Math.Max(0, height - item.PaddingTop + item.PaddingBottom);

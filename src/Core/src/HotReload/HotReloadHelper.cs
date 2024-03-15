@@ -34,35 +34,71 @@ namespace Microsoft.Maui.HotReload
 		public static void Register(IHotReloadableView view, params object[] parameters)
 		{
 			if (!IsSupported || !IsEnabled)
+			{
 				return;
+			}
+
 			currentViews[view] = parameters;
 		}
 
 		public static void UnRegister(IHotReloadableView view)
 		{
 			if (!IsSupported || !IsEnabled)
+			{
 				return;
+			}
+
 			currentViews.Remove(view);
 		}
 		public static bool IsReplacedView(IHotReloadableView view, IView newView)
 		{
 			if (!IsSupported || !IsEnabled)
+			{
 				return false;
+			}
+
 			if (view == null || newView == null)
+			{
 				return false;
+			}
 
 			if (!replacedViews.TryGetValue(view.GetType().FullName!, out var newViewType))
+			{
+			{
 				return false;
+			}
+
+			}
+
 			return newView.GetType() == newViewType;
 		}
 		public static IView GetReplacedView(IHotReloadableView view)
 		{
 			if (!IsSupported || !IsEnabled)
+
+/* Unmerged change from project 'Core(net8.0-ios)'
+Before:
 				return view;
+After:
+			{
+				return view;
+			}
+*/
+			{
+			{
+				return view;
+
+/* Unmerged change from project 'Core(net8.0-ios)'
+Added:
+			}
+*/
+			}
 
 			var viewType = view.GetType();
 			if (!replacedViews.TryGetValue(viewType.FullName!, out var newViewType) || viewType == newViewType)
+			{
 				return view;
+			}
 
 			currentViews.TryGetValue(view, out var parameters);
 			try
@@ -100,6 +136,9 @@ namespace Microsoft.Maui.HotReload
 		public static void RegisterReplacedView(string oldViewType, Type newViewType)
 		{
 			if (!IsSupported || !IsEnabled)
+
+/* Unmerged change from project 'Core(net8.0-maccatalyst)'
+Before:
 				return;
 
 			Action<MethodInfo> executeStaticMethod = (method) =>
@@ -121,13 +160,525 @@ namespace Microsoft.Maui.HotReload
 
 			if (typeof(IHotReloadableView).IsAssignableFrom(newViewType))
 				replacedViews[oldViewType] = newViewType;
+After:
+			{
+				return;
+			}
+
+			Action<MethodInfo> executeStaticMethod = (method) =>
+			{
+				try
+				{
+					method?.Invoke(null, null);
+				}
+				catch (Exception ex)
+				{
+					Debug.WriteLine($"Error calling {method.Name} on type: {newViewType}");
+					Debug.WriteLine(ex);
+					//TODO: Notify that we couldnt execute OnHotReload for the Method;
+				}
+			};
+
+			var onHotReloadMethods = newViewType.GetOnHotReloadMethods();
+			onHotReloadMethods.ForEach(x => executeStaticMethod(x));
+*/
+
+/* Unmerged change from project 'Core(net8.0-android)'
+Before:
+				return;
+
+			Action<MethodInfo> executeStaticMethod = (method) =>
+			{
+				try
+				{
+					method?.Invoke(null, null);
+				}
+				catch (Exception ex)
+				{
+					Debug.WriteLine($"Error calling {method.Name} on type: {newViewType}");
+					Debug.WriteLine(ex);
+					//TODO: Notify that we couldnt execute OnHotReload for the Method;
+				}
+			};
+
+			var onHotReloadMethods = newViewType.GetOnHotReloadMethods();
+			onHotReloadMethods.ForEach(x => executeStaticMethod(x));
+
+			if (typeof(IHotReloadableView).IsAssignableFrom(newViewType))
+				replacedViews[oldViewType] = newViewType;
+After:
+			{
+				return;
+			}
+
+			Action<MethodInfo> executeStaticMethod = (method) =>
+			{
+				try
+				{
+					method?.Invoke(null, null);
+				}
+				catch (Exception ex)
+				{
+					Debug.WriteLine($"Error calling {method.Name} on type: {newViewType}");
+					Debug.WriteLine(ex);
+					//TODO: Notify that we couldnt execute OnHotReload for the Method;
+				}
+			};
+
+			var onHotReloadMethods = newViewType.GetOnHotReloadMethods();
+			onHotReloadMethods.ForEach(x => executeStaticMethod(x));
+*/
+
+/* Unmerged change from project 'Core(net8.0-windows10.0.19041.0)'
+Before:
+				return;
+
+			Action<MethodInfo> executeStaticMethod = (method) =>
+			{
+				try
+				{
+					method?.Invoke(null, null);
+				}
+				catch (Exception ex)
+				{
+					Debug.WriteLine($"Error calling {method.Name} on type: {newViewType}");
+					Debug.WriteLine(ex);
+					//TODO: Notify that we couldnt execute OnHotReload for the Method;
+				}
+			};
+
+			var onHotReloadMethods = newViewType.GetOnHotReloadMethods();
+			onHotReloadMethods.ForEach(x => executeStaticMethod(x));
+
+			if (typeof(IHotReloadableView).IsAssignableFrom(newViewType))
+				replacedViews[oldViewType] = newViewType;
+After:
+			{
+				return;
+			}
+
+			Action<MethodInfo> executeStaticMethod = (method) =>
+			{
+				try
+				{
+					method?.Invoke(null, null);
+				}
+				catch (Exception ex)
+				{
+					Debug.WriteLine($"Error calling {method.Name} on type: {newViewType}");
+					Debug.WriteLine(ex);
+					//TODO: Notify that we couldnt execute OnHotReload for the Method;
+				}
+			};
+
+			var onHotReloadMethods = newViewType.GetOnHotReloadMethods();
+			onHotReloadMethods.ForEach(x => executeStaticMethod(x));
+*/
+
+/* Unmerged change from project 'Core(net8.0-windows10.0.20348.0)'
+Before:
+				return;
+
+			Action<MethodInfo> executeStaticMethod = (method) =>
+			{
+				try
+				{
+					method?.Invoke(null, null);
+				}
+				catch (Exception ex)
+				{
+					Debug.WriteLine($"Error calling {method.Name} on type: {newViewType}");
+					Debug.WriteLine(ex);
+					//TODO: Notify that we couldnt execute OnHotReload for the Method;
+				}
+			};
+
+			var onHotReloadMethods = newViewType.GetOnHotReloadMethods();
+			onHotReloadMethods.ForEach(x => executeStaticMethod(x));
+
+			if (typeof(IHotReloadableView).IsAssignableFrom(newViewType))
+				replacedViews[oldViewType] = newViewType;
+After:
+			{
+				return;
+			}
+
+			Action<MethodInfo> executeStaticMethod = (method) =>
+			{
+				try
+				{
+					method?.Invoke(null, null);
+				}
+				catch (Exception ex)
+				{
+					Debug.WriteLine($"Error calling {method.Name} on type: {newViewType}");
+					Debug.WriteLine(ex);
+					//TODO: Notify that we couldnt execute OnHotReload for the Method;
+				}
+			};
+
+			var onHotReloadMethods = newViewType.GetOnHotReloadMethods();
+			onHotReloadMethods.ForEach(x => executeStaticMethod(x));
+*/
+			{
+				return;
+			}
+
+			Action<MethodInfo> executeStaticMethod = 
+/* Unmerged change from project 'Core(net8.0-maccatalyst)'
+Before:
+			if (typeof(IViewHandler).IsAssignableFrom(newViewType))
+After:
+			if (typeof(IHotReloadableView).IsAssignableFrom(newViewType))
+*/
+
+/* Unmerged change from project 'Core(net8.0-android)'
+Before:
+			if (typeof(IViewHandler).IsAssignableFrom(newViewType))
+After:
+			if (typeof(IHotReloadableView).IsAssignableFrom(newViewType))
+*/
+
+/* Unmerged change from project 'Core(net8.0-windows10.0.19041.0)'
+Before:
+			if (typeof(IViewHandler).IsAssignableFrom(newViewType))
+After:
+			if (typeof(IHotReloadableView).IsAssignableFrom(newViewType))
+*/
+
+/* Unmerged change from project 'Core(net8.0-windows10.0.20348.0)'
+Before:
+			if (typeof(IViewHandler).IsAssignableFrom(newViewType))
+After:
+			if (typeof(IHotReloadableView).IsAssignableFrom(newViewType))
+*/
+
+/* Unmerged change from project 'Core(net8.0-maccatalyst)'
+Before:
+				if (replacedHandlers.TryGetValue(oldViewType, out var vTypes))
+				{
+					foreach (var vType in vTypes)
+						RegisterHandler(vType, newViewType);
+					return;
+				}
+
+				_ = HandlerService ?? throw new ArgumentNullException(nameof(HandlerService));
+				var assemblies = AppDomain.CurrentDomain.GetAssemblies();
+				var t = assemblies.Select(x => x.GetType(oldViewType)).FirstOrDefault(x => x != null);
+
+				var views = HandlerService!.Where(x => x.ImplementationType == t).Select(x => new KeyValuePair<Type, Type>(x.ServiceType, x.ImplementationType!)).ToList();
+
+
+				replacedHandlers[oldViewType] = views.ToList();
+				foreach (var h in views)
+				{
+					RegisterHandler(h, newViewType);
+				}
+After:
+				replacedViews[oldViewType] = newViewType;
+			}
 
 			if (typeof(IViewHandler).IsAssignableFrom(newViewType))
 			{
 				if (replacedHandlers.TryGetValue(oldViewType, out var vTypes))
 				{
 					foreach (var vType in vTypes)
+					{
 						RegisterHandler(vType, newViewType);
+					}
+
+					return;
+				}
+
+				_ = HandlerService ?? throw new ArgumentNullException(nameof(HandlerService));
+				var assemblies = AppDomain.CurrentDomain.GetAssemblies();
+				var t = assemblies.Select(x => x.GetType(oldViewType)).FirstOrDefault(x => x != null);
+
+				var views = HandlerService!.Where(x => x.ImplementationType == t).Select(x => new KeyValuePair<Type, Type>(x.ServiceType, x.ImplementationType!)).ToList();
+
+
+				replacedHandlers[oldViewType] = views.ToList();
+				foreach (var h in views)
+				{
+					RegisterHandler(h, newViewType);
+				}
+*/
+
+/* Unmerged change from project 'Core(net8.0-android)'
+Before:
+				if (replacedHandlers.TryGetValue(oldViewType, out var vTypes))
+				{
+					foreach (var vType in vTypes)
+						RegisterHandler(vType, newViewType);
+					return;
+				}
+
+				_ = HandlerService ?? throw new ArgumentNullException(nameof(HandlerService));
+				var assemblies = AppDomain.CurrentDomain.GetAssemblies();
+				var t = assemblies.Select(x => x.GetType(oldViewType)).FirstOrDefault(x => x != null);
+
+				var views = HandlerService!.Where(x => x.ImplementationType == t).Select(x => new KeyValuePair<Type, Type>(x.ServiceType, x.ImplementationType!)).ToList();
+
+
+				replacedHandlers[oldViewType] = views.ToList();
+				foreach (var h in views)
+				{
+					RegisterHandler(h, newViewType);
+				}
+After:
+				replacedViews[oldViewType] = newViewType;
+			}
+
+			if (typeof(IViewHandler).IsAssignableFrom(newViewType))
+			{
+				if (replacedHandlers.TryGetValue(oldViewType, out var vTypes))
+				{
+					foreach (var vType in vTypes)
+					{
+						RegisterHandler(vType, newViewType);
+					}
+
+					return;
+				}
+
+				_ = HandlerService ?? throw new ArgumentNullException(nameof(HandlerService));
+				var assemblies = AppDomain.CurrentDomain.GetAssemblies();
+				var t = assemblies.Select(x => x.GetType(oldViewType)).FirstOrDefault(x => x != null);
+
+				var views = HandlerService!.Where(x => x.ImplementationType == t).Select(x => new KeyValuePair<Type, Type>(x.ServiceType, x.ImplementationType!)).ToList();
+
+
+				replacedHandlers[oldViewType] = views.ToList();
+				foreach (var h in views)
+				{
+					RegisterHandler(h, newViewType);
+				}
+*/
+
+/* Unmerged change from project 'Core(net8.0-windows10.0.19041.0)'
+Before:
+				if (replacedHandlers.TryGetValue(oldViewType, out var vTypes))
+				{
+					foreach (var vType in vTypes)
+						RegisterHandler(vType, newViewType);
+					return;
+				}
+
+				_ = HandlerService ?? throw new ArgumentNullException(nameof(HandlerService));
+				var assemblies = AppDomain.CurrentDomain.GetAssemblies();
+				var t = assemblies.Select(x => x.GetType(oldViewType)).FirstOrDefault(x => x != null);
+
+				var views = HandlerService!.Where(x => x.ImplementationType == t).Select(x => new KeyValuePair<Type, Type>(x.ServiceType, x.ImplementationType!)).ToList();
+
+
+				replacedHandlers[oldViewType] = views.ToList();
+				foreach (var h in views)
+				{
+					RegisterHandler(h, newViewType);
+				}
+After:
+				replacedViews[oldViewType] = newViewType;
+			}
+
+			if (typeof(IViewHandler).IsAssignableFrom(newViewType))
+			{
+				if (replacedHandlers.TryGetValue(oldViewType, out var vTypes))
+				{
+					foreach (var vType in vTypes)
+					{
+						RegisterHandler(vType, newViewType);
+					}
+
+					return;
+				}
+
+				_ = HandlerService ?? throw new ArgumentNullException(nameof(HandlerService));
+				var assemblies = AppDomain.CurrentDomain.GetAssemblies();
+				var t = assemblies.Select(x => x.GetType(oldViewType)).FirstOrDefault(x => x != null);
+
+				var views = HandlerService!.Where(x => x.ImplementationType == t).Select(x => new KeyValuePair<Type, Type>(x.ServiceType, x.ImplementationType!)).ToList();
+
+
+				replacedHandlers[oldViewType] = views.ToList();
+				foreach (var h in views)
+				{
+					RegisterHandler(h, newViewType);
+				}
+*/
+
+/* Unmerged change from project 'Core(net8.0-windows10.0.20348.0)'
+Before:
+				if (replacedHandlers.TryGetValue(oldViewType, out var vTypes))
+				{
+					foreach (var vType in vTypes)
+						RegisterHandler(vType, newViewType);
+					return;
+				}
+
+				_ = HandlerService ?? throw new ArgumentNullException(nameof(HandlerService));
+				var assemblies = AppDomain.CurrentDomain.GetAssemblies();
+				var t = assemblies.Select(x => x.GetType(oldViewType)).FirstOrDefault(x => x != null);
+
+				var views = HandlerService!.Where(x => x.ImplementationType == t).Select(x => new KeyValuePair<Type, Type>(x.ServiceType, x.ImplementationType!)).ToList();
+
+
+				replacedHandlers[oldViewType] = views.ToList();
+				foreach (var h in views)
+				{
+					RegisterHandler(h, newViewType);
+				}
+After:
+				replacedViews[oldViewType] = newViewType;
+			}
+
+			if (typeof(IViewHandler).IsAssignableFrom(newViewType))
+			{
+				if (replacedHandlers.TryGetValue(oldViewType, out var vTypes))
+				{
+					foreach (var vType in vTypes)
+					{
+						RegisterHandler(vType, newViewType);
+					}
+
+					return;
+				}
+
+				_ = HandlerService ?? throw new ArgumentNullException(nameof(HandlerService));
+				var assemblies = AppDomain.CurrentDomain.GetAssemblies();
+				var t = assemblies.Select(x => x.GetType(oldViewType)).FirstOrDefault(x => x != null);
+
+				var views = HandlerService!.Where(x => x.ImplementationType == t).Select(x => new KeyValuePair<Type, Type>(x.ServiceType, x.ImplementationType!)).ToList();
+
+
+				replacedHandlers[oldViewType] = views.ToList();
+				foreach (var h in views)
+				{
+					RegisterHandler(h, newViewType);
+				}
+*/
+
+/* Unmerged change from project 'Core(net8.0-maccatalyst)'
+Before:
+				newType = pair.Value.GetGenericTypeDefinition().MakeGenericType(newHandler);
+			HandlerService.AddHandler(view, newType);
+After:
+			{
+				newType = pair.Value.GetGenericTypeDefinition().MakeGenericType(newHandler);
+			}
+
+			HandlerService.AddHandler(view, newType);
+*/
+
+/* Unmerged change from project 'Core(net8.0-android)'
+Before:
+				newType = pair.Value.GetGenericTypeDefinition().MakeGenericType(newHandler);
+			HandlerService.AddHandler(view, newType);
+After:
+			{
+				newType = pair.Value.GetGenericTypeDefinition().MakeGenericType(newHandler);
+			}
+
+			HandlerService.AddHandler(view, newType);
+*/
+
+/* Unmerged change from project 'Core(net8.0-windows10.0.19041.0)'
+Before:
+				newType = pair.Value.GetGenericTypeDefinition().MakeGenericType(newHandler);
+			HandlerService.AddHandler(view, newType);
+After:
+			{
+				newType = pair.Value.GetGenericTypeDefinition().MakeGenericType(newHandler);
+			}
+
+			HandlerService.AddHandler(view, newType);
+*/
+
+/* Unmerged change from project 'Core(net8.0-windows10.0.20348.0)'
+Before:
+				newType = pair.Value.GetGenericTypeDefinition().MakeGenericType(newHandler);
+			HandlerService.AddHandler(view, newType);
+After:
+			{
+				newType = pair.Value.GetGenericTypeDefinition().MakeGenericType(newHandler);
+			}
+
+			HandlerService.AddHandler(view, newType);
+*/
+
+/* Unmerged change from project 'Core(net8.0-maccatalyst)'
+Before:
+				RegisterReplacedView(t.FullName ?? "", t);
+		}
+After:
+			{
+				RegisterReplacedView(t.FullName ?? "", t);
+			}
+		}
+*/
+
+/* Unmerged change from project 'Core(net8.0-android)'
+Before:
+				RegisterReplacedView(t.FullName ?? "", t);
+		}
+After:
+			{
+				RegisterReplacedView(t.FullName ?? "", t);
+			}
+		}
+*/
+
+/* Unmerged change from project 'Core(net8.0-windows10.0.19041.0)'
+Before:
+				RegisterReplacedView(t.FullName ?? "", t);
+		}
+After:
+			{
+				RegisterReplacedView(t.FullName ?? "", t);
+			}
+		}
+*/
+
+/* Unmerged change from project 'Core(net8.0-windows10.0.20348.0)'
+Before:
+				RegisterReplacedView(t.FullName ?? "", t);
+		}
+After:
+			{
+				RegisterReplacedView(t.FullName ?? "", t);
+			}
+		}
+*/
+(method) =>
+			{
+				try
+				{
+					method?.Invoke(null, null);
+				}
+				catch (Exception ex)
+				{
+					Debug.WriteLine($"Error calling {method.Name} on type: {newViewType}");
+					Debug.WriteLine(ex);
+					//TODO: Notify that we couldnt execute OnHotReload for the Method;
+				}
+			};
+
+			var onHotReloadMethods = newViewType.GetOnHotReloadMethods();
+			onHotReloadMethods.ForEach(x => executeStaticMethod(x));
+
+			if (typeof(IHotReloadableView).IsAssignableFrom(newViewType))
+			{
+				replacedViews[oldViewType] = newViewType;
+			}
+
+			if (typeof(IViewHandler).IsAssignableFrom(newViewType))
+			{
+				if (replacedHandlers.TryGetValue(oldViewType, out var vTypes))
+				{
+					foreach (var vType in vTypes)
+					{
+						RegisterHandler(vType, newViewType);
+					}
+
 					return;
 				}
 
@@ -154,7 +705,10 @@ namespace Microsoft.Maui.HotReload
 			var view = pair.Key;
 			var newType = newHandler;
 			if (pair.Value.IsGenericType)
+			{
 				newType = pair.Value.GetGenericTypeDefinition().MakeGenericType(newHandler);
+			}
+
 			HandlerService.AddHandler(view, newType);
 		}
 
@@ -183,7 +737,9 @@ namespace Microsoft.Maui.HotReload
 		{
 			IsEnabled = true;
 			foreach (var t in types)
+			{
 				RegisterReplacedView(t.FullName ?? "", t);
+			}
 		}
 		public static void ClearCache(Type[] types) => TriggerReload();
 		#endregion

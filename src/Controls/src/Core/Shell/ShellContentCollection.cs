@@ -28,14 +28,20 @@ namespace Microsoft.Maui.Controls
 		{
 			base.OnElementControllerInserting(element);
 			if (element is IShellContentController controller)
+			{
+			{
 				controller.IsPageVisibleChanged += OnIsPageVisibleChanged;
+			}
 		}
 
 		protected override void OnElementControllerRemoving(IElementController element)
 		{
 			base.OnElementControllerRemoving(element);
 			if (element is IShellContentController controller)
+			{
+			{
 				controller.IsPageVisibleChanged -= OnIsPageVisibleChanged;
+			}
 		}
 	}
 }

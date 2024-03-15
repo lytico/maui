@@ -290,7 +290,9 @@ namespace Microsoft.Maui.Graphics.Platform
 					var scale = CurrentState.Scale;
 					var scaledStrokeSize = scale * actualStrokeSize;
 					if (scaledStrokeSize < strokeLimit)
+					{
 						actualStrokeSize = strokeLimit / scale;
+					}
 				}
 
 				var actualDashPattern = new nfloat[strokePattern.Length];
@@ -340,7 +342,9 @@ namespace Microsoft.Maui.Graphics.Platform
 					offsets[i] = linearGradientPaint.GradientStops[i].Offset;
 
 					if (vColor == null)
+					{
 						vColor = Colors.White;
+					}
 
 					gradientColors[g++] = vColor.Red;
 					gradientColors[g++] = vColor.Green;
@@ -364,7 +368,9 @@ namespace Microsoft.Maui.Graphics.Platform
 					offsets[i] = radialGradientPaint.GradientStops[i].Offset;
 
 					if (vColor == null)
+					{
 						vColor = Colors.White;
+					}
 
 					gradientColors[g++] = vColor.Red;
 					gradientColors[g++] = vColor.Green;
@@ -395,14 +401,18 @@ namespace Microsoft.Maui.Graphics.Platform
 		protected override void PlatformDrawLine(float x1, float y1, float x2, float y2)
 		{
 			if (!_antialias)
+			{
 				_context.SetShouldAntialias(false);
+			}
 
 			_context.MoveTo(x1, y1);
 			_context.AddLineToPoint(x2, y2);
 			_context.StrokePath();
 
 			if (!_antialias)
+			{
 				_context.SetShouldAntialias(true);
+			}
 		}
 
 		protected override void PlatformDrawArc(float x, float y, float width, float height, float startAngle, float endAngle, bool clockwise, bool close)
@@ -413,6 +423,9 @@ namespace Microsoft.Maui.Graphics.Platform
 			_rect.Height = height;
 
 			if (!_antialias)
+
+/* Unmerged change from project 'Graphics(net8.0-maccatalyst)'
+Before:
 				_context.SetShouldAntialias(false);
 			var startAngleInRadians = GeometryUtil.DegreesToRadians(-startAngle);
 			var endAngleInRadians = GeometryUtil.DegreesToRadians(-endAngle);
@@ -450,10 +463,130 @@ namespace Microsoft.Maui.Graphics.Platform
 				_context.AddPath(path);
 				_context.StrokePath();
 				path.Dispose();
+After:
+			{
+				_context.SetShouldAntialias(false);
+			}
+
+			var startAngleInRadians = GeometryUtil.DegreesToRadians(-startAngle);
+			var endAngleInRadians = GeometryUtil.DegreesToRadians(-endAngle);
+
+			while (startAngleInRadians < 0)
+			{
+				startAngleInRadians += (float)Math.PI * 2;
+			}
+
+			while (endAngleInRadians < 0)
+			{
+				endAngleInRadians += (float)Math.PI * 2;
+*/
+
+/* Unmerged change from project 'Graphics(net8.0-macos)'
+Before:
+				_context.SetShouldAntialias(false);
+			var startAngleInRadians = GeometryUtil.DegreesToRadians(-startAngle);
+			var endAngleInRadians = GeometryUtil.DegreesToRadians(-endAngle);
+
+			while (startAngleInRadians < 0)
+				startAngleInRadians += (float)Math.PI * 2;
+
+			while (endAngleInRadians < 0)
+				endAngleInRadians += (float)Math.PI * 2;
+
+			if (width == height)
+			{
+				_context.AddArc(_rect.GetMidX(), _rect.GetMidY(), _rect.Width / 2, startAngleInRadians, endAngleInRadians, !clockwise);
+				if (close)
+				{
+					_context.ClosePath();
+				}
+
+				_context.StrokePath();
+			}
+			else
+			{
+				var cx = _rect.GetMidX();
+				var cy = _rect.GetMidY();
+				var transform = CGAffineTransform.MakeTranslation(cx, cy);
+				transform = CGAffineTransform.Multiply(CGAffineTransform.MakeScale(1, _rect.Height / _rect.Width), transform);
+
+				var path = new CGPath();
+				path.AddArc(transform, 0, 0, _rect.Width / 2, startAngleInRadians, endAngleInRadians, !clockwise);
+				if (close)
+				{
+					path.CloseSubpath();
+				}
+
+				_context.AddPath(path);
+				_context.StrokePath();
+				path.Dispose();
+After:
+			{
+				_context.SetShouldAntialias(false);
+			}
+
+			var startAngleInRadians = GeometryUtil.DegreesToRadians(-startAngle);
+			var endAngleInRadians = GeometryUtil.DegreesToRadians(-endAngle);
+
+			while (startAngleInRadians < 0)
+			{
+				startAngleInRadians += (float)Math.PI * 2;
+			}
+
+			while (endAngleInRadians < 0)
+			{
+				endAngleInRadians += (float)Math.PI * 2;
+*/
+			{
+				_context.SetShouldAntialias(false);
+			}
+
+			var startAngleInRadians = GeometryUtil.DegreesToRadians(-startAngle);
+			var endAngleInRadians = GeometryUtil.DegreesToRadians(-endAngle);
+
+			while (startAngleInRadians < 0)
+			{
+				startAngleInRadians += (float)Math.PI * 2;
+			}
+
+			while (endAngleInRadians < 0)
+			{
+				endAngleInRadians += (float)Math.PI * 2;
+			}
+
+			if (width == height)
+			{
+				_context.AddArc(_rect.GetMidX(), _rect.GetMidY(), _rect.Width / 2, startAngleInRadians, endAngleInRadians, !clockwise);
+				if (close)
+				{
+					_context.ClosePath();
+				}
+
+				_context.StrokePath();
+			}
+			else
+			{
+				var cx = _rect.GetMidX();
+				var cy = _rect.GetMidY();
+				var transform = CGAffineTransform.MakeTranslation(cx, cy);
+				transform = CGAffineTransform.Multiply(CGAffineTransform.MakeScale(1, _rect.Height / _rect.Width), transform);
+
+				var path = new CGPath();
+				path.AddArc(transform, 0, 0, _rect.Width / 2, startAngleInRadians, endAngleInRadians, !clockwise);
+				if (close)
+				{
+					path.CloseSubpath();
+				}
+
+				_context.AddPath(path);
+				_context.StrokePath();
+				path.Dispose();
 			}
 
 			if (!_antialias)
+			{
 				_context.SetShouldAntialias(true);
+			}
 		}
 
 		public override void FillArc(float x, float y, float width, float height, float startAngle, float endAngle, bool clockwise)
@@ -467,10 +600,48 @@ namespace Microsoft.Maui.Graphics.Platform
 			var endAngleInRadians = GeometryUtil.DegreesToRadians(-endAngle);
 
 			while (startAngleInRadians < 0)
+
+/* Unmerged change from project 'Graphics(net8.0-maccatalyst)'
+Before:
 				startAngleInRadians += (float)Math.PI * 2;
 
 			while (endAngleInRadians < 0)
 				endAngleInRadians += (float)Math.PI * 2;
+After:
+			{
+				startAngleInRadians += (float)Math.PI * 2;
+			}
+
+			while (endAngleInRadians < 0)
+			{
+				endAngleInRadians += (float)Math.PI * 2;
+			}
+*/
+
+/* Unmerged change from project 'Graphics(net8.0-macos)'
+Before:
+				startAngleInRadians += (float)Math.PI * 2;
+
+			while (endAngleInRadians < 0)
+				endAngleInRadians += (float)Math.PI * 2;
+After:
+			{
+				startAngleInRadians += (float)Math.PI * 2;
+			}
+
+			while (endAngleInRadians < 0)
+			{
+				endAngleInRadians += (float)Math.PI * 2;
+			}
+*/
+			{
+				startAngleInRadians += (float)Math.PI * 2;
+			}
+
+			while (endAngleInRadians < 0)
+			{
+				endAngleInRadians += (float)Math.PI * 2;
+			}
 
 			if (width == height)
 			{
@@ -576,10 +747,15 @@ namespace Microsoft.Maui.Graphics.Platform
 			_rect.Height = height;
 
 			if (!_antialias)
+			{
 				_context.SetShouldAntialias(false);
+			}
+
 			_context.StrokeRect(_rect);
 			if (!_antialias)
+			{
 				_context.SetShouldAntialias(true);
+			}
 		}
 
 		private void DrawGradient()
@@ -633,7 +809,10 @@ namespace Microsoft.Maui.Graphics.Platform
 			{
 				context.SetLineDash(0, EmptyNFloatArray);
 				if (_fillPatternCanvas == null)
+				{
 					_fillPatternCanvas = new PlatformCanvas(_getColorspace);
+				}
+
 				_fillPatternCanvas.Context = context;
 				fillPattern.Draw(_fillPatternCanvas);
 			}
@@ -1108,7 +1287,9 @@ namespace Microsoft.Maui.Graphics.Platform
 			var ctFont = font?.ToCTFont(fontSize) ?? FontExtensions.GetDefaultCTFont(fontSize);
 
 			if (ctFont != null && ctFont.Handle != IntPtr.Zero)
+			{
 				attributes.Font = ctFont;
+			}
 
 			if (verticalAlignment == VerticalAlignment.Center)
 			{
@@ -1227,7 +1408,18 @@ namespace Microsoft.Maui.Graphics.Platform
 
 			var attributedString = text.AsNSAttributedString(font, fontSize, fontColor?.ToHex(), true);
 			if (attributedString == null)
+
+/* Unmerged change from project 'Graphics(net8.0-macos)'
+Before:
 				return;
+After:
+			{
+				return;
+			}
+*/
+			{
+				return;
+			}
 
 			// Create the frame setter with the attributed string.
 			var framesetter = new CTFramesetter(attributedString);
@@ -1382,10 +1574,14 @@ namespace Microsoft.Maui.Graphics.Platform
 			var rect = new CGRect(x, y, width, height);
 
 			if (finalCornerRadius > rect.Width)
+			{
 				finalCornerRadius = rect.Width / 2;
+			}
 
 			if (finalCornerRadius > rect.Height)
+			{
 				finalCornerRadius = rect.Height / 2;
+			}
 
 			var minX = rect.X;
 			var minY = rect.Y;

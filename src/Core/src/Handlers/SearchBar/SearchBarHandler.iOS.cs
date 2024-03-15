@@ -113,7 +113,10 @@ namespace Microsoft.Maui.Handlers
 		public static void MapTextColor(ISearchBarHandler handler, ISearchBar searchBar)
 		{
 			if (handler is SearchBarHandler platformHandler)
+			{
+			{
 				handler.QueryEditor?.UpdateTextColor(searchBar);
+			}
 		}
 
 		public static void MapIsTextPredictionEnabled(ISearchBarHandler handler, ISearchBar searchBar)
@@ -149,7 +152,9 @@ namespace Microsoft.Maui.Handlers
 		void UpdateCancelButtonVisibility()
 		{
 			if (PlatformView.ShowsCancelButton != VirtualView.ShouldShowCancelButton())
+			{
 				UpdateValue(nameof(ISearchBar.CancelButtonColor));
+			}
 		}
 
 		class MauiSearchBarProxy
@@ -175,7 +180,9 @@ namespace Microsoft.Maui.Handlers
 				platformView.OnEditingStopped += OnEditingStopped;
 
 				if (handler.QueryEditor is UITextField editor)
+				{
 					editor.EditingChanged += OnEditingChanged;
+				}
 			}
 
 			public void Disconnect(MauiSearchBar platformView, UITextField? editor)
@@ -192,7 +199,9 @@ namespace Microsoft.Maui.Handlers
 				platformView.OnEditingStopped -= OnEditingStopped;
 
 				if (editor is not null)
+				{
 					editor.EditingChanged -= OnEditingChanged;
+				}
 			}
 
 			void OnMovedToWindow(object? sender, EventArgs e)
@@ -208,7 +217,9 @@ namespace Microsoft.Maui.Handlers
 			void OnCancelClicked(object? sender, EventArgs args)
 			{
 				if (VirtualView is ISearchBar virtualView)
+				{
 					virtualView.Text = string.Empty;
+				}
 			}
 
 			void OnSearchButtonClicked(object? sender, EventArgs e)
@@ -238,7 +249,9 @@ namespace Microsoft.Maui.Handlers
 			void OnEditingStarted(object? sender, EventArgs e)
 			{
 				if (VirtualView is ISearchBar virtualView)
+				{
 					virtualView.IsFocused = true;
+				}
 			}
 
 			void OnEditingChanged(object? sender, EventArgs e)
@@ -257,7 +270,9 @@ namespace Microsoft.Maui.Handlers
 			void OnEditingStopped(object? sender, EventArgs e)
 			{
 				if (VirtualView is ISearchBar virtualView)
+				{
 					virtualView.IsFocused = false;
+				}
 			}
 		}
 	}

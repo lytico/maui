@@ -11,10 +11,908 @@ namespace Microsoft.Maui.Graphics.Text
 		public static IAttributedText Optimize(this IAttributedText attributedText)
 		{
 			if (attributedText?.Text == null)
+
+/* Unmerged change from project 'Graphics(net8.0)'
+Before:
 				return null;
 
 			if (attributedText is AbstractAttributedText abstractAttributedText && abstractAttributedText.Optimal)
 				return attributedText;
+
+			var start = 0;
+			var attributeIndex = 0;
+			var text = attributedText.Text;
+			var length = text.Length;
+			var runs = new List<IAttributedTextRun>();
+			attributedText.CreateParagraphRun(start, length, runs, attributeIndex);
+After:
+			{
+				return null;
+			}
+
+			if (attributedText is AbstractAttributedText abstractAttributedText && abstractAttributedText.Optimal)
+			{
+				return attributedText;
+			}
+
+			var start = 0;
+			var attributeIndex = 0;
+			var text = attributedText.Text;
+			var length = text.Length;
+			var runs = new List<IAttributedTextRun>();
+			attributedText.CreateParagraphRun(start, length, runs, attributeIndex);
+*/
+
+/* Unmerged change from project 'Graphics(net8.0-ios)'
+Before:
+				return null;
+
+			if (attributedText is AbstractAttributedText abstractAttributedText && abstractAttributedText.Optimal)
+				return attributedText;
+
+			var start = 0;
+			var attributeIndex = 0;
+			var text = attributedText.Text;
+			var length = text.Length;
+			var runs = new List<IAttributedTextRun>();
+			attributedText.CreateParagraphRun(start, length, runs, attributeIndex);
+After:
+			{
+				return null;
+			}
+
+			if (attributedText is AbstractAttributedText abstractAttributedText && abstractAttributedText.Optimal)
+			{
+				return attributedText;
+			}
+
+			var start = 0;
+			var attributeIndex = 0;
+			var text = attributedText.Text;
+			var length = text.Length;
+			var runs = new List<IAttributedTextRun>();
+			attributedText.CreateParagraphRun(start, length, runs, attributeIndex);
+*/
+
+/* Unmerged change from project 'Graphics(net8.0-maccatalyst)'
+Before:
+				return null;
+
+			if (attributedText is AbstractAttributedText abstractAttributedText && abstractAttributedText.Optimal)
+				return attributedText;
+
+			var start = 0;
+			var attributeIndex = 0;
+			var text = attributedText.Text;
+			var length = text.Length;
+			var runs = new List<IAttributedTextRun>();
+			attributedText.CreateParagraphRun(start, length, runs, attributeIndex);
+After:
+			{
+				return null;
+			}
+
+			if (attributedText is AbstractAttributedText abstractAttributedText && abstractAttributedText.Optimal)
+			{
+				return attributedText;
+			}
+
+			var start = 0;
+			var attributeIndex = 0;
+			var text = attributedText.Text;
+			var length = text.Length;
+			var runs = new List<IAttributedTextRun>();
+			attributedText.CreateParagraphRun(start, length, runs, attributeIndex);
+*/
+
+/* Unmerged change from project 'Graphics(net8.0-android)'
+Before:
+				return null;
+
+			if (attributedText is AbstractAttributedText abstractAttributedText && abstractAttributedText.Optimal)
+				return attributedText;
+
+			var start = 0;
+			var attributeIndex = 0;
+			var text = attributedText.Text;
+			var length = text.Length;
+			var runs = new List<IAttributedTextRun>();
+			attributedText.CreateParagraphRun(start, length, runs, attributeIndex);
+After:
+			{
+				return null;
+			}
+
+			if (attributedText is AbstractAttributedText abstractAttributedText && abstractAttributedText.Optimal)
+			{
+				return attributedText;
+			}
+
+			var start = 0;
+			var attributeIndex = 0;
+			var text = attributedText.Text;
+			var length = text.Length;
+			var runs = new List<IAttributedTextRun>();
+			attributedText.CreateParagraphRun(start, length, runs, attributeIndex);
+*/
+
+/* Unmerged change from project 'Graphics(net8.0-windows10.0.19041.0)'
+Before:
+				return null;
+
+			if (attributedText is AbstractAttributedText abstractAttributedText && abstractAttributedText.Optimal)
+				return attributedText;
+
+			var start = 0;
+			var attributeIndex = 0;
+			var text = attributedText.Text;
+			var length = text.Length;
+			var runs = new List<IAttributedTextRun>();
+			attributedText.CreateParagraphRun(start, length, runs, attributeIndex);
+After:
+			{
+				return null;
+			}
+
+			if (attributedText is AbstractAttributedText abstractAttributedText && abstractAttributedText.Optimal)
+			{
+				return attributedText;
+			}
+
+			var start = 0;
+			var attributeIndex = 0;
+			var text = attributedText.Text;
+			var length = text.Length;
+			var runs = new List<IAttributedTextRun>();
+			attributedText.CreateParagraphRun(start, length, runs, attributeIndex);
+*/
+
+/* Unmerged change from project 'Graphics(net8.0-windows10.0.20348.0)'
+Before:
+				return null;
+
+			if (attributedText is AbstractAttributedText abstractAttributedText && abstractAttributedText.Optimal)
+				return attributedText;
+
+			var start = 0;
+			var attributeIndex = 0;
+			var text = attributedText.Text;
+			var length = text.Length;
+			var runs = new List<IAttributedTextRun>();
+			attributedText.CreateParagraphRun(start, length, runs, attributeIndex);
+After:
+			{
+				return null;
+			}
+
+			if (attributedText is AbstractAttributedText abstractAttributedText && abstractAttributedText.Optimal)
+			{
+				return attributedText;
+			}
+
+			var start = 0;
+			var attributeIndex = 0;
+			var text = attributedText.Text;
+			var length = text.Length;
+			var runs = new List<IAttributedTextRun>();
+			attributedText.CreateParagraphRun(start, length, runs, attributeIndex);
+*/
+
+/* Unmerged change from project 'Graphics(net8.0-macos)'
+Before:
+				return null;
+
+			if (attributedText is AbstractAttributedText abstractAttributedText && abstractAttributedText.Optimal)
+				return attributedText;
+
+			var start = 0;
+			var attributeIndex = 0;
+			var text = attributedText.Text;
+			var length = text.Length;
+			var runs = new List<IAttributedTextRun>();
+			attributedText.CreateParagraphRun(start, length, runs, attributeIndex);
+After:
+			{
+				return null;
+			}
+
+			if (attributedText is AbstractAttributedText abstractAttributedText && abstractAttributedText.Optimal)
+			{
+				return attributedText;
+			}
+
+			var start = 0;
+			var attributeIndex = 0;
+			var text = attributedText.Text;
+			var length = text.Length;
+			var runs = new List<IAttributedTextRun>();
+			attributedText.CreateParagraphRun(start, length, runs, attributeIndex);
+*/
+			{
+				return null;
+			}
+
+			if (attributedText is AbstractAttributedText abstractAttributedText && abstractAttributedText.Optimal)
+			{
+				return attributedText;
+		
+/* Unmerged change from project 'Graphics(net8.0)'
+Before:
+				return null;
+After:
+			{
+				return null;
+			}
+*/
+
+/* Unmerged change from project 'Graphics(net8.0-ios)'
+Before:
+				return null;
+After:
+			{
+				return null;
+			}
+*/
+
+/* Unmerged change from project 'Graphics(net8.0-maccatalyst)'
+Before:
+				return null;
+After:
+			{
+				return null;
+			}
+*/
+
+/* Unmerged change from project 'Graphics(net8.0-android)'
+Before:
+				return null;
+After:
+			{
+				return null;
+			}
+*/
+
+/* Unmerged change from project 'Graphics(net8.0-windows10.0.19041.0)'
+Before:
+				return null;
+After:
+			{
+				return null;
+			}
+*/
+
+/* Unmerged change from project 'Graphics(net8.0-windows10.0.20348.0)'
+Before:
+				return null;
+After:
+			{
+				return null;
+			}
+*/
+
+/* Unmerged change from project 'Graphics(net8.0-macos)'
+Before:
+				return null;
+After:
+			{
+				return null;
+			}
+*/
+
+/* Unmerged change from project 'Graphics(net8.0)'
+Before:
+					return null;
+After:
+				{
+					return null;
+				}
+*/
+
+/* Unmerged change from project 'Graphics(net8.0-ios)'
+Before:
+					return null;
+After:
+				{
+					return null;
+				}
+*/
+
+/* Unmerged change from project 'Graphics(net8.0-maccatalyst)'
+Before:
+					return null;
+After:
+				{
+					return null;
+				}
+*/
+
+/* Unmerged change from project 'Graphics(net8.0-android)'
+Before:
+					return null;
+
+				if (attributedText.Runs is List<IAttributedTextRun> list)
+					return list;
+After:
+				{
+					return null;
+				}
+
+				if (attributedText.Runs is List<IAttributedTextRun> list)
+				{
+					return list;
+				}
+*/
+
+/* Unmerged change from project 'Graphics(net8.0-windows10.0.19041.0)'
+Before:
+					return null;
+After:
+				{
+					return null;
+				}
+*/
+
+/* Unmerged change from project 'Graphics(net8.0-windows10.0.20348.0)'
+Before:
+					return null;
+After:
+				{
+					return null;
+				}
+*/
+
+/* Unmerged change from project 'Graphics(net8.0-macos)'
+Before:
+					return null;
+
+				if (attributedText.Runs is List<IAttributedTextRun> list)
+					return list;
+After:
+				{
+					return null;
+				}
+
+				if (attributedText.Runs is List<IAttributedTextRun> list)
+				{
+					return list;
+				}
+*/
+
+/* Unmerged change from project 'Graphics(net8.0)'
+Before:
+					return list;
+After:
+				{
+					return list;
+				}
+*/
+
+/* Unmerged change from project 'Graphics(net8.0-ios)'
+Before:
+					return list;
+After:
+				{
+					return list;
+				}
+*/
+
+/* Unmerged change from project 'Graphics(net8.0-maccatalyst)'
+Before:
+					return list;
+After:
+				{
+					return list;
+				}
+*/
+
+/* Unmerged change from project 'Graphics(net8.0-windows10.0.19041.0)'
+Before:
+					return list;
+After:
+				{
+					return list;
+				}
+*/
+
+/* Unmerged change from project 'Graphics(net8.0-windows10.0.20348.0)'
+Before:
+					return list;
+After:
+				{
+					return list;
+				}
+*/
+
+/* Unmerged change from project 'Graphics(net8.0)'
+Before:
+				return null;
+
+			List<IAttributedText> paragraphs = new List<IAttributedText>();
+
+			int start = 0;
+			int attributeIndex = 0;
+After:
+			{
+				return null;
+			}
+
+			List<IAttributedText> paragraphs = new List<IAttributedText>();
+
+			int start = 0;
+			int attributeIndex = 0;
+*/
+
+/* Unmerged change from project 'Graphics(net8.0-ios)'
+Before:
+				return null;
+
+			List<IAttributedText> paragraphs = new List<IAttributedText>();
+
+			int start = 0;
+			int attributeIndex = 0;
+After:
+			{
+				return null;
+			}
+
+			List<IAttributedText> paragraphs = new List<IAttributedText>();
+
+			int start = 0;
+			int attributeIndex = 0;
+*/
+
+/* Unmerged change from project 'Graphics(net8.0-maccatalyst)'
+Before:
+				return null;
+
+			List<IAttributedText> paragraphs = new List<IAttributedText>();
+
+			int start = 0;
+			int attributeIndex = 0;
+After:
+			{
+				return null;
+			}
+
+			List<IAttributedText> paragraphs = new List<IAttributedText>();
+
+			int start = 0;
+			int attributeIndex = 0;
+*/
+
+/* Unmerged change from project 'Graphics(net8.0-android)'
+Before:
+				return null;
+
+			List<IAttributedText> paragraphs = new List<IAttributedText>();
+
+			int start = 0;
+			int attributeIndex = 0;
+After:
+			{
+				return null;
+			}
+
+			List<IAttributedText> paragraphs = new List<IAttributedText>();
+
+			int start = 0;
+			int attributeIndex = 0;
+*/
+
+/* Unmerged change from project 'Graphics(net8.0-windows10.0.19041.0)'
+Before:
+				return null;
+
+			List<IAttributedText> paragraphs = new List<IAttributedText>();
+
+			int start = 0;
+			int attributeIndex = 0;
+After:
+			{
+				return null;
+			}
+
+			List<IAttributedText> paragraphs = new List<IAttributedText>();
+
+			int start = 0;
+			int attributeIndex = 0;
+*/
+
+/* Unmerged change from project 'Graphics(net8.0-windows10.0.20348.0)'
+Before:
+				return null;
+
+			List<IAttributedText> paragraphs = new List<IAttributedText>();
+
+			int start = 0;
+			int attributeIndex = 0;
+After:
+			{
+				return null;
+			}
+
+			List<IAttributedText> paragraphs = new List<IAttributedText>();
+
+			int start = 0;
+			int attributeIndex = 0;
+*/
+
+/* Unmerged change from project 'Graphics(net8.0-macos)'
+Before:
+				return null;
+
+			List<IAttributedText> paragraphs = new List<IAttributedText>();
+
+			int start = 0;
+			int attributeIndex = 0;
+After:
+			{
+				return null;
+			}
+
+			List<IAttributedText> paragraphs = new List<IAttributedText>();
+
+			int start = 0;
+			int attributeIndex = 0;
+*/
+
+/* Unmerged change from project 'Graphics(net8.0)'
+Before:
+				return 0;
+
+			// If we've already reached the end of the runs, we can simply return
+			if (!(startIndexForSearch < text.Runs.Count))
+				return startIndexForSearch;
+
+			var end = start + length;
+			var index = startIndexForSearch;
+After:
+			{
+				return 0;
+			}
+
+			// If we've already reached the end of the runs, we can simply return
+			if (!(startIndexForSearch < text.Runs.Count))
+			{
+				return startIndexForSearch;
+			}
+
+			var end = start + length;
+			var index = startIndexForSearch;
+*/
+
+/* Unmerged change from project 'Graphics(net8.0-ios)'
+Before:
+				return 0;
+
+			// If we've already reached the end of the runs, we can simply return
+			if (!(startIndexForSearch < text.Runs.Count))
+				return startIndexForSearch;
+
+			var end = start + length;
+			var index = startIndexForSearch;
+After:
+			{
+				return 0;
+			}
+
+			// If we've already reached the end of the runs, we can simply return
+			if (!(startIndexForSearch < text.Runs.Count))
+			{
+				return startIndexForSearch;
+			}
+
+			var end = start + length;
+			var index = startIndexForSearch;
+*/
+
+/* Unmerged change from project 'Graphics(net8.0-maccatalyst)'
+Before:
+				return 0;
+
+			// If we've already reached the end of the runs, we can simply return
+			if (!(startIndexForSearch < text.Runs.Count))
+				return startIndexForSearch;
+
+			var end = start + length;
+			var index = startIndexForSearch;
+After:
+			{
+				return 0;
+			}
+
+			// If we've already reached the end of the runs, we can simply return
+			if (!(startIndexForSearch < text.Runs.Count))
+			{
+				return startIndexForSearch;
+			}
+
+			var end = start + length;
+			var index = startIndexForSearch;
+*/
+
+/* Unmerged change from project 'Graphics(net8.0-android)'
+Before:
+				return 0;
+
+			// If we've already reached the end of the runs, we can simply return
+			if (!(startIndexForSearch < text.Runs.Count))
+				return startIndexForSearch;
+
+			var end = start + length;
+			var index = startIndexForSearch;
+After:
+			{
+				return 0;
+			}
+
+			// If we've already reached the end of the runs, we can simply return
+			if (!(startIndexForSearch < text.Runs.Count))
+			{
+				return startIndexForSearch;
+			}
+
+			var end = start + length;
+			var index = startIndexForSearch;
+*/
+
+/* Unmerged change from project 'Graphics(net8.0-windows10.0.19041.0)'
+Before:
+				return 0;
+
+			// If we've already reached the end of the runs, we can simply return
+			if (!(startIndexForSearch < text.Runs.Count))
+				return startIndexForSearch;
+
+			var end = start + length;
+			var index = startIndexForSearch;
+After:
+			{
+				return 0;
+			}
+
+			// If we've already reached the end of the runs, we can simply return
+			if (!(startIndexForSearch < text.Runs.Count))
+			{
+				return startIndexForSearch;
+			}
+
+			var end = start + length;
+			var index = startIndexForSearch;
+*/
+
+/* Unmerged change from project 'Graphics(net8.0-windows10.0.20348.0)'
+Before:
+				return 0;
+
+			// If we've already reached the end of the runs, we can simply return
+			if (!(startIndexForSearch < text.Runs.Count))
+				return startIndexForSearch;
+
+			var end = start + length;
+			var index = startIndexForSearch;
+After:
+			{
+				return 0;
+			}
+
+			// If we've already reached the end of the runs, we can simply return
+			if (!(startIndexForSearch < text.Runs.Count))
+			{
+				return startIndexForSearch;
+			}
+
+			var end = start + length;
+			var index = startIndexForSearch;
+*/
+
+/* Unmerged change from project 'Graphics(net8.0-macos)'
+Before:
+				return 0;
+
+			// If we've already reached the end of the runs, we can simply return
+			if (!(startIndexForSearch < text.Runs.Count))
+				return startIndexForSearch;
+
+			var end = start + length;
+			var index = startIndexForSearch;
+After:
+			{
+				return 0;
+			}
+
+			// If we've already reached the end of the runs, we can simply return
+			if (!(startIndexForSearch < text.Runs.Count))
+			{
+				return startIndexForSearch;
+			}
+
+			var end = start + length;
+			var index = startIndexForSearch;
+*/
+
+/* Unmerged change from project 'Graphics(net8.0)'
+Before:
+					return index;
+After:
+				{
+					return index;
+				}
+*/
+
+/* Unmerged change from project 'Graphics(net8.0-ios)'
+Before:
+					return index;
+After:
+				{
+					return index;
+				}
+*/
+
+/* Unmerged change from project 'Graphics(net8.0-maccatalyst)'
+Before:
+					return index;
+After:
+				{
+					return index;
+				}
+*/
+
+/* Unmerged change from project 'Graphics(net8.0-android)'
+Before:
+					return index;
+After:
+				{
+					return index;
+				}
+*/
+
+/* Unmerged change from project 'Graphics(net8.0-windows10.0.19041.0)'
+Before:
+					return index;
+After:
+				{
+					return index;
+				}
+*/
+
+/* Unmerged change from project 'Graphics(net8.0-windows10.0.20348.0)'
+Before:
+					return index;
+After:
+				{
+					return index;
+				}
+*/
+
+/* Unmerged change from project 'Graphics(net8.0-macos)'
+Before:
+					return index;
+After:
+				{
+					return index;
+				}
+*/
+
+/* Unmerged change from project 'Graphics(net8.0)'
+Before:
+							return index + 1;
+After:
+						{
+							return index + 1;
+						}
+*/
+
+/* Unmerged change from project 'Graphics(net8.0-ios)'
+Before:
+							return index + 1;
+After:
+						{
+							return index + 1;
+						}
+*/
+
+/* Unmerged change from project 'Graphics(net8.0-maccatalyst)'
+Before:
+							return index + 1;
+After:
+						{
+							return index + 1;
+						}
+*/
+
+/* Unmerged change from project 'Graphics(net8.0-android)'
+Before:
+							return index + 1;
+After:
+						{
+							return index + 1;
+						}
+*/
+
+/* Unmerged change from project 'Graphics(net8.0-windows10.0.19041.0)'
+Before:
+							return index + 1;
+After:
+						{
+							return index + 1;
+						}
+*/
+
+/* Unmerged change from project 'Graphics(net8.0-windows10.0.20348.0)'
+Before:
+							return index + 1;
+After:
+						{
+							return index + 1;
+						}
+*/
+
+/* Unmerged change from project 'Graphics(net8.0-macos)'
+Before:
+							return index + 1;
+After:
+						{
+							return index + 1;
+						}
+*/
+
+/* Unmerged change from project 'Graphics(net8.0)'
+Before:
+							return index;
+After:
+						{
+							return index;
+*/
+
+/* Unmerged change from project 'Graphics(net8.0-ios)'
+Before:
+							return index;
+After:
+						{
+							return index;
+*/
+
+/* Unmerged change from project 'Graphics(net8.0-maccatalyst)'
+Before:
+							return index;
+After:
+						{
+							return index;
+*/
+
+/* Unmerged change from project 'Graphics(net8.0-android)'
+Before:
+							return index;
+After:
+						{
+							return index;
+*/
+
+/* Unmerged change from project 'Graphics(net8.0-windows10.0.19041.0)'
+Before:
+							return index;
+After:
+						{
+							return index;
+*/
+
+/* Unmerged change from project 'Graphics(net8.0-windows10.0.20348.0)'
+Before:
+							return index;
+After:
+						{
+							return index;
+*/
+
+/* Unmerged change from project 'Graphics(net8.0-macos)'
+Before:
+							return index;
+After:
+						{
+							return index;
+*/
+	}
 
 			var start = 0;
 			var attributeIndex = 0;
@@ -28,15 +926,21 @@ namespace Microsoft.Maui.Graphics.Text
 		internal static List<IAttributedTextRun> OptimizeRuns(this IAttributedText attributedText)
 		{
 			if (attributedText?.Text == null)
+			{
 				return null;
+			}
 
 			if (attributedText is AbstractAttributedText abstractAttributedText && abstractAttributedText.Optimal)
 			{
 				if (attributedText.Runs == null)
+				{
 					return null;
+				}
 
 				if (attributedText.Runs is List<IAttributedTextRun> list)
+				{
 					return list;
+				}
 
 				return attributedText.Runs.ToList();
 			}
@@ -53,7 +957,9 @@ namespace Microsoft.Maui.Graphics.Text
 		public static IReadOnlyList<IAttributedText> CreateParagraphs(this IAttributedText attributedText)
 		{
 			if (attributedText?.Text == null)
+			{
 				return null;
+			}
 
 			List<IAttributedText> paragraphs = new List<IAttributedText>();
 
@@ -89,11 +995,15 @@ namespace Microsoft.Maui.Graphics.Text
 		{
 			// If the text doesn't have any runs, then we can simply return
 			if (text.Runs == null || text.Runs.Count == 0)
+			{
 				return 0;
+			}
 
 			// If we've already reached the end of the runs, we can simply return
 			if (!(startIndexForSearch < text.Runs.Count))
+			{
 				return startIndexForSearch;
+			}
 
 			var end = start + length;
 			var index = startIndexForSearch;
@@ -104,7 +1014,9 @@ namespace Microsoft.Maui.Graphics.Text
 
 				// If the run is after the end index, then we can go ahead and return
 				if (end < run.Start)
+				{
 					return index;
+				}
 
 				if (run.Intersects(start, length))
 				{
@@ -117,12 +1029,17 @@ namespace Microsoft.Maui.Graphics.Text
 						// If the length of the run is the same as the paragraph, then we know
 						// that the next run (if any) will apply to to the next paragraph.
 						if (run.Length == length)
+						{
 							return index + 1;
+						}
 
 						// If the run is longer than the line, then we know that the attributes from this run
 						// will also apply to the next paragraph.
 						if (run.Length > length)
+						{
 							return index;
+						}
+						}
 
 						// If the run length is less than the length of the line, then the next run may apply
 						// to this line, so continue
@@ -154,8 +1071,10 @@ namespace Microsoft.Maui.Graphics.Text
 		public static IList<AttributedTextBlock> CreateBlocks(this IAttributedText text)
 		{
 			if (text?.Text == null)
-				return null;
-
+			{
+			
+/* Unmerged change from project 'Graphics(net8.0)'
+Before:
 			var blocks = new List<AttributedTextBlock>();
 
 			var start = 0;
@@ -183,6 +1102,541 @@ namespace Microsoft.Maui.Graphics.Text
 #if DEBUG
 					else
 						System.Diagnostics.Debug.WriteLine("Length should not be less then 0");
+#endif
+				}
+			}
+After:
+			}
+
+			var blocks = new List<AttributedTextBlock>();
+
+			var start = 0;
+			var end = text.Text.Length;
+*/
+
+/* Unmerged change from project 'Graphics(net8.0-ios)'
+Before:
+			var blocks = new List<AttributedTextBlock>();
+
+			var start = 0;
+			var end = text.Text.Length;
+
+			if (text.Runs?.Count > 0)
+			{
+				foreach (var run in text.Runs)
+				{
+					if (start < run.Start)
+					{
+						var noAttrLength = run.Start - start;
+						var noAttrValue = text.Text.Substring(start, noAttrLength);
+						blocks.Add(new AttributedTextBlock(noAttrValue, null));
+						start = run.Start;
+					}
+
+					var length = run.Length;
+					if (length > 0)
+					{
+						var value = text.Text.Substring(start, length);
+						blocks.Add(new AttributedTextBlock(value, run.Attributes));
+						start = run.GetEnd();
+					}
+#if DEBUG
+					else
+						System.Diagnostics.Debug.WriteLine("Length should not be less then 0");
+#endif
+				}
+			}
+After:
+			}
+
+			var blocks = new List<AttributedTextBlock>();
+
+			var start = 0;
+			var end = text.Text.Length;
+*/
+
+/* Unmerged change from project 'Graphics(net8.0-maccatalyst)'
+Before:
+			var blocks = new List<AttributedTextBlock>();
+
+			var start = 0;
+			var end = text.Text.Length;
+
+			if (text.Runs?.Count > 0)
+			{
+				foreach (var run in text.Runs)
+				{
+					if (start < run.Start)
+					{
+						var noAttrLength = run.Start - start;
+						var noAttrValue = text.Text.Substring(start, noAttrLength);
+						blocks.Add(new AttributedTextBlock(noAttrValue, null));
+						start = run.Start;
+					}
+
+					var length = run.Length;
+					if (length > 0)
+					{
+						var value = text.Text.Substring(start, length);
+						blocks.Add(new AttributedTextBlock(value, run.Attributes));
+						start = run.GetEnd();
+					}
+#if DEBUG
+					else
+						System.Diagnostics.Debug.WriteLine("Length should not be less then 0");
+#endif
+				}
+			}
+After:
+			}
+
+			var blocks = new List<AttributedTextBlock>();
+
+			var start = 0;
+			var end = text.Text.Length;
+*/
+
+/* Unmerged change from project 'Graphics(net8.0-android)'
+Before:
+			var blocks = new List<AttributedTextBlock>();
+
+			var start = 0;
+			var end = text.Text.Length;
+
+			if (text.Runs?.Count > 0)
+			{
+				foreach (var run in text.Runs)
+				{
+					if (start < run.Start)
+					{
+						var noAttrLength = run.Start - start;
+						var noAttrValue = text.Text.Substring(start, noAttrLength);
+						blocks.Add(new AttributedTextBlock(noAttrValue, null));
+						start = run.Start;
+					}
+
+					var length = run.Length;
+					if (length > 0)
+					{
+						var value = text.Text.Substring(start, length);
+						blocks.Add(new AttributedTextBlock(value, run.Attributes));
+						start = run.GetEnd();
+					}
+#if DEBUG
+					else
+						System.Diagnostics.Debug.WriteLine("Length should not be less then 0");
+#endif
+				}
+			}
+After:
+			}
+
+			var blocks = new List<AttributedTextBlock>();
+
+			var start = 0;
+			var end = text.Text.Length;
+*/
+
+/* Unmerged change from project 'Graphics(net8.0-windows10.0.19041.0)'
+Before:
+			var blocks = new List<AttributedTextBlock>();
+
+			var start = 0;
+			var end = text.Text.Length;
+
+			if (text.Runs?.Count > 0)
+			{
+				foreach (var run in text.Runs)
+				{
+					if (start < run.Start)
+					{
+						var noAttrLength = run.Start - start;
+						var noAttrValue = text.Text.Substring(start, noAttrLength);
+						blocks.Add(new AttributedTextBlock(noAttrValue, null));
+						start = run.Start;
+					}
+
+					var length = run.Length;
+					if (length > 0)
+					{
+						var value = text.Text.Substring(start, length);
+						blocks.Add(new AttributedTextBlock(value, run.Attributes));
+						start = run.GetEnd();
+					}
+#if DEBUG
+					else
+						System.Diagnostics.Debug.WriteLine("Length should not be less then 0");
+#endif
+				}
+			}
+After:
+			}
+
+			var blocks = new List<AttributedTextBlock>();
+
+			var start = 0;
+			var end = text.Text.Length;
+*/
+
+/* Unmerged change from project 'Graphics(net8.0-windows10.0.20348.0)'
+Before:
+			var blocks = new List<AttributedTextBlock>();
+
+			var start = 0;
+			var end = text.Text.Length;
+
+			if (text.Runs?.Count > 0)
+			{
+				foreach (var run in text.Runs)
+				{
+					if (start < run.Start)
+					{
+						var noAttrLength = run.Start - start;
+						var noAttrValue = text.Text.Substring(start, noAttrLength);
+						blocks.Add(new AttributedTextBlock(noAttrValue, null));
+						start = run.Start;
+					}
+
+					var length = run.Length;
+					if (length > 0)
+					{
+						var value = text.Text.Substring(start, length);
+						blocks.Add(new AttributedTextBlock(value, run.Attributes));
+						start = run.GetEnd();
+					}
+#if DEBUG
+					else
+						System.Diagnostics.Debug.WriteLine("Length should not be less then 0");
+#endif
+				}
+			}
+After:
+			}
+
+			var blocks = new List<AttributedTextBlock>();
+
+			var start = 0;
+			var end = text.Text.Length;
+*/
+
+/* Unmerged change from project 'Graphics(net8.0-macos)'
+Before:
+			var blocks = new List<AttributedTextBlock>();
+
+			var start = 0;
+			var end = text.Text.Length;
+
+			if (text.Runs?.Count > 0)
+			{
+				foreach (var run in text.Runs)
+				{
+					if (start < run.Start)
+					{
+						var noAttrLength = run.Start - start;
+						var noAttrValue = text.Text.Substring(start, noAttrLength);
+						blocks.Add(new AttributedTextBlock(noAttrValue, null));
+						start = run.Start;
+					}
+
+					var length = run.Length;
+					if (length > 0)
+					{
+						var value = text.Text.Substring(start, length);
+						blocks.Add(new AttributedTextBlock(value, run.Attributes));
+						start = run.GetEnd();
+					}
+#if DEBUG
+					else
+						System.Diagnostics.Debug.WriteLine("Length should not be less then 0");
+#endif
+				}
+			}
+After:
+			}
+
+			var blocks = new List<AttributedTextBlock>();
+
+			var start = 0;
+			var end = text.Text.Length;
+*/
+
+/* Unmerged change from project 'Graphics(net8.0)'
+Before:
+			if (start < end)
+After:
+			if (text.Runs?.Count > 0)
+			{
+				foreach (var run in text.Runs)
+				{
+					if (start < run.Start)
+					{
+						var noAttrLength = run.Start - start;
+						var noAttrValue = text.Text.Substring(start, noAttrLength);
+						blocks.Add(new AttributedTextBlock(noAttrValue, null));
+						start = run.Start;
+					}
+
+					var length = run.Length;
+					if (length > 0)
+					{
+						var value = text.Text.Substring(start, length);
+						blocks.Add(new AttributedTextBlock(value, run.Attributes));
+						start = run.GetEnd();
+					}
+#if DEBUG
+					else
+					{
+						System.Diagnostics.Debug.WriteLine("Length should not be less then 0");
+					}
+#endif
+				}
+			}
+
+			if (start < end)
+*/
+
+/* Unmerged change from project 'Graphics(net8.0-ios)'
+Before:
+			if (start < end)
+After:
+			if (text.Runs?.Count > 0)
+			{
+				foreach (var run in text.Runs)
+				{
+					if (start < run.Start)
+					{
+						var noAttrLength = run.Start - start;
+						var noAttrValue = text.Text.Substring(start, noAttrLength);
+						blocks.Add(new AttributedTextBlock(noAttrValue, null));
+						start = run.Start;
+					}
+
+					var length = run.Length;
+					if (length > 0)
+					{
+						var value = text.Text.Substring(start, length);
+						blocks.Add(new AttributedTextBlock(value, run.Attributes));
+						start = run.GetEnd();
+					}
+#if DEBUG
+					else
+					{
+						System.Diagnostics.Debug.WriteLine("Length should not be less then 0");
+					}
+#endif
+				}
+			}
+
+			if (start < end)
+*/
+
+/* Unmerged change from project 'Graphics(net8.0-maccatalyst)'
+Before:
+			if (start < end)
+After:
+			if (text.Runs?.Count > 0)
+			{
+				foreach (var run in text.Runs)
+				{
+					if (start < run.Start)
+					{
+						var noAttrLength = run.Start - start;
+						var noAttrValue = text.Text.Substring(start, noAttrLength);
+						blocks.Add(new AttributedTextBlock(noAttrValue, null));
+						start = run.Start;
+					}
+
+					var length = run.Length;
+					if (length > 0)
+					{
+						var value = text.Text.Substring(start, length);
+						blocks.Add(new AttributedTextBlock(value, run.Attributes));
+						start = run.GetEnd();
+					}
+#if DEBUG
+					else
+					{
+						System.Diagnostics.Debug.WriteLine("Length should not be less then 0");
+					}
+#endif
+				}
+			}
+
+			if (start < end)
+*/
+
+/* Unmerged change from project 'Graphics(net8.0-android)'
+Before:
+			if (start < end)
+After:
+			if (text.Runs?.Count > 0)
+			{
+				foreach (var run in text.Runs)
+				{
+					if (start < run.Start)
+					{
+						var noAttrLength = run.Start - start;
+						var noAttrValue = text.Text.Substring(start, noAttrLength);
+						blocks.Add(new AttributedTextBlock(noAttrValue, null));
+						start = run.Start;
+					}
+
+					var length = run.Length;
+					if (length > 0)
+					{
+						var value = text.Text.Substring(start, length);
+						blocks.Add(new AttributedTextBlock(value, run.Attributes));
+						start = run.GetEnd();
+					}
+#if DEBUG
+					else
+					{
+						System.Diagnostics.Debug.WriteLine("Length should not be less then 0");
+					}
+#endif
+				}
+			}
+
+			if (start < end)
+*/
+
+/* Unmerged change from project 'Graphics(net8.0-windows10.0.19041.0)'
+Before:
+			if (start < end)
+After:
+			if (text.Runs?.Count > 0)
+			{
+				foreach (var run in text.Runs)
+				{
+					if (start < run.Start)
+					{
+						var noAttrLength = run.Start - start;
+						var noAttrValue = text.Text.Substring(start, noAttrLength);
+						blocks.Add(new AttributedTextBlock(noAttrValue, null));
+						start = run.Start;
+					}
+
+					var length = run.Length;
+					if (length > 0)
+					{
+						var value = text.Text.Substring(start, length);
+						blocks.Add(new AttributedTextBlock(value, run.Attributes));
+						start = run.GetEnd();
+					}
+#if DEBUG
+					else
+					{
+						System.Diagnostics.Debug.WriteLine("Length should not be less then 0");
+					}
+#endif
+				}
+			}
+
+			if (start < end)
+*/
+
+/* Unmerged change from project 'Graphics(net8.0-windows10.0.20348.0)'
+Before:
+			if (start < end)
+After:
+			if (text.Runs?.Count > 0)
+			{
+				foreach (var run in text.Runs)
+				{
+					if (start < run.Start)
+					{
+						var noAttrLength = run.Start - start;
+						var noAttrValue = text.Text.Substring(start, noAttrLength);
+						blocks.Add(new AttributedTextBlock(noAttrValue, null));
+						start = run.Start;
+					}
+
+					var length = run.Length;
+					if (length > 0)
+					{
+						var value = text.Text.Substring(start, length);
+						blocks.Add(new AttributedTextBlock(value, run.Attributes));
+						start = run.GetEnd();
+					}
+#if DEBUG
+					else
+					{
+						System.Diagnostics.Debug.WriteLine("Length should not be less then 0");
+					}
+#endif
+				}
+			}
+
+			if (start < end)
+*/
+
+/* Unmerged change from project 'Graphics(net8.0-macos)'
+Before:
+			if (start < end)
+After:
+			if (text.Runs?.Count > 0)
+			{
+				foreach (var run in text.Runs)
+				{
+					if (start < run.Start)
+					{
+						var noAttrLength = run.Start - start;
+						var noAttrValue = text.Text.Substring(start, noAttrLength);
+						blocks.Add(new AttributedTextBlock(noAttrValue, null));
+						start = run.Start;
+					}
+
+					var length = run.Length;
+					if (length > 0)
+					{
+						var value = text.Text.Substring(start, length);
+						blocks.Add(new AttributedTextBlock(value, run.Attributes));
+						start = run.GetEnd();
+					}
+#if DEBUG
+					else
+					{
+						System.Diagnostics.Debug.WriteLine("Length should not be less then 0");
+					}
+#endif
+				}
+			}
+
+			if (start < end)
+*/
+{
+				return null;
+			}
+
+			var blocks = new List<AttributedTextBlock>();
+
+			var start = 0;
+			var end = text.Text.Length;
+
+			if (text.Runs?.Count > 0)
+			{
+				foreach (var run in text.Runs)
+				{
+					if (start < run.Start)
+					{
+						var noAttrLength = run.Start - start;
+						var noAttrValue = text.Text.Substring(start, noAttrLength);
+						blocks.Add(new AttributedTextBlock(noAttrValue, null));
+						start = run.Start;
+					}
+
+					var length = run.Length;
+					if (length > 0)
+					{
+						var value = text.Text.Substring(start, length);
+						blocks.Add(new AttributedTextBlock(value, run.Attributes));
+						start = run.GetEnd();
+					}
+#if DEBUG
+					else
+					{
+						System.Diagnostics.Debug.WriteLine("Length should not be less then 0");
+					}
 #endif
 				}
 			}

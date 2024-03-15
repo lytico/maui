@@ -20,14 +20,20 @@ namespace Microsoft.Maui
 		{
 			var count = ItemDelegate.GetCount();
 			for (var i = 0; i < count; i++)
+			{
 				yield return ItemDelegate.GetItem(i);
+			}
+			}
 		}
 
 		IEnumerator IEnumerable.GetEnumerator()
 		{
 			var count = ItemDelegate.GetCount();
 			for (var i = 0; i < count; i++)
+			{
 				yield return ItemDelegate.GetItem(i);
+			}
+			}
 		}
 	}
 }

@@ -37,7 +37,12 @@ namespace Microsoft.Maui.Controls
 		void Maui.ISwipeItem.OnInvoked()
 		{
 			if (Command != null && Command.CanExecute(CommandParameter))
+			{
 				Command.Execute(CommandParameter);
+			}
+
+			OnClicked();
+			}
 
 			OnClicked();
 			Invoked?.Invoke(this, EventArgs.Empty);

@@ -31,7 +31,10 @@ namespace Microsoft.Maui.Controls.Platform
 				var currentPage = _modalPages.Count > 0 ? _modalPages[_modalPages.Count - 1].Page : _window.Page;
 
 				if (currentPage is Shell shell)
+				{
+				{
 					currentPage = shell.CurrentPage;
+				}
 
 				return currentPage;
 			}
@@ -49,7 +52,9 @@ namespace Microsoft.Maui.Controls.Platform
 			_window.PropertyChanged += (_, args) =>
 			{
 				if (args.Is(Window.PageProperty))
+				{
 					SettingNewPage();
+				}
 			};
 
 			InitializePlatform();
@@ -119,6 +124,9 @@ namespace Microsoft.Maui.Controls.Platform
 		async Task SyncPlatformModalStackAsync()
 		{
 			if (!IsModalReady || syncing)
+
+/* Unmerged change from project 'Controls.Core(net8.0-maccatalyst)'
+Before:
 				return;
 
 			bool syncAgain = false;
@@ -176,6 +184,327 @@ namespace Microsoft.Maui.Controls.Platform
 					}
 				}
 			}
+After:
+			{
+				return;
+			}
+*/
+
+/* Unmerged change from project 'Controls.Core(net8.0-android)'
+Before:
+				return;
+
+			bool syncAgain = false;
+
+			try
+			{
+				syncing = true;
+
+				int popTo;
+
+				for (popTo = 0; popTo < _platformModalPages.Count && popTo < _modalPages.Count; popTo++)
+				{
+					if (_platformModalPages[popTo] != _modalPages[popTo].Page)
+					{
+						break;
+					}
+				}
+
+				// This means the modal stacks are already synced so we don't have to do anything
+				if (_platformModalPages.Count == _modalPages.Count && popTo == _platformModalPages.Count)
+					return;
+
+				// This ensures that appearing has fired on the final page that will be visible after 
+				// the sync has finished
+				CurrentPage?.SendAppearing();
+
+				// Pop platform modal pages until we get to the point where the xplat expectation
+				// matches the platform modals
+				if (_platformModalPages.Count > popTo && IsModalReady)
+				{
+					bool animated = false;
+					if (_modalPages.TryGetValue(CurrentPlatformModalPage, out var request))
+					{
+						_modalPages.Remove(CurrentPlatformModalPage);
+						animated = request.IsAnimated;
+					}
+
+					var page = await PopModalPlatformAsync(animated);
+					page.Parent?.RemoveLogicalChild(page);
+					syncAgain = true;
+				}
+
+				if (!syncAgain)
+				{
+					//push any modals that need to be synced
+					var i = _platformModalPages.Count;
+					if (i < _modalPages.Count && IsModalReady)
+					{
+						var nextRequest = _modalPages[i];
+						var nextPage = nextRequest.Page;
+						bool animated = nextRequest.IsAnimated;
+
+						await PushModalPlatformAsync(nextPage, animated);
+						syncAgain = true;
+					}
+				}
+			}
+After:
+			{
+				return;
+			}
+*/
+
+/* Unmerged change from project 'Controls.Core(net8.0-windows10.0.19041.0)'
+Before:
+				return;
+
+			bool syncAgain = false;
+
+			try
+			{
+				syncing = true;
+
+				int popTo;
+
+				for (popTo = 0; popTo < _platformModalPages.Count && popTo < _modalPages.Count; popTo++)
+				{
+					if (_platformModalPages[popTo] != _modalPages[popTo].Page)
+					{
+						break;
+					}
+				}
+
+				// This means the modal stacks are already synced so we don't have to do anything
+				if (_platformModalPages.Count == _modalPages.Count && popTo == _platformModalPages.Count)
+					return;
+
+				// This ensures that appearing has fired on the final page that will be visible after 
+				// the sync has finished
+				CurrentPage?.SendAppearing();
+
+				// Pop platform modal pages until we get to the point where the xplat expectation
+				// matches the platform modals
+				if (_platformModalPages.Count > popTo && IsModalReady)
+				{
+					bool animated = false;
+					if (_modalPages.TryGetValue(CurrentPlatformModalPage, out var request))
+					{
+						_modalPages.Remove(CurrentPlatformModalPage);
+						animated = request.IsAnimated;
+					}
+
+					var page = await PopModalPlatformAsync(animated);
+					page.Parent?.RemoveLogicalChild(page);
+					syncAgain = true;
+				}
+
+				if (!syncAgain)
+				{
+					//push any modals that need to be synced
+					var i = _platformModalPages.Count;
+					if (i < _modalPages.Count && IsModalReady)
+					{
+						var nextRequest = _modalPages[i];
+						var nextPage = nextRequest.Page;
+						bool animated = nextRequest.IsAnimated;
+
+						await PushModalPlatformAsync(nextPage, animated);
+						syncAgain = true;
+					}
+				}
+			}
+After:
+			{
+				return;
+			}
+*/
+
+/* Unmerged change from project 'Controls.Core(net8.0-windows10.0.20348.0)'
+Before:
+				return;
+
+			bool syncAgain = false;
+
+			try
+			{
+				syncing = true;
+
+				int popTo;
+
+				for (popTo = 0; popTo < _platformModalPages.Count && popTo < _modalPages.Count; popTo++)
+				{
+					if (_platformModalPages[popTo] != _modalPages[popTo].Page)
+					{
+						break;
+					}
+				}
+
+				// This means the modal stacks are already synced so we don't have to do anything
+				if (_platformModalPages.Count == _modalPages.Count && popTo == _platformModalPages.Count)
+					return;
+
+				// This ensures that appearing has fired on the final page that will be visible after 
+				// the sync has finished
+				CurrentPage?.SendAppearing();
+
+				// Pop platform modal pages until we get to the point where the xplat expectation
+				// matches the platform modals
+				if (_platformModalPages.Count > popTo && IsModalReady)
+				{
+					bool animated = false;
+					if (_modalPages.TryGetValue(CurrentPlatformModalPage, out var request))
+					{
+						_modalPages.Remove(CurrentPlatformModalPage);
+						animated = request.IsAnimated;
+					}
+
+					var page = await PopModalPlatformAsync(animated);
+					page.Parent?.RemoveLogicalChild(page);
+					syncAgain = true;
+				}
+
+				if (!syncAgain)
+				{
+					//push any modals that need to be synced
+					var i = _platformModalPages.Count;
+					if (i < _modalPages.Count && IsModalReady)
+					{
+						var nextRequest = _modalPages[i];
+						var nextPage = nextRequest.Page;
+						bool animated = nextRequest.IsAnimated;
+
+						await PushModalPlatformAsync(nextPage, animated);
+						syncAgain = true;
+					}
+				}
+			}
+After:
+			{
+				return;
+			}
+*/
+			{
+			{
+				return;
+			}
+
+			bool syncAgain = false;
+
+			try
+			{
+				syncing = true;
+
+				int popTo;
+
+				for (popTo = 0; popTo < _platformModalPages.Count && popTo < _modalPages.Count; popTo++)
+				{
+					if (_platformModalPages[popTo] != _modalPages[popTo].Page)
+					{
+						break;
+					}
+				}
+
+				// This means the modal stacks are already synced so we don't have to do anything
+				if (_platformModalPages.Count == _modalPages.Count && popTo == _platformModalPages.Count)
+				{
+				{
+					return;
+				}
+
+				// This ensures that appearing has fired on the final page that will be visible after 
+				// the sync has finished
+				CurrentPage?.SendAppearing();
+
+				// Pop platform modal pages until we get to the point where the xplat expectation
+				// matches the platform modals
+				if (_platformModalPages.Count > popTo && IsModalReady)
+				{
+					bool animated = false;
+					if (_modalPages.TryGetValue(CurrentPlatformModalPage, out var request))
+					{
+						_modalPages.Remove(CurrentPlatformModalPage);
+						animated = request.IsAnimated;
+					}
+
+					var page = await PopModalPlatformAsync(animated);
+					page.Parent?.RemoveLogicalChild(page);
+					syncAgain = true;
+				}
+
+				if (!syncAgain)
+				{
+					//push any modals that need to be synced
+					var i = _platformModalPages.Count;
+					if (i < _modalPages.Count && IsModalReady)
+					{
+						var nextRequest = _modalPages[i];
+						var nextPage = nextRequest.Page;
+						bool animated = nextRequest.IsAnimated;
+
+						await PushModalPlatformAsync(nextPage, animated);
+						syncAgain = true;
+					}
+				}
+			}
+
+			bool syncAgain = false;
+
+			try
+			{
+				syncing = true;
+
+				int popTo;
+
+				for (popTo = 0; popTo < _platformModalPages.Count && popTo < _modalPages.Count; popTo++)
+				{
+					if (_platformModalPages[popTo] != _modalPages[popTo].Page)
+					{
+						break;
+					}
+				}
+
+				// This means the modal stacks are already synced so we don't have to do anything
+				if (_platformModalPages.Count == _modalPages.Count && popTo == _platformModalPages.Count)
+				{
+					return;
+				}
+
+				// This ensures that appearing has fired on the final page that will be visible after 
+				// the sync has finished
+				CurrentPage?.SendAppearing();
+
+				// Pop platform modal pages until we get to the point where the xplat expectation
+				// matches the platform modals
+				if (_platformModalPages.Count > popTo && IsModalReady)
+				{
+					bool animated = false;
+					if (_modalPages.TryGetValue(CurrentPlatformModalPage, out var request))
+					{
+						_modalPages.Remove(CurrentPlatformModalPage);
+						animated = request.IsAnimated;
+					}
+
+					var page = await PopModalPlatformAsync(animated);
+					page.Parent?.RemoveLogicalChild(page);
+					syncAgain = true;
+				}
+
+				if (!syncAgain)
+				{
+					//push any modals that need to be synced
+					var i = _platformModalPages.Count;
+					if (i < _modalPages.Count && IsModalReady)
+					{
+						var nextRequest = _modalPages[i];
+						var nextPage = nextRequest.Page;
+						bool animated = nextRequest.IsAnimated;
+
+						await PushModalPlatformAsync(nextPage, animated);
+						syncAgain = true;
+					}
+				}
+			}
 			finally
 			{
 				// Code has multiple exit points during the sync operation.
@@ -196,7 +525,10 @@ namespace Microsoft.Maui.Controls.Platform
 		public async Task<Page?> PopModalAsync(bool animated)
 		{
 			if (_modalPages.Count <= 0)
+			{
+			{
 				throw new InvalidOperationException("PopModalAsync failed because modal stack is currently empty.");
+			}
 
 			Page modal = _modalPages[_modalPages.Count - 1].Page;
 
@@ -244,7 +576,10 @@ namespace Microsoft.Maui.Controls.Platform
 			}
 
 			if (!isPlatformReady)
+			{
+			{
 				SyncModalStackWhenPlatformIsReady();
+			}
 
 			return modal;
 		}
@@ -302,7 +637,10 @@ namespace Microsoft.Maui.Controls.Platform
 			_window.OnModalPushed(modal);
 
 			if (!isPlatformReady)
+			{
+			{
 				SyncModalStackWhenPlatformIsReady();
+			}
 		}
 
 		void SettingNewPage()
@@ -354,10 +692,15 @@ namespace Microsoft.Maui.Controls.Platform
 		void ClearModalPages(bool xplat = false, bool platform = false)
 		{
 			if (xplat)
+			{
 				_modalPages.Clear();
+			}
 
 			if (platform)
+			{
+			{
 				_platformModalPages.Clear();
+			}
 		}
 
 		// Windows and Android have basically the same requirement that
@@ -438,7 +781,9 @@ namespace Microsoft.Maui.Controls.Platform
 					&& CurrentPlatformPage.IsLoadedOnPlatform();
 
 				if (result)
+				{
 					DisconnectPlatformPageWatchingForLoaded();
+				}
 
 				return result;
 			}

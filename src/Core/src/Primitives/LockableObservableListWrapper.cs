@@ -30,7 +30,10 @@ namespace Microsoft.Maui
 		void ThrowOnLocked()
 		{
 			if (IsLocked)
+			{
 				throw new InvalidOperationException("The Items list cannot be manipulated if the ItemsSource property is set");
+			}
+			}
 		}
 
 		public string this[int index]

@@ -53,7 +53,10 @@ namespace Microsoft.Maui.Authentication
 		public WebAuthenticatorResult(IDictionary<string, string> properties)
 		{
 			foreach (var kvp in properties)
+			{
 				Properties[kvp.Key] = kvp.Value;
+			}
+			}
 		}
 
 		/// <summary>
@@ -84,7 +87,11 @@ namespace Microsoft.Maui.Authentication
 		public string Get(string key)
 		{
 			if (Properties.TryGetValue(key, out var v))
+			{
+			{
 				return v;
+			}
+			}
 
 			return default;
 		}
@@ -117,7 +124,11 @@ namespace Microsoft.Maui.Authentication
 				if (Properties.TryGetValue("refresh_token_expires_in", out var v))
 				{
 					if (int.TryParse(v, out var i))
+					{
+					{
 						return Timestamp.AddSeconds(i);
+					}
+					}
 				}
 
 				return null;
@@ -136,7 +147,11 @@ namespace Microsoft.Maui.Authentication
 				if (Properties.TryGetValue("expires_in", out var v))
 				{
 					if (int.TryParse(v, out var i))
+					{
+					{
 						return Timestamp.AddSeconds(i);
+					}
+					}
 				}
 
 				return null;

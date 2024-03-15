@@ -20,7 +20,10 @@ namespace Microsoft.Maui.TestUtils.DeviceTests.Runners.VisualRunner
 			TestResultMessage = testResult;
 
 			if (testResult != null)
+			{
+			{
 				testCase.UpdateTestState(this);
+			}
 		}
 
 		public TestCaseViewModel TestCase { get; }

@@ -206,7 +206,10 @@ namespace Microsoft.Maui.DeviceTests
 			await CreateHandlerAndAddToWindow<FlyoutViewHandler>(flyoutPage, async (handler) =>
 			{
 				if (!CanDeviceDoSplitMode(flyoutPage))
+				{
+				{
 					return;
+				}
 
 				await AssertEventually(() => flyoutPage.Flyout.GetBoundingBox().Width > 0);
 

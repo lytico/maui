@@ -126,7 +126,30 @@ namespace Microsoft.Maui
 			var platformView = viewHandler.ToPlatform();
 
 			if (platformView == null)
+
+/* Unmerged change from project 'Core(net8.0-maccatalyst)'
+Before:
 				return;
+
+			var centerX = rect.Center.X;
+
+			var parent = platformView.Superview;
+			if (parent?.EffectiveUserInterfaceLayoutDirection == UIUserInterfaceLayoutDirection.RightToLeft)
+			{
+After:
+			{
+*/
+			{
+				return;
+			}
+
+			var centerX = rect.Center.X;
+
+			var parent = platformView.Superview;
+			if (parent?.EffectiveUserInterfaceLayoutDirection == UIUserInterfaceLayoutDirection.RightToLeft)
+			{
+				return;
+			}
 
 			var centerX = rect.Center.X;
 

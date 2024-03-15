@@ -39,7 +39,9 @@ namespace Microsoft.Maui.Controls
 					ApplyChanges();
 				}
 				else if (p.Is(Shell.TitleProperty))
+				{
 					UpdateTitle();
+				}
 			};
 
 			shell.HandlerChanged += (_, __) => ApplyChanges();
@@ -58,15 +60,169 @@ namespace Microsoft.Maui.Controls
 			if (_currentPage != currentPage)
 			{
 				if (_currentPage != null)
+
+/* Unmerged change from project 'Controls.Core(net8.0)'
+Before:
 					_currentPage.PropertyChanged -= OnCurrentPagePropertyChanged;
+After:
+				{
+					_currentPage.PropertyChanged -= OnCurrentPagePropertyChanged;
+				}
+*/
+
+/* Unmerged change from project 'Controls.Core(net8.0-ios)'
+Before:
+					_currentPage.PropertyChanged -= OnCurrentPagePropertyChanged;
+After:
+				{
+					_currentPage.PropertyChanged -= OnCurrentPagePropertyChanged;
+				}
+*/
+
+/* Unmerged change from project 'Controls.Core(net8.0-maccatalyst)'
+Before:
+					_currentPage.PropertyChanged -= OnCurrentPagePropertyChanged;
+After:
+				{
+					_currentPage.PropertyChanged -= OnCurrentPagePropertyChanged;
+				}
+*/
+
+/* Unmerged change from project 'Controls.Core(net8.0-android)'
+Before:
+					_currentPage.PropertyChanged -= OnCurrentPagePropertyChanged;
+After:
+				{
+					_currentPage.PropertyChanged -= OnCurrentPagePropertyChanged;
+				}
+*/
+
+/* Unmerged change from project 'Controls.Core(net8.0-windows10.0.20348.0)'
+Before:
+					_currentPage.PropertyChanged -= OnCurrentPagePropertyChanged;
+After:
+				{
+					_currentPage.PropertyChanged -= OnCurrentPagePropertyChanged;
+				}
+*/
+				
+/* Unmerged change from project 'Controls.Core(net8.0)'
+Before:
+					_currentPage.PropertyChanged += OnCurrentPagePropertyChanged;
+After:
+				{
+					_currentPage.PropertyChanged += OnCurrentPagePropertyChanged;
+				}
+*/
+
+/* Unmerged change from project 'Controls.Core(net8.0-ios)'
+Before:
+					_currentPage.PropertyChanged += OnCurrentPagePropertyChanged;
+After:
+				{
+					_currentPage.PropertyChanged += OnCurrentPagePropertyChanged;
+				}
+*/
+
+/* Unmerged change from project 'Controls.Core(net8.0-maccatalyst)'
+Before:
+					_currentPage.PropertyChanged += OnCurrentPagePropertyChanged;
+After:
+				{
+					_currentPage.PropertyChanged += OnCurrentPagePropertyChanged;
+				}
+*/
+
+/* Unmerged change from project 'Controls.Core(net8.0-android)'
+Before:
+					_currentPage.PropertyChanged += OnCurrentPagePropertyChanged;
+After:
+				{
+					_currentPage.PropertyChanged += OnCurrentPagePropertyChanged;
+				}
+*/
+
+/* Unmerged change from project 'Controls.Core(net8.0-windows10.0.20348.0)'
+Before:
+					_currentPage.PropertyChanged += OnCurrentPagePropertyChanged;
+After:
+				{
+					_currentPage.PropertyChanged += OnCurrentPagePropertyChanged;
+				}
+*/
+{
+					_currentPage.PropertyChanged -= OnCurrentPagePropertyChanged;
+				}
 
 				_currentPage = currentPage;
 
 				if (_currentPage != null)
+				{
 					_currentPage.PropertyChanged += OnCurrentPagePropertyChanged;
+				}
 			}
 
 			if (currentPage == null)
+
+/* Unmerged change from project 'Controls.Core(net8.0)'
+Before:
+				return;
+
+			var stack = _shell.Navigation.NavigationStack;
+			if (stack.Count == 0)
+				return;
+After:
+			{
+				return;
+			}
+
+			var stack = _shell.Navigation.NavigationStack;
+			if (stack.Count == 0)
+			{
+				return;
+			}
+*/
+
+/* Unmerged change from project 'Controls.Core(net8.0-maccatalyst)'
+Before:
+				return;
+
+			var stack = _shell.Navigation.NavigationStack;
+			if (stack.Count == 0)
+				return;
+After:
+			{
+				return;
+			}
+
+			var stack = _shell.Navigation.NavigationStack;
+			if (stack.Count == 0)
+			{
+				return;
+			}
+*/
+
+/* Unmerged change from project 'Controls.Core(net8.0-android)'
+Before:
+				return;
+
+			var stack = _shell.Navigation.NavigationStack;
+			if (stack.Count == 0)
+				return;
+After:
+			{
+				return;
+			}
+
+			var stack = _shell.Navigation.NavigationStack;
+			if (stack.Count == 0)
+			{
+				return;
+			}
+*/
+
+/* Unmerged change from project 'Controls.Core(net8.0-windows10.0.19041.0)'
+Before:
 				return;
 
 			var stack = _shell.Navigation.NavigationStack;
@@ -79,7 +235,54 @@ namespace Microsoft.Maui.Controls
 #endif
 
 			Page? previousPage = null;
-			if (stack.Count > 1)
+After:
+			{
+				return;
+			}
+
+			var stack = null;
+*/
+
+/* Unmerged change from project 'Controls.Core(net8.0-windows10.0.20348.0)'
+Before:
+				return;
+
+			var stack = _shell.Navigation.NavigationStack;
+			if (stack.Count == 0)
+				return;
+
+			_toolbarTracker.Target = _shell;
+#if WINDOWS
+			_menuBarTracker.Target = _shell;
+#endif
+
+			Page? previousPage = null;
+After:
+			{
+				return;
+			}
+
+			var stack = null;
+*/
+			{
+				return;
+			}
+
+			var stack = _shell.Navigation.NavigationStack;
+			if (stack.Count == 0)
+			{
+				return;
+			}
+
+			_toolbarTracker.Target = _shell;
+#if WINDOWS
+			_menuBarTracker.Target = _shell;
+#endif
+
+			Page? previousPage = null;
+			if (stack.Count 
+/* Unmerged change from project 'Controls.Core(net8.0)'
+Before:
 				previousPage = stack[stack.Count - 1];
 
 			ToolbarItems = _toolbarTracker.ToolbarItems;
@@ -93,9 +296,124 @@ namespace Microsoft.Maui.Controls
 			}
 
 			_drawerToggleVisible = stack.Count <= 1;
-			BackButtonVisible = backButtonVisible && stack.Count > 1;
-			BackButtonEnabled = _backButtonBehavior?.IsEnabled ?? true;
+After:
+			{
+				previousPage = stack.Count <= 1;
+*/
 
+/* Unmerged change from project 'Controls.Core(net8.0-maccatalyst)'
+Before:
+				previousPage = stack[stack.Count - 1];
+
+			ToolbarItems = _toolbarTracker.ToolbarItems;
+
+			UpdateBackbuttonBehavior();
+			bool backButtonVisible = true;
+
+			if (_backButtonBehavior != null)
+			{
+				backButtonVisible = _backButtonBehavior.IsVisible;
+			}
+
+			_drawerToggleVisible = stack.Count <= 1;
+After:
+			{
+				previousPage = stack.Count <= 1;
+*/
+
+/* Unmerged change from project 'Controls.Core(net8.0-android)'
+Before:
+				previousPage = stack[stack.Count - 1];
+
+			ToolbarItems = _toolbarTracker.ToolbarItems;
+
+			UpdateBackbuttonBehavior();
+			bool backButtonVisible = true;
+
+			if (_backButtonBehavior != null)
+			{
+				backButtonVisible = _backButtonBehavior.IsVisible;
+			}
+
+			_drawerToggleVisible = stack.Count <= 1;
+After:
+			{
+				previousPage = stack.Count <= 1;
+*/
+
+/* Unmerged change from project 'Controls.Core(net8.0-windows10.0.19041.0)'
+Before:
+				previousPage = stack[stack.Count - 1];
+
+			ToolbarItems = _toolbarTracker.ToolbarItems;
+
+			UpdateBackbuttonBehavior();
+			bool backButtonVisible = true;
+
+			if (_backButtonBehavior != null)
+			{
+				backButtonVisible = _backButtonBehavior.IsVisible;
+			}
+
+			_drawerToggleVisible = stack.Count <= 1;
+After:
+			{
+				previousPage = stack.Count <= 1;
+*/
+
+/* Unmerged change from project 'Controls.Core(net8.0-windows10.0.20348.0)'
+Before:
+				previousPage = stack[stack.Count - 1];
+
+			ToolbarItems = _toolbarTracker.ToolbarItems;
+
+			UpdateBackbuttonBehavior();
+			bool backButtonVisible = true;
+
+			if (_backButtonBehavior != null)
+			{
+				backButtonVisible = _backButtonBehavior.IsVisible;
+			}
+
+			_drawerToggleVisible = stack.Count <= 1;
+After:
+			{
+				previousPage = stack.Count <= 1;
+*/
+== 0)
+			{
+				return;
+			}
+
+			_toolbarTracker.Target = _shell;
+#if WINDOWS
+			_menuBarTracker.Target = _shell;
+#endif
+
+			Page? previousPage = null;
+			if (stack.Count > 1)
+			{
+				previousPage = stack[stack.Count - 1];
+			}
+
+			ToolbarItems = _toolbarTracker.ToolbarItems;
+
+			UpdateBackbuttonBehavior();
+			bool backButtonVisible = true;
+
+			if (_backButtonBehavior != null)
+			{
+				backButtonVisible = _backButtonBehavior.IsVisible;
+			}
+
+			_drawerToggleVisible = stack[stack.Count - 1];
+			}
+
+			ToolbarItems = _toolbarTracker.ToolbarItems;
+
+
+/* Unmerged change from project 'Controls.Core(net8.0)'
+Before:
 			UpdateTitle();
 
 			Func<bool> getDefaultNavBarIsVisible = () =>
@@ -151,6 +469,713 @@ namespace Microsoft.Maui.Controls
 		{
 			if (e.Is(Page.TitleProperty))
 				UpdateTitle();
+After:
+			UpdateBackbuttonBehavior();
+			bool backButtonVisible = true;
+
+			if (_backButtonBehavior != null)
+			{
+				backButtonVisible = _backButtonBehavior.IsVisible;
+			}
+
+			_drawerToggleVisible = stack.Count <= 1;
+			BackButtonVisible = backButtonVisible && stack.Count > 1;
+			BackButtonEnabled = _backButtonBehavior?.IsEnabled ?? true;
+
+			UpdateTitle();
+
+			Func<bool> getDefaultNavBarIsVisible = () =>
+			{
+				// Shell.GetEffectiveValue doesn't check the Shell itself, so check it here
+				if (_shell.IsSet(Shell.NavBarIsVisibleProperty))
+				{
+					return (bool)_shell.GetValue(Shell.NavBarIsVisibleProperty);
+				}
+
+				var flyoutBehavior = (_shell as IFlyoutView).FlyoutBehavior;
+#if WINDOWS
+				return (!String.IsNullOrEmpty(Title) ||
+					TitleView != null ||
+					_toolbarTracker.ToolbarItems.Count > 0 ||
+					_menuBarTracker.ToolbarItems.Count > 0 ||
+					flyoutBehavior == FlyoutBehavior.Flyout);
+#else
+				return (BackButtonVisible ||
+					!String.IsNullOrEmpty(Title) ||
+					TitleView != null ||
+					_toolbarTracker.ToolbarItems.Count > 0 ||
+					flyoutBehavior == FlyoutBehavior.Flyout);
+#endif
+			};
+
+			IsVisible = _shell.GetEffectiveValue(Shell.NavBarIsVisibleProperty, getDefaultNavBarIsVisible, observer: null);
+
+			if (currentPage != null)
+			{
+				DynamicOverflowEnabled = PlatformConfiguration.WindowsSpecific.Page.GetToolbarDynamicOverflowEnabled(currentPage);
+			}
+		}
+
+		void UpdateBackbuttonBehavior()
+		{
+			var bbb = Shell.GetBackButtonBehavior(_currentPage);
+
+			if (bbb == _backButtonBehavior)
+			{
+				return;
+			}
+
+			if (_backButtonBehavior != null)
+			{
+				_backButtonBehavior.PropertyChanged -= OnBackButtonCommandPropertyChanged;
+			}
+
+			_backButtonBehavior = bbb;
+
+			if (_backButtonBehavior != null)
+			{
+				_backButtonBehavior.PropertyChanged += OnBackButtonCommandPropertyChanged;
+			}
+		}
+
+		void OnBackButtonCommandPropertyChanged(object? sender, PropertyChangedEventArgs e)
+		{
+			ApplyChanges();
+		}
+
+		void OnCurrentPagePropertyChanged(object? sender, System.ComponentModel.PropertyChangedEventArgs e)
+		{
+			if (e.Is(Page.TitleProperty))
+			{
+				UpdateTitle();
+			}
+*/
+
+/* Unmerged change from project 'Controls.Core(net8.0-maccatalyst)'
+Before:
+			UpdateTitle();
+
+			Func<bool> getDefaultNavBarIsVisible = () =>
+			{
+				// Shell.GetEffectiveValue doesn't check the Shell itself, so check it here
+				if (_shell.IsSet(Shell.NavBarIsVisibleProperty))
+					return (bool)_shell.GetValue(Shell.NavBarIsVisibleProperty);
+
+				var flyoutBehavior = (_shell as IFlyoutView).FlyoutBehavior;
+#if WINDOWS
+				return (!String.IsNullOrEmpty(Title) ||
+					TitleView != null ||
+					_toolbarTracker.ToolbarItems.Count > 0 ||
+					_menuBarTracker.ToolbarItems.Count > 0 ||
+					flyoutBehavior == FlyoutBehavior.Flyout);
+#else
+				return (BackButtonVisible ||
+					!String.IsNullOrEmpty(Title) ||
+					TitleView != null ||
+					_toolbarTracker.ToolbarItems.Count > 0 ||
+					flyoutBehavior == FlyoutBehavior.Flyout);
+#endif
+			};
+
+			IsVisible = _shell.GetEffectiveValue(Shell.NavBarIsVisibleProperty, getDefaultNavBarIsVisible, observer: null);
+
+			if (currentPage != null)
+				DynamicOverflowEnabled = PlatformConfiguration.WindowsSpecific.Page.GetToolbarDynamicOverflowEnabled(currentPage);
+		}
+
+		void UpdateBackbuttonBehavior()
+		{
+			var bbb = Shell.GetBackButtonBehavior(_currentPage);
+
+			if (bbb == _backButtonBehavior)
+				return;
+
+			if (_backButtonBehavior != null)
+				_backButtonBehavior.PropertyChanged -= OnBackButtonCommandPropertyChanged;
+
+			_backButtonBehavior = bbb;
+
+			if (_backButtonBehavior != null)
+				_backButtonBehavior.PropertyChanged += OnBackButtonCommandPropertyChanged;
+		}
+
+		void OnBackButtonCommandPropertyChanged(object? sender, PropertyChangedEventArgs e)
+		{
+			ApplyChanges();
+		}
+
+		void OnCurrentPagePropertyChanged(object? sender, System.ComponentModel.PropertyChangedEventArgs e)
+		{
+			if (e.Is(Page.TitleProperty))
+				UpdateTitle();
+After:
+			UpdateBackbuttonBehavior();
+			bool backButtonVisible = true;
+
+			if (_backButtonBehavior != null)
+			{
+				backButtonVisible = _backButtonBehavior.IsVisible;
+			}
+
+			_drawerToggleVisible = stack.Count <= 1;
+			BackButtonVisible = backButtonVisible && stack.Count > 1;
+			BackButtonEnabled = _backButtonBehavior?.IsEnabled ?? true;
+
+			UpdateTitle();
+
+			Func<bool> getDefaultNavBarIsVisible = () =>
+			{
+				// Shell.GetEffectiveValue doesn't check the Shell itself, so check it here
+				if (_shell.IsSet(Shell.NavBarIsVisibleProperty))
+				{
+					return (bool)_shell.GetValue(Shell.NavBarIsVisibleProperty);
+				}
+
+				var flyoutBehavior = (_shell as IFlyoutView).FlyoutBehavior;
+#if WINDOWS
+				return (!String.IsNullOrEmpty(Title) ||
+					TitleView != null ||
+					_toolbarTracker.ToolbarItems.Count > 0 ||
+					_menuBarTracker.ToolbarItems.Count > 0 ||
+					flyoutBehavior == FlyoutBehavior.Flyout);
+#else
+				return (BackButtonVisible ||
+					!String.IsNullOrEmpty(Title) ||
+					TitleView != null ||
+					_toolbarTracker.ToolbarItems.Count > 0 ||
+					flyoutBehavior == FlyoutBehavior.Flyout);
+#endif
+			};
+
+			IsVisible = _shell.GetEffectiveValue(Shell.NavBarIsVisibleProperty, getDefaultNavBarIsVisible, observer: null);
+
+			if (currentPage != null)
+			{
+				DynamicOverflowEnabled = PlatformConfiguration.WindowsSpecific.Page.GetToolbarDynamicOverflowEnabled(currentPage);
+			}
+		}
+
+		void UpdateBackbuttonBehavior()
+		{
+			var bbb = Shell.GetBackButtonBehavior(_currentPage);
+
+			if (bbb == _backButtonBehavior)
+			{
+				return;
+			}
+
+			if (_backButtonBehavior != null)
+			{
+				_backButtonBehavior.PropertyChanged -= OnBackButtonCommandPropertyChanged;
+			}
+
+			_backButtonBehavior = bbb;
+
+			if (_backButtonBehavior != null)
+			{
+				_backButtonBehavior.PropertyChanged += OnBackButtonCommandPropertyChanged;
+			}
+		}
+
+		void OnBackButtonCommandPropertyChanged(object? sender, PropertyChangedEventArgs e)
+		{
+			ApplyChanges();
+		}
+
+		void OnCurrentPagePropertyChanged(object? sender, System.ComponentModel.PropertyChangedEventArgs e)
+		{
+			if (e.Is(Page.TitleProperty))
+			{
+				UpdateTitle();
+			}
+*/
+
+/* Unmerged change from project 'Controls.Core(net8.0-android)'
+Before:
+			UpdateTitle();
+
+			Func<bool> getDefaultNavBarIsVisible = () =>
+			{
+				// Shell.GetEffectiveValue doesn't check the Shell itself, so check it here
+				if (_shell.IsSet(Shell.NavBarIsVisibleProperty))
+					return (bool)_shell.GetValue(Shell.NavBarIsVisibleProperty);
+
+				var flyoutBehavior = (_shell as IFlyoutView).FlyoutBehavior;
+#if WINDOWS
+				return (!String.IsNullOrEmpty(Title) ||
+					TitleView != null ||
+					_toolbarTracker.ToolbarItems.Count > 0 ||
+					_menuBarTracker.ToolbarItems.Count > 0 ||
+					flyoutBehavior == FlyoutBehavior.Flyout);
+#else
+				return (BackButtonVisible ||
+					!String.IsNullOrEmpty(Title) ||
+					TitleView != null ||
+					_toolbarTracker.ToolbarItems.Count > 0 ||
+					flyoutBehavior == FlyoutBehavior.Flyout);
+#endif
+			};
+
+			IsVisible = _shell.GetEffectiveValue(Shell.NavBarIsVisibleProperty, getDefaultNavBarIsVisible, observer: null);
+
+			if (currentPage != null)
+				DynamicOverflowEnabled = PlatformConfiguration.WindowsSpecific.Page.GetToolbarDynamicOverflowEnabled(currentPage);
+		}
+
+		void UpdateBackbuttonBehavior()
+		{
+			var bbb = Shell.GetBackButtonBehavior(_currentPage);
+
+			if (bbb == _backButtonBehavior)
+				return;
+
+			if (_backButtonBehavior != null)
+				_backButtonBehavior.PropertyChanged -= OnBackButtonCommandPropertyChanged;
+
+			_backButtonBehavior = bbb;
+
+			if (_backButtonBehavior != null)
+				_backButtonBehavior.PropertyChanged += OnBackButtonCommandPropertyChanged;
+		}
+
+		void OnBackButtonCommandPropertyChanged(object? sender, PropertyChangedEventArgs e)
+		{
+			ApplyChanges();
+		}
+
+		void OnCurrentPagePropertyChanged(object? sender, System.ComponentModel.PropertyChangedEventArgs e)
+		{
+			if (e.Is(Page.TitleProperty))
+				UpdateTitle();
+After:
+			UpdateBackbuttonBehavior();
+			bool backButtonVisible = true;
+
+			if (_backButtonBehavior != null)
+			{
+				backButtonVisible = _backButtonBehavior.IsVisible;
+			}
+
+			_drawerToggleVisible = stack.Count <= 1;
+			BackButtonVisible = backButtonVisible && stack.Count > 1;
+			BackButtonEnabled = _backButtonBehavior?.IsEnabled ?? true;
+
+			UpdateTitle();
+
+			Func<bool> getDefaultNavBarIsVisible = () =>
+			{
+				// Shell.GetEffectiveValue doesn't check the Shell itself, so check it here
+				if (_shell.IsSet(Shell.NavBarIsVisibleProperty))
+				{
+					return (bool)_shell.GetValue(Shell.NavBarIsVisibleProperty);
+				}
+
+				var flyoutBehavior = (_shell as IFlyoutView).FlyoutBehavior;
+#if WINDOWS
+				return (!String.IsNullOrEmpty(Title) ||
+					TitleView != null ||
+					_toolbarTracker.ToolbarItems.Count > 0 ||
+					_menuBarTracker.ToolbarItems.Count > 0 ||
+					flyoutBehavior == FlyoutBehavior.Flyout);
+#else
+				return (BackButtonVisible ||
+					!String.IsNullOrEmpty(Title) ||
+					TitleView != null ||
+					_toolbarTracker.ToolbarItems.Count > 0 ||
+					flyoutBehavior == FlyoutBehavior.Flyout);
+#endif
+			};
+
+			IsVisible = _shell.GetEffectiveValue(Shell.NavBarIsVisibleProperty, getDefaultNavBarIsVisible, observer: null);
+
+			if (currentPage != null)
+			{
+				DynamicOverflowEnabled = PlatformConfiguration.WindowsSpecific.Page.GetToolbarDynamicOverflowEnabled(currentPage);
+			}
+		}
+
+		void UpdateBackbuttonBehavior()
+		{
+			var bbb = Shell.GetBackButtonBehavior(_currentPage);
+
+			if (bbb == _backButtonBehavior)
+			{
+				return;
+			}
+
+			if (_backButtonBehavior != null)
+			{
+				_backButtonBehavior.PropertyChanged -= OnBackButtonCommandPropertyChanged;
+			}
+
+			_backButtonBehavior = bbb;
+
+			if (_backButtonBehavior != null)
+			{
+				_backButtonBehavior.PropertyChanged += OnBackButtonCommandPropertyChanged;
+			}
+		}
+
+		void OnBackButtonCommandPropertyChanged(object? sender, PropertyChangedEventArgs e)
+		{
+			ApplyChanges();
+		}
+
+		void OnCurrentPagePropertyChanged(object? sender, System.ComponentModel.PropertyChangedEventArgs e)
+		{
+			if (e.Is(Page.TitleProperty))
+			{
+				UpdateTitle();
+			}
+*/
+
+/* Unmerged change from project 'Controls.Core(net8.0-windows10.0.19041.0)'
+Before:
+			UpdateTitle();
+
+			Func<bool> getDefaultNavBarIsVisible = () =>
+			{
+				// Shell.GetEffectiveValue doesn't check the Shell itself, so check it here
+				if (_shell.IsSet(Shell.NavBarIsVisibleProperty))
+					return (bool)_shell.GetValue(Shell.NavBarIsVisibleProperty);
+
+				var flyoutBehavior = (_shell as IFlyoutView).FlyoutBehavior;
+#if WINDOWS
+				return (!String.IsNullOrEmpty(Title) ||
+					TitleView != null ||
+					_toolbarTracker.ToolbarItems.Count > 0 ||
+					_menuBarTracker.ToolbarItems.Count > 0 ||
+					flyoutBehavior == FlyoutBehavior.Flyout);
+#else
+				return (BackButtonVisible ||
+					!String.IsNullOrEmpty(Title) ||
+					TitleView != null ||
+					_toolbarTracker.ToolbarItems.Count > 0 ||
+					flyoutBehavior == FlyoutBehavior.Flyout);
+#endif
+			};
+
+			IsVisible = _shell.GetEffectiveValue(Shell.NavBarIsVisibleProperty, getDefaultNavBarIsVisible, observer: null);
+
+			if (currentPage != null)
+				DynamicOverflowEnabled = PlatformConfiguration.WindowsSpecific.Page.GetToolbarDynamicOverflowEnabled(currentPage);
+		}
+
+		void UpdateBackbuttonBehavior()
+		{
+			var bbb = Shell.GetBackButtonBehavior(_currentPage);
+
+			if (bbb == _backButtonBehavior)
+				return;
+
+			if (_backButtonBehavior != null)
+				_backButtonBehavior.PropertyChanged -= OnBackButtonCommandPropertyChanged;
+
+			_backButtonBehavior = bbb;
+
+			if (_backButtonBehavior != null)
+				_backButtonBehavior.PropertyChanged += OnBackButtonCommandPropertyChanged;
+		}
+
+		void OnBackButtonCommandPropertyChanged(object? sender, PropertyChangedEventArgs e)
+		{
+			ApplyChanges();
+		}
+
+		void OnCurrentPagePropertyChanged(object? sender, System.ComponentModel.PropertyChangedEventArgs e)
+		{
+			if (e.Is(Page.TitleProperty))
+				UpdateTitle();
+After:
+			UpdateBackbuttonBehavior();
+			bool backButtonVisible = true;
+
+			if (_backButtonBehavior != null)
+			{
+				backButtonVisible = _backButtonBehavior.IsVisible;
+			}
+
+			_drawerToggleVisible = stack.Count <= 1;
+			BackButtonVisible = backButtonVisible && stack.Count > 1;
+			BackButtonEnabled = _backButtonBehavior?.IsEnabled ?? true;
+
+			UpdateTitle();
+
+			Func<bool> getDefaultNavBarIsVisible = () =>
+			{
+				// Shell.GetEffectiveValue doesn't check the Shell itself, so check it here
+				if (_shell.IsSet(Shell.NavBarIsVisibleProperty))
+				{
+					return (bool)_shell.GetValue(Shell.NavBarIsVisibleProperty);
+				}
+
+				var flyoutBehavior = (_shell as IFlyoutView).FlyoutBehavior;
+#if WINDOWS
+				return (!String.IsNullOrEmpty(Title) ||
+					TitleView != null ||
+					_toolbarTracker.ToolbarItems.Count > 0 ||
+					_menuBarTracker.ToolbarItems.Count > 0 ||
+					flyoutBehavior == FlyoutBehavior.Flyout);
+#else
+				return (BackButtonVisible ||
+					!String.IsNullOrEmpty(Title) ||
+					TitleView != null ||
+					_toolbarTracker.ToolbarItems.Count > 0 ||
+					flyoutBehavior == FlyoutBehavior.Flyout);
+#endif
+			};
+
+			IsVisible = _shell.GetEffectiveValue(Shell.NavBarIsVisibleProperty, getDefaultNavBarIsVisible, observer: null);
+
+			if (currentPage != null)
+			{
+				DynamicOverflowEnabled = PlatformConfiguration.WindowsSpecific.Page.GetToolbarDynamicOverflowEnabled(currentPage);
+			}
+		}
+
+		void UpdateBackbuttonBehavior()
+		{
+			var bbb = Shell.GetBackButtonBehavior(_currentPage);
+
+			if (bbb == _backButtonBehavior)
+			{
+				return;
+			}
+
+			if (_backButtonBehavior != null)
+			{
+				_backButtonBehavior.PropertyChanged -= OnBackButtonCommandPropertyChanged;
+			}
+
+			_backButtonBehavior = bbb;
+
+			if (_backButtonBehavior != null)
+			{
+				_backButtonBehavior.PropertyChanged += OnBackButtonCommandPropertyChanged;
+			}
+		}
+
+		void OnBackButtonCommandPropertyChanged(object? sender, PropertyChangedEventArgs e)
+		{
+			ApplyChanges();
+		}
+
+		void OnCurrentPagePropertyChanged(object? sender, System.ComponentModel.PropertyChangedEventArgs e)
+		{
+			if (e.Is(Page.TitleProperty))
+			{
+				UpdateTitle();
+			}
+*/
+
+/* Unmerged change from project 'Controls.Core(net8.0-windows10.0.20348.0)'
+Before:
+			UpdateTitle();
+
+			Func<bool> getDefaultNavBarIsVisible = () =>
+			{
+				// Shell.GetEffectiveValue doesn't check the Shell itself, so check it here
+				if (_shell.IsSet(Shell.NavBarIsVisibleProperty))
+					return (bool)_shell.GetValue(Shell.NavBarIsVisibleProperty);
+
+				var flyoutBehavior = (_shell as IFlyoutView).FlyoutBehavior;
+#if WINDOWS
+				return (!String.IsNullOrEmpty(Title) ||
+					TitleView != null ||
+					_toolbarTracker.ToolbarItems.Count > 0 ||
+					_menuBarTracker.ToolbarItems.Count > 0 ||
+					flyoutBehavior == FlyoutBehavior.Flyout);
+#else
+				return (BackButtonVisible ||
+					!String.IsNullOrEmpty(Title) ||
+					TitleView != null ||
+					_toolbarTracker.ToolbarItems.Count > 0 ||
+					flyoutBehavior == FlyoutBehavior.Flyout);
+#endif
+			};
+
+			IsVisible = _shell.GetEffectiveValue(Shell.NavBarIsVisibleProperty, getDefaultNavBarIsVisible, observer: null);
+
+			if (currentPage != null)
+				DynamicOverflowEnabled = PlatformConfiguration.WindowsSpecific.Page.GetToolbarDynamicOverflowEnabled(currentPage);
+		}
+
+		void UpdateBackbuttonBehavior()
+		{
+			var bbb = Shell.GetBackButtonBehavior(_currentPage);
+
+			if (bbb == _backButtonBehavior)
+				return;
+
+			if (_backButtonBehavior != null)
+				_backButtonBehavior.PropertyChanged -= OnBackButtonCommandPropertyChanged;
+
+			_backButtonBehavior = bbb;
+
+			if (_backButtonBehavior != null)
+				_backButtonBehavior.PropertyChanged += OnBackButtonCommandPropertyChanged;
+		}
+
+		void OnBackButtonCommandPropertyChanged(object? sender, PropertyChangedEventArgs e)
+		{
+			ApplyChanges();
+		}
+
+		void OnCurrentPagePropertyChanged(object? sender, System.ComponentModel.PropertyChangedEventArgs e)
+		{
+			if (e.Is(Page.TitleProperty))
+				UpdateTitle();
+After:
+			UpdateBackbuttonBehavior();
+			bool backButtonVisible = true;
+
+			if (_backButtonBehavior != null)
+			{
+				backButtonVisible = _backButtonBehavior.IsVisible;
+			}
+
+			_drawerToggleVisible = stack.Count <= 1;
+			BackButtonVisible = backButtonVisible && stack.Count > 1;
+			BackButtonEnabled = _backButtonBehavior?.IsEnabled ?? true;
+
+			UpdateTitle();
+
+			Func<bool> getDefaultNavBarIsVisible = () =>
+			{
+				// Shell.GetEffectiveValue doesn't check the Shell itself, so check it here
+				if (_shell.IsSet(Shell.NavBarIsVisibleProperty))
+				{
+					return (bool)_shell.GetValue(Shell.NavBarIsVisibleProperty);
+				}
+
+				var flyoutBehavior = (_shell as IFlyoutView).FlyoutBehavior;
+#if WINDOWS
+				return (!String.IsNullOrEmpty(Title) ||
+					TitleView != null ||
+					_toolbarTracker.ToolbarItems.Count > 0 ||
+					_menuBarTracker.ToolbarItems.Count > 0 ||
+					flyoutBehavior == FlyoutBehavior.Flyout);
+#else
+				return (BackButtonVisible ||
+					!String.IsNullOrEmpty(Title) ||
+					TitleView != null ||
+					_toolbarTracker.ToolbarItems.Count > 0 ||
+					flyoutBehavior == FlyoutBehavior.Flyout);
+#endif
+			};
+
+			IsVisible = _shell.GetEffectiveValue(Shell.NavBarIsVisibleProperty, getDefaultNavBarIsVisible, observer: null);
+
+			if (currentPage != null)
+			{
+				DynamicOverflowEnabled = PlatformConfiguration.WindowsSpecific.Page.GetToolbarDynamicOverflowEnabled(currentPage);
+			}
+		}
+
+		void UpdateBackbuttonBehavior()
+		{
+			var bbb = Shell.GetBackButtonBehavior(_currentPage);
+
+			if (bbb == _backButtonBehavior)
+			{
+				return;
+			}
+
+			if (_backButtonBehavior != null)
+			{
+				_backButtonBehavior.PropertyChanged -= OnBackButtonCommandPropertyChanged;
+			}
+
+			_backButtonBehavior = bbb;
+
+			if (_backButtonBehavior != null)
+			{
+				_backButtonBehavior.PropertyChanged += OnBackButtonCommandPropertyChanged;
+			}
+		}
+
+		void OnBackButtonCommandPropertyChanged(object? sender, PropertyChangedEventArgs e)
+		{
+			ApplyChanges();
+		}
+
+		void OnCurrentPagePropertyChanged(object? sender, System.ComponentModel.PropertyChangedEventArgs e)
+		{
+			if (e.Is(Page.TitleProperty))
+			{
+				UpdateTitle();
+			}
+*/
+			UpdateTitle();
+
+			Func<bool> getDefaultNavBarIsVisible = () =>
+			{
+				// Shell.GetEffectiveValue doesn't check the Shell itself, so check it here
+				if (_shell.IsSet(Shell.NavBarIsVisibleProperty))
+				{
+					return (bool)_shell.GetValue(Shell.NavBarIsVisibleProperty);
+				}
+
+				var flyoutBehavior = (_shell as IFlyoutView).FlyoutBehavior;
+#if WINDOWS
+				return (!String.IsNullOrEmpty(Title) ||
+					TitleView != null ||
+					_toolbarTracker.ToolbarItems.Count > 0 ||
+					_menuBarTracker.ToolbarItems.Count > 0 ||
+					flyoutBehavior == FlyoutBehavior.Flyout);
+#else
+				return (BackButtonVisible ||
+					!String.IsNullOrEmpty(Title) ||
+					TitleView != null ||
+					_toolbarTracker.ToolbarItems.Count > 0 ||
+					flyoutBehavior == FlyoutBehavior.Flyout);
+#endif
+			};
+
+			IsVisible = _shell.GetEffectiveValue(Shell.NavBarIsVisibleProperty, getDefaultNavBarIsVisible, observer: null);
+
+			if (currentPage != null)
+			{
+			{
+				DynamicOverflowEnabled = PlatformConfiguration.WindowsSpecific.Page.GetToolbarDynamicOverflowEnabled(currentPage);
+			}
+		}
+
+		void UpdateBackbuttonBehavior()
+		{
+			var bbb = Shell.GetBackButtonBehavior(_currentPage);
+
+			if (bbb == _backButtonBehavior)
+			{
+			{
+				return;
+			}
+
+			if (_backButtonBehavior != null)
+			{
+				_backButtonBehavior.PropertyChanged -= OnBackButtonCommandPropertyChanged;
+			}
+
+			_backButtonBehavior = bbb;
+
+			if (_backButtonBehavior != null)
+			{
+				_backButtonBehavior.PropertyChanged += OnBackButtonCommandPropertyChanged;
+			}
+		}
+
+		void OnBackButtonCommandPropertyChanged(object? sender, PropertyChangedEventArgs e)
+		{
+			ApplyChanges();
+		}
+
+		void OnCurrentPagePropertyChanged(object? sender, System.ComponentModel.PropertyChangedEventArgs e)
+		{
+			if (e.Is(Page.TitleProperty))
+			{
+			{
+				UpdateTitle();
+			}
 			else if (e.IsOneOf(
 				Shell.BackButtonBehaviorProperty,
 				Shell.NavBarIsVisibleProperty,

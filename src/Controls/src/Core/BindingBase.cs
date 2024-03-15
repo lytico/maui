@@ -33,7 +33,9 @@ namespace Microsoft.Maui.Controls
 					&& value != BindingMode.OneWayToSource
 					&& value != BindingMode.TwoWay
 					&& value != BindingMode.OneTime)
+				{
 					throw new ArgumentException("mode is not a valid BindingMode", "mode");
+				}
 
 				ThrowIfApplied();
 
@@ -91,9 +93,13 @@ namespace Microsoft.Maui.Controls
 			set
 			{
 				if (value != null)
+				{
 					_relativeSourceTargetOverride = new WeakReference<Element>(value);
+				}
 				else
+				{
 					_relativeSourceTargetOverride = null;
+				}
 			}
 		}
 
@@ -101,7 +107,9 @@ namespace Microsoft.Maui.Controls
 		public static void DisableCollectionSynchronization(IEnumerable collection)
 		{
 			if (collection == null)
+			{
 				throw new ArgumentNullException(nameof(collection));
+			}
 
 			SynchronizedCollections.Remove(collection);
 		}
@@ -112,9 +120,14 @@ namespace Microsoft.Maui.Controls
 		public static void EnableCollectionSynchronization(IEnumerable collection, object context, CollectionSynchronizationCallback callback)
 		{
 			if (collection == null)
+			{
 				throw new ArgumentNullException(nameof(collection));
+			}
+
 			if (callback == null)
+			{
 				throw new ArgumentNullException(nameof(callback));
+			}
 
 			SynchronizedCollections.Add(collection, new CollectionSynchronizationContext(context, callback));
 		}
@@ -123,7 +136,9 @@ namespace Microsoft.Maui.Controls
 		protected void ThrowIfApplied()
 		{
 			if (IsApplied)
+			{
 				throw new InvalidOperationException("Cannot change a binding while it's applied");
+			}
 		}
 
 		internal virtual void Apply(bool fromTarget)
@@ -137,10 +152,14 @@ namespace Microsoft.Maui.Controls
 		internal virtual object GetSourceValue(object value, Type targetPropertyType)
 		{
 			if (value == null && TargetNullValue != null)
+			{
 				return TargetNullValue;
+			}
 
 			if (StringFormat != null && TryFormat(StringFormat, value, out var formatted))
+			{
 				return formatted;
+			}
 
 			return value;
 		}
@@ -180,7 +199,9 @@ namespace Microsoft.Maui.Controls
 		internal static bool TryGetSynchronizedCollection(IEnumerable collection, out CollectionSynchronizationContext synchronizationContext)
 		{
 			if (collection == null)
+			{
 				throw new ArgumentNullException(nameof(collection));
+			}
 
 			return SynchronizedCollections.TryGetValue(collection, out synchronizationContext);
 		}

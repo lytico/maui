@@ -121,13 +121,23 @@ namespace Microsoft.Maui.Devices.Sensors
 			get
 			{
 				if (Current is IPlatformCompass c)
+				{
+				{
 					return c.ShouldDisplayHeadingCalibration;
+				}
+
+				}
+
 				return false;
 			}
 			set
 			{
 				if (Current is IPlatformCompass c)
+				{
+				{
 					c.ShouldDisplayHeadingCalibration = value;
+				}
+				}
 			}
 		}
 #endif
@@ -265,10 +275,90 @@ namespace Microsoft.Maui.Devices.Sensors
 		public void Start(SensorSpeed sensorSpeed, bool applyLowPassFilter)
 		{
 			if (!PlatformIsSupported)
+
+/* Unmerged change from project 'Essentials(net8.0-maccatalyst)'
+Before:
 				throw new FeatureNotSupportedException();
 
 			if (IsMonitoring)
+After:
+			{
+*/
+
+/* Unmerged change from project 'Essentials(net8.0-android)'
+Before:
+				throw new FeatureNotSupportedException();
+
+			if (IsMonitoring)
+After:
+			{
+*/
+
+/* Unmerged change from project 'Essentials(net8.0-windows10.0.19041.0)'
+Before:
+				throw new FeatureNotSupportedException();
+
+			if (IsMonitoring)
+After:
+			{
+*/
+
+/* Unmerged change from project 'Essentials(net8.0-windows10.0.20348.0)'
+Before:
+				throw new FeatureNotSupportedException();
+
+			if (IsMonitoring)
+After:
+			{
+*/
+			{
+				throw new FeatureNotSupportedException();
+			}
+
+			if (IsMonitoring)
+			{
+				throw new FeatureNotSupportedException();
+
+/* Unmerged change from project 'Essentials(net8.0-maccatalyst)'
+Added:
+			}
+
+			if (IsMonitoring)
+			{
 				throw new InvalidOperationException("Compass has already been started.");
+			}
+*/
+
+/* Unmerged change from project 'Essentials(net8.0-android)'
+Added:
+			}
+
+			if (IsMonitoring)
+			{
+				throw new InvalidOperationException("Compass has already been started.");
+			}
+*/
+
+/* Unmerged change from project 'Essentials(net8.0-windows10.0.19041.0)'
+Added:
+			}
+
+			if (IsMonitoring)
+			{
+				throw new InvalidOperationException("Compass has already been started.");
+			}
+*/
+
+/* Unmerged change from project 'Essentials(net8.0-windows10.0.20348.0)'
+Added:
+			}
+
+			if (IsMonitoring)
+			{
+				throw new InvalidOperationException("Compass has already been started.");
+			}
+*/
+			}
 
 			IsMonitoring = true;
 
@@ -287,10 +377,70 @@ namespace Microsoft.Maui.Devices.Sensors
 		public void Stop()
 		{
 			if (!PlatformIsSupported)
+			{
+			{
 				throw new FeatureNotSupportedException();
+			}
 
 			if (!IsMonitoring)
+
+/* Unmerged change from project 'Essentials(net8.0-maccatalyst)'
+Before:
 				return;
+
+			IsMonitoring = false;
+
+			try
+			{
+After:
+			{
+*/
+
+/* Unmerged change from project 'Essentials(net8.0-android)'
+Before:
+				return;
+
+			IsMonitoring = false;
+
+			try
+			{
+After:
+			{
+*/
+
+/* Unmerged change from project 'Essentials(net8.0-windows10.0.19041.0)'
+Before:
+				return;
+
+			IsMonitoring = false;
+
+			try
+			{
+After:
+			{
+*/
+
+/* Unmerged change from project 'Essentials(net8.0-windows10.0.20348.0)'
+Before:
+				return;
+
+			IsMonitoring = false;
+
+			try
+			{
+After:
+			{
+*/
+			{
+				return;
+			}
+
+			IsMonitoring = false;
+
+			try
+			{
+				return;
+			}
 
 			IsMonitoring = false;
 
@@ -310,9 +460,51 @@ namespace Microsoft.Maui.Devices.Sensors
 			var args = new CompassChangedEventArgs(data);
 
 			if (UseSyncContext)
+
+/* Unmerged change from project 'Essentials(net8.0-maccatalyst)'
+Before:
 				MainThread.BeginInvokeOnMainThread(() => ReadingChanged?.Invoke(null, args));
+After:
+			{
+				MainThread.BeginInvokeOnMainThread(() => ReadingChanged?.Invoke(null, args));
+			}
+*/
+
+/* Unmerged change from project 'Essentials(net8.0-android)'
+Before:
+				MainThread.BeginInvokeOnMainThread(() => ReadingChanged?.Invoke(null, args));
+After:
+			{
+				MainThread.BeginInvokeOnMainThread(() => ReadingChanged?.Invoke(null, args));
+			}
+*/
+
+/* Unmerged change from project 'Essentials(net8.0-windows10.0.19041.0)'
+Before:
+				MainThread.BeginInvokeOnMainThread(() => ReadingChanged?.Invoke(null, args));
+After:
+			{
+				MainThread.BeginInvokeOnMainThread(() => ReadingChanged?.Invoke(null, args));
+			}
+*/
+
+/* Unmerged change from project 'Essentials(net8.0-windows10.0.20348.0)'
+Before:
+				MainThread.BeginInvokeOnMainThread(() => ReadingChanged?.Invoke(null, args));
+After:
+			{
+				MainThread.BeginInvokeOnMainThread(() => ReadingChanged?.Invoke(null, args));
+			}
+*/
+			{
+				MainThread.BeginInvokeOnMainThread(() => ReadingChanged?.Invoke(null, args));
+			}
 			else
+			{
+			{
+			{
 				ReadingChanged?.Invoke(null, args);
+			}
 		}
 	}
 }

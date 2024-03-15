@@ -38,7 +38,9 @@ namespace Microsoft.Maui.Controls.Handlers.Compatibility
 		public void UpdateProperty(string property)
 		{
 			if (_viewHandler.VirtualView != null)
+			{
 				_mapper.UpdateProperty(_viewHandler, _viewHandler.VirtualView, property);
+			}
 		}
 
 		public void Invoke(string command, object? args)
@@ -49,10 +51,70 @@ namespace Microsoft.Maui.Controls.Handlers.Compatibility
 		public void DisconnectHandler()
 		{
 			if (_element == null)
+
+/* Unmerged change from project 'Controls.Core(net8.0-maccatalyst)'
+Before:
 				return;
 
 			if (_element.Handler == _viewHandler)
 				_element.Handler = null;
+
+			_element = null;
+After:
+			{
+				return;
+			}
+*/
+
+/* Unmerged change from project 'Controls.Core(net8.0-android)'
+Before:
+				return;
+
+			if (_element.Handler == _viewHandler)
+				_element.Handler = null;
+
+			_element = null;
+After:
+			{
+				return;
+			}
+*/
+
+/* Unmerged change from project 'Controls.Core(net8.0-windows10.0.19041.0)'
+Before:
+				return;
+
+			if (_element.Handler == _viewHandler)
+				_element.Handler = null;
+
+			_element = null;
+After:
+			{
+				return;
+			}
+*/
+
+/* Unmerged change from project 'Controls.Core(net8.0-windows10.0.20348.0)'
+Before:
+				return;
+
+			if (_element.Handler == _viewHandler)
+				_element.Handler = null;
+
+			_element = null;
+After:
+			{
+				return;
+			}
+*/
+			{
+				return;
+			}
+
+			if (_element.Handler == _viewHandler)
+			{
+				_element.Handler = null;
+			}
 
 			_element = null;
 

@@ -38,10 +38,71 @@ namespace Microsoft.Maui.Controls.Platform.Compatibility
 		public void SetCustomContent(View content)
 		{
 			if (content == Content)
+
+/* Unmerged change from project 'Controls.Core(net8.0-maccatalyst)'
+Before:
 				return;
 
 			removeScrolledEvent?.Invoke();
 			removeScrolledEvent = null;
+
+			if (Content is not null)
+			{
+				var oldRenderer = (IPlatformViewHandler)Content.Handler;
+				var oldContentView = ContentView;
+				var oldContent = Content;
+
+				Content = null;
+				ContentView = null;
+				oldContent.Handler = null;
+				oldContentView?.RemoveFromSuperview();
+				oldRenderer?.DisconnectHandler();
+			}
+			// If the user hasn't defined custom content then only the ContentView is set
+			else if (ContentView is not null)
+			{
+				var oldContentView = ContentView;
+				ContentView = null;
+				oldContentView.RemoveFromSuperview();
+			}
+
+			Content = content;
+After:
+			{
+				return;
+			}
+
+			removeScrolledEvent?.Invoke();
+			removeScrolledEvent = content;
+*/
+			{
+				return;
+			}
+
+			removeScrolledEvent?.Invoke();
+			removeScrolledEvent = null;
+
+			if (Content is not null)
+			{
+				var oldRenderer = (IPlatformViewHandler)Content.Handler;
+				var oldContentView = ContentView;
+				var oldContent = Content;
+
+				Content = null;
+				ContentView = null;
+				oldContent.Handler = null;
+				oldContentView?.RemoveFromSuperview();
+				oldRenderer?.DisconnectHandler();
+			}
+			// If the user hasn't defined custom content then only the ContentView is set
+			else if (ContentView is not null)
+			{
+				var oldContentView = ContentView;
+				ContentView = null;
+				oldContentView.RemoveFromSuperview();
+			}
+
+			Content = null;
 
 			if (Content is not null)
 			{
@@ -102,7 +163,9 @@ namespace Microsoft.Maui.Controls.Platform.Compatibility
 		public void SetDefaultContent(UIView view)
 		{
 			if (ContentView == view)
+			{
 				return;
+			}
 
 			SetCustomContent(null);
 			ContentView = view;
@@ -127,11 +190,44 @@ namespace Microsoft.Maui.Controls.Platform.Compatibility
 				ScrollView = null;
 
 				if (ContentView is UIScrollView sv)
+
+/* Unmerged change from project 'Controls.Core(net8.0-maccatalyst)'
+Before:
 					ScrollView = sv;
-				else if (ContentView is IPlatformViewHandler ver && ver.PlatformView is UIScrollView uIScroll)
+After:
+				{
+					ScrollView = sv;
+				}
+*/
+				
+/* Unmerged change from project 'Controls.Core(net8.0-maccatalyst)'
+Before:
 					ScrollView = uIScroll;
-				else if (Content is ItemsView && ContentView.Subviews.Length > 0 && ContentView.Subviews[0] is UICollectionView cv)
+After:
+				{
+					ScrollView = uIScroll;
+				}
+*/
+
+/* Unmerged change from project 'Controls.Core(net8.0-maccatalyst)'
+Before:
 					ScrollView = cv;
+After:
+				{
+					ScrollView = cv;
+				}
+*/
+{
+					ScrollView = sv;
+				}
+				else if (ContentView is IPlatformViewHandler ver && ver.PlatformView is UIScrollView uIScroll)
+				{
+					ScrollView = uIScroll;
+				}
+				else if (Content is ItemsView && ContentView.Subviews.Length > 0 && ContentView.Subviews[0] is UICollectionView cv)
+				{
+					ScrollView = cv;
+				}
 
 				if (ScrollView is not null && (OperatingSystem.IsIOSVersionAtLeast(11) || OperatingSystem.IsMacCatalystVersionAtLeast(11)
 #if TVOS
@@ -152,15 +248,22 @@ namespace Microsoft.Maui.Controls.Platform.Compatibility
 			set
 			{
 				if (_headerView == value)
+				{
+				{
 					return;
+				}
 
 				if (_headerView is not null)
+				{
 					_headerView.HeaderSizeChanged -= OnHeaderViewMeasureChanged;
+				}
 
 				_headerView = value;
 
 				if (_headerView is not null)
+				{
 					_headerView.HeaderSizeChanged += OnHeaderViewMeasureChanged;
+				}
 
 				UpdateHeaderSize();
 			}
@@ -172,7 +275,10 @@ namespace Microsoft.Maui.Controls.Platform.Compatibility
 			set
 			{
 				if (_footerView == value)
+				{
+				{
 					return;
+				}
 
 				_footerView = value;
 				UpdateHeaderSize();
@@ -182,7 +288,9 @@ namespace Microsoft.Maui.Controls.Platform.Compatibility
 		void OnHeaderViewMeasureChanged(object sender, EventArgs e)
 		{
 			if (HeaderView is null || ContentView?.Superview is null)
+			{
 				return;
+			}
 
 			HeaderView.SizeThatFits(new CGSize(ContentView.Superview.Frame.Width, double.PositiveInfinity));
 			UpdateHeaderSize();
@@ -191,7 +299,18 @@ namespace Microsoft.Maui.Controls.Platform.Compatibility
 		internal void UpdateHeaderSize()
 		{
 			if (HeaderView is null || ContentView?.Superview is null)
+
+/* Unmerged change from project 'Controls.Core(net8.0-maccatalyst)'
+Before:
 				return;
+After:
+			{
+				return;
+			}
+*/
+			{
+				return;
+			}
 
 			// If the HeaderView hasn't been measured we need to measure it
 			if (double.IsNaN(MeasuredHeaderViewHeightWithMargin))
@@ -208,7 +327,18 @@ namespace Microsoft.Maui.Controls.Platform.Compatibility
 		internal void SetHeaderContentInset()
 		{
 			if (ScrollView is null)
+
+/* Unmerged change from project 'Controls.Core(net8.0-maccatalyst)'
+Before:
 				return;
+After:
+			{
+				return;
+			}
+*/
+			{
+				return;
+			}
 
 			var offset = ScrollView.ContentInset.Top;
 
@@ -239,7 +369,9 @@ namespace Microsoft.Maui.Controls.Platform.Compatibility
 		public void UpdateVerticalScrollMode()
 		{
 			if (ScrollView is null)
+			{
 				return;
+			}
 
 			switch (_context.Shell.FlyoutVerticalScrollMode)
 			{
@@ -360,7 +492,9 @@ namespace Microsoft.Maui.Controls.Platform.Compatibility
 				LayoutParallax();
 			}
 			else if (e.Is(Shell.FlyoutVerticalScrollModeProperty))
+			{
 				UpdateVerticalScrollMode();
+			}
 		}
 
 		public void ViewDidLoad()
@@ -450,9 +584,31 @@ namespace Microsoft.Maui.Controls.Platform.Compatibility
 					HeaderView.View.MinimumHeightRequest == Dimension.Unset)
 				{
 					if (_context.Shell.FlyoutHeaderBehavior == FlyoutHeaderBehavior.CollapseOnScroll)
+
+/* Unmerged change from project 'Controls.Core(net8.0-maccatalyst)'
+Before:
 						return MinimumCollapsedHeaderHeight;
-					else
+After:
+					{
+						return MinimumCollapsedHeaderHeight;
+					}
+*/
+					{
+
+/* Unmerged change from project 'Controls.Core(net8.0-maccatalyst)'
+Before:
 						return 0;
+After:
+					{
+						return 0;
+					}
+*/
+						return MinimumCollapsedHeaderHeight;
+					}
+					else
+					{
+						return 0;
+					}
 				}
 
 				return HeaderView.View.MinimumHeightRequest;

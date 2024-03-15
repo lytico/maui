@@ -90,11 +90,47 @@ namespace Microsoft.Maui.DeviceTests
 			IWindow window;
 
 			if (view is IWindow w)
+			{
+			{
 				window = w;
+			}
+			}
 			else if (view is Page page)
+
+/* Unmerged change from project 'Controls.DeviceTests(net8.0-maccatalyst)'
+Before:
 				window = new Controls.Window(page);
+After:
+			{
+				window = new Controls.Window(page);
+			}
+*/
+
+/* Unmerged change from project 'Controls.DeviceTests(net8.0-windows10.0.19041.0)'
+Before:
+				window = new Controls.Window(page);
+After:
+			{
+				window = new Controls.Window(page);
+			}
+*/
+
+/* Unmerged change from project 'Controls.DeviceTests(net8.0-windows10.0.20348.0)'
+Before:
+				window = new Controls.Window(page);
+After:
+			{
+				window = new Controls.Window(page);
+			}
+*/
+			{
+				window = new Controls.Window(page);
+			}
 			else
+			{
+			{
 				window = new Controls.Window(new ContentPage() { Content = (View)view });
+			}
 
 			return window;
 		}
@@ -142,9 +178,41 @@ namespace Microsoft.Maui.DeviceTests
 			mauiContext ??= MauiContext;
 
 			if (System.Diagnostics.Debugger.IsAttached)
+
+/* Unmerged change from project 'Controls.DeviceTests(net8.0-maccatalyst)'
+Before:
 				timeOut ??= TimeSpan.FromHours(1);
+After:
+			{
+				timeOut ??= TimeSpan.FromHours(1);
+			}
+*/
+
+/* Unmerged change from project 'Controls.DeviceTests(net8.0-windows10.0.19041.0)'
+Before:
+				timeOut ??= TimeSpan.FromHours(1);
+After:
+			{
+				timeOut ??= TimeSpan.FromHours(1);
+			}
+*/
+
+/* Unmerged change from project 'Controls.DeviceTests(net8.0-windows10.0.20348.0)'
+Before:
+				timeOut ??= TimeSpan.FromHours(1);
+After:
+			{
+				timeOut ??= TimeSpan.FromHours(1);
+			}
+*/
+			{
+				timeOut ??= TimeSpan.FromHours(1);
+			}
 			else
+			{
+			{
 				timeOut ??= TimeSpan.FromSeconds(15);
+			}
 
 			return InvokeOnMainThreadAsync(async () =>
 			{
@@ -169,10 +237,351 @@ namespace Microsoft.Maui.DeviceTests
 						IView content = window.Content;
 
 						if (content is FlyoutPage fp)
+
+/* Unmerged change from project 'Controls.DeviceTests(net8.0-maccatalyst)'
+Before:
 							content = fp.Detail;
 
 						if (window is Window w && w.Navigation.ModalStack.Count > 0)
 							content = w.Navigation.ModalStack.Last();
+After:
+						{
+							content = fp.Detail;
+						}
+
+						if (window is Window w && w.Navigation.ModalStack.Count > 0)
+						{
+							content = w.Navigation.ModalStack.Last();
+						}
+*/
+
+/* Unmerged change from project 'Controls.DeviceTests(net8.0-windows10.0.19041.0)'
+Before:
+							content = fp.Detail;
+
+						if (window is Window w && w.Navigation.ModalStack.Count > 0)
+							content = w.Navigation.ModalStack.Last();
+After:
+						{
+							content = fp.Detail;
+						}
+
+						if (window is Window w && w.Navigation.ModalStack.Count > 0)
+						{
+							content = w.Navigation.ModalStack.Last();
+						}
+*/
+
+/* Unmerged change from project 'Controls.DeviceTests(net8.0-windows10.0.20348.0)'
+Before:
+							content = fp.Detail;
+
+						if (window is Window w && w.Navigation.ModalStack.Count > 0)
+							content = w.Navigation.ModalStack.Last();
+After:
+						{
+							content = fp.Detail;
+						}
+
+						if (window is Window w && w.Navigation.ModalStack.Count > 0)
+						{
+							content = w.Navigation.ModalStack.Last();
+						}
+*/
+						
+/* Unmerged change from project 'Controls.DeviceTests(net8.0-maccatalyst)'
+Before:
+							await OnLoadedAsync(veBeingTested);
+
+#if !WINDOWS
+						if (window is Window controlsWindow)
+						{
+							if (!controlsWindow.IsActivated)
+								window.Activated();
+						}
+						else
+						{
+							controlsWindow = null;
+							window.Activated();
+						}
+#endif
+
+#if WINDOWS
+						await Task.Delay(10);
+#endif
+
+						THandler handler;
+
+						if (typeof(THandler).IsAssignableFrom(window.Handler.GetType()))
+							handler = (THandler)window.Handler;
+						else if (typeof(THandler).IsAssignableFrom(window.Content.Handler.GetType()))
+							handler = (THandler)window.Content.Handler;
+						else if (window.Content is ContentPage cp && typeof(THandler).IsAssignableFrom(cp.Content.Handler.GetType()))
+							handler = (THandler)cp.Content.Handler;
+						else if (typeof(THandler).IsAssignableFrom(typeof(WindowHandler)))
+							throw new Exception($"Use IWindowHandler instead of WindowHandler for CreateHandlerAndAddToWindow");
+						else
+							throw new Exception($"I can't work with {typeof(THandler)}");
+
+						await action(handler).WaitAsync(timeOut.Value);
+
+
+#if !WINDOWS
+						bool isActivated = controlsWindow?.IsActivated ?? false;
+						bool isDestroyed = controlsWindow?.IsDestroyed ?? false;
+
+						if (isActivated)
+							window.Deactivated();
+After:
+						{
+							await OnLoadedAsync(veBeingTested);
+						}
+
+#if !WINDOWS
+						if (window is Window controlsWindow)
+						{
+							if (!controlsWindow.IsActivated)
+							{
+								window.Activated();
+							}
+						}
+						else
+						{
+							controlsWindow = null;
+							window.Activated();
+						}
+#endif
+
+#if WINDOWS
+						await Task.Delay(10);
+#endif
+
+						THandler handler;
+*/
+
+/* Unmerged change from project 'Controls.DeviceTests(net8.0-windows10.0.19041.0)'
+Before:
+							await OnLoadedAsync(veBeingTested);
+
+#if !WINDOWS
+						if (window is Window controlsWindow)
+						{
+							if (!controlsWindow.IsActivated)
+								window.Activated();
+						}
+						else
+						{
+							controlsWindow = null;
+							window.Activated();
+						}
+#endif
+
+#if WINDOWS
+						await Task.Delay(10);
+#endif
+After:
+						{
+							await OnLoadedAsync(veBeingTested);
+						}
+
+#if !WINDOWS
+						if (window is Window controlsWindow)
+						{
+							if (!controlsWindow.IsActivated)
+								window.Activated();
+						}
+						else
+						{
+							controlsWindow = null;
+							window.Activated();
+						}
+#endif
+
+#if WINDOWS
+						await Task.Delay(10);
+#endif
+*/
+
+/* Unmerged change from project 'Controls.DeviceTests(net8.0-windows10.0.20348.0)'
+Before:
+							await OnLoadedAsync(veBeingTested);
+
+#if !WINDOWS
+						if (window is Window controlsWindow)
+						{
+							if (!controlsWindow.IsActivated)
+								window.Activated();
+						}
+						else
+						{
+							controlsWindow = null;
+							window.Activated();
+						}
+#endif
+
+#if WINDOWS
+						await Task.Delay(10);
+#endif
+After:
+						{
+							await OnLoadedAsync(veBeingTested);
+						}
+
+#if !WINDOWS
+						if (window is Window controlsWindow)
+						{
+							if (!controlsWindow.IsActivated)
+								window.Activated();
+						}
+						else
+						{
+							controlsWindow = null;
+							window.Activated();
+						}
+#endif
+
+#if WINDOWS
+						await Task.Delay(10);
+#endif
+*/
+
+/* Unmerged change from project 'Controls.DeviceTests(net8.0-windows10.0.19041.0)'
+Before:
+							handler = (THandler)window.Handler;
+After:
+						{
+							handler = (THandler)window.Handler;
+						}
+*/
+
+/* Unmerged change from project 'Controls.DeviceTests(net8.0-windows10.0.20348.0)'
+Before:
+							handler = (THandler)window.Handler;
+After:
+						{
+							handler = (THandler)window.Handler;
+						}
+*/
+
+/* Unmerged change from project 'Controls.DeviceTests(net8.0-windows10.0.19041.0)'
+Before:
+							handler = (THandler)window.Content.Handler;
+After:
+						{
+							handler = (THandler)window.Content.Handler;
+						}
+*/
+
+/* Unmerged change from project 'Controls.DeviceTests(net8.0-windows10.0.20348.0)'
+Before:
+							handler = (THandler)window.Content.Handler;
+After:
+						{
+							handler = (THandler)window.Content.Handler;
+						}
+*/
+
+/* Unmerged change from project 'Controls.DeviceTests(net8.0-windows10.0.19041.0)'
+Before:
+							handler = (THandler)cp.Content.Handler;
+After:
+						{
+							handler = (THandler)cp.Content.Handler;
+						}
+*/
+
+/* Unmerged change from project 'Controls.DeviceTests(net8.0-windows10.0.20348.0)'
+Before:
+							handler = (THandler)cp.Content.Handler;
+After:
+						{
+							handler = (THandler)cp.Content.Handler;
+						}
+*/
+
+/* Unmerged change from project 'Controls.DeviceTests(net8.0-windows10.0.19041.0)'
+Before:
+							throw new Exception($"Use IWindowHandler instead of WindowHandler for CreateHandlerAndAddToWindow");
+						else
+							throw new Exception($"I can't work with {typeof(THandler)}");
+After:
+						{
+							throw new Exception($"Use IWindowHandler instead of WindowHandler for CreateHandlerAndAddToWindow");
+						}
+						else
+						{
+							throw new Exception($"I can't work with {typeof(THandler)}");
+						}
+*/
+
+/* Unmerged change from project 'Controls.DeviceTests(net8.0-windows10.0.20348.0)'
+Before:
+							throw new Exception($"Use IWindowHandler instead of WindowHandler for CreateHandlerAndAddToWindow");
+						else
+							throw new Exception($"I can't work with {typeof(THandler)}");
+After:
+						{
+							throw new Exception($"Use IWindowHandler instead of WindowHandler for CreateHandlerAndAddToWindow");
+						}
+						else
+						{
+							throw new Exception($"I can't work with {typeof(THandler)}");
+						}
+*/
+{
+							content = fp.Detail;
+						}
+
+
+/* Unmerged change from project 'Controls.DeviceTests(net8.0-maccatalyst)'
+Before:
+						if (!isDestroyed)
+							window.Destroying();
+#endif
+After:
+						if (typeof(THandler).IsAssignableFrom(window.Handler.GetType()))
+						{
+							handler = (THandler)window.Handler;
+						}
+						else if (typeof(THandler).IsAssignableFrom(window.Content.Handler.GetType()))
+						{
+							handler = (THandler)window.Content.Handler;
+						}
+						else if (window.Content is ContentPage cp && typeof(THandler).IsAssignableFrom(cp.Content.Handler.GetType()))
+						{
+							handler = (THandler)cp.Content.Handler;
+						}
+						else if (typeof(THandler).IsAssignableFrom(typeof(WindowHandler)))
+						{
+							throw new Exception($"Use IWindowHandler instead of WindowHandler for CreateHandlerAndAddToWindow");
+						}
+						else
+						{
+							throw new Exception($"I can't work with {typeof(THandler)}");
+						}
+
+						await action(handler).WaitAsync(timeOut.Value);
+
+
+#if !WINDOWS
+						bool isActivated = controlsWindow?.IsActivated ?? false;
+						bool isDestroyed = controlsWindow?.IsDestroyed ?? false;
+
+						if (isActivated)
+						{
+							window.Deactivated();
+						}
+
+						if (!isDestroyed)
+						{
+							window.Destroying();
+						}
+#endif
+*/
+						if (window is Window w && w.Navigation.ModalStack.Count > 0)
+						{
+							content = w.Navigation.ModalStack.Last();
+						}
 
 						if (content is IPageContainer<Page> pc)
 						{
@@ -217,13 +626,17 @@ namespace Microsoft.Maui.DeviceTests
 						// Gives time for the measure/layout pass to settle
 						await Task.Yield();
 						if (view is VisualElement veBeingTested)
+						{
 							await OnLoadedAsync(veBeingTested);
+						}
 
 #if !WINDOWS
 						if (window is Window controlsWindow)
 						{
 							if (!controlsWindow.IsActivated)
+							{
 								window.Activated();
+							}
 						}
 						else
 						{
@@ -239,28 +652,241 @@ namespace Microsoft.Maui.DeviceTests
 						THandler handler;
 
 						if (typeof(THandler).IsAssignableFrom(window.Handler.GetType()))
+						{
 							handler = (THandler)window.Handler;
+						}
 						else if (typeof(THandler).IsAssignableFrom(window.Content.Handler.GetType()))
+						{
 							handler = (THandler)window.Content.Handler;
+						}
 						else if (window.Content is ContentPage cp && typeof(THandler).IsAssignableFrom(cp.Content.Handler.GetType()))
+						{
 							handler = (THandler)cp.Content.Handler;
+						}
 						else if (typeof(THandler).IsAssignableFrom(typeof(WindowHandler)))
+						{
 							throw new Exception($"Use IWindowHandler instead of WindowHandler for CreateHandlerAndAddToWindow");
+						}
 						else
+						{
 							throw new Exception($"I can't work with {typeof(THandler)}");
+						}
 
 						await action(handler).WaitAsync(timeOut.Value);
 
 
 #if !WINDOWS
 						bool isActivated = controlsWindow?.IsActivated ?? false;
-						bool isDestroyed = controlsWindow?.IsDestroyed ?? false;
+			
+/* Unmerged change from project 'Controls.DeviceTests(net8.0-maccatalyst)'
+Before:
+						frameworkElement.Loaded -= loaded;
+After:
+					{
+						frameworkElement.Loaded -= loaded;
+					}
+*/
+
+/* Unmerged change from project 'Controls.DeviceTests(net8.0-windows10.0.19041.0)'
+Before:
+						frameworkElement.Loaded -= loaded;
+					try
+					{
+						await Task.Yield();
+						source.TrySetResult();
+					}
+					catch (Exception e)
+After:
+					{
+						frameworkElement.Loaded -= loaded;
+					}
+
+					try
+					{
+						await Task.Yield();
+						source.TrySetResult();
+					}
+					catch (Exception e)
+*/
+
+/* Unmerged change from project 'Controls.DeviceTests(net8.0-windows10.0.20348.0)'
+Before:
+						frameworkElement.Loaded -= loaded;
+					try
+					{
+						await Task.Yield();
+						source.TrySetResult();
+					}
+					catch (Exception e)
+After:
+					{
+						frameworkElement.Loaded -= loaded;
+					}
+
+					try
+					{
+						await Task.Yield();
+						source.TrySetResult();
+					}
+					catch (Exception e)
+*/
+
+/* Unmerged change from project 'Controls.DeviceTests(net8.0-maccatalyst)'
+Before:
+						frameworkElement.Unloaded -= unloaded;
+After:
+					{
+						frameworkElement.Unloaded -= unloaded;
+					}
+*/
+
+/* Unmerged change from project 'Controls.DeviceTests(net8.0-windows10.0.19041.0)'
+Before:
+						frameworkElement.Unloaded -= unloaded;
+					try
+					{
+						await Task.Yield();
+						source.TrySetResult();
+					}
+					catch (Exception e)
+After:
+					{
+						frameworkElement.Unloaded -= unloaded;
+					}
+
+					try
+					{
+						await Task.Yield();
+						source.TrySetResult();
+					}
+					catch (Exception e)
+*/
+
+/* Unmerged change from project 'Controls.DeviceTests(net8.0-windows10.0.20348.0)'
+Before:
+						frameworkElement.Unloaded -= unloaded;
+					try
+					{
+						await Task.Yield();
+						source.TrySetResult();
+					}
+					catch (Exception e)
+After:
+					{
+						frameworkElement.Unloaded -= unloaded;
+					}
+
+					try
+					{
+						await Task.Yield();
+						source.TrySetResult();
+					}
+					catch (Exception e)
+*/
+
+/* Unmerged change from project 'Controls.DeviceTests(net8.0-maccatalyst)'
+Before:
+					await Task.Delay(10);
+After:
+				{
+					await Task.Delay(10);
+				}
+*/
+
+/* Unmerged change from project 'Controls.DeviceTests(net8.0-windows10.0.19041.0)'
+Before:
+					await Task.Delay(10);
+After:
+				{
+					await Task.Delay(10);
+				}
+*/
+
+/* Unmerged change from project 'Controls.DeviceTests(net8.0-windows10.0.20348.0)'
+Before:
+					await Task.Delay(10);
+After:
+				{
+					await Task.Delay(10);
+				}
+*/
+
+/* Unmerged change from project 'Controls.DeviceTests(net8.0-maccatalyst)'
+Before:
+					await OnNavigatedToAsync(pc.CurrentPage);
+
+				await Task.Yield();
+After:
+				{
+					await OnNavigatedToAsync(pc.CurrentPage);
+				}
+
+				await Task.Yield();
+*/
+
+/* Unmerged change from project 'Controls.DeviceTests(net8.0-windows10.0.19041.0)'
+Before:
+					await OnNavigatedToAsync(pc.CurrentPage);
+
+				await Task.Yield();
+After:
+				{
+					await OnNavigatedToAsync(pc.CurrentPage);
+				}
+
+				await Task.Yield();
+*/
+
+/* Unmerged change from project 'Controls.DeviceTests(net8.0-windows10.0.20348.0)'
+Before:
+					await OnNavigatedToAsync(pc.CurrentPage);
+
+				await Task.Yield();
+After:
+				{
+					await OnNavigatedToAsync(pc.CurrentPage);
+				}
+
+				await Task.Yield();
+*/
+
+/* Unmerged change from project 'Controls.DeviceTests(net8.0-maccatalyst)'
+Before:
+				await Task.Delay(10);
+After:
+			{
+				await Task.Delay(10);
+			}
+*/
+
+/* Unmerged change from project 'Controls.DeviceTests(net8.0-windows10.0.19041.0)'
+Before:
+				await Task.Delay(10);
+After:
+			{
+				await Task.Delay(10);
+			}
+*/
+
+/* Unmerged change from project 'Controls.DeviceTests(net8.0-windows10.0.20348.0)'
+Before:
+				await Task.Delay(10);
+After:
+			{
+				await Task.Delay(10);
+			}
+*/
+			bool isDestroyed = controlsWindow?.IsDestroyed ?? false;
 
 						if (isActivated)
+						{
 							window.Deactivated();
+						}
 
 						if (!isDestroyed)
+						{
 							window.Destroying();
+						}
 #endif
 
 					}, mauiContext);
@@ -326,6 +952,15 @@ namespace Microsoft.Maui.DeviceTests
 			TValue expectedValue)
 			where THandler : IElementHandler, new()
 		{
+
+/* Unmerged change from project 'Controls.DeviceTests(net8.0-maccatalyst)'
+Before:
+				return;
+After:
+			{
+				return;
+			}
+*/
 			var values = await GetValueAsync(view, (THandler handler) =>
 			{
 				return new
@@ -419,7 +1054,10 @@ namespace Microsoft.Maui.DeviceTests
 				loaded = async (_, __) =>
 				{
 					if (loaded is not null)
+					{
 						frameworkElement.Loaded -= loaded;
+					}
+
 					try
 					{
 						await Task.Yield();
@@ -471,7 +1109,10 @@ namespace Microsoft.Maui.DeviceTests
 				unloaded = async (_, __) =>
 				{
 					if (unloaded is not null)
+					{
 						frameworkElement.Unloaded -= unloaded;
+					}
+
 					try
 					{
 						await Task.Yield();
@@ -517,10 +1158,14 @@ namespace Microsoft.Maui.DeviceTests
 			{
 				// TabbedPage fires OnNavigated earlier than it should
 				if (page.Parent is TabbedPage)
+				{
 					await Task.Delay(10);
+				}
 
 				if (page is IPageContainer<Page> pc)
+				{
 					await OnNavigatedToAsync(pc.CurrentPage);
+				}
 
 				await Task.Yield();
 
@@ -536,7 +1181,9 @@ namespace Microsoft.Maui.DeviceTests
 
 			// TabbedPage fires OnNavigated earlier than it should
 			if (page.Parent is TabbedPage)
+			{
 				await Task.Delay(10);
+			}
 
 			await Task.Yield();
 
@@ -600,7 +1247,9 @@ namespace Microsoft.Maui.DeviceTests
 		{
 #if IOS || MACCATALYST
 			if (UIKit.UIAccessibility.IsVoiceOverRunning)
+			{
 				return;
+			}
 
 			var mapperOverride = view.GetRendererOverrides<IView>();
 

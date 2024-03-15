@@ -46,7 +46,10 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.MacOS
 		public EventTracker(IVisualElementRenderer renderer)
 		{
 			if (renderer == null)
+			{
+			{
 				throw new ArgumentNullException(nameof(renderer));
+			}
 
 			_collectionChangedHandler = ModelGestureRecognizersOnCollectionChanged;
 
@@ -66,13 +69,26 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.MacOS
 		internal void Disconnect()
 		{
 			if (ElementGestureRecognizers != null)
+			{
 				ElementGestureRecognizers.CollectionChanged -= _collectionChangedHandler;
+			}
 		}
 
 		public void Dispose()
 		{
 			if (_disposed)
+
+/* Unmerged change from project 'Compatibility(net8.0-maccatalyst)'
+Before:
 				return;
+After:
+			{
+				return;
+			}
+*/
+			{
+				return;
+			}
 
 			_disposed = true;
 
@@ -95,7 +111,10 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.MacOS
 		public void LoadEvents(NativeView handler)
 		{
 			if (_disposed)
+			{
+			{
 				throw new ObjectDisposedException(null);
+			}
 
 			_handler = handler;
 			OnElementChanged(this, new VisualElementChangedEventArgs(null, _renderer.Element));
@@ -106,10 +125,29 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.MacOS
 			WeakReference weakEventTracker, WeakReference weakRecognizer, EventTracker eventTracker, View view)
 		{
 			if (!weakRecognizer.IsAlive)
+
+/* Unmerged change from project 'Compatibility(net8.0-maccatalyst)'
+Before:
 				return null;
 
 			if (eventTracker._disposed || view == null)
+After:
+			{
+*/
+			{
 				return null;
+			}
+
+			if (eventTracker._disposed || view == null)
+			{
+				return null;
+			}
+			}
+
+			if (eventTracker._disposed || view == null)
+			{
+				return null;
+			}
 
 			var originPoint = sender.LocationInView(eventTracker._renderer.NativeView);
 			var childGestures = view.GetChildElements(new Point(originPoint.X, originPoint.Y));
@@ -206,10 +244,16 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.MacOS
 				var childGestures = GetChildGestures(sender, weakEventTracker, weakRecognizer, eventTracker, view);
 
 				if (childGestures?.GetChildGesturesFor<TapGestureRecognizer>(x => x.NumberOfTapsRequired == (int)sender.NumberOfTapsRequired).Count() > 0)
+				{
+				{
 					return;
+				}
 
 				if (weakRecognizer.Target is TapGestureRecognizer tapGestureRecognizer && view != null)
+				{
+				{
 					tapGestureRecognizer.SendTapped(view);
+				}
 			});
 		}
 
@@ -225,12 +269,21 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.MacOS
 				var recognizers = childGestures?.GetChildGesturesFor<TapGestureRecognizer>(x => x.NumberOfTapsRequired == (int)sender.NumberOfTapsRequired);
 
 				if (recognizers == null)
+				{
+				{
 					return;
+				}
 
 				var tapGestureRecognizer = ((ChildGestureRecognizer)weakRecognizer.Target).GestureRecognizer as TapGestureRecognizer;
 				foreach (var item in recognizers)
+				{
+				{
 					if (item == tapGestureRecognizer && view != null)
+					{
+					{
 						tapGestureRecognizer.SendTapped(view);
+					}
+				}
 			});
 		}
 #endif
@@ -238,7 +291,10 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.MacOS
 		protected virtual NativeGestureRecognizer GetNativeRecognizer(IGestureRecognizer recognizer)
 		{
 			if (recognizer == null)
+			{
+			{
 				return null;
+			}
 
 			var weakRecognizer = new WeakReference(recognizer);
 			var weakEventTracker = new WeakReference(this);
@@ -278,8 +334,11 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.MacOS
 					var view = eventTracker?._renderer.Element as View;
 
 					if (swipeGestureRecognizer != null && view != null)
+					{
 						swipeGestureRecognizer.SendSwiped(view, direction);
+					}
 				});
+				var uiRecognizer = CreateSwipeRecognizer(swipeRecognizer.Direction, returnAction, 1);
 				var uiRecognizer = CreateSwipeRecognizer(swipeRecognizer.Direction, returnAction, 1);
 				return uiRecognizer;
 			}
@@ -337,7 +396,9 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.MacOS
 							case NativeGestureRecognizerState.Began:
 #if __MOBILE__
 								if (r.NumberOfTouches < 2)
+								{
 									return;
+								}
 #endif
 								pinchGestureRecognizer.SendPinchStarted(view, scaledPoint);
 								startingScale = view.Scale;
@@ -357,9 +418,14 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.MacOS
 								var delta = 1.0;
 								var dif = Math.Abs(scale - oldScale) * startingScale;
 								if (oldScale < scale)
+								{
 									delta = 1 + dif;
+								}
+
 								if (oldScale > scale)
+								{
 									delta = 1 - dif;
+								}
 
 								pinchGestureRecognizer.SendPinch(view, delta, scaledPoint);
 								eventTracker._previousScale = scale;
@@ -367,11 +433,17 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.MacOS
 							case NativeGestureRecognizerState.Cancelled:
 							case NativeGestureRecognizerState.Failed:
 								if (pinchGestureRecognizer.IsPinching)
+								{
 									pinchGestureRecognizer.SendPinchCanceled(view);
+								}
+
 								break;
 							case NativeGestureRecognizerState.Ended:
 								if (pinchGestureRecognizer.IsPinching)
+								{
 									pinchGestureRecognizer.SendPinchEnded(view);
+								}
+
 								eventTracker._previousScale = 1;
 								break;
 						}
@@ -396,7 +468,176 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.MacOS
 							case NativeGestureRecognizerState.Began:
 #if __MOBILE__
 								if (r.NumberOfTouches != panRecognizer.TouchPoints)
+								{
 									return;
+								}
+#endif
+								panGestureRecognizer.SendPanStarted(view, PanGestureRecognizer.CurrentId.Value);
+								break;
+							case NativeGestureRecognizerState.Changed:
+#if __MOBILE__
+								if (r.NumberOfTouches != panRecognizer.TouchPoints)
+								{
+									r.State = NativeGestureRecognizerState.Ended;
+									panGestureRecognizer.SendPanCompleted(view, PanGestureRecognizer.CurrentId.Value);
+									PanGestureRecognizer.CurrentId.Increment();
+									return;
+								}
+#endif
+								var translationInView = r.TranslationInView(_handler);
+								panGestureRecognizer.SendPan(view, translationInView.X, translationInView.Y, PanGestureRecognizer.CurrentId.Value);
+								break;
+							case NativeGestureRecognizerState.Cancelled:
+							case NativeGestureRecognizerState.Failed:
+								panGestureRecognizer.SendPanCanceled(view, PanGestureRecognizer.CurrentId.Value);
+								PanGestureRecognizer.CurrentId.Increment();
+								break;
+							case NativeGestureRecognizerState.Ended:
+#if __MOBILE__
+								if (r.NumberOfTouches != panRecognizer.TouchPoints)
+								{
+									panGestureRecognizer.SendPanCompleted(view, PanGestureRecognizer.CurrentId.Value);
+									PanGestureRecognizer.CurrentId.Increment();
+								}
+#else
+								panGestureRecognizer.SendPanCompleted(view, PanGestureRecognizer.CurrentId.Value);
+								PanGestureRecognizer.CurrentId.Increment();
+#endif
+								break;
+						}
+					}
+				});
+				return uiRecognizer;
+			}
+#endif
+
+			if (recognizer is ChildGestureRecognizer childRecognizer)
+			{
+#if !__MOBILE__
+				if (childRecognizer.GestureRecognizer is ClickGestureRecognizer clickChildRecognizer)
+				{
+					var returnAction = CreateChildRecognizerHandler(weakEventTracker, weakRecognizer);
+					var uiRecognizer = CreateClickRecognizer((int)clickChildRecognizer.Buttons, clickChildRecognizer.NumberOfClicksRequired, returnAction);
+					return uiRecognizer;
+				}
+
+				if (childRecognizer.GestureRecognizer is TapGestureRecognizer tapChildRecognizer)
+				{
+					var returnAction = CreateChildTapRecognizerHandler(weakEventTracker, weakRecognizer);
+					var uiRecognizer = CreateTapRecognizer(tapChildRecognizer.NumberOfTapsRequired, returnAction);
+					return uiRecognizer;
+				}
+#else
+				if (childRecognizer.GestureRecognizer is TapGestureRecognizer tapChildRecognizer)
+				{
+					var returnAction = CreateChildRecognizerHandler(weakEventTracker, weakRecognizer);
+					var uiRecognizer = CreateTapRecognizer(tapChildRecognizer.NumberOfTapsRequired, returnAction);
+					return uiRecognizer;
+				}
+#endif
+			}
+
+			var pinchRecognizer = recognizer as IPinchGestureController;
+			if (pinchRecognizer != null)
+			{
+				double startingScale = 1;
+				var uiRecognizer = CreatePinchRecognizer(r =>
+				{
+					var pinchGestureRecognizer = weakRecognizer.Target as IPinchGestureController;
+					var eventTracker = weakEventTracker.Target as EventTracker;
+					var view = eventTracker?._renderer?.Element as View;
+
+					if (pinchGestureRecognizer != null && eventTracker != null && view != null)
+					{
+						var oldScale = eventTracker._previousScale;
+						var originPoint = r.LocationInView(null);
+#if __MOBILE__
+						originPoint = UIApplication.SharedApplication.GetKeyWindow().ConvertPointToView(originPoint, eventTracker._renderer.NativeView);
+#else
+						originPoint = NSApplication.SharedApplication.KeyWindow.ContentView.ConvertPointToView(originPoint, eventTracker._renderer.NativeView);
+#endif
+						var scaledPoint = new Point(originPoint.X / view.Width, originPoint.Y / view.Height);
+
+						switch (r.State)
+						{
+							case NativeGestureRecognizerState.Began:
+#if __MOBILE__
+								if (r.NumberOfTouches < 2)
+								{
+									return;
+								}
+#endif
+								pinchGestureRecognizer.SendPinchStarted(view, scaledPoint);
+								startingScale = view.Scale;
+								break;
+							case NativeGestureRecognizerState.Changed:
+#if __MOBILE__
+								if (r.NumberOfTouches < 2 && pinchGestureRecognizer.IsPinching)
+								{
+									r.State = NativeGestureRecognizerState.Ended;
+									pinchGestureRecognizer.SendPinchEnded(view);
+									return;
+								}
+								var scale = r.Scale;
+#else
+								var scale = r.Magnification;
+#endif
+								var delta = 1.0;
+								var dif = Math.Abs(scale - oldScale) * startingScale;
+								if (oldScale < scale)
+								{
+									delta = 1 + dif;
+								}
+
+								if (oldScale > scale)
+								{
+									delta = 1 - dif;
+								}
+
+								pinchGestureRecognizer.SendPinch(view, delta, scaledPoint);
+								eventTracker._previousScale = scale;
+								break;
+							case NativeGestureRecognizerState.Cancelled:
+							case NativeGestureRecognizerState.Failed:
+								if (pinchGestureRecognizer.IsPinching)
+								{
+									pinchGestureRecognizer.SendPinchCanceled(view);
+								}
+
+								break;
+							case NativeGestureRecognizerState.Ended:
+								if (pinchGestureRecognizer.IsPinching)
+								{
+									pinchGestureRecognizer.SendPinchEnded(view);
+								}
+
+								eventTracker._previousScale = 1;
+								break;
+						}
+					}
+				});
+				return uiRecognizer;
+			}
+
+			var panRecognizer = recognizer as PanGestureRecognizer;
+			if (panRecognizer != null)
+			{
+				var uiRecognizer = CreatePanRecognizer(panRecognizer.TouchPoints, r =>
+				{
+					var eventTracker = weakEventTracker.Target as EventTracker;
+					var view = eventTracker?._renderer?.Element as View;
+
+					var panGestureRecognizer = weakRecognizer.Target as IPanGestureController;
+					if (panGestureRecognizer != null && view != null)
+					{
+						switch (r.State)
+						{
+							case NativeGestureRecognizerState.Began:
+#if __MOBILE__
+								if (r.NumberOfTouches != panRecognizer.TouchPoints)
+								{
+									return;
+								}
 #endif
 								panGestureRecognizer.SendPanStarted(view, PanGestureRecognizer.CurrentId.Value);
 								break;
@@ -562,7 +803,26 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.MacOS
 		void LoadRecognizers()
 		{
 			if (ElementGestureRecognizers == null)
+
+/* Unmerged change from project 'Compatibility(net8.0-maccatalyst)'
+Before:
 				return;
+
+#if __MOBILE__
+			if (_shouldReceiveTouch == null)
+			{
+After:
+			{
+*/
+			{
+				return;
+			}
+
+#if __MOBILE__
+			if (_shouldReceiveTouch == null)
+			{
+				return;
+			}
 
 #if __MOBILE__
 			if (_shouldReceiveTouch == null)
@@ -582,10 +842,32 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.MacOS
 				foreach (var interaction in _renderer.NativeView.Interactions)
 				{
 					if (interaction is UIDragInteraction uIDrag && uIDrag.Delegate == _dragAndDropDelegate)
+
+/* Unmerged change from project 'Compatibility(net8.0-maccatalyst)'
+Before:
 						uIDragInteraction = uIDrag;
+After:
+					{
+						uIDragInteraction = uIDrag;
+					}
+*/
+					
+/* Unmerged change from project 'Compatibility(net8.0-maccatalyst)'
+Before:
+						uIDropInteraction = uiDrop;
+After:
+					{
+						uIDropInteraction = uiDrop;
+					}
+*/
+{
+						uIDragInteraction = uIDrag;
+					}
 
 					if (interaction is UIDropInteraction uiDrop && uiDrop.Delegate == _dragAndDropDelegate)
+					{
 						uIDropInteraction = uiDrop;
+					}
 				}
 #pragma warning restore CA1416
 			}
@@ -597,7 +879,9 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.MacOS
 			{
 				IGestureRecognizer recognizer = ElementGestureRecognizers[i];
 				if (_gestureRecognizers.ContainsKey(recognizer))
+				{
 					continue;
+				}
 
 				var nativeRecognizer = GetNativeRecognizer(recognizer);
 				if (nativeRecognizer != null && _handler != null)
@@ -638,10 +922,14 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.MacOS
 
 #if __MOBILE__
 			if (!dragFound && uIDragInteraction != null && Forms.IsiOS11OrNewer)
+			{
 				_renderer.NativeView.RemoveInteraction(uIDragInteraction);
+			}
 
 			if (!dropFound && uIDropInteraction != null && Forms.IsiOS11OrNewer)
+			{
 				_renderer.NativeView.RemoveInteraction(uIDropInteraction);
+			}
 #endif
 
 			var toRemove = _gestureRecognizers.Keys.Where(key => !ElementGestureRecognizers.Contains(key)).ToArray();

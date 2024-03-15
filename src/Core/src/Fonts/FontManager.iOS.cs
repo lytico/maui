@@ -65,7 +65,9 @@ namespace Microsoft.Maui
 			foreach (var (value, weight) in FontWeightMap)
 			{
 				if (self <= weight)
+				{
 					return value;
+				}
 			}
 			return 1.0f;
 		}
@@ -74,7 +76,10 @@ namespace Microsoft.Maui
 		{
 			var size = GetFontSize(font, defaultFont);
 			if (size != font.Size)
+			{
 				font = font.WithSize(size);
+			}
+
 			return _fonts.GetOrAdd(font, factory);
 		}
 
@@ -86,10 +91,15 @@ namespace Microsoft.Maui
 			};
 			var weight = font.Weight;
 			if (font.Weight == 0)
+			{
 				weight = FontWeight.Regular;
+			}
+
 			var traits = (UIFontDescriptorSymbolicTraits)0;
 			if (weight == FontWeight.Bold)
+			{
 				traits |= UIFontDescriptorSymbolicTraits.Bold;
+			}
 			else if (weight != FontWeight.Regular)
 			{
 				a.Traits = new UIFontTraits
@@ -99,7 +109,9 @@ namespace Microsoft.Maui
 				};
 			}
 			if (font.Slant == FontSlant.Italic)
+			{
 				traits |= UIFontDescriptorSymbolicTraits.Italic;
+			}
 
 			a.Traits.SymbolicTrait = traits;
 			return a;
@@ -124,11 +136,15 @@ namespace Microsoft.Maui
 					{
 						var descriptor = new UIFontDescriptor().CreateWithFamily(family);
 						if (hasAttributes)
+						{
 							descriptor = descriptor.CreateWithAttributes(GetFontAttributes(font));
+						}
 
 						result = UIFont.FromDescriptor(descriptor, size);
 						if (result != null)
+						{
 							return ApplyScaling(font, result);
+						}
 					}
 
 					if (family.StartsWith(".SFUI", StringComparison.InvariantCultureIgnoreCase))
@@ -142,21 +158,24 @@ namespace Microsoft.Maui
 						{
 							result = UIFont.SystemFontOfSize(size, uIFontWeight);
 							if (result != null)
+							{
 								return ApplyScaling(font, result);
+							}
 						}
 
 						result = UIFont.SystemFontOfSize(size, UIFontWeight.Regular);
 						if (result != null)
+						{
 							return ApplyScaling(font, result);
+						}
 					}
 
 					var cleansedFont = CleanseFontName(family);
 					result = UIFont.FromName(cleansedFont, size);
 					if (result != null)
-						return ApplyScaling(font, result);
 
-					result = UIFont.FromName(family, size);
-					if (result != null)
+/* Unmerged change from project 'Core(net8.0-maccatalyst)'
+Before:
 						return ApplyScaling(font, result);
 				}
 				catch (Exception ex)
@@ -178,6 +197,70 @@ namespace Microsoft.Maui
 			{
 				if (font.AutoScalingEnabled && (OperatingSystem.IsIOSVersionAtLeast(11) || OperatingSystem.IsMacCatalystVersionAtLeast(11)))
 					return UIFontMetrics.DefaultMetrics.GetScaledFont(uiFont);
+After:
+					{
+						return ApplyScaling(font, result);
+					}
+
+					result = UIFont.FromName(family, size);
+					if (result != null)
+					{
+						return ApplyScaling(font, result);
+*/
+					{
+						return ApplyScaling(font, result);
+					}
+
+					result = UIFont.FromName(family, size);
+					if (result != null)
+					{
+						return ApplyScaling(font, result);
+					}
+				}
+				catch (Exception ex)
+				{
+					_serviceProvider?.CreateLogger<FontManager>()?.LogWarning(ex, "Unable to load font '{Font}'.", family);
+				}
+			}
+
+			if (hasAttributes)
+			{
+				var defaultFont = UIFont.SystemFontOfSize(size);
+				var descriptor = defaultFont.FontDescriptor.CreateWithAttributes(GetFontAttributes(font));
+				return ApplyScaling(font, UIFont.FromDescriptor(descriptor, size));
+			}
+
+			return ApplyScaling(font, UIFont.SystemFontOfSize(size));
+
+			UIFont ApplyScaling(Font font, UIFont uiFont)
+			{
+				if (font.AutoScalingEnabled && (OperatingSystem.IsIOSVersionAtLeast(11) || OperatingSystem.IsMacCatalystVersionAtLeast(11)))
+				{
+					return UIFontMetrics.DefaultMetrics.GetScaledFont(uiFont);
+				}
+					}
+				}
+				catch (Exception ex)
+				{
+					_serviceProvider?.CreateLogger<FontManager>()?.LogWarning(ex, "Unable to load font '{Font}'.", family);
+				}
+			}
+
+			if (hasAttributes)
+			{
+				var defaultFont = UIFont.SystemFontOfSize(size);
+				var descriptor = defaultFont.FontDescriptor.CreateWithAttributes(GetFontAttributes(font));
+				return ApplyScaling(font, UIFont.FromDescriptor(descriptor, size));
+			}
+
+			return ApplyScaling(font, UIFont.SystemFontOfSize(size));
+
+			UIFont ApplyScaling(Font font, UIFont uiFont)
+			{
+				if (font.AutoScalingEnabled && (OperatingSystem.IsIOSVersionAtLeast(11) || OperatingSystem.IsMacCatalystVersionAtLeast(11)))
+				{
+					return UIFontMetrics.DefaultMetrics.GetScaledFont(uiFont);
+				}
 
 				return uiFont;
 			}
@@ -187,14 +270,18 @@ namespace Microsoft.Maui
 		{
 			// First check Alias
 			if (_fontRegistrar.GetFont(fontName) is string fontPostScriptName)
+			{
 				return fontPostScriptName;
+			}
 
 			var fontFile = FontFile.FromString(fontName);
 
 			if (!string.IsNullOrWhiteSpace(fontFile.Extension))
 			{
 				if (_fontRegistrar.GetFont(fontFile.FileNameWithExtension()) is string filePath)
+				{
 					return filePath ?? fontFile.PostScriptName;
+				}
 			}
 			else
 			{
@@ -202,7 +289,9 @@ namespace Microsoft.Maui
 				{
 					var formatted = fontFile.FileNameWithExtension(ext);
 					if (_fontRegistrar.GetFont(formatted) is string filePath)
+					{
 						return filePath;
+					}
 				}
 			}
 

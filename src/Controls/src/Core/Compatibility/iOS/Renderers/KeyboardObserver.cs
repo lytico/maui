@@ -21,14 +21,20 @@ namespace Microsoft.Maui.Controls.Compatibility.Platform.iOS
 		{
 			var handler = KeyboardWillHide;
 			if (handler != null)
+			{
+			{
 				handler(sender, args);
+			}
 		}
 
 		static void OnKeyboardShown(object sender, UIKeyboardEventArgs args)
 		{
 			var handler = KeyboardWillShow;
 			if (handler != null)
+			{
+			{
 				handler(sender, args);
+			}
 		}
 	}
 }

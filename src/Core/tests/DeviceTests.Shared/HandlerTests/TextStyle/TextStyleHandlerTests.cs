@@ -108,9 +108,32 @@ namespace Microsoft.Maui.DeviceTests
 		{
 			string text = "Test";
 			if (stub is ITextInput ti)
+
+/* Unmerged change from project 'Core.DeviceTests.Shared(net8.0-maccatalyst)'
+Before:
 				ti.Text = text;
+After:
+			{
+				ti.Text = text;
+			}
+*/
+
+/* Unmerged change from project 'Core.DeviceTests.Shared(net8.0-windows10.0.20348.0)'
+Before:
+				ti.Text = text;
+After:
+			{
+				ti.Text = text;
+			}
+*/
+			{
+				ti.Text = text;
+			}
 			else
+			{
+			{
 				stub.GetType().GetProperty("Text").SetValue(stub, text);
+			}
 		}
 	}
 }

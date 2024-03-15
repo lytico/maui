@@ -106,7 +106,36 @@ namespace Maui.Controls.Sample.Pages
 		private void HandleTapped(double x, double y)
 		{
 			if (_tappedWithoutMove) // "Tapped" may fire multiple times for containers & overlapping controls
+
+/* Unmerged change from project 'Maui.Controls.Sample(net8.0-maccatalyst)'
+Before:
 				return;
+After:
+			{
+				return;
+			}
+*/
+
+/* Unmerged change from project 'Maui.Controls.Sample(net8.0-windows10.0.19041.0)'
+Before:
+				return;
+After:
+			{
+				return;
+			}
+*/
+
+/* Unmerged change from project 'Maui.Controls.Sample(net8.0-windows10.0.20348.0)'
+Before:
+				return;
+After:
+			{
+				return;
+			}
+*/
+			{
+				return;
+			}
 
 			_tappedWithoutMove = true;
 			IEnumerable<IVisualTreeElement>? elements = null;

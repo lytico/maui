@@ -52,7 +52,9 @@ namespace Microsoft.Maui.Controls.Xaml
 			Type propertyType = null;
 
 			if (valueProvider.TargetObject is Setter setter)
+			{
 				bp = setter.Property;
+			}
 			else
 			{
 				bp = valueProvider.TargetProperty as BindableProperty;
@@ -69,16 +71,90 @@ namespace Microsoft.Maui.Controls.Xaml
 					object targetObject = valueProvider.TargetObject;
 
 					if (targetObject is Setter)
+
+/* Unmerged change from project 'Controls.Xaml(net8.0-maccatalyst)'
+Before:
 						return null;
 					else return bp.GetDefaultValue(targetObject as BindableObject);
 				}
 				if (propertyType.IsValueType)
 					return Activator.CreateInstance(propertyType);
+After:
+					{
+						return null;
+					}
+					else
+					{
+						return bp.CreateInstance(propertyType);
+*/
+
+/* Unmerged change from project 'Controls.Xaml(net8.0-android)'
+Before:
+						return null;
+					else return bp.GetDefaultValue(targetObject as BindableObject);
+				}
+				if (propertyType.IsValueType)
+					return Activator.CreateInstance(propertyType);
+After:
+					{
+						return null;
+					}
+					else
+					{
+						return bp.CreateInstance(propertyType);
+*/
+
+/* Unmerged change from project 'Controls.Xaml(net8.0-windows10.0.19041.0)'
+Before:
+						return null;
+					else return bp.GetDefaultValue(targetObject as BindableObject);
+				}
+				if (propertyType.IsValueType)
+					return Activator.CreateInstance(propertyType);
+After:
+					{
+						return null;
+					}
+					else
+					{
+						return bp.CreateInstance(propertyType);
+*/
+
+/* Unmerged change from project 'Controls.Xaml(net8.0-windows10.0.20348.0)'
+Before:
+						return null;
+					else return bp.GetDefaultValue(targetObject as BindableObject);
+				}
+				if (propertyType.IsValueType)
+					return Activator.CreateInstance(propertyType);
+After:
+					{
+						return null;
+					}
+					else
+					{
+						return bp.CreateInstance(propertyType);
+*/
+					{
+						return null;
+					}
+					else
+					{
+						return bp.GetDefaultValue(targetObject as BindableObject);
+					}
+				}
+				if (propertyType.IsValueType)
+				{
+					return Activator.CreateInstance(propertyType);
+				}
+
 				return null;
 			}
 
 			if (Converter != null)
+			{
 				return Converter.Convert(value, propertyType, ConverterParameter, CultureInfo.CurrentUICulture);
+			}
 
 			var converterProvider = serviceProvider?.GetService<IValueConverterProvider>();
 			if (converterProvider != null)
@@ -86,7 +162,9 @@ namespace Microsoft.Maui.Controls.Xaml
 				MemberInfo minforetriever()
 				{
 					if (pi != null)
+					{
 						return pi;
+					}
 
 					MemberInfo minfo = null;
 					try
@@ -98,7 +176,10 @@ namespace Microsoft.Maui.Controls.Xaml
 						throw new XamlParseException($"Multiple properties with name '{bp.DeclaringType}.{bp.PropertyName}' found.", serviceProvider, innerException: e);
 					}
 					if (minfo != null)
+					{
 						return minfo;
+					}
+
 					try
 					{
 						return bp.DeclaringType.GetRuntimeMethod("Get" + bp.PropertyName, new[] { typeof(BindableObject) });
@@ -113,7 +194,10 @@ namespace Microsoft.Maui.Controls.Xaml
 			}
 			var ret = value.ConvertTo(propertyType, () => pi, serviceProvider, out Exception exception);
 			if (exception != null)
+			{
 				throw exception;
+			}
+
 			return ret;
 		}
 

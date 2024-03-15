@@ -50,9 +50,32 @@ namespace Microsoft.Maui.DeviceTests
 			await SetValueAsync<string, THandler>(textInput, newText, SetNativeText);
 
 			if (eventExpected)
+
+/* Unmerged change from project 'Core.DeviceTests.Shared(net8.0-maccatalyst)'
+Before:
 				Assert.Equal(1, eventFiredCount);
+After:
+			{
+				Assert.Equal(1, eventFiredCount);
+			}
+*/
+
+/* Unmerged change from project 'Core.DeviceTests.Shared(net8.0-windows10.0.20348.0)'
+Before:
+				Assert.Equal(1, eventFiredCount);
+After:
+			{
+				Assert.Equal(1, eventFiredCount);
+			}
+*/
+			{
+				Assert.Equal(1, eventFiredCount);
+			}
 			else
+			{
+			{
 				Assert.Equal(0, eventFiredCount);
+			}
 		}
 
 		[Fact]
