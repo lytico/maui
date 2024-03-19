@@ -8,7 +8,6 @@ namespace Microsoft.Maui.Controls.Handlers.Items.Platform;
 
 public abstract class LayoutManagerBase : ICollectionViewLayoutManager
 {
-
 	protected Size _allocatedSize;
 	protected Size _scrollCanvasSize;
 	protected bool _isLayouting;
@@ -113,6 +112,57 @@ public abstract class LayoutManagerBase : ICollectionViewLayoutManager
 	public abstract double GetScrollColumnSize();
 
 	public abstract void LayoutItems(Rect bound, bool force);
+
+	public virtual Size Measure(double widthConstraint, double heightConstraint, bool force = false)
+	{
+		var size = new Size(widthConstraint, heightConstraint);
+		// LayoutManager.Reset();
+		SizeAllocated(size);
+		LayoutItems(new Rect(Point.Zero, size), force);
+
+		var measured = GetScrollCanvasSize();
+		var blockSize = GetScrollBlockSize();
+
+		var width = GetScrollColumnSize();
+
+		if (double.IsPositiveInfinity(measured.Width))
+			measured.Width = width;
+
+		if (double.IsPositiveInfinity(measured.Height))
+			measured.Height = blockSize;
+
+		return measured;
+	}
+
+	public virtual Size Arrange(Rect allocation, bool force = false)
+	{
+		// TODO: set Frame or call Arrange on all realized Views
+		
+		SizeAllocated(allocation.Size);
+		LayoutItems(new Rect(Point.Zero, allocation.Size), force);
+		
+		
+		foreach (var cr in _realizedItem.Values.ToArray())
+		{
+			var w = cr;
+			var wBounds = w.Holder.Bounds;
+			
+			if (Controller!.GetVirtualView(w.Index) is { } view)
+			{
+				var frame = view.Frame;
+				if (frame != wBounds)
+				{
+					view.Arrange(wBounds);
+				}
+			}
+			else
+			{
+				;
+			}
+		}
+		
+		return allocation.Size;
+	}
 
 	public void ItemInserted(int inserted)
 	{
@@ -450,5 +500,4 @@ public abstract class LayoutManagerBase : ICollectionViewLayoutManager
 
 		return start;
 	}
-
 }

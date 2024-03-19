@@ -352,6 +352,11 @@ public class CollectionViewController : ICollectionViewController
 		RequestItemSelect(index, default);
 	}
 
+	public IView? GetVirtualView(int index)
+	{
+		return Adaptor!.GetTemplatedView(index);
+	}
+
 	void RequestItemSelect(int index, ViewHolder? viewHolder = null)
 	{
 		if (SelectionMode == SelectionMode.None)

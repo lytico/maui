@@ -222,8 +222,7 @@ public partial class CollectionContainer : Container
 		if (VirtualView is not { } virtualView || LayoutManager is not { })
 			return;
 
-		LayoutManager.SizeAllocated(allocation.Size);
-		LayoutManager.LayoutItems(new Rect(Point.Zero, allocation.Size), false);
+		LayoutManager.Arrange(allocation);
 
 		foreach (var cr in GetItemViews())
 		{
@@ -242,23 +241,8 @@ public partial class CollectionContainer : Container
 			if (VirtualView is not { } virtualView || LayoutManager is not { })
 				return new Size(widthConstraint, heightConstraint);
 
-			var size = new Size(widthConstraint, heightConstraint);
-			// LayoutManager.Reset();
-			LayoutManager.SizeAllocated(size);
-			LayoutManager.LayoutItems(new Rect(Point.Zero, size), false);
-
-			var measured = LayoutManager.GetScrollCanvasSize();
-			var blockSize = LayoutManager.GetScrollBlockSize();
-
-			var width = LayoutManager.GetScrollColumnSize();
-
-			if (double.IsPositiveInfinity(measured.Width))
-				measured.Width = width;
-
-			if (double.IsPositiveInfinity(measured.Height))
-				measured.Height = blockSize;
-
-			return measured;
+			var size = LayoutManager.Measure(widthConstraint, heightConstraint, false);
+			return size;
 		}
 		finally
 		{

@@ -6,13 +6,11 @@ using Size = Microsoft.Maui.Graphics.Size;
 
 namespace Microsoft.Maui.Controls.Handlers.Items.Platform
 {
-
 	/// <summary>
 	/// A View that contain a templated list of items.
 	/// </summary>
 	public partial class CollectionView : ScrolledWindow, ICollectionViewController
 	{
-
 		double _previousHorizontalOffset;
 		double _previousVerticalOffset;
 
@@ -56,7 +54,6 @@ namespace Microsoft.Maui.Controls.Handlers.Items.Platform
 				CollectionViewController.Adaptor = value;
 				CollectionContainer.Adaptor = value;
 			}
-
 		}
 
 		public ICollectionViewLayoutManager? LayoutManager
@@ -67,7 +64,6 @@ namespace Microsoft.Maui.Controls.Handlers.Items.Platform
 				CollectionViewController.LayoutManager = value;
 				CollectionContainer.LayoutManager = value;
 			}
-
 		}
 
 		/// <summary>
@@ -216,12 +212,7 @@ namespace Microsoft.Maui.Controls.Handlers.Items.Platform
 		/// <returns>A ScrollView instance</returns>
 		protected virtual ScrollableBase CreateScrollView()
 		{
-			return new SnappableScrollable(this)
-			{
-				UseCostomScrolling = true,
-				MaximumVelocity = 8.5f,
-				Friction = 0.015f
-			};
+			return new SnappableScrollable(this) { UseCostomScrolling = true, MaximumVelocity = 8.5f, Friction = 0.015f };
 		}
 
 		public IView? VirtualView
@@ -235,7 +226,6 @@ namespace Microsoft.Maui.Controls.Handlers.Items.Platform
 		/// </summary>
 		protected virtual void InitializationComponent()
 		{
-
 			CollectionViewController = new CollectionViewController()
 			{
 				SelectionMode = SelectionMode,
@@ -243,7 +233,6 @@ namespace Microsoft.Maui.Controls.Handlers.Items.Platform
 				AddToContainer = holder => CollectionContainer.AddItem(holder),
 				RemoveFromContainer = holder => CollectionContainer.RemoveItem(holder),
 				ScrollTo = args => ScrollTo(args.index, args.position, args.animate),
-
 			};
 
 			CollectionViewController.HasContentSizeUpdated += (sender, size) =>
@@ -306,8 +295,7 @@ namespace Microsoft.Maui.Controls.Handlers.Items.Platform
 			CollectionContainer = new CollectionContainer()
 			{
 				// VirtualView = VirtualView,
-				Adaptor = Adaptor,
-				LayoutManager = LayoutManager
+				Adaptor = Adaptor, LayoutManager = LayoutManager
 			};
 
 			Child = CollectionContainer;
@@ -454,7 +442,7 @@ namespace Microsoft.Maui.Controls.Handlers.Items.Platform
 		void ICollectionViewController.ItemMeasureInvalidated(int index) => CollectionViewController.ItemMeasureInvalidated(index);
 
 		void ICollectionViewController.RequestItemSelect(int index) => CollectionViewController.RequestItemSelect(index);
-
+		
+		IView? ICollectionViewController.GetVirtualView(int index) => CollectionViewController.GetVirtualView(index);
 	}
-
 }
