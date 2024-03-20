@@ -26,7 +26,11 @@ namespace Microsoft.Maui.Platform
 		public static T? GetResource<T>(this FrameworkElement element, string key, T? def = default)
 		{
 			if (element.Resources.TryGetValue(key, out var resource))
+			{
+			{
 				return (T?)resource;
+			}
+			}
 
 			return def;
 		}
@@ -34,7 +38,9 @@ namespace Microsoft.Maui.Platform
 		public static WBrush GetForeground(this FrameworkElement element)
 		{
 			if (element == null)
+			{
 				throw new ArgumentNullException(nameof(element));
+			}
 
 			return (WBrush)element.GetValue(GetForegroundProperty(element));
 		}
@@ -44,7 +50,11 @@ namespace Microsoft.Maui.Platform
 			WBindingExpression expr = element.GetBindingExpression(GetForegroundProperty(element));
 
 			if (expr == null)
+			{
+			{
 				return null;
+			}
+			}
 
 			return expr.ParentBinding;
 		}
@@ -54,7 +64,11 @@ namespace Microsoft.Maui.Platform
 			WBinding? binding = GetForegroundBinding(element);
 
 			if (binding != null)
+			{
+			{
 				return binding;
+			}
+			}
 
 			return GetForeground(element);
 		}
@@ -63,15 +77,21 @@ namespace Microsoft.Maui.Platform
 		{
 			var binding = cache as WBinding;
 			if (binding != null)
+			{
 				SetForeground(element, binding);
+			}
 			else
+			{
 				SetForeground(element, (WBrush)cache);
+			}
 		}
 
 		public static void SetForeground(this FrameworkElement element, WBrush foregroundBrush)
 		{
 			if (element == null)
+			{
 				throw new ArgumentNullException(nameof(element));
+			}
 
 			element.SetValue(GetForegroundProperty(element), foregroundBrush);
 		}
@@ -79,7 +99,9 @@ namespace Microsoft.Maui.Platform
 		public static void SetForeground(this FrameworkElement element, WBinding binding)
 		{
 			if (element == null)
+			{
 				throw new ArgumentNullException(nameof(element));
+			}
 
 			element.SetBinding(GetForegroundProperty(element), binding);
 		}
@@ -103,7 +125,9 @@ namespace Microsoft.Maui.Platform
 				else
 				{
 					foreach (var subChild in child.GetDescendantsByName<T>(elementName))
+					{
 						yield return subChild;
+					}
 				}
 			}
 		}
@@ -116,9 +140,31 @@ namespace Microsoft.Maui.Platform
 				var child = VisualTreeHelper.GetChild(parent, i);
 
 				if (child is T t && elementName.Equals(child.GetValue(FrameworkElement.NameProperty)))
+
+/* Unmerged change from project 'Core(net8.0-windows10.0.20348.0)'
+Before:
 					return t;
-				else if (child.GetDescendantByName<T>(elementName) is T tChild)
+After:
+				{
+					return t;
+				}
+*/
+				
+/* Unmerged change from project 'Core(net8.0-windows10.0.20348.0)'
+Before:
 					return tChild;
+After:
+				{
+					return tChild;
+				}
+*/
+{
+					return t;
+				}
+				else if (child.GetDescendantByName<T>(elementName) is T tChild)
+				{
+					return tChild;
+				}
 			}
 			return null;
 		}
@@ -131,7 +177,9 @@ namespace Microsoft.Maui.Platform
 				DependencyObject child = VisualTreeHelper.GetChild(element, i);
 
 				if ((child as T ?? GetFirstDescendant<T>(child)) is T target)
+				{
 					return target;
+				}
 			}
 			return null;
 		}
@@ -147,7 +195,9 @@ namespace Microsoft.Maui.Platform
 			var rd = new ResourceDictionary();
 
 			foreach (var r in element.Resources)
+			{
 				rd.TryAdd(r.Key, r.Value);
+			}
 
 			return rd;
 		}
@@ -157,12 +207,16 @@ namespace Microsoft.Maui.Platform
 			var rd = element?.Resources;
 
 			if (rd == null)
+			{
 				return;
+			}
 
 			foreach (var key in keys)
 			{
 				if (rd?.ContainsKey(key) ?? false)
+				{
 					rd[key] = newValue;
+				}
 			}
 
 			element?.RefreshThemeResources();
@@ -171,19 +225,38 @@ namespace Microsoft.Maui.Platform
 		static DependencyProperty? GetForegroundProperty(FrameworkElement element)
 		{
 			if (element is Control)
+
+/* Unmerged change from project 'Core(net8.0-windows10.0.20348.0)'
+Before:
 				return Control.ForegroundProperty;
 			if (element is TextBlock)
 				return TextBlock.ForegroundProperty;
+After:
+			{
+				return Control.ForegroundProperty;
+*/
+			{
+				return Control.ForegroundProperty;
+			}
+
+			if (element is TextBlock)
+			{
+				return TextBlock.ForegroundProperty;
+			}
 
 			Type type = element.GetType();
 
 			if (!ForegroundProperties.Value.TryGetValue(type, out var foregroundProperty))
 			{
 				if (ReflectionExtensions.GetFields(type).FirstOrDefault(f => f.Name == "ForegroundProperty") is not FieldInfo field)
+				{
 					throw new ArgumentException("type is not a Foregroundable type");
+				}
 
 				if (field.GetValue(null) is DependencyProperty property)
+				{
 					ForegroundProperties.Value.TryAdd(type, property);
+				}
 
 				return null;
 			}
@@ -199,11 +272,15 @@ namespace Microsoft.Maui.Platform
 				var child = VisualTreeHelper.GetChild(parent, i);
 
 				if (child is T t)
+				{
 					yield return t;
+				}
 				else
 				{
 					foreach (var subChild in child.GetChildren<T>())
+					{
 						yield return subChild;
+					}
 				}
 			}
 		}
@@ -211,7 +288,11 @@ namespace Microsoft.Maui.Platform
 		internal static bool IsLoaded(this FrameworkElement frameworkElement)
 		{
 			if (frameworkElement == null)
+			{
+			{
 				return false;
+			}
+			}
 
 			return frameworkElement.IsLoaded;
 		}
@@ -228,7 +309,9 @@ namespace Microsoft.Maui.Platform
 			ActionDisposable disposable = new ActionDisposable(() =>
 			{
 				if (routedEventHandler != null)
+				{
 					frameworkElement.Loaded -= routedEventHandler;
+				}
 			});
 
 			routedEventHandler = (_, __) =>
@@ -253,7 +336,9 @@ namespace Microsoft.Maui.Platform
 			ActionDisposable disposable = new ActionDisposable(() =>
 			{
 				if (routedEventHandler != null)
+				{
 					frameworkElement.Unloaded -= routedEventHandler;
+				}
 			});
 
 			routedEventHandler = (_, __) =>
@@ -272,7 +357,9 @@ namespace Microsoft.Maui.Platform
 			var rect = new Graphics.Rect(0, 0, frameworkElement.ActualWidth, frameworkElement.ActualHeight);
 
 			if (!view.Frame.Equals(rect))
+			{
 				view.Arrange(rect);
+			}
 		}
 
 
@@ -305,7 +392,11 @@ namespace Microsoft.Maui.Platform
 		internal static WPoint? GetLocationOnScreen(this IElement element)
 		{
 			if (element.Handler?.MauiContext == null)
+			{
+			{
 				return null;
+			}
+			}
 
 			var view = element.ToPlatform();
 			return
@@ -322,7 +413,11 @@ namespace Microsoft.Maui.Platform
 		internal static WPoint? GetLocationRelativeTo(this IElement element, UIElement relativeTo)
 		{
 			if (element.Handler?.MauiContext == null)
+			{
+			{
 				return null;
+			}
+			}
 
 			return
 				element
@@ -333,7 +428,11 @@ namespace Microsoft.Maui.Platform
 		internal static WPoint? GetLocationRelativeTo(this IElement element, IElement relativeTo)
 		{
 			if (element.Handler?.MauiContext == null)
+			{
+			{
 				return null;
+			}
+			}
 
 			return
 				element

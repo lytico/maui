@@ -74,7 +74,9 @@ namespace Microsoft.Maui.Controls.Platform.Compatibility
 		void SearchHandlerFocusChangeRequested(object sender, VisualElement.FocusRequestArgs e)
 		{
 			if (e.Focus)
+			{
 				e.Result = _uiSearchBar.BecomeFirstResponder();
+			}
 		}
 
 		void SearchHandlerPropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
@@ -133,8 +135,9 @@ namespace Microsoft.Maui.Controls.Platform.Compatibility
 		void UpdateFont(UITextField textField)
 		{
 			if (textField == null)
+			{
 				return;
-
+			}
 
 			textField.Font = _searchHandler.ToFont().ToUIFont(_fontManager);
 		}
@@ -142,12 +145,25 @@ namespace Microsoft.Maui.Controls.Platform.Compatibility
 		void UpdateSearchBarBackgroundColor(UITextField textField)
 		{
 			if (textField == null)
+			{
 				return;
+
+/* Unmerged change from project 'Controls.Core(net8.0-maccatalyst)'
+Before:
+			var backgroundView = textField.Subviews[0];
+After:
+			}
+
+			var backGroundColor = textField.Subviews[0];
+*/
+			}
 
 			var backGroundColor = _searchHandler.BackgroundColor;
 
 			if (!_hasCustomBackground && backGroundColor == null)
+			{
 				return;
+			}
 
 			var backgroundView = textField.Subviews[0];
 
@@ -163,14 +179,19 @@ namespace Microsoft.Maui.Controls.Platform.Compatibility
 			backgroundView.Layer.CornerRadius = 10;
 			backgroundView.ClipsToBounds = true;
 			if (_defaultBackgroundColor == null)
+			{
 				_defaultBackgroundColor = backgroundView.BackgroundColor;
+			}
+
 			backgroundView.BackgroundColor = backGroundColor.ToPlatform();
 		}
 
 		void UpdateCancelButtonColor(UIButton cancelButton)
 		{
 			if (cancelButton == null)
+			{
 				return;
+			}
 
 			var cancelColor = _searchHandler.CancelButtonColor;
 			if (cancelColor == null)
@@ -193,7 +214,9 @@ namespace Microsoft.Maui.Controls.Platform.Compatibility
 		void UpdateSearchBarPlaceholder(UITextField textField)
 		{
 			if (textField == null)
+			{
 				return;
+			}
 
 			var formatted = (FormattedString)_searchHandler.Placeholder ?? string.Empty;
 			var targetColor = _searchHandler.PlaceholderColor;
@@ -216,7 +239,9 @@ namespace Microsoft.Maui.Controls.Platform.Compatibility
 		void UpdateTextTransform(UITextField textField)
 		{
 			if (textField == null)
+			{
 				return;
+			}
 
 			textField.Text = _searchHandler.UpdateFormsText(textField.Text, _searchHandler.TextTransform);
 		}
@@ -224,7 +249,9 @@ namespace Microsoft.Maui.Controls.Platform.Compatibility
 		void UpdateTextColor(UITextField textField)
 		{
 			if (textField == null)
+			{
 				return;
+			}
 
 			_defaultTextColor = _defaultTextColor ?? textField.TextColor;
 			var targetColor = _searchHandler.TextColor;
@@ -256,7 +283,9 @@ namespace Microsoft.Maui.Controls.Platform.Compatibility
 			var uiButton = uiTextField.FindDescendantView<UIButton>();
 
 			if (uiButton == null)
+			{
 				return;
+			}
 
 			_defaultPlaceholderTintColor = _defaultPlaceholderTintColor ?? uiButton?.ImageView?.TintColor;
 
@@ -272,7 +301,9 @@ namespace Microsoft.Maui.Controls.Platform.Compatibility
 			var uiButton = uiTextField.ValueForKey(new NSString("clearButton")) as UIButton;
 
 			if (uiButton == null)
+			{
 				return;
+			}
 
 			_defaultClearIconTintColor = _defaultClearIconTintColor ?? uiButton?.TintColor;
 
@@ -282,7 +313,9 @@ namespace Microsoft.Maui.Controls.Platform.Compatibility
 		void UpdateSearchBarHorizontalTextAlignment(UITextField textField, IView view = null)
 		{
 			if (textField == null)
+			{
 				return;
+			}
 
 			textField.TextAlignment = _searchHandler.HorizontalTextAlignment.ToPlatformHorizontal(textField.EffectiveUserInterfaceLayoutDirection);
 		}
@@ -290,7 +323,9 @@ namespace Microsoft.Maui.Controls.Platform.Compatibility
 		void UpdateSearchBarVerticalTextAlignment(UITextField textField)
 		{
 			if (textField == null)
+			{
 				return;
+			}
 
 			textField.VerticalAlignment = _searchHandler.VerticalTextAlignment.ToPlatformVertical();
 		}
@@ -355,7 +390,9 @@ namespace Microsoft.Maui.Controls.Platform.Compatibility
 			var icon = imageView?.Image;
 
 			if (icon == null || (targetColor == null && defaultTintColor == null))
+			{
 				return;
+			}
 
 			var newIcon = icon.ImageWithRenderingMode(UIImageRenderingMode.AlwaysTemplate);
 			imageView.TintColor = targetColor?.ToPlatform() ?? defaultTintColor;
@@ -367,7 +404,9 @@ namespace Microsoft.Maui.Controls.Platform.Compatibility
 			var icon = button.ImageView?.Image;
 
 			if (icon == null || (targetColor == null && defaultTintColor == null))
+			{
 				return;
+			}
 
 			var newIcon = icon.ImageWithRenderingMode(UIImageRenderingMode.AlwaysTemplate);
 			button.SetImage(newIcon, UIControlState.Normal);
@@ -379,7 +418,9 @@ namespace Microsoft.Maui.Controls.Platform.Compatibility
 		protected virtual void Dispose(bool disposing)
 		{
 			if (_disposed)
+			{
 				return;
+			}
 
 			_disposed = true;
 

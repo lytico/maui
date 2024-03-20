@@ -56,7 +56,10 @@ namespace Microsoft.Maui.Controls.Xaml
 			var isEmpty = reader.IsEmptyElement;
 
 			if (isEmpty)
+			{
+			{
 				return;
+			}
 
 			while (reader.Read())
 			{
@@ -71,49 +74,71 @@ namespace Microsoft.Maui.Controls.Xaml
 						{
 							XmlName name;
 							if (reader.Name.StartsWith(elementName + ".", StringComparison.Ordinal))
+							{
 								name = new XmlName(reader.NamespaceURI, reader.Name.Substring(elementName.Length + 1));
+							}
 							else //Attached BP
+							{
 								name = new XmlName(reader.NamespaceURI, reader.LocalName);
+							}
 
 							if (node.Properties.ContainsKey(name))
+							{
 								throw new XamlParseException($"'{reader.Name}' is a duplicate property name.", (IXmlLineInfo)reader);
+							}
 
 							INode prop = null;
 							if (reader.IsEmptyElement)
+							{
 								Debug.WriteLine($"Unexpected empty element '<{reader.Name} />'", (IXmlLineInfo)reader);
+							}
 							else
+							{
 								prop = ReadNode(reader);
+							}
 
 							if (prop != null)
+							{
 								node.Properties.Add(name, prop);
+							}
 						}
 						// 2. Xaml2009 primitives, x:Arguments, ...
 						else if (reader.NamespaceURI == X2009Uri && reader.LocalName == "Arguments")
 						{
 							if (node.Properties.ContainsKey(XmlName.xArguments))
+							{
 								throw new XamlParseException($"'x:Arguments' is a duplicate directive name.", (IXmlLineInfo)reader);
+							}
 
 							var prop = ReadNode(reader);
 							if (prop != null)
+							{
 								node.Properties.Add(XmlName.xArguments, prop);
+							}
 						}
 						// 3. DataTemplate (should be handled by 4.)
 						else if (node.XmlType.NamespaceUri == MauiUri &&
 								 (node.XmlType.Name == "DataTemplate" || node.XmlType.Name == "ControlTemplate"))
 						{
 							if (node.Properties.ContainsKey(XmlName._CreateContent))
+							{
 								throw new XamlParseException($"Multiple child elements in {node.XmlType.Name}", (IXmlLineInfo)reader);
+							}
 
 							var prop = ReadNode(reader, true);
 							if (prop != null)
+							{
 								node.Properties.Add(XmlName._CreateContent, prop);
+							}
 						}
 						// 4. Implicit content, implicit collection, or collection syntax. Add to CollectionItems, resolve case later.
 						else
 						{
 							var item = ReadNode(reader, true);
 							if (item != null)
+							{
 								node.CollectionItems.Add(item);
+							}
 						}
 						break;
 					case XmlNodeType.Whitespace:
@@ -121,6 +146,9 @@ namespace Microsoft.Maui.Controls.Xaml
 					case XmlNodeType.Text:
 					case XmlNodeType.CDATA:
 						if (node.CollectionItems.Count == 1 && node.CollectionItems[0] is ValueNode)
+
+/* Unmerged change from project 'Controls.Xaml(net8.0)'
+Before:
 							((ValueNode)node.CollectionItems[0]).Value += reader.Value.Trim();
 						else
 							node.CollectionItems.Add(new ValueNode(reader.Value.Trim(), (IXmlNamespaceResolver)reader));
@@ -301,6 +329,2783 @@ namespace Microsoft.Maui.Controls.Xaml
 						// Special case for Windows backward compatibility
 						if (targetPlatform == "Windows" && DeviceInfo.Platform == DevicePlatform.WinUI)
 							continue;
+After:
+						{
+							((ValueNode)node.CollectionItems[0]).Value += reader.Value.Trim();
+						}
+						else
+						{
+							node.CollectionItems.Add(new ValueNode(reader.Value.Trim(), (IXmlNamespaceResolver)reader));
+						}
+
+						break;
+					default:
+						Debug.WriteLine("Unhandled node {0} {1} {2}", reader.NodeType, reader.Name, reader.Value);
+						break;
+				}
+			}
+		}
+
+		static INode ReadNode(XmlReader reader, bool nested = false)
+		{
+			var skipFirstRead = nested;
+			Debug.Assert(reader.NodeType == XmlNodeType.Element);
+			var name = reader.Name;
+			var nodes = new List<INode>();
+
+			while (skipFirstRead || reader.Read())
+			{
+				skipFirstRead = false;
+
+				INode node;
+				switch (reader.NodeType)
+				{
+					case XmlNodeType.EndElement:
+						Debug.Assert(reader.Name == name);
+						if (nodes.Count == 0) //Empty element
+						{
+							return null;
+						}
+
+						if (nodes.Count == 1)
+						{
+							return nodes[0];
+						}
+
+						return new ListNode(nodes, (IXmlNamespaceResolver)reader, ((IXmlLineInfo)reader).LineNumber,
+							((IXmlLineInfo)reader).LinePosition);
+					case XmlNodeType.Element:
+						var isEmpty = reader.IsEmptyElement && reader.Name == name;
+						var elementName = reader.Name;
+						var elementNsUri = reader.NamespaceURI;
+						var elementXmlInfo = (IXmlLineInfo)reader;
+						IList<KeyValuePair<string, string>> xmlns;
+
+						var attributes = ParseXamlAttributes(reader, out xmlns);
+						var prefixes = PrefixesToIgnore(xmlns);
+						var typeArguments = GetTypeArguments(attributes);
+
+						node = new ElementNode(new XmlType(elementNsUri, elementName, typeArguments), elementNsUri,
+							reader as IXmlNamespaceResolver, elementXmlInfo.LineNumber, elementXmlInfo.LinePosition);
+						((IElementNode)node).Properties.AddRange(attributes);
+						(node.IgnorablePrefixes ?? (node.IgnorablePrefixes = new List<string>())).AddRange(prefixes);
+
+						ParseXamlElementFor((IElementNode)node, reader);
+						nodes.Add(node);
+						if (isEmpty || nested)
+						{
+							return node;
+						}
+
+						break;
+					case XmlNodeType.Text:
+					case XmlNodeType.CDATA:
+						node = new ValueNode(reader.Value.Trim(), (IXmlNamespaceResolver)reader, ((IXmlLineInfo)reader).LineNumber,
+							((IXmlLineInfo)reader).LinePosition);
+						nodes.Add(node);
+						break;
+					case XmlNodeType.Whitespace:
+						break;
+					default:
+						Debug.WriteLine("Unhandled node {0} {1} {2}", reader.NodeType, reader.Name, reader.Value);
+						break;
+				}
+			}
+			throw new XamlParseException("Closing PropertyElement expected", (IXmlLineInfo)reader);
+		}
+
+		internal static IList<XmlType> GetTypeArguments(XmlReader reader) => GetTypeArguments(ParseXamlAttributes(reader, out _));
+
+		static IList<XmlType> GetTypeArguments(IList<KeyValuePair<XmlName, INode>> attributes)
+		{
+			return attributes.Any(kvp => kvp.Key == XmlName.xTypeArguments)
+				? ((ValueNode)attributes.First(kvp => kvp.Key == XmlName.xTypeArguments).Value).Value as IList<XmlType>
+				: null;
+		}
+
+		static IList<KeyValuePair<XmlName, INode>> ParseXamlAttributes(XmlReader reader, out IList<KeyValuePair<string, string>> xmlns)
+		{
+			Debug.Assert(reader.NodeType == XmlNodeType.Element);
+			var attributes = new List<KeyValuePair<XmlName, INode>>();
+			xmlns = new List<KeyValuePair<string, string>>();
+			for (var i = 0; i < reader.AttributeCount; i++)
+			{
+				reader.MoveToAttribute(i);
+
+				//skip xmlns
+				if (reader.NamespaceURI == "http://www.w3.org/2000/xmlns/")
+				{
+					xmlns.Add(new KeyValuePair<string, string>(reader.LocalName, reader.Value));
+					continue;
+				}
+
+				var namespaceUri = reader.NamespaceURI;
+				if (reader.LocalName.IndexOf(".", StringComparison.Ordinal) != -1 && namespaceUri == "")
+				{
+					namespaceUri = ((IXmlNamespaceResolver)reader).LookupNamespace("");
+				}
+
+				var propertyName = ParsePropertyName(new XmlName(namespaceUri, reader.LocalName));
+
+				if (propertyName.NamespaceURI == null && propertyName.LocalName == null)
+				{
+					continue;
+				}
+
+				object value = reader.Value;
+
+				if (propertyName == XmlName.xTypeArguments)
+				{
+					value = TypeArgumentsParser.ParseExpression((string)value, (IXmlNamespaceResolver)reader, (IXmlLineInfo)reader);
+				}
+
+				var propertyNode = GetValueNode(value, reader);
+				attributes.Add(new KeyValuePair<XmlName, INode>(propertyName, propertyNode));
+			}
+			reader.MoveToElement();
+			return attributes;
+		}
+
+		public static XmlName ParsePropertyName(XmlName name)
+		{
+			if (name.NamespaceURI == X2006Uri)
+			{
+				switch (name.LocalName)
+				{
+					case "Key":
+						return XmlName.xKey;
+					case "Name":
+						return XmlName.xName;
+					case "Class":
+					case "FieldModifier":
+						return new XmlName(null, null);
+					default:
+						Debug.WriteLine("Unhandled attribute {0}", name);
+						return new XmlName(null, null);
+				}
+			}
+
+			if (name.NamespaceURI == X2009Uri)
+			{
+				switch (name.LocalName)
+				{
+					case "Key":
+						return XmlName.xKey;
+					case "Name":
+						return XmlName.xName;
+					case "TypeArguments":
+						return XmlName.xTypeArguments;
+					case "DataType":
+						return XmlName.xDataType;
+					case "Class":
+					case "FieldModifier":
+						return new XmlName(null, null);
+					case "FactoryMethod":
+						return XmlName.xFactoryMethod;
+					case "Arguments":
+						return XmlName.xArguments;
+					default:
+						Debug.WriteLine("Unhandled attribute {0}", name);
+						return new XmlName(null, null);
+				}
+			}
+
+			return name;
+		}
+
+		static IList<string> PrefixesToIgnore(IList<KeyValuePair<string, string>> xmlns)
+		{
+			var prefixes = new List<string>();
+			foreach (var kvp in xmlns)
+			{
+				var prefix = kvp.Key;
+
+				XmlnsHelper.ParseXmlns(kvp.Value, out _, out _, out _, out var targetPlatform);
+				if (targetPlatform == null)
+				{
+					continue;
+				}
+
+				try
+				{
+					if (targetPlatform != DeviceInfo.Platform.ToString())
+					{
+						// Special case for Windows backward compatibility
+						if (targetPlatform == "Windows" && DeviceInfo.Platform == DevicePlatform.WinUI)
+						{
+							continue;
+						}
+*/
+
+/* Unmerged change from project 'Controls.Xaml(net8.0-maccatalyst)'
+Before:
+							((ValueNode)node.CollectionItems[0]).Value += reader.Value.Trim();
+						else
+							node.CollectionItems.Add(new ValueNode(reader.Value.Trim(), (IXmlNamespaceResolver)reader));
+						break;
+					default:
+						Debug.WriteLine("Unhandled node {0} {1} {2}", reader.NodeType, reader.Name, reader.Value);
+						break;
+				}
+			}
+		}
+
+		static INode ReadNode(XmlReader reader, bool nested = false)
+		{
+			var skipFirstRead = nested;
+			Debug.Assert(reader.NodeType == XmlNodeType.Element);
+			var name = reader.Name;
+			var nodes = new List<INode>();
+
+			while (skipFirstRead || reader.Read())
+			{
+				skipFirstRead = false;
+
+				INode node;
+				switch (reader.NodeType)
+				{
+					case XmlNodeType.EndElement:
+						Debug.Assert(reader.Name == name);
+						if (nodes.Count == 0) //Empty element
+							return null;
+						if (nodes.Count == 1)
+							return nodes[0];
+						return new ListNode(nodes, (IXmlNamespaceResolver)reader, ((IXmlLineInfo)reader).LineNumber,
+							((IXmlLineInfo)reader).LinePosition);
+					case XmlNodeType.Element:
+						var isEmpty = reader.IsEmptyElement && reader.Name == name;
+						var elementName = reader.Name;
+						var elementNsUri = reader.NamespaceURI;
+						var elementXmlInfo = (IXmlLineInfo)reader;
+						IList<KeyValuePair<string, string>> xmlns;
+
+						var attributes = ParseXamlAttributes(reader, out xmlns);
+						var prefixes = PrefixesToIgnore(xmlns);
+						var typeArguments = GetTypeArguments(attributes);
+
+						node = new ElementNode(new XmlType(elementNsUri, elementName, typeArguments), elementNsUri,
+							reader as IXmlNamespaceResolver, elementXmlInfo.LineNumber, elementXmlInfo.LinePosition);
+						((IElementNode)node).Properties.AddRange(attributes);
+						(node.IgnorablePrefixes ?? (node.IgnorablePrefixes = new List<string>())).AddRange(prefixes);
+
+						ParseXamlElementFor((IElementNode)node, reader);
+						nodes.Add(node);
+						if (isEmpty || nested)
+							return node;
+						break;
+					case XmlNodeType.Text:
+					case XmlNodeType.CDATA:
+						node = new ValueNode(reader.Value.Trim(), (IXmlNamespaceResolver)reader, ((IXmlLineInfo)reader).LineNumber,
+							((IXmlLineInfo)reader).LinePosition);
+						nodes.Add(node);
+						break;
+					case XmlNodeType.Whitespace:
+						break;
+					default:
+						Debug.WriteLine("Unhandled node {0} {1} {2}", reader.NodeType, reader.Name, reader.Value);
+						break;
+				}
+			}
+			throw new XamlParseException("Closing PropertyElement expected", (IXmlLineInfo)reader);
+		}
+
+		internal static IList<XmlType> GetTypeArguments(XmlReader reader) => GetTypeArguments(ParseXamlAttributes(reader, out _));
+
+		static IList<XmlType> GetTypeArguments(IList<KeyValuePair<XmlName, INode>> attributes)
+		{
+			return attributes.Any(kvp => kvp.Key == XmlName.xTypeArguments)
+				? ((ValueNode)attributes.First(kvp => kvp.Key == XmlName.xTypeArguments).Value).Value as IList<XmlType>
+				: null;
+		}
+
+		static IList<KeyValuePair<XmlName, INode>> ParseXamlAttributes(XmlReader reader, out IList<KeyValuePair<string, string>> xmlns)
+		{
+			Debug.Assert(reader.NodeType == XmlNodeType.Element);
+			var attributes = new List<KeyValuePair<XmlName, INode>>();
+			xmlns = new List<KeyValuePair<string, string>>();
+			for (var i = 0; i < reader.AttributeCount; i++)
+			{
+				reader.MoveToAttribute(i);
+
+				//skip xmlns
+				if (reader.NamespaceURI == "http://www.w3.org/2000/xmlns/")
+				{
+					xmlns.Add(new KeyValuePair<string, string>(reader.LocalName, reader.Value));
+					continue;
+				}
+
+				var namespaceUri = reader.NamespaceURI;
+				if (reader.LocalName.IndexOf(".", StringComparison.Ordinal) != -1 && namespaceUri == "")
+					namespaceUri = ((IXmlNamespaceResolver)reader).LookupNamespace("");
+				var propertyName = ParsePropertyName(new XmlName(namespaceUri, reader.LocalName));
+
+				if (propertyName.NamespaceURI == null && propertyName.LocalName == null)
+					continue;
+
+				object value = reader.Value;
+
+				if (propertyName == XmlName.xTypeArguments)
+					value = TypeArgumentsParser.ParseExpression((string)value, (IXmlNamespaceResolver)reader, (IXmlLineInfo)reader);
+
+				var propertyNode = GetValueNode(value, reader);
+				attributes.Add(new KeyValuePair<XmlName, INode>(propertyName, propertyNode));
+			}
+			reader.MoveToElement();
+			return attributes;
+		}
+
+		public static XmlName ParsePropertyName(XmlName name)
+		{
+			if (name.NamespaceURI == X2006Uri)
+			{
+				switch (name.LocalName)
+				{
+					case "Key":
+						return XmlName.xKey;
+					case "Name":
+						return XmlName.xName;
+					case "Class":
+					case "FieldModifier":
+						return new XmlName(null, null);
+					default:
+						Debug.WriteLine("Unhandled attribute {0}", name);
+						return new XmlName(null, null);
+				}
+			}
+
+			if (name.NamespaceURI == X2009Uri)
+			{
+				switch (name.LocalName)
+				{
+					case "Key":
+						return XmlName.xKey;
+					case "Name":
+						return XmlName.xName;
+					case "TypeArguments":
+						return XmlName.xTypeArguments;
+					case "DataType":
+						return XmlName.xDataType;
+					case "Class":
+					case "FieldModifier":
+						return new XmlName(null, null);
+					case "FactoryMethod":
+						return XmlName.xFactoryMethod;
+					case "Arguments":
+						return XmlName.xArguments;
+					default:
+						Debug.WriteLine("Unhandled attribute {0}", name);
+						return new XmlName(null, null);
+				}
+			}
+
+			return name;
+		}
+
+		static IList<string> PrefixesToIgnore(IList<KeyValuePair<string, string>> xmlns)
+		{
+			var prefixes = new List<string>();
+			foreach (var kvp in xmlns)
+			{
+				var prefix = kvp.Key;
+
+				XmlnsHelper.ParseXmlns(kvp.Value, out _, out _, out _, out var targetPlatform);
+				if (targetPlatform == null)
+					continue;
+
+				try
+				{
+					if (targetPlatform != DeviceInfo.Platform.ToString())
+					{
+						// Special case for Windows backward compatibility
+						if (targetPlatform == "Windows" && DeviceInfo.Platform == DevicePlatform.WinUI)
+							continue;
+After:
+						{
+							((ValueNode)node.CollectionItems[0]).Value += reader.Value.Trim();
+						}
+						else
+						{
+							node.CollectionItems.Add(new ValueNode(reader.Value.Trim(), (IXmlNamespaceResolver)reader));
+						}
+
+						break;
+					default:
+						Debug.WriteLine("Unhandled node {0} {1} {2}", reader.NodeType, reader.Name, reader.Value);
+						break;
+				}
+			}
+		}
+
+		static INode ReadNode(XmlReader reader, bool nested = false)
+		{
+			var skipFirstRead = nested;
+			Debug.Assert(reader.NodeType == XmlNodeType.Element);
+			var name = reader.Name;
+			var nodes = new List<INode>();
+
+			while (skipFirstRead || reader.Read())
+			{
+				skipFirstRead = false;
+
+				INode node;
+				switch (reader.NodeType)
+				{
+					case XmlNodeType.EndElement:
+						Debug.Assert(reader.Name == name);
+						if (nodes.Count == 0) //Empty element
+						{
+							return null;
+						}
+
+						if (nodes.Count == 1)
+						{
+							return nodes[0];
+						}
+
+						return new ListNode(nodes, (IXmlNamespaceResolver)reader, ((IXmlLineInfo)reader).LineNumber,
+							((IXmlLineInfo)reader).LinePosition);
+					case XmlNodeType.Element:
+						var isEmpty = reader.IsEmptyElement && reader.Name == name;
+						var elementName = reader.Name;
+						var elementNsUri = reader.NamespaceURI;
+						var elementXmlInfo = (IXmlLineInfo)reader;
+						IList<KeyValuePair<string, string>> xmlns;
+
+						var attributes = ParseXamlAttributes(reader, out xmlns);
+						var prefixes = PrefixesToIgnore(xmlns);
+						var typeArguments = GetTypeArguments(attributes);
+
+						node = new ElementNode(new XmlType(elementNsUri, elementName, typeArguments), elementNsUri,
+							reader as IXmlNamespaceResolver, elementXmlInfo.LineNumber, elementXmlInfo.LinePosition);
+						((IElementNode)node).Properties.AddRange(attributes);
+						(node.IgnorablePrefixes ?? (node.IgnorablePrefixes = new List<string>())).AddRange(prefixes);
+
+						ParseXamlElementFor((IElementNode)node, reader);
+						nodes.Add(node);
+						if (isEmpty || nested)
+						{
+							return node;
+						}
+
+						break;
+					case XmlNodeType.Text:
+					case XmlNodeType.CDATA:
+						node = new ValueNode(reader.Value.Trim(), (IXmlNamespaceResolver)reader, ((IXmlLineInfo)reader).LineNumber,
+							((IXmlLineInfo)reader).LinePosition);
+						nodes.Add(node);
+						break;
+					case XmlNodeType.Whitespace:
+						break;
+					default:
+						Debug.WriteLine("Unhandled node {0} {1} {2}", reader.NodeType, reader.Name, reader.Value);
+						break;
+				}
+			}
+			throw new XamlParseException("Closing PropertyElement expected", (IXmlLineInfo)reader);
+		}
+
+		internal static IList<XmlType> GetTypeArguments(XmlReader reader) => GetTypeArguments(ParseXamlAttributes(reader, out _));
+
+		static IList<XmlType> GetTypeArguments(IList<KeyValuePair<XmlName, INode>> attributes)
+		{
+			return attributes.Any(kvp => kvp.Key == XmlName.xTypeArguments)
+				? ((ValueNode)attributes.First(kvp => kvp.Key == XmlName.xTypeArguments).Value).Value as IList<XmlType>
+				: null;
+		}
+
+		static IList<KeyValuePair<XmlName, INode>> ParseXamlAttributes(XmlReader reader, out IList<KeyValuePair<string, string>> xmlns)
+		{
+			Debug.Assert(reader.NodeType == XmlNodeType.Element);
+			var attributes = new List<KeyValuePair<XmlName, INode>>();
+			xmlns = new List<KeyValuePair<string, string>>();
+			for (var i = 0; i < reader.AttributeCount; i++)
+			{
+				reader.MoveToAttribute(i);
+
+				//skip xmlns
+				if (reader.NamespaceURI == "http://www.w3.org/2000/xmlns/")
+				{
+					xmlns.Add(new KeyValuePair<string, string>(reader.LocalName, reader.Value));
+					continue;
+				}
+
+				var namespaceUri = reader.NamespaceURI;
+				if (reader.LocalName.IndexOf(".", StringComparison.Ordinal) != -1 && namespaceUri == "")
+				{
+					namespaceUri = ((IXmlNamespaceResolver)reader).LookupNamespace("");
+				}
+
+				var propertyName = ParsePropertyName(new XmlName(namespaceUri, reader.LocalName));
+
+				if (propertyName.NamespaceURI == null && propertyName.LocalName == null)
+				{
+					continue;
+				}
+
+				object value = reader.Value;
+
+				if (propertyName == XmlName.xTypeArguments)
+				{
+					value = TypeArgumentsParser.ParseExpression((string)value, (IXmlNamespaceResolver)reader, (IXmlLineInfo)reader);
+				}
+
+				var propertyNode = GetValueNode(value, reader);
+				attributes.Add(new KeyValuePair<XmlName, INode>(propertyName, propertyNode));
+			}
+			reader.MoveToElement();
+			return attributes;
+		}
+
+		public static XmlName ParsePropertyName(XmlName name)
+		{
+			if (name.NamespaceURI == X2006Uri)
+			{
+				switch (name.LocalName)
+				{
+					case "Key":
+						return XmlName.xKey;
+					case "Name":
+						return XmlName.xName;
+					case "Class":
+					case "FieldModifier":
+						return new XmlName(null, null);
+					default:
+						Debug.WriteLine("Unhandled attribute {0}", name);
+						return new XmlName(null, null);
+				}
+			}
+
+			if (name.NamespaceURI == X2009Uri)
+			{
+				switch (name.LocalName)
+				{
+					case "Key":
+						return XmlName.xKey;
+					case "Name":
+						return XmlName.xName;
+					case "TypeArguments":
+						return XmlName.xTypeArguments;
+					case "DataType":
+						return XmlName.xDataType;
+					case "Class":
+					case "FieldModifier":
+						return new XmlName(null, null);
+					case "FactoryMethod":
+						return XmlName.xFactoryMethod;
+					case "Arguments":
+						return XmlName.xArguments;
+					default:
+						Debug.WriteLine("Unhandled attribute {0}", name);
+						return new XmlName(null, null);
+				}
+			}
+
+			return name;
+		}
+
+		static IList<string> PrefixesToIgnore(IList<KeyValuePair<string, string>> xmlns)
+		{
+			var prefixes = new List<string>();
+			foreach (var kvp in xmlns)
+			{
+				var prefix = kvp.Key;
+
+				XmlnsHelper.ParseXmlns(kvp.Value, out _, out _, out _, out var targetPlatform);
+				if (targetPlatform == null)
+				{
+					continue;
+				}
+
+				try
+				{
+					if (targetPlatform != DeviceInfo.Platform.ToString())
+					{
+						// Special case for Windows backward compatibility
+						if (targetPlatform == "Windows" && DeviceInfo.Platform == DevicePlatform.WinUI)
+						{
+							continue;
+						}
+*/
+
+/* Unmerged change from project 'Controls.Xaml(net8.0-android)'
+Before:
+							((ValueNode)node.CollectionItems[0]).Value += reader.Value.Trim();
+						else
+							node.CollectionItems.Add(new ValueNode(reader.Value.Trim(), (IXmlNamespaceResolver)reader));
+						break;
+					default:
+						Debug.WriteLine("Unhandled node {0} {1} {2}", reader.NodeType, reader.Name, reader.Value);
+						break;
+				}
+			}
+		}
+
+		static INode ReadNode(XmlReader reader, bool nested = false)
+		{
+			var skipFirstRead = nested;
+			Debug.Assert(reader.NodeType == XmlNodeType.Element);
+			var name = reader.Name;
+			var nodes = new List<INode>();
+
+			while (skipFirstRead || reader.Read())
+			{
+				skipFirstRead = false;
+
+				INode node;
+				switch (reader.NodeType)
+				{
+					case XmlNodeType.EndElement:
+						Debug.Assert(reader.Name == name);
+						if (nodes.Count == 0) //Empty element
+							return null;
+						if (nodes.Count == 1)
+							return nodes[0];
+						return new ListNode(nodes, (IXmlNamespaceResolver)reader, ((IXmlLineInfo)reader).LineNumber,
+							((IXmlLineInfo)reader).LinePosition);
+					case XmlNodeType.Element:
+						var isEmpty = reader.IsEmptyElement && reader.Name == name;
+						var elementName = reader.Name;
+						var elementNsUri = reader.NamespaceURI;
+						var elementXmlInfo = (IXmlLineInfo)reader;
+						IList<KeyValuePair<string, string>> xmlns;
+
+						var attributes = ParseXamlAttributes(reader, out xmlns);
+						var prefixes = PrefixesToIgnore(xmlns);
+						var typeArguments = GetTypeArguments(attributes);
+
+						node = new ElementNode(new XmlType(elementNsUri, elementName, typeArguments), elementNsUri,
+							reader as IXmlNamespaceResolver, elementXmlInfo.LineNumber, elementXmlInfo.LinePosition);
+						((IElementNode)node).Properties.AddRange(attributes);
+						(node.IgnorablePrefixes ?? (node.IgnorablePrefixes = new List<string>())).AddRange(prefixes);
+
+						ParseXamlElementFor((IElementNode)node, reader);
+						nodes.Add(node);
+						if (isEmpty || nested)
+							return node;
+						break;
+					case XmlNodeType.Text:
+					case XmlNodeType.CDATA:
+						node = new ValueNode(reader.Value.Trim(), (IXmlNamespaceResolver)reader, ((IXmlLineInfo)reader).LineNumber,
+							((IXmlLineInfo)reader).LinePosition);
+						nodes.Add(node);
+						break;
+					case XmlNodeType.Whitespace:
+						break;
+					default:
+						Debug.WriteLine("Unhandled node {0} {1} {2}", reader.NodeType, reader.Name, reader.Value);
+						break;
+				}
+			}
+			throw new XamlParseException("Closing PropertyElement expected", (IXmlLineInfo)reader);
+		}
+
+		internal static IList<XmlType> GetTypeArguments(XmlReader reader) => GetTypeArguments(ParseXamlAttributes(reader, out _));
+
+		static IList<XmlType> GetTypeArguments(IList<KeyValuePair<XmlName, INode>> attributes)
+		{
+			return attributes.Any(kvp => kvp.Key == XmlName.xTypeArguments)
+				? ((ValueNode)attributes.First(kvp => kvp.Key == XmlName.xTypeArguments).Value).Value as IList<XmlType>
+				: null;
+		}
+
+		static IList<KeyValuePair<XmlName, INode>> ParseXamlAttributes(XmlReader reader, out IList<KeyValuePair<string, string>> xmlns)
+		{
+			Debug.Assert(reader.NodeType == XmlNodeType.Element);
+			var attributes = new List<KeyValuePair<XmlName, INode>>();
+			xmlns = new List<KeyValuePair<string, string>>();
+			for (var i = 0; i < reader.AttributeCount; i++)
+			{
+				reader.MoveToAttribute(i);
+
+				//skip xmlns
+				if (reader.NamespaceURI == "http://www.w3.org/2000/xmlns/")
+				{
+					xmlns.Add(new KeyValuePair<string, string>(reader.LocalName, reader.Value));
+					continue;
+				}
+
+				var namespaceUri = reader.NamespaceURI;
+				if (reader.LocalName.IndexOf(".", StringComparison.Ordinal) != -1 && namespaceUri == "")
+					namespaceUri = ((IXmlNamespaceResolver)reader).LookupNamespace("");
+				var propertyName = ParsePropertyName(new XmlName(namespaceUri, reader.LocalName));
+
+				if (propertyName.NamespaceURI == null && propertyName.LocalName == null)
+					continue;
+
+				object value = reader.Value;
+
+				if (propertyName == XmlName.xTypeArguments)
+					value = TypeArgumentsParser.ParseExpression((string)value, (IXmlNamespaceResolver)reader, (IXmlLineInfo)reader);
+
+				var propertyNode = GetValueNode(value, reader);
+				attributes.Add(new KeyValuePair<XmlName, INode>(propertyName, propertyNode));
+			}
+			reader.MoveToElement();
+			return attributes;
+		}
+
+		public static XmlName ParsePropertyName(XmlName name)
+		{
+			if (name.NamespaceURI == X2006Uri)
+			{
+				switch (name.LocalName)
+				{
+					case "Key":
+						return XmlName.xKey;
+					case "Name":
+						return XmlName.xName;
+					case "Class":
+					case "FieldModifier":
+						return new XmlName(null, null);
+					default:
+						Debug.WriteLine("Unhandled attribute {0}", name);
+						return new XmlName(null, null);
+				}
+			}
+
+			if (name.NamespaceURI == X2009Uri)
+			{
+				switch (name.LocalName)
+				{
+					case "Key":
+						return XmlName.xKey;
+					case "Name":
+						return XmlName.xName;
+					case "TypeArguments":
+						return XmlName.xTypeArguments;
+					case "DataType":
+						return XmlName.xDataType;
+					case "Class":
+					case "FieldModifier":
+						return new XmlName(null, null);
+					case "FactoryMethod":
+						return XmlName.xFactoryMethod;
+					case "Arguments":
+						return XmlName.xArguments;
+					default:
+						Debug.WriteLine("Unhandled attribute {0}", name);
+						return new XmlName(null, null);
+				}
+			}
+
+			return name;
+		}
+
+		static IList<string> PrefixesToIgnore(IList<KeyValuePair<string, string>> xmlns)
+		{
+			var prefixes = new List<string>();
+			foreach (var kvp in xmlns)
+			{
+				var prefix = kvp.Key;
+
+				XmlnsHelper.ParseXmlns(kvp.Value, out _, out _, out _, out var targetPlatform);
+				if (targetPlatform == null)
+					continue;
+
+				try
+				{
+					if (targetPlatform != DeviceInfo.Platform.ToString())
+					{
+						// Special case for Windows backward compatibility
+						if (targetPlatform == "Windows" && DeviceInfo.Platform == DevicePlatform.WinUI)
+							continue;
+After:
+						{
+							((ValueNode)node.CollectionItems[0]).Value += reader.Value.Trim();
+						}
+						else
+						{
+							node.CollectionItems.Add(new ValueNode(reader.Value.Trim(), (IXmlNamespaceResolver)reader));
+						}
+
+						break;
+					default:
+						Debug.WriteLine("Unhandled node {0} {1} {2}", reader.NodeType, reader.Name, reader.Value);
+						break;
+				}
+			}
+		}
+
+		static INode ReadNode(XmlReader reader, bool nested = false)
+		{
+			var skipFirstRead = nested;
+			Debug.Assert(reader.NodeType == XmlNodeType.Element);
+			var name = reader.Name;
+			var nodes = new List<INode>();
+
+			while (skipFirstRead || reader.Read())
+			{
+				skipFirstRead = false;
+
+				INode node;
+				switch (reader.NodeType)
+				{
+					case XmlNodeType.EndElement:
+						Debug.Assert(reader.Name == name);
+						if (nodes.Count == 0) //Empty element
+						{
+							return null;
+						}
+
+						if (nodes.Count == 1)
+						{
+							return nodes[0];
+						}
+
+						return new ListNode(nodes, (IXmlNamespaceResolver)reader, ((IXmlLineInfo)reader).LineNumber,
+							((IXmlLineInfo)reader).LinePosition);
+					case XmlNodeType.Element:
+						var isEmpty = reader.IsEmptyElement && reader.Name == name;
+						var elementName = reader.Name;
+						var elementNsUri = reader.NamespaceURI;
+						var elementXmlInfo = (IXmlLineInfo)reader;
+						IList<KeyValuePair<string, string>> xmlns;
+
+						var attributes = ParseXamlAttributes(reader, out xmlns);
+						var prefixes = PrefixesToIgnore(xmlns);
+						var typeArguments = GetTypeArguments(attributes);
+
+						node = new ElementNode(new XmlType(elementNsUri, elementName, typeArguments), elementNsUri,
+							reader as IXmlNamespaceResolver, elementXmlInfo.LineNumber, elementXmlInfo.LinePosition);
+						((IElementNode)node).Properties.AddRange(attributes);
+						(node.IgnorablePrefixes ?? (node.IgnorablePrefixes = new List<string>())).AddRange(prefixes);
+
+						ParseXamlElementFor((IElementNode)node, reader);
+						nodes.Add(node);
+						if (isEmpty || nested)
+						{
+							return node;
+						}
+
+						break;
+					case XmlNodeType.Text:
+					case XmlNodeType.CDATA:
+						node = new ValueNode(reader.Value.Trim(), (IXmlNamespaceResolver)reader, ((IXmlLineInfo)reader).LineNumber,
+							((IXmlLineInfo)reader).LinePosition);
+						nodes.Add(node);
+						break;
+					case XmlNodeType.Whitespace:
+						break;
+					default:
+						Debug.WriteLine("Unhandled node {0} {1} {2}", reader.NodeType, reader.Name, reader.Value);
+						break;
+				}
+			}
+			throw new XamlParseException("Closing PropertyElement expected", (IXmlLineInfo)reader);
+		}
+
+		internal static IList<XmlType> GetTypeArguments(XmlReader reader) => GetTypeArguments(ParseXamlAttributes(reader, out _));
+
+		static IList<XmlType> GetTypeArguments(IList<KeyValuePair<XmlName, INode>> attributes)
+		{
+			return attributes.Any(kvp => kvp.Key == XmlName.xTypeArguments)
+				? ((ValueNode)attributes.First(kvp => kvp.Key == XmlName.xTypeArguments).Value).Value as IList<XmlType>
+				: null;
+		}
+
+		static IList<KeyValuePair<XmlName, INode>> ParseXamlAttributes(XmlReader reader, out IList<KeyValuePair<string, string>> xmlns)
+		{
+			Debug.Assert(reader.NodeType == XmlNodeType.Element);
+			var attributes = new List<KeyValuePair<XmlName, INode>>();
+			xmlns = new List<KeyValuePair<string, string>>();
+			for (var i = 0; i < reader.AttributeCount; i++)
+			{
+				reader.MoveToAttribute(i);
+
+				//skip xmlns
+				if (reader.NamespaceURI == "http://www.w3.org/2000/xmlns/")
+				{
+					xmlns.Add(new KeyValuePair<string, string>(reader.LocalName, reader.Value));
+					continue;
+				}
+
+				var namespaceUri = reader.NamespaceURI;
+				if (reader.LocalName.IndexOf(".", StringComparison.Ordinal) != -1 && namespaceUri == "")
+				{
+					namespaceUri = ((IXmlNamespaceResolver)reader).LookupNamespace("");
+				}
+
+				var propertyName = ParsePropertyName(new XmlName(namespaceUri, reader.LocalName));
+
+				if (propertyName.NamespaceURI == null && propertyName.LocalName == null)
+				{
+					continue;
+				}
+
+				object value = reader.Value;
+
+				if (propertyName == XmlName.xTypeArguments)
+				{
+					value = TypeArgumentsParser.ParseExpression((string)value, (IXmlNamespaceResolver)reader, (IXmlLineInfo)reader);
+				}
+
+				var propertyNode = GetValueNode(value, reader);
+				attributes.Add(new KeyValuePair<XmlName, INode>(propertyName, propertyNode));
+			}
+			reader.MoveToElement();
+			return attributes;
+		}
+
+		public static XmlName ParsePropertyName(XmlName name)
+		{
+			if (name.NamespaceURI == X2006Uri)
+			{
+				switch (name.LocalName)
+				{
+					case "Key":
+						return XmlName.xKey;
+					case "Name":
+						return XmlName.xName;
+					case "Class":
+					case "FieldModifier":
+						return new XmlName(null, null);
+					default:
+						Debug.WriteLine("Unhandled attribute {0}", name);
+						return new XmlName(null, null);
+				}
+			}
+
+			if (name.NamespaceURI == X2009Uri)
+			{
+				switch (name.LocalName)
+				{
+					case "Key":
+						return XmlName.xKey;
+					case "Name":
+						return XmlName.xName;
+					case "TypeArguments":
+						return XmlName.xTypeArguments;
+					case "DataType":
+						return XmlName.xDataType;
+					case "Class":
+					case "FieldModifier":
+						return new XmlName(null, null);
+					case "FactoryMethod":
+						return XmlName.xFactoryMethod;
+					case "Arguments":
+						return XmlName.xArguments;
+					default:
+						Debug.WriteLine("Unhandled attribute {0}", name);
+						return new XmlName(null, null);
+				}
+			}
+
+			return name;
+		}
+
+		static IList<string> PrefixesToIgnore(IList<KeyValuePair<string, string>> xmlns)
+		{
+			var prefixes = new List<string>();
+			foreach (var kvp in xmlns)
+			{
+				var prefix = kvp.Key;
+
+				XmlnsHelper.ParseXmlns(kvp.Value, out _, out _, out _, out var targetPlatform);
+				if (targetPlatform == null)
+				{
+					continue;
+				}
+
+				try
+				{
+					if (targetPlatform != DeviceInfo.Platform.ToString())
+					{
+						// Special case for Windows backward compatibility
+						if (targetPlatform == "Windows" && DeviceInfo.Platform == DevicePlatform.WinUI)
+						{
+							continue;
+						}
+*/
+
+/* Unmerged change from project 'Controls.Xaml(net8.0-windows10.0.19041.0)'
+Before:
+							((ValueNode)node.CollectionItems[0]).Value += reader.Value.Trim();
+						else
+							node.CollectionItems.Add(new ValueNode(reader.Value.Trim(), (IXmlNamespaceResolver)reader));
+						break;
+					default:
+						Debug.WriteLine("Unhandled node {0} {1} {2}", reader.NodeType, reader.Name, reader.Value);
+						break;
+				}
+			}
+		}
+
+		static INode ReadNode(XmlReader reader, bool nested = false)
+		{
+			var skipFirstRead = nested;
+			Debug.Assert(reader.NodeType == XmlNodeType.Element);
+			var name = reader.Name;
+			var nodes = new List<INode>();
+
+			while (skipFirstRead || reader.Read())
+			{
+				skipFirstRead = false;
+
+				INode node;
+				switch (reader.NodeType)
+				{
+					case XmlNodeType.EndElement:
+						Debug.Assert(reader.Name == name);
+						if (nodes.Count == 0) //Empty element
+							return null;
+						if (nodes.Count == 1)
+							return nodes[0];
+						return new ListNode(nodes, (IXmlNamespaceResolver)reader, ((IXmlLineInfo)reader).LineNumber,
+							((IXmlLineInfo)reader).LinePosition);
+					case XmlNodeType.Element:
+						var isEmpty = reader.IsEmptyElement && reader.Name == name;
+						var elementName = reader.Name;
+						var elementNsUri = reader.NamespaceURI;
+						var elementXmlInfo = (IXmlLineInfo)reader;
+						IList<KeyValuePair<string, string>> xmlns;
+
+						var attributes = ParseXamlAttributes(reader, out xmlns);
+						var prefixes = PrefixesToIgnore(xmlns);
+						var typeArguments = GetTypeArguments(attributes);
+
+						node = new ElementNode(new XmlType(elementNsUri, elementName, typeArguments), elementNsUri,
+							reader as IXmlNamespaceResolver, elementXmlInfo.LineNumber, elementXmlInfo.LinePosition);
+						((IElementNode)node).Properties.AddRange(attributes);
+						(node.IgnorablePrefixes ?? (node.IgnorablePrefixes = new List<string>())).AddRange(prefixes);
+
+						ParseXamlElementFor((IElementNode)node, reader);
+						nodes.Add(node);
+						if (isEmpty || nested)
+							return node;
+						break;
+					case XmlNodeType.Text:
+					case XmlNodeType.CDATA:
+						node = new ValueNode(reader.Value.Trim(), (IXmlNamespaceResolver)reader, ((IXmlLineInfo)reader).LineNumber,
+							((IXmlLineInfo)reader).LinePosition);
+						nodes.Add(node);
+						break;
+					case XmlNodeType.Whitespace:
+						break;
+					default:
+						Debug.WriteLine("Unhandled node {0} {1} {2}", reader.NodeType, reader.Name, reader.Value);
+						break;
+				}
+			}
+			throw new XamlParseException("Closing PropertyElement expected", (IXmlLineInfo)reader);
+		}
+
+		internal static IList<XmlType> GetTypeArguments(XmlReader reader) => GetTypeArguments(ParseXamlAttributes(reader, out _));
+
+		static IList<XmlType> GetTypeArguments(IList<KeyValuePair<XmlName, INode>> attributes)
+		{
+			return attributes.Any(kvp => kvp.Key == XmlName.xTypeArguments)
+				? ((ValueNode)attributes.First(kvp => kvp.Key == XmlName.xTypeArguments).Value).Value as IList<XmlType>
+				: null;
+		}
+
+		static IList<KeyValuePair<XmlName, INode>> ParseXamlAttributes(XmlReader reader, out IList<KeyValuePair<string, string>> xmlns)
+		{
+			Debug.Assert(reader.NodeType == XmlNodeType.Element);
+			var attributes = new List<KeyValuePair<XmlName, INode>>();
+			xmlns = new List<KeyValuePair<string, string>>();
+			for (var i = 0; i < reader.AttributeCount; i++)
+			{
+				reader.MoveToAttribute(i);
+
+				//skip xmlns
+				if (reader.NamespaceURI == "http://www.w3.org/2000/xmlns/")
+				{
+					xmlns.Add(new KeyValuePair<string, string>(reader.LocalName, reader.Value));
+					continue;
+				}
+
+				var namespaceUri = reader.NamespaceURI;
+				if (reader.LocalName.IndexOf(".", StringComparison.Ordinal) != -1 && namespaceUri == "")
+					namespaceUri = ((IXmlNamespaceResolver)reader).LookupNamespace("");
+				var propertyName = ParsePropertyName(new XmlName(namespaceUri, reader.LocalName));
+
+				if (propertyName.NamespaceURI == null && propertyName.LocalName == null)
+					continue;
+
+				object value = reader.Value;
+
+				if (propertyName == XmlName.xTypeArguments)
+					value = TypeArgumentsParser.ParseExpression((string)value, (IXmlNamespaceResolver)reader, (IXmlLineInfo)reader);
+
+				var propertyNode = GetValueNode(value, reader);
+				attributes.Add(new KeyValuePair<XmlName, INode>(propertyName, propertyNode));
+			}
+			reader.MoveToElement();
+			return attributes;
+		}
+
+		public static XmlName ParsePropertyName(XmlName name)
+		{
+			if (name.NamespaceURI == X2006Uri)
+			{
+				switch (name.LocalName)
+				{
+					case "Key":
+						return XmlName.xKey;
+					case "Name":
+						return XmlName.xName;
+					case "Class":
+					case "FieldModifier":
+						return new XmlName(null, null);
+					default:
+						Debug.WriteLine("Unhandled attribute {0}", name);
+						return new XmlName(null, null);
+				}
+			}
+
+			if (name.NamespaceURI == X2009Uri)
+			{
+				switch (name.LocalName)
+				{
+					case "Key":
+						return XmlName.xKey;
+					case "Name":
+						return XmlName.xName;
+					case "TypeArguments":
+						return XmlName.xTypeArguments;
+					case "DataType":
+						return XmlName.xDataType;
+					case "Class":
+					case "FieldModifier":
+						return new XmlName(null, null);
+					case "FactoryMethod":
+						return XmlName.xFactoryMethod;
+					case "Arguments":
+						return XmlName.xArguments;
+					default:
+						Debug.WriteLine("Unhandled attribute {0}", name);
+						return new XmlName(null, null);
+				}
+			}
+
+			return name;
+		}
+
+		static IList<string> PrefixesToIgnore(IList<KeyValuePair<string, string>> xmlns)
+		{
+			var prefixes = new List<string>();
+			foreach (var kvp in xmlns)
+			{
+				var prefix = kvp.Key;
+
+				XmlnsHelper.ParseXmlns(kvp.Value, out _, out _, out _, out var targetPlatform);
+				if (targetPlatform == null)
+					continue;
+
+				try
+				{
+					if (targetPlatform != DeviceInfo.Platform.ToString())
+					{
+						// Special case for Windows backward compatibility
+						if (targetPlatform == "Windows" && DeviceInfo.Platform == DevicePlatform.WinUI)
+							continue;
+After:
+						{
+							((ValueNode)node.CollectionItems[0]).Value += reader.Value.Trim();
+						}
+						else
+						{
+							node.CollectionItems.Add(new ValueNode(reader.Value.Trim(), (IXmlNamespaceResolver)reader));
+						}
+
+						break;
+					default:
+						Debug.WriteLine("Unhandled node {0} {1} {2}", reader.NodeType, reader.Name, reader.Value);
+						break;
+				}
+			}
+		}
+
+		static INode ReadNode(XmlReader reader, bool nested = false)
+		{
+			var skipFirstRead = nested;
+			Debug.Assert(reader.NodeType == XmlNodeType.Element);
+			var name = reader.Name;
+			var nodes = new List<INode>();
+
+			while (skipFirstRead || reader.Read())
+			{
+				skipFirstRead = false;
+
+				INode node;
+				switch (reader.NodeType)
+				{
+					case XmlNodeType.EndElement:
+						Debug.Assert(reader.Name == name);
+						if (nodes.Count == 0) //Empty element
+						{
+							return null;
+						}
+
+						if (nodes.Count == 1)
+						{
+							return nodes[0];
+						}
+
+						return new ListNode(nodes, (IXmlNamespaceResolver)reader, ((IXmlLineInfo)reader).LineNumber,
+							((IXmlLineInfo)reader).LinePosition);
+					case XmlNodeType.Element:
+						var isEmpty = reader.IsEmptyElement && reader.Name == name;
+						var elementName = reader.Name;
+						var elementNsUri = reader.NamespaceURI;
+						var elementXmlInfo = (IXmlLineInfo)reader;
+						IList<KeyValuePair<string, string>> xmlns;
+
+						var attributes = ParseXamlAttributes(reader, out xmlns);
+						var prefixes = PrefixesToIgnore(xmlns);
+						var typeArguments = GetTypeArguments(attributes);
+
+						node = new ElementNode(new XmlType(elementNsUri, elementName, typeArguments), elementNsUri,
+							reader as IXmlNamespaceResolver, elementXmlInfo.LineNumber, elementXmlInfo.LinePosition);
+						((IElementNode)node).Properties.AddRange(attributes);
+						(node.IgnorablePrefixes ?? (node.IgnorablePrefixes = new List<string>())).AddRange(prefixes);
+
+						ParseXamlElementFor((IElementNode)node, reader);
+						nodes.Add(node);
+						if (isEmpty || nested)
+						{
+							return node;
+						}
+
+						break;
+					case XmlNodeType.Text:
+					case XmlNodeType.CDATA:
+						node = new ValueNode(reader.Value.Trim(), (IXmlNamespaceResolver)reader, ((IXmlLineInfo)reader).LineNumber,
+							((IXmlLineInfo)reader).LinePosition);
+						nodes.Add(node);
+						break;
+					case XmlNodeType.Whitespace:
+						break;
+					default:
+						Debug.WriteLine("Unhandled node {0} {1} {2}", reader.NodeType, reader.Name, reader.Value);
+						break;
+				}
+			}
+			throw new XamlParseException("Closing PropertyElement expected", (IXmlLineInfo)reader);
+		}
+
+		internal static IList<XmlType> GetTypeArguments(XmlReader reader) => GetTypeArguments(ParseXamlAttributes(reader, out _));
+
+		static IList<XmlType> GetTypeArguments(IList<KeyValuePair<XmlName, INode>> attributes)
+		{
+			return attributes.Any(kvp => kvp.Key == XmlName.xTypeArguments)
+				? ((ValueNode)attributes.First(kvp => kvp.Key == XmlName.xTypeArguments).Value).Value as IList<XmlType>
+				: null;
+		}
+
+		static IList<KeyValuePair<XmlName, INode>> ParseXamlAttributes(XmlReader reader, out IList<KeyValuePair<string, string>> xmlns)
+		{
+			Debug.Assert(reader.NodeType == XmlNodeType.Element);
+			var attributes = new List<KeyValuePair<XmlName, INode>>();
+			xmlns = new List<KeyValuePair<string, string>>();
+			for (var i = 0; i < reader.AttributeCount; i++)
+			{
+				reader.MoveToAttribute(i);
+
+				//skip xmlns
+				if (reader.NamespaceURI == "http://www.w3.org/2000/xmlns/")
+				{
+					xmlns.Add(new KeyValuePair<string, string>(reader.LocalName, reader.Value));
+					continue;
+				}
+
+				var namespaceUri = reader.NamespaceURI;
+				if (reader.LocalName.IndexOf(".", StringComparison.Ordinal) != -1 && namespaceUri == "")
+				{
+					namespaceUri = ((IXmlNamespaceResolver)reader).LookupNamespace("");
+				}
+
+				var propertyName = ParsePropertyName(new XmlName(namespaceUri, reader.LocalName));
+
+				if (propertyName.NamespaceURI == null && propertyName.LocalName == null)
+				{
+					continue;
+				}
+
+				object value = reader.Value;
+
+				if (propertyName == XmlName.xTypeArguments)
+				{
+					value = TypeArgumentsParser.ParseExpression((string)value, (IXmlNamespaceResolver)reader, (IXmlLineInfo)reader);
+				}
+
+				var propertyNode = GetValueNode(value, reader);
+				attributes.Add(new KeyValuePair<XmlName, INode>(propertyName, propertyNode));
+			}
+			reader.MoveToElement();
+			return attributes;
+		}
+
+		public static XmlName ParsePropertyName(XmlName name)
+		{
+			if (name.NamespaceURI == X2006Uri)
+			{
+				switch (name.LocalName)
+				{
+					case "Key":
+						return XmlName.xKey;
+					case "Name":
+						return XmlName.xName;
+					case "Class":
+					case "FieldModifier":
+						return new XmlName(null, null);
+					default:
+						Debug.WriteLine("Unhandled attribute {0}", name);
+						return new XmlName(null, null);
+				}
+			}
+
+			if (name.NamespaceURI == X2009Uri)
+			{
+				switch (name.LocalName)
+				{
+					case "Key":
+						return XmlName.xKey;
+					case "Name":
+						return XmlName.xName;
+					case "TypeArguments":
+						return XmlName.xTypeArguments;
+					case "DataType":
+						return XmlName.xDataType;
+					case "Class":
+					case "FieldModifier":
+						return new XmlName(null, null);
+					case "FactoryMethod":
+						return XmlName.xFactoryMethod;
+					case "Arguments":
+						return XmlName.xArguments;
+					default:
+						Debug.WriteLine("Unhandled attribute {0}", name);
+						return new XmlName(null, null);
+				}
+			}
+
+			return name;
+		}
+
+		static IList<string> PrefixesToIgnore(IList<KeyValuePair<string, string>> xmlns)
+		{
+			var prefixes = new List<string>();
+			foreach (var kvp in xmlns)
+			{
+				var prefix = kvp.Key;
+
+				XmlnsHelper.ParseXmlns(kvp.Value, out _, out _, out _, out var targetPlatform);
+				if (targetPlatform == null)
+				{
+					continue;
+				}
+
+				try
+				{
+					if (targetPlatform != DeviceInfo.Platform.ToString())
+					{
+						// Special case for Windows backward compatibility
+						if (targetPlatform == "Windows" && DeviceInfo.Platform == DevicePlatform.WinUI)
+						{
+							continue;
+						}
+*/
+
+/* Unmerged change from project 'Controls.Xaml(net8.0-windows10.0.20348.0)'
+Before:
+							((ValueNode)node.CollectionItems[0]).Value += reader.Value.Trim();
+						else
+							node.CollectionItems.Add(new ValueNode(reader.Value.Trim(), (IXmlNamespaceResolver)reader));
+						break;
+					default:
+						Debug.WriteLine("Unhandled node {0} {1} {2}", reader.NodeType, reader.Name, reader.Value);
+						break;
+				}
+			}
+		}
+
+		static INode ReadNode(XmlReader reader, bool nested = false)
+		{
+			var skipFirstRead = nested;
+			Debug.Assert(reader.NodeType == XmlNodeType.Element);
+			var name = reader.Name;
+			var nodes = new List<INode>();
+
+			while (skipFirstRead || reader.Read())
+			{
+				skipFirstRead = false;
+
+				INode node;
+				switch (reader.NodeType)
+				{
+					case XmlNodeType.EndElement:
+						Debug.Assert(reader.Name == name);
+						if (nodes.Count == 0) //Empty element
+							return null;
+						if (nodes.Count == 1)
+							return nodes[0];
+						return new ListNode(nodes, (IXmlNamespaceResolver)reader, ((IXmlLineInfo)reader).LineNumber,
+							((IXmlLineInfo)reader).LinePosition);
+					case XmlNodeType.Element:
+						var isEmpty = reader.IsEmptyElement && reader.Name == name;
+						var elementName = reader.Name;
+						var elementNsUri = reader.NamespaceURI;
+						var elementXmlInfo = (IXmlLineInfo)reader;
+						IList<KeyValuePair<string, string>> xmlns;
+
+						var attributes = ParseXamlAttributes(reader, out xmlns);
+						var prefixes = PrefixesToIgnore(xmlns);
+						var typeArguments = GetTypeArguments(attributes);
+
+						node = new ElementNode(new XmlType(elementNsUri, elementName, typeArguments), elementNsUri,
+							reader as IXmlNamespaceResolver, elementXmlInfo.LineNumber, elementXmlInfo.LinePosition);
+						((IElementNode)node).Properties.AddRange(attributes);
+						(node.IgnorablePrefixes ?? (node.IgnorablePrefixes = new List<string>())).AddRange(prefixes);
+
+						ParseXamlElementFor((IElementNode)node, reader);
+						nodes.Add(node);
+						if (isEmpty || nested)
+							return node;
+						break;
+					case XmlNodeType.Text:
+					case XmlNodeType.CDATA:
+						node = new ValueNode(reader.Value.Trim(), (IXmlNamespaceResolver)reader, ((IXmlLineInfo)reader).LineNumber,
+							((IXmlLineInfo)reader).LinePosition);
+						nodes.Add(node);
+						break;
+					case XmlNodeType.Whitespace:
+						break;
+					default:
+						Debug.WriteLine("Unhandled node {0} {1} {2}", reader.NodeType, reader.Name, reader.Value);
+						break;
+				}
+			}
+			throw new XamlParseException("Closing PropertyElement expected", (IXmlLineInfo)reader);
+		}
+
+		internal static IList<XmlType> GetTypeArguments(XmlReader reader) => GetTypeArguments(ParseXamlAttributes(reader, out _));
+
+		static IList<XmlType> GetTypeArguments(IList<KeyValuePair<XmlName, INode>> attributes)
+		{
+			return attributes.Any(kvp => kvp.Key == XmlName.xTypeArguments)
+				? ((ValueNode)attributes.First(kvp => kvp.Key == XmlName.xTypeArguments).Value).Value as IList<XmlType>
+				: null;
+		}
+
+		static IList<KeyValuePair<XmlName, INode>> ParseXamlAttributes(XmlReader reader, out IList<KeyValuePair<string, string>> xmlns)
+		{
+			Debug.Assert(reader.NodeType == XmlNodeType.Element);
+			var attributes = new List<KeyValuePair<XmlName, INode>>();
+			xmlns = new List<KeyValuePair<string, string>>();
+			for (var i = 0; i < reader.AttributeCount; i++)
+			{
+				reader.MoveToAttribute(i);
+
+				//skip xmlns
+				if (reader.NamespaceURI == "http://www.w3.org/2000/xmlns/")
+				{
+					xmlns.Add(new KeyValuePair<string, string>(reader.LocalName, reader.Value));
+					continue;
+				}
+
+				var namespaceUri = reader.NamespaceURI;
+				if (reader.LocalName.IndexOf(".", StringComparison.Ordinal) != -1 && namespaceUri == "")
+					namespaceUri = ((IXmlNamespaceResolver)reader).LookupNamespace("");
+				var propertyName = ParsePropertyName(new XmlName(namespaceUri, reader.LocalName));
+
+				if (propertyName.NamespaceURI == null && propertyName.LocalName == null)
+					continue;
+
+				object value = reader.Value;
+
+				if (propertyName == XmlName.xTypeArguments)
+					value = TypeArgumentsParser.ParseExpression((string)value, (IXmlNamespaceResolver)reader, (IXmlLineInfo)reader);
+
+				var propertyNode = GetValueNode(value, reader);
+				attributes.Add(new KeyValuePair<XmlName, INode>(propertyName, propertyNode));
+			}
+			reader.MoveToElement();
+			return attributes;
+		}
+
+		public static XmlName ParsePropertyName(XmlName name)
+		{
+			if (name.NamespaceURI == X2006Uri)
+			{
+				switch (name.LocalName)
+				{
+					case "Key":
+						return XmlName.xKey;
+					case "Name":
+						return XmlName.xName;
+					case "Class":
+					case "FieldModifier":
+						return new XmlName(null, null);
+					default:
+						Debug.WriteLine("Unhandled attribute {0}", name);
+						return new XmlName(null, null);
+				}
+			}
+
+			if (name.NamespaceURI == X2009Uri)
+			{
+				switch (name.LocalName)
+				{
+					case "Key":
+						return XmlName.xKey;
+					case "Name":
+						return XmlName.xName;
+					case "TypeArguments":
+						return XmlName.xTypeArguments;
+					case "DataType":
+						return XmlName.xDataType;
+					case "Class":
+					case "FieldModifier":
+						return new XmlName(null, null);
+					case "FactoryMethod":
+						return XmlName.xFactoryMethod;
+					case "Arguments":
+						return XmlName.xArguments;
+					default:
+						Debug.WriteLine("Unhandled attribute {0}", name);
+						return new XmlName(null, null);
+				}
+			}
+
+			return name;
+		}
+
+		static IList<string> PrefixesToIgnore(IList<KeyValuePair<string, string>> xmlns)
+		{
+			var prefixes = new List<string>();
+			foreach (var kvp in xmlns)
+			{
+				var prefix = kvp.Key;
+
+				XmlnsHelper.ParseXmlns(kvp.Value, out _, out _, out _, out var targetPlatform);
+				if (targetPlatform == null)
+					continue;
+
+				try
+				{
+					if (targetPlatform != DeviceInfo.Platform.ToString())
+					{
+						// Special case for Windows backward compatibility
+						if (targetPlatform == "Windows" && DeviceInfo.Platform == DevicePlatform.WinUI)
+							continue;
+After:
+						{
+							((ValueNode)node.CollectionItems[0]).Value += reader.Value.Trim();
+						}
+						else
+						{
+							node.CollectionItems.Add(new ValueNode(reader.Value.Trim(), (IXmlNamespaceResolver)reader));
+						}
+
+						break;
+					default:
+						Debug.WriteLine("Unhandled node {0} {1} {2}", reader.NodeType, reader.Name, reader.Value);
+						break;
+				}
+			}
+		}
+
+		static INode ReadNode(XmlReader reader, bool nested = false)
+		{
+			var skipFirstRead = nested;
+			Debug.Assert(reader.NodeType == XmlNodeType.Element);
+			var name = reader.Name;
+			var nodes = new List<INode>();
+
+			while (skipFirstRead || reader.Read())
+			{
+				skipFirstRead = false;
+
+				INode node;
+				switch (reader.NodeType)
+				{
+					case XmlNodeType.EndElement:
+						Debug.Assert(reader.Name == name);
+						if (nodes.Count == 0) //Empty element
+						{
+							return null;
+						}
+
+						if (nodes.Count == 1)
+						{
+							return nodes[0];
+						}
+
+						return new ListNode(nodes, (IXmlNamespaceResolver)reader, ((IXmlLineInfo)reader).LineNumber,
+							((IXmlLineInfo)reader).LinePosition);
+					case XmlNodeType.Element:
+						var isEmpty = reader.IsEmptyElement && reader.Name == name;
+						var elementName = reader.Name;
+						var elementNsUri = reader.NamespaceURI;
+						var elementXmlInfo = (IXmlLineInfo)reader;
+						IList<KeyValuePair<string, string>> xmlns;
+
+						var attributes = ParseXamlAttributes(reader, out xmlns);
+						var prefixes = PrefixesToIgnore(xmlns);
+						var typeArguments = GetTypeArguments(attributes);
+
+						node = new ElementNode(new XmlType(elementNsUri, elementName, typeArguments), elementNsUri,
+							reader as IXmlNamespaceResolver, elementXmlInfo.LineNumber, elementXmlInfo.LinePosition);
+						((IElementNode)node).Properties.AddRange(attributes);
+						(node.IgnorablePrefixes ?? (node.IgnorablePrefixes = new List<string>())).AddRange(prefixes);
+
+						ParseXamlElementFor((IElementNode)node, reader);
+						nodes.Add(node);
+						if (isEmpty || nested)
+						{
+							return node;
+						}
+
+						break;
+					case XmlNodeType.Text:
+					case XmlNodeType.CDATA:
+						node = new ValueNode(reader.Value.Trim(), (IXmlNamespaceResolver)reader, ((IXmlLineInfo)reader).LineNumber,
+							((IXmlLineInfo)reader).LinePosition);
+						nodes.Add(node);
+						break;
+					case XmlNodeType.Whitespace:
+						break;
+					default:
+						Debug.WriteLine("Unhandled node {0} {1} {2}", reader.NodeType, reader.Name, reader.Value);
+						break;
+				}
+			}
+			throw new XamlParseException("Closing PropertyElement expected", (IXmlLineInfo)reader);
+		}
+
+		internal static IList<XmlType> GetTypeArguments(XmlReader reader) => GetTypeArguments(ParseXamlAttributes(reader, out _));
+
+		static IList<XmlType> GetTypeArguments(IList<KeyValuePair<XmlName, INode>> attributes)
+		{
+			return attributes.Any(kvp => kvp.Key == XmlName.xTypeArguments)
+				? ((ValueNode)attributes.First(kvp => kvp.Key == XmlName.xTypeArguments).Value).Value as IList<XmlType>
+				: null;
+		}
+
+		static IList<KeyValuePair<XmlName, INode>> ParseXamlAttributes(XmlReader reader, out IList<KeyValuePair<string, string>> xmlns)
+		{
+			Debug.Assert(reader.NodeType == XmlNodeType.Element);
+			var attributes = new List<KeyValuePair<XmlName, INode>>();
+			xmlns = new List<KeyValuePair<string, string>>();
+			for (var i = 0; i < reader.AttributeCount; i++)
+			{
+				reader.MoveToAttribute(i);
+
+				//skip xmlns
+				if (reader.NamespaceURI == "http://www.w3.org/2000/xmlns/")
+				{
+					xmlns.Add(new KeyValuePair<string, string>(reader.LocalName, reader.Value));
+					continue;
+				}
+
+				var namespaceUri = reader.NamespaceURI;
+				if (reader.LocalName.IndexOf(".", StringComparison.Ordinal) != -1 && namespaceUri == "")
+				{
+					namespaceUri = ((IXmlNamespaceResolver)reader).LookupNamespace("");
+				}
+
+				var propertyName = ParsePropertyName(new XmlName(namespaceUri, reader.LocalName));
+
+				if (propertyName.NamespaceURI == null && propertyName.LocalName == null)
+				{
+					continue;
+				}
+
+				object value = reader.Value;
+
+				if (propertyName == XmlName.xTypeArguments)
+				{
+					value = TypeArgumentsParser.ParseExpression((string)value, (IXmlNamespaceResolver)reader, (IXmlLineInfo)reader);
+				}
+
+				var propertyNode = GetValueNode(value, reader);
+				attributes.Add(new KeyValuePair<XmlName, INode>(propertyName, propertyNode));
+			}
+			reader.MoveToElement();
+			return attributes;
+		}
+
+		public static XmlName ParsePropertyName(XmlName name)
+		{
+			if (name.NamespaceURI == X2006Uri)
+			{
+				switch (name.LocalName)
+				{
+					case "Key":
+						return XmlName.xKey;
+					case "Name":
+						return XmlName.xName;
+					case "Class":
+					case "FieldModifier":
+						return new XmlName(null, null);
+					default:
+						Debug.WriteLine("Unhandled attribute {0}", name);
+						return new XmlName(null, null);
+				}
+			}
+
+			if (name.NamespaceURI == X2009Uri)
+			{
+				switch (name.LocalName)
+				{
+					case "Key":
+						return XmlName.xKey;
+					case "Name":
+						return XmlName.xName;
+					case "TypeArguments":
+						return XmlName.xTypeArguments;
+					case "DataType":
+						return XmlName.xDataType;
+					case "Class":
+					case "FieldModifier":
+						return new XmlName(null, null);
+					case "FactoryMethod":
+						return XmlName.xFactoryMethod;
+					case "Arguments":
+						return XmlName.xArguments;
+					default:
+						Debug.WriteLine("Unhandled attribute {0}", name);
+						return new XmlName(null, null);
+				}
+			}
+
+			return name;
+		}
+
+		static IList<string> PrefixesToIgnore(IList<KeyValuePair<string, string>> xmlns)
+		{
+			var prefixes = new List<string>();
+			foreach (var kvp in xmlns)
+			{
+				var prefix = kvp.Key;
+
+				XmlnsHelper.ParseXmlns(kvp.Value, out _, out _, out _, out var targetPlatform);
+				if (targetPlatform == null)
+				{
+					continue;
+				}
+
+				try
+				{
+					if (targetPlatform != DeviceInfo.Platform.ToString())
+					{
+						// Special case for Windows backward compatibility
+						if (targetPlatform == "Windows" && DeviceInfo.Platform == DevicePlatform.WinUI)
+						{
+							continue;
+						}
+*/
+						
+/* Unmerged change from project 'Controls.Xaml(net8.0)'
+Before:
+				GatherXmlnsDefinitionAttributes();
+
+			Type type = xmlType.GetTypeReference(
+				s_xmlnsDefinitions,
+				currentAssembly?.FullName,
+				(typeInfo) =>
+				{
+					var t = Type.GetType($"{typeInfo.clrNamespace}.{typeInfo.typeName}, {typeInfo.assemblyName}");
+					if (t is not null && t.IsPublicOrVisibleInternal(currentAssembly))
+						return t;
+					return null;
+				});
+
+			var typeArguments = xmlType.TypeArguments;
+			exception = null;
+
+			if (type == null)
+			{
+				// This covers the scenario where the AppDomain's loaded
+				// assemblies might have changed since this method was first
+				// called. This occurred during unit test runs and could
+				// conceivably occur in the field. 
+				if (!hasRetriedNsSearch)
+				{
+					hasRetriedNsSearch = true;
+					s_xmlnsDefinitions = null;
+					goto retry;
+				}
+			}
+
+			if (type != null && typeArguments != null)
+			{
+				XamlParseException innerexception = null;
+				var args = typeArguments.Select(delegate (XmlType xmltype)
+				{
+					var t = GetElementType(xmltype, xmlInfo, currentAssembly, out XamlParseException xpe);
+					if (xpe != null)
+					{
+						innerexception = xpe;
+						return null;
+					}
+					return t;
+				}).ToArray();
+				if (innerexception != null)
+				{
+					exception = innerexception;
+					return null;
+				}
+
+				try
+				{
+					type = type.MakeGenericType(args);
+				}
+				catch (InvalidOperationException)
+				{
+					exception = new XamlParseException($"Type {type} is not a GenericTypeDefinition", xmlInfo);
+				}
+			}
+After:
+			{
+				GatherXmlnsDefinitionAttributes();
+			}
+
+			Type type = xmlType.GetTypeReference(
+				s_xmlnsDefinitions,
+				currentAssembly?.FullName,
+				(typeInfo) =>
+				{
+					var t = Type.GetType($"{typeInfo.clrNamespace}.{typeInfo.typeName}, {typeInfo.assemblyName}");
+					if (t is not null && t.IsPublicOrVisibleInternal(currentAssembly))
+					{
+						return t;
+					}
+
+					return null;
+				});
+
+			var typeArguments = xmlType.TypeArguments;
+			exception = null;
+*/
+
+/* Unmerged change from project 'Controls.Xaml(net8.0-maccatalyst)'
+Before:
+				GatherXmlnsDefinitionAttributes();
+
+			Type type = xmlType.GetTypeReference(
+				s_xmlnsDefinitions,
+				currentAssembly?.FullName,
+				(typeInfo) =>
+				{
+					var t = Type.GetType($"{typeInfo.clrNamespace}.{typeInfo.typeName}, {typeInfo.assemblyName}");
+					if (t is not null && t.IsPublicOrVisibleInternal(currentAssembly))
+						return t;
+					return null;
+				});
+
+			var typeArguments = xmlType.TypeArguments;
+			exception = null;
+
+			if (type == null)
+			{
+				// This covers the scenario where the AppDomain's loaded
+				// assemblies might have changed since this method was first
+				// called. This occurred during unit test runs and could
+				// conceivably occur in the field. 
+				if (!hasRetriedNsSearch)
+				{
+					hasRetriedNsSearch = true;
+					s_xmlnsDefinitions = null;
+					goto retry;
+				}
+			}
+
+			if (type != null && typeArguments != null)
+			{
+				XamlParseException innerexception = null;
+				var args = typeArguments.Select(delegate (XmlType xmltype)
+				{
+					var t = GetElementType(xmltype, xmlInfo, currentAssembly, out XamlParseException xpe);
+					if (xpe != null)
+					{
+						innerexception = xpe;
+						return null;
+					}
+					return t;
+				}).ToArray();
+				if (innerexception != null)
+				{
+					exception = innerexception;
+					return null;
+				}
+
+				try
+				{
+					type = type.MakeGenericType(args);
+				}
+				catch (InvalidOperationException)
+				{
+					exception = new XamlParseException($"Type {type} is not a GenericTypeDefinition", xmlInfo);
+				}
+			}
+After:
+			{
+				GatherXmlnsDefinitionAttributes();
+			}
+
+			Type type = xmlType.GetTypeReference(
+				s_xmlnsDefinitions,
+				currentAssembly?.FullName,
+				(typeInfo) =>
+				{
+					var t = Type.GetType($"{typeInfo.clrNamespace}.{typeInfo.typeName}, {typeInfo.assemblyName}");
+					if (t is not null && t.IsPublicOrVisibleInternal(currentAssembly))
+					{
+						return t;
+					}
+
+					return null;
+				});
+
+			var typeArguments = xmlType.TypeArguments;
+			exception = null;
+*/
+
+/* Unmerged change from project 'Controls.Xaml(net8.0-android)'
+Before:
+				GatherXmlnsDefinitionAttributes();
+
+			Type type = xmlType.GetTypeReference(
+				s_xmlnsDefinitions,
+				currentAssembly?.FullName,
+				(typeInfo) =>
+				{
+					var t = Type.GetType($"{typeInfo.clrNamespace}.{typeInfo.typeName}, {typeInfo.assemblyName}");
+					if (t is not null && t.IsPublicOrVisibleInternal(currentAssembly))
+						return t;
+					return null;
+				});
+
+			var typeArguments = xmlType.TypeArguments;
+			exception = null;
+
+			if (type == null)
+			{
+				// This covers the scenario where the AppDomain's loaded
+				// assemblies might have changed since this method was first
+				// called. This occurred during unit test runs and could
+				// conceivably occur in the field. 
+				if (!hasRetriedNsSearch)
+				{
+					hasRetriedNsSearch = true;
+					s_xmlnsDefinitions = null;
+					goto retry;
+				}
+			}
+
+			if (type != null && typeArguments != null)
+			{
+				XamlParseException innerexception = null;
+				var args = typeArguments.Select(delegate (XmlType xmltype)
+				{
+					var t = GetElementType(xmltype, xmlInfo, currentAssembly, out XamlParseException xpe);
+					if (xpe != null)
+					{
+						innerexception = xpe;
+						return null;
+					}
+					return t;
+				}).ToArray();
+				if (innerexception != null)
+				{
+					exception = innerexception;
+					return null;
+				}
+
+				try
+				{
+					type = type.MakeGenericType(args);
+				}
+				catch (InvalidOperationException)
+				{
+					exception = new XamlParseException($"Type {type} is not a GenericTypeDefinition", xmlInfo);
+				}
+			}
+After:
+			{
+				GatherXmlnsDefinitionAttributes();
+			}
+
+			Type type = xmlType.GetTypeReference(
+				s_xmlnsDefinitions,
+				currentAssembly?.FullName,
+				(typeInfo) =>
+				{
+					var t = Type.GetType($"{typeInfo.clrNamespace}.{typeInfo.typeName}, {typeInfo.assemblyName}");
+					if (t is not null && t.IsPublicOrVisibleInternal(currentAssembly))
+					{
+						return t;
+					}
+
+					return null;
+				});
+
+			var typeArguments = xmlType.TypeArguments;
+			exception = null;
+*/
+
+/* Unmerged change from project 'Controls.Xaml(net8.0-windows10.0.19041.0)'
+Before:
+				GatherXmlnsDefinitionAttributes();
+
+			Type type = xmlType.GetTypeReference(
+				s_xmlnsDefinitions,
+				currentAssembly?.FullName,
+				(typeInfo) =>
+				{
+					var t = Type.GetType($"{typeInfo.clrNamespace}.{typeInfo.typeName}, {typeInfo.assemblyName}");
+					if (t is not null && t.IsPublicOrVisibleInternal(currentAssembly))
+						return t;
+					return null;
+				});
+
+			var typeArguments = xmlType.TypeArguments;
+			exception = null;
+
+			if (type == null)
+			{
+				// This covers the scenario where the AppDomain's loaded
+				// assemblies might have changed since this method was first
+				// called. This occurred during unit test runs and could
+				// conceivably occur in the field. 
+				if (!hasRetriedNsSearch)
+				{
+					hasRetriedNsSearch = true;
+					s_xmlnsDefinitions = null;
+					goto retry;
+				}
+			}
+
+			if (type != null && typeArguments != null)
+			{
+				XamlParseException innerexception = null;
+				var args = typeArguments.Select(delegate (XmlType xmltype)
+				{
+					var t = GetElementType(xmltype, xmlInfo, currentAssembly, out XamlParseException xpe);
+					if (xpe != null)
+					{
+						innerexception = xpe;
+						return null;
+					}
+					return t;
+				}).ToArray();
+				if (innerexception != null)
+				{
+					exception = innerexception;
+					return null;
+				}
+
+				try
+				{
+					type = type.MakeGenericType(args);
+				}
+				catch (InvalidOperationException)
+				{
+					exception = new XamlParseException($"Type {type} is not a GenericTypeDefinition", xmlInfo);
+				}
+			}
+After:
+			{
+				GatherXmlnsDefinitionAttributes();
+			}
+
+			Type type = xmlType.GetTypeReference(
+				s_xmlnsDefinitions,
+				currentAssembly?.FullName,
+				(typeInfo) =>
+				{
+					var t = Type.GetType($"{typeInfo.clrNamespace}.{typeInfo.typeName}, {typeInfo.assemblyName}");
+					if (t is not null && t.IsPublicOrVisibleInternal(currentAssembly))
+					{
+						return t;
+					}
+
+					return null;
+				});
+
+			var typeArguments = xmlType.TypeArguments;
+			exception = null;
+*/
+
+/* Unmerged change from project 'Controls.Xaml(net8.0-windows10.0.20348.0)'
+Before:
+				GatherXmlnsDefinitionAttributes();
+
+			Type type = xmlType.GetTypeReference(
+				s_xmlnsDefinitions,
+				currentAssembly?.FullName,
+				(typeInfo) =>
+				{
+					var t = Type.GetType($"{typeInfo.clrNamespace}.{typeInfo.typeName}, {typeInfo.assemblyName}");
+					if (t is not null && t.IsPublicOrVisibleInternal(currentAssembly))
+						return t;
+					return null;
+				});
+
+			var typeArguments = xmlType.TypeArguments;
+			exception = null;
+
+			if (type == null)
+			{
+				// This covers the scenario where the AppDomain's loaded
+				// assemblies might have changed since this method was first
+				// called. This occurred during unit test runs and could
+				// conceivably occur in the field. 
+				if (!hasRetriedNsSearch)
+				{
+					hasRetriedNsSearch = true;
+					s_xmlnsDefinitions = null;
+					goto retry;
+				}
+			}
+
+			if (type != null && typeArguments != null)
+			{
+				XamlParseException innerexception = null;
+				var args = typeArguments.Select(delegate (XmlType xmltype)
+				{
+					var t = GetElementType(xmltype, xmlInfo, currentAssembly, out XamlParseException xpe);
+					if (xpe != null)
+					{
+						innerexception = xpe;
+						return null;
+					}
+					return t;
+				}).ToArray();
+				if (innerexception != null)
+				{
+					exception = innerexception;
+					return null;
+				}
+
+				try
+				{
+					type = type.MakeGenericType(args);
+				}
+				catch (InvalidOperationException)
+				{
+					exception = new XamlParseException($"Type {type} is not a GenericTypeDefinition", xmlInfo);
+				}
+			}
+After:
+			{
+				GatherXmlnsDefinitionAttributes();
+			}
+
+			Type type = xmlType.GetTypeReference(
+				s_xmlnsDefinitions,
+				currentAssembly?.FullName,
+				(typeInfo) =>
+				{
+					var t = Type.GetType($"{typeInfo.clrNamespace}.{typeInfo.typeName}, {typeInfo.assemblyName}");
+					if (t is not null && t.IsPublicOrVisibleInternal(currentAssembly))
+					{
+						return t;
+					}
+
+					return null;
+				});
+
+			var typeArguments = xmlType.TypeArguments;
+			exception = null;
+*/
+
+/* Unmerged change from project 'Controls.Xaml(net8.0)'
+Before:
+				exception = new XamlParseException($"Type {xmlType.Name} not found in xmlns {xmlType.NamespaceUri}", xmlInfo);
+After:
+			{
+				// This covers the scenario where the AppDomain's loaded
+				// assemblies might have changed since this method was first
+				// called. This occurred during unit test runs and could
+				// conceivably occur in the field. 
+				if (!hasRetriedNsSearch)
+				{
+					hasRetriedNsSearch = true;
+					s_xmlnsDefinitions = null;
+					goto retry;
+				}
+			}
+
+			if (type != null && typeArguments != null)
+			{
+				XamlParseException innerexception = null;
+				var args = typeArguments.Select(delegate (XmlType xmltype)
+				{
+					var t = GetElementType(xmltype, xmlInfo, currentAssembly, out XamlParseException xpe);
+					if (xpe != null)
+					{
+						innerexception = xpe;
+						return null;
+					}
+					return t;
+				}).ToArray();
+				if (innerexception != null)
+				{
+					exception = innerexception;
+					return null;
+				}
+
+				try
+				{
+					type = type.MakeGenericType(args);
+				}
+				catch (InvalidOperationException)
+				{
+					exception = new XamlParseException($"Type {type} is not a GenericTypeDefinition", xmlInfo);
+				}
+			}
+
+			if (type == null)
+			{
+				exception = new XamlParseException($"Type {xmlType.Name} not found in xmlns {xmlType.NamespaceUri}", xmlInfo);
+			}
+*/
+
+/* Unmerged change from project 'Controls.Xaml(net8.0-maccatalyst)'
+Before:
+				exception = new XamlParseException($"Type {xmlType.Name} not found in xmlns {xmlType.NamespaceUri}", xmlInfo);
+After:
+			{
+				// This covers the scenario where the AppDomain's loaded
+				// assemblies might have changed since this method was first
+				// called. This occurred during unit test runs and could
+				// conceivably occur in the field. 
+				if (!hasRetriedNsSearch)
+				{
+					hasRetriedNsSearch = true;
+					s_xmlnsDefinitions = null;
+					goto retry;
+				}
+			}
+
+			if (type != null && typeArguments != null)
+			{
+				XamlParseException innerexception = null;
+				var args = typeArguments.Select(delegate (XmlType xmltype)
+				{
+					var t = GetElementType(xmltype, xmlInfo, currentAssembly, out XamlParseException xpe);
+					if (xpe != null)
+					{
+						innerexception = xpe;
+						return null;
+					}
+					return t;
+				}).ToArray();
+				if (innerexception != null)
+				{
+					exception = innerexception;
+					return null;
+				}
+
+				try
+				{
+					type = type.MakeGenericType(args);
+				}
+				catch (InvalidOperationException)
+				{
+					exception = new XamlParseException($"Type {type} is not a GenericTypeDefinition", xmlInfo);
+				}
+			}
+
+			if (type == null)
+			{
+				exception = new XamlParseException($"Type {xmlType.Name} not found in xmlns {xmlType.NamespaceUri}", xmlInfo);
+			}
+*/
+
+/* Unmerged change from project 'Controls.Xaml(net8.0-android)'
+Before:
+				exception = new XamlParseException($"Type {xmlType.Name} not found in xmlns {xmlType.NamespaceUri}", xmlInfo);
+After:
+			{
+				// This covers the scenario where the AppDomain's loaded
+				// assemblies might have changed since this method was first
+				// called. This occurred during unit test runs and could
+				// conceivably occur in the field. 
+				if (!hasRetriedNsSearch)
+				{
+					hasRetriedNsSearch = true;
+					s_xmlnsDefinitions = null;
+					goto retry;
+				}
+			}
+
+			if (type != null && typeArguments != null)
+			{
+				XamlParseException innerexception = null;
+				var args = typeArguments.Select(delegate (XmlType xmltype)
+				{
+					var t = GetElementType(xmltype, xmlInfo, currentAssembly, out XamlParseException xpe);
+					if (xpe != null)
+					{
+						innerexception = xpe;
+						return null;
+					}
+					return t;
+				}).ToArray();
+				if (innerexception != null)
+				{
+					exception = innerexception;
+					return null;
+				}
+
+				try
+				{
+					type = type.MakeGenericType(args);
+				}
+				catch (InvalidOperationException)
+				{
+					exception = new XamlParseException($"Type {type} is not a GenericTypeDefinition", xmlInfo);
+				}
+			}
+
+			if (type == null)
+			{
+				exception = new XamlParseException($"Type {xmlType.Name} not found in xmlns {xmlType.NamespaceUri}", xmlInfo);
+			}
+*/
+
+/* Unmerged change from project 'Controls.Xaml(net8.0-windows10.0.19041.0)'
+Before:
+				exception = new XamlParseException($"Type {xmlType.Name} not found in xmlns {xmlType.NamespaceUri}", xmlInfo);
+After:
+			{
+				// This covers the scenario where the AppDomain's loaded
+				// assemblies might have changed since this method was first
+				// called. This occurred during unit test runs and could
+				// conceivably occur in the field. 
+				if (!hasRetriedNsSearch)
+				{
+					hasRetriedNsSearch = true;
+					s_xmlnsDefinitions = null;
+					goto retry;
+				}
+			}
+
+			if (type != null && typeArguments != null)
+			{
+				XamlParseException innerexception = null;
+				var args = typeArguments.Select(delegate (XmlType xmltype)
+				{
+					var t = GetElementType(xmltype, xmlInfo, currentAssembly, out XamlParseException xpe);
+					if (xpe != null)
+					{
+						innerexception = xpe;
+						return null;
+					}
+					return t;
+				}).ToArray();
+				if (innerexception != null)
+				{
+					exception = innerexception;
+					return null;
+				}
+
+				try
+				{
+					type = type.MakeGenericType(args);
+				}
+				catch (InvalidOperationException)
+				{
+					exception = new XamlParseException($"Type {type} is not a GenericTypeDefinition", xmlInfo);
+				}
+			}
+
+			if (type == null)
+			{
+				exception = new XamlParseException($"Type {xmlType.Name} not found in xmlns {xmlType.NamespaceUri}", xmlInfo);
+			}
+*/
+
+/* Unmerged change from project 'Controls.Xaml(net8.0-windows10.0.20348.0)'
+Before:
+				exception = new XamlParseException($"Type {xmlType.Name} not found in xmlns {xmlType.NamespaceUri}", xmlInfo);
+After:
+			{
+				// This covers the scenario where the AppDomain's loaded
+				// assemblies might have changed since this method was first
+				// called. This occurred during unit test runs and could
+				// conceivably occur in the field. 
+				if (!hasRetriedNsSearch)
+				{
+					hasRetriedNsSearch = true;
+					s_xmlnsDefinitions = null;
+					goto retry;
+				}
+			}
+
+			if (type != null && typeArguments != null)
+			{
+				XamlParseException innerexception = null;
+				var args = typeArguments.Select(delegate (XmlType xmltype)
+				{
+					var t = GetElementType(xmltype, xmlInfo, currentAssembly, out XamlParseException xpe);
+					if (xpe != null)
+					{
+						innerexception = xpe;
+						return null;
+					}
+					return t;
+				}).ToArray();
+				if (innerexception != null)
+				{
+					exception = innerexception;
+					return null;
+				}
+
+				try
+				{
+					type = type.MakeGenericType(args);
+				}
+				catch (InvalidOperationException)
+				{
+					exception = new XamlParseException($"Type {type} is not a GenericTypeDefinition", xmlInfo);
+				}
+			}
+
+			if (type == null)
+			{
+				exception = new XamlParseException($"Type {xmlType.Name} not found in xmlns {xmlType.NamespaceUri}", xmlInfo);
+			}
+*/
+
+/* Unmerged change from project 'Controls.Xaml(net8.0)'
+Before:
+				return true;
+			if (type.Assembly == assembly)
+After:
+			{
+*/
+
+/* Unmerged change from project 'Controls.Xaml(net8.0-maccatalyst)'
+Before:
+				return true;
+			if (type.Assembly == assembly)
+After:
+			{
+*/
+
+/* Unmerged change from project 'Controls.Xaml(net8.0-android)'
+Before:
+				return true;
+			if (type.Assembly == assembly)
+After:
+			{
+*/
+
+/* Unmerged change from project 'Controls.Xaml(net8.0-windows10.0.19041.0)'
+Before:
+				return true;
+			if (type.Assembly == assembly)
+After:
+			{
+*/
+
+/* Unmerged change from project 'Controls.Xaml(net8.0-windows10.0.20348.0)'
+Before:
+				return true;
+			if (type.Assembly == assembly)
+After:
+			{
+*/
+
+/* Unmerged change from project 'Controls.Xaml(net8.0)'
+Before:
+			if (type.Assembly.IsVisibleInternal(assembly))
+				return true;
+After:
+			}
+
+			if (type.Assembly == assembly)
+			{
+				return true;
+			}
+
+			if (type.Assembly.IsVisibleInternal(assembly))
+			{
+				return true;
+			}
+*/
+
+/* Unmerged change from project 'Controls.Xaml(net8.0-maccatalyst)'
+Before:
+			if (type.Assembly.IsVisibleInternal(assembly))
+				return true;
+After:
+			}
+
+			if (type.Assembly == assembly)
+			{
+				return true;
+			}
+
+			if (type.Assembly.IsVisibleInternal(assembly))
+			{
+				return true;
+			}
+*/
+
+/* Unmerged change from project 'Controls.Xaml(net8.0-android)'
+Before:
+			if (type.Assembly.IsVisibleInternal(assembly))
+				return true;
+After:
+			}
+
+			if (type.Assembly == assembly)
+			{
+				return true;
+			}
+
+			if (type.Assembly.IsVisibleInternal(assembly))
+			{
+				return true;
+			}
+*/
+
+/* Unmerged change from project 'Controls.Xaml(net8.0-windows10.0.19041.0)'
+Before:
+			if (type.Assembly.IsVisibleInternal(assembly))
+				return true;
+After:
+			}
+
+			if (type.Assembly == assembly)
+			{
+				return true;
+			}
+
+			if (type.Assembly.IsVisibleInternal(assembly))
+			{
+				return true;
+			}
+*/
+
+/* Unmerged change from project 'Controls.Xaml(net8.0-windows10.0.20348.0)'
+Before:
+			if (type.Assembly.IsVisibleInternal(assembly))
+				return true;
+After:
+			}
+
+			if (type.Assembly == assembly)
+			{
+				return true;
+			}
+
+			if (type.Assembly.IsVisibleInternal(assembly))
+			{
+				return true;
+			}
+*/
+{
+							((ValueNode)node.CollectionItems[0]).Value += reader.Value.Trim();
+						}
+						else
+						{
+							node.CollectionItems.Add(new ValueNode(reader.Value.Trim(), (IXmlNamespaceResolver)reader));
+						}
+
+						break;
+					default:
+						Debug.WriteLine("Unhandled node {0} {1} {2}", reader.NodeType, reader.Name, reader.Value);
+						break;
+				}
+			}
+		}
+
+		static INode ReadNode(XmlReader reader, bool nested = false)
+		{
+			var skipFirstRead = nested;
+			Debug.Assert(reader.NodeType == XmlNodeType.Element);
+			var name = reader.Name;
+			var nodes = new List<INode>();
+
+			while (skipFirstRead || reader.Read())
+			{
+				skipFirstRead = false;
+
+				INode node;
+				switch (reader.NodeType)
+				{
+					case XmlNodeType.EndElement:
+						Debug.Assert(reader.Name == name);
+						if (nodes.Count == 0) //Empty element
+						{
+							return null;
+						}
+
+						if (nodes.Count == 1)
+						{
+							return nodes[0];
+						}
+
+						return new ListNode(nodes, (IXmlNamespaceResolver)reader, ((IXmlLineInfo)reader).LineNumber,
+							((IXmlLineInfo)reader).LinePosition);
+					case XmlNodeType.Element:
+						var isEmpty = reader.IsEmptyElement && reader.Name == name;
+						var elementName = reader.Name;
+						var elementNsUri = reader.NamespaceURI;
+						var elementXmlInfo = (IXmlLineInfo)reader;
+						IList<KeyValuePair<string, string>> xmlns;
+
+						var attributes = ParseXamlAttributes(reader, out xmlns);
+						var prefixes = PrefixesToIgnore(xmlns);
+						var typeArguments = GetTypeArguments(attributes);
+
+						node = new ElementNode(new XmlType(elementNsUri, elementName, typeArguments), elementNsUri,
+							reader as IXmlNamespaceResolver, elementXmlInfo.LineNumber, elementXmlInfo.LinePosition);
+						((IElementNode)node).Properties.AddRange(attributes);
+						(node.IgnorablePrefixes ?? (node.IgnorablePrefixes = new List<string>())).AddRange(prefixes);
+
+						ParseXamlElementFor((IElementNode)node, reader);
+						nodes.Add(node);
+						if (isEmpty || nested)
+						{
+							return node;
+						}
+
+						break;
+					case XmlNodeType.Text:
+					case XmlNodeType.CDATA:
+						node = new ValueNode(reader.Value.Trim(), (IXmlNamespaceResolver)reader, ((IXmlLineInfo)reader).LineNumber,
+							((IXmlLineInfo)reader).LinePosition);
+						nodes.Add(node);
+						break;
+					case XmlNodeType.Whitespace:
+						break;
+					default:
+						Debug.WriteLine("Unhandled node {0} {1} {2}", reader.NodeType, reader.Name, reader.Value);
+						break;
+				}
+			}
+			throw new XamlParseException("Closing PropertyElement expected", (IXmlLineInfo)reader);
+		}
+
+		internal static IList<XmlType> GetTypeArguments(XmlReader reader) => GetTypeArguments(ParseXamlAttributes(reader, out _));
+
+		static IList<XmlType> GetTypeArguments(IList<KeyValuePair<XmlName, INode>> attributes)
+		{
+			return attributes.Any(kvp => kvp.Key == XmlName.xTypeArguments)
+				? ((ValueNode)attributes.First(kvp => kvp.Key == XmlName.xTypeArguments).Value).Value as IList<XmlType>
+				: null;
+		}
+
+		static IList<KeyValuePair<XmlName, INode>> ParseXamlAttributes(XmlReader reader, out IList<KeyValuePair<string, string>> xmlns)
+		{
+			Debug.Assert(reader.NodeType == XmlNodeType.Element);
+			var attributes = new List<KeyValuePair<XmlName, INode>>();
+			xmlns = new List<KeyValuePair<string, string>>();
+			for (var i = 0; i < reader.AttributeCount; i++)
+			{
+				reader.MoveToAttribute(i);
+
+				//skip xmlns
+				if (reader.NamespaceURI == "http://www.w3.org/2000/xmlns/")
+				{
+					xmlns.Add(new KeyValuePair<string, string>(reader.LocalName, reader.Value));
+					continue;
+				}
+
+				var namespaceUri = reader.NamespaceURI;
+				if (reader.LocalName.IndexOf(".", StringComparison.Ordinal) != -1 && namespaceUri == "")
+				{
+					namespaceUri = ((IXmlNamespaceResolver)reader).LookupNamespace("");
+				}
+
+				var propertyName = ParsePropertyName(new XmlName(namespaceUri, reader.LocalName));
+
+				if (propertyName.NamespaceURI == null && propertyName.LocalName == null)
+				{
+					continue;
+				}
+
+				object value = reader.Value;
+
+				if (propertyName == XmlName.xTypeArguments)
+				{
+					value = TypeArgumentsParser.ParseExpression((string)value, (IXmlNamespaceResolver)reader, (IXmlLineInfo)reader);
+				}
+
+				var propertyNode = GetValueNode(value, reader);
+				attributes.Add(new KeyValuePair<XmlName, INode>(propertyName, propertyNode));
+			}
+			reader.MoveToElement();
+			return attributes;
+		}
+
+		public static XmlName ParsePropertyName(XmlName name)
+		{
+			if (name.NamespaceURI == X2006Uri)
+			{
+				switch (name.LocalName)
+				{
+					case "Key":
+						return XmlName.xKey;
+					case "Name":
+						return XmlName.xName;
+					case "Class":
+					case "FieldModifier":
+						return new XmlName(null, null);
+					default:
+						Debug.WriteLine("Unhandled attribute {0}", name);
+						return new XmlName(null, null);
+				}
+			}
+
+			if (name.NamespaceURI == X2009Uri)
+			{
+				switch (name.LocalName)
+				{
+					case "Key":
+						return XmlName.xKey;
+					case "Name":
+						return XmlName.xName;
+					case "TypeArguments":
+						return XmlName.xTypeArguments;
+					case "DataType":
+						return XmlName.xDataType;
+					case "Class":
+					case "FieldModifier":
+						return new XmlName(null, null);
+					case "FactoryMethod":
+						return XmlName.xFactoryMethod;
+					case "Arguments":
+						return XmlName.xArguments;
+					default:
+						Debug.WriteLine("Unhandled attribute {0}", name);
+						return new XmlName(null, null);
+				}
+			}
+
+			return name;
+		}
+
+		static IList<string> PrefixesToIgnore(IList<KeyValuePair<string, string>> xmlns)
+		{
+			var prefixes = new List<string>();
+			foreach (var kvp in xmlns)
+			{
+				var prefix = kvp.Key;
+
+				XmlnsHelper.ParseXmlns(kvp.Value, out _, out _, out _, out var targetPlatform);
+				if (targetPlatform == null)
+				{
+					continue;
+				}
+
+				try
+				{
+					if (targetPlatform != DeviceInfo.Platform.ToString())
+					{
+						// Special case for Windows backward compatibility
+						if (targetPlatform == "Windows" && DeviceInfo.Platform == DevicePlatform.WinUI)
+						{
+							continue;
+						}
 
 						prefixes.Add(prefix);
 					}
@@ -363,7 +3168,9 @@ namespace Microsoft.Maui.Controls.Xaml
 
 		retry:
 			if (s_xmlnsDefinitions == null)
+			{
 				GatherXmlnsDefinitionAttributes();
+			}
 
 			Type type = xmlType.GetTypeReference(
 				s_xmlnsDefinitions,
@@ -372,7 +3179,10 @@ namespace Microsoft.Maui.Controls.Xaml
 				{
 					var t = Type.GetType($"{typeInfo.clrNamespace}.{typeInfo.typeName}, {typeInfo.assemblyName}");
 					if (t is not null && t.IsPublicOrVisibleInternal(currentAssembly))
+					{
 						return t;
+					}
+
 					return null;
 				});
 
@@ -423,7 +3233,9 @@ namespace Microsoft.Maui.Controls.Xaml
 			}
 
 			if (type == null)
+			{
 				exception = new XamlParseException($"Type {xmlType.Name} not found in xmlns {xmlType.NamespaceUri}", xmlInfo);
+			}
 
 			return type;
 		}
@@ -431,11 +3243,20 @@ namespace Microsoft.Maui.Controls.Xaml
 		public static bool IsPublicOrVisibleInternal(this Type type, Assembly assembly)
 		{
 			if (type.IsPublic || type.IsNestedPublic)
+			{
 				return true;
+			}
+
 			if (type.Assembly == assembly)
+			{
 				return true;
+			}
+
 			if (type.Assembly.IsVisibleInternal(assembly))
+			{
 				return true;
+			}
+
 			return false;
 		}
 

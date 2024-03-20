@@ -29,7 +29,9 @@ namespace Microsoft.Maui.Controls
 			{
 				page.NavigatedFrom -= OnPageNavigatedFrom;
 				if (_contentPages.Contains(pageToRemove))
+				{
 					_contentPages.Remove(pageToRemove);
+				}
 
 				SetupHideSoftInputOnTapped();
 			}
@@ -65,10 +67,24 @@ namespace Microsoft.Maui.Controls
 			}
 
 			if (_view is not VisualElement ve)
+			{
 				return null;
 
+/* Unmerged change from project 'Controls.Core(net8.0-android)'
+Added:
+			}
+
 			if (!_view.IsFocused)
+			{
 				return null;
+			}
+*/
+			}
+
+			if (!_view.IsFocused)
+			{
+				return null;
+			}
 
 			DisconnectFromPlatform();
 

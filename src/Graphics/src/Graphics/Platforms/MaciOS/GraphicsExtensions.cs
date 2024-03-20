@@ -405,10 +405,14 @@ namespace Microsoft.Maui.Graphics.Platform
 			var rect = new CGRect(x, y, width, height);
 
 			if (actualRadius > rect.Width)
+			{
 				actualRadius = rect.Width / 2;
+			}
 
 			if (actualRadius > rect.Height)
+			{
 				actualRadius = rect.Height / 2;
+			}
 
 			var minX = rect.X;
 			var minY = rect.Y;
@@ -423,22 +427,36 @@ namespace Microsoft.Maui.Graphics.Platform
 			context.AddArcToPoint(maxX, maxY, midX, maxY, (float)actualRadius);
 			context.AddArcToPoint(minX, maxY, minX, midY, (float)actualRadius);
 			context.ClosePath();
+			context.AddArcToPoint(minX, minY, midX, minY, (float)actualRadius);
+			context.AddArcToPoint(maxX, minY, maxX, midY, (float)actualRadius);
+			context.AddArcToPoint(maxX, maxY, midX, maxY, (float)actualRadius);
+			context.AddArcToPoint(minX, maxY, minX, midY, (float)actualRadius);
+			context.ClosePath();
 		}
 
 		public static void SetFillColor(this CGContext context, Color color)
 		{
 			if (color != null)
+			{
 				context.SetFillColor(color.Red, color.Green, color.Blue, color.Alpha);
+			}
 			else
+			{
 				context.SetFillColor(1, 1, 1, 1); // White
+			}
 		}
 
 		public static void SetStrokeColor(this CGContext context, Color color)
 		{
 			if (color != null)
+			{
 				context.SetStrokeColor(color.Red, color.Green, color.Blue, color.Alpha);
+			}
 			else
+			{
 				context.SetStrokeColor(0, 0, 0, 1); // Black
+			}
+			}
 		}
 	}
 }

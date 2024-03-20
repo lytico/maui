@@ -21,9 +21,30 @@ namespace Microsoft.Maui.ApplicationModel
 		public static IntPtr SetWindowLongPtr(IntPtr hWnd, WindowLongFlags nIndex, WindowProc dwNewLong)
 		{
 			if (IntPtr.Size == 8)
+
+/* Unmerged change from project 'Essentials(net8.0-windows10.0.20348.0)'
+Before:
 				return SetWindowLongPtr64(hWnd, nIndex, dwNewLong);
 			else
+After:
+			{
+*/
+			{
+				return SetWindowLongPtr64(hWnd, nIndex, dwNewLong);
+			}
+			else
+			{
+				return SetWindowLongPtr64(hWnd, nIndex, dwNewLong);
+
+/* Unmerged change from project 'Essentials(net8.0-windows10.0.20348.0)'
+Added:
+			}
+			else
+			{
 				return new IntPtr(SetWindowLong32(hWnd, nIndex, dwNewLong));
+			}
+*/
+			}
 
 			[DllImport("user32.dll", EntryPoint = "SetWindowLong")]
 			static extern int SetWindowLong32(IntPtr hWnd, WindowLongFlags nIndex, WindowProc dwNewLong);
@@ -35,9 +56,30 @@ namespace Microsoft.Maui.ApplicationModel
 		public static IntPtr SetWindowLongPtr(IntPtr hWnd, WindowLongFlags nIndex, IntPtr dwNewLong)
 		{
 			if (IntPtr.Size == 8)
+
+/* Unmerged change from project 'Essentials(net8.0-windows10.0.20348.0)'
+Before:
 				return SetWindowLongPtr64(hWnd, nIndex, dwNewLong);
 			else
+After:
+			{
+*/
+			{
+				return SetWindowLongPtr64(hWnd, nIndex, dwNewLong);
+			}
+			else
+			{
+				return SetWindowLongPtr64(hWnd, nIndex, dwNewLong);
+
+/* Unmerged change from project 'Essentials(net8.0-windows10.0.20348.0)'
+Added:
+			}
+			else
+			{
 				return new IntPtr(SetWindowLong32(hWnd, nIndex, dwNewLong));
+			}
+*/
+			}
 
 			[DllImport("user32.dll", EntryPoint = "SetWindowLong")]
 			static extern int SetWindowLong32(IntPtr hWnd, WindowLongFlags nIndex, IntPtr dwNewLong);
@@ -49,9 +91,30 @@ namespace Microsoft.Maui.ApplicationModel
 		public static IntPtr SetWindowLongPtr(IntPtr hWnd, WindowLongFlags nIndex, long dwNewLong)
 		{
 			if (IntPtr.Size == 8)
+
+/* Unmerged change from project 'Essentials(net8.0-windows10.0.20348.0)'
+Before:
 				return SetWindowLongPtr64(hWnd, nIndex, dwNewLong);
 			else
+After:
+			{
+*/
+			{
+				return SetWindowLongPtr64(hWnd, nIndex, dwNewLong);
+			}
+			else
+			{
+				return SetWindowLongPtr64(hWnd, nIndex, dwNewLong);
+
+/* Unmerged change from project 'Essentials(net8.0-windows10.0.20348.0)'
+Added:
+			}
+			else
+			{
 				return new IntPtr(SetWindowLong32(hWnd, nIndex, dwNewLong));
+			}
+*/
+			}
 
 			[DllImport("user32.dll", EntryPoint = "SetWindowLong")]
 			static extern int SetWindowLong32(IntPtr hWnd, WindowLongFlags nIndex, long dwNewLong);
@@ -63,9 +126,26 @@ namespace Microsoft.Maui.ApplicationModel
 		public static long GetWindowLongPtr(IntPtr hWnd, WindowLongFlags nIndex)
 		{
 			if (IntPtr.Size == 8)
+
+/* Unmerged change from project 'Essentials(net8.0-windows10.0.20348.0)'
+Before:
 				return GetWindowLongPtr64(hWnd, nIndex);
 			else
+After:
+			{
+*/
+			{
+				return GetWindowLongPtr64(hWnd, nIndex);
+			}
+			else
+			{
+				return GetWindowLongPtr64(hWnd, nIndex);
+			}
+			else
+			{
 				return GetWindowLong32(hWnd, nIndex);
+			}
+			}
 
 			[DllImport("user32.dll", EntryPoint = "GetWindowLong")]
 			static extern int GetWindowLong32(IntPtr hWnd, WindowLongFlags nIndex);

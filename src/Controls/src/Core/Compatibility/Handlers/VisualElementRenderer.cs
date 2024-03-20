@@ -114,9 +114,12 @@ namespace Microsoft.Maui.Controls.Handlers.Compatibility
 		protected virtual void OnElementPropertyChanged(object sender, PropertyChangedEventArgs e)
 		{
 			if (Element is TElement element && e.PropertyName != null)
+			{
 				_mapper.UpdateProperty(this, element, e.PropertyName);
+			}
 
 			ElementPropertyChanged?.Invoke(sender, e);
+			ElementPropertyChangedPartial(sender, e);
 			ElementPropertyChangedPartial(sender, e);
 		}
 
@@ -182,7 +185,10 @@ namespace Microsoft.Maui.Controls.Handlers.Compatibility
 #endif
 		{
 			if (Element is TElement element)
+			{
 				ViewHandler.MapBackground(this, element);
+			}
+			}
 		}
 
 #if IOS
@@ -192,20 +198,29 @@ namespace Microsoft.Maui.Controls.Handlers.Compatibility
 #endif
 		{
 			if (Element is TElement element)
+			{
 				ViewHandler.MapBackground(this, element);
+			}
+			}
 		}
 
 
 		protected virtual void SetAutomationId(string id)
 		{
 			if (Element is TElement element)
+			{
 				ViewHandler.MapAutomationId(this, element);
+			}
+			}
 		}
 
 		protected virtual void SetIsEnabled()
 		{
 			if (Element is TElement element)
+			{
 				ViewHandler.MapIsEnabled(this, element);
+			}
+			}
 		}
 
 #if WINDOWS
@@ -215,7 +230,10 @@ namespace Microsoft.Maui.Controls.Handlers.Compatibility
 #endif
 		{
 			if (Element is TElement element)
+			{
 				VisualElement.MapAutomationPropertiesIsInAccessibleTree(this, element);
+			}
+			}
 		}
 
 
@@ -254,7 +272,10 @@ namespace Microsoft.Maui.Controls.Handlers.Compatibility
 			bool autoPackage)
 		{
 			if (currentVirtualView == view)
+			{
+			{
 				return;
+			}
 
 			var oldElement = currentVirtualView;
 			currentVirtualView = view as TElement;
@@ -263,12 +284,171 @@ namespace Microsoft.Maui.Controls.Handlers.Compatibility
 			_ = view ?? throw new ArgumentNullException(nameof(view));
 
 			if (oldElement?.Handler != null)
+
+/* Unmerged change from project 'Controls.Core(net8.0-maccatalyst)'
+Before:
 				oldElement.Handler = null;
 
 			currentVirtualView = (TElement)view;
 
 			if (currentVirtualView.Handler != nativeViewHandler)
 				currentVirtualView.Handler = nativeViewHandler;
+
+			_mapper = _defaultMapper;
+
+			if (currentVirtualView is IPropertyMapperView imv)
+			{
+				var map = imv.GetPropertyMapperOverrides();
+				if (map is not null)
+				{
+					map.Chained = new[] { _defaultMapper };
+					_mapper = map;
+				}
+			}
+
+			if (autoPackage)
+			{
+				ProcessAutoPackage(view);
+			}
+
+			_mapper.UpdateProperties(nativeViewHandler, currentVirtualView);
+After:
+			{
+				oldElement.Handler = null;
+*/
+
+/* Unmerged change from project 'Controls.Core(net8.0-android)'
+Before:
+				oldElement.Handler = null;
+
+			currentVirtualView = (TElement)view;
+
+			if (currentVirtualView.Handler != nativeViewHandler)
+				currentVirtualView.Handler = nativeViewHandler;
+
+			_mapper = _defaultMapper;
+
+			if (currentVirtualView is IPropertyMapperView imv)
+			{
+				var map = imv.GetPropertyMapperOverrides();
+				if (map is not null)
+				{
+					map.Chained = new[] { _defaultMapper };
+					_mapper = map;
+				}
+			}
+
+			if (autoPackage)
+			{
+				ProcessAutoPackage(view);
+			}
+
+			_mapper.UpdateProperties(nativeViewHandler, currentVirtualView);
+After:
+			{
+				oldElement.Handler = null;
+*/
+
+/* Unmerged change from project 'Controls.Core(net8.0-windows10.0.19041.0)'
+Before:
+				oldElement.Handler = null;
+
+			currentVirtualView = (TElement)view;
+
+			if (currentVirtualView.Handler != nativeViewHandler)
+				currentVirtualView.Handler = nativeViewHandler;
+
+			_mapper = _defaultMapper;
+
+			if (currentVirtualView is IPropertyMapperView imv)
+			{
+				var map = imv.GetPropertyMapperOverrides();
+				if (map is not null)
+				{
+					map.Chained = new[] { _defaultMapper };
+					_mapper = map;
+				}
+			}
+
+			if (autoPackage)
+			{
+				ProcessAutoPackage(view);
+			}
+
+			_mapper.UpdateProperties(nativeViewHandler, currentVirtualView);
+After:
+			{
+				oldElement.Handler = null;
+*/
+
+/* Unmerged change from project 'Controls.Core(net8.0-windows10.0.20348.0)'
+Before:
+				oldElement.Handler = null;
+
+			currentVirtualView = (TElement)view;
+
+			if (currentVirtualView.Handler != nativeViewHandler)
+				currentVirtualView.Handler = nativeViewHandler;
+
+			_mapper = _defaultMapper;
+
+			if (currentVirtualView is IPropertyMapperView imv)
+			{
+				var map = imv.GetPropertyMapperOverrides();
+				if (map is not null)
+				{
+					map.Chained = new[] { _defaultMapper };
+					_mapper = map;
+				}
+			}
+
+			if (autoPackage)
+			{
+				ProcessAutoPackage(view);
+			}
+
+			_mapper.UpdateProperties(nativeViewHandler, currentVirtualView);
+After:
+			{
+				oldElement.Handler = null;
+*/
+			{
+				oldElement.Handler = null;
+			}
+
+			currentVirtualView = (TElement)view;
+
+			if (currentVirtualView.Handler != nativeViewHandler)
+			{
+				currentVirtualView.Handler = nativeViewHandler;
+			}
+
+			_mapper = _defaultMapper;
+
+			if (currentVirtualView is IPropertyMapperView imv)
+			{
+				var map = imv.GetPropertyMapperOverrides();
+				if (map is not null)
+				{
+					map.Chained = new[] { _defaultMapper };
+					_mapper = map;
+				}
+			}
+
+			if (autoPackage)
+			{
+				ProcessAutoPackage(view);
+			}
+
+			_mapper.UpdateProperties(nativeViewHandler, currentVirtualView);
+			}
+
+			currentVirtualView = (TElement)view;
+
+			if (currentVirtualView.Handler != nativeViewHandler)
+			{
+				currentVirtualView.Handler = nativeViewHandler;
+			}
 
 			_mapper = _defaultMapper;
 
@@ -325,7 +505,12 @@ namespace Microsoft.Maui.Controls.Handlers.Compatibility
 		{
 			DisconnectHandlerCore();
 			if (Element is IElement element && element.Handler == (IPlatformViewHandler)this)
+			{
 				element.Handler = null;
+			}
+
+			_virtualView = null;
+			}
 
 			_virtualView = null;
 		}
@@ -339,10 +524,14 @@ namespace Microsoft.Maui.Controls.Handlers.Compatibility
 		{
 #if WINDOWS
 			if (handler is VisualElementRenderer<TElement, TPlatformElement> ver)
+			{
 				ver.SetAutomationPropertiesAccessibilityView();
+			}
 #else
 			if (handler is VisualElementRenderer<TElement> ver)
+			{
 				ver.SetImportantForAccessibility();
+			}
 #endif
 		}
 

@@ -99,7 +99,9 @@ namespace Microsoft.Maui.Controls.Foldable
 		{
 			double returnValue = 641d;
 			if (DeviceDisplay.MainDisplayInfo.Density <= 0)
+			{
 				return returnValue;
+			}
 
 			returnValue = 641d / DeviceDisplay.MainDisplayInfo.Density;
 			return returnValue;
@@ -124,9 +126,43 @@ namespace Microsoft.Maui.Controls.Foldable
 			var newView = (View)newValue;
 
 			if (paneIndex == 0)
+
+/* Unmerged change from project 'Controls.Foldable(net8.0-android)'
+Before:
 				twoPaneView._content1.Content = newView;
 			else
 				twoPaneView._content2.Content = newView;
+After:
+			{
+				twoPaneView._content1.Content = newView;
+			}
+			else
+			{
+				twoPaneView._content2.Content = newView;
+			}
+*/
+
+/* Unmerged change from project 'Controls.Foldable(net8.0-windows10.0.19041.0)'
+Before:
+				twoPaneView._content1.Content = newView;
+			else
+				twoPaneView._content2.Content = newView;
+After:
+			{
+				twoPaneView._content1.Content = newView;
+			}
+			else
+			{
+				twoPaneView._content2.Content = newView;
+			}
+*/
+			{
+				twoPaneView._content1.Content = newView;
+			}
+			else
+			{
+				twoPaneView._content2.Content = newView;
+			}
 
 			twoPaneView.UpdateMode();
 		}
@@ -431,7 +467,9 @@ namespace Microsoft.Maui.Controls.Foldable
 				else
 				{
 					if (invalidateLayout)
+					{
 						InvalidateMeasure(); //HACK:FOLDABLE was InvalidateLayout();
+					}
 				}
 			}
 			finally
@@ -628,7 +666,10 @@ namespace Microsoft.Maui.Controls.Foldable
 			void SetRowColumn(BindableObject bo, int row, int column)
 			{
 				if (bo == null)
+				{
+				{
 					return;
+				}
 
 				Grid.SetColumn(bo, column);
 				Grid.SetRow(bo, row);

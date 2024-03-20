@@ -44,10 +44,14 @@ namespace Microsoft.Maui.Controls.Handlers.Items
 				var correctedIndexPath = NSIndexPath.FromRowSection(cellAndCorrectedIndex.correctedIndex, 0);
 
 				if (cell is DefaultCell defaultCell)
+				{
 					UpdateDefaultCell(defaultCell, correctedIndexPath);
+				}
 
 				if (cell is TemplatedCell templatedCell)
+				{
 					UpdateTemplatedCell(templatedCell, correctedIndexPath);
+				}
 			}
 			else
 			{
@@ -57,7 +61,9 @@ namespace Microsoft.Maui.Controls.Handlers.Items
 			var element = (cell as TemplatedCell)?.PlatformHandler?.VirtualView as VisualElement;
 
 			if (element != null)
+			{
 				VisualStateManager.GoToState(element, CarouselView.DefaultItemVisualState);
+			}
 
 			return cell;
 		}
@@ -144,7 +150,11 @@ namespace Microsoft.Maui.Controls.Handlers.Items
 		protected override string DetermineCellReuseId()
 		{
 			if (ItemsView?.ItemTemplate != null)
+			{
+			{
 				return CarouselTemplatedCell.ReuseId;
+			}
+			}
 
 			return base.DetermineCellReuseId();
 		}
@@ -178,7 +188,10 @@ namespace Microsoft.Maui.Controls.Handlers.Items
 		internal void TearDown()
 		{
 			if (ItemsView is CarouselView carousel)
+			{
 				carousel.Scrolled -= CarouselViewScrolled;
+			}
+
 			UnsubscribeCollectionItemsSourceChanged(ItemsSource);
 			_carouselViewLoopManager?.Dispose();
 			_carouselViewLoopManager = null;
@@ -187,13 +200,19 @@ namespace Microsoft.Maui.Controls.Handlers.Items
 		internal void UpdateIsScrolling(bool isScrolling)
 		{
 			if (ItemsView is CarouselView carousel)
+			{
 				carousel.IsScrolling = isScrolling;
+			}
 		}
 
 		internal NSIndexPath GetScrollToIndexPath(int position)
 		{
 			if (ItemsView?.Loop == true && _carouselViewLoopManager != null)
+			{
+			{
 				return _carouselViewLoopManager.GetGoToIndex(CollectionView, position);
+			}
+			}
 
 			return NSIndexPath.FromItemSection(position, 0);
 		}
@@ -201,7 +220,11 @@ namespace Microsoft.Maui.Controls.Handlers.Items
 		internal int GetIndexFromIndexPath(NSIndexPath indexPath)
 		{
 			if (ItemsView?.Loop == true && _carouselViewLoopManager != null)
+			{
+			{
 				return _carouselViewLoopManager.GetCorrectedIndexFromIndexPath(indexPath);
+			}
+			}
 
 			return indexPath.Row;
 		}
@@ -210,7 +233,9 @@ namespace Microsoft.Maui.Controls.Handlers.Items
 		void CarouselViewScrolled(object sender, ItemsViewScrolledEventArgs e)
 		{
 			if (_updatingScrollOffset)
+			{
 				return;
+			}
 
 			if (_isDragging)
 			{
@@ -228,7 +253,9 @@ namespace Microsoft.Maui.Controls.Handlers.Items
 		void CollectionViewUpdating(object sender, NotifyCollectionChangedEventArgs e)
 		{
 			if (ItemsView is not CarouselView carousel)
+			{
 				return;
+			}
 
 			int carouselPosition = carousel.Position;
 			_positionAfterUpdate = carouselPosition;
@@ -236,13 +263,44 @@ namespace Microsoft.Maui.Controls.Handlers.Items
 			var count = ItemsSource.ItemCount;
 
 			if (e.Action == NotifyCollectionChangedAction.Remove)
-				_positionAfterUpdate = GetPositionWhenRemovingItems(e.OldStartingIndex, carouselPosition, currentItemPosition, count);
+			{
+				_positionAfterUpdate = GetPositionWhen
+/* Unmerged change from project 'Controls.Core(net8.0-maccatalyst)'
+Before:
+		int GetPositionWhenRemovingItems(int oldStartingIndex, int carouselPosition, int currentItemPosition, int count)
+		{
+			bool removingCurrentElement = currentItemPosition == -1;
+
+			bool removingFirstElement = oldStartingIndex == 0;
+			bool removingLastElement = oldStartingIndex == count;
+
+			int currentPosition = ItemsView?.Position ?? 0;
+			bool removingCurrentElementAndLast = removingCurrentElement && removingLastElement && currentPosition > 0;
+			if (removingCurrentElementAndLast)
+After:
+		int GetPositionWhenRemovingItems(int oldStartingIndex, int carouselPosition, int currentItemPosition, count);
+			}
 
 			if (e.Action == NotifyCollectionChangedAction.Reset)
+			{
 				_positionAfterUpdate = GetPositionWhenResetItems();
+			}
 
 			if (e.Action == NotifyCollectionChangedAction.Add)
+*/
+RemovingItems(e.OldStartingIndex, carouselPosition, currentItemPosition, 
+/* Unmerged change from project 'Controls.Core(net8.0-maccatalyst)'
+Before:
+				//If we are removing the last element update the position
+				carouselPosition = currentPosition - 1;
+After:
 				_positionAfterUpdate = GetPositionWhenAddingItems(carouselPosition, currentItemPosition);
+*/
+
+/* Unmerged change from project 'Controls.Core(net8.0-maccatalyst)'
+Before:
+			else if (removingFirstElement && !removingCurrentElement)
+After:
 		}
 
 		[UnconditionalSuppressMessage("Memory", "MEM0003", Justification = "Proven safe in test: MemoryTests.HandlerDoesNotLeak")]
@@ -271,6 +329,410 @@ namespace Microsoft.Maui.Controls.Handlers.Items
 		int GetPositionWhenResetItems()
 		{
 			//If we are reseting the collection Position should go to 0
+			ItemsView?.SetValueFromRenderer(CarouselView.CurrentItemProperty, null);
+			return 0;
+		}
+
+		int GetPositionWhenRemovingItems(int oldStartingIndex, int carouselPosition, int currentItemPosition, int count)
+		{
+			bool removingCurrentElement = currentItemPosition == -1;
+
+			bool removingFirstElement = oldStartingIndex == 0;
+			bool removingLastElement = oldStartingIndex == count;
+
+			int currentPosition = ItemsView?.Position ?? 0;
+			bool removingCurrentElementAndLast = removingCurrentElement && removingLastElement && currentPosition > 0;
+			if (removingCurrentElementAndLast)
+			{
+				//If we are removing the last element update the position
+				carouselPosition = currentPosition - 1;
+			}
+			else if (removingFirstElement && !removingCurrentElement)
+*/
+
+/* Unmerged change from project 'Controls.Core(net8.0-maccatalyst)'
+Before:
+				return;
+After:
+			{
+				return;
+			}
+*/
+
+/* Unmerged change from project 'Controls.Core(net8.0-maccatalyst)'
+Before:
+				LoopItemsSource.Loop = carousel.Loop;
+
+			CollectionView.ReloadData();
+
+			ScrollToPosition(carouselPosition, carouselPosition, false, true);
+		}
+After:
+			{
+				LoopItemsSource.Loop = carousel.Loop;
+			}
+
+			CollectionView.ReloadData();
+
+			ScrollToPosition(carouselPosition, carouselPosition, false, true);
+		}
+*/
+
+/* Unmerged change from project 'Controls.Core(net8.0-maccatalyst)'
+Before:
+				return;
+
+			if (carousel.Loop)
+				carouselPosition = _carouselViewLoopManager?.GetCorrectPositionForCenterItem(CollectionView) ?? -1;
+
+			//no center item found, collection could be empty
+			//also if we are dragging we don't need to ScrollTo
+			if (carousel.IsDragging || carouselPosition == -1)
+After:
+			{
+*/
+
+/* Unmerged change from project 'Controls.Core(net8.0-maccatalyst)'
+Before:
+			if (_gotoPosition == -1 && (goToPosition != carouselPosition || forceScroll))
+After:
+			}
+
+			if (carousel.Loop)
+			{
+				carouselPosition = _carouselViewLoopManager?.GetCorrectPositionForCenterItem(CollectionView) ?? -1;
+			}
+
+			//no center item found, collection could be empty
+			//also if we are dragging we don't need to ScrollTo
+			if (carousel.IsDragging || carouselPosition == -1)
+			{
+				return;
+			}
+
+			if (_gotoPosition == -1 && (goToPosition != carouselPosition || forceScroll))
+*/
+
+/* Unmerged change from project 'Controls.Core(net8.0-maccatalyst)'
+Before:
+				return;
+			if (ItemsView is not CarouselView carousel)
+After:
+			{
+*/
+
+/* Unmerged change from project 'Controls.Core(net8.0-maccatalyst)'
+Before:
+			//we arrived center
+			if (position == _gotoPosition)
+				_gotoPosition = -1;
+
+			//If _gotoPosition is != -1 we are scrolling to that possition
+			if (_gotoPosition == -1 && carousel.Position != position)
+				carousel.SetValueFromRenderer(CarouselView.PositionProperty, position);
+After:
+			}
+
+			if (ItemsView is not CarouselView carousel)
+			{
+				return;
+			}
+
+			//we arrived center
+			if (position == _gotoPosition)
+			{
+				_gotoPosition = -1;
+			}
+
+			//If _gotoPosition is != -1 we are scrolling to that possition
+			if (_gotoPosition == -1 && carousel.Position != position)
+			{
+				carousel.SetValueFromRenderer(CarouselView.PositionProperty, position);
+			}
+*/
+
+/* Unmerged change from project 'Controls.Core(net8.0-maccatalyst)'
+Before:
+				return;
+After:
+			{
+				return;
+			}
+*/
+
+/* Unmerged change from project 'Controls.Core(net8.0-maccatalyst)'
+Before:
+				return;
+			if (carousel.CurrentItem == null || ItemsSource == null || ItemsSource.ItemCount == 0)
+After:
+			{
+*/
+
+/* Unmerged change from project 'Controls.Core(net8.0-maccatalyst)'
+Added:
+			}
+
+			if (carousel.CurrentItem == null || ItemsSource == null || ItemsSource.ItemCount == 0)
+			{
+				return;
+			}
+*/
+
+/* Unmerged change from project 'Controls.Core(net8.0-maccatalyst)'
+Before:
+				return;
+			var itemsCount = ItemsSource?.ItemCount;
+			if (itemsCount == 0)
+After:
+			{
+*/
+
+/* Unmerged change from project 'Controls.Core(net8.0-maccatalyst)'
+Before:
+			var currentItemPosition = GetIndexForItem(carousel.CurrentItem).Row;
+			var carouselPosition = carousel.Position;
+			if (carouselPosition == _gotoPosition)
+				_gotoPosition = -1;
+
+			ScrollToPosition(carouselPosition, currentItemPosition, carousel.AnimatePositionChanges);
+
+			SetCurrentItem(carouselPosition);
+		}
+After:
+			}
+
+			var itemsCount = ItemsSource?.ItemCount;
+			if (itemsCount == 0)
+			{
+				return;
+			}
+
+			var currentItemPosition = GetIndexForItem(carousel.CurrentItem).Row;
+			var carouselPosition = carousel.Position;
+			if (carouselPosition == _gotoPosition)
+			{
+				_gotoPosition = -1;
+			}
+
+			ScrollToPosition(carouselPosition, currentItemPosition, carousel.AnimatePositionChanges);
+
+			SetCurrentItem(carouselPosition);
+		}
+*/
+
+/* Unmerged change from project 'Controls.Core(net8.0-maccatalyst)'
+Before:
+				return;
+After:
+			{
+				return;
+			}
+*/
+
+/* Unmerged change from project 'Controls.Core(net8.0-maccatalyst)'
+Before:
+					return;
+After:
+				{
+					return;
+				}
+*/
+
+/* Unmerged change from project 'Controls.Core(net8.0-maccatalyst)'
+Before:
+				return;
+			var cells = CollectionView.VisibleCells;
+
+			var newViews = new List<View>();
+After:
+			{
+				return;
+			}
+
+			var cells = CollectionView.VisibleCells;
+*/
+
+/* Unmerged change from project 'Controls.Core(net8.0-maccatalyst)'
+Before:
+			var carouselPosition = carousel.Position;
+			var previousPosition = carouselPosition - 1;
+			var nextPosition = carouselPosition + 1;
+
+			foreach (var cell in cells)
+			{
+				if (!((cell as CarouselTemplatedCell)?.PlatformHandler?.VirtualView is View itemView))
+					return;
+After:
+			var newViews = new List<View>();
+
+			var carouselPosition = carousel.Position;
+			var previousPosition = carouselPosition - 1;
+			var nextPosition = carouselPosition + 1;
+
+			foreach (var cell in cells)
+			{
+				if (!((cell as CarouselTemplatedCell)?.PlatformHandler?.VirtualView is View itemView))
+				{
+					return;
+				}
+*/
+count);
+			}
+
+			if (e.Action == NotifyCollectionChangedAction.Reset)
+			{
+				_positionAfterUpdate = GetPositionWhenResetItems();
+		
+/* Unmerged change from project 'Controls.Core(net8.0-maccatalyst)'
+Before:
+				throw new ArgumentNullException(nameof(layout), "LoopManager expects a UICollectionViewFlowLayout");
+After:
+			{
+				throw new ArgumentNullException(nameof(layout), "LoopManager expects a UICollectionViewFlowLayout");
+			}
+*/
+	}
+
+			if (e.Action == NotifyCollectionChangedAction.Add)
+			{
+				_positionAfterUpdate = GetPositionWhenAddingItems(carouselPosition, currentItemPosition);
+			}
+		}
+
+		[UnconditionalSuppressMessage("Memory", "MEM0003", Justification = "Proven safe in test: MemoryTests.HandlerDoesNotLeak")]
+		void CollectionViewUpdated(object sender, NotifyCollectionChangedEventArgs e)
+		{
+			if (_positionAfterUpdate == -1)
+
+/* Unmerged change from project 'Controls.Core(net8.0-maccatalyst)'
+Before:
+				CenterHorizontalIfNeeded(collectionView);
+			else
+After:
+			{
+				CenterHorizontalIfNeeded(collectionView);
+			}
+			else
+			{
+*/
+			
+/* Unmerged change from project 'Controls.Core(net8.0-maccatalyst)'
+Before:
+		}
+After:
+			}
+		}
+*/
+{
+				return;
+			}
+
+			_gotoPosition = -1;
+
+			var targetPosition = _positionAfterUpdate;
+			_positionAfterUpdate = -1;
+
+			SetPosition(targetPosition);
+			SetCurrentItem(targetPosition);
+		}
+
+		int GetPositionWhenAddingItems(int 
+/* Unmerged change from project 'Controls.Core(net8.0-maccatalyst)'
+Before:
+				return -1;
+After:
+			{
+				return -1;
+			}
+*/
+
+/* Unmerged change from project 'Controls.Core(net8.0-maccatalyst)'
+Before:
+				return NSIndexPath.FromItemSection(0, 0);
+
+			var currentCarouselPosition = GetCorrectedIndexFromIndexPath(centerIndexPath);
+			var itemSourceCount = _itemsSource.ItemCount;
+
+			var diffToStart = currentCarouselPosition + (itemSourceCount - newPosition);
+			var diffToEnd = itemSourceCount - currentCarouselPosition + newPosition;
+
+			var increment = currentCarouselPosition - newPosition;
+			var incrementAbs = Math.Abs(increment);
+
+			int goToPosition;
+			if (diffToStart < incrementAbs)
+				goToPosition = centerIndexPath.Row - diffToStart;
+			else if (diffToEnd < incrementAbs)
+				goToPosition = centerIndexPath.Row + diffToEnd;
+			else
+				goToPosition = centerIndexPath.Row - increment;
+After:
+			{
+				return NSIndexPath.FromItemSection(0, 0);
+			}
+
+			var currentCarouselPosition = GetCorrectedIndexFromIndexPath(centerIndexPath);
+			var itemSourceCount = _itemsSource.ItemCount;
+
+			var diffToStart = currentCarouselPosition + (itemSourceCount - newPosition);
+			var diffToEnd = itemSourceCount - currentCarouselPosition + newPosition;
+
+			var increment = currentCarouselPosition - newPosition;
+			var incrementAbs = Math.Abs(increment);
+
+			int goToPosition;
+			if (diffToStart < incrementAbs)
+			{
+				goToPosition = centerIndexPath.Row - diffToStart;
+			}
+			else if (diffToEnd < incrementAbs)
+			{
+				goToPosition = centerIndexPath.Row + diffToEnd;
+			}
+			else
+			{
+				goToPosition = centerIndexPath.Row - increment;
+			}
+*/
+carouselPosition, int currentItemPosition)
+		{
+			
+/* Unmerged change from project 'Controls.Core(net8.0-maccatalyst)'
+Before:
+				return;
+
+			var centerOffsetY = (LoopCount * contentHeight - boundsHeight) / 2;
+			var distFromCenter = centerOffsetY - currentOffset.Y;
+After:
+			{
+				return;
+			}
+
+			var centerOffsetY = (LoopCount * contentHeight - boundsHeight) / 2;
+			var distFromCenter = centerOffsetY - currentOffset.Y;
+*/
+//If we are adding a new item make sure to maintain the CurrentItemPosition
+			return currentItemPosition != -1 ? currentItemPosition : carouselPosition;
+		}
+
+		int GetPositionWhenResetItems()
+		{
+			
+/* Unmerged change from project 'Controls.Core(net8.0-maccatalyst)'
+Before:
+				return;
+
+			var centerOffsetX = (LoopCount * contentWidth - boundsWidth) / 2;
+			var distFromCentre = centerOffsetX - currentOffset.X;
+After:
+			{
+				return;
+			}
+
+			var centerOffsetX = (LoopCount * contentWidth - boundsWidth) / 2;
+			var distFromCentre = centerOffsetX - currentOffset.X;
+*/
+//If we are reseting the collection Position should go to 0
 			ItemsView?.SetValueFromRenderer(CarouselView.CurrentItemProperty, null);
 			return 0;
 		}
@@ -319,12 +781,16 @@ namespace Microsoft.Maui.Controls.Handlers.Items
 		internal void UpdateLoop()
 		{
 			if (ItemsView is not CarouselView carousel)
+			{
 				return;
+			}
 
 			var carouselPosition = carousel.Position;
 
 			if (LoopItemsSource != null)
+			{
 				LoopItemsSource.Loop = carousel.Loop;
+			}
 
 			CollectionView.ReloadData();
 
@@ -334,15 +800,21 @@ namespace Microsoft.Maui.Controls.Handlers.Items
 		void ScrollToPosition(int goToPosition, int carouselPosition, bool animate, bool forceScroll = false)
 		{
 			if (ItemsView is not CarouselView carousel)
+			{
 				return;
+			}
 
 			if (carousel.Loop)
+			{
 				carouselPosition = _carouselViewLoopManager?.GetCorrectPositionForCenterItem(CollectionView) ?? -1;
+			}
 
 			//no center item found, collection could be empty
 			//also if we are dragging we don't need to ScrollTo
 			if (carousel.IsDragging || carouselPosition == -1)
+			{
 				return;
+			}
 
 			if (_gotoPosition == -1 && (goToPosition != carouselPosition || forceScroll))
 			{
@@ -354,24 +826,64 @@ namespace Microsoft.Maui.Controls.Handlers.Items
 		void SetPosition(int position)
 		{
 			if (position == -1)
+
+/* Unmerged change from project 'Controls.Core(net8.0-maccatalyst)'
+Before:
+				return indexToCorrect;
+
+			var countInIndex = (double)(indexToCorrect / itemsCount);
+			var flooredValue = (int)(Math.Floor(countInIndex));
+			var offset = itemsCount * flooredValue;
+			var newIndex = indexToCorrect - offset;
+			if (newIndex < 0)
+				return (itemsCount - Math.Abs(newIndex));
+			return newIndex;
+		}
+After:
+			{
+				return indexToCorrect;
+			}
+
+			var countInIndex = (double)(indexToCorrect / itemsCount);
+			var flooredValue = (int)(Math.Floor(countInIndex));
+			var offset = itemsCount * flooredValue;
+			var newIndex = indexToCorrect - offset;
+			if (newIndex < 0)
+			{
+				return (itemsCount - Math.Abs(newIndex));
+			}
+
+			return newIndex;
+		}
+*/
+			{
 				return;
+			}
+
 			if (ItemsView is not CarouselView carousel)
+			{
 				return;
+			}
 
 			//we arrived center
 			if (position == _gotoPosition)
+			{
 				_gotoPosition = -1;
+			}
 
 			//If _gotoPosition is != -1 we are scrolling to that possition
 			if (_gotoPosition == -1 && carousel.Position != position)
+			{
 				carousel.SetValueFromRenderer(CarouselView.PositionProperty, position);
-
+			}
 		}
 
 		void SetCurrentItem(int carouselPosition)
 		{
 			if (ItemsSource.ItemCount == 0)
+			{
 				return;
+			}
 
 			var item = GetItemAtIndex(NSIndexPath.FromItemSection(carouselPosition, 0));
 			ItemsView?.SetValueFromRenderer(CarouselView.CurrentItemProperty, item);
@@ -381,9 +893,14 @@ namespace Microsoft.Maui.Controls.Handlers.Items
 		internal void UpdateFromCurrentItem()
 		{
 			if (ItemsView is not CarouselView carousel)
+			{
 				return;
+			}
+
 			if (carousel.CurrentItem == null || ItemsSource == null || ItemsSource.ItemCount == 0)
+			{
 				return;
+			}
 
 			var currentItemPosition = GetIndexForItem(carousel.CurrentItem).Row;
 
@@ -395,15 +912,22 @@ namespace Microsoft.Maui.Controls.Handlers.Items
 		internal void UpdateFromPosition()
 		{
 			if (ItemsView is not CarouselView carousel)
+			{
 				return;
+			}
+
 			var itemsCount = ItemsSource?.ItemCount;
 			if (itemsCount == 0)
+			{
 				return;
+			}
 
 			var currentItemPosition = GetIndexForItem(carousel.CurrentItem).Row;
 			var carouselPosition = carousel.Position;
 			if (carouselPosition == _gotoPosition)
+			{
 				_gotoPosition = -1;
+			}
 
 			ScrollToPosition(carouselPosition, currentItemPosition, carousel.AnimatePositionChanges);
 
@@ -415,12 +939,16 @@ namespace Microsoft.Maui.Controls.Handlers.Items
 			var itemsCount = ItemsSource?.ItemCount;
 
 			if (itemsCount == 0)
+			{
 				return;
+			}
 
 			if (!_initialPositionSet)
 			{
 				if (ItemsView is not CarouselView carousel)
+				{
 					return;
+				}
 
 				System.Diagnostics.Debug.WriteLine($"UpdateInitialPosition");
 				_initialPositionSet = true;
@@ -445,7 +973,10 @@ namespace Microsoft.Maui.Controls.Handlers.Items
 		void UpdateVisualStates()
 		{
 			if (ItemsView is not CarouselView carousel)
+			{
 				return;
+			}
+
 			var cells = CollectionView.VisibleCells;
 
 			var newViews = new List<View>();
@@ -457,7 +988,9 @@ namespace Microsoft.Maui.Controls.Handlers.Items
 			foreach (var cell in cells)
 			{
 				if (!((cell as CarouselTemplatedCell)?.PlatformHandler?.VirtualView is View itemView))
+				{
 					return;
+				}
 
 				var item = itemView.BindingContext;
 				var pos = ItemsSource.GetIndexForItem(item).Row;
@@ -526,7 +1059,9 @@ namespace Microsoft.Maui.Controls.Handlers.Items
 		public CarouselViewLoopManager(UICollectionViewFlowLayout layout)
 		{
 			if (layout == null)
+			{
 				throw new ArgumentNullException(nameof(layout), "LoopManager expects a UICollectionViewFlowLayout");
+			}
 
 			_layout = layout;
 		}
@@ -534,9 +1069,13 @@ namespace Microsoft.Maui.Controls.Handlers.Items
 		public void CenterIfNeeded(UICollectionView collectionView, bool isHorizontal)
 		{
 			if (isHorizontal)
+			{
 				CenterHorizontalIfNeeded(collectionView);
+			}
 			else
+			{
 				CenterVerticallyIfNeeded(collectionView);
+			}
 		}
 
 		protected virtual void Dispose(bool disposing)
@@ -574,7 +1113,10 @@ namespace Microsoft.Maui.Controls.Handlers.Items
 		{
 			NSIndexPath centerIndexPath = GetIndexPathForCenteredItem(collectionView);
 			if (centerIndexPath == null)
+			{
 				return -1;
+			}
+
 			return GetCorrectedIndexFromIndexPath(centerIndexPath);
 		}
 
@@ -582,7 +1124,9 @@ namespace Microsoft.Maui.Controls.Handlers.Items
 		{
 			NSIndexPath centerIndexPath = GetIndexPathForCenteredItem(collectionView);
 			if (centerIndexPath == null)
+			{
 				return NSIndexPath.FromItemSection(0, 0);
+			}
 
 			var currentCarouselPosition = GetCorrectedIndexFromIndexPath(centerIndexPath);
 			var itemSourceCount = _itemsSource.ItemCount;
@@ -595,11 +1139,17 @@ namespace Microsoft.Maui.Controls.Handlers.Items
 
 			int goToPosition;
 			if (diffToStart < incrementAbs)
+			{
 				goToPosition = centerIndexPath.Row - diffToStart;
+			}
 			else if (diffToEnd < incrementAbs)
+			{
 				goToPosition = centerIndexPath.Row + diffToEnd;
+			}
 			else
+			{
 				goToPosition = centerIndexPath.Row - increment;
+			}
 
 			NSIndexPath goToIndexPath = NSIndexPath.FromItemSection(goToPosition, 0);
 
@@ -617,7 +1167,9 @@ namespace Microsoft.Maui.Controls.Handlers.Items
 			var boundsHeight = collectionView.Bounds.Size.Height;
 
 			if (contentHeight == 0 || cellHeight == 0)
+			{
 				return;
+			}
 
 			var centerOffsetY = (LoopCount * contentHeight - boundsHeight) / 2;
 			var distFromCenter = centerOffsetY - currentOffset.Y;
@@ -650,7 +1202,9 @@ namespace Microsoft.Maui.Controls.Handlers.Items
 			var boundsWidth = collectionView.Bounds.Size.Width;
 
 			if (contentWidth == 0 || cellWidth == 0)
+			{
 				return;
+			}
 
 			var centerOffsetX = (LoopCount * contentWidth - boundsWidth) / 2;
 			var distFromCentre = centerOffsetX - currentOffset.X;
@@ -686,14 +1240,19 @@ namespace Microsoft.Maui.Controls.Handlers.Items
 		{
 			var itemsCount = GetItemsSourceCount();
 			if ((indexToCorrect < itemsCount && indexToCorrect >= 0) || itemsCount == 0)
+			{
 				return indexToCorrect;
+			}
 
 			var countInIndex = (double)(indexToCorrect / itemsCount);
 			var flooredValue = (int)(Math.Floor(countInIndex));
 			var offset = itemsCount * flooredValue;
 			var newIndex = indexToCorrect - offset;
 			if (newIndex < 0)
+			{
 				return (itemsCount - Math.Abs(newIndex));
+			}
+
 			return newIndex;
 		}
 

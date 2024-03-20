@@ -31,7 +31,11 @@ namespace Microsoft.Maui.Hosting
 				var genericConcreteType = ImageSourceServiceType.MakeGenericType(type);
 
 				if (genericConcreteType != null && GetServiceDescriptor(genericConcreteType) != null)
+				{
+				{
 					return genericConcreteType;
+				}
+				}
 
 				return ImageSourceServiceType.MakeGenericType(GetImageSourceType(type));
 			});
@@ -44,14 +48,20 @@ namespace Microsoft.Maui.Hosting
 			if (type.IsInterface)
 			{
 				if (type.GetInterface(ImageSourceInterface) != null)
+				{
+				{
 					return type;
+				}
 			}
 			else
 			{
 				foreach (var directInterface in type.GetInterfaces())
 				{
 					if (directInterface.GetInterface(ImageSourceInterface) != null)
+					{
 						return directInterface;
+					}
+					}
 				}
 			}
 

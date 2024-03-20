@@ -110,9 +110,44 @@ namespace Microsoft.Maui.ApplicationModel.Communication
 		string BuildDisplayName()
 		{
 			if (string.IsNullOrWhiteSpace(GivenName))
+
+/* Unmerged change from project 'Essentials(net8.0-maccatalyst)'
+Before:
 				return FamilyName;
 			if (string.IsNullOrWhiteSpace(FamilyName))
 				return GivenName;
+After:
+			{
+				return FamilyName;
+*/
+
+/* Unmerged change from project 'Essentials(net8.0-android)'
+Before:
+				return FamilyName;
+			if (string.IsNullOrWhiteSpace(FamilyName))
+				return GivenName;
+After:
+			{
+				return FamilyName;
+*/
+
+/* Unmerged change from project 'Essentials(net8.0-windows10.0.19041.0)'
+Before:
+				return FamilyName;
+			if (string.IsNullOrWhiteSpace(FamilyName))
+				return GivenName;
+After:
+			{
+				return FamilyName;
+*/
+			{
+				return FamilyName;
+			}
+
+			if (string.IsNullOrWhiteSpace(FamilyName))
+			{
+				return GivenName;
+			}
 
 			return $"{GivenName} {FamilyName}";
 		}

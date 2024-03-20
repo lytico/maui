@@ -145,11 +145,19 @@ namespace Maui.Controls.Sample.Pages.SwipeViewGalleries
 		{
 			var fontFamily = "";
 			if (DeviceInfo.Platform == DevicePlatform.iOS)
+			{
+			{
 				fontFamily = "Ionicons";
+			}
 			else if (DeviceInfo.Platform == DevicePlatform.WinUI)
+			{
 				fontFamily = "Assets/Fonts/ionicons.ttf#ionicons";
+			}
 			else
+			{
 				fontFamily = "fonts/ionicons.ttf#";
+			}
+
 			return fontFamily;
 		}
 	}

@@ -21,7 +21,9 @@ namespace Microsoft.Maui.Devices.Sensors
 		public async Task<Location?> GetLastKnownLocationAsync()
 		{
 			if (!CLLocationManager.LocationServicesEnabled)
+			{
 				throw new FeatureNotEnabledException("Location services are not enabled on device.");
+			}
 
 			await Permissions.EnsureGrantedAsync<Permissions.LocationWhenInUse>();
 
@@ -43,7 +45,9 @@ namespace Microsoft.Maui.Devices.Sensors
 			ArgumentNullException.ThrowIfNull(request);
 
 			if (!CLLocationManager.LocationServicesEnabled)
+			{
 				throw new FeatureNotEnabledException("Location services are not enabled on device.");
+			}
 
 			await Permissions.EnsureGrantedAsync<Permissions.LocationWhenInUse>();
 
@@ -117,10 +121,14 @@ namespace Microsoft.Maui.Devices.Sensors
 			ArgumentNullException.ThrowIfNull(request);
 
 			if (IsListeningForeground)
+			{
 				throw new InvalidOperationException("Already listening to location changes.");
+			}
 
 			if (!CLLocationManager.LocationServicesEnabled)
+			{
 				throw new FeatureNotEnabledException("Location services are not enabled on device.");
+			}
 
 			await Permissions.EnsureGrantedAsync<Permissions.LocationWhenInUse>();
 
@@ -175,7 +183,9 @@ namespace Microsoft.Maui.Devices.Sensors
 		{
 			if (!IsListeningForeground ||
 				listeningManager is null)
+			{
 				return;
+			}
 
 			listeningManager.StopUpdatingLocation();
 
@@ -201,14 +211,18 @@ namespace Microsoft.Maui.Devices.Sensors
 		public override void LocationsUpdated(CLLocationManager manager, CLLocation[] locations)
 		{
 			if (wasRaised)
+			{
 				return;
+			}
 
 			wasRaised = true;
 
 			var location = locations?.LastOrDefault();
 
 			if (location == null)
+			{
 				return;
+			}
 
 			LocationHandler?.Invoke(location);
 		}
@@ -229,7 +243,9 @@ namespace Microsoft.Maui.Devices.Sensors
 			var location = locations?.LastOrDefault();
 
 			if (location == null)
+			{
 				return;
+			}
 
 			LocationHandler?.Invoke(location);
 		}
@@ -238,7 +254,9 @@ namespace Microsoft.Maui.Devices.Sensors
 		public override void Failed(CLLocationManager manager, NSError error)
 		{
 			if ((CLError)error.Code == CLError.Network)
+			{
 				ErrorHandler?.Invoke(GeolocationError.PositionUnavailable);
+			}
 		}
 
 		/// <inheritdoc/>
@@ -246,7 +264,9 @@ namespace Microsoft.Maui.Devices.Sensors
 		{
 			if (status == CLAuthorizationStatus.Denied ||
 				status == CLAuthorizationStatus.Restricted)
+			{
 				ErrorHandler?.Invoke(GeolocationError.Unauthorized);
+			}
 		}
 
 		/// <inheritdoc/>

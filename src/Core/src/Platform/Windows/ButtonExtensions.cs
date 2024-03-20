@@ -16,9 +16,13 @@ namespace Microsoft.Maui.Platform
 			var brush = buttonStroke.StrokeColor?.ToPlatform();
 
 			if (brush is null)
+			{
 				platformButton.Resources.RemoveKeys(StrokeColorResourceKeys);
+			}
 			else
+			{
 				platformButton.Resources.SetValueForAllKey(StrokeColorResourceKeys, brush);
+			}
 
 			platformButton.RefreshThemeResources();
 		}
@@ -36,9 +40,13 @@ namespace Microsoft.Maui.Platform
 			var thickness = buttonStroke.StrokeThickness;
 
 			if (thickness >= 0)
+			{
 				platformButton.Resources.SetValueForAllKey(StrokeThicknessResourceKeys, WinUIHelpers.CreateThickness(buttonStroke.StrokeThickness));
+			}
 			else
+			{
 				platformButton.Resources.RemoveKeys(StrokeThicknessResourceKeys);
+			}
 
 			platformButton.RefreshThemeResources();
 		}
@@ -53,9 +61,13 @@ namespace Microsoft.Maui.Platform
 			var radius = buttonStroke.CornerRadius;
 
 			if (radius >= 0)
+			{
 				platformButton.Resources.SetValueForAllKey(CornerRadiusResourceKeys, WinUIHelpers.CreateCornerRadius(radius));
+			}
 			else
+			{
 				platformButton.Resources.RemoveKeys(CornerRadiusResourceKeys);
+			}
 
 			platformButton.RefreshThemeResources();
 		}
@@ -73,7 +85,9 @@ namespace Microsoft.Maui.Platform
 		public static void UpdateText(this Button platformButton, string text)
 		{
 			if (platformButton.GetContent<TextBlock>() is not TextBlock textBlock)
+			{
 				return;
+			}
 
 			textBlock.Text = text;
 
@@ -87,9 +101,13 @@ namespace Microsoft.Maui.Platform
 			var brush = button.Background?.ToPlatform();
 
 			if (brush is null)
+			{
 				platformButton.Resources.RemoveKeys(BackgroundResourceKeys);
+			}
 			else
+			{
 				platformButton.Resources.SetValueForAllKey(BackgroundResourceKeys, brush);
+			}
 
 			platformButton.RefreshThemeResources();
 		}
@@ -152,7 +170,9 @@ namespace Microsoft.Maui.Platform
 			platformButton.CharacterSpacing = characterSpacing;
 
 			if (platformButton.GetContent<TextBlock>() is TextBlock textBlock)
+			{
 				textBlock.CharacterSpacing = characterSpacing;
+			}
 		}
 
 		public static void UpdateImageSource(this Button platformButton, WImageSource? nativeImageSource)
@@ -173,6 +193,9 @@ namespace Microsoft.Maui.Platform
 			where T : FrameworkElement
 		{
 			if (platformButton.Content is null)
+
+/* Unmerged change from project 'Core(net8.0-windows10.0.20348.0)'
+Before:
 				return null;
 
 			if (platformButton.Content is T t)
@@ -184,6 +207,42 @@ namespace Microsoft.Maui.Platform
 				{
 					if (child is T c)
 						return c;
+After:
+			{
+				return null;
+			}
+
+			if (platformButton.Content is T t)
+			{
+				return t;
+			}
+
+			if (platformButton.Content is Panel panel)
+			{
+				foreach (var child in panel.Children)
+				{
+					if (child is T c)
+					{
+						return c;
+					}
+*/
+			{
+				return null;
+			}
+
+			if (platformButton.Content is T t)
+			{
+				return t;
+			}
+
+			if (platformButton.Content is Panel panel)
+			{
+				foreach (var child in panel.Children)
+				{
+					if (child is T c)
+					{
+						return c;
+					}
 				}
 			}
 

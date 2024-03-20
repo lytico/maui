@@ -83,7 +83,11 @@ namespace Microsoft.Maui.Graphics
 			get
 			{
 				if (_operations.Count > 0)
+				{
+				{
 					return _operations[_operations.Count - 1] == PathOperation.Close;
+				}
+				}
 
 				return false;
 			}
@@ -94,7 +98,11 @@ namespace Microsoft.Maui.Graphics
 			get
 			{
 				if (_points != null && _points.Count > 0)
+				{
+				{
 					return _points[0];
+				}
+				}
 
 				return default;
 			}
@@ -105,7 +113,9 @@ namespace Microsoft.Maui.Graphics
 			get
 			{
 				for (var i = 0; i < _operations.Count; i++)
+				{
 					yield return _operations[i];
+				}
 			}
 		}
 
@@ -114,7 +124,9 @@ namespace Microsoft.Maui.Graphics
 			get
 			{
 				for (var i = 0; i < _points.Count; i++)
+				{
 					yield return _points[i];
+				}
 			}
 		}
 
@@ -123,7 +135,11 @@ namespace Microsoft.Maui.Graphics
 			get
 			{
 				if (_points != null && _points.Count > 0)
+				{
+				{
 					return _points[_points.Count - 1];
+				}
+				}
 
 				return default;
 			}
@@ -134,7 +150,11 @@ namespace Microsoft.Maui.Graphics
 			get
 			{
 				if (_points != null && _points.Count > 0)
+				{
+				{
 					return _points.Count - 1;
+				}
+				}
 
 				return -1;
 			}
@@ -145,7 +165,11 @@ namespace Microsoft.Maui.Graphics
 			get
 			{
 				if (index < 0 || index >= _points.Count)
+				{
+				{
 					return default;
+				}
+				}
 
 				return _points[index];
 			}
@@ -436,6 +460,9 @@ namespace Microsoft.Maui.Graphics
 					if (operation == PathOperation.Move)
 					{
 						if (operationIndex == index)
+
+/* Unmerged change from project 'Graphics(net8.0)'
+Before:
 							return pointIndex;
 
 						pointIndex++;
@@ -472,27 +499,593 @@ namespace Microsoft.Maui.Graphics
 					{
 						if (operationIndex == index)
 							return pointIndex;
+After:
+						{
+							return pointIndex;
+						}
+
+						pointIndex++;
 					}
-				}
-			}
-
-			return -1;
-		}
-
-		public PathOperation GetSegmentInfo(int segmentIndex, out int pointIndex, out int arcAngleIndex, out int arcClockwiseIndex)
-		{
-			pointIndex = 0;
-			arcAngleIndex = 0;
-			arcClockwiseIndex = 0;
-
-			if (segmentIndex <= OperationCount)
-			{
-				for (var s = 0; s < _operations.Count; s++)
-				{
-					var type = _operations[s];
-					if (type == PathOperation.Move)
+					else if (operation == PathOperation.Line)
 					{
-						if (s == segmentIndex)
+						if (operationIndex == index)
+						{
+							return pointIndex;
+						}
+
+						pointIndex++;
+					}
+					else if (operation == PathOperation.Quad)
+					{
+						if (operationIndex == index)
+						{
+							return pointIndex;
+						}
+
+						pointIndex += 2;
+					}
+					else if (operation == PathOperation.Cubic)
+					{
+						if (operationIndex == index)
+						{
+							return pointIndex;
+						}
+
+						pointIndex += 3;
+					}
+					else if (operation == PathOperation.Arc)
+					{
+						if (operationIndex == index)
+						{
+							return pointIndex;
+						}
+
+						pointIndex += 2;
+					}
+					else if (operation == PathOperation.Close)
+					{
+						if (operationIndex == index)
+						{
+							return pointIndex;
+						}
+*/
+
+/* Unmerged change from project 'Graphics(net8.0-ios)'
+Before:
+							return pointIndex;
+
+						pointIndex++;
+					}
+					else if (operation == PathOperation.Line)
+					{
+						if (operationIndex == index)
+							return pointIndex;
+
+						pointIndex++;
+					}
+					else if (operation == PathOperation.Quad)
+					{
+						if (operationIndex == index)
+							return pointIndex;
+
+						pointIndex += 2;
+					}
+					else if (operation == PathOperation.Cubic)
+					{
+						if (operationIndex == index)
+							return pointIndex;
+
+						pointIndex += 3;
+					}
+					else if (operation == PathOperation.Arc)
+					{
+						if (operationIndex == index)
+							return pointIndex;
+
+						pointIndex += 2;
+					}
+					else if (operation == PathOperation.Close)
+					{
+						if (operationIndex == index)
+							return pointIndex;
+After:
+						{
+							return pointIndex;
+						}
+
+						pointIndex++;
+					}
+					else if (operation == PathOperation.Line)
+					{
+						if (operationIndex == index)
+						{
+							return pointIndex;
+						}
+
+						pointIndex++;
+					}
+					else if (operation == PathOperation.Quad)
+					{
+						if (operationIndex == index)
+						{
+							return pointIndex;
+						}
+
+						pointIndex += 2;
+					}
+					else if (operation == PathOperation.Cubic)
+					{
+						if (operationIndex == index)
+						{
+							return pointIndex;
+						}
+
+						pointIndex += 3;
+					}
+					else if (operation == PathOperation.Arc)
+					{
+						if (operationIndex == index)
+						{
+							return pointIndex;
+						}
+
+						pointIndex += 2;
+					}
+					else if (operation == PathOperation.Close)
+					{
+						if (operationIndex == index)
+						{
+							return pointIndex;
+						}
+*/
+
+/* Unmerged change from project 'Graphics(net8.0-maccatalyst)'
+Before:
+							return pointIndex;
+
+						pointIndex++;
+					}
+					else if (operation == PathOperation.Line)
+					{
+						if (operationIndex == index)
+							return pointIndex;
+
+						pointIndex++;
+					}
+					else if (operation == PathOperation.Quad)
+					{
+						if (operationIndex == index)
+							return pointIndex;
+
+						pointIndex += 2;
+					}
+					else if (operation == PathOperation.Cubic)
+					{
+						if (operationIndex == index)
+							return pointIndex;
+
+						pointIndex += 3;
+					}
+					else if (operation == PathOperation.Arc)
+					{
+						if (operationIndex == index)
+							return pointIndex;
+
+						pointIndex += 2;
+					}
+					else if (operation == PathOperation.Close)
+					{
+						if (operationIndex == index)
+							return pointIndex;
+After:
+						{
+							return pointIndex;
+						}
+
+						pointIndex++;
+					}
+					else if (operation == PathOperation.Line)
+					{
+						if (operationIndex == index)
+						{
+							return pointIndex;
+						}
+
+						pointIndex++;
+					}
+					else if (operation == PathOperation.Quad)
+					{
+						if (operationIndex == index)
+						{
+							return pointIndex;
+						}
+
+						pointIndex += 2;
+					}
+					else if (operation == PathOperation.Cubic)
+					{
+						if (operationIndex == index)
+						{
+							return pointIndex;
+						}
+
+						pointIndex += 3;
+					}
+					else if (operation == PathOperation.Arc)
+					{
+						if (operationIndex == index)
+						{
+							return pointIndex;
+						}
+
+						pointIndex += 2;
+					}
+					else if (operation == PathOperation.Close)
+					{
+						if (operationIndex == index)
+						{
+							return pointIndex;
+						}
+*/
+
+/* Unmerged change from project 'Graphics(net8.0-android)'
+Before:
+							return pointIndex;
+
+						pointIndex++;
+					}
+					else if (operation == PathOperation.Line)
+					{
+						if (operationIndex == index)
+							return pointIndex;
+
+						pointIndex++;
+					}
+					else if (operation == PathOperation.Quad)
+					{
+						if (operationIndex == index)
+							return pointIndex;
+
+						pointIndex += 2;
+					}
+					else if (operation == PathOperation.Cubic)
+					{
+						if (operationIndex == index)
+							return pointIndex;
+
+						pointIndex += 3;
+					}
+					else if (operation == PathOperation.Arc)
+					{
+						if (operationIndex == index)
+							return pointIndex;
+
+						pointIndex += 2;
+					}
+					else if (operation == PathOperation.Close)
+					{
+						if (operationIndex == index)
+							return pointIndex;
+After:
+						{
+							return pointIndex;
+						}
+
+						pointIndex++;
+					}
+					else if (operation == PathOperation.Line)
+					{
+						if (operationIndex == index)
+						{
+							return pointIndex;
+						}
+
+						pointIndex++;
+					}
+					else if (operation == PathOperation.Quad)
+					{
+						if (operationIndex == index)
+						{
+							return pointIndex;
+						}
+
+						pointIndex += 2;
+					}
+					else if (operation == PathOperation.Cubic)
+					{
+						if (operationIndex == index)
+						{
+							return pointIndex;
+						}
+
+						pointIndex += 3;
+					}
+					else if (operation == PathOperation.Arc)
+					{
+						if (operationIndex == index)
+						{
+							return pointIndex;
+						}
+
+						pointIndex += 2;
+					}
+					else if (operation == PathOperation.Close)
+					{
+						if (operationIndex == index)
+						{
+							return pointIndex;
+						}
+*/
+
+/* Unmerged change from project 'Graphics(net8.0-windows10.0.19041.0)'
+Before:
+							return pointIndex;
+
+						pointIndex++;
+					}
+					else if (operation == PathOperation.Line)
+					{
+						if (operationIndex == index)
+							return pointIndex;
+
+						pointIndex++;
+					}
+					else if (operation == PathOperation.Quad)
+					{
+						if (operationIndex == index)
+							return pointIndex;
+
+						pointIndex += 2;
+					}
+					else if (operation == PathOperation.Cubic)
+					{
+						if (operationIndex == index)
+							return pointIndex;
+
+						pointIndex += 3;
+					}
+					else if (operation == PathOperation.Arc)
+					{
+						if (operationIndex == index)
+							return pointIndex;
+
+						pointIndex += 2;
+					}
+					else if (operation == PathOperation.Close)
+					{
+						if (operationIndex == index)
+							return pointIndex;
+After:
+						{
+							return pointIndex;
+						}
+
+						pointIndex++;
+					}
+					else if (operation == PathOperation.Line)
+					{
+						if (operationIndex == index)
+						{
+							return pointIndex;
+						}
+
+						pointIndex++;
+					}
+					else if (operation == PathOperation.Quad)
+					{
+						if (operationIndex == index)
+						{
+							return pointIndex;
+						}
+
+						pointIndex += 2;
+					}
+					else if (operation == PathOperation.Cubic)
+					{
+						if (operationIndex == index)
+						{
+							return pointIndex;
+						}
+
+						pointIndex += 3;
+					}
+					else if (operation == PathOperation.Arc)
+					{
+						if (operationIndex == index)
+						{
+							return pointIndex;
+						}
+
+						pointIndex += 2;
+					}
+					else if (operation == PathOperation.Close)
+					{
+						if (operationIndex == index)
+						{
+							return pointIndex;
+						}
+*/
+
+/* Unmerged change from project 'Graphics(net8.0-windows10.0.20348.0)'
+Before:
+							return pointIndex;
+
+						pointIndex++;
+					}
+					else if (operation == PathOperation.Line)
+					{
+						if (operationIndex == index)
+							return pointIndex;
+
+						pointIndex++;
+					}
+					else if (operation == PathOperation.Quad)
+					{
+						if (operationIndex == index)
+							return pointIndex;
+
+						pointIndex += 2;
+					}
+					else if (operation == PathOperation.Cubic)
+					{
+						if (operationIndex == index)
+							return pointIndex;
+
+						pointIndex += 3;
+					}
+					else if (operation == PathOperation.Arc)
+					{
+						if (operationIndex == index)
+							return pointIndex;
+
+						pointIndex += 2;
+					}
+					else if (operation == PathOperation.Close)
+					{
+						if (operationIndex == index)
+							return pointIndex;
+After:
+						{
+							return pointIndex;
+						}
+
+						pointIndex++;
+					}
+					else if (operation == PathOperation.Line)
+					{
+						if (operationIndex == index)
+						{
+							return pointIndex;
+						}
+
+						pointIndex++;
+					}
+					else if (operation == PathOperation.Quad)
+					{
+						if (operationIndex == index)
+						{
+							return pointIndex;
+						}
+
+						pointIndex += 2;
+					}
+					else if (operation == PathOperation.Cubic)
+					{
+						if (operationIndex == index)
+						{
+							return pointIndex;
+						}
+
+						pointIndex += 3;
+					}
+					else if (operation == PathOperation.Arc)
+					{
+						if (operationIndex == index)
+						{
+							return pointIndex;
+						}
+
+						pointIndex += 2;
+					}
+					else if (operation == PathOperation.Close)
+					{
+						if (operationIndex == index)
+						{
+							return pointIndex;
+						}
+*/
+
+/* Unmerged change from project 'Graphics(net8.0-macos)'
+Before:
+							return pointIndex;
+
+						pointIndex++;
+					}
+					else if (operation == PathOperation.Line)
+					{
+						if (operationIndex == index)
+							return pointIndex;
+
+						pointIndex++;
+					}
+					else if (operation == PathOperation.Quad)
+					{
+						if (operationIndex == index)
+							return pointIndex;
+
+						pointIndex += 2;
+					}
+					else if (operation == PathOperation.Cubic)
+					{
+						if (operationIndex == index)
+							return pointIndex;
+
+						pointIndex += 3;
+					}
+					else if (operation == PathOperation.Arc)
+					{
+						if (operationIndex == index)
+							return pointIndex;
+
+						pointIndex += 2;
+					}
+					else if (operation == PathOperation.Close)
+					{
+						if (operationIndex == index)
+							return pointIndex;
+After:
+						{
+							return pointIndex;
+						}
+
+						pointIndex++;
+					}
+					else if (operation == PathOperation.Line)
+					{
+						if (operationIndex == index)
+						{
+							return pointIndex;
+						}
+
+						pointIndex++;
+					}
+					else if (operation == PathOperation.Quad)
+					{
+						if (operationIndex == index)
+						{
+							return pointIndex;
+						}
+
+						pointIndex += 2;
+					}
+					else if (operation == PathOperation.Cubic)
+					{
+						if (operationIndex == index)
+						{
+							return pointIndex;
+						}
+
+						pointIndex += 3;
+					}
+					else if (operation == PathOperation.Arc)
+					{
+						if (operationIndex == index)
+						{
+							return pointIndex;
+						}
+
+						pointIndex += 2;
+					}
+					else if (operation == PathOperation.Close)
+					{
+						if (operationIndex == index)
+						{
+							return pointIndex;
+						}
+*/
+						
+/* Unmerged change from project 'Graphics(net8.0)'
+Before:
 							return type;
 
 						pointIndex++;
@@ -527,6 +1120,711 @@ namespace Microsoft.Maui.Graphics
 					{
 						if (s == segmentIndex)
 							return type;
+After:
+						{
+							return type;
+						}
+
+						pointIndex++;
+					}
+					else if (type == PathOperation.Line)
+					{
+						if (s == segmentIndex)
+						{
+							return type;
+						}
+
+						pointIndex++;
+					}
+					else if (type == PathOperation.Quad)
+					{
+						if (s == segmentIndex)
+						{
+							return type;
+						}
+
+						pointIndex += 2;
+					}
+					else if (type == PathOperation.Cubic)
+					{
+						if (s == segmentIndex)
+						{
+							return type;
+						}
+
+						pointIndex += 3;
+					}
+					else if (type == PathOperation.Arc)
+					{
+						if (s == segmentIndex)
+						{
+							return type;
+						}
+
+						pointIndex += 2;
+						arcAngleIndex += 2;
+						arcClockwiseIndex++;
+					}
+					else if (type == PathOperation.Close)
+					{
+						if (s == segmentIndex)
+						{
+							return type;
+						}
+*/
+
+/* Unmerged change from project 'Graphics(net8.0-ios)'
+Before:
+							return type;
+
+						pointIndex++;
+					}
+					else if (type == PathOperation.Line)
+					{
+						if (s == segmentIndex)
+							return type;
+						pointIndex++;
+					}
+					else if (type == PathOperation.Quad)
+					{
+						if (s == segmentIndex)
+							return type;
+						pointIndex += 2;
+					}
+					else if (type == PathOperation.Cubic)
+					{
+						if (s == segmentIndex)
+							return type;
+						pointIndex += 3;
+					}
+					else if (type == PathOperation.Arc)
+					{
+						if (s == segmentIndex)
+							return type;
+						pointIndex += 2;
+						arcAngleIndex += 2;
+						arcClockwiseIndex++;
+					}
+					else if (type == PathOperation.Close)
+					{
+						if (s == segmentIndex)
+							return type;
+After:
+						{
+							return type;
+						}
+
+						pointIndex++;
+					}
+					else if (type == PathOperation.Line)
+					{
+						if (s == segmentIndex)
+						{
+							return type;
+						}
+
+						pointIndex++;
+					}
+					else if (type == PathOperation.Quad)
+					{
+						if (s == segmentIndex)
+						{
+							return type;
+						}
+
+						pointIndex += 2;
+					}
+					else if (type == PathOperation.Cubic)
+					{
+						if (s == segmentIndex)
+						{
+							return type;
+						}
+
+						pointIndex += 3;
+					}
+					else if (type == PathOperation.Arc)
+					{
+						if (s == segmentIndex)
+						{
+							return type;
+						}
+
+						pointIndex += 2;
+						arcAngleIndex += 2;
+						arcClockwiseIndex++;
+					}
+					else if (type == PathOperation.Close)
+					{
+						if (s == segmentIndex)
+						{
+							return type;
+						}
+*/
+
+/* Unmerged change from project 'Graphics(net8.0-maccatalyst)'
+Before:
+							return type;
+
+						pointIndex++;
+					}
+					else if (type == PathOperation.Line)
+					{
+						if (s == segmentIndex)
+							return type;
+						pointIndex++;
+					}
+					else if (type == PathOperation.Quad)
+					{
+						if (s == segmentIndex)
+							return type;
+						pointIndex += 2;
+					}
+					else if (type == PathOperation.Cubic)
+					{
+						if (s == segmentIndex)
+							return type;
+						pointIndex += 3;
+					}
+					else if (type == PathOperation.Arc)
+					{
+						if (s == segmentIndex)
+							return type;
+						pointIndex += 2;
+						arcAngleIndex += 2;
+						arcClockwiseIndex++;
+					}
+					else if (type == PathOperation.Close)
+					{
+						if (s == segmentIndex)
+							return type;
+After:
+						{
+							return type;
+						}
+
+						pointIndex++;
+					}
+					else if (type == PathOperation.Line)
+					{
+						if (s == segmentIndex)
+						{
+							return type;
+						}
+
+						pointIndex++;
+					}
+					else if (type == PathOperation.Quad)
+					{
+						if (s == segmentIndex)
+						{
+							return type;
+						}
+
+						pointIndex += 2;
+					}
+					else if (type == PathOperation.Cubic)
+					{
+						if (s == segmentIndex)
+						{
+							return type;
+						}
+
+						pointIndex += 3;
+					}
+					else if (type == PathOperation.Arc)
+					{
+						if (s == segmentIndex)
+						{
+							return type;
+						}
+
+						pointIndex += 2;
+						arcAngleIndex += 2;
+						arcClockwiseIndex++;
+					}
+					else if (type == PathOperation.Close)
+					{
+						if (s == segmentIndex)
+						{
+							return type;
+						}
+*/
+
+/* Unmerged change from project 'Graphics(net8.0-android)'
+Before:
+							return type;
+
+						pointIndex++;
+					}
+					else if (type == PathOperation.Line)
+					{
+						if (s == segmentIndex)
+							return type;
+						pointIndex++;
+					}
+					else if (type == PathOperation.Quad)
+					{
+						if (s == segmentIndex)
+							return type;
+						pointIndex += 2;
+					}
+					else if (type == PathOperation.Cubic)
+					{
+						if (s == segmentIndex)
+							return type;
+						pointIndex += 3;
+					}
+					else if (type == PathOperation.Arc)
+					{
+						if (s == segmentIndex)
+							return type;
+						pointIndex += 2;
+						arcAngleIndex += 2;
+						arcClockwiseIndex++;
+					}
+					else if (type == PathOperation.Close)
+					{
+						if (s == segmentIndex)
+							return type;
+After:
+						{
+							return type;
+						}
+
+						pointIndex++;
+					}
+					else if (type == PathOperation.Line)
+					{
+						if (s == segmentIndex)
+						{
+							return type;
+						}
+
+						pointIndex++;
+					}
+					else if (type == PathOperation.Quad)
+					{
+						if (s == segmentIndex)
+						{
+							return type;
+						}
+
+						pointIndex += 2;
+					}
+					else if (type == PathOperation.Cubic)
+					{
+						if (s == segmentIndex)
+						{
+							return type;
+						}
+
+						pointIndex += 3;
+					}
+					else if (type == PathOperation.Arc)
+					{
+						if (s == segmentIndex)
+						{
+							return type;
+						}
+
+						pointIndex += 2;
+						arcAngleIndex += 2;
+						arcClockwiseIndex++;
+					}
+					else if (type == PathOperation.Close)
+					{
+						if (s == segmentIndex)
+						{
+							return type;
+						}
+*/
+
+/* Unmerged change from project 'Graphics(net8.0-windows10.0.19041.0)'
+Before:
+							return type;
+
+						pointIndex++;
+					}
+					else if (type == PathOperation.Line)
+					{
+						if (s == segmentIndex)
+							return type;
+						pointIndex++;
+					}
+					else if (type == PathOperation.Quad)
+					{
+						if (s == segmentIndex)
+							return type;
+						pointIndex += 2;
+					}
+					else if (type == PathOperation.Cubic)
+					{
+						if (s == segmentIndex)
+							return type;
+						pointIndex += 3;
+					}
+					else if (type == PathOperation.Arc)
+					{
+						if (s == segmentIndex)
+							return type;
+						pointIndex += 2;
+						arcAngleIndex += 2;
+						arcClockwiseIndex++;
+					}
+					else if (type == PathOperation.Close)
+					{
+						if (s == segmentIndex)
+							return type;
+After:
+						{
+							return type;
+						}
+
+						pointIndex++;
+					}
+					else if (type == PathOperation.Line)
+					{
+						if (s == segmentIndex)
+						{
+							return type;
+						}
+
+						pointIndex++;
+					}
+					else if (type == PathOperation.Quad)
+					{
+						if (s == segmentIndex)
+						{
+							return type;
+						}
+
+						pointIndex += 2;
+					}
+					else if (type == PathOperation.Cubic)
+					{
+						if (s == segmentIndex)
+						{
+							return type;
+						}
+
+						pointIndex += 3;
+					}
+					else if (type == PathOperation.Arc)
+					{
+						if (s == segmentIndex)
+						{
+							return type;
+						}
+
+						pointIndex += 2;
+						arcAngleIndex += 2;
+						arcClockwiseIndex++;
+					}
+					else if (type == PathOperation.Close)
+					{
+						if (s == segmentIndex)
+						{
+							return type;
+						}
+*/
+
+/* Unmerged change from project 'Graphics(net8.0-windows10.0.20348.0)'
+Before:
+							return type;
+
+						pointIndex++;
+					}
+					else if (type == PathOperation.Line)
+					{
+						if (s == segmentIndex)
+							return type;
+						pointIndex++;
+					}
+					else if (type == PathOperation.Quad)
+					{
+						if (s == segmentIndex)
+							return type;
+						pointIndex += 2;
+					}
+					else if (type == PathOperation.Cubic)
+					{
+						if (s == segmentIndex)
+							return type;
+						pointIndex += 3;
+					}
+					else if (type == PathOperation.Arc)
+					{
+						if (s == segmentIndex)
+							return type;
+						pointIndex += 2;
+						arcAngleIndex += 2;
+						arcClockwiseIndex++;
+					}
+					else if (type == PathOperation.Close)
+					{
+						if (s == segmentIndex)
+							return type;
+After:
+						{
+							return type;
+						}
+
+						pointIndex++;
+					}
+					else if (type == PathOperation.Line)
+					{
+						if (s == segmentIndex)
+						{
+							return type;
+						}
+
+						pointIndex++;
+					}
+					else if (type == PathOperation.Quad)
+					{
+						if (s == segmentIndex)
+						{
+							return type;
+						}
+
+						pointIndex += 2;
+					}
+					else if (type == PathOperation.Cubic)
+					{
+						if (s == segmentIndex)
+						{
+							return type;
+						}
+
+						pointIndex += 3;
+					}
+					else if (type == PathOperation.Arc)
+					{
+						if (s == segmentIndex)
+						{
+							return type;
+						}
+
+						pointIndex += 2;
+						arcAngleIndex += 2;
+						arcClockwiseIndex++;
+					}
+					else if (type == PathOperation.Close)
+					{
+						if (s == segmentIndex)
+						{
+							return type;
+						}
+*/
+
+/* Unmerged change from project 'Graphics(net8.0-macos)'
+Before:
+							return type;
+
+						pointIndex++;
+					}
+					else if (type == PathOperation.Line)
+					{
+						if (s == segmentIndex)
+							return type;
+						pointIndex++;
+					}
+					else if (type == PathOperation.Quad)
+					{
+						if (s == segmentIndex)
+							return type;
+						pointIndex += 2;
+					}
+					else if (type == PathOperation.Cubic)
+					{
+						if (s == segmentIndex)
+							return type;
+						pointIndex += 3;
+					}
+					else if (type == PathOperation.Arc)
+					{
+						if (s == segmentIndex)
+							return type;
+						pointIndex += 2;
+						arcAngleIndex += 2;
+						arcClockwiseIndex++;
+					}
+					else if (type == PathOperation.Close)
+					{
+						if (s == segmentIndex)
+							return type;
+After:
+						{
+							return type;
+						}
+
+						pointIndex++;
+					}
+					else if (type == PathOperation.Line)
+					{
+						if (s == segmentIndex)
+						{
+							return type;
+						}
+
+						pointIndex++;
+					}
+					else if (type == PathOperation.Quad)
+					{
+						if (s == segmentIndex)
+						{
+							return type;
+						}
+
+						pointIndex += 2;
+					}
+					else if (type == PathOperation.Cubic)
+					{
+						if (s == segmentIndex)
+						{
+							return type;
+						}
+
+						pointIndex += 3;
+					}
+					else if (type == PathOperation.Arc)
+					{
+						if (s == segmentIndex)
+						{
+							return type;
+						}
+
+						pointIndex += 2;
+						arcAngleIndex += 2;
+						arcClockwiseIndex++;
+					}
+					else if (type == PathOperation.Close)
+					{
+						if (s == segmentIndex)
+						{
+							return type;
+						}
+*/
+{
+							return pointIndex;
+						}
+
+						pointIndex++;
+					}
+					else if (operation == PathOperation.Line)
+					{
+						if (operationIndex == index)
+						{
+							return pointIndex;
+						}
+
+						pointIndex++;
+					}
+					else if (operation == PathOperation.Quad)
+					{
+						if (operationIndex == index)
+						{
+							return pointIndex;
+						}
+
+						pointIndex += 2;
+					}
+					else if (operation == PathOperation.Cubic)
+					{
+						if (operationIndex == index)
+						{
+							return pointIndex;
+						}
+
+						pointIndex += 3;
+					}
+					else if (operation == PathOperation.Arc)
+					{
+						if (operationIndex == index)
+						{
+							return pointIndex;
+						}
+
+						pointIndex += 2;
+					}
+					else if (operation == PathOperation.Close)
+					{
+						if (operationIndex == index)
+						{
+							return pointIndex;
+						}
+					}
+				}
+			}
+
+			return -1;
+		}
+
+		public PathOperation GetSegmentInfo(int segmentIndex, out int pointIndex, out int arcAngleIndex, out int arcClockwiseIndex)
+		{
+			pointIndex = 0;
+			arcAngleIndex = 0;
+			arcClockwiseIndex = 0;
+
+			if (segmentIndex <= OperationCount)
+			{
+				for (var s = 0; s < _operations.Count; s++)
+				{
+					var type = _operations[s];
+					if (type == PathOperation.Move)
+					{
+						if (s == segmentIndex)
+						{
+							return type;
+						}
+
+						pointIndex++;
+					}
+					else if (type == PathOperation.Line)
+					{
+						if (s == segmentIndex)
+						{
+							return type;
+						}
+
+						pointIndex++;
+					}
+					else if (type == PathOperation.Quad)
+					{
+						if (s == segmentIndex)
+						{
+							return type;
+						}
+
+						pointIndex += 2;
+					}
+					else if (type == PathOperation.Cubic)
+					{
+						if (s == segmentIndex)
+						{
+							return type;
+						}
+
+						pointIndex += 3;
+					}
+					else if (type == PathOperation.Arc)
+					{
+						if (s == segmentIndex)
+						{
+							return type;
+						}
+
+						pointIndex += 2;
+						arcAngleIndex += 2;
+						arcClockwiseIndex++;
+					}
+					else if (type == PathOperation.Close)
+					{
+						if (s == segmentIndex)
+						{
+							return type;
+						}
 					}
 				}
 			}
@@ -931,7 +2229,12 @@ namespace Microsoft.Maui.Graphics
 		public void Transform(Matrix3x2 transform)
 		{
 			for (var i = 0; i < _points.Count; i++)
+			{
 				_points[i] = Vector2.Transform((Vector2)_points[i], transform);
+			}
+
+			Invalidate();
+			}
 
 			Invalidate();
 		}
@@ -940,7 +2243,51 @@ namespace Microsoft.Maui.Graphics
 		{
 			var paths = new List<PathF>();
 			if (_points == null || _operations == null)
+			{
 				return paths;
+			}
+
+			PathF path = null;
+
+			// ReSharper disable PossibleNullReferenceException
+			var i = 0;
+			var a = 0;
+			var c = 0;
+
+			foreach (var operation in _operations)
+			{
+				if (operation == PathOperation.Move)
+				{
+					path = new PathF();
+					paths.Add(path);
+					path.MoveTo(_points[i++]);
+				}
+				else if (operation == PathOperation.Line)
+				{
+					path.LineTo(_points[i++]);
+				}
+				else if (operation == PathOperation.Quad)
+				{
+					path.QuadTo(_points[i++], _points[i++]);
+				}
+				else if (operation == PathOperation.Cubic)
+				{
+					path.CurveTo(_points[i++], _points[i++], _points[i++]);
+				}
+				else if (operation == PathOperation.Arc)
+				{
+					path.AddArc(_points[i++], _points[i++], _arcAngles[a++], _arcAngles[a++], _arcClockwise[c++]);
+				}
+				else if (operation == PathOperation.Close)
+				{
+					path.Close();
+					path = null;
+				}
+			}
+			// ReSharper restore PossibleNullReferenceException
+
+			return paths;
+			}
 
 			PathF path = null;
 
@@ -1224,10 +2571,14 @@ namespace Microsoft.Maui.Graphics
 		private float ClampCornerRadius(float cornerRadius, float w, float h)
 		{
 			if (cornerRadius > h / 2)
+			{
 				cornerRadius = h / 2;
+			}
 
 			if (cornerRadius > w / 2)
+			{
 				cornerRadius = w / 2;
+			}
 
 			return cornerRadius;
 		}
@@ -1266,7 +2617,9 @@ namespace Microsoft.Maui.Graphics
 		private void ReleaseNative()
 		{
 			if (_platformPath is IDisposable disposable)
+			{
 				disposable.Dispose();
+			}
 
 			_platformPath = null;
 		}
@@ -1292,6 +2645,9 @@ namespace Microsoft.Maui.Graphics
 			if (obj is PathF compareTo)
 			{
 				if (OperationCount != compareTo.OperationCount)
+
+/* Unmerged change from project 'Graphics(net8.0)'
+Before:
 					return false;
 
 				for (var i = 0; i < _operations.Count; i++)
@@ -1299,13 +2655,100 @@ namespace Microsoft.Maui.Graphics
 					var segmentType = _operations[i];
 					if (segmentType != compareTo.GetSegmentType(i))
 						return false;
+After:
+				{
+					return false;
+*/
+
+/* Unmerged change from project 'Graphics(net8.0-maccatalyst)'
+Before:
+					return false;
+
+				for (var i = 0; i < _operations.Count; i++)
+				{
+					var segmentType = _operations[i];
+					if (segmentType != compareTo.GetSegmentType(i))
+						return false;
+After:
+				{
+					return false;
+*/
+
+/* Unmerged change from project 'Graphics(net8.0-android)'
+Before:
+					return false;
+
+				for (var i = 0; i < _operations.Count; i++)
+				{
+					var segmentType = _operations[i];
+					if (segmentType != compareTo.GetSegmentType(i))
+						return false;
+After:
+				{
+					return false;
+*/
+
+/* Unmerged change from project 'Graphics(net8.0-windows10.0.19041.0)'
+Before:
+					return false;
+
+				for (var i = 0; i < _operations.Count; i++)
+				{
+					var segmentType = _operations[i];
+					if (segmentType != compareTo.GetSegmentType(i))
+						return false;
+After:
+				{
+					return false;
+*/
+
+/* Unmerged change from project 'Graphics(net8.0-windows10.0.20348.0)'
+Before:
+					return false;
+
+				for (var i = 0; i < _operations.Count; i++)
+				{
+					var segmentType = _operations[i];
+					if (segmentType != compareTo.GetSegmentType(i))
+						return false;
+After:
+				{
+					return false;
+*/
+
+/* Unmerged change from project 'Graphics(net8.0-macos)'
+Before:
+					return false;
+
+				for (var i = 0; i < _operations.Count; i++)
+				{
+					var segmentType = _operations[i];
+					if (segmentType != compareTo.GetSegmentType(i))
+						return false;
+After:
+				{
+					return false;
+*/
+				{
+					return false;
+				}
+
+				for (var i = 0; i < _operations.Count; i++)
+				{
+					var segmentType = _operations[i];
+					if (segmentType != compareTo.GetSegmentType(i))
+					{
+						return false;
+					}
 				}
 
 				for (var i = 0; i < _points.Count; i++)
 				{
 					var point = _points[i];
 					if (!point.Equals(compareTo[i], GeometryUtil.Epsilon))
+					{
 						return false;
+					}
 				}
 
 				if (_arcAngles != null)
@@ -1314,7 +2757,9 @@ namespace Microsoft.Maui.Graphics
 					{
 						var arcAngle = _arcAngles[i];
 						if (Math.Abs(arcAngle - compareTo.GetArcAngle(i)) > GeometryUtil.Epsilon)
+						{
 							return false;
+						}
 					}
 				}
 
@@ -1324,7 +2769,9 @@ namespace Microsoft.Maui.Graphics
 					{
 						var arcClockwise = _arcClockwise[i];
 						if (arcClockwise != compareTo.GetArcClockwise(i))
+						{
 							return false;
+						}
 					}
 				}
 			}
@@ -1349,6 +2796,9 @@ namespace Microsoft.Maui.Graphics
 			if (obj is PathF compareTo)
 			{
 				if (OperationCount != compareTo.OperationCount)
+
+/* Unmerged change from project 'Graphics(net8.0)'
+Before:
 					return false;
 
 				for (var i = 0; i < _operations.Count; i++)
@@ -1356,13 +2806,100 @@ namespace Microsoft.Maui.Graphics
 					var segmentType = _operations[i];
 					if (segmentType != compareTo.GetSegmentType(i))
 						return false;
+After:
+				{
+					return false;
+*/
+
+/* Unmerged change from project 'Graphics(net8.0-maccatalyst)'
+Before:
+					return false;
+
+				for (var i = 0; i < _operations.Count; i++)
+				{
+					var segmentType = _operations[i];
+					if (segmentType != compareTo.GetSegmentType(i))
+						return false;
+After:
+				{
+					return false;
+*/
+
+/* Unmerged change from project 'Graphics(net8.0-android)'
+Before:
+					return false;
+
+				for (var i = 0; i < _operations.Count; i++)
+				{
+					var segmentType = _operations[i];
+					if (segmentType != compareTo.GetSegmentType(i))
+						return false;
+After:
+				{
+					return false;
+*/
+
+/* Unmerged change from project 'Graphics(net8.0-windows10.0.19041.0)'
+Before:
+					return false;
+
+				for (var i = 0; i < _operations.Count; i++)
+				{
+					var segmentType = _operations[i];
+					if (segmentType != compareTo.GetSegmentType(i))
+						return false;
+After:
+				{
+					return false;
+*/
+
+/* Unmerged change from project 'Graphics(net8.0-windows10.0.20348.0)'
+Before:
+					return false;
+
+				for (var i = 0; i < _operations.Count; i++)
+				{
+					var segmentType = _operations[i];
+					if (segmentType != compareTo.GetSegmentType(i))
+						return false;
+After:
+				{
+					return false;
+*/
+
+/* Unmerged change from project 'Graphics(net8.0-macos)'
+Before:
+					return false;
+
+				for (var i = 0; i < _operations.Count; i++)
+				{
+					var segmentType = _operations[i];
+					if (segmentType != compareTo.GetSegmentType(i))
+						return false;
+After:
+				{
+					return false;
+*/
+				{
+					return false;
+				}
+
+				for (var i = 0; i < _operations.Count; i++)
+				{
+					var segmentType = _operations[i];
+					if (segmentType != compareTo.GetSegmentType(i))
+					{
+						return false;
+					}
 				}
 
 				for (var i = 0; i < _points.Count; i++)
 				{
 					var point = _points[i];
 					if (!point.Equals(compareTo[i], epsilon))
+					{
 						return false;
+					}
 				}
 
 				if (_arcAngles != null)
@@ -1371,7 +2908,9 @@ namespace Microsoft.Maui.Graphics
 					{
 						var arcAngle = _arcAngles[i];
 						if (Math.Abs(arcAngle - compareTo.GetArcAngle(i)) > epsilon)
+						{
 							return false;
+						}
 					}
 				}
 
@@ -1381,7 +2920,9 @@ namespace Microsoft.Maui.Graphics
 					{
 						var arcClockwise = _arcClockwise[i];
 						if (arcClockwise != compareTo.GetArcClockwise(i))
+						{
 							return false;
+						}
 					}
 				}
 			}
@@ -1394,7 +2935,11 @@ namespace Microsoft.Maui.Graphics
 			get
 			{
 				if (_cachedBounds != null)
+				{
+				{
 					return (RectF)_cachedBounds;
+				}
+				}
 
 #if IOS || MACCATALYST || __IOS__
 
@@ -1415,7 +2960,10 @@ namespace Microsoft.Maui.Graphics
 		public RectF GetBoundsByFlattening(float flatness = 0.001f)
 		{
 			if (_cachedBounds != null)
+			{
+			{
 				return (RectF)_cachedBounds;
+			}
 
 			var path = GetFlattenedPath(flatness, true);
 
@@ -1436,13 +2984,24 @@ namespace Microsoft.Maui.Graphics
 				{
 					var point = path[i];
 					if (point.X < l)
+					{
 						l = point.X;
+					}
+
 					if (point.Y < t)
+					{
 						t = point.Y;
+					}
+
 					if (point.X > r)
+					{
 						r = point.X;
+					}
+
 					if (point.Y > b)
+					{
 						b = point.Y;
+					}
 				}
 			}
 
@@ -1478,6 +3037,9 @@ namespace Microsoft.Maui.Graphics
 						curvePoints.Clear();
 						QuadToCubic(pointIndex, curvePoints);
 						FlattenCubicSegment(0, flatness, curvePoints, flattenedPoints);
+
+/* Unmerged change from project 'Graphics(net8.0-ios)'
+Before:
 						foreach (var point in flattenedPoints)
 							flattenedPath.LineTo(point);
 						pointIndex += 2;
@@ -1487,17 +3049,35 @@ namespace Microsoft.Maui.Graphics
 						flattenedPoints.Clear();
 						FlattenCubicSegment(pointIndex - 1, flatness, _points, flattenedPoints);
 						foreach (var point in flattenedPoints)
+After:
+						foreach (var point in flattenedPoints)
+*/
+						foreach (var point in flattenedPoints)
+						{
 							flattenedPath.LineTo(point);
-						pointIndex += 3;
+						}
+
+						pointIndex += 2;
 						break;
-					case PathOperation.Arc:
-						var topLeft = _points[pointIndex++];
-						var bottomRight = _points[pointIndex++];
-						float startAngle = GetArcAngle(arcAngleIndex++);
-						float endAngle = GetArcAngle(arcAngleIndex++);
-						var clockwise = GetArcClockwise(arcClockwiseIndex++);
-						var flattenedArcPath = FlattenArc(topLeft, bottomRight, startAngle, endAngle, clockwise, flatness);
-						foreach (var point in flattenedArcPath.Points)
+					case PathOperation.Cubic:
+						flattenedPoints ??= new List<PointF>();
+						flattenedPoints.Clear();
+						FlattenCubicSegment(pointIndex - 1, flatness, _points, flattenedPoints);
+						foreach (var point in flattenedPoints)
+						{
+							flattenedPath.LineTo(point);
+						}
+
+						pointIndex += 2;
+						break;
+					case PathOperation.Cubic:
+						flattenedPoints ??= new List<PointF>();
+						flattenedPoints.Clear();
+						FlattenCubicSegment(pointIndex - 1, flatness, _points, flattenedPoints);
+						foreach (var point in flattenedPoints)
+
+/* Unmerged change from project 'Graphics(net8.0-ios)'
+Before:
 							flattenedPath.LineTo(point);
 						break;
 					case PathOperation.Close:
@@ -1583,6 +3163,219 @@ namespace Microsoft.Maui.Graphics
 			{
 				for (k = 1; k <= 3; k++)
 					vectors[k] += vectors[k - 1];
+After:
+						{
+							flattenedPath.LineTo(point);
+						}
+
+						pointIndex += 3;
+						break;
+					case PathOperation.Arc:
+						var topLeft = _points[pointIndex++];
+						var bottomRight = _points[pointIndex++];
+						float startAngle = GetArcAngle(arcAngleIndex++);
+						float endAngle = GetArcAngle(arcAngleIndex++);
+						var clockwise = GetArcClockwise(arcClockwiseIndex++);
+						var flattenedArcPath = FlattenArc(topLeft, bottomRight, startAngle, endAngle, clockwise, flatness);
+						foreach (var point in flattenedArcPath.Points)
+						{
+							flattenedPath.LineTo(point);
+						}
+
+						break;
+					case PathOperation.Close:
+						flattenedPath.Close();
+						if (!includeSubPaths)
+						{
+							foundClosed = true;
+						}
+						break;
+					default:
+						throw new ArgumentOutOfRangeException();
+				}
+			}
+
+			return flattenedPath;
+		}
+
+		private PathF FlattenArc(PointF topLeft, PointF bottomRight, float startAngle, float endAngle, bool clockwise, float flattness)
+		{
+			var arcFlattener = new ArcFlattener(topLeft.X, topLeft.Y, bottomRight.X - topLeft.X, bottomRight.Y - topLeft.Y, startAngle, endAngle, clockwise);
+			var flattenedPath = arcFlattener.CreateFlattenedPath(flattness);
+			return flattenedPath.GetFlattenedPath();
+		}
+
+		private void QuadToCubic(int pointIndex, List<PointF> curvePoints)
+		{
+			var startPoint = _points[pointIndex - 1];
+			var quadControlPoint = _points[pointIndex];
+			var endPoint = _points[pointIndex + 1];
+
+			var controlPoint1 = new PointF(startPoint.X + 2.0f * (quadControlPoint.X - startPoint.X) / 3.0f, startPoint.Y + 2.0f * (quadControlPoint.Y - startPoint.Y) / 3.0f);
+			var controlPoint2 = new PointF(endPoint.X + 2.0f * (quadControlPoint.X - endPoint.X) / 3.0f, endPoint.Y + 2.0f * (quadControlPoint.Y - endPoint.Y) / 3.0f);
+
+			curvePoints.Add(startPoint);
+			curvePoints.Add(controlPoint1);
+			curvePoints.Add(controlPoint2);
+			curvePoints.Add(endPoint);
+		}
+
+		private void FlattenCubicSegment(int index, double flatness, List<PointF> curvePoints, List<PointF> flattenedPoints)
+		{
+			int i, k;
+			var numberOfPoints = 1;
+			var vectors = new Vector2[4];
+
+			double rCurve = 0;
+
+			for (i = index + 1; i <= index + 2; i++)
+			{
+				vectors[0] = (GetPointAsVector(curvePoints, i - 1) + GetPointAsVector(curvePoints, i + 1)) * 0.5f - GetPointAsVector(curvePoints, i);
+
+				double r = vectors[0].Length();
+
+				if (r > rCurve)
+				{
+					rCurve = r;
+				}
+			}
+
+			if (rCurve <= 0.5 * flatness)
+			{
+				var vector = GetPointAsVector(curvePoints, index + 3);
+				flattenedPoints.Add(new Point(vector.X, vector.Y));
+				return;
+			}
+
+			numberOfPoints = (int)(Math.Sqrt(rCurve / flatness)) + 3;
+			if (numberOfPoints > 1000)
+			{
+				numberOfPoints = 1000;
+			}
+
+			var d = 1.0f / numberOfPoints;
+
+			vectors[0] = GetPointAsVector(curvePoints, index);
+			for (i = 1; i <= 3; i++)
+			{
+				vectors[i] = DeCasteljau(curvePoints, index, i * d);
+				flattenedPoints.Add(new Point(vectors[i].X, vectors[i].Y));
+			}
+
+			for (i = 1; i <= 3; i++)
+			{
+				for (k = 0; k <= (3 - i); k++)
+				{
+					vectors[k] = vectors[k + 1] - vectors[k];
+				}
+			}
+
+			for (i = 4; i <= numberOfPoints; i++)
+			{
+				for (k = 1; k <= 3; k++)
+				{
+					vectors[k] += vectors[k - 1];
+				}
+*/
+						{
+							flattenedPath.LineTo(point);
+						}
+
+						break;
+					case PathOperation.Close:
+						flattenedPath.Close();
+						if (!includeSubPaths)
+						{
+							foundClosed = true;
+						}
+						break;
+					default:
+						throw new ArgumentOutOfRangeException();
+				}
+			}
+
+			return flattenedPath;
+		}
+
+		private PathF FlattenArc(PointF topLeft, PointF bottomRight, float startAngle, float endAngle, bool clockwise, float flattness)
+		{
+			var arcFlattener = new ArcFlattener(topLeft.X, topLeft.Y, bottomRight.X - topLeft.X, bottomRight.Y - topLeft.Y, startAngle, endAngle, clockwise);
+			var flattenedPath = arcFlattener.CreateFlattenedPath(flattness);
+			return flattenedPath.GetFlattenedPath();
+		}
+
+		private void QuadToCubic(int pointIndex, List<PointF> curvePoints)
+		{
+			var startPoint = _points[pointIndex - 1];
+			var quadControlPoint = _points[pointIndex];
+			var endPoint = _points[pointIndex + 1];
+
+			var controlPoint1 = new PointF(startPoint.X + 2.0f * (quadControlPoint.X - startPoint.X) / 3.0f, startPoint.Y + 2.0f * (quadControlPoint.Y - startPoint.Y) / 3.0f);
+			var controlPoint2 = new PointF(endPoint.X + 2.0f * (quadControlPoint.X - endPoint.X) / 3.0f, endPoint.Y + 2.0f * (quadControlPoint.Y - endPoint.Y) / 3.0f);
+
+			curvePoints.Add(startPoint);
+			curvePoints.Add(controlPoint1);
+			curvePoints.Add(controlPoint2);
+			curvePoints.Add(endPoint);
+		}
+
+		private void FlattenCubicSegment(int index, double flatness, List<PointF> curvePoints, List<PointF> flattenedPoints)
+		{
+			int i, k;
+			var numberOfPoints = 1;
+			var vectors = new Vector2[4];
+
+			double rCurve = 0;
+
+			for (i = index + 1; i <= index + 2; i++)
+			{
+				vectors[0] = (GetPointAsVector(curvePoints, i - 1) + GetPointAsVector(curvePoints, i + 1)) * 0.5f - GetPointAsVector(curvePoints, i);
+
+				double r = vectors[0].Length();
+
+				if (r > rCurve)
+				{
+					rCurve = r;
+				}
+			}
+
+			if (rCurve <= 0.5 * flatness)
+			{
+				var vector = GetPointAsVector(curvePoints, index + 3);
+				flattenedPoints.Add(new Point(vector.X, vector.Y));
+				return;
+			}
+
+			numberOfPoints = (int)(Math.Sqrt(rCurve / flatness)) + 3;
+			if (numberOfPoints > 1000)
+			{
+				numberOfPoints = 1000;
+			}
+
+			var d = 1.0f / numberOfPoints;
+
+			vectors[0] = GetPointAsVector(curvePoints, index);
+			for (i = 1; i <= 3; i++)
+			{
+				vectors[i] = DeCasteljau(curvePoints, index, i * d);
+				flattenedPoints.Add(new Point(vectors[i].X, vectors[i].Y));
+			}
+
+			for (i = 1; i <= 3; i++)
+			{
+				for (k = 0; k <= (3 - i); k++)
+				{
+				{
+					vectors[k] = vectors[k + 1] - vectors[k];
+				}
+			}
+
+			for (i = 4; i <= numberOfPoints; i++)
+			{
+				for (k = 1; k <= 3; k++)
+				{
+					vectors[k] += vectors[k - 1];
+				}
 
 				flattenedPoints.Add(new Point(vectors[3].X, vectors[3].Y));
 			}

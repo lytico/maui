@@ -41,11 +41,19 @@ namespace Microsoft.Maui.Controls.Xaml
 			var parentElement = parentNode as IElementNode;
 			XmlName propertyName;
 			if (!ApplyPropertiesVisitor.TryGetPropertyName(markupnode, parentNode, out propertyName))
+			{
 				return;
+			}
+
 			if (Skips.Contains(propertyName))
+			{
 				return;
+			}
+
 			if (parentElement.SkipProperties.Contains(propertyName))
+			{
 				return;
+			}
 
 			var markupString = markupnode.MarkupString;
 			var node =
@@ -73,6 +81,9 @@ namespace Microsoft.Maui.Controls.Xaml
 			INode parentNode)
 		{
 			if (expression.StartsWith("{}", StringComparison.Ordinal))
+
+/* Unmerged change from project 'Controls.Xaml(net8.0)'
+Before:
 				return new ValueNode(expression.Substring(2), null);
 
 			if (expression[expression.Length - 1] != '}')
@@ -176,6 +187,1228 @@ namespace Microsoft.Maui.Controls.Xaml
 
 				if (!(serviceProvider.GetService(typeof(IXamlTypeResolver)) is XamlTypeResolver typeResolver))
 					throw new NotSupportedException();
+After:
+			{
+				return new ValueNode(expression.Substring(2), null);
+			}
+
+			if (expression[expression.Length - 1] != '}')
+			{
+				var ex = new XamlParseException("Expression must end with '}'", xmlLineInfo);
+				if (Context.ExceptionHandler != null)
+				{
+					Context.ExceptionHandler(ex);
+					return null;
+				}
+				throw ex;
+			}
+
+			if (!MarkupExpressionParser.MatchMarkup(out var match, expression, out var len))
+			{
+				throw new Exception();
+			}
+
+			expression = expression.Substring(len).TrimStart();
+			if (expression.Length == 0)
+			{
+				var ex = new XamlParseException("Expression did not end in '}'", xmlLineInfo);
+				if (Context.ExceptionHandler != null)
+				{
+					Context.ExceptionHandler(ex);
+					return null;
+				}
+				throw ex;
+			}
+			var serviceProvider = new XamlServiceProvider(node, Context);
+			serviceProvider.Add(typeof(IXmlNamespaceResolver), nsResolver);
+
+			return new MarkupExpansionParser { ExceptionHandler = Context.ExceptionHandler }.Parse(match, ref expression, serviceProvider);
+		}
+
+		public class MarkupExpansionParser : MarkupExpressionParser, IExpressionParser<INode>
+		{
+			IElementNode _node;
+			internal Action<Exception> ExceptionHandler { get; set; }
+			object IExpressionParser.Parse(string match, ref string remaining, IServiceProvider serviceProvider)
+			{
+				return Parse(match, ref remaining, serviceProvider);
+			}
+
+			public INode Parse(string match, ref string remaining, IServiceProvider serviceProvider)
+			{
+				if (!(serviceProvider.GetService(typeof(IXmlNamespaceResolver)) is IXmlNamespaceResolver nsResolver))
+				{
+					throw new ArgumentException();
+				}
+
+				IXmlLineInfo xmlLineInfo = null;
+				if (serviceProvider.GetService(typeof(IXmlLineInfoProvider)) is IXmlLineInfoProvider xmlLineInfoProvider)
+				{
+					xmlLineInfo = xmlLineInfoProvider.XmlLineInfo;
+				}
+
+				var (prefix, name) = ParseName(match);
+
+				var namespaceuri = nsResolver.LookupNamespace(prefix) ?? "";
+
+				IList<XmlType> typeArguments = null;
+				var childnodes = new List<(XmlName, INode)>();
+				var contentname = new XmlName(null, null);
+
+				if (remaining.StartsWith("}", StringComparison.Ordinal))
+				{
+					remaining = remaining.Substring(1);
+				}
+				else
+				{
+					Property parsed;
+					do
+					{
+						parsed = ParseProperty(serviceProvider, ref remaining);
+						XmlName childname;
+
+						if (parsed.name == null)
+						{
+							childname = contentname;
+						}
+						else
+						{
+							var (propertyPrefix, propertyName) = ParseName(parsed.name);
+
+							childname = XamlParser.ParsePropertyName(new XmlName(
+								propertyPrefix == "" ? null : nsResolver.LookupNamespace(propertyPrefix),
+								propertyName));
+
+							if (childname.NamespaceURI == null && childname.LocalName == null)
+							{
+								continue;
+							}
+						}
+
+						if (childname == XmlName.xTypeArguments)
+						{
+							typeArguments = TypeArgumentsParser.ParseExpression(parsed.strValue, nsResolver, xmlLineInfo);
+							childnodes.Add((childname, new ValueNode(typeArguments, nsResolver)));
+						}
+						else
+						{
+							var childnode = parsed.value as INode ?? new ValueNode(parsed.strValue, nsResolver);
+							childnodes.Add((childname, childnode));
+						}
+					}
+					while (!parsed.last);
+				}
+
+
+				if (!(serviceProvider.GetService(typeof(IXamlTypeResolver)) is XamlTypeResolver typeResolver))
+				{
+					throw new NotSupportedException();
+				}
+*/
+
+/* Unmerged change from project 'Controls.Xaml(net8.0-maccatalyst)'
+Before:
+				return new ValueNode(expression.Substring(2), null);
+
+			if (expression[expression.Length - 1] != '}')
+			{
+				var ex = new XamlParseException("Expression must end with '}'", xmlLineInfo);
+				if (Context.ExceptionHandler != null)
+				{
+					Context.ExceptionHandler(ex);
+					return null;
+				}
+				throw ex;
+			}
+
+			if (!MarkupExpressionParser.MatchMarkup(out var match, expression, out var len))
+				throw new Exception();
+
+			expression = expression.Substring(len).TrimStart();
+			if (expression.Length == 0)
+			{
+				var ex = new XamlParseException("Expression did not end in '}'", xmlLineInfo);
+				if (Context.ExceptionHandler != null)
+				{
+					Context.ExceptionHandler(ex);
+					return null;
+				}
+				throw ex;
+			}
+			var serviceProvider = new XamlServiceProvider(node, Context);
+			serviceProvider.Add(typeof(IXmlNamespaceResolver), nsResolver);
+
+			return new MarkupExpansionParser { ExceptionHandler = Context.ExceptionHandler }.Parse(match, ref expression, serviceProvider);
+		}
+
+		public class MarkupExpansionParser : MarkupExpressionParser, IExpressionParser<INode>
+		{
+			IElementNode _node;
+			internal Action<Exception> ExceptionHandler { get; set; }
+			object IExpressionParser.Parse(string match, ref string remaining, IServiceProvider serviceProvider)
+			{
+				return Parse(match, ref remaining, serviceProvider);
+			}
+
+			public INode Parse(string match, ref string remaining, IServiceProvider serviceProvider)
+			{
+				if (!(serviceProvider.GetService(typeof(IXmlNamespaceResolver)) is IXmlNamespaceResolver nsResolver))
+					throw new ArgumentException();
+				IXmlLineInfo xmlLineInfo = null;
+				if (serviceProvider.GetService(typeof(IXmlLineInfoProvider)) is IXmlLineInfoProvider xmlLineInfoProvider)
+					xmlLineInfo = xmlLineInfoProvider.XmlLineInfo;
+
+				var (prefix, name) = ParseName(match);
+
+				var namespaceuri = nsResolver.LookupNamespace(prefix) ?? "";
+
+				IList<XmlType> typeArguments = null;
+				var childnodes = new List<(XmlName, INode)>();
+				var contentname = new XmlName(null, null);
+
+				if (remaining.StartsWith("}", StringComparison.Ordinal))
+				{
+					remaining = remaining.Substring(1);
+				}
+				else
+				{
+					Property parsed;
+					do
+					{
+						parsed = ParseProperty(serviceProvider, ref remaining);
+						XmlName childname;
+
+						if (parsed.name == null)
+						{
+							childname = contentname;
+						}
+						else
+						{
+							var (propertyPrefix, propertyName) = ParseName(parsed.name);
+
+							childname = XamlParser.ParsePropertyName(new XmlName(
+								propertyPrefix == "" ? null : nsResolver.LookupNamespace(propertyPrefix),
+								propertyName));
+
+							if (childname.NamespaceURI == null && childname.LocalName == null)
+								continue;
+						}
+
+						if (childname == XmlName.xTypeArguments)
+						{
+							typeArguments = TypeArgumentsParser.ParseExpression(parsed.strValue, nsResolver, xmlLineInfo);
+							childnodes.Add((childname, new ValueNode(typeArguments, nsResolver)));
+						}
+						else
+						{
+							var childnode = parsed.value as INode ?? new ValueNode(parsed.strValue, nsResolver);
+							childnodes.Add((childname, childnode));
+						}
+					}
+					while (!parsed.last);
+				}
+
+
+				if (!(serviceProvider.GetService(typeof(IXamlTypeResolver)) is XamlTypeResolver typeResolver))
+					throw new NotSupportedException();
+After:
+			{
+				return new ValueNode(expression.Substring(2), null);
+			}
+
+			if (expression[expression.Length - 1] != '}')
+			{
+				var ex = new XamlParseException("Expression must end with '}'", xmlLineInfo);
+				if (Context.ExceptionHandler != null)
+				{
+					Context.ExceptionHandler(ex);
+					return null;
+				}
+				throw ex;
+			}
+
+			if (!MarkupExpressionParser.MatchMarkup(out var match, expression, out var len))
+			{
+				throw new Exception();
+			}
+
+			expression = expression.Substring(len).TrimStart();
+			if (expression.Length == 0)
+			{
+				var ex = new XamlParseException("Expression did not end in '}'", xmlLineInfo);
+				if (Context.ExceptionHandler != null)
+				{
+					Context.ExceptionHandler(ex);
+					return null;
+				}
+				throw ex;
+			}
+			var serviceProvider = new XamlServiceProvider(node, Context);
+			serviceProvider.Add(typeof(IXmlNamespaceResolver), nsResolver);
+
+			return new MarkupExpansionParser { ExceptionHandler = Context.ExceptionHandler }.Parse(match, ref expression, serviceProvider);
+		}
+
+		public class MarkupExpansionParser : MarkupExpressionParser, IExpressionParser<INode>
+		{
+			IElementNode _node;
+			internal Action<Exception> ExceptionHandler { get; set; }
+			object IExpressionParser.Parse(string match, ref string remaining, IServiceProvider serviceProvider)
+			{
+				return Parse(match, ref remaining, serviceProvider);
+			}
+
+			public INode Parse(string match, ref string remaining, IServiceProvider serviceProvider)
+			{
+				if (!(serviceProvider.GetService(typeof(IXmlNamespaceResolver)) is IXmlNamespaceResolver nsResolver))
+				{
+					throw new ArgumentException();
+				}
+
+				IXmlLineInfo xmlLineInfo = null;
+				if (serviceProvider.GetService(typeof(IXmlLineInfoProvider)) is IXmlLineInfoProvider xmlLineInfoProvider)
+				{
+					xmlLineInfo = xmlLineInfoProvider.XmlLineInfo;
+				}
+
+				var (prefix, name) = ParseName(match);
+
+				var namespaceuri = nsResolver.LookupNamespace(prefix) ?? "";
+
+				IList<XmlType> typeArguments = null;
+				var childnodes = new List<(XmlName, INode)>();
+				var contentname = new XmlName(null, null);
+
+				if (remaining.StartsWith("}", StringComparison.Ordinal))
+				{
+					remaining = remaining.Substring(1);
+				}
+				else
+				{
+					Property parsed;
+					do
+					{
+						parsed = ParseProperty(serviceProvider, ref remaining);
+						XmlName childname;
+
+						if (parsed.name == null)
+						{
+							childname = contentname;
+						}
+						else
+						{
+							var (propertyPrefix, propertyName) = ParseName(parsed.name);
+
+							childname = XamlParser.ParsePropertyName(new XmlName(
+								propertyPrefix == "" ? null : nsResolver.LookupNamespace(propertyPrefix),
+								propertyName));
+
+							if (childname.NamespaceURI == null && childname.LocalName == null)
+							{
+								continue;
+							}
+						}
+
+						if (childname == XmlName.xTypeArguments)
+						{
+							typeArguments = TypeArgumentsParser.ParseExpression(parsed.strValue, nsResolver, xmlLineInfo);
+							childnodes.Add((childname, new ValueNode(typeArguments, nsResolver)));
+						}
+						else
+						{
+							var childnode = parsed.value as INode ?? new ValueNode(parsed.strValue, nsResolver);
+							childnodes.Add((childname, childnode));
+						}
+					}
+					while (!parsed.last);
+				}
+
+
+				if (!(serviceProvider.GetService(typeof(IXamlTypeResolver)) is XamlTypeResolver typeResolver))
+				{
+					throw new NotSupportedException();
+				}
+*/
+
+/* Unmerged change from project 'Controls.Xaml(net8.0-android)'
+Before:
+				return new ValueNode(expression.Substring(2), null);
+
+			if (expression[expression.Length - 1] != '}')
+			{
+				var ex = new XamlParseException("Expression must end with '}'", xmlLineInfo);
+				if (Context.ExceptionHandler != null)
+				{
+					Context.ExceptionHandler(ex);
+					return null;
+				}
+				throw ex;
+			}
+
+			if (!MarkupExpressionParser.MatchMarkup(out var match, expression, out var len))
+				throw new Exception();
+
+			expression = expression.Substring(len).TrimStart();
+			if (expression.Length == 0)
+			{
+				var ex = new XamlParseException("Expression did not end in '}'", xmlLineInfo);
+				if (Context.ExceptionHandler != null)
+				{
+					Context.ExceptionHandler(ex);
+					return null;
+				}
+				throw ex;
+			}
+			var serviceProvider = new XamlServiceProvider(node, Context);
+			serviceProvider.Add(typeof(IXmlNamespaceResolver), nsResolver);
+
+			return new MarkupExpansionParser { ExceptionHandler = Context.ExceptionHandler }.Parse(match, ref expression, serviceProvider);
+		}
+
+		public class MarkupExpansionParser : MarkupExpressionParser, IExpressionParser<INode>
+		{
+			IElementNode _node;
+			internal Action<Exception> ExceptionHandler { get; set; }
+			object IExpressionParser.Parse(string match, ref string remaining, IServiceProvider serviceProvider)
+			{
+				return Parse(match, ref remaining, serviceProvider);
+			}
+
+			public INode Parse(string match, ref string remaining, IServiceProvider serviceProvider)
+			{
+				if (!(serviceProvider.GetService(typeof(IXmlNamespaceResolver)) is IXmlNamespaceResolver nsResolver))
+					throw new ArgumentException();
+				IXmlLineInfo xmlLineInfo = null;
+				if (serviceProvider.GetService(typeof(IXmlLineInfoProvider)) is IXmlLineInfoProvider xmlLineInfoProvider)
+					xmlLineInfo = xmlLineInfoProvider.XmlLineInfo;
+
+				var (prefix, name) = ParseName(match);
+
+				var namespaceuri = nsResolver.LookupNamespace(prefix) ?? "";
+
+				IList<XmlType> typeArguments = null;
+				var childnodes = new List<(XmlName, INode)>();
+				var contentname = new XmlName(null, null);
+
+				if (remaining.StartsWith("}", StringComparison.Ordinal))
+				{
+					remaining = remaining.Substring(1);
+				}
+				else
+				{
+					Property parsed;
+					do
+					{
+						parsed = ParseProperty(serviceProvider, ref remaining);
+						XmlName childname;
+
+						if (parsed.name == null)
+						{
+							childname = contentname;
+						}
+						else
+						{
+							var (propertyPrefix, propertyName) = ParseName(parsed.name);
+
+							childname = XamlParser.ParsePropertyName(new XmlName(
+								propertyPrefix == "" ? null : nsResolver.LookupNamespace(propertyPrefix),
+								propertyName));
+
+							if (childname.NamespaceURI == null && childname.LocalName == null)
+								continue;
+						}
+
+						if (childname == XmlName.xTypeArguments)
+						{
+							typeArguments = TypeArgumentsParser.ParseExpression(parsed.strValue, nsResolver, xmlLineInfo);
+							childnodes.Add((childname, new ValueNode(typeArguments, nsResolver)));
+						}
+						else
+						{
+							var childnode = parsed.value as INode ?? new ValueNode(parsed.strValue, nsResolver);
+							childnodes.Add((childname, childnode));
+						}
+					}
+					while (!parsed.last);
+				}
+
+
+				if (!(serviceProvider.GetService(typeof(IXamlTypeResolver)) is XamlTypeResolver typeResolver))
+					throw new NotSupportedException();
+After:
+			{
+				return new ValueNode(expression.Substring(2), null);
+			}
+
+			if (expression[expression.Length - 1] != '}')
+			{
+				var ex = new XamlParseException("Expression must end with '}'", xmlLineInfo);
+				if (Context.ExceptionHandler != null)
+				{
+					Context.ExceptionHandler(ex);
+					return null;
+				}
+				throw ex;
+			}
+
+			if (!MarkupExpressionParser.MatchMarkup(out var match, expression, out var len))
+			{
+				throw new Exception();
+			}
+
+			expression = expression.Substring(len).TrimStart();
+			if (expression.Length == 0)
+			{
+				var ex = new XamlParseException("Expression did not end in '}'", xmlLineInfo);
+				if (Context.ExceptionHandler != null)
+				{
+					Context.ExceptionHandler(ex);
+					return null;
+				}
+				throw ex;
+			}
+			var serviceProvider = new XamlServiceProvider(node, Context);
+			serviceProvider.Add(typeof(IXmlNamespaceResolver), nsResolver);
+
+			return new MarkupExpansionParser { ExceptionHandler = Context.ExceptionHandler }.Parse(match, ref expression, serviceProvider);
+		}
+
+		public class MarkupExpansionParser : MarkupExpressionParser, IExpressionParser<INode>
+		{
+			IElementNode _node;
+			internal Action<Exception> ExceptionHandler { get; set; }
+			object IExpressionParser.Parse(string match, ref string remaining, IServiceProvider serviceProvider)
+			{
+				return Parse(match, ref remaining, serviceProvider);
+			}
+
+			public INode Parse(string match, ref string remaining, IServiceProvider serviceProvider)
+			{
+				if (!(serviceProvider.GetService(typeof(IXmlNamespaceResolver)) is IXmlNamespaceResolver nsResolver))
+				{
+					throw new ArgumentException();
+				}
+
+				IXmlLineInfo xmlLineInfo = null;
+				if (serviceProvider.GetService(typeof(IXmlLineInfoProvider)) is IXmlLineInfoProvider xmlLineInfoProvider)
+				{
+					xmlLineInfo = xmlLineInfoProvider.XmlLineInfo;
+				}
+
+				var (prefix, name) = ParseName(match);
+
+				var namespaceuri = nsResolver.LookupNamespace(prefix) ?? "";
+
+				IList<XmlType> typeArguments = null;
+				var childnodes = new List<(XmlName, INode)>();
+				var contentname = new XmlName(null, null);
+
+				if (remaining.StartsWith("}", StringComparison.Ordinal))
+				{
+					remaining = remaining.Substring(1);
+				}
+				else
+				{
+					Property parsed;
+					do
+					{
+						parsed = ParseProperty(serviceProvider, ref remaining);
+						XmlName childname;
+
+						if (parsed.name == null)
+						{
+							childname = contentname;
+						}
+						else
+						{
+							var (propertyPrefix, propertyName) = ParseName(parsed.name);
+
+							childname = XamlParser.ParsePropertyName(new XmlName(
+								propertyPrefix == "" ? null : nsResolver.LookupNamespace(propertyPrefix),
+								propertyName));
+
+							if (childname.NamespaceURI == null && childname.LocalName == null)
+							{
+								continue;
+							}
+						}
+
+						if (childname == XmlName.xTypeArguments)
+						{
+							typeArguments = TypeArgumentsParser.ParseExpression(parsed.strValue, nsResolver, xmlLineInfo);
+							childnodes.Add((childname, new ValueNode(typeArguments, nsResolver)));
+						}
+						else
+						{
+							var childnode = parsed.value as INode ?? new ValueNode(parsed.strValue, nsResolver);
+							childnodes.Add((childname, childnode));
+						}
+					}
+					while (!parsed.last);
+				}
+
+
+				if (!(serviceProvider.GetService(typeof(IXamlTypeResolver)) is XamlTypeResolver typeResolver))
+				{
+					throw new NotSupportedException();
+				}
+*/
+
+/* Unmerged change from project 'Controls.Xaml(net8.0-windows10.0.19041.0)'
+Before:
+				return new ValueNode(expression.Substring(2), null);
+
+			if (expression[expression.Length - 1] != '}')
+			{
+				var ex = new XamlParseException("Expression must end with '}'", xmlLineInfo);
+				if (Context.ExceptionHandler != null)
+				{
+					Context.ExceptionHandler(ex);
+					return null;
+				}
+				throw ex;
+			}
+
+			if (!MarkupExpressionParser.MatchMarkup(out var match, expression, out var len))
+				throw new Exception();
+
+			expression = expression.Substring(len).TrimStart();
+			if (expression.Length == 0)
+			{
+				var ex = new XamlParseException("Expression did not end in '}'", xmlLineInfo);
+				if (Context.ExceptionHandler != null)
+				{
+					Context.ExceptionHandler(ex);
+					return null;
+				}
+				throw ex;
+			}
+			var serviceProvider = new XamlServiceProvider(node, Context);
+			serviceProvider.Add(typeof(IXmlNamespaceResolver), nsResolver);
+
+			return new MarkupExpansionParser { ExceptionHandler = Context.ExceptionHandler }.Parse(match, ref expression, serviceProvider);
+		}
+
+		public class MarkupExpansionParser : MarkupExpressionParser, IExpressionParser<INode>
+		{
+			IElementNode _node;
+			internal Action<Exception> ExceptionHandler { get; set; }
+			object IExpressionParser.Parse(string match, ref string remaining, IServiceProvider serviceProvider)
+			{
+				return Parse(match, ref remaining, serviceProvider);
+			}
+
+			public INode Parse(string match, ref string remaining, IServiceProvider serviceProvider)
+			{
+				if (!(serviceProvider.GetService(typeof(IXmlNamespaceResolver)) is IXmlNamespaceResolver nsResolver))
+					throw new ArgumentException();
+				IXmlLineInfo xmlLineInfo = null;
+				if (serviceProvider.GetService(typeof(IXmlLineInfoProvider)) is IXmlLineInfoProvider xmlLineInfoProvider)
+					xmlLineInfo = xmlLineInfoProvider.XmlLineInfo;
+
+				var (prefix, name) = ParseName(match);
+
+				var namespaceuri = nsResolver.LookupNamespace(prefix) ?? "";
+
+				IList<XmlType> typeArguments = null;
+				var childnodes = new List<(XmlName, INode)>();
+				var contentname = new XmlName(null, null);
+
+				if (remaining.StartsWith("}", StringComparison.Ordinal))
+				{
+					remaining = remaining.Substring(1);
+				}
+				else
+				{
+					Property parsed;
+					do
+					{
+						parsed = ParseProperty(serviceProvider, ref remaining);
+						XmlName childname;
+
+						if (parsed.name == null)
+						{
+							childname = contentname;
+						}
+						else
+						{
+							var (propertyPrefix, propertyName) = ParseName(parsed.name);
+
+							childname = XamlParser.ParsePropertyName(new XmlName(
+								propertyPrefix == "" ? null : nsResolver.LookupNamespace(propertyPrefix),
+								propertyName));
+
+							if (childname.NamespaceURI == null && childname.LocalName == null)
+								continue;
+						}
+
+						if (childname == XmlName.xTypeArguments)
+						{
+							typeArguments = TypeArgumentsParser.ParseExpression(parsed.strValue, nsResolver, xmlLineInfo);
+							childnodes.Add((childname, new ValueNode(typeArguments, nsResolver)));
+						}
+						else
+						{
+							var childnode = parsed.value as INode ?? new ValueNode(parsed.strValue, nsResolver);
+							childnodes.Add((childname, childnode));
+						}
+					}
+					while (!parsed.last);
+				}
+
+
+				if (!(serviceProvider.GetService(typeof(IXamlTypeResolver)) is XamlTypeResolver typeResolver))
+					throw new NotSupportedException();
+After:
+			{
+				return new ValueNode(expression.Substring(2), null);
+			}
+
+			if (expression[expression.Length - 1] != '}')
+			{
+				var ex = new XamlParseException("Expression must end with '}'", xmlLineInfo);
+				if (Context.ExceptionHandler != null)
+				{
+					Context.ExceptionHandler(ex);
+					return null;
+				}
+				throw ex;
+			}
+
+			if (!MarkupExpressionParser.MatchMarkup(out var match, expression, out var len))
+			{
+				throw new Exception();
+			}
+
+			expression = expression.Substring(len).TrimStart();
+			if (expression.Length == 0)
+			{
+				var ex = new XamlParseException("Expression did not end in '}'", xmlLineInfo);
+				if (Context.ExceptionHandler != null)
+				{
+					Context.ExceptionHandler(ex);
+					return null;
+				}
+				throw ex;
+			}
+			var serviceProvider = new XamlServiceProvider(node, Context);
+			serviceProvider.Add(typeof(IXmlNamespaceResolver), nsResolver);
+
+			return new MarkupExpansionParser { ExceptionHandler = Context.ExceptionHandler }.Parse(match, ref expression, serviceProvider);
+		}
+
+		public class MarkupExpansionParser : MarkupExpressionParser, IExpressionParser<INode>
+		{
+			IElementNode _node;
+			internal Action<Exception> ExceptionHandler { get; set; }
+			object IExpressionParser.Parse(string match, ref string remaining, IServiceProvider serviceProvider)
+			{
+				return Parse(match, ref remaining, serviceProvider);
+			}
+
+			public INode Parse(string match, ref string remaining, IServiceProvider serviceProvider)
+			{
+				if (!(serviceProvider.GetService(typeof(IXmlNamespaceResolver)) is IXmlNamespaceResolver nsResolver))
+				{
+					throw new ArgumentException();
+				}
+
+				IXmlLineInfo xmlLineInfo = null;
+				if (serviceProvider.GetService(typeof(IXmlLineInfoProvider)) is IXmlLineInfoProvider xmlLineInfoProvider)
+				{
+					xmlLineInfo = xmlLineInfoProvider.XmlLineInfo;
+				}
+
+				var (prefix, name) = ParseName(match);
+
+				var namespaceuri = nsResolver.LookupNamespace(prefix) ?? "";
+
+				IList<XmlType> typeArguments = null;
+				var childnodes = new List<(XmlName, INode)>();
+				var contentname = new XmlName(null, null);
+
+				if (remaining.StartsWith("}", StringComparison.Ordinal))
+				{
+					remaining = remaining.Substring(1);
+				}
+				else
+				{
+					Property parsed;
+					do
+					{
+						parsed = ParseProperty(serviceProvider, ref remaining);
+						XmlName childname;
+
+						if (parsed.name == null)
+						{
+							childname = contentname;
+						}
+						else
+						{
+							var (propertyPrefix, propertyName) = ParseName(parsed.name);
+
+							childname = XamlParser.ParsePropertyName(new XmlName(
+								propertyPrefix == "" ? null : nsResolver.LookupNamespace(propertyPrefix),
+								propertyName));
+
+							if (childname.NamespaceURI == null && childname.LocalName == null)
+							{
+								continue;
+							}
+						}
+
+						if (childname == XmlName.xTypeArguments)
+						{
+							typeArguments = TypeArgumentsParser.ParseExpression(parsed.strValue, nsResolver, xmlLineInfo);
+							childnodes.Add((childname, new ValueNode(typeArguments, nsResolver)));
+						}
+						else
+						{
+							var childnode = parsed.value as INode ?? new ValueNode(parsed.strValue, nsResolver);
+							childnodes.Add((childname, childnode));
+						}
+					}
+					while (!parsed.last);
+				}
+
+
+				if (!(serviceProvider.GetService(typeof(IXamlTypeResolver)) is XamlTypeResolver typeResolver))
+				{
+					throw new NotSupportedException();
+				}
+*/
+
+/* Unmerged change from project 'Controls.Xaml(net8.0-windows10.0.20348.0)'
+Before:
+				return new ValueNode(expression.Substring(2), null);
+
+			if (expression[expression.Length - 1] != '}')
+			{
+				var ex = new XamlParseException("Expression must end with '}'", xmlLineInfo);
+				if (Context.ExceptionHandler != null)
+				{
+					Context.ExceptionHandler(ex);
+					return null;
+				}
+				throw ex;
+			}
+
+			if (!MarkupExpressionParser.MatchMarkup(out var match, expression, out var len))
+				throw new Exception();
+
+			expression = expression.Substring(len).TrimStart();
+			if (expression.Length == 0)
+			{
+				var ex = new XamlParseException("Expression did not end in '}'", xmlLineInfo);
+				if (Context.ExceptionHandler != null)
+				{
+					Context.ExceptionHandler(ex);
+					return null;
+				}
+				throw ex;
+			}
+			var serviceProvider = new XamlServiceProvider(node, Context);
+			serviceProvider.Add(typeof(IXmlNamespaceResolver), nsResolver);
+
+			return new MarkupExpansionParser { ExceptionHandler = Context.ExceptionHandler }.Parse(match, ref expression, serviceProvider);
+		}
+
+		public class MarkupExpansionParser : MarkupExpressionParser, IExpressionParser<INode>
+		{
+			IElementNode _node;
+			internal Action<Exception> ExceptionHandler { get; set; }
+			object IExpressionParser.Parse(string match, ref string remaining, IServiceProvider serviceProvider)
+			{
+				return Parse(match, ref remaining, serviceProvider);
+			}
+
+			public INode Parse(string match, ref string remaining, IServiceProvider serviceProvider)
+			{
+				if (!(serviceProvider.GetService(typeof(IXmlNamespaceResolver)) is IXmlNamespaceResolver nsResolver))
+					throw new ArgumentException();
+				IXmlLineInfo xmlLineInfo = null;
+				if (serviceProvider.GetService(typeof(IXmlLineInfoProvider)) is IXmlLineInfoProvider xmlLineInfoProvider)
+					xmlLineInfo = xmlLineInfoProvider.XmlLineInfo;
+
+				var (prefix, name) = ParseName(match);
+
+				var namespaceuri = nsResolver.LookupNamespace(prefix) ?? "";
+
+				IList<XmlType> typeArguments = null;
+				var childnodes = new List<(XmlName, INode)>();
+				var contentname = new XmlName(null, null);
+
+				if (remaining.StartsWith("}", StringComparison.Ordinal))
+				{
+					remaining = remaining.Substring(1);
+				}
+				else
+				{
+					Property parsed;
+					do
+					{
+						parsed = ParseProperty(serviceProvider, ref remaining);
+						XmlName childname;
+
+						if (parsed.name == null)
+						{
+							childname = contentname;
+						}
+						else
+						{
+							var (propertyPrefix, propertyName) = ParseName(parsed.name);
+
+							childname = XamlParser.ParsePropertyName(new XmlName(
+								propertyPrefix == "" ? null : nsResolver.LookupNamespace(propertyPrefix),
+								propertyName));
+
+							if (childname.NamespaceURI == null && childname.LocalName == null)
+								continue;
+						}
+
+						if (childname == XmlName.xTypeArguments)
+						{
+							typeArguments = TypeArgumentsParser.ParseExpression(parsed.strValue, nsResolver, xmlLineInfo);
+							childnodes.Add((childname, new ValueNode(typeArguments, nsResolver)));
+						}
+						else
+						{
+							var childnode = parsed.value as INode ?? new ValueNode(parsed.strValue, nsResolver);
+							childnodes.Add((childname, childnode));
+						}
+					}
+					while (!parsed.last);
+				}
+
+
+				if (!(serviceProvider.GetService(typeof(IXamlTypeResolver)) is XamlTypeResolver typeResolver))
+					throw new NotSupportedException();
+After:
+			{
+				return new ValueNode(expression.Substring(2), null);
+			}
+
+			if (expression[expression.Length - 1] != '}')
+			{
+				var ex = new XamlParseException("Expression must end with '}'", xmlLineInfo);
+				if (Context.ExceptionHandler != null)
+				{
+					Context.ExceptionHandler(ex);
+					return null;
+				}
+				throw ex;
+			}
+
+			if (!MarkupExpressionParser.MatchMarkup(out var match, expression, out var len))
+			{
+				throw new Exception();
+			}
+
+			expression = expression.Substring(len).TrimStart();
+			if (expression.Length == 0)
+			{
+				var ex = new XamlParseException("Expression did not end in '}'", xmlLineInfo);
+				if (Context.ExceptionHandler != null)
+				{
+					Context.ExceptionHandler(ex);
+					return null;
+				}
+				throw ex;
+			}
+			var serviceProvider = new XamlServiceProvider(node, Context);
+			serviceProvider.Add(typeof(IXmlNamespaceResolver), nsResolver);
+
+			return new MarkupExpansionParser { ExceptionHandler = Context.ExceptionHandler }.Parse(match, ref expression, serviceProvider);
+		}
+
+		public class MarkupExpansionParser : MarkupExpressionParser, IExpressionParser<INode>
+		{
+			IElementNode _node;
+			internal Action<Exception> ExceptionHandler { get; set; }
+			object IExpressionParser.Parse(string match, ref string remaining, IServiceProvider serviceProvider)
+			{
+				return Parse(match, ref remaining, serviceProvider);
+			}
+
+			public INode Parse(string match, ref string remaining, IServiceProvider serviceProvider)
+			{
+				if (!(serviceProvider.GetService(typeof(IXmlNamespaceResolver)) is IXmlNamespaceResolver nsResolver))
+				{
+					throw new ArgumentException();
+				}
+
+				IXmlLineInfo xmlLineInfo = null;
+				if (serviceProvider.GetService(typeof(IXmlLineInfoProvider)) is IXmlLineInfoProvider xmlLineInfoProvider)
+				{
+					xmlLineInfo = xmlLineInfoProvider.XmlLineInfo;
+				}
+
+				var (prefix, name) = ParseName(match);
+
+				var namespaceuri = nsResolver.LookupNamespace(prefix) ?? "";
+
+				IList<XmlType> typeArguments = null;
+				var childnodes = new List<(XmlName, INode)>();
+				var contentname = new XmlName(null, null);
+
+				if (remaining.StartsWith("}", StringComparison.Ordinal))
+				{
+					remaining = remaining.Substring(1);
+				}
+				else
+				{
+					Property parsed;
+					do
+					{
+						parsed = ParseProperty(serviceProvider, ref remaining);
+						XmlName childname;
+
+						if (parsed.name == null)
+						{
+							childname = contentname;
+						}
+						else
+						{
+							var (propertyPrefix, propertyName) = ParseName(parsed.name);
+
+							childname = XamlParser.ParsePropertyName(new XmlName(
+								propertyPrefix == "" ? null : nsResolver.LookupNamespace(propertyPrefix),
+								propertyName));
+
+							if (childname.NamespaceURI == null && childname.LocalName == null)
+							{
+								continue;
+							}
+						}
+
+						if (childname == XmlName.xTypeArguments)
+						{
+							typeArguments = TypeArgumentsParser.ParseExpression(parsed.strValue, nsResolver, xmlLineInfo);
+							childnodes.Add((childname, new ValueNode(typeArguments, nsResolver)));
+						}
+						else
+						{
+							var childnode = parsed.value as INode ?? new ValueNode(parsed.strValue, nsResolver);
+							childnodes.Add((childname, childnode));
+						}
+					}
+					while (!parsed.last);
+				}
+
+
+				if (!(serviceProvider.GetService(typeof(IXamlTypeResolver)) is XamlTypeResolver typeResolver))
+				{
+					throw new NotSupportedException();
+				}
+*/
+			{
+				return new ValueNode(expression.Substring(2), null);
+			}
+
+			if (expression[expression.Length - 1] != '}')
+			{
+				var ex = new XamlParseException("Expression must end with '}'", xmlLineInfo);
+				if (Context.ExceptionHandler != null)
+				{
+					Context.ExceptionHandler(ex);
+					return null;
+				}
+				throw ex;
+			}
+
+			if (!MarkupExpressionParser.MatchMarkup(out var match, expression, out var len))
+			{
+				throw new Exception();
+			}
+
+			expression = expression.Substring(len).TrimStart();
+			if (expression.Length == 0)
+			{
+				var ex = new XamlParseException("Expression did not end in '}'", xmlLineInfo);
+				if (Context.ExceptionHandler != null)
+				{
+					Context.ExceptionHandler(ex);
+					return null;
+				}
+				throw ex;
+			}
+			var serviceProvider = new XamlServiceProvider(node, Context);
+			serviceProvider.Add(typeof(IXmlNamespaceResolver), nsResolver);
+
+			return new MarkupExpansionParser { ExceptionHandler = Context.ExceptionHandler }.Parse(match, ref expression, serviceProvider);
+		}
+
+		public class MarkupExpansionParser : MarkupExpressionParser, IExpressionParser<INode>
+		{
+			IElementNode _node;
+			internal Action<Exception> ExceptionHandler { get; set; }
+			object IExpressionParser.Parse(string match, ref string remaining, IServiceProvider serviceProvider)
+			{
+				return Parse(match, ref remaining, serviceProvider);
+			}
+
+			public INode Parse(string match, ref string remaining, IServiceProvider serviceProvider)
+			{
+				if (!(serviceProvider.GetService(typeof(IXmlNamespaceResolver)) is IXmlNamespaceResolver nsResolver))
+				{
+					throw new ArgumentException();
+				}
+
+				IXmlLineInfo xmlLineInfo = null;
+				if (serviceProvider.GetService(typeof(IXmlLineInfoProvider)) is IXmlLineInfoProvider xmlLineInfoProvider)
+
+/* Unmerged change from project 'Controls.Xaml(net8.0-ios)'
+Before:
+					xmlLineInfo = xmlLineInfoProvider.XmlLineInfo;
+
+				var (prefix, name) = ParseName(match);
+
+				var namespaceuri = nsResolver.LookupNamespace(prefix) ?? "";
+
+				IList<XmlType> typeArguments = null;
+				var childnodes = new List<(XmlName, INode)>();
+				var contentname = new XmlName(null, null);
+
+				if (remaining.StartsWith("}", StringComparison.Ordinal))
+				{
+					remaining = remaining.Substring(1);
+After:
+				{
+					xmlLineInfo = xmlLineInfoProvider.XmlLineInfo;
+*/
+				{
+					xmlLineInfo = xmlLineInfoProvider.XmlLineInfo;
+				}
+
+				var (prefix, name) = ParseName(match)
+/* Unmerged change from project 'Controls.Xaml(net8.0-ios)'
+Before:
+				else
+				{
+					Property parsed;
+					do
+					{
+						parsed = ParseProperty(serviceProvider, ref remaining);
+						XmlName childname;
+
+						if (parsed.name == null)
+						{
+							childname = contentname;
+						}
+						else
+						{
+							var (propertyPrefix, propertyName) = ParseName(parsed.name);
+
+							childname = XamlParser.ParsePropertyName(new XmlName(
+								propertyPrefix == "" ? null : nsResolver.LookupNamespace(propertyPrefix),
+								propertyName));
+
+							if (childname.NamespaceURI == null && childname.LocalName == null)
+								continue;
+After:
+				var (prefix, name) = ParseName(match);
+
+				var namespaceuri = nsResolver.LookupNamespace(prefix) ?? "";
+
+				IList<XmlType> typeArguments = null;
+				var childnodes = new List<(XmlName, INode)>();
+				var contentname = new XmlName(null, null);
+
+				if (remaining.StartsWith("}", StringComparison.Ordinal))
+				{
+					remaining = remaining.Substring(1);
+				}
+				else
+				{
+					Property parsed;
+					do
+					{
+						parsed = ParseProperty(serviceProvider, ref remaining);
+						XmlName childname;
+
+						if (parsed.name == null)
+						{
+							childname = contentname;
+						}
+						else
+						{
+							var (propertyPrefix, propertyName) = ParseName(parsed.name);
+
+							childname = XamlParser.ParsePropertyName(new XmlName(
+								propertyPrefix == "" ? null : nsResolver.LookupNamespace(propertyPrefix),
+								propertyName));
+
+							if (childname.NamespaceURI == null && childname.LocalName == null)
+							{
+								continue;
+							}
+*/
+
+/* Unmerged change from project 'Controls.Xaml(net8.0-ios)'
+Before:
+					throw new NotSupportedException();
+After:
+				{
+					throw new NotSupportedException();
+				}
+*/
+;
+
+				var namespaceuri = nsResolver.LookupNamespace(prefix) ?? "";
+
+				IList<XmlType> typeArguments = null;
+				var childnodes = new List<(XmlName, INode)>();
+				var contentname = new XmlName(null, null);
+
+				if (remaining.StartsWith("}", StringComparison.Ordinal))
+				{
+					remaining = remaining.Substring(1);
+				}
+				else
+				{
+					Property parsed;
+					do
+					{
+						parsed = ParseProperty(serviceProvider, ref remaining);
+						XmlName childname;
+
+						if (parsed.name == null)
+						{
+							childname = contentname;
+						}
+						else
+						{
+							var (propertyPrefix, propertyName) = ParseName(parsed.name);
+
+							childname = XamlParser.ParsePropertyName(new XmlName(
+								propertyPrefix == "" ? null : nsResolver.LookupNamespace(propertyPrefix),
+								propertyName));
+
+							if (childname.NamespaceURI == null && childname.LocalName == null)
+							{
+								continue;
+							}
+						}
+
+						if (childname == XmlName.xTypeArguments)
+						{
+							typeArguments = TypeArgumentsParser.ParseExpression(parsed.strValue, nsResolver, xmlLineInfo);
+							childnodes.Add((childname, new ValueNode(typeArguments, nsResolver)));
+						}
+						else
+						{
+							var childnode = parsed.value as INode ?? new ValueNode(parsed.strValue, nsResolver);
+							childnodes.Add((childname, childnode));
+						}
+					}
+					while (!parsed.last);
+				}
+
+
+				if (!(serviceProvider.GetService(typeof(IXamlTypeResolver)) is XamlTypeResolver typeResolver))
+				{
+					throw new NotSupportedException();
+				}
 
 				var xmltype = new XmlType(namespaceuri, name + "Extension", typeArguments);
 

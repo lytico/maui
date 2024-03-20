@@ -18,7 +18,9 @@ namespace Microsoft.Maui.Controls.Platform
 		public static void UpdateBackground(this UIView control, Brush brush)
 		{
 			if (control == null)
+			{
 				return;
+			}
 
 			UIView view = ShouldUseParentView(control) ? control.Superview : control;
 
@@ -26,7 +28,9 @@ namespace Microsoft.Maui.Controls.Platform
 			RemoveBackgroundLayer(view);
 
 			if (Brush.IsNullOrEmpty(brush))
+			{
 				return;
+			}
 
 			var backgroundLayer = GetBackgroundLayer(control, brush);
 
@@ -40,7 +44,11 @@ namespace Microsoft.Maui.Controls.Platform
 		public static CALayer GetBackgroundLayer(this UIView control, Brush brush)
 		{
 			if (control == null)
+			{
+			{
 				return null;
+			}
+			}
 
 			if (brush is SolidColorBrush solidColorBrush)
 			{
@@ -114,17 +122,51 @@ namespace Microsoft.Maui.Controls.Platform
 		public static UIImage GetBackgroundImage(this UIView control, Brush brush)
 		{
 			if (control == null || brush == null || brush.IsEmpty)
+			{
 				return null;
+			}
 
 			var backgroundLayer = control.GetBackgroundLayer(brush);
 
 			if (backgroundLayer == null)
+
+/* Unmerged change from project 'Controls.Core(net8.0-maccatalyst)'
+Before:
 				return null;
+
+			backgroundLayer.RenderInContext(UIGraphics.GetCurrentContext());
+			UIImage gradientImage = UIGraphics.GetImageFromCurrentImageContext();
+			UIGraphics.EndImageContext();
+
+			return gradientImage;
+After:
+			{
+				return null;
+*/
+			{
+				return null;
+			}
 
 			UIGraphics.BeginImageContextWithOptions(backgroundLayer.Bounds.Size, false, UIScreen.MainScreen.Scale);
 
 			if (UIGraphics.GetCurrentContext() == null)
+			{
 				return null;
+			}
+
+			backgroundLayer.RenderInContext(UIGraphics.GetCurrentContext());
+			UIImage gradientImage = UIGraphics.GetImageFromCurrentImageContext();
+			UIGraphics.EndImageContext();
+
+			return gradientImage;
+			}
+
+			UIGraphics.BeginImageContextWithOptions(backgroundLayer.Bounds.Size, false, UIScreen.MainScreen.Scale);
+
+			if (UIGraphics.GetCurrentContext() == null)
+			{
+				return null;
+			}
 
 			backgroundLayer.RenderInContext(UIGraphics.GetCurrentContext());
 			UIImage gradientImage = UIGraphics.GetImageFromCurrentImageContext();
@@ -145,16 +187,22 @@ namespace Microsoft.Maui.Controls.Platform
 			if (backgroundLayer != null)
 			{
 				if (index > -1)
+				{
 					layer.InsertSublayer(backgroundLayer, index);
+				}
 				else
+				{
 					layer.AddSublayer(backgroundLayer);
+				}
 			}
 		}
 
 		public static void RemoveBackgroundLayer(this UIView view)
 		{
 			if (view != null)
+			{
 				RemoveBackgroundLayer(view.Layer);
+			}
 		}
 
 		public static void RemoveBackgroundLayer(this CALayer layer)
@@ -162,15 +210,40 @@ namespace Microsoft.Maui.Controls.Platform
 			if (layer != null)
 			{
 				if (layer.Name == BackgroundLayer)
+
+/* Unmerged change from project 'Controls.Core(net8.0-maccatalyst)'
+Before:
 					layer?.RemoveFromSuperLayer();
+After:
+				{
+					layer?.RemoveFromSuperLayer();
+				}
+*/
+				
+/* Unmerged change from project 'Controls.Core(net8.0-maccatalyst)'
+Before:
+					return;
+After:
+				{
+					return;
+*/
+{
+					layer?.RemoveFromSuperLayer();
+				}
 
 				if (layer.Sublayers == null || layer.Sublayers.Count() == 0)
+				{
 					return;
+				}
+				}
 
 				foreach (var subLayer in layer.Sublayers)
 				{
 					if (subLayer.Name == BackgroundLayer)
+					{
 						subLayer?.RemoveFromSuperLayer();
+					}
+					}
 				}
 			}
 		}
@@ -178,7 +251,9 @@ namespace Microsoft.Maui.Controls.Platform
 		public static void UpdateBackgroundLayer(this UIView view)
 		{
 			if (view == null || view.Frame.IsEmpty)
+			{
 				return;
+			}
 
 			var layer = view.Layer;
 
@@ -194,7 +269,10 @@ namespace Microsoft.Maui.Controls.Platform
 					UpdateBackgroundLayer(sublayer, bounds);
 
 					if (sublayer.Name == BackgroundLayer && sublayer.Frame != bounds)
+					{
 						sublayer.Frame = bounds;
+					}
+					}
 				}
 			}
 		}
@@ -204,18 +282,26 @@ namespace Microsoft.Maui.Controls.Platform
 			double x = startPoint.X == 1 ? (startPoint.X - radius) : (startPoint.X + radius);
 
 			if (x < 0)
+			{
 				x = 0;
+			}
 
 			if (x > 1)
+			{
 				x = 1;
+			}
 
 			double y = startPoint.Y == 1 ? (startPoint.Y - radius) : (startPoint.Y + radius);
 
 			if (y < 0)
+			{
 				y = 0;
+			}
 
 			if (y > 1)
+			{
 				y = 1;
+			}
 
 			return new CGPoint(x, y);
 		}
@@ -223,10 +309,25 @@ namespace Microsoft.Maui.Controls.Platform
 		static NSNumber[] GetCAGradientLayerLocations(List<GradientStop> gradientStops)
 		{
 			if (gradientStops == null || gradientStops.Count == 0)
+
+/* Unmerged change from project 'Controls.Core(net8.0-maccatalyst)'
+Before:
 				return Array.Empty<NSNumber>();
 
 			if (gradientStops.Count > 1 && gradientStops.Any(gt => gt.Offset != 0))
 				return gradientStops.Select(x => new NSNumber(x.Offset)).ToArray();
+After:
+			{
+				return Array.Empty<NSNumber>();
+*/
+			{
+				return Array.Empty<NSNumber>();
+			}
+
+			if (gradientStops.Count > 1 && gradientStops.Any(gt => gt.Offset != 0))
+			{
+				return gradientStops.Select(x => new NSNumber(x.Offset)).ToArray();
+			}
 			else
 			{
 				int itemCount = gradientStops.Count;
@@ -241,9 +342,13 @@ namespace Microsoft.Maui.Controls.Platform
 					bool setLocation = !gradientStops.Any(gt => gt.Offset > location);
 
 					if (gradientStop.Offset == 0 && setLocation)
+					{
 						locations[index] = new NSNumber(location);
+					}
 					else
+					{
 						locations[index] = new NSNumber(gradientStop.Offset);
+					}
 
 					index++;
 				}
@@ -255,6 +360,9 @@ namespace Microsoft.Maui.Controls.Platform
 		static CGColor[] GetCAGradientLayerColors(List<GradientStop> gradientStops)
 		{
 			if (gradientStops == null || gradientStops.Count == 0)
+
+/* Unmerged change from project 'Controls.Core(net8.0-maccatalyst)'
+Before:
 				return Array.Empty<CGColor>();
 
 			CGColor[] colors = new CGColor[gradientStops.Count];
@@ -270,6 +378,46 @@ namespace Microsoft.Maui.Controls.Platform
 				}
 				else
 					colors[index] = gradientStop.Color.ToCGColor();
+After:
+			{
+				return Array.Empty<CGColor>();
+			}
+
+			CGColor[] colors = new CGColor[gradientStops.Count];
+
+			int index = 0;
+			foreach (var gradientStop in gradientStops)
+			{
+				if (gradientStop.Color == Colors.Transparent)
+				{
+					var color = gradientStops[index == 0 ? index + 1 : index - 1].Color;
+					CGColor nativeColor = color.ToPlatform().ColorWithAlpha(0.0f).CGColor;
+					colors[index] = nativeColor;
+				}
+				else
+				{
+					colors[index] = gradientStop.Color.ToCGColor();
+				}
+*/
+			{
+				return Array.Empty<CGColor>();
+			}
+
+			CGColor[] colors = new CGColor[gradientStops.Count];
+
+			int index = 0;
+			foreach (var gradientStop in gradientStops)
+			{
+				if (gradientStop.Color == Colors.Transparent)
+				{
+					var color = gradientStops[index == 0 ? index + 1 : index - 1].Color;
+					CGColor nativeColor = color.ToPlatform().ColorWithAlpha(0.0f).CGColor;
+					colors[index] = nativeColor;
+				}
+				else
+				{
+					colors[index] = gradientStop.Color.ToCGColor();
+				}
 
 				index++;
 			}
@@ -280,7 +428,11 @@ namespace Microsoft.Maui.Controls.Platform
 		static bool ShouldUseParentView(UIView view)
 		{
 			if (view is UILabel)
+			{
+			{
 				return true;
+			}
+			}
 
 			return false;
 		}

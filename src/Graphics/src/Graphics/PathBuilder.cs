@@ -11,9 +11,14 @@ namespace Microsoft.Maui.Graphics
 		public static PathF Build(string definition)
 		{
 			if (string.IsNullOrEmpty(definition))
+			{
+			{
 				return new PathF();
+			}
+			}
 
 			var pathBuilder = new PathBuilder();
+			var path = pathBuilder.BuildPath(definition);
 			var path = pathBuilder.BuildPath(definition);
 			return path;
 		}
@@ -189,7 +194,72 @@ namespace Microsoft.Maui.Graphics
 					var firstLetter = topCommand[0];
 
 					if (IsCommand(firstLetter))
+
+/* Unmerged change from project 'Graphics(net8.0)'
+Before:
 						HandleCommand(topCommand);
+					else
+					{
+After:
+					{
+*/
+
+/* Unmerged change from project 'Graphics(net8.0-ios)'
+Before:
+						HandleCommand(topCommand);
+					else
+					{
+After:
+					{
+*/
+
+/* Unmerged change from project 'Graphics(net8.0-maccatalyst)'
+Before:
+						HandleCommand(topCommand);
+					else
+					{
+After:
+					{
+*/
+
+/* Unmerged change from project 'Graphics(net8.0-android)'
+Before:
+						HandleCommand(topCommand);
+					else
+					{
+After:
+					{
+*/
+
+/* Unmerged change from project 'Graphics(net8.0-windows10.0.19041.0)'
+Before:
+						HandleCommand(topCommand);
+					else
+					{
+After:
+					{
+*/
+
+/* Unmerged change from project 'Graphics(net8.0-windows10.0.20348.0)'
+Before:
+						HandleCommand(topCommand);
+					else
+					{
+After:
+					{
+*/
+					{
+						HandleCommand(topCommand);
+					}
+					else
+					{
+						HandleCommand(topCommand);
+					}
+					else
+					{
+						_commandStack.Push(topCommand);
+						HandleCommand(_lastCommand.ToString());
+					}
 					else
 					{
 						_commandStack.Push(topCommand);
@@ -220,16 +290,36 @@ namespace Microsoft.Maui.Graphics
 		private bool IsCommand(char firstLetter)
 		{
 			if (char.IsDigit(firstLetter))
+			{
 				return false;
+			}
 
 			if (firstLetter == '.')
+			{
 				return false;
+			}
 
 			if (firstLetter == '-')
+			{
 				return false;
+			}
+
+			if (firstLetter == '.')
+			{
+				return false;
+			}
+
+			if (firstLetter == '-')
+			{
+				return false;
+			}
 
 			if (firstLetter == 'e' || firstLetter == 'E')
+			{
+			{
 				return false;
+			}
+			}
 
 			return true;
 		}
@@ -558,7 +648,10 @@ namespace Microsoft.Maui.Graphics
 
 			var point3 = NewPoint(NextValue, NextValue, isRelative, true);
 			if (point1 != null)
+			{
 				_path.CurveTo((PointF)point1, point2, point3);
+			}
+
 			_lastCurveControlPoint = point2;
 		}
 

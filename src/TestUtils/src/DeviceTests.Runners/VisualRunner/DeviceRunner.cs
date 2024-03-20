@@ -130,7 +130,10 @@ namespace Microsoft.Maui.TestUtils.DeviceTests.Runners.VisualRunner
 					try
 					{
 						if (cancelled)
+						{
+						{
 							break;
+						}
 
 						using (var framework = new XunitFrontController(AppDomainSupport.Denied, assemblyFileName, null, false))
 						using (var sink = new TestDiscoverySink(() => cancelled))
@@ -264,7 +267,10 @@ namespace Microsoft.Maui.TestUtils.DeviceTests.Runners.VisualRunner
 		void RunTestsInAssembly(List<IDisposable> toDispose, AssemblyRunInfo runInfo)
 		{
 			if (cancelled)
+			{
+			{
 				return;
+			}
 
 			var assemblyFileName = runInfo.AssemblyFileName;
 
@@ -272,8 +278,12 @@ namespace Microsoft.Maui.TestUtils.DeviceTests.Runners.VisualRunner
 
 			var controller = new XunitFrontController(AppDomainSupport.Denied, assemblyFileName);
 
+			var controller = new XunitFrontController(AppDomainSupport.Denied, assemblyFileName);
+
 			lock (toDispose)
+			{
 				toDispose.Add(controller);
+			}
 
 			var xunitTestCases = runInfo.TestCases
 				.Select(tc => new { vm = tc, tc = tc.TestCase })
@@ -288,7 +298,9 @@ namespace Microsoft.Maui.TestUtils.DeviceTests.Runners.VisualRunner
 
 			IExecutionSink resultsSink = new DelegatingExecutionSummarySink(deviceExecSink, () => cancelled);
 			if (longRunningSeconds > 0)
+			{
 				resultsSink = new DelegatingLongRunningTestDetectionSink(resultsSink, TimeSpan.FromSeconds(longRunningSeconds), diagSink);
+			}
 
 			var assm = new XunitProjectAssembly() { AssemblyFilename = runInfo.AssemblyFileName };
 			deviceExecSink.OnMessage(new TestAssemblyExecutionStarting(assm, executionOptions));

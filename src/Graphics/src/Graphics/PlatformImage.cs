@@ -47,7 +47,18 @@ namespace Microsoft.Maui.Graphics.Platform
 		public void Save(Stream stream, ImageFormat format = ImageFormat.Png, float quality = 1)
 		{
 			if (quality < 0 || quality > 1)
+
+/* Unmerged change from project 'Graphics(net8.0)'
+Before:
 				throw new ArgumentOutOfRangeException(nameof(quality), "quality must be in the range of 0..1");
+After:
+			{
+				throw new ArgumentOutOfRangeException(nameof(quality), "quality must be in the range of 0..1");
+			}
+*/
+			{
+				throw new ArgumentOutOfRangeException(nameof(quality), "quality must be in the range of 0..1");
+			}
 
 			if (format == _originalFormat)
 			{
@@ -62,7 +73,18 @@ namespace Microsoft.Maui.Graphics.Platform
 		public Task SaveAsync(Stream stream, ImageFormat format = ImageFormat.Png, float quality = 1)
 		{
 			if (quality < 0 || quality > 1)
+
+/* Unmerged change from project 'Graphics(net8.0)'
+Before:
 				throw new ArgumentOutOfRangeException(nameof(quality), "quality must be in the range of 0..1");
+After:
+			{
+				throw new ArgumentOutOfRangeException(nameof(quality), "quality must be in the range of 0..1");
+			}
+*/
+			{
+				throw new ArgumentOutOfRangeException(nameof(quality), "quality must be in the range of 0..1");
+			}
 
 			if (format == _originalFormat)
 			{
@@ -137,7 +159,9 @@ namespace Microsoft.Maui.Graphics.Platform
 
 				// EOF?
 				if (type == 0xD9)
+				{
 					eof = true;
+				}
 
 				// process the data
 				if (len > 0)

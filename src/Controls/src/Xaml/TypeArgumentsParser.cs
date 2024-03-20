@@ -45,7 +45,11 @@ namespace Microsoft.Maui.Controls.Xaml
 					isGeneric = true;
 				}
 				else if (match[pos] == ')')
+				{
+				{
 					parensCount--;
+				}
+				}
 				else if (match[pos] == ',' && parensCount == 0)
 				{
 					remaining = match.Substring(pos + 1);
@@ -65,6 +69,9 @@ namespace Microsoft.Maui.Controls.Xaml
 
 			var split = type.Split(':');
 			if (split.Length > 2)
+
+/* Unmerged change from project 'Controls.Xaml(net8.0)'
+Before:
 				return null;
 
 			string prefix, name;
@@ -82,6 +89,223 @@ namespace Microsoft.Maui.Controls.Xaml
 			var namespaceuri = resolver.LookupNamespace(prefix);
 			if (namespaceuri == null)
 				throw new XamlParseException($"No xmlns declaration for prefix '{prefix}'.", lineinfo, null);
+After:
+			{
+				return null;
+			}
+
+			string prefix, name;
+			if (split.Length == 2)
+			{
+				prefix = split[0];
+				name = split[1];
+			}
+			else
+			{
+				prefix = "";
+				name = split[0];
+			}
+
+			var namespaceuri = resolver.LookupNamespace(prefix);
+			if (namespaceuri == null)
+			{
+				throw new XamlParseException($"No xmlns declaration for prefix '{prefix}'.", lineinfo, null);
+			}
+*/
+
+/* Unmerged change from project 'Controls.Xaml(net8.0-maccatalyst)'
+Before:
+				return null;
+
+			string prefix, name;
+			if (split.Length == 2)
+			{
+				prefix = split[0];
+				name = split[1];
+			}
+			else
+			{
+				prefix = "";
+				name = split[0];
+			}
+
+			var namespaceuri = resolver.LookupNamespace(prefix);
+			if (namespaceuri == null)
+				throw new XamlParseException($"No xmlns declaration for prefix '{prefix}'.", lineinfo, null);
+After:
+			{
+				return null;
+			}
+
+			string prefix, name;
+			if (split.Length == 2)
+			{
+				prefix = split[0];
+				name = split[1];
+			}
+			else
+			{
+				prefix = "";
+				name = split[0];
+			}
+
+			var namespaceuri = resolver.LookupNamespace(prefix);
+			if (namespaceuri == null)
+			{
+				throw new XamlParseException($"No xmlns declaration for prefix '{prefix}'.", lineinfo, null);
+			}
+*/
+
+/* Unmerged change from project 'Controls.Xaml(net8.0-android)'
+Before:
+				return null;
+
+			string prefix, name;
+			if (split.Length == 2)
+			{
+				prefix = split[0];
+				name = split[1];
+			}
+			else
+			{
+				prefix = "";
+				name = split[0];
+			}
+
+			var namespaceuri = resolver.LookupNamespace(prefix);
+			if (namespaceuri == null)
+				throw new XamlParseException($"No xmlns declaration for prefix '{prefix}'.", lineinfo, null);
+After:
+			{
+				return null;
+			}
+
+			string prefix, name;
+			if (split.Length == 2)
+			{
+				prefix = split[0];
+				name = split[1];
+			}
+			else
+			{
+				prefix = "";
+				name = split[0];
+			}
+
+			var namespaceuri = resolver.LookupNamespace(prefix);
+			if (namespaceuri == null)
+			{
+				throw new XamlParseException($"No xmlns declaration for prefix '{prefix}'.", lineinfo, null);
+			}
+*/
+
+/* Unmerged change from project 'Controls.Xaml(net8.0-windows10.0.19041.0)'
+Before:
+				return null;
+
+			string prefix, name;
+			if (split.Length == 2)
+			{
+				prefix = split[0];
+				name = split[1];
+			}
+			else
+			{
+				prefix = "";
+				name = split[0];
+			}
+
+			var namespaceuri = resolver.LookupNamespace(prefix);
+			if (namespaceuri == null)
+				throw new XamlParseException($"No xmlns declaration for prefix '{prefix}'.", lineinfo, null);
+After:
+			{
+				return null;
+			}
+
+			string prefix, name;
+			if (split.Length == 2)
+			{
+				prefix = split[0];
+				name = split[1];
+			}
+			else
+			{
+				prefix = "";
+				name = split[0];
+			}
+
+			var namespaceuri = resolver.LookupNamespace(prefix);
+			if (namespaceuri == null)
+			{
+				throw new XamlParseException($"No xmlns declaration for prefix '{prefix}'.", lineinfo, null);
+			}
+*/
+
+/* Unmerged change from project 'Controls.Xaml(net8.0-windows10.0.20348.0)'
+Before:
+				return null;
+
+			string prefix, name;
+			if (split.Length == 2)
+			{
+				prefix = split[0];
+				name = split[1];
+			}
+			else
+			{
+				prefix = "";
+				name = split[0];
+			}
+
+			var namespaceuri = resolver.LookupNamespace(prefix);
+			if (namespaceuri == null)
+				throw new XamlParseException($"No xmlns declaration for prefix '{prefix}'.", lineinfo, null);
+After:
+			{
+				return null;
+			}
+
+			string prefix, name;
+			if (split.Length == 2)
+			{
+				prefix = split[0];
+				name = split[1];
+			}
+			else
+			{
+				prefix = "";
+				name = split[0];
+			}
+
+			var namespaceuri = resolver.LookupNamespace(prefix);
+			if (namespaceuri == null)
+			{
+				throw new XamlParseException($"No xmlns declaration for prefix '{prefix}'.", lineinfo, null);
+			}
+*/
+			{
+				return null;
+			}
+
+			string prefix, name;
+			if (split.Length == 2)
+			{
+				prefix = split[0];
+				name = split[1];
+			}
+			else
+			{
+				prefix = "";
+				name = split[0];
+			}
+
+			var namespaceuri = resolver.LookupNamespace(prefix);
+			if (namespaceuri == null)
+			{
+				throw new XamlParseException($"No xmlns declaration for prefix '{prefix}'.", lineinfo, null);
+			}
+
 			return new XmlType(namespaceuri, name, typeArguments);
 		}
 	}

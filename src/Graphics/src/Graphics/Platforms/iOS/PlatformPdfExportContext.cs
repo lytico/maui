@@ -24,7 +24,18 @@ namespace Microsoft.Maui.Graphics.Platform
 		protected override void AddPageImpl(float width, float height)
 		{
 			if (_closed)
+
+/* Unmerged change from project 'Graphics(net8.0-maccatalyst)'
+Before:
 				throw new Exception("Unable to add a page because the PDFContext is already closed.");
+After:
+			{
+				throw new Exception("Unable to add a page because the PDFContext is already closed.");
+*/
+			{
+				throw new Exception("Unable to add a page because the PDFContext is already closed.");
+			}
+			}
 
 			if (_tempFilePath == null)
 			{
@@ -91,7 +102,9 @@ namespace Microsoft.Maui.Graphics.Platform
 			try
 			{
 				if (File.Exists(_tempFilePath))
+				{
 					File.Delete(_tempFilePath);
+				}
 			}
 			catch (Exception exc)
 			{

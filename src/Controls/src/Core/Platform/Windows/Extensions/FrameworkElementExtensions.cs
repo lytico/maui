@@ -22,7 +22,9 @@ namespace Microsoft.Maui.Controls.Platform
 		public static WBrush GetForeground(this FrameworkElement element)
 		{
 			if (element == null)
+			{
 				throw new ArgumentNullException("element");
+			}
 
 			return (WBrush)element.GetValue(GetForegroundProperty(element));
 		}
@@ -31,7 +33,11 @@ namespace Microsoft.Maui.Controls.Platform
 		{
 			WBindingExpression expr = element.GetBindingExpression(GetForegroundProperty(element));
 			if (expr == null)
+			{
+			{
 				return null;
+			}
+			}
 
 			return expr.ParentBinding;
 		}
@@ -40,7 +46,11 @@ namespace Microsoft.Maui.Controls.Platform
 		{
 			WBinding binding = GetForegroundBinding(element);
 			if (binding != null)
+			{
+			{
 				return binding;
+			}
+			}
 
 			return GetForeground(element);
 		}
@@ -49,15 +59,21 @@ namespace Microsoft.Maui.Controls.Platform
 		{
 			var binding = cache as WBinding;
 			if (binding != null)
+			{
 				SetForeground(element, binding);
+			}
 			else
+			{
 				SetForeground(element, (WBrush)cache);
+			}
 		}
 
 		public static void SetForeground(this FrameworkElement element, WBrush foregroundBrush)
 		{
 			if (element == null)
+			{
 				throw new ArgumentNullException("element");
+			}
 
 			element.SetValue(GetForegroundProperty(element), foregroundBrush);
 		}
@@ -65,7 +81,9 @@ namespace Microsoft.Maui.Controls.Platform
 		public static void SetForeground(this FrameworkElement element, WBinding binding)
 		{
 			if (element == null)
+			{
 				throw new ArgumentNullException("element");
+			}
 
 			element.SetBinding(GetForegroundProperty(element), binding);
 		}
@@ -73,9 +91,24 @@ namespace Microsoft.Maui.Controls.Platform
 		static DependencyProperty GetForegroundProperty(FrameworkElement element)
 		{
 			if (element is Control)
+
+/* Unmerged change from project 'Controls.Core(net8.0-windows10.0.20348.0)'
+Before:
 				return Control.ForegroundProperty;
 			if (element is TextBlock)
 				return TextBlock.ForegroundProperty;
+After:
+			{
+				return Control.ForegroundProperty;
+*/
+			{
+				return Control.ForegroundProperty;
+			}
+
+			if (element is TextBlock)
+			{
+				return TextBlock.ForegroundProperty;
+			}
 
 			Type type = element.GetType();
 
@@ -84,7 +117,9 @@ namespace Microsoft.Maui.Controls.Platform
 			{
 				FieldInfo field = ReflectionExtensions.GetFields(type).FirstOrDefault(f => f.Name == "ForegroundProperty");
 				if (field == null)
+				{
 					throw new ArgumentException("type is not a Foregroundable type");
+				}
 
 				var property = (DependencyProperty)field.GetValue(null);
 				ForegroundProperties.Value.TryAdd(type, property);

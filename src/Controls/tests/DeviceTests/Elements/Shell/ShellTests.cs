@@ -649,12 +649,35 @@ namespace Microsoft.Maui.DeviceTests
 				bool WaitCondition()
 				{
 					if (shellTitleView.Handler == null)
+
+/* Unmerged change from project 'Controls.DeviceTests(net8.0-windows10.0.20348.0)'
+Before:
 						return false;
 
 					var titleView = GetTitleView(handler);
 
 					if (titleView == null)
+After:
+					{
+*/
+					{
 						return false;
+					}
+
+					var titleView = GetTitleView(handler);
+
+					if (titleView == null)
+					{
+						return false;
+					}
+					}
+
+					var titleView = GetTitleView(handler);
+
+					if (titleView == null)
+					{
+						return false;
+					}
 
 					return shellTitleView.ToPlatform() == titleView;
 				}
@@ -780,7 +803,9 @@ namespace Microsoft.Maui.DeviceTests
 			{
 				var value = new Shell();
 				foreach (var item in shellItems)
+				{
 					value.Items.Add(item);
+				}
 
 				return value;
 			});

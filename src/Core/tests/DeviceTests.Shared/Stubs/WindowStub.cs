@@ -98,7 +98,11 @@ namespace Microsoft.Maui.DeviceTests.Stubs
 		public virtual bool AddOverlay(IWindowOverlay overlay)
 		{
 			if (overlay is IVisualDiagnosticsOverlay)
+			{
+			{
 				return false;
+			}
+			}
 
 			// Add the overlay. If it's added, 
 			// Initalize the native layer if it wasn't already,
@@ -116,11 +120,91 @@ namespace Microsoft.Maui.DeviceTests.Stubs
 		public virtual bool RemoveOverlay(IWindowOverlay overlay)
 		{
 			if (overlay is IVisualDiagnosticsOverlay)
+
+/* Unmerged change from project 'Core.DeviceTests.Shared(net8.0-maccatalyst)'
+Before:
 				return false;
 
 			var result = _overlays.Remove(overlay);
 			if (result)
 				overlay.Deinitialize();
+After:
+			{
+				return false;
+			}
+
+			var result = _overlays.Remove(overlay);
+			if (result)
+			{
+				overlay.Deinitialize();
+			}
+*/
+
+/* Unmerged change from project 'Core.DeviceTests.Shared(net8.0-android)'
+Before:
+				return false;
+
+			var result = _overlays.Remove(overlay);
+			if (result)
+				overlay.Deinitialize();
+After:
+			{
+				return false;
+			}
+
+			var result = _overlays.Remove(overlay);
+			if (result)
+			{
+				overlay.Deinitialize();
+			}
+*/
+
+/* Unmerged change from project 'Core.DeviceTests.Shared(net8.0-windows10.0.19041.0)'
+Before:
+				return false;
+
+			var result = _overlays.Remove(overlay);
+			if (result)
+				overlay.Deinitialize();
+After:
+			{
+				return false;
+			}
+
+			var result = _overlays.Remove(overlay);
+			if (result)
+			{
+				overlay.Deinitialize();
+			}
+*/
+
+/* Unmerged change from project 'Core.DeviceTests.Shared(net8.0-windows10.0.20348.0)'
+Before:
+				return false;
+
+			var result = _overlays.Remove(overlay);
+			if (result)
+				overlay.Deinitialize();
+After:
+			{
+				return false;
+			}
+
+			var result = _overlays.Remove(overlay);
+			if (result)
+			{
+				overlay.Deinitialize();
+			}
+*/
+			{
+				return false;
+			}
+
+			var result = _overlays.Remove(overlay);
+			if (result)
+			{
+				overlay.Deinitialize();
+			}
 
 			return result;
 		}

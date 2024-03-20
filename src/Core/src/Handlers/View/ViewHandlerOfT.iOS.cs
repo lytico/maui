@@ -22,7 +22,20 @@ namespace Microsoft.Maui.Handlers
 		protected override void SetupContainer()
 		{
 			if (PlatformView == null || ContainerView != null)
+			{
 				return;
+
+/* Unmerged change from project 'Core(net8.0-maccatalyst)'
+Before:
+			var oldParent = (UIView?)PlatformView.Superview;
+
+			var oldIndex = oldParent?.IndexOfSubview(PlatformView);
+After:
+			}
+
+			var oldParent = oldParent?.IndexOfSubview(PlatformView);
+*/
+			}
 
 			var oldParent = (UIView?)PlatformView.Superview;
 
@@ -33,9 +46,13 @@ namespace Microsoft.Maui.Handlers
 			ContainerView.AddSubview(PlatformView);
 
 			if (oldIndex is int idx && idx >= 0)
+			{
 				oldParent?.InsertSubview(ContainerView, idx);
+			}
 			else
+			{
 				oldParent?.AddSubview(ContainerView);
+			}
 		}
 
 		protected override void RemoveContainer()
@@ -54,9 +71,13 @@ namespace Microsoft.Maui.Handlers
 			ContainerView = null;
 
 			if (oldIndex is int idx && idx >= 0)
+			{
 				oldParent?.InsertSubview(PlatformView, idx);
+			}
 			else
+			{
 				oldParent?.AddSubview(PlatformView);
+			}
 
 			void CleanupContainerView(UIView? containerView)
 			{

@@ -52,7 +52,9 @@ namespace Microsoft.Maui.Controls.Xaml
 			Type propertyType = null;
 
 			if (valueProvider.TargetObject is Setter setter)
+			{
 				bp = setter.Property;
+			}
 			else
 			{
 				bp = valueProvider.TargetProperty as BindableProperty;
@@ -69,15 +71,26 @@ namespace Microsoft.Maui.Controls.Xaml
 					object targetObject = valueProvider.TargetObject;
 
 					if (targetObject is Setter)
+					{
 						return null;
-					else return bp.GetDefaultValue(targetObject as BindableObject);
+					}
+					else
+					{
+						return bp.GetDefaultValue(targetObject as BindableObject);
+					}
 				}
 				if (propertyType.IsValueType)
+				{
 					return Activator.CreateInstance(propertyType);
+				}
+
 				return null;
 			}
 
 			if (Converter != null)
+
+/* Unmerged change from project 'Controls.Xaml(net8.0)'
+Before:
 				return Converter.Convert(value, propertyType, ConverterParameter, CultureInfo.CurrentUICulture);
 
 			var converterProvider = serviceProvider?.GetService<IValueConverterProvider>();
@@ -114,6 +127,443 @@ namespace Microsoft.Maui.Controls.Xaml
 			var ret = value.ConvertTo(propertyType, () => pi, serviceProvider, out Exception exception);
 			if (exception != null)
 				throw exception;
+After:
+			{
+				return Converter.Convert(value, propertyType, ConverterParameter, CultureInfo.CurrentUICulture);
+			}
+
+			var converterProvider = serviceProvider?.GetService<IValueConverterProvider>();
+			if (converterProvider != null)
+			{
+				MemberInfo minforetriever()
+				{
+					if (pi != null)
+					{
+						return pi;
+					}
+
+					MemberInfo minfo = null;
+					try
+					{
+						minfo = bp.DeclaringType.GetRuntimeProperty(bp.PropertyName);
+					}
+					catch (AmbiguousMatchException e)
+					{
+						throw new XamlParseException($"Multiple properties with name '{bp.DeclaringType}.{bp.PropertyName}' found.", serviceProvider, innerException: e);
+					}
+					if (minfo != null)
+					{
+						return minfo;
+					}
+
+					try
+					{
+						return bp.DeclaringType.GetRuntimeMethod("Get" + bp.PropertyName, new[] { typeof(BindableObject) });
+					}
+					catch (AmbiguousMatchException e)
+					{
+						throw new XamlParseException($"Multiple methods with name '{bp.DeclaringType}.Get{bp.PropertyName}' found.", serviceProvider, innerException: e);
+					}
+				}
+
+				return converterProvider.Convert(value, propertyType, minforetriever, serviceProvider);
+			}
+			var ret = value.ConvertTo(propertyType, () => pi, serviceProvider, out Exception exception);
+			if (exception != null)
+			{
+				throw exception;
+			}
+*/
+
+/* Unmerged change from project 'Controls.Xaml(net8.0-maccatalyst)'
+Before:
+				return Converter.Convert(value, propertyType, ConverterParameter, CultureInfo.CurrentUICulture);
+
+			var converterProvider = serviceProvider?.GetService<IValueConverterProvider>();
+			if (converterProvider != null)
+			{
+				MemberInfo minforetriever()
+				{
+					if (pi != null)
+						return pi;
+
+					MemberInfo minfo = null;
+					try
+					{
+						minfo = bp.DeclaringType.GetRuntimeProperty(bp.PropertyName);
+					}
+					catch (AmbiguousMatchException e)
+					{
+						throw new XamlParseException($"Multiple properties with name '{bp.DeclaringType}.{bp.PropertyName}' found.", serviceProvider, innerException: e);
+					}
+					if (minfo != null)
+						return minfo;
+					try
+					{
+						return bp.DeclaringType.GetRuntimeMethod("Get" + bp.PropertyName, new[] { typeof(BindableObject) });
+					}
+					catch (AmbiguousMatchException e)
+					{
+						throw new XamlParseException($"Multiple methods with name '{bp.DeclaringType}.Get{bp.PropertyName}' found.", serviceProvider, innerException: e);
+					}
+				}
+
+				return converterProvider.Convert(value, propertyType, minforetriever, serviceProvider);
+			}
+			var ret = value.ConvertTo(propertyType, () => pi, serviceProvider, out Exception exception);
+			if (exception != null)
+				throw exception;
+After:
+			{
+				return Converter.Convert(value, propertyType, ConverterParameter, CultureInfo.CurrentUICulture);
+			}
+
+			var converterProvider = serviceProvider?.GetService<IValueConverterProvider>();
+			if (converterProvider != null)
+			{
+				MemberInfo minforetriever()
+				{
+					if (pi != null)
+					{
+						return pi;
+					}
+
+					MemberInfo minfo = null;
+					try
+					{
+						minfo = bp.DeclaringType.GetRuntimeProperty(bp.PropertyName);
+					}
+					catch (AmbiguousMatchException e)
+					{
+						throw new XamlParseException($"Multiple properties with name '{bp.DeclaringType}.{bp.PropertyName}' found.", serviceProvider, innerException: e);
+					}
+					if (minfo != null)
+					{
+						return minfo;
+					}
+
+					try
+					{
+						return bp.DeclaringType.GetRuntimeMethod("Get" + bp.PropertyName, new[] { typeof(BindableObject) });
+					}
+					catch (AmbiguousMatchException e)
+					{
+						throw new XamlParseException($"Multiple methods with name '{bp.DeclaringType}.Get{bp.PropertyName}' found.", serviceProvider, innerException: e);
+					}
+				}
+
+				return converterProvider.Convert(value, propertyType, minforetriever, serviceProvider);
+			}
+			var ret = value.ConvertTo(propertyType, () => pi, serviceProvider, out Exception exception);
+			if (exception != null)
+			{
+				throw exception;
+			}
+*/
+
+/* Unmerged change from project 'Controls.Xaml(net8.0-android)'
+Before:
+				return Converter.Convert(value, propertyType, ConverterParameter, CultureInfo.CurrentUICulture);
+
+			var converterProvider = serviceProvider?.GetService<IValueConverterProvider>();
+			if (converterProvider != null)
+			{
+				MemberInfo minforetriever()
+				{
+					if (pi != null)
+						return pi;
+
+					MemberInfo minfo = null;
+					try
+					{
+						minfo = bp.DeclaringType.GetRuntimeProperty(bp.PropertyName);
+					}
+					catch (AmbiguousMatchException e)
+					{
+						throw new XamlParseException($"Multiple properties with name '{bp.DeclaringType}.{bp.PropertyName}' found.", serviceProvider, innerException: e);
+					}
+					if (minfo != null)
+						return minfo;
+					try
+					{
+						return bp.DeclaringType.GetRuntimeMethod("Get" + bp.PropertyName, new[] { typeof(BindableObject) });
+					}
+					catch (AmbiguousMatchException e)
+					{
+						throw new XamlParseException($"Multiple methods with name '{bp.DeclaringType}.Get{bp.PropertyName}' found.", serviceProvider, innerException: e);
+					}
+				}
+
+				return converterProvider.Convert(value, propertyType, minforetriever, serviceProvider);
+			}
+			var ret = value.ConvertTo(propertyType, () => pi, serviceProvider, out Exception exception);
+			if (exception != null)
+				throw exception;
+After:
+			{
+				return Converter.Convert(value, propertyType, ConverterParameter, CultureInfo.CurrentUICulture);
+			}
+
+			var converterProvider = serviceProvider?.GetService<IValueConverterProvider>();
+			if (converterProvider != null)
+			{
+				MemberInfo minforetriever()
+				{
+					if (pi != null)
+					{
+						return pi;
+					}
+
+					MemberInfo minfo = null;
+					try
+					{
+						minfo = bp.DeclaringType.GetRuntimeProperty(bp.PropertyName);
+					}
+					catch (AmbiguousMatchException e)
+					{
+						throw new XamlParseException($"Multiple properties with name '{bp.DeclaringType}.{bp.PropertyName}' found.", serviceProvider, innerException: e);
+					}
+					if (minfo != null)
+					{
+						return minfo;
+					}
+
+					try
+					{
+						return bp.DeclaringType.GetRuntimeMethod("Get" + bp.PropertyName, new[] { typeof(BindableObject) });
+					}
+					catch (AmbiguousMatchException e)
+					{
+						throw new XamlParseException($"Multiple methods with name '{bp.DeclaringType}.Get{bp.PropertyName}' found.", serviceProvider, innerException: e);
+					}
+				}
+
+				return converterProvider.Convert(value, propertyType, minforetriever, serviceProvider);
+			}
+			var ret = value.ConvertTo(propertyType, () => pi, serviceProvider, out Exception exception);
+			if (exception != null)
+			{
+				throw exception;
+			}
+*/
+
+/* Unmerged change from project 'Controls.Xaml(net8.0-windows10.0.19041.0)'
+Before:
+				return Converter.Convert(value, propertyType, ConverterParameter, CultureInfo.CurrentUICulture);
+
+			var converterProvider = serviceProvider?.GetService<IValueConverterProvider>();
+			if (converterProvider != null)
+			{
+				MemberInfo minforetriever()
+				{
+					if (pi != null)
+						return pi;
+
+					MemberInfo minfo = null;
+					try
+					{
+						minfo = bp.DeclaringType.GetRuntimeProperty(bp.PropertyName);
+					}
+					catch (AmbiguousMatchException e)
+					{
+						throw new XamlParseException($"Multiple properties with name '{bp.DeclaringType}.{bp.PropertyName}' found.", serviceProvider, innerException: e);
+					}
+					if (minfo != null)
+						return minfo;
+					try
+					{
+						return bp.DeclaringType.GetRuntimeMethod("Get" + bp.PropertyName, new[] { typeof(BindableObject) });
+					}
+					catch (AmbiguousMatchException e)
+					{
+						throw new XamlParseException($"Multiple methods with name '{bp.DeclaringType}.Get{bp.PropertyName}' found.", serviceProvider, innerException: e);
+					}
+				}
+
+				return converterProvider.Convert(value, propertyType, minforetriever, serviceProvider);
+			}
+			var ret = value.ConvertTo(propertyType, () => pi, serviceProvider, out Exception exception);
+			if (exception != null)
+				throw exception;
+After:
+			{
+				return Converter.Convert(value, propertyType, ConverterParameter, CultureInfo.CurrentUICulture);
+			}
+
+			var converterProvider = serviceProvider?.GetService<IValueConverterProvider>();
+			if (converterProvider != null)
+			{
+				MemberInfo minforetriever()
+				{
+					if (pi != null)
+					{
+						return pi;
+					}
+
+					MemberInfo minfo = null;
+					try
+					{
+						minfo = bp.DeclaringType.GetRuntimeProperty(bp.PropertyName);
+					}
+					catch (AmbiguousMatchException e)
+					{
+						throw new XamlParseException($"Multiple properties with name '{bp.DeclaringType}.{bp.PropertyName}' found.", serviceProvider, innerException: e);
+					}
+					if (minfo != null)
+					{
+						return minfo;
+					}
+
+					try
+					{
+						return bp.DeclaringType.GetRuntimeMethod("Get" + bp.PropertyName, new[] { typeof(BindableObject) });
+					}
+					catch (AmbiguousMatchException e)
+					{
+						throw new XamlParseException($"Multiple methods with name '{bp.DeclaringType}.Get{bp.PropertyName}' found.", serviceProvider, innerException: e);
+					}
+				}
+
+				return converterProvider.Convert(value, propertyType, minforetriever, serviceProvider);
+			}
+			var ret = value.ConvertTo(propertyType, () => pi, serviceProvider, out Exception exception);
+			if (exception != null)
+			{
+				throw exception;
+			}
+*/
+
+/* Unmerged change from project 'Controls.Xaml(net8.0-windows10.0.20348.0)'
+Before:
+				return Converter.Convert(value, propertyType, ConverterParameter, CultureInfo.CurrentUICulture);
+
+			var converterProvider = serviceProvider?.GetService<IValueConverterProvider>();
+			if (converterProvider != null)
+			{
+				MemberInfo minforetriever()
+				{
+					if (pi != null)
+						return pi;
+
+					MemberInfo minfo = null;
+					try
+					{
+						minfo = bp.DeclaringType.GetRuntimeProperty(bp.PropertyName);
+					}
+					catch (AmbiguousMatchException e)
+					{
+						throw new XamlParseException($"Multiple properties with name '{bp.DeclaringType}.{bp.PropertyName}' found.", serviceProvider, innerException: e);
+					}
+					if (minfo != null)
+						return minfo;
+					try
+					{
+						return bp.DeclaringType.GetRuntimeMethod("Get" + bp.PropertyName, new[] { typeof(BindableObject) });
+					}
+					catch (AmbiguousMatchException e)
+					{
+						throw new XamlParseException($"Multiple methods with name '{bp.DeclaringType}.Get{bp.PropertyName}' found.", serviceProvider, innerException: e);
+					}
+				}
+
+				return converterProvider.Convert(value, propertyType, minforetriever, serviceProvider);
+			}
+			var ret = value.ConvertTo(propertyType, () => pi, serviceProvider, out Exception exception);
+			if (exception != null)
+				throw exception;
+After:
+			{
+				return Converter.Convert(value, propertyType, ConverterParameter, CultureInfo.CurrentUICulture);
+			}
+
+			var converterProvider = serviceProvider?.GetService<IValueConverterProvider>();
+			if (converterProvider != null)
+			{
+				MemberInfo minforetriever()
+				{
+					if (pi != null)
+					{
+						return pi;
+					}
+
+					MemberInfo minfo = null;
+					try
+					{
+						minfo = bp.DeclaringType.GetRuntimeProperty(bp.PropertyName);
+					}
+					catch (AmbiguousMatchException e)
+					{
+						throw new XamlParseException($"Multiple properties with name '{bp.DeclaringType}.{bp.PropertyName}' found.", serviceProvider, innerException: e);
+					}
+					if (minfo != null)
+					{
+						return minfo;
+					}
+
+					try
+					{
+						return bp.DeclaringType.GetRuntimeMethod("Get" + bp.PropertyName, new[] { typeof(BindableObject) });
+					}
+					catch (AmbiguousMatchException e)
+					{
+						throw new XamlParseException($"Multiple methods with name '{bp.DeclaringType}.Get{bp.PropertyName}' found.", serviceProvider, innerException: e);
+					}
+				}
+
+				return converterProvider.Convert(value, propertyType, minforetriever, serviceProvider);
+			}
+			var ret = value.ConvertTo(propertyType, () => pi, serviceProvider, out Exception exception);
+			if (exception != null)
+			{
+				throw exception;
+			}
+*/
+			{
+				return Converter.Convert(value, propertyType, ConverterParameter, CultureInfo.CurrentUICulture);
+			}
+
+			var converterProvider = serviceProvider?.GetService<IValueConverterProvider>();
+			if (converterProvider != null)
+			{
+				MemberInfo minforetriever()
+				{
+					if (pi != null)
+					{
+						return pi;
+					}
+
+					MemberInfo minfo = null;
+					try
+					{
+						minfo = bp.DeclaringType.GetRuntimeProperty(bp.PropertyName);
+					}
+					catch (AmbiguousMatchException e)
+					{
+						throw new XamlParseException($"Multiple properties with name '{bp.DeclaringType}.{bp.PropertyName}' found.", serviceProvider, innerException: e);
+					}
+					if (minfo != null)
+					{
+						return minfo;
+					}
+
+					try
+					{
+						return bp.DeclaringType.GetRuntimeMethod("Get" + bp.PropertyName, new[] { typeof(BindableObject) });
+					}
+					catch (AmbiguousMatchException e)
+					{
+						throw new XamlParseException($"Multiple methods with name '{bp.DeclaringType}.Get{bp.PropertyName}' found.", serviceProvider, innerException: e);
+					}
+				}
+
+				return converterProvider.Convert(value, propertyType, minforetriever, serviceProvider);
+			}
+			var ret = value.ConvertTo(propertyType, () => pi, serviceProvider, out Exception exception);
+			if (exception != null)
+			{
+				throw exception;
+			}
+
 			return ret;
 		}
 

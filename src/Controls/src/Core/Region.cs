@@ -41,9 +41,13 @@ namespace Microsoft.Maui.Controls
 			var lineHeightTotal = startY;
 
 			for (var i = 0; i <= endLine; i++)
+			{
 				if (endLine != 0) // MultiLine
 				{
 					if (i == 0) // First Line
+
+/* Unmerged change from project 'Controls.Core(net8.0)'
+Before:
 						positions.Add(new Rect(startX, lineHeightTotal, maxWidth - startX, lineHeights[i]));
 
 					else if (i != endLine) // Middle Line
@@ -55,7 +59,171 @@ namespace Microsoft.Maui.Controls
 					lineHeightTotal += lineHeights[i];
 				}
 				else // SingleLine
+After:
+					{
+						positions.Add(new Rect(startX, lineHeightTotal, maxWidth - startX, lineHeights[i]));
+					}
+					else if (i != endLine) // Middle Line
+					{
+						positions.Add(new Rect(0, lineHeightTotal, maxWidth, lineHeights[i]));
+					}
+					else // End Line
+					{
+						positions.Add(new Rect(0, lineHeightTotal, endX, lineHeights[i]));
+					}
+
+					lineHeightTotal += lineHeights[i];
+				}
+				else // SingleLine
+				{
+*/
+
+/* Unmerged change from project 'Controls.Core(net8.0-maccatalyst)'
+Before:
+						positions.Add(new Rect(startX, lineHeightTotal, maxWidth - startX, lineHeights[i]));
+
+					else if (i != endLine) // Middle Line
+						positions.Add(new Rect(0, lineHeightTotal, maxWidth, lineHeights[i]));
+
+					else // End Line
+						positions.Add(new Rect(0, lineHeightTotal, endX, lineHeights[i]));
+
+					lineHeightTotal += lineHeights[i];
+				}
+				else // SingleLine
+After:
+					{
+						positions.Add(new Rect(startX, lineHeightTotal, maxWidth - startX, lineHeights[i]));
+					}
+					else if (i != endLine) // Middle Line
+					{
+						positions.Add(new Rect(0, lineHeightTotal, maxWidth, lineHeights[i]));
+					}
+					else // End Line
+					{
+						positions.Add(new Rect(0, lineHeightTotal, endX, lineHeights[i]));
+					}
+
+					lineHeightTotal += lineHeights[i];
+				}
+				else // SingleLine
+				{
+*/
+
+/* Unmerged change from project 'Controls.Core(net8.0-android)'
+Before:
+						positions.Add(new Rect(startX, lineHeightTotal, maxWidth - startX, lineHeights[i]));
+
+					else if (i != endLine) // Middle Line
+						positions.Add(new Rect(0, lineHeightTotal, maxWidth, lineHeights[i]));
+
+					else // End Line
+						positions.Add(new Rect(0, lineHeightTotal, endX, lineHeights[i]));
+
+					lineHeightTotal += lineHeights[i];
+				}
+				else // SingleLine
+After:
+					{
+						positions.Add(new Rect(startX, lineHeightTotal, maxWidth - startX, lineHeights[i]));
+					}
+					else if (i != endLine) // Middle Line
+					{
+						positions.Add(new Rect(0, lineHeightTotal, maxWidth, lineHeights[i]));
+					}
+					else // End Line
+					{
+						positions.Add(new Rect(0, lineHeightTotal, endX, lineHeights[i]));
+					}
+
+					lineHeightTotal += lineHeights[i];
+				}
+				else // SingleLine
+				{
+*/
+
+/* Unmerged change from project 'Controls.Core(net8.0-windows10.0.19041.0)'
+Before:
+						positions.Add(new Rect(startX, lineHeightTotal, maxWidth - startX, lineHeights[i]));
+
+					else if (i != endLine) // Middle Line
+						positions.Add(new Rect(0, lineHeightTotal, maxWidth, lineHeights[i]));
+
+					else // End Line
+						positions.Add(new Rect(0, lineHeightTotal, endX, lineHeights[i]));
+
+					lineHeightTotal += lineHeights[i];
+				}
+				else // SingleLine
+After:
+					{
+						positions.Add(new Rect(startX, lineHeightTotal, maxWidth - startX, lineHeights[i]));
+					}
+					else if (i != endLine) // Middle Line
+					{
+						positions.Add(new Rect(0, lineHeightTotal, maxWidth, lineHeights[i]));
+					}
+					else // End Line
+					{
+						positions.Add(new Rect(0, lineHeightTotal, endX, lineHeights[i]));
+					}
+
+					lineHeightTotal += lineHeights[i];
+				}
+				else // SingleLine
+				{
+*/
+
+/* Unmerged change from project 'Controls.Core(net8.0-windows10.0.20348.0)'
+Before:
+						positions.Add(new Rect(startX, lineHeightTotal, maxWidth - startX, lineHeights[i]));
+
+					else if (i != endLine) // Middle Line
+						positions.Add(new Rect(0, lineHeightTotal, maxWidth, lineHeights[i]));
+
+					else // End Line
+						positions.Add(new Rect(0, lineHeightTotal, endX, lineHeights[i]));
+
+					lineHeightTotal += lineHeights[i];
+				}
+				else // SingleLine
+After:
+					{
+						positions.Add(new Rect(startX, lineHeightTotal, maxWidth - startX, lineHeights[i]));
+					}
+					else if (i != endLine) // Middle Line
+					{
+						positions.Add(new Rect(0, lineHeightTotal, maxWidth, lineHeights[i]));
+					}
+					else // End Line
+					{
+						positions.Add(new Rect(0, lineHeightTotal, endX, lineHeights[i]));
+					}
+
+					lineHeightTotal += lineHeights[i];
+				}
+				else // SingleLine
+				{
+*/
+					{
+						positions.Add(new Rect(startX, lineHeightTotal, maxWidth - startX, lineHeights[i]));
+					}
+					else if (i != endLine) // Middle Line
+					{
+						positions.Add(new Rect(0, lineHeightTotal, maxWidth, lineHeights[i]));
+					}
+					else // End Line
+					{
+						positions.Add(new Rect(0, lineHeightTotal, endX, lineHeights[i]));
+					}
+
+					lineHeightTotal += lineHeights[i];
+				}
+				else // SingleLine
+				{
 					positions.Add(new Rect(startX, lineHeightTotal, endX - startX, lineHeights[i]));
+				}
+			}
 
 			return new Region(positions);
 		}
@@ -70,11 +238,17 @@ namespace Microsoft.Maui.Controls
 		public bool Contains(double x, double y)
 		{
 			if (Regions == null)
+			{
 				return false;
+			}
 
 			for (int i = 0; i < Regions.Count; i++)
+			{
 				if (Regions[i].Contains(x, y))
+				{
 					return true;
+				}
+			}
 
 			return false;
 		}
@@ -83,7 +257,11 @@ namespace Microsoft.Maui.Controls
 		public Region Deflate()
 		{
 			if (_inflation == null)
+			{
+			{
 				return this;
+			}
+			}
 
 			return Inflate(_inflation.Value.Left * -1, _inflation.Value.Top * -1, _inflation.Value.Right * -1, _inflation.Value.Bottom * -1);
 		}
@@ -98,7 +276,11 @@ namespace Microsoft.Maui.Controls
 		public Region Inflate(double left, double top, double right, double bottom)
 		{
 			if (Regions == null)
+			{
+			{
 				return this;
+			}
+			}
 
 			Rect[] rectangles = new Rect[Regions.Count];
 			for (int i = 0; i < Regions.Count; i++)

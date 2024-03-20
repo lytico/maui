@@ -61,10 +61,58 @@ namespace Microsoft.Maui.Controls
 		bool AreEqual(object value1, object value2)
 		{
 			if (value1 == value2)
+
+/* Unmerged change from project 'Controls.Core(net8.0-maccatalyst)'
+Before:
 				return true;
 
 			if (value1 != null && value2 != null)
 				return AreEqualType(value1, value2) || AreEqualType(value2, value1);
+After:
+			{
+				return true;
+*/
+
+/* Unmerged change from project 'Controls.Core(net8.0-android)'
+Before:
+				return true;
+
+			if (value1 != null && value2 != null)
+				return AreEqualType(value1, value2) || AreEqualType(value2, value1);
+After:
+			{
+				return true;
+*/
+
+/* Unmerged change from project 'Controls.Core(net8.0-windows10.0.19041.0)'
+Before:
+				return true;
+
+			if (value1 != null && value2 != null)
+				return AreEqualType(value1, value2) || AreEqualType(value2, value1);
+After:
+			{
+				return true;
+*/
+
+/* Unmerged change from project 'Controls.Core(net8.0-windows10.0.20348.0)'
+Before:
+				return true;
+
+			if (value1 != null && value2 != null)
+				return AreEqualType(value1, value2) || AreEqualType(value2, value1);
+After:
+			{
+				return true;
+*/
+			{
+				return true;
+			}
+
+			if (value1 != null && value2 != null)
+			{
+				return AreEqualType(value1, value2) || AreEqualType(value2, value1);
+			}
 
 			return false;
 		}
@@ -72,9 +120,13 @@ namespace Microsoft.Maui.Controls
 		bool AreEqualType(object value1, object value2)
 		{
 			if (value2 is Enum)
+			{
 				value1 = ConvertToEnum(value2.GetType(), value1);
+			}
 			else
+			{
 				value1 = Convert.ChangeType(value1, value2.GetType(), CultureInfo.InvariantCulture);
+			}
 
 			return value2.Equals(value1);
 		}

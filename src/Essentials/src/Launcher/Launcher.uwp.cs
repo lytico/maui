@@ -29,7 +29,11 @@ namespace Microsoft.Maui.ApplicationModel
 			var canOpen = await PlatformCanOpenAsync(uri);
 
 			if (canOpen)
+			{
+			{
 				return await WinLauncher.LaunchUriAsync(uri).AsTask();
+			}
+			}
 
 			return canOpen;
 		}

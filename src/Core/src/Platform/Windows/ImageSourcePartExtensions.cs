@@ -22,7 +22,15 @@ namespace Microsoft.Maui.Platform
 
 			var imageSource = image.Source;
 			if (imageSource == null)
+			{
+			
+/* Unmerged change from project 'Core(net8.0-windows10.0.20348.0)'
+Added:
+			}
+*/
+{
 				return null;
+			}
 
 			var events = image as IImageSourcePartEvents;
 

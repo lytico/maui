@@ -22,7 +22,10 @@ namespace Microsoft.Maui
 		public Task<IImageSourceServiceResult<WImageSource>?> GetImageSourceAsync(IFontImageSource imageSource, float scale = 1, CancellationToken cancellationToken = default)
 		{
 			if (imageSource.IsEmpty)
+			{
+			{
 				return FromResult(null);
+			}
 
 			try
 			{
@@ -35,7 +38,9 @@ namespace Microsoft.Maui
 				var image = RenderImageSource(imageSource, scale);
 
 				if (image == null)
+				{
 					throw new InvalidOperationException("Unable to generate font image.");
+				}
 
 				// TODO: The DPI not working as the view is not respecting the
 				//       value, so mark this image as non-resolution-dependent.
@@ -99,7 +104,70 @@ namespace Microsoft.Maui
 		string GetFontSource(IFontImageSource imageSource)
 		{
 			if (imageSource == null)
+			{
+			
+/* Unmerged change from project 'Core(net8.0-windows10.0.20348.0)'
+Before:
+			var fontFamily = FontManager.GetFontFamily(imageSource.Font);
+
+			var fontSource = fontFamily.Source;
+
+			var allFamilies = fontFamily.Source.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
+After:
+			}
+
+			var fontFamily = FontManager.GetFontFamily(imageSource.Font);
+
+			var fontSource = fontFamily.Source;
+*/
+
+/* Unmerged change from project 'Core(net8.0-windows10.0.20348.0)'
+Before:
+			if (allFamilies.Length > 1)
+			{
+				// There's really no perfect solution to handle font families with fallbacks (comma-separated)	
+				// So if the font family has fallbacks, only one is taken, because CanvasTextFormat	
+				// only supports one font family
+				var source = imageSource.Font.Family ?? String.Empty;
+
+				foreach (var family in allFamilies)
+				{
+					if (family.Contains(source, StringComparison.Ordinal))
+					{
+						fontSource = family;
+						break;
+					}
+				}
+			}
+
+			// unpackaged apps can't load files using packaged schemes
+			if (!AppInfoUtils.IsPackagedApp)
+After:
+			var allFamilies = fontFamily.Source.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
+
+			if (allFamilies.Length > 1)
+			{
+				// There's really no perfect solution to handle font families with fallbacks (comma-separated)	
+				// So if the font family has fallbacks, only one is taken, because CanvasTextFormat	
+				// only supports one font family
+				var source = imageSource.Font.Family ?? String.Empty;
+
+				foreach (var family in allFamilies)
+				{
+					if (family.Contains(source, StringComparison.Ordinal))
+					{
+						fontSource = family;
+						break;
+					}
+				}
+			}
+
+			// unpackaged apps can't load files using packaged schemes
+			if (!AppInfoUtils.IsPackagedApp)
+*/
+{
 				return string.Empty;
+			}
 
 			var fontFamily = FontManager.GetFontFamily(imageSource.Font);
 
@@ -128,7 +196,7 @@ namespace Microsoft.Maui
 			if (!AppInfoUtils.IsPackagedApp)
 			{
 				var fontUri = new Uri(fontSource, UriKind.RelativeOrAbsolute);
-			
+
 				var path = fontUri.AbsolutePath.TrimStart('/');
 				if (FileSystemUtils.TryGetAppPackageFileUri(path, out var uri))
 				{

@@ -43,11 +43,57 @@ namespace Microsoft.Maui
 		public static IWindow? GetVisualElementWindow(this IVisualTreeElement element)
 		{
 			if (element is IWindow window)
+
+/* Unmerged change from project 'Core(net8.0-maccatalyst)'
+Before:
 				return window;
 
 			var parent = element.GetVisualParent();
 			if (parent != null)
 				return parent.GetVisualElementWindow();
+After:
+			{
+				return window;
+*/
+
+/* Unmerged change from project 'Core(net8.0-android)'
+Before:
+				return window;
+After:
+			{
+				return window;
+			}
+*/
+
+/* Unmerged change from project 'Core(net8.0-windows10.0.19041.0)'
+Before:
+				return window;
+
+			var parent = element.GetVisualParent();
+			if (parent != null)
+				return parent.GetVisualElementWindow();
+After:
+			{
+				return window;
+*/
+			{
+
+/* Unmerged change from project 'Core(net8.0-android)'
+Before:
+				return parent.GetVisualElementWindow();
+After:
+			{
+				return parent.GetVisualElementWindow();
+			}
+*/
+				return window;
+			}
+
+			var parent = element.GetVisualParent();
+			if (parent != null)
+			{
+				return parent.GetVisualElementWindow();
+			}
 
 			return null;
 		}
@@ -63,12 +109,16 @@ namespace Microsoft.Maui
 		static List<IVisualTreeElement> GetVisualTreeDescendantsInternal(this IVisualTreeElement visualElement, List<IVisualTreeElement>? elements = null)
 		{
 			if (elements == null)
+			{
 				elements = new List<IVisualTreeElement>();
+			}
 
 			elements.Add(visualElement);
 
 			foreach (var children in visualElement.GetVisualChildren())
+			{
 				children.GetVisualTreeDescendantsInternal(elements);
+			}
 
 			return elements;
 		}
@@ -213,7 +263,9 @@ namespace Microsoft.Maui
 					.FindParent(x =>
 					{
 						if (x is PlatformView pv)
+						{
 							platformParentPath.Add(pv);
+						}
 
 						if (x is IVisualTreeElementProvidable backing)
 						{
@@ -227,10 +279,65 @@ namespace Microsoft.Maui
 			platformParentPath.Reverse();
 
 			if (foundParent?.IsThisMyPlatformView(platformView) == true)
+
+/* Unmerged change from project 'Core(net8.0-maccatalyst)'
+Before:
 				return foundParent;
 
 			if (nearestParentContainer is null || foundParent is null)
 				return null;
+After:
+			{
+				return foundParent;
+			}
+
+			if (nearestParentContainer is null || foundParent is null)
+			{
+				return null;
+			}
+*/
+
+/* Unmerged change from project 'Core(net8.0-android)'
+Before:
+				return foundParent;
+
+			if (nearestParentContainer is null || foundParent is null)
+				return null;
+After:
+			{
+				return foundParent;
+			}
+
+			if (nearestParentContainer is null || foundParent is null)
+			{
+				return null;
+			}
+*/
+
+/* Unmerged change from project 'Core(net8.0-windows10.0.19041.0)'
+Before:
+				return foundParent;
+
+			if (nearestParentContainer is null || foundParent is null)
+				return null;
+After:
+			{
+				return foundParent;
+			}
+
+			if (nearestParentContainer is null || foundParent is null)
+			{
+				return null;
+			}
+*/
+			{
+				return foundParent;
+			}
+
+			if (nearestParentContainer is null || foundParent is null)
+			{
+				return null;
+			}
 
 			// Now that we have an xplat starting point
 			// Let's search back down the xplat tree to figure out what IElement to return
@@ -276,7 +383,10 @@ namespace Microsoft.Maui
 						var indexOfPlatformView = platformParentPath.IndexOf(pvh.PlatformView);
 
 						if (indexOfPlatformView < 0)
+						{
+						{
 							continue;
+						}
 
 						childMatch = child;
 						platformParentPath.RemoveRange(0, indexOfPlatformView + 1);
@@ -287,7 +397,11 @@ namespace Microsoft.Maui
 				// If I've ran out of children then we just return the parent 
 				// as the furthest down element we've been able to match to
 				if (childMatch is null)
+				{
+				{
 					return parent;
+				}
+				}
 
 				return FindNextChild(childMatch, platformView, platformParentPath);
 			}
@@ -296,7 +410,11 @@ namespace Microsoft.Maui
 		internal static bool IsThisMyPlatformView(this IVisualTreeElement? visualTreeElement, PlatformView platformView)
 		{
 			if (visualTreeElement is IElement element)
+			{
+			{
 				return element.IsThisMyPlatformView(platformView);
+			}
+			}
 
 			return false;
 		}
@@ -316,7 +434,10 @@ namespace Microsoft.Maui
 				{
 					Rect bounds = view.GetBoundingBox();
 					if (intersectElementBounds(bounds))
+					{
 						elements.Add(visualElement);
+					}
+					}
 				}
 				var children = visualElement.GetVisualChildren();
 

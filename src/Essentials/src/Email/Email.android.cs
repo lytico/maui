@@ -40,9 +40,13 @@ namespace Microsoft.Maui.ApplicationModel.Communication
 			var intent = new Intent(action);
 
 			if (action == Intent.ActionSendto)
+			{
 				intent.SetData(Uri.Parse("mailto:"));
+			}
 			else
+			{
 				intent.SetType(FileMimeTypes.EmailMessage);
+			}
 
 			if (!string.IsNullOrEmpty(message?.Body))
 			{
@@ -69,13 +73,24 @@ namespace Microsoft.Maui.ApplicationModel.Communication
 				}
 			}
 			if (!string.IsNullOrEmpty(message?.Subject))
+			{
 				intent.PutExtra(Intent.ExtraSubject, message.Subject);
+			}
+
 			if (message?.To?.Count > 0)
+			{
 				intent.PutExtra(Intent.ExtraEmail, message.To.ToArray());
+			}
+
 			if (message?.Cc?.Count > 0)
+			{
 				intent.PutExtra(Intent.ExtraCc, message.Cc.ToArray());
+			}
+
 			if (message?.Bcc?.Count > 0)
+			{
 				intent.PutExtra(Intent.ExtraBcc, message.Bcc.ToArray());
+			}
 
 			if (message?.Attachments?.Count > 0)
 			{
@@ -86,9 +101,13 @@ namespace Microsoft.Maui.ApplicationModel.Communication
 				}
 
 				if (uris.Count > 1)
+				{
 					intent.PutParcelableArrayListExtra(Intent.ExtraStream, uris);
+				}
 				else
+				{
 					intent.PutExtra(Intent.ExtraStream, uris[0]);
+				}
 
 				intent.AddFlags(ActivityFlags.GrantReadUriPermission);
 			}

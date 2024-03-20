@@ -61,7 +61,10 @@ namespace Microsoft.Maui.Animations
 			protected set
 			{
 				if (_currentValue == value)
+				{
 					return;
+				}
+
 				_currentValue = value;
 				ValueChanged?.Invoke();
 			}
@@ -77,12 +80,107 @@ namespace Microsoft.Maui.Animations
 			get
 			{
 				if (_lerp != null)
+
+/* Unmerged change from project 'Core(net8.0)'
+Before:
 					return _lerp;
+After:
+				{
+					return _lerp;
+				}
+*/
+
+/* Unmerged change from project 'Core(net8.0-maccatalyst)'
+Before:
+					return _lerp;
+After:
+				{
+					return _lerp;
+				}
+*/
+
+/* Unmerged change from project 'Core(net8.0-android)'
+Before:
+					return _lerp;
+After:
+				{
+					return _lerp;
+				}
+*/
+
+/* Unmerged change from project 'Core(net8.0-windows10.0.19041.0)'
+Before:
+					return _lerp;
+After:
+				{
+					return _lerp;
+				}
+*/
+
+/* Unmerged change from project 'Core(net8.0-windows10.0.20348.0)'
+Before:
+					return _lerp;
+After:
+				{
+					return _lerp;
+				}
+*/
+				{
+
+/* Unmerged change from project 'Core(net8.0)'
+Before:
+					return null;
+After:
+				{
+					return null;
+				}
+*/
+
+/* Unmerged change from project 'Core(net8.0-maccatalyst)'
+Before:
+					return null;
+After:
+				{
+					return null;
+				}
+*/
+
+/* Unmerged change from project 'Core(net8.0-android)'
+Before:
+					return null;
+After:
+				{
+					return null;
+				}
+*/
+
+/* Unmerged change from project 'Core(net8.0-windows10.0.19041.0)'
+Before:
+					return null;
+After:
+				{
+					return null;
+				}
+*/
+
+/* Unmerged change from project 'Core(net8.0-windows10.0.20348.0)'
+Before:
+					return null;
+After:
+				{
+					return null;
+				}
+*/
+					return _lerp;
+				}
 
 				//TODO: later we should find the first matching types of the subclasses
 				var type = StartValue?.GetType() ?? EndValue?.GetType();
 				if (type == null)
+				{
 					return null;
+				}
+
 				return _lerp = Lerp.GetLerp(type);
 			}
 			set => _lerp = value;
@@ -95,7 +193,9 @@ namespace Microsoft.Maui.Animations
 			{
 				base.Update(percent);
 				if (Lerp != null! && StartValue != null && EndValue != null)
+				{
 					CurrentValue = Lerp.Calculate?.Invoke(StartValue, EndValue, Progress);
+				}
 			}
 			catch (Exception)
 			{

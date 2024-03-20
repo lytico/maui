@@ -105,7 +105,18 @@ namespace Microsoft.Maui.Graphics.Platform
 		private NSData CreateData(ImageFormat format = ImageFormat.Png, float quality = 1)
 		{
 			if (quality < 0 || quality > 1)
+
+/* Unmerged change from project 'Graphics(net8.0-maccatalyst)'
+Before:
 				throw new ArgumentOutOfRangeException(nameof(quality), "quality must be in the range of 0..1");
+After:
+			{
+				throw new ArgumentOutOfRangeException(nameof(quality), "quality must be in the range of 0..1");
+			}
+*/
+			{
+				throw new ArgumentOutOfRangeException(nameof(quality), "quality must be in the range of 0..1");
+			}
 
 			NSData data;
 			switch (format)

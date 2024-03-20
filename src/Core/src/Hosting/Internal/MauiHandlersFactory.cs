@@ -36,10 +36,65 @@ namespace Microsoft.Maui.Hosting.Internal
 		public Type? GetHandlerType(Type iview)
 		{
 			if (!TryGetServiceDescriptors(ref iview, out var single, out var enumerable))
+
+/* Unmerged change from project 'Core(net8.0-maccatalyst)'
+Before:
 				return default;
 
 			if (single != null)
 				return single.ImplementationType;
+After:
+			{
+				return default;
+			}
+
+			if (single != null)
+			{
+				return single.ImplementationType;
+			}
+*/
+
+/* Unmerged change from project 'Core(net8.0-android)'
+Before:
+				return default;
+
+			if (single != null)
+				return single.ImplementationType;
+After:
+			{
+				return default;
+			}
+
+			if (single != null)
+			{
+				return single.ImplementationType;
+			}
+*/
+
+/* Unmerged change from project 'Core(net8.0-windows10.0.19041.0)'
+Before:
+				return default;
+
+			if (single != null)
+				return single.ImplementationType;
+After:
+			{
+				return default;
+			}
+
+			if (single != null)
+			{
+				return single.ImplementationType;
+			}
+*/
+			{
+				return default;
+			}
+
+			if (single != null)
+			{
+				return single.ImplementationType;
+			}
 
 			if (enumerable != null)
 			{

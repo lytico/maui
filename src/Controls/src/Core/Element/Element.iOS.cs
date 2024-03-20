@@ -12,7 +12,9 @@ namespace Microsoft.Maui.Controls
 		{
 			// If the user hasn't set IsInAccessibleTree then just don't do anything
 			if (!element.IsSet(AutomationProperties.IsInAccessibleTreeProperty))
+			{
 				return;
+			}
 
 			var Control = handler.PlatformView as UIView;
 
@@ -33,7 +35,20 @@ namespace Microsoft.Maui.Controls
 		public static void MapAutomationPropertiesExcludedWithChildren(IElementHandler handler, Element view)
 		{
 			if (!view.IsSet(AutomationProperties.ExcludedWithChildrenProperty))
+			{
 				return;
+
+/* Unmerged change from project 'Controls.Core(net8.0-maccatalyst)'
+Before:
+			var Control = handler.PlatformView as UIView;
+
+			var _defaultAccessibilityElementsHidden = Control.AccessibilityElementsHidden || Control is UIControl;
+After:
+			}
+
+			var Control = Control.AccessibilityElementsHidden || Control is UIControl;
+*/
+			}
 
 			var Control = handler.PlatformView as UIView;
 
@@ -44,13 +59,17 @@ namespace Microsoft.Maui.Controls
 		static void MapAutomationPropertiesIsInAccessibleTree(IElementHandler handler, IElement element)
 		{
 			if (element is Element e)
+			{
 				MapAutomationPropertiesIsInAccessibleTree(handler, e);
+			}
 		}
 
 		static void MapAutomationPropertiesExcludedWithChildren(IElementHandler handler, IElement element)
 		{
 			if (element is Element e)
+			{
 				MapAutomationPropertiesExcludedWithChildren(handler, e);
+			}
 		}
 	}
 }

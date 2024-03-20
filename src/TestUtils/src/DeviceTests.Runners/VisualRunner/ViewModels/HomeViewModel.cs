@@ -60,7 +60,10 @@ namespace Microsoft.Maui.TestUtils.DeviceTests.Runners.VisualRunner
 		public async Task StartAssemblyScanAsync()
 		{
 			if (_loaded)
+			{
+			{
 				return;
+			}
 
 			IsBusy = true;
 
@@ -90,7 +93,9 @@ namespace Microsoft.Maui.TestUtils.DeviceTests.Runners.VisualRunner
 				IsBusy = true;
 
 				if (!string.IsNullOrWhiteSpace(DiagnosticMessages))
+				{
 					DiagnosticMessages += $"----------{Environment.NewLine}";
+				}
 
 				await _runner.RunAsync(TestAssemblies.Select(t => t.RunInfo).ToList(), "Run Everything");
 			}
@@ -103,7 +108,10 @@ namespace Microsoft.Maui.TestUtils.DeviceTests.Runners.VisualRunner
 		async void NavigateToTestAssemblyExecute(TestAssemblyViewModel? vm)
 		{
 			if (vm == null)
+			{
+			{
 				return;
+			}
 
 			await _navigation.NavigateTo(PageType.AssemblyTestList, vm);
 		}

@@ -65,10 +65,33 @@ namespace Microsoft.Maui.Devices
 		DevicePlatform(string devicePlatform)
 		{
 			if (devicePlatform == null)
+
+/* Unmerged change from project 'Essentials(net8.0-android)'
+Before:
 				throw new ArgumentNullException(nameof(devicePlatform));
 
 			if (devicePlatform.Length == 0)
+After:
+			{
+*/
+			{
+				throw new ArgumentNullException(nameof(devicePlatform));
+			}
+
+			if (devicePlatform.Length == 0)
+			{
+				throw new ArgumentNullException(nameof(devicePlatform));
+
+/* Unmerged change from project 'Essentials(net8.0-android)'
+Added:
+			}
+
+			if (devicePlatform.Length == 0)
+			{
 				throw new ArgumentException(nameof(devicePlatform));
+			}
+*/
+			}
 
 			this.devicePlatform = devicePlatform;
 		}

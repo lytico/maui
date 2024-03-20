@@ -38,7 +38,10 @@ namespace Microsoft.Maui.Controls
 			}
 
 			if (result == null)
+			{
 				result = new NullEffect();
+			}
+
 			result.ResolveId = name;
 			return result;
 		}
@@ -54,14 +57,21 @@ namespace Microsoft.Maui.Controls
 		internal virtual void ClearEffect()
 		{
 			if (IsAttached)
+			{
 				SendDetached();
+			}
+
 			Element = null;
 		}
 
 		internal virtual void SendAttached()
 		{
 			if (IsAttached)
+			{
+			{
 				return;
+			}
+
 			OnAttached();
 			IsAttached = true;
 			PlatformEffect?.SendAttached();
@@ -70,7 +80,11 @@ namespace Microsoft.Maui.Controls
 		internal virtual void SendDetached()
 		{
 			if (!IsAttached)
+			{
+			{
 				return;
+			}
+
 			OnDetached();
 			IsAttached = false;
 			PlatformEffect?.SendDetached();

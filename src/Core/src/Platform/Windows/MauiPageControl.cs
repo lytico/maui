@@ -31,18 +31,28 @@ namespace Microsoft.Maui.Platform
 			_indicatorView = indicatorView;
 
 			if (indicatorView == null)
+			{
 				Items.Clear();
+			}
 		}
 
 		internal void UpdateIndicatorsColor()
 		{
 			if (_indicatorView == null)
+			{
 				return;
+			}
 
 			if (_indicatorView.IndicatorColor is SolidPaint solidPaint)
+			{
 				_fillColor = solidPaint?.ToPlatform();
+			}
+
 			if (_indicatorView.SelectedIndicatorColor is SolidPaint selectedSolidPaint)
+			{
 				_selectedColor = selectedSolidPaint.ToPlatform();
+			}
+
 			var position = _indicatorView.Position;
 			int i = 0;
 			foreach (var item in Items)
@@ -55,7 +65,9 @@ namespace Microsoft.Maui.Platform
 		internal void CreateIndicators()
 		{
 			if (_indicatorView == null)
+			{
 				return;
+			}
 
 			var position = GetIndexFromPosition();
 			var indicators = new List<WShape>();
@@ -92,7 +104,32 @@ namespace Microsoft.Maui.Platform
 		WShape? CreateIndicator(int i, int position)
 		{
 			if (_indicatorView == null)
+			{
+			
+/* Unmerged change from project 'Core(net8.0-windows10.0.20348.0)'
+Before:
+			var indicatorSize = _indicatorView.IndicatorSize;
+			WShape? shape = null;
+			if (_indicatorView.IsCircleShape())
+After:
+			}
+
+			var indicatorSize = _indicatorView.IndicatorSize;
+			WShape? shape = null;
+			if (_indicatorView.IsCircleShape())
+*/
+
+/* Unmerged change from project 'Core(net8.0-windows10.0.20348.0)'
+Before:
+					return;
+After:
+				{
+					return;
+				}
+*/
+{
 				return null;
+			}
 
 			var indicatorSize = _indicatorView.IndicatorSize;
 			WShape? shape = null;
@@ -120,7 +157,9 @@ namespace Microsoft.Maui.Platform
 			shape.PointerPressed += (s, e) =>
 			{
 				if (_indicatorView == null)
+				{
 					return;
+				}
 
 				_indicatorView.Position = (int)((WShape)s).Tag;
 			};
@@ -130,7 +169,11 @@ namespace Microsoft.Maui.Platform
 		int GetIndexFromPosition()
 		{
 			if (_indicatorView == null)
+			{
+			{
 				return 0;
+			}
+			}
 
 			var maxVisible = _indicatorView.GetMaximumVisible();
 			var position = _indicatorView.Position;

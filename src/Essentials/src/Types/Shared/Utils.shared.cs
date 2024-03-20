@@ -10,10 +10,47 @@ namespace Microsoft.Maui.ApplicationModel
 		internal static Version ParseVersion(string version)
 		{
 			if (Version.TryParse(version, out var number))
+
+/* Unmerged change from project 'Essentials(net8.0-maccatalyst)'
+Before:
 				return number;
 
 			if (int.TryParse(version, out var major))
 				return new Version(major, 0);
+After:
+			{
+				return number;
+*/
+
+/* Unmerged change from project 'Essentials(net8.0-android)'
+Before:
+				return number;
+
+			if (int.TryParse(version, out var major))
+				return new Version(major, 0);
+After:
+			{
+				return number;
+*/
+
+/* Unmerged change from project 'Essentials(net8.0-windows10.0.19041.0)'
+Before:
+				return number;
+
+			if (int.TryParse(version, out var major))
+				return new Version(major, 0);
+After:
+			{
+				return number;
+*/
+			{
+				return number;
+			}
+
+			if (int.TryParse(version, out var major))
+			{
+				return new Version(major, 0);
+			}
 
 			return new Version(0, 0);
 		}
@@ -25,7 +62,9 @@ namespace Microsoft.Maui.ApplicationModel
 
 			// if a timeout was given, make the token source cancel after it expires
 			if (timeout > TimeSpan.Zero)
+			{
 				cancelTokenSrc.CancelAfter(timeout);
+			}
 
 			// our Cancel method will handle the actual cancellation logic
 			return cancelTokenSrc.Token;

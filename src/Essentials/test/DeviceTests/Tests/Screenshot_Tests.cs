@@ -52,7 +52,10 @@ namespace Microsoft.Maui.Essentials.DeviceTests
 				Assert.True(mediaFile.Height > 0);
 
 				using (var stream = await mediaFile.OpenReadAsync())
+				{
 					Assert.True(stream.Length > 0);
+				}
+				}
 			});
 		}
 
@@ -69,7 +72,10 @@ namespace Microsoft.Maui.Essentials.DeviceTests
 				Assert.True(mediaFile.Height > 0);
 
 				using (var stream = await mediaFile.OpenReadAsync())
+				{
 					Assert.True(stream.Length > 0);
+				}
+				}
 			});
 		}
 
@@ -90,7 +96,10 @@ namespace Microsoft.Maui.Essentials.DeviceTests
 				Assert.True(mediaFile.Height > 0);
 
 				using (var stream = await mediaFile.OpenReadAsync())
+				{
 					Assert.True(stream.Length > 0);
+				}
+				}
 			});
 		}
 
@@ -110,7 +119,10 @@ namespace Microsoft.Maui.Essentials.DeviceTests
 				Assert.True(mediaFile.Height > 0);
 
 				using (var stream = await mediaFile.OpenReadAsync())
+				{
 					Assert.True(stream.Length > 0);
+				}
+				}
 			});
 		}
 
@@ -133,7 +145,10 @@ namespace Microsoft.Maui.Essentials.DeviceTests
 				Assert.True(mediaFile.Height > 0);
 
 				using (var stream = await mediaFile.OpenReadAsync())
+				{
 					Assert.True(stream.Length > 0);
+				}
+				}
 			});
 		}
 

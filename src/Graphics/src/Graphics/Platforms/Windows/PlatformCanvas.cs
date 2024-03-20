@@ -671,7 +671,9 @@ namespace Microsoft.Maui.Graphics.Platform
 		protected override void PlatformDrawPath(PathF path)
 		{
 			if (path == null)
+			{
 				return;
+			}
 
 			var geometry = GetPath(path);
 
@@ -811,7 +813,9 @@ namespace Microsoft.Maui.Graphics.Platform
 				}
 
 				if (_shadowEffect == null)
+				{
 					_shadowEffect = new ShadowEffect();
+				}
 
 				_shadowEffect.Source = context;
 				_shadowEffect.BlurAmount = CurrentState.ActualShadowBlur / 3;
@@ -836,7 +840,9 @@ namespace Microsoft.Maui.Graphics.Platform
 				}
 
 				if (_blurEffect == null)
+				{
 					_blurEffect = new GaussianBlurEffect();
+				}
 
 				_blurEffect.Source = context;
 				_blurEffect.BorderMode = EffectBorderMode.Soft;

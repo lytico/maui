@@ -21,10 +21,14 @@ namespace Microsoft.Maui.Platform
 			var keyboardAccelerators = menuFlyoutItem.KeyboardAccelerators?.ToPlatform();
 
 			if (keyboardAccelerators is null)
+			{
 				return;
+			}
 
 			foreach (var keyboardAccelerator in keyboardAccelerators)
+			{
 				platformView.KeyboardAccelerators.Add(keyboardAccelerator);
+			}
 		}
 
 		/// <summary>
@@ -37,7 +41,23 @@ namespace Microsoft.Maui.Platform
 		public static IList<KeyboardAccelerator>? ToPlatform(this IReadOnlyList<IKeyboardAccelerator> keyboardAccelerators)
 		{
 			if (keyboardAccelerators is null)
+			{
+			
+/* Unmerged change from project 'Core(net8.0-windows10.0.20348.0)'
+Added:
+			}
+*/
+
+/* Unmerged change from project 'Core(net8.0-windows10.0.20348.0)'
+Before:
+					result.Add(accelerator);
+After:
+				{
+					result.Add(accelerator);
+*/
+{
 				return null;
+			}
 
 			List<KeyboardAccelerator> result = new List<KeyboardAccelerator>();
 
@@ -46,7 +66,10 @@ namespace Microsoft.Maui.Platform
 				var accelerator = keyboardAccelerator.ToPlatform();
 
 				if (accelerator is not null)
+				{
 					result.Add(accelerator);
+				}
+				}
 			}
 
 			return result;
@@ -58,13 +81,17 @@ namespace Microsoft.Maui.Platform
 		public static KeyboardAccelerator? ToPlatform(this IKeyboardAccelerator keyboardAccelerator)
 		{
 			if (keyboardAccelerator is null)
+			{
 				return null;
+			}
 
 			var key = keyboardAccelerator.Key;
 			var modifiers = keyboardAccelerator.Modifiers;
 
 			if (key is null)
+			{
 				return null;
+			}
 
 			var accelerator = new KeyboardAccelerator();
 			accelerator.Key = key.ToVirtualKey();
@@ -78,13 +105,24 @@ namespace Microsoft.Maui.Platform
 			VirtualKeyModifiers modifierMask = 0;
 
 			if (modifiers.HasFlag(KeyboardAcceleratorModifiers.Shift))
+			{
 				modifierMask |= VirtualKeyModifiers.Shift;
+			}
+
 			if (modifiers.HasFlag(KeyboardAcceleratorModifiers.Ctrl))
+			{
 				modifierMask |= VirtualKeyModifiers.Control;
+			}
+
 			if (modifiers.HasFlag(KeyboardAcceleratorModifiers.Alt))
+			{
 				modifierMask |= VirtualKeyModifiers.Menu;
+			}
+
 			if (modifiers.HasFlag(KeyboardAcceleratorModifiers.Windows))
+			{
 				modifierMask |= VirtualKeyModifiers.Windows;
+			}
 
 			return modifierMask;
 		}
@@ -100,7 +138,11 @@ namespace Microsoft.Maui.Platform
 			}
 
 			if (Enum.TryParse<VirtualKey>(key.ToVirtualKeyString(), true, out var virtualKey))
+			{
+			{
 				return virtualKey;
+			}
+			}
 
 			return VirtualKey.None;
 		}

@@ -19,7 +19,9 @@ namespace Microsoft.Maui.Controls
 			{
 				var source = oldvalue as WebViewSource;
 				if (source != null)
+				{
 					source.SourceChanged -= ((WebView)bindable).OnSourceChanged;
+				}
 			}, propertyChanged: (bindable, oldvalue, newvalue) =>
 			{
 				var source = newvalue as WebViewSource;
@@ -117,6 +119,9 @@ namespace Microsoft.Maui.Controls
 		public async Task<string> EvaluateJavaScriptAsync(string script)
 		{
 			if (script == null)
+
+/* Unmerged change from project 'Controls.Core(net8.0-maccatalyst)'
+Before:
 				return null;
 
 			// Make all the platforms mimic Android's implementation, which is by far the most complete.
@@ -156,6 +161,375 @@ namespace Microsoft.Maui.Controls
 			//note that if the js function returns the string "null" we will get here and not above
 			else if (result != null)
 				result = result.Trim('"');
+After:
+			{
+				return null;
+			}
+
+			// Make all the platforms mimic Android's implementation, which is by far the most complete.
+			if (DeviceInfo.Platform != DevicePlatform.Android)
+			{
+				script = EscapeJsString(script);
+
+				if (DeviceInfo.Platform != DevicePlatform.WinUI)
+				{
+					// Use JSON.stringify() method to converts a JavaScript value to a JSON string
+					script = "try{JSON.stringify(eval('" + script + "'))}catch(e){'null'};";
+				}
+				else
+				{
+					script = "try{eval('" + script + "')}catch(e){'null'};";
+				}
+			}
+
+			string result;
+
+			if (_evaluateJavaScriptRequested != null) // With Handlers we don't use events, if is null we are using a renderer and a handler otherwise.
+			{
+				// This is the WebViewRenderer subscribing to these requests; the handler stuff
+				// doesn't use them.
+				result = await _evaluateJavaScriptRequested?.Invoke(script);
+			}
+			else
+			{
+				// Use the handler command to evaluate the JS
+				result = await Handler.InvokeAsync(nameof(IWebView.EvaluateJavaScriptAsync),
+					new EvaluateJavaScriptAsyncRequest(script));
+			}
+
+			//if the js function errored or returned null/undefined treat it as null
+			if (result == "null")
+			{
+				result = null;
+			}
+
+			//JSON.stringify wraps the result in literal quotes, we just want the actual returned result
+			//note that if the js function returns the string "null" we will get here and not above
+			else if (result != null)
+			{
+				result = result.Trim('"');
+			}
+*/
+
+/* Unmerged change from project 'Controls.Core(net8.0-android)'
+Before:
+				return null;
+
+			// Make all the platforms mimic Android's implementation, which is by far the most complete.
+			if (DeviceInfo.Platform != DevicePlatform.Android)
+			{
+				script = EscapeJsString(script);
+
+				if (DeviceInfo.Platform != DevicePlatform.WinUI)
+				{
+					// Use JSON.stringify() method to converts a JavaScript value to a JSON string
+					script = "try{JSON.stringify(eval('" + script + "'))}catch(e){'null'};";
+				}
+				else
+					script = "try{eval('" + script + "')}catch(e){'null'};";
+			}
+
+			string result;
+
+			if (_evaluateJavaScriptRequested != null) // With Handlers we don't use events, if is null we are using a renderer and a handler otherwise.
+			{
+				// This is the WebViewRenderer subscribing to these requests; the handler stuff
+				// doesn't use them.
+				result = await _evaluateJavaScriptRequested?.Invoke(script);
+			}
+			else
+			{
+				// Use the handler command to evaluate the JS
+				result = await Handler.InvokeAsync(nameof(IWebView.EvaluateJavaScriptAsync),
+					new EvaluateJavaScriptAsyncRequest(script));
+			}
+
+			//if the js function errored or returned null/undefined treat it as null
+			if (result == "null")
+				result = null;
+
+			//JSON.stringify wraps the result in literal quotes, we just want the actual returned result
+			//note that if the js function returns the string "null" we will get here and not above
+			else if (result != null)
+				result = result.Trim('"');
+After:
+			{
+				return null;
+			}
+
+			// Make all the platforms mimic Android's implementation, which is by far the most complete.
+			if (DeviceInfo.Platform != DevicePlatform.Android)
+			{
+				script = EscapeJsString(script);
+
+				if (DeviceInfo.Platform != DevicePlatform.WinUI)
+				{
+					// Use JSON.stringify() method to converts a JavaScript value to a JSON string
+					script = "try{JSON.stringify(eval('" + script + "'))}catch(e){'null'};";
+				}
+				else
+				{
+					script = "try{eval('" + script + "')}catch(e){'null'};";
+				}
+			}
+
+			string result;
+
+			if (_evaluateJavaScriptRequested != null) // With Handlers we don't use events, if is null we are using a renderer and a handler otherwise.
+			{
+				// This is the WebViewRenderer subscribing to these requests; the handler stuff
+				// doesn't use them.
+				result = await _evaluateJavaScriptRequested?.Invoke(script);
+			}
+			else
+			{
+				// Use the handler command to evaluate the JS
+				result = await Handler.InvokeAsync(nameof(IWebView.EvaluateJavaScriptAsync),
+					new EvaluateJavaScriptAsyncRequest(script));
+			}
+
+			//if the js function errored or returned null/undefined treat it as null
+			if (result == "null")
+			{
+				result = null;
+			}
+
+			//JSON.stringify wraps the result in literal quotes, we just want the actual returned result
+			//note that if the js function returns the string "null" we will get here and not above
+			else if (result != null)
+			{
+				result = result.Trim('"');
+			}
+*/
+
+/* Unmerged change from project 'Controls.Core(net8.0-windows10.0.19041.0)'
+Before:
+				return null;
+
+			// Make all the platforms mimic Android's implementation, which is by far the most complete.
+			if (DeviceInfo.Platform != DevicePlatform.Android)
+			{
+				script = EscapeJsString(script);
+
+				if (DeviceInfo.Platform != DevicePlatform.WinUI)
+				{
+					// Use JSON.stringify() method to converts a JavaScript value to a JSON string
+					script = "try{JSON.stringify(eval('" + script + "'))}catch(e){'null'};";
+				}
+				else
+					script = "try{eval('" + script + "')}catch(e){'null'};";
+			}
+
+			string result;
+
+			if (_evaluateJavaScriptRequested != null) // With Handlers we don't use events, if is null we are using a renderer and a handler otherwise.
+			{
+				// This is the WebViewRenderer subscribing to these requests; the handler stuff
+				// doesn't use them.
+				result = await _evaluateJavaScriptRequested?.Invoke(script);
+			}
+			else
+			{
+				// Use the handler command to evaluate the JS
+				result = await Handler.InvokeAsync(nameof(IWebView.EvaluateJavaScriptAsync),
+					new EvaluateJavaScriptAsyncRequest(script));
+			}
+
+			//if the js function errored or returned null/undefined treat it as null
+			if (result == "null")
+				result = null;
+
+			//JSON.stringify wraps the result in literal quotes, we just want the actual returned result
+			//note that if the js function returns the string "null" we will get here and not above
+			else if (result != null)
+				result = result.Trim('"');
+After:
+			{
+				return null;
+			}
+
+			// Make all the platforms mimic Android's implementation, which is by far the most complete.
+			if (DeviceInfo.Platform != DevicePlatform.Android)
+			{
+				script = EscapeJsString(script);
+
+				if (DeviceInfo.Platform != DevicePlatform.WinUI)
+				{
+					// Use JSON.stringify() method to converts a JavaScript value to a JSON string
+					script = "try{JSON.stringify(eval('" + script + "'))}catch(e){'null'};";
+				}
+				else
+				{
+					script = "try{eval('" + script + "')}catch(e){'null'};";
+				}
+			}
+
+			string result;
+
+			if (_evaluateJavaScriptRequested != null) // With Handlers we don't use events, if is null we are using a renderer and a handler otherwise.
+			{
+				// This is the WebViewRenderer subscribing to these requests; the handler stuff
+				// doesn't use them.
+				result = await _evaluateJavaScriptRequested?.Invoke(script);
+			}
+			else
+			{
+				// Use the handler command to evaluate the JS
+				result = await Handler.InvokeAsync(nameof(IWebView.EvaluateJavaScriptAsync),
+					new EvaluateJavaScriptAsyncRequest(script));
+			}
+
+			//if the js function errored or returned null/undefined treat it as null
+			if (result == "null")
+			{
+				result = null;
+			}
+
+			//JSON.stringify wraps the result in literal quotes, we just want the actual returned result
+			//note that if the js function returns the string "null" we will get here and not above
+			else if (result != null)
+			{
+				result = result.Trim('"');
+			}
+*/
+
+/* Unmerged change from project 'Controls.Core(net8.0-windows10.0.20348.0)'
+Before:
+				return null;
+
+			// Make all the platforms mimic Android's implementation, which is by far the most complete.
+			if (DeviceInfo.Platform != DevicePlatform.Android)
+			{
+				script = EscapeJsString(script);
+
+				if (DeviceInfo.Platform != DevicePlatform.WinUI)
+				{
+					// Use JSON.stringify() method to converts a JavaScript value to a JSON string
+					script = "try{JSON.stringify(eval('" + script + "'))}catch(e){'null'};";
+				}
+				else
+					script = "try{eval('" + script + "')}catch(e){'null'};";
+			}
+
+			string result;
+
+			if (_evaluateJavaScriptRequested != null) // With Handlers we don't use events, if is null we are using a renderer and a handler otherwise.
+			{
+				// This is the WebViewRenderer subscribing to these requests; the handler stuff
+				// doesn't use them.
+				result = await _evaluateJavaScriptRequested?.Invoke(script);
+			}
+			else
+			{
+				// Use the handler command to evaluate the JS
+				result = await Handler.InvokeAsync(nameof(IWebView.EvaluateJavaScriptAsync),
+					new EvaluateJavaScriptAsyncRequest(script));
+			}
+
+			//if the js function errored or returned null/undefined treat it as null
+			if (result == "null")
+				result = null;
+
+			//JSON.stringify wraps the result in literal quotes, we just want the actual returned result
+			//note that if the js function returns the string "null" we will get here and not above
+			else if (result != null)
+				result = result.Trim('"');
+After:
+			{
+				return null;
+			}
+
+			// Make all the platforms mimic Android's implementation, which is by far the most complete.
+			if (DeviceInfo.Platform != DevicePlatform.Android)
+			{
+				script = EscapeJsString(script);
+
+				if (DeviceInfo.Platform != DevicePlatform.WinUI)
+				{
+					// Use JSON.stringify() method to converts a JavaScript value to a JSON string
+					script = "try{JSON.stringify(eval('" + script + "'))}catch(e){'null'};";
+				}
+				else
+				{
+					script = "try{eval('" + script + "')}catch(e){'null'};";
+				}
+			}
+
+			string result;
+
+			if (_evaluateJavaScriptRequested != null) // With Handlers we don't use events, if is null we are using a renderer and a handler otherwise.
+			{
+				// This is the WebViewRenderer subscribing to these requests; the handler stuff
+				// doesn't use them.
+				result = await _evaluateJavaScriptRequested?.Invoke(script);
+			}
+			else
+			{
+				// Use the handler command to evaluate the JS
+				result = await Handler.InvokeAsync(nameof(IWebView.EvaluateJavaScriptAsync),
+					new EvaluateJavaScriptAsyncRequest(script));
+			}
+
+			//if the js function errored or returned null/undefined treat it as null
+			if (result == "null")
+			{
+				result = null;
+			}
+
+			//JSON.stringify wraps the result in literal quotes, we just want the actual returned result
+			//note that if the js function returns the string "null" we will get here and not above
+			else if (result != null)
+			{
+				result = result.Trim('"');
+			}
+*/
+			{
+				return null;
+			}
+
+			// Make all the platforms mimic Android's implementation, which is by far the most complete.
+			if (DeviceInfo.Platform != DevicePlatform.Android)
+			{
+				script = EscapeJsString(script);
+
+				if (DeviceInfo.Platform != DevicePlatform.WinUI)
+				{
+					// Use JSON.stringify() method to converts a JavaScript value to a JSON string
+					script = "try{JSON.stringify(eval('" + script + "'))}catch(e){'null'};";
+				}
+				else
+				{
+					script = "try{eval('" + script + "')}catch(e){'null'};";
+				}
+			}
+
+			string result;
+
+			if (_evaluateJavaScriptRequested != null) // With Handlers we don't use events, if is null we are using a renderer and a handler otherwise.
+			{
+				// This is the WebViewRenderer subscribing to these requests; the handler stuff
+				// doesn't use them.
+				result = await _evaluateJavaScriptRequested?.Invoke(script);
+			}
+			else
+			{
+				// Use the handler command to evaluate the JS
+				result = await Handler.InvokeAsync(nameof(IWebView.EvaluateJavaScriptAsync),
+					new EvaluateJavaScriptAsyncRequest(script));
+			}
+
+			//if the js function errored or returned null/undefined treat it as null
+			if (result == "null")
+			{
+				result = null;
+			}
+
+			//JSON.stringify wraps the result in literal quotes, we just want the actual returned result
+			//note that if the js function returns the string "null" we will get here and not above
+			else if (result != null)
+			{
+				result = result.Trim('"');
+			}
 
 			return result;
 		}
@@ -210,7 +584,9 @@ namespace Microsoft.Maui.Controls
 			{
 				WebViewSource source = Source;
 				if (source != null)
+				{
 					SetInheritedBindingContext(source, BindingContext);
+				}
 			}
 
 			base.OnPropertyChanged(propertyName);
@@ -285,10 +661,58 @@ namespace Microsoft.Maui.Controls
 		static string EscapeJsString(string js)
 		{
 			if (js == null)
+
+/* Unmerged change from project 'Controls.Core(net8.0-maccatalyst)'
+Before:
 				return null;
 
 			if (js.IndexOf("'", StringComparison.Ordinal) == -1)
 				return js;
+After:
+			{
+				return null;
+*/
+
+/* Unmerged change from project 'Controls.Core(net8.0-android)'
+Before:
+				return null;
+
+			if (js.IndexOf("'", StringComparison.Ordinal) == -1)
+				return js;
+After:
+			{
+				return null;
+*/
+
+/* Unmerged change from project 'Controls.Core(net8.0-windows10.0.19041.0)'
+Before:
+				return null;
+
+			if (js.IndexOf("'", StringComparison.Ordinal) == -1)
+				return js;
+After:
+			{
+				return null;
+*/
+
+/* Unmerged change from project 'Controls.Core(net8.0-windows10.0.20348.0)'
+Before:
+				return null;
+
+			if (js.IndexOf("'", StringComparison.Ordinal) == -1)
+				return js;
+After:
+			{
+				return null;
+*/
+			{
+				return null;
+			}
+
+			if (js.IndexOf("'", StringComparison.Ordinal) == -1)
+			{
+				return js;
+			}
 
 			//get every quote in the string along with all the backslashes preceding it
 			var singleQuotes = Regex.Matches(js, @"(\\*?)'");

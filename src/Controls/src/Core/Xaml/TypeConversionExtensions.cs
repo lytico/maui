@@ -48,11 +48,16 @@ namespace Microsoft.Maui.Controls.Xaml
 			Func<TypeConverter> getConverter = () =>
 			{
 				if (pinfoRetriever == null || pinfoRetriever() is not ParameterInfo pInfo)
+				{
 					return null;
+				}
 
 				var convertertype = pInfo.GetCustomAttribute<TypeConverterAttribute>()?.GetConverterType();
 				if (convertertype == null)
+				{
 					return null;
+				}
+
 				return (TypeConverter)Activator.CreateInstance(convertertype);
 			};
 
@@ -118,13 +123,19 @@ namespace Microsoft.Maui.Controls.Xaml
 			{
 				ret = value.ConvertTo(toType, (Func<TypeConverter>)null, serviceProvider, out exception);
 				if (exception != null)
+				{
 					throw exception;
+				}
+
 				return ret;
 			}
 			Func<TypeConverter> getConverter = () => (TypeConverter)Activator.CreateInstance(convertertype);
 			ret = value.ConvertTo(toType, getConverter, serviceProvider, out exception);
 			if (exception != null)
+			{
 				throw exception;
+			}
+
 			return ret;
 		}
 
@@ -133,6 +144,9 @@ namespace Microsoft.Maui.Controls.Xaml
 		{
 			exception = null;
 			if (value == null)
+
+/* Unmerged change from project 'Controls.Core(net8.0-maccatalyst)'
+Before:
 				return null;
 
 			if (value is string str)
@@ -235,6 +249,500 @@ namespace Microsoft.Maui.Controls.Xaml
 			object platformValue = null;
 			if (platformValueConverterService != null && platformValueConverterService.ConvertTo(value, toType, out platformValue))
 				return platformValue;
+After:
+			{
+				return null;
+*/
+
+/* Unmerged change from project 'Controls.Core(net8.0-android)'
+Before:
+				return null;
+
+			if (value is string str)
+			{
+				//If there's a [TypeConverter], use it
+				TypeConverter converter;
+				try
+				{ //minforetriver can fail
+					converter = getConverter?.Invoke();
+				}
+				catch (Exception e)
+				{
+					exception = e;
+					return null;
+				}
+				try
+				{
+					if (converter is IExtendedTypeConverter xfExtendedTypeConverter)
+						return xfExtendedTypeConverter.ConvertFromInvariantString(str, serviceProvider);
+					if (converter is TypeConverter xfTypeConverter)
+						return xfTypeConverter.ConvertFromInvariantString(str);
+				}
+				catch (Exception e)
+				{
+					exception = e as XamlParseException ?? new XamlParseException($"Type converter failed: {e.Message}", serviceProvider, e);
+					return null;
+				}
+
+				var ignoreCase = (serviceProvider?.GetService(typeof(IConverterOptions)) as IConverterOptions)?.IgnoreCase ?? false;
+
+				//If the type is nullable, as the value is not null, it's safe to assume we want the built-in conversion
+				if (toType.IsGenericType && toType.GetGenericTypeDefinition() == typeof(Nullable<>))
+					toType = Nullable.GetUnderlyingType(toType);
+
+				//Obvious Built-in conversions
+				try
+				{
+					if (toType.IsEnum)
+						return Enum.Parse(toType, str, ignoreCase);
+					if (toType == typeof(SByte))
+						return SByte.Parse(str, CultureInfo.InvariantCulture);
+					if (toType == typeof(Int16))
+						return Int16.Parse(str, CultureInfo.InvariantCulture);
+					if (toType == typeof(Int32))
+						return Int32.Parse(str, CultureInfo.InvariantCulture);
+					if (toType == typeof(Int64))
+						return Int64.Parse(str, CultureInfo.InvariantCulture);
+					if (toType == typeof(Byte))
+						return Byte.Parse(str, CultureInfo.InvariantCulture);
+					if (toType == typeof(UInt16))
+						return UInt16.Parse(str, CultureInfo.InvariantCulture);
+					if (toType == typeof(UInt32))
+						return UInt32.Parse(str, CultureInfo.InvariantCulture);
+					if (toType == typeof(UInt64))
+						return UInt64.Parse(str, CultureInfo.InvariantCulture);
+					if (toType == typeof(Single))
+						return Single.Parse(str, CultureInfo.InvariantCulture);
+					if (toType == typeof(Double))
+						return Double.Parse(str, CultureInfo.InvariantCulture);
+					if (toType == typeof(Boolean))
+						return Boolean.Parse(str);
+					if (toType == typeof(TimeSpan))
+						return TimeSpan.Parse(str, CultureInfo.InvariantCulture);
+					if (toType == typeof(DateTime))
+						return DateTime.Parse(str, CultureInfo.InvariantCulture);
+					if (toType == typeof(Char))
+					{
+						Char.TryParse(str, out var c);
+						return c;
+					}
+					if (toType == typeof(String) && str.StartsWith("{}", StringComparison.Ordinal))
+						return str.Substring(2);
+					if (toType == typeof(String))
+						return value;
+					if (toType == typeof(Decimal))
+						return Decimal.Parse(str, CultureInfo.InvariantCulture);
+				}
+				catch (FormatException fe)
+				{
+					exception = fe;
+					return null;
+				}
+			}
+
+			//if the value is not assignable and there's an implicit conversion, convert
+			if (value != null && !toType.IsAssignableFrom(value.GetType()))
+			{
+				var opImplicit = value.GetType().GetImplicitConversionOperator(fromType: value.GetType(), toType: toType)
+								?? toType.GetImplicitConversionOperator(fromType: value.GetType(), toType: toType);
+
+				if (opImplicit != null)
+				{
+					value = opImplicit.Invoke(null, new[] { value });
+					return value;
+				}
+			}
+
+			var platformValueConverterService = DependencyService.Get<INativeValueConverterService>();
+
+			object platformValue = null;
+			if (platformValueConverterService != null && platformValueConverterService.ConvertTo(value, toType, out platformValue))
+				return platformValue;
+After:
+			{
+				return null;
+*/
+
+/* Unmerged change from project 'Controls.Core(net8.0-windows10.0.19041.0)'
+Before:
+				return null;
+
+			if (value is string str)
+			{
+				//If there's a [TypeConverter], use it
+				TypeConverter converter;
+				try
+				{ //minforetriver can fail
+					converter = getConverter?.Invoke();
+				}
+				catch (Exception e)
+				{
+					exception = e;
+					return null;
+				}
+				try
+				{
+					if (converter is IExtendedTypeConverter xfExtendedTypeConverter)
+						return xfExtendedTypeConverter.ConvertFromInvariantString(str, serviceProvider);
+					if (converter is TypeConverter xfTypeConverter)
+						return xfTypeConverter.ConvertFromInvariantString(str);
+				}
+				catch (Exception e)
+				{
+					exception = e as XamlParseException ?? new XamlParseException($"Type converter failed: {e.Message}", serviceProvider, e);
+					return null;
+				}
+
+				var ignoreCase = (serviceProvider?.GetService(typeof(IConverterOptions)) as IConverterOptions)?.IgnoreCase ?? false;
+
+				//If the type is nullable, as the value is not null, it's safe to assume we want the built-in conversion
+				if (toType.IsGenericType && toType.GetGenericTypeDefinition() == typeof(Nullable<>))
+					toType = Nullable.GetUnderlyingType(toType);
+
+				//Obvious Built-in conversions
+				try
+				{
+					if (toType.IsEnum)
+						return Enum.Parse(toType, str, ignoreCase);
+					if (toType == typeof(SByte))
+						return SByte.Parse(str, CultureInfo.InvariantCulture);
+					if (toType == typeof(Int16))
+						return Int16.Parse(str, CultureInfo.InvariantCulture);
+					if (toType == typeof(Int32))
+						return Int32.Parse(str, CultureInfo.InvariantCulture);
+					if (toType == typeof(Int64))
+						return Int64.Parse(str, CultureInfo.InvariantCulture);
+					if (toType == typeof(Byte))
+						return Byte.Parse(str, CultureInfo.InvariantCulture);
+					if (toType == typeof(UInt16))
+						return UInt16.Parse(str, CultureInfo.InvariantCulture);
+					if (toType == typeof(UInt32))
+						return UInt32.Parse(str, CultureInfo.InvariantCulture);
+					if (toType == typeof(UInt64))
+						return UInt64.Parse(str, CultureInfo.InvariantCulture);
+					if (toType == typeof(Single))
+						return Single.Parse(str, CultureInfo.InvariantCulture);
+					if (toType == typeof(Double))
+						return Double.Parse(str, CultureInfo.InvariantCulture);
+					if (toType == typeof(Boolean))
+						return Boolean.Parse(str);
+					if (toType == typeof(TimeSpan))
+						return TimeSpan.Parse(str, CultureInfo.InvariantCulture);
+					if (toType == typeof(DateTime))
+						return DateTime.Parse(str, CultureInfo.InvariantCulture);
+					if (toType == typeof(Char))
+					{
+						Char.TryParse(str, out var c);
+						return c;
+					}
+					if (toType == typeof(String) && str.StartsWith("{}", StringComparison.Ordinal))
+						return str.Substring(2);
+					if (toType == typeof(String))
+						return value;
+					if (toType == typeof(Decimal))
+						return Decimal.Parse(str, CultureInfo.InvariantCulture);
+				}
+				catch (FormatException fe)
+				{
+					exception = fe;
+					return null;
+				}
+			}
+
+			//if the value is not assignable and there's an implicit conversion, convert
+			if (value != null && !toType.IsAssignableFrom(value.GetType()))
+			{
+				var opImplicit = value.GetType().GetImplicitConversionOperator(fromType: value.GetType(), toType: toType)
+								?? toType.GetImplicitConversionOperator(fromType: value.GetType(), toType: toType);
+
+				if (opImplicit != null)
+				{
+					value = opImplicit.Invoke(null, new[] { value });
+					return value;
+				}
+			}
+
+			var platformValueConverterService = DependencyService.Get<INativeValueConverterService>();
+
+			object platformValue = null;
+			if (platformValueConverterService != null && platformValueConverterService.ConvertTo(value, toType, out platformValue))
+				return platformValue;
+After:
+			{
+				return null;
+*/
+
+/* Unmerged change from project 'Controls.Core(net8.0-windows10.0.20348.0)'
+Before:
+				return null;
+
+			if (value is string str)
+			{
+				//If there's a [TypeConverter], use it
+				TypeConverter converter;
+				try
+				{ //minforetriver can fail
+					converter = getConverter?.Invoke();
+				}
+				catch (Exception e)
+				{
+					exception = e;
+					return null;
+				}
+				try
+				{
+					if (converter is IExtendedTypeConverter xfExtendedTypeConverter)
+						return xfExtendedTypeConverter.ConvertFromInvariantString(str, serviceProvider);
+					if (converter is TypeConverter xfTypeConverter)
+						return xfTypeConverter.ConvertFromInvariantString(str);
+				}
+				catch (Exception e)
+				{
+					exception = e as XamlParseException ?? new XamlParseException($"Type converter failed: {e.Message}", serviceProvider, e);
+					return null;
+				}
+
+				var ignoreCase = (serviceProvider?.GetService(typeof(IConverterOptions)) as IConverterOptions)?.IgnoreCase ?? false;
+
+				//If the type is nullable, as the value is not null, it's safe to assume we want the built-in conversion
+				if (toType.IsGenericType && toType.GetGenericTypeDefinition() == typeof(Nullable<>))
+					toType = Nullable.GetUnderlyingType(toType);
+
+				//Obvious Built-in conversions
+				try
+				{
+					if (toType.IsEnum)
+						return Enum.Parse(toType, str, ignoreCase);
+					if (toType == typeof(SByte))
+						return SByte.Parse(str, CultureInfo.InvariantCulture);
+					if (toType == typeof(Int16))
+						return Int16.Parse(str, CultureInfo.InvariantCulture);
+					if (toType == typeof(Int32))
+						return Int32.Parse(str, CultureInfo.InvariantCulture);
+					if (toType == typeof(Int64))
+						return Int64.Parse(str, CultureInfo.InvariantCulture);
+					if (toType == typeof(Byte))
+						return Byte.Parse(str, CultureInfo.InvariantCulture);
+					if (toType == typeof(UInt16))
+						return UInt16.Parse(str, CultureInfo.InvariantCulture);
+					if (toType == typeof(UInt32))
+						return UInt32.Parse(str, CultureInfo.InvariantCulture);
+					if (toType == typeof(UInt64))
+						return UInt64.Parse(str, CultureInfo.InvariantCulture);
+					if (toType == typeof(Single))
+						return Single.Parse(str, CultureInfo.InvariantCulture);
+					if (toType == typeof(Double))
+						return Double.Parse(str, CultureInfo.InvariantCulture);
+					if (toType == typeof(Boolean))
+						return Boolean.Parse(str);
+					if (toType == typeof(TimeSpan))
+						return TimeSpan.Parse(str, CultureInfo.InvariantCulture);
+					if (toType == typeof(DateTime))
+						return DateTime.Parse(str, CultureInfo.InvariantCulture);
+					if (toType == typeof(Char))
+					{
+						Char.TryParse(str, out var c);
+						return c;
+					}
+					if (toType == typeof(String) && str.StartsWith("{}", StringComparison.Ordinal))
+						return str.Substring(2);
+					if (toType == typeof(String))
+						return value;
+					if (toType == typeof(Decimal))
+						return Decimal.Parse(str, CultureInfo.InvariantCulture);
+				}
+				catch (FormatException fe)
+				{
+					exception = fe;
+					return null;
+				}
+			}
+
+			//if the value is not assignable and there's an implicit conversion, convert
+			if (value != null && !toType.IsAssignableFrom(value.GetType()))
+			{
+				var opImplicit = value.GetType().GetImplicitConversionOperator(fromType: value.GetType(), toType: toType)
+								?? toType.GetImplicitConversionOperator(fromType: value.GetType(), toType: toType);
+
+				if (opImplicit != null)
+				{
+					value = opImplicit.Invoke(null, new[] { value });
+					return value;
+				}
+			}
+
+			var platformValueConverterService = DependencyService.Get<INativeValueConverterService>();
+
+			object platformValue = null;
+			if (platformValueConverterService != null && platformValueConverterService.ConvertTo(value, toType, out platformValue))
+				return platformValue;
+After:
+			{
+				return null;
+*/
+			{
+				return null;
+			}
+
+			if (value is string str)
+			{
+				//If there's a [TypeConverter], use it
+				TypeConverter converter;
+				try
+				{ //minforetriver can fail
+					converter = getConverter?.Invoke();
+				}
+				catch (Exception e)
+				{
+					exception = e;
+					return null;
+				}
+				try
+				{
+					if (converter is IExtendedTypeConverter xfExtendedTypeConverter)
+					{
+						return xfExtendedTypeConverter.ConvertFromInvariantString(str, serviceProvider);
+					}
+
+					if (converter is TypeConverter xfTypeConverter)
+					{
+						return xfTypeConverter.ConvertFromInvariantString(str);
+					}
+				}
+				catch (Exception e)
+				{
+					exception = e as XamlParseException ?? new XamlParseException($"Type converter failed: {e.Message}", serviceProvider, e);
+					return null;
+				}
+
+				var ignoreCase = (serviceProvider?.GetService(typeof(IConverterOptions)) as IConverterOptions)?.IgnoreCase ?? false;
+
+				//If the type is nullable, as the value is not null, it's safe to assume we want the built-in conversion
+				if (toType.IsGenericType && toType.GetGenericTypeDefinition() == typeof(Nullable<>))
+				{
+					toType = Nullable.GetUnderlyingType(toType);
+				}
+
+				//Obvious Built-in conversions
+				try
+				{
+					if (toType.IsEnum)
+					{
+						return Enum.Parse(toType, str, ignoreCase);
+					}
+
+					if (toType == typeof(SByte))
+					{
+						return SByte.Parse(str, CultureInfo.InvariantCulture);
+					}
+
+					if (toType == typeof(Int16))
+					{
+						return Int16.Parse(str, CultureInfo.InvariantCulture);
+					}
+
+					if (toType == typeof(Int32))
+					{
+						return Int32.Parse(str, CultureInfo.InvariantCulture);
+					}
+
+					if (toType == typeof(Int64))
+					{
+						return Int64.Parse(str, CultureInfo.InvariantCulture);
+					}
+
+					if (toType == typeof(Byte))
+					{
+						return Byte.Parse(str, CultureInfo.InvariantCulture);
+					}
+
+					if (toType == typeof(UInt16))
+					{
+						return UInt16.Parse(str, CultureInfo.InvariantCulture);
+					}
+
+					if (toType == typeof(UInt32))
+					{
+						return UInt32.Parse(str, CultureInfo.InvariantCulture);
+					}
+
+					if (toType == typeof(UInt64))
+					{
+						return UInt64.Parse(str, CultureInfo.InvariantCulture);
+					}
+
+					if (toType == typeof(Single))
+					{
+						return Single.Parse(str, CultureInfo.InvariantCulture);
+					}
+
+					if (toType == typeof(Double))
+					{
+						return Double.Parse(str, CultureInfo.InvariantCulture);
+					}
+
+					if (toType == typeof(Boolean))
+					{
+						return Boolean.Parse(str);
+					}
+
+					if (toType == typeof(TimeSpan))
+					{
+						return TimeSpan.Parse(str, CultureInfo.InvariantCulture);
+					}
+
+					if (toType == typeof(DateTime))
+					{
+						return DateTime.Parse(str, CultureInfo.InvariantCulture);
+					}
+
+					if (toType == typeof(Char))
+					{
+						Char.TryParse(str, out var c);
+						return c;
+					}
+					if (toType == typeof(String) && str.StartsWith("{}", StringComparison.Ordinal))
+					{
+						return str.Substring(2);
+					}
+
+					if (toType == typeof(String))
+					{
+						return value;
+					}
+
+					if (toType == typeof(Decimal))
+					{
+						return Decimal.Parse(str, CultureInfo.InvariantCulture);
+					}
+				}
+				catch (FormatException fe)
+				{
+					exception = fe;
+					return null;
+				}
+			}
+
+			//if the value is not assignable and there's an implicit conversion, convert
+			if (value != null && !toType.IsAssignableFrom(value.GetType()))
+			{
+				var opImplicit = value.GetType().GetImplicitConversionOperator(fromType: value.GetType(), toType: toType)
+								?? toType.GetImplicitConversionOperator(fromType: value.GetType(), toType: toType);
+
+				if (opImplicit != null)
+				{
+					value = opImplicit.Invoke(null, new[] { value });
+					return value;
+				}
+			}
+
+			var platformValueConverterService = DependencyService.Get<INativeValueConverterService>();
+
+			object platformValue = null;
+			if (platformValueConverterService != null && platformValueConverterService.ConvertTo(value, toType, out platformValue))
+			{
+				return platformValue;
+			}
 
 			return value;
 		}
@@ -253,28 +761,49 @@ namespace Microsoft.Maui.Controls.Xaml
 				foreach (var mi in onType.GetMethods(bindingAttr))
 				{
 					if (mi.Name != "op_Implicit")
+					{
 						break;
+					}
+
 					var parameters = mi.GetParameters();
 					if (parameters.Length == 0)
+					{
 						continue;
+					}
+
 					if (!parameters[0].ParameterType.IsAssignableFrom(fromType))
+					{
 						continue;
-					((List<MethodInfo>)mis).Add(mi);
+					} ((List<MethodInfo>)mis).Add(mi);
 				}
 			}
 
 			foreach (var mi in mis)
 			{
 				if (mi == null)
+				{
 					continue;
+				}
+
 				if (!mi.IsSpecialName)
+				{
 					continue;
+				}
+
 				if (!mi.IsPublic)
+				{
 					continue;
+				}
+
 				if (!mi.IsStatic)
+				{
 					continue;
+				}
+
 				if (!toType.IsAssignableFrom(mi.ReturnType))
+				{
 					continue;
+				}
 
 				return mi;
 			}

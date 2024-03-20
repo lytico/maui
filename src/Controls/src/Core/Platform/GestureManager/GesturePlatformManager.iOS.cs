@@ -36,12 +36,16 @@ namespace Microsoft.Maui.Controls.Platform
 		public GesturePlatformManager(IViewHandler handler)
 		{
 			if (handler == null)
+			{
 				throw new ArgumentNullException(nameof(handler));
+			}
 
 			_handler = (IPlatformViewHandler)handler;
 
 			if (_handler?.ToPlatform() is not PlatformView target)
+			{
 				throw new ArgumentNullException(nameof(handler.PlatformView));
+			}
 
 			_platformView = new WeakReference<PlatformView>(target);
 
@@ -49,9 +53,13 @@ namespace Microsoft.Maui.Controls.Platform
 
 			// In XF this was called inside ViewDidLoad
 			if (_handler.VirtualView is View view)
+			{
 				OnElementChanged(this, new VisualElementChangedEventArgs(null, view));
+			}
 			else
+			{
 				throw new ArgumentNullException(nameof(handler.VirtualView));
+			}
 		}
 
 		protected virtual PlatformView? PlatformView
@@ -59,7 +67,10 @@ namespace Microsoft.Maui.Controls.Platform
 			get
 			{
 				if (_platformView?.TryGetTarget(out var target) == true)
+				{
 					return target;
+				}
+
 				return null;
 			}
 		}
@@ -70,13 +81,17 @@ namespace Microsoft.Maui.Controls.Platform
 		internal void Disconnect()
 		{
 			if (ElementGestureRecognizers != null)
+			{
 				ElementGestureRecognizers.CollectionChanged -= _collectionChangedHandler;
+			}
 		}
 
 		public void Dispose()
 		{
 			if (_disposed)
+			{
 				return;
+			}
 
 			_disposed = true;
 
@@ -91,10 +106,15 @@ namespace Microsoft.Maui.Controls.Platform
 				foreach (var uiGestureRecognizer in kvp.Value)
 				{
 					if (uiGestureRecognizer is null)
+					{
 						continue;
+					}
 
 					if (PlatformView != null)
+					{
 						PlatformView.RemoveGestureRecognizer(uiGestureRecognizer);
+					}
+
 					uiGestureRecognizer.ShouldReceiveTouch = null;
 					uiGestureRecognizer.Dispose();
 				}
@@ -124,10 +144,14 @@ namespace Microsoft.Maui.Controls.Platform
 			WeakReference weakEventTracker, WeakReference weakRecognizer, GesturePlatformManager? eventTracker, View? view)
 		{
 			if (!weakRecognizer.IsAlive)
+			{
 				return null;
+			}
 
 			if (eventTracker == null || eventTracker._disposed || view == null)
+			{
 				return null;
+			}
 
 			var childGestures = view.GetChildElements(new Point(originPoint.X, originPoint.Y));
 			return childGestures;
@@ -146,17 +170,23 @@ namespace Microsoft.Maui.Controls.Platform
 
 			WeakReference? weakPlatformRecognizer = null;
 			if (uITapGestureRecognizer != null)
+			{
 				weakPlatformRecognizer = new WeakReference(uITapGestureRecognizer);
+			}
 
 			if (recognizer is TapGestureRecognizer tapGestureRecognizer)
 			{
 				var childGestures = GetChildGestures(originPoint, weakEventTracker, weakRecognizer, eventTracker, view);
 
 				if (childGestures?.HasChildGesturesFor<TapGestureRecognizer>(x => x.NumberOfTapsRequired == uiTapGestureRecognizerNumberOfTapsRequired) == true)
+				{
 					return;
+				}
 
 				if (view != null)
+				{
 					tapGestureRecognizer.SendTapped(view, (relativeTo) => CalculatePosition(relativeTo, originPoint, weakPlatformRecognizer, weakEventTracker));
+				}
 			}
 			else if (recognizer is ChildGestureRecognizer childGestureRecognizer)
 			{
@@ -165,12 +195,18 @@ namespace Microsoft.Maui.Controls.Platform
 				var recognizers = childGestures?.GetChildGesturesFor<TapGestureRecognizer>(x => x.NumberOfTapsRequired == uiTapGestureRecognizerNumberOfTapsRequired);
 
 				if (recognizers == null || weakRecognizer.Target == null)
+				{
 					return;
+				}
 
 				var childTapGestureRecognizer = childGestureRecognizer.GestureRecognizer as TapGestureRecognizer;
 				foreach (var item in recognizers)
+				{
 					if (item == childTapGestureRecognizer && view != null)
+					{
 						childTapGestureRecognizer.SendTapped(view, (relativeTo) => CalculatePosition(relativeTo, originPoint, weakPlatformRecognizer, weakEventTracker));
+					}
+				}
 			}
 		}
 
@@ -183,23 +219,31 @@ namespace Microsoft.Maui.Controls.Platform
 			var platformView = element?.ToPlatform();
 
 			if (virtualView == null)
+			{
 				return null;
+			}
 
 			if (platformRecognizer == null)
 			{
 				if (virtualView == element)
+				{
 					return new Point((int)originPoint.X, (int)originPoint.Y);
+				}
 
 				var targetViewScreenLocation = virtualView.GetLocationOnScreen();
 
 				if (!targetViewScreenLocation.HasValue)
+				{
 					return null;
+				}
 
 				var windowX = targetViewScreenLocation.Value.X + originPoint.X;
 				var windowY = targetViewScreenLocation.Value.Y + originPoint.Y;
 
 				if (element == null)
+				{
 					return new Point(windowX, windowY);
+				}
 
 				if (platformView is PlatformView uiView)
 				{
@@ -216,12 +260,18 @@ namespace Microsoft.Maui.Controls.Platform
 
 			CGPoint? result = null;
 			if (element == null)
+			{
 				result = platformRecognizer.LocationInView(null);
+			}
 			else if (platformView is PlatformView view)
+			{
 				result = platformRecognizer.LocationInView(view);
+			}
 
 			if (result == null)
+			{
 				return null;
+			}
 
 			return new Point((int)result.Value.X, (int)result.Value.Y);
 
@@ -230,7 +280,9 @@ namespace Microsoft.Maui.Controls.Platform
 		protected virtual List<UIGestureRecognizer?>? GetPlatformRecognizer(IGestureRecognizer recognizer)
 		{
 			if (recognizer == null)
+			{
 				return null;
+			}
 
 			var weakRecognizer = new WeakReference(recognizer);
 			var weakEventTracker = new WeakReference(this);
@@ -260,7 +312,9 @@ namespace Microsoft.Maui.Controls.Platform
 					var view = eventTracker?._handler.VirtualView as View;
 
 					if (swipeGestureRecognizer != null && view != null)
+					{
 						swipeGestureRecognizer.SendSwiped(view, direction);
+					}
 				});
 				var uiRecognizer = CreateSwipeRecognizer(swipeRecognizer.Direction, returnAction, 1);
 				return new List<UIGestureRecognizer?> { uiRecognizer };
@@ -287,7 +341,9 @@ namespace Microsoft.Maui.Controls.Platform
 						{
 							case UIGestureRecognizerState.Began:
 								if (r.NumberOfTouches < 2)
+								{
 									return;
+								}
 
 								pinchGestureRecognizer.SendPinchStarted(view, scaledPoint);
 								startingScale = view.Scale;
@@ -303,9 +359,14 @@ namespace Microsoft.Maui.Controls.Platform
 								var delta = 1.0;
 								var dif = Math.Abs(scale - oldScale) * startingScale;
 								if (oldScale < scale)
+								{
 									delta = 1 + dif;
+								}
+
 								if (oldScale > scale)
+								{
 									delta = 1 - dif;
+								}
 
 								pinchGestureRecognizer.SendPinch(view, delta, scaledPoint);
 								eventTracker._previousScale = scale;
@@ -313,11 +374,17 @@ namespace Microsoft.Maui.Controls.Platform
 							case UIGestureRecognizerState.Cancelled:
 							case UIGestureRecognizerState.Failed:
 								if (pinchGestureRecognizer.IsPinching)
+								{
 									pinchGestureRecognizer.SendPinchCanceled(view);
+								}
+
 								break;
 							case UIGestureRecognizerState.Ended:
 								if (pinchGestureRecognizer.IsPinching)
+								{
 									pinchGestureRecognizer.SendPinchEnded(view);
+								}
+
 								eventTracker._previousScale = 1;
 								break;
 						}
@@ -341,7 +408,10 @@ namespace Microsoft.Maui.Controls.Platform
 						{
 							case UIGestureRecognizerState.Began:
 								if (r.NumberOfTouches != panRecognizer.TouchPoints)
+								{
 									return;
+								}
+
 								panGestureRecognizer.SendPanStarted(view, PanGestureRecognizer.CurrentId.Value);
 								break;
 							case UIGestureRecognizerState.Changed:
@@ -423,21 +493,32 @@ namespace Microsoft.Maui.Controls.Platform
 						case UIGestureRecognizerState.Began:
 							exited = false;
 							if (pointerGesture is UIHoverGestureRecognizer)
+							{
 								pointerGestureRecognizer.SendPointerEntered(view, (relativeTo) => CalculatePosition(relativeTo, originPoint, weakRecognizer, weakEventTracker), platformPointerArgs);
+							}
 							else
+							{
 								pointerGestureRecognizer.SendPointerPressed(view, (relativeTo) => CalculatePosition(relativeTo, originPoint, weakRecognizer, weakEventTracker), platformPointerArgs);
+							}
+
 							break;
 						case UIGestureRecognizerState.Changed:
 							if (exited)
+							{
 								break;
+							}
 
 							if (pointerGesture is UIHoverGestureRecognizer)
+							{
 								pointerGestureRecognizer.SendPointerMoved(view, (relativeTo) => CalculatePosition(relativeTo, originPoint, weakRecognizer, weakEventTracker), platformPointerArgs);
+							}
 							else
 							{
 								var bounds = eventTracker?.PlatformView?.Bounds;
 								if (bounds is not null && bounds.Value.Contains(originPoint))
+								{
 									pointerGestureRecognizer.SendPointerMoved(view, (relativeTo) => CalculatePosition(relativeTo, originPoint, weakRecognizer, weakEventTracker), platformPointerArgs);
+								}
 								else
 								{
 									pointerGestureRecognizer.SendPointerExited(view, (relativeTo) => CalculatePosition(relativeTo, originPoint, weakRecognizer, weakEventTracker), platformPointerArgs);
@@ -451,12 +532,19 @@ namespace Microsoft.Maui.Controls.Platform
 						case UIGestureRecognizerState.Failed:
 						case UIGestureRecognizerState.Ended:
 							if (exited)
+							{
 								break;
+							}
 
 							if (pointerGesture is UIHoverGestureRecognizer)
+							{
 								pointerGestureRecognizer.SendPointerExited(view, (relativeTo) => CalculatePosition(relativeTo, originPoint, weakRecognizer, weakEventTracker), platformPointerArgs);
+							}
 							else
+							{
 								pointerGestureRecognizer.SendPointerReleased(view, (relativeTo) => CalculatePosition(relativeTo, originPoint, weakRecognizer, weakEventTracker), platformPointerArgs);
+							}
+
 							break;
 					}
 				}
@@ -476,10 +564,14 @@ namespace Microsoft.Maui.Controls.Platform
 			WeakReference weakRecognizer)
 		{
 			if (!TryGetTapGestureRecognizer(weakRecognizer.Target as IGestureRecognizer, out TapGestureRecognizer? tapGesture))
+			{
 				return null;
+			}
 
 			if (tapGesture == null)
+			{
 				return null;
+			}
 
 			Action<UITapGestureRecognizer> action = new Action<UITapGestureRecognizer>((sender) =>
 			{
@@ -503,10 +595,14 @@ namespace Microsoft.Maui.Controls.Platform
 				UIEventButtonMask uIEventButtonMask = (UIEventButtonMask)0;
 
 				if ((tapGesture.Buttons & ButtonsMask.Primary) == ButtonsMask.Primary)
+				{
 					uIEventButtonMask |= UIEventButtonMask.Primary;
+				}
 
 				if ((tapGesture.Buttons & ButtonsMask.Secondary) == ButtonsMask.Secondary)
+				{
 					uIEventButtonMask |= UIEventButtonMask.Secondary;
+				}
 
 				result.ButtonMaskRequired = uIEventButtonMask;
 			}
@@ -562,7 +658,9 @@ namespace Microsoft.Maui.Controls.Platform
 		void LoadRecognizers()
 		{
 			if (ElementGestureRecognizers == null)
+			{
 				return;
+			}
 
 			if (_shouldReceiveTouch == null)
 			{
@@ -580,10 +678,14 @@ namespace Microsoft.Maui.Controls.Platform
 					foreach (var interaction in PlatformView.Interactions)
 					{
 						if (interaction is UIDragInteraction uIDrag && uIDrag.Delegate == _dragAndDropDelegate)
+						{
 							uIDragInteraction = uIDrag;
+						}
 
 						if (interaction is UIDropInteraction uiDrop && uiDrop.Delegate == _dragAndDropDelegate)
+						{
 							uIDropInteraction = uiDrop;
+						}
 					}
 				}
 			}
@@ -616,7 +718,9 @@ namespace Microsoft.Maui.Controls.Platform
 				IGestureRecognizer recognizer = ElementGestureRecognizers[i];
 
 				if (_gestureRecognizers.ContainsKey(recognizer))
+				{
 					continue;
+				}
 
 				if (TryGetTapGestureRecognizer(recognizer, out TapGestureRecognizer? tapGestureRecognizer) &&
 					tapGestureRecognizer != null)
@@ -662,7 +766,9 @@ namespace Microsoft.Maui.Controls.Platform
 				var nativeRecognizers = GetPlatformRecognizer(recognizer);
 
 				if (nativeRecognizers is null)
+				{
 					continue;
+				}
 
 				_gestureRecognizers[recognizer] = nativeRecognizers;
 				foreach (UIGestureRecognizer? nativeRecognizer in nativeRecognizers)
@@ -679,10 +785,14 @@ namespace Microsoft.Maui.Controls.Platform
 			if (OperatingSystem.IsIOSVersionAtLeast(11))
 			{
 				if (!dragFound && uIDragInteraction != null && PlatformView != null)
+				{
 					PlatformView.RemoveInteraction(uIDragInteraction);
+				}
 
 				if (!dropFound && uIDropInteraction != null && PlatformView != null)
+				{
 					PlatformView.RemoveInteraction(uIDropInteraction);
+				}
 			}
 
 			var toRemove = new List<IGestureRecognizer>();
@@ -690,7 +800,9 @@ namespace Microsoft.Maui.Controls.Platform
 			foreach (var key in _gestureRecognizers.Keys)
 			{
 				if (!ElementGestureRecognizers.Contains(key))
+				{
 					toRemove.Add(key);
+				}
 			}
 
 			for (int i = 0; i < toRemove.Count; i++)
@@ -702,7 +814,9 @@ namespace Microsoft.Maui.Controls.Platform
 				foreach (var uiRecognizer in uiRecognizers)
 				{
 					if (uiRecognizer is null)
+					{
 						continue;
+					}
 
 					if (PlatformView != null)
 					{
@@ -735,7 +849,9 @@ namespace Microsoft.Maui.Controls.Platform
 		void OnTapGestureRecognizerPropertyChanged(object? sender, System.ComponentModel.PropertyChangedEventArgs e)
 		{
 			if (e.Is(TapGestureRecognizer.ButtonsProperty))
+			{
 				LoadRecognizers();
+			}
 		}
 
 		bool ShouldReceiveTouch(UIGestureRecognizer recognizer, UITouch touch)
@@ -780,7 +896,9 @@ namespace Microsoft.Maui.Controls.Platform
 				if (OperatingSystem.IsIOSVersionAtLeast(13) || OperatingSystem.IsMacCatalystVersionAtLeast(13))
 				{
 					if (_defaultAccessibilityRespondsToUserInteraction != null)
+					{
 						PlatformView.AccessibilityRespondsToUserInteraction = _defaultAccessibilityRespondsToUserInteraction.Value;
+					}
 				}
 			}
 
@@ -880,7 +998,9 @@ namespace Microsoft.Maui.Controls.Platform
 				public override UIContextMenuConfiguration? GetConfigurationForMenu(UIContextMenuInteraction interaction, CGPoint location)
 				{
 					if (TapGestureRecognizer?.NumberOfTapsRequired == 1)
+					{
 						ProcessRecognizerHandlerTap(_gestureManager, _recognizer, location, 1);
+					}
 
 					return null;
 				}
