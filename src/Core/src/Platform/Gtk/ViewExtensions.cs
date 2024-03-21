@@ -14,7 +14,7 @@ namespace Microsoft.Maui.Platform
 
 		public static void UpdateAutomationId(this Widget platformView, IView view) { }
 
-		public static void UpdateBackground(this Widget platformView, IView view)
+		public static void UpdateBackground(this Widget platformView, IView view, string? subNode = default)
 		{
 			var color = view.Background?.BackgroundColor;
 
@@ -55,16 +55,16 @@ namespace Microsoft.Maui.Platform
 				default:
 					if (picCss != null)
 					{
-						platformView.SetStyleValue(picCss, "background-image");
+						platformView.SetStyleValue(picCss, "background-image", subNode);
 					}
 
 					if (gradientCss != null)
 					{
-						platformView.SetStyleValue(gradientCss, "background");
+						platformView.SetStyleValue(gradientCss, "background", subNode);
 					}
 					else
 					{
-						platformView.SetBackgroundColor(color);
+						platformView.SetBackgroundColor(color, subNode);
 					}
 
 					break;

@@ -9,7 +9,7 @@ namespace Microsoft.Maui
 	public static class WidgetColorExtensions
 	{
 
-		public static void SetBackgroundColor(this Gtk.Widget widget, Graphics.Color? color)
+		public static void SetBackgroundColor(this Gtk.Widget widget, Graphics.Color? color, string? subNode = default)
 		{
 			if (color == null)
 				return;
@@ -17,7 +17,7 @@ namespace Microsoft.Maui
 			widget.SetBackgroundColor(Gtk.StateFlags.Normal, color);
 		}
 
-		public static void SetBackgroundColor(this Gtk.Widget widget, Gtk.StateType state, Graphics.Color? color)
+		public static void SetBackgroundColor(this Gtk.Widget widget, Gtk.StateType state, Graphics.Color? color, string? subNode = default)
 		{
 			if (color == null)
 				return;
@@ -25,7 +25,7 @@ namespace Microsoft.Maui
 			widget.SetBackgroundColor(state.ToStateFlag(), color);
 		}
 
-		public static void SetBackgroundColor(this Gtk.Widget widget, Gtk.StateFlags state, Graphics.Color? color)
+		public static void SetBackgroundColor(this Gtk.Widget widget, Gtk.StateFlags state, Graphics.Color? color, string? subNode = default)
 		{
 			if (color == null)
 				return;
@@ -33,7 +33,7 @@ namespace Microsoft.Maui
 			var cssFlags = state.CssState();
 			var mainNode = widget.CssMainNode();
 			if (cssFlags != null) mainNode = $"{mainNode}:{cssFlags}";
-			widget.SetStyleColor(color, mainNode, "background-color");
+			widget.SetStyleColor(color, mainNode, "background-color", subNode);
 
 		}
 

@@ -5,8 +5,12 @@ using Microsoft.Maui.Graphics.Platform.Gtk;
 
 namespace Microsoft.Maui.Platform
 {
+
+	// https://www.w3.org/TR/css-backgrounds-3/
+
 	public static class StrokeExtensions
 	{
+
 		static (string mainNode, string subNode) GetBorderCssNode(this BorderView platformView)
 		{
 			var mainNode = platformView.CssMainNode();
@@ -20,6 +24,7 @@ namespace Microsoft.Maui.Platform
 			var (mainNode, subnode) = platformView.GetBorderCssNode();
 			platformView.SetStyleColor(border.Stroke.ToColor(), mainNode, "border-color", subnode);
 			platformView.SetStyleValueNode($"{(int)border.StrokeThickness}px", mainNode, "border-width", subnode);
+
 			if (border.StrokeDashPattern is { Length: > 1 })
 			{
 				if (border.StrokeDashPattern[0] > 1)
@@ -33,7 +38,7 @@ namespace Microsoft.Maui.Platform
 			}
 
 			// no effect:
-			// platformView.SetStyleValueNode("content-box", mainNode, "background-clip");
+
 		}
 
 		// radius can be calculated from path
@@ -45,6 +50,7 @@ namespace Microsoft.Maui.Platform
 			var iCorner = 0;
 			PointF fromP = default;
 			PointF toP = default;
+
 			for (var i = 0; i < path.OperationCount; i++)
 			{
 				var type = path.GetSegmentType(i);
@@ -64,8 +70,10 @@ namespace Microsoft.Maui.Platform
 				{
 					corners[iCorner] = (fromP, toP);
 					iCorner++;
+
 					if (iCorner > corners.Length)
 						break;
+
 					fromP = points[0];
 				}
 			}
@@ -88,6 +96,7 @@ namespace Microsoft.Maui.Platform
 			if (platformView is not BorderView borderView)
 				return;
 
+			var setBackgroundDefault = true;
 			if (border.Shape is { } shape)
 			{
 				var (mainNode, subnode) = borderView.GetBorderCssNode();
@@ -99,9 +108,10 @@ namespace Microsoft.Maui.Platform
 					    (radius == tr && radius == br && radius == bl))
 					{
 						platformView.SetStyleValueNode($"{(int)radius}px", mainNode, "border-radius", subnode);
+
 						return;
 					}
-
+					// platformView.SetStyleValueNode($"{(int)radius}px", mainNode, "padding");
 					platformView.SetStyleValueNode($"{(int)radius}px", mainNode, "border-top-left-radius", subnode);
 					platformView.SetStyleValueNode($"{(int)tr}px", mainNode, "border-top-right-radius", subnode);
 					platformView.SetStyleValueNode($"{(int)br}px", mainNode, "border-bottom-right-radius", subnode);
@@ -118,6 +128,14 @@ namespace Microsoft.Maui.Platform
 				{
 					SetRadius(0);
 				}
+
+				platformView.SetStyleValueNode("padding-box", mainNode, "background-clip");
+			}
+
+			if (setBackgroundDefault)
+			{
+				platformView.UpdateBackground((IView)border);
+
 			}
 		}
 
@@ -183,5 +201,22 @@ namespace Microsoft.Maui.Platform
 
 			UpdateStroke(borderView, border);
 		}
+
+		public static void UpdateBackground(this Gtk.Frame platformView, IBorderView border)
+		{
+			bool hasBorder = border.Shape != null;
+
+			if (hasBorder)
+			{
+				platformView.UpdateStrokeShape(border);
+			}
+			else
+			{
+				platformView.UpdateBackground((IView)border);
+			}
+
+		}
+
 	}
+
 }
