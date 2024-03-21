@@ -177,7 +177,8 @@ public partial class GtkWebViewManager : Microsoft.AspNetCore.Components.WebView
 		{
 			var jsValue = args.JsResult.JsValue;
 
-			if (!jsValue.IsString) return;
+			if (!jsValue.IsString)
+				return;
 
 			var s = jsValue.ToString();
 
@@ -262,7 +263,7 @@ public partial class GtkWebViewManager : Microsoft.AspNetCore.Components.WebView
 		launchBrowser.Start();
 	}
 
-	
+
 	public static (InputStream inputStream, int length) InputStreamNewFromStream(Stream content)
 	{
 		using var memoryStream = new MemoryStream();

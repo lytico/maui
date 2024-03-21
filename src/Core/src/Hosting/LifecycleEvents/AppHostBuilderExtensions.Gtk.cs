@@ -1,5 +1,5 @@
-using Microsoft.Maui.Hosting;
 using Gdk;
+using Microsoft.Maui.Hosting;
 
 namespace Microsoft.Maui.LifecycleEvents
 {

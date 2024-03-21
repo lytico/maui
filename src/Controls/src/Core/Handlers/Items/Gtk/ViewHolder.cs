@@ -48,7 +48,7 @@ namespace Microsoft.Maui.Controls.Handlers.Items.Platform
 					_content.FocusOnClick = false;
 					_content.FocusInEvent -= OnContentFocused;
 					_content.FocusOutEvent -= OnContentUnfocused;
-					
+
 					Remove(_content);
 				}
 
@@ -56,7 +56,7 @@ namespace Microsoft.Maui.Controls.Handlers.Items.Platform
 
 				if (_content != null)
 				{
-					_content.AddEvents ((int)Gdk.EventMask.ButtonPressMask);
+					_content.AddEvents((int)Gdk.EventMask.ButtonPressMask);
 					_content.CanFocus = true;
 					_content.FocusOnClick = true;
 					_content.WidthSpecification(LayoutParamPolicies.MatchParent);
@@ -66,7 +66,7 @@ namespace Microsoft.Maui.Controls.Handlers.Items.Platform
 
 					// _content.FocusInEvent += OnContentFocused;
 					_content.FocusOutEvent += OnContentUnfocused;
-					_content.ButtonPressEvent+=OnContentOnButtonPressEvent;
+					_content.ButtonPressEvent += OnContentOnButtonPressEvent;
 					// _content.FocusGrabbed += OnContentFocused;
 					Child = _content;
 				}
@@ -112,13 +112,13 @@ namespace Microsoft.Maui.Controls.Handlers.Items.Platform
 		{
 			CanFocus = true;
 
-			this.AddEvents ((int)Gdk.EventMask.ButtonPressMask);
-			this.AddEvents ((int)Gdk.EventMask.FocusChangeMask);
+			this.AddEvents((int)Gdk.EventMask.ButtonPressMask);
+			this.AddEvents((int)Gdk.EventMask.FocusChangeMask);
 			TouchEvent += OnTouchEvent;
 			KeyPressEvent += OnKeyEvent;
 			FocusGrabbed += OnFocused;
 			FocusOutEvent += OnUnfocused;
-			ButtonPressEvent+=OnButtonPressEvent;
+			ButtonPressEvent += OnButtonPressEvent;
 			// no need for that:
 			//SizeAllocated += OnLayout;
 		}

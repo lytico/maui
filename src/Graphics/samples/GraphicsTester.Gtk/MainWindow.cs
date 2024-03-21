@@ -60,11 +60,13 @@ class MainWindow : Window
 
 	private void Selection_Changed(object sender, EventArgs e)
 	{
-		if (!_treeView.Selection.GetSelected(out TreeIter iter)) return;
+		if (!_treeView.Selection.GetSelected(out TreeIter iter))
+			return;
 
 		var s = _store.GetValue(iter, 0).ToString();
 
-		if (!_items.TryGetValue(s, out var scenario)) return;
+		if (!_items.TryGetValue(s, out var scenario))
+			return;
 
 		_gtkGtkGraphicsView.Drawable = scenario;
 		_gtkGtkGraphicsView.HeightRequest = (int)scenario.Height;

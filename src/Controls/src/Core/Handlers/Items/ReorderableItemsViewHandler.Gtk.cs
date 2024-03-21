@@ -7,7 +7,7 @@ namespace Microsoft.Maui.Controls.Handlers.Items
 		[MissingMapper]
 		public static void MapCanReorderItems(ReorderableItemsViewHandler<TItemsView> handler, ReorderableItemsView itemsView)
 		{
-			
+
 		}
 	}
 }

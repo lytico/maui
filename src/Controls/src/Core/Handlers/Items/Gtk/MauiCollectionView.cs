@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Collections.Specialized;
 using System.Linq;
-using Microsoft.Maui.Controls.Platform;
 using Microsoft.Maui.Controls.Handlers.Items.Platform;
+using Microsoft.Maui.Controls.Platform;
 using IMeasurable = Gtk.UIExtensions.Common.IMeasurable;
+using Size = Microsoft.Maui.Graphics.Size;
 using TCollectionView = Microsoft.Maui.Controls.Handlers.Items.Platform.CollectionView;
 using TScrollToPosition = Microsoft.Maui.Controls.ScrollToPosition;
-using Size = Microsoft.Maui.Graphics.Size;
 using TSnapPointsAlignment = Microsoft.Maui.Controls.Handlers.Items.Platform.SnapPointsAlignment;
 using TSnapPointsType = Microsoft.Maui.Controls.Handlers.Items.Platform.SnapPointsType;
 
@@ -37,7 +37,7 @@ namespace Microsoft.Maui.Controls.Handlers.Items
 		{
 			Relayout?.Invoke(this, EventArgs.Empty);
 		}
-		
+
 		public virtual void SetupNewElement(TItemsView newElement)
 		{
 			if (newElement == null)
@@ -188,10 +188,10 @@ namespace Microsoft.Maui.Controls.Handlers.Items
 				return;
 
 			if (e.PropertyName == nameof(LinearItemsLayout.ItemSpacing)
-			    || e.PropertyName == nameof(GridItemsLayout.VerticalItemSpacing)
-			    || e.PropertyName == nameof(GridItemsLayout.HorizontalItemSpacing)
-			    || e.PropertyName == nameof(Controls.ItemsLayout.SnapPointsType)
-			    || e.PropertyName == nameof(Controls.ItemsLayout.SnapPointsAlignment))
+				|| e.PropertyName == nameof(GridItemsLayout.VerticalItemSpacing)
+				|| e.PropertyName == nameof(GridItemsLayout.HorizontalItemSpacing)
+				|| e.PropertyName == nameof(Controls.ItemsLayout.SnapPointsType)
+				|| e.PropertyName == nameof(Controls.ItemsLayout.SnapPointsAlignment))
 			{
 				UpdateLayoutManager();
 			}

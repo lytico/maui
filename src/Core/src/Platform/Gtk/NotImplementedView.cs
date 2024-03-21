@@ -14,7 +14,7 @@ namespace Microsoft.Maui.Platform
 
 		protected NotImplementedView() { }
 
-		public NotImplementedView(string name):this()
+		public NotImplementedView(string name) : this()
 		{
 			DisplayName = name;
 

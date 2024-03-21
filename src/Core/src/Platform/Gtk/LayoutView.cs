@@ -5,9 +5,9 @@ using System.Collections.Generic;
 using System.Linq;
 using Gtk;
 using Microsoft.Maui.Graphics.Platform.Gtk;
+using Point = Microsoft.Maui.Graphics.Point;
 using Rectangle = Microsoft.Maui.Graphics.Rect;
 using Size = Microsoft.Maui.Graphics.Size;
-using Point = Microsoft.Maui.Graphics.Point;
 
 #pragma warning disable CS0162 // Unreachable code detected
 
@@ -24,7 +24,7 @@ namespace Microsoft.Maui.Platform
 			var stc = this.StyleContext;
 			stc.RenderBackground(cr, 0, 0, Allocation.Width, Allocation.Height);
 
-			var r = true; 
+			var r = true;
 			foreach (var c in _children.ToArray())
 				PropagateDraw(c.widget, cr);
 #if TRACE_ALLOCATION
@@ -443,7 +443,8 @@ namespace Microsoft.Maui.Platform
 			if (rect.IsEmpty)
 				return;
 
-			if (rect == Allocation.ToRect()) return;
+			if (rect == Allocation.ToRect())
+				return;
 
 			if (IsSizeAllocating)
 			{

@@ -96,7 +96,7 @@ namespace Microsoft.Maui.Platform
 				void SetRadius(float radius, float? tr = default, float? br = default, float? bl = default)
 				{
 					if (tr is not { } || br is not { } || bl is not { } ||
-					    (radius == tr && radius == br && radius == bl))
+						(radius == tr && radius == br && radius == bl))
 					{
 						platformView.SetStyleValueNode($"{(int)radius}px", mainNode, "border-radius", subnode);
 						return;

@@ -79,7 +79,7 @@ namespace Microsoft.Maui
 			var initServices = mauiApp.Services.GetServices<IMauiInitializeService>();
 			if (initServices is null)
 				return;
-			
+
 			foreach (var instance in initServices)
 				instance.Initialize(mauiApp.Services);
 		}

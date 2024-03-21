@@ -5,8 +5,8 @@ using Gtk;
 using Microsoft.Maui.Graphics;
 using Microsoft.Maui.Graphics.Platform.Gtk;
 using Point = Microsoft.Maui.Graphics.Point;
-using Size = Microsoft.Maui.Graphics.Size;
 using Rectangle = Microsoft.Maui.Graphics.Rect;
+using Size = Microsoft.Maui.Graphics.Size;
 
 namespace Microsoft.Maui.Controls.Handlers.Items.Platform;
 
@@ -287,7 +287,8 @@ public partial class CollectionContainer : Container
 		if (rect.IsEmpty)
 			return;
 
-		if (rect == Allocation.ToRect()) return;
+		if (rect == Allocation.ToRect())
+			return;
 
 		if (IsSizeAllocating)
 		{

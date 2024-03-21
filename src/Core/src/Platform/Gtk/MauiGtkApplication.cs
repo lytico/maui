@@ -1,9 +1,9 @@
 using System;
+using Gtk;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Maui.Dispatching;
 using Microsoft.Maui.Hosting;
 using Microsoft.Maui.LifecycleEvents;
-using Gtk;
-using Microsoft.Maui.Dispatching;
 
 namespace Microsoft.Maui
 {

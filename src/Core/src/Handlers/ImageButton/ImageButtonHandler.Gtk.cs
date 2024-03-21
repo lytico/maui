@@ -25,7 +25,7 @@ namespace Microsoft.Maui.Handlers
 				if (Handler?.PlatformView is not MauiImageButton button)
 					return;
 
-				var imageView = button.ImageView ?? new ();
+				var imageView = button.ImageView ?? new();
 				imageView.Image = platformImage;
 				button.ImageView = imageView;
 			}

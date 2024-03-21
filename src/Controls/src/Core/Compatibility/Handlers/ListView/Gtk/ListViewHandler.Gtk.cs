@@ -5,7 +5,8 @@ namespace Microsoft.Maui.Controls.Handlers.Compatibility
 	public partial class ListViewHandler : ViewHandler<ListView, MauiListView>
 	{
 		public static IPropertyMapper<ListView, ListViewHandler> Mapper = new PropertyMapper<ListView, ListViewHandler>(
-			ViewRenderer.VisualElementRendererMapper) { [VisualElement.BackgroundProperty.PropertyName] = MapBackground, [ListView.SelectedItemProperty.PropertyName] = MapSelectedItem, };
+			ViewRenderer.VisualElementRendererMapper)
+		{ [VisualElement.BackgroundProperty.PropertyName] = MapBackground, [ListView.SelectedItemProperty.PropertyName] = MapSelectedItem, };
 
 		public static CommandMapper<ListView, ListViewHandler> CommandMapper = new(ViewRenderer.VisualElementRendererCommandMapper) { };
 

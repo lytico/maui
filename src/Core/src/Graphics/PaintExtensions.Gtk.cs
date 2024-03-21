@@ -22,22 +22,22 @@ namespace Microsoft.Maui.Graphics
 			switch (paint)
 			{
 				case ImagePaint { Image: PlatformImage image } imagePaint:
-				{
-					var pixbuf = image.NativeImage;
+					{
+						var pixbuf = image.NativeImage;
 
-					return pixbuf;
-				}
+						return pixbuf;
+					}
 
 				case PatternPaint patternPaint:
-				{
+					{
 
-					var pixbuf = patternPaint.GetPatternBitmap(1);
-					owned = true;
+						var pixbuf = patternPaint.GetPatternBitmap(1);
+						owned = true;
 
-					// TODO: create a cairo.pattern & store it in pixbuf
-					return pixbuf;
+						// TODO: create a cairo.pattern & store it in pixbuf
+						return pixbuf;
 
-				}
+					}
 
 			}
 
@@ -68,19 +68,19 @@ namespace Microsoft.Maui.Graphics
 			switch (paint)
 			{
 				case LinearGradientPaint lg:
-				{
-					var stops = Stops(lg.GetSortedStops());
-					var css = $"linear-gradient( to right, {stops})";
+					{
+						var stops = Stops(lg.GetSortedStops());
+						var css = $"linear-gradient( to right, {stops})";
 
-					return css;
-				}
+						return css;
+					}
 				case RadialGradientPaint rg:
-				{
-					var stops = Stops(rg.GetSortedStops());
-					var css = $"radial-gradient({stops})";
+					{
+						var stops = Stops(rg.GetSortedStops());
+						var css = $"radial-gradient({stops})";
 
-					return css;
-				}
+						return css;
+					}
 
 			}
 

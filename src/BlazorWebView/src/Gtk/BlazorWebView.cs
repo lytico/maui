@@ -112,19 +112,22 @@ namespace Microsoft.AspNetCore.Components.WebView.Gtk
 		/// Allows customizing how links are opened.
 		/// By default, opens internal links in the webview and external links in an external app.
 		/// </summary>
-		[Category("Action")] [Description("Allows customizing how links are opened. By default, opens internal links in the webview and external links in an external app.")]
+		[Category("Action")]
+		[Description("Allows customizing how links are opened. By default, opens internal links in the webview and external links in an external app.")]
 		public EventHandler<UrlLoadingEventArgs>? UrlLoading;
 
 		/// <summary>
 		/// Allows customizing the web view before it is created.
 		/// </summary>
-		[Category("Action")] [Description("Allows customizing the web view before it is created.")]
+		[Category("Action")]
+		[Description("Allows customizing the web view before it is created.")]
 		public EventHandler<BlazorWebViewInitializingEventArgs>? BlazorWebViewInitializing;
 
 		/// <summary>
 		/// Allows customizing the web view after it is created.
 		/// </summary>
-		[Category("Action")] [Description("Allows customizing the web view after it is created.")]
+		[Category("Action")]
+		[Description("Allows customizing the web view after it is created.")]
 		public EventHandler<BlazorWebViewInitializedEventArgs>? BlazorWebViewInitialized;
 
 		private void OnHostPagePropertyChanged() => StartWebViewCoreIfPossible();

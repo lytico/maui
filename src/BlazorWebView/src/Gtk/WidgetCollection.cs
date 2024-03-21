@@ -16,14 +16,16 @@ public class WidgetCollection : ObservableCollection<Widget>
 
 	public new virtual void Add(Widget? value)
 	{
-		if (value != null) base.Add(value);
+		if (value != null)
+			base.Add(value);
 	}
 
 	public new virtual void Clear() => base.Clear();
 
 	public new virtual void Remove(Widget? value)
 	{
-		if (value != null) base.Remove(value);
+		if (value != null)
+			base.Remove(value);
 	}
 
 	public virtual void SetChildIndex(Widget child, int newIndex)

@@ -2,7 +2,8 @@ using System;
 
 namespace Microsoft.Maui.Graphics.Platform.Gtk;
 
-public static class GraphicsExtensions {
+public static class GraphicsExtensions
+{
 
 	public static Rect ToRect(this Gdk.Rectangle it)
 		=> new Rect(it.X, it.Y, it.Width, it.Height);
@@ -11,10 +12,10 @@ public static class GraphicsExtensions {
 		=> new RectF(it.X, it.Y, it.Width, it.Height);
 
 	public static Gdk.Rectangle ToNative(this Rect it)
-		=> new Gdk.Rectangle((int) it.X, (int) it.Y, (int) it.Width, (int) it.Height);
+		=> new Gdk.Rectangle((int)it.X, (int)it.Y, (int)it.Width, (int)it.Height);
 
 	public static Gdk.Rectangle ToNative(this RectF it)
-		=> new Gdk.Rectangle((int) it.X, (int) it.Y, (int) it.Width, (int) it.Height);
+		=> new Gdk.Rectangle((int)it.X, (int)it.Y, (int)it.Width, (int)it.Height);
 
 	public static Point ToPoint(this Gdk.Point it)
 		=> new Point(it.X, it.Y);
@@ -23,13 +24,13 @@ public static class GraphicsExtensions {
 		=> new PointF(it.X, it.Y);
 
 	public static PointF ToPointF(this Cairo.PointD it)
-		=> new PointF((float) it.X, (float) it.Y);
+		=> new PointF((float)it.X, (float)it.Y);
 
 	public static Gdk.Point ToNative(this Point it)
-		=> new Gdk.Point((int) it.X, (int) it.Y);
+		=> new Gdk.Point((int)it.X, (int)it.Y);
 
 	public static Gdk.Point ToNative(this PointF it)
-		=> new Gdk.Point((int) it.X, (int) it.Y);
+		=> new Gdk.Point((int)it.X, (int)it.Y);
 
 	public static Size ToSize(this Gdk.Size it)
 		=> new Size(it.Width, it.Height);
@@ -38,24 +39,24 @@ public static class GraphicsExtensions {
 		=> new SizeF(it.Width, it.Height);
 
 	public static Gdk.Size ToNative(this Size it)
-		=> new Gdk.Size((int) it.Width, (int) it.Height);
+		=> new Gdk.Size((int)it.Width, (int)it.Height);
 
 	public static Gdk.Size ToNative(this SizeF it)
-		=> new Gdk.Size((int) it.Width, (int) it.Height);
+		=> new Gdk.Size((int)it.Width, (int)it.Height);
 
 	public static double ScaledFromPango(this int it)
 		=> Math.Ceiling(it / Pango.Scale.PangoScale);
 
 	public static float ScaledFromPangoF(this int it)
-		=> (float) Math.Ceiling(it / Pango.Scale.PangoScale);
+		=> (float)Math.Ceiling(it / Pango.Scale.PangoScale);
 
 	public static int ScaledToPango(this double it)
-		=> (int) Math.Ceiling(it * Pango.Scale.PangoScale);
+		=> (int)Math.Ceiling(it * Pango.Scale.PangoScale);
 
 	public static int ScaledToPango(this float it)
-		=> (int) Math.Ceiling(it * Pango.Scale.PangoScale);
+		=> (int)Math.Ceiling(it * Pango.Scale.PangoScale);
 
 	public static int ScaledToPango(this int it)
-		=> (int) Math.Ceiling(it * Pango.Scale.PangoScale);
+		=> (int)Math.Ceiling(it * Pango.Scale.PangoScale);
 
 }

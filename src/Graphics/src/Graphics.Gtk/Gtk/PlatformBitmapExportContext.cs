@@ -3,18 +3,21 @@ using System.Threading;
 
 namespace Microsoft.Maui.Graphics.Platform.Gtk;
 
-public class PlatformBitmapExportContext : BitmapExportContext {
+public class PlatformBitmapExportContext : BitmapExportContext
+{
 
 	private PlatformCanvas _canvas;
 	private Cairo.ImageSurface _surface;
 	private Cairo.Context _context;
 	private Gdk.Pixbuf? _pixbuf;
 
-	public PlatformBitmapExportContext(int width, int height, float dpi) : base(width, height, dpi) {
+	public PlatformBitmapExportContext(int width, int height, float dpi) : base(width, height, dpi)
+	{
 		_surface = new Cairo.ImageSurface(Cairo.Format.Argb32, width, height);
 		_context = new Cairo.Context(_surface);
 
-		_canvas = new PlatformCanvas {
+		_canvas = new PlatformCanvas
+		{
 			Context = _context
 		};
 	}
@@ -27,32 +30,41 @@ public class PlatformBitmapExportContext : BitmapExportContext {
 	/// writes a pixbuf to stream
 	/// </summary>
 	/// <param name="stream"></param>
-	public override void WriteToStream(Stream stream) {
-		if (_pixbuf != null) {
+	public override void WriteToStream(Stream stream)
+	{
+		if (_pixbuf != null)
+		{
 			_pixbuf.SaveToStream(stream, Format);
-		} else {
+		}
+		else
+		{
 			_pixbuf = _surface.SaveToStream(stream, Format);
 		}
 	}
 
 	private PlatformImage? _image;
 
-	public override IImage? Image {
-		get {
+	public override IImage? Image
+	{
+		get
+		{
 			_pixbuf ??= _surface.CreatePixbuf();
 
-			if (_pixbuf != null) return _image ??= new PlatformImage(_pixbuf);
+			if (_pixbuf != null)
+				return _image ??= new PlatformImage(_pixbuf);
 
 			return _image;
 		}
 	}
 
-	public override void Dispose() {
+	public override void Dispose()
+	{
 		_canvas?.Dispose();
 		_context?.Dispose();
 		_surface?.Dispose();
 
-		if (_pixbuf != null) {
+		if (_pixbuf != null)
+		{
 			var previousValue = Interlocked.Exchange(ref _pixbuf, null);
 			previousValue?.Dispose();
 		}

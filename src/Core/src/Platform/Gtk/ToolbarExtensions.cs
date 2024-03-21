@@ -7,7 +7,7 @@ public static class ToolbarExtensions
 		platformView.Title = toolbar.Title ?? string.Empty;
 
 	}
-	
+
 	public static void UpdateIsVisible(this MauiToolbar platformView, IToolbar toolbar)
 	{
 		var wasVisible = platformView.Visible;

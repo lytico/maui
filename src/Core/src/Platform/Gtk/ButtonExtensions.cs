@@ -24,7 +24,7 @@ namespace Microsoft.Maui
 		[MissingMapper]
 		public static void UpdateLineBreakMode(this Button platformView, ITextButton button)
 		{
-			
+
 		}
 
 	}

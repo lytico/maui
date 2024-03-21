@@ -1,9 +1,9 @@
 ﻿using System.IO;
 using BlazorGtkApp;
-using Microsoft.Extensions.DependencyInjection;
 using Gtk;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebView.Gtk;
+using Microsoft.Extensions.DependencyInjection;
 using WebViewAppShared;
 
 #pragma warning disable CS0162 // Unreachable code detected

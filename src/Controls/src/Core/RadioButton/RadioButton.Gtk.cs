@@ -10,7 +10,7 @@ namespace Microsoft.Maui.Controls
 		[MissingMapper]
 		public static void MapContent(IRadioButtonHandler handler, RadioButton radioButton)
 		{
-			
+
 		}
 	}
 }

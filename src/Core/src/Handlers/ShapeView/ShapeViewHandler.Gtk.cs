@@ -44,7 +44,7 @@ namespace Microsoft.Maui.Handlers
 		{
 			handler.PlatformView?.InvalidateShape(shapeView);
 		}
-		
+
 		public static void MapStrokeLineCap(IShapeViewHandler handler, IShapeView shapeView)
 		{
 			handler.PlatformView?.InvalidateShape(shapeView);

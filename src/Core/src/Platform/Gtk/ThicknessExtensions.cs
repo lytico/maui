@@ -28,7 +28,7 @@ namespace Microsoft.Maui
 
 		public static Thickness GetPadding<TWidget>(this TWidget? it) where TWidget : Widget =>
 			it == default ? default : new Thickness(it.MarginStart, it.MarginTop, it.MarginEnd, it.MarginBottom);
-		
+
 		public static Thickness GetPaddingThickness<TWidget>(this TWidget? it) where TWidget : Widget
 		{
 

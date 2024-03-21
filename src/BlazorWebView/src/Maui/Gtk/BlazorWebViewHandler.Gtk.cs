@@ -83,7 +83,7 @@ namespace Microsoft.AspNetCore.Components.WebView.Maui
 			var contentRootDirFullPath = Path.GetDirectoryName(hostPageFullPath)!;
 			var contentRootRelativePath = Path.GetRelativePath(appRootDir, contentRootDirFullPath);
 			var hostPageRelativePath = Path.GetRelativePath(contentRootDirFullPath, hostPageFullPath);
-			
+
 			logger.CreatingFileProvider(contentRootDirFullPath, hostPageRelativePath);
 
 			var fileProvider = VirtualView.CreateFileProvider(contentRootDirFullPath);

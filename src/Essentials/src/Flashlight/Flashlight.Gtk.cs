@@ -10,7 +10,7 @@ namespace Microsoft.Maui.Devices
 
 		public Task TurnOffAsync() =>
 			throw ExceptionUtils.NotSupportedOrImplementedException;
-		
+
 		/// <summary>
 		/// Checks if the flashlight is available and can be turned on or off.
 		/// </summary>

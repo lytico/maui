@@ -31,7 +31,7 @@ namespace Microsoft.Maui.ApplicationModel
 				throw ExceptionUtils.NotSupportedOrImplementedException;
 		}
 
-			public partial class Battery : BasePlatformPermission
+		public partial class Battery : BasePlatformPermission
 		{
 		}
 

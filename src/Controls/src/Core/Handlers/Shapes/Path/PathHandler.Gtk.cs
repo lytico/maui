@@ -15,7 +15,7 @@ namespace Microsoft.Maui.Controls.Handlers
 		{
 			handler.PlatformView?.UpdateShape(path);
 		}
-		
+
 		[MissingMapper]
 		public static void MapRenderTransform(IShapeViewHandler handler, Path path) { }
 	}

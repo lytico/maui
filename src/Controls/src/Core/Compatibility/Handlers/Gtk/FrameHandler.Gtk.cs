@@ -8,9 +8,9 @@ namespace Microsoft.Maui.Controls.Handlers.Compatibility
 	{
 		public static IPropertyMapper<Frame, FrameHandler> Mapper = new PropertyMapper<Frame, FrameHandler>(ViewRenderer.VisualElementRendererMapper)
 		{
-			[VisualElement.BackgroundProperty.PropertyName] = MapBackground, 
-			[Frame.ContentProperty.PropertyName] = MapContent, 
-			[Frame.CornerRadiusProperty.PropertyName] = MapCornerRadius, 
+			[VisualElement.BackgroundProperty.PropertyName] = MapBackground,
+			[Frame.ContentProperty.PropertyName] = MapContent,
+			[Frame.CornerRadiusProperty.PropertyName] = MapCornerRadius,
 			[Frame.BorderColorProperty.PropertyName] = MapBorderColor,
 		};
 

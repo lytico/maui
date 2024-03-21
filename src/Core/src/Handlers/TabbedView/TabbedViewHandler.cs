@@ -38,11 +38,11 @@ namespace Microsoft.Maui.Handlers
 		}
 
 #if !GTK
-			protected override PlatformView CreatePlatformView()
+		protected override PlatformView CreatePlatformView()
 		{
 			throw new NotImplementedException();
 		}
 #endif
-	
+
 	}
 }

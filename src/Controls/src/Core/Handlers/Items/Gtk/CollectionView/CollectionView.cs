@@ -248,7 +248,8 @@ namespace Microsoft.Maui.Controls.Handlers.Items.Platform
 
 			CollectionViewController.HasContentSizeUpdated += (sender, size) =>
 			{
-				if (CollectionContainer.IsSizeAllocating || CollectionContainer.IsMeasuring || CollectionContainer.IsReallocating) return;
+				if (CollectionContainer.IsSizeAllocating || CollectionContainer.IsMeasuring || CollectionContainer.IsReallocating)
+					return;
 
 				CollectionContainer.UpdateSize(size);
 
