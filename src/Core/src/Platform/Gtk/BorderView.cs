@@ -8,6 +8,12 @@ namespace Microsoft.Maui.Platform;
 public class BorderView : Frame, ICrossPlatformLayoutBacking
 {
 
+	public BorderView()
+	{
+		ShadowType = ShadowType.None;
+
+	}
+
 	public ICrossPlatformLayout? CrossPlatformLayout { get; set; }
 
 	Widget? _content;

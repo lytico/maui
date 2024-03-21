@@ -11,7 +11,7 @@ namespace Microsoft.Maui.Platform
 		{
 			var mainNode = platformView.CssMainNode();
 
-			return (mainNode, $"border,\n.{mainNode}");
+			return (mainNode, $"border.flat");
 		}
 
 		[MissingMapper]
