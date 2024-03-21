@@ -210,7 +210,23 @@ namespace Microsoft.Maui.Platform
 		}
 
 		[MissingMapper]
-		public static void UpdateShadow(this Widget? platformView, IView view) { }
+		// see: https://docs.gtk.org/gtk3/css-properties.html
+		// https://www.w3.org/TR/css-backgrounds-3/#box-shadow
+		public static void UpdateShadow(this Widget? platformView, IView view)
+		{
+			if (platformView is not { })
+				return;
+
+			//  box-shadow: none;
+			if (view.Shadow is not { })
+			{
+				platformView.SetStyleValueNode($"none", platformView.CssMainNode(), "box-shadow");
+			}
+			else
+			{
+				platformView.SetStyleValueNode($"inset {view.Shadow.Offset} 2px 2px -2px {view.Shadow.Paint.ToColor()}", platformView.CssMainNode(), "box-shadow");
+			}
+		}
 
 		[MissingMapper]
 		public static void UpdateBorder(this Widget? platformView, IView view) { }
