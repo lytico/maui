@@ -49,17 +49,17 @@ namespace Microsoft.Maui.Platform
 
 		public static Size Measure(Aspect aspect, Size desiredSize, double widthConstraint, double heightConstraint)
 		{
-			double desiredAspect = desiredSize.Width / desiredSize.Height;
-			double constraintAspect = widthConstraint / heightConstraint;
+			var desiredAspect = Math.Round(desiredSize.Width / desiredSize.Height,5);
+			var constraintAspect = Math.Round(widthConstraint / heightConstraint,5);
 
-			double desiredWidth = desiredSize.Width;
-			double desiredHeight = desiredSize.Height;
+			var desiredWidth = desiredSize.Width;
+			var desiredHeight = desiredSize.Height;
 
 			if (desiredWidth == 0 || desiredHeight == 0)
 				return new SizeRequest(new Size(0, 0));
 
-			double width = desiredWidth;
-			double height = desiredHeight;
+			var width = desiredWidth;
+			var height = desiredHeight;
 
 			if (constraintAspect > desiredAspect)
 			{
@@ -67,32 +67,40 @@ namespace Microsoft.Maui.Platform
 				switch (aspect)
 				{
 					case Aspect.AspectFit:
-					case Aspect.AspectFill:
 						height = Math.Min(desiredHeight, heightConstraint);
 						width = desiredWidth * (height / desiredHeight);
 
 						break;
+					case Aspect.AspectFill:
+						height = heightConstraint;
+						width = desiredWidth * (height / desiredHeight);
+
+						break;
 					case Aspect.Fill:
-						width = Math.Min(desiredWidth, widthConstraint);
-						height = desiredHeight * (width / desiredWidth);
+						width = widthConstraint;
+						height = heightConstraint;
 
 						break;
 				}
 			}
-			else if (constraintAspect < desiredAspect)
+			else if (constraintAspect <= desiredAspect)
 			{
 				// constraint area is proportionally taller than image
 				switch (aspect)
 				{
 					case Aspect.AspectFit:
-					case Aspect.AspectFill:
 						width = Math.Min(desiredWidth, widthConstraint);
 						height = desiredHeight * (width / desiredWidth);
 
 						break;
+					case Aspect.AspectFill:
+						width = widthConstraint;
+						height = desiredHeight * (width / desiredWidth);
+
+						break;
 					case Aspect.Fill:
-						height = Math.Min(desiredHeight, heightConstraint);
-						width = desiredWidth * (height / desiredHeight);
+						height = heightConstraint;
+						width = widthConstraint;
 
 						break;
 				}
@@ -164,7 +172,8 @@ namespace Microsoft.Maui.Platform
 			if (Image is { })
 			{
 
-				var size = Measure(Aspect, new Size(Image.Width, Image.Height), width, (double)Image.Height * width / Image.Width);
+				var imgSize = new Size(Image.Width, Image.Height);
+				var size = Measure(Aspect, new Size(Image.Width, Image.Height), width, imgSize.Height * (width / imgSize.Width));
 				minimum_height = (int)size.Height;
 				natural_height = Math.Max(Image.Height, minimum_height);
 			}
@@ -176,7 +185,8 @@ namespace Microsoft.Maui.Platform
 
 			if (Image is { })
 			{
-				var size = Measure(Aspect, new Size(Image.Width, Image.Height), (double)Image.Width * height / Image.Height, height);
+				var imgSize = new Size(Image.Width, Image.Height);
+				var size = Measure(Aspect, new Size(Image.Width, Image.Height), imgSize.Width * (height / imgSize.Height), height);
 				minimum_width = (int)size.Width;
 				natural_width = Math.Max(Image.Width, minimum_width);
 
