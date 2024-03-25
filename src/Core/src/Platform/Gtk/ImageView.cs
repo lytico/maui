@@ -8,6 +8,7 @@ using Rectangle = Gdk.Rectangle;
 
 namespace Microsoft.Maui.Platform
 {
+
 	// https://docs.gtk.org/gtk3/class.Image.html 
 
 	// GtkImage has nothing like Aspect; maybe an ownerdrawn class is needed 
@@ -16,6 +17,7 @@ namespace Microsoft.Maui.Platform
 
 	public class ImageView : Gtk.DrawingArea
 	{
+
 		public ImageView()
 		{
 			CanFocus = true;
@@ -41,17 +43,24 @@ namespace Microsoft.Maui.Platform
 			get => _aspect;
 			set
 			{
+				if(_aspect==value)
+					return;
+				
 				_aspect = value;
+				QueueResize();
 			}
 		}
 
 		public static Size Measure(Aspect aspect, Size desiredSize, double? widthConstraint, double? heightConstraint)
 		{
 			double desiredAspect = desiredSize.Width / desiredSize.Height;
+
 			if (widthConstraint is not { } && heightConstraint is { })
 				widthConstraint = desiredSize.Width * heightConstraint / desiredSize.Height;
+
 			if (widthConstraint is { } && heightConstraint is not { })
 				heightConstraint = desiredSize.Height * widthConstraint / desiredSize.Width;
+
 			if (widthConstraint is not { } && heightConstraint is not { })
 			{
 				widthConstraint = desiredSize.Width;
@@ -68,6 +77,7 @@ namespace Microsoft.Maui.Platform
 
 			double width = desiredWidth;
 			double height = desiredHeight;
+
 			if (constraintAspect > desiredAspect)
 			{
 				// constraint area is proportionally wider than image
@@ -76,14 +86,17 @@ namespace Microsoft.Maui.Platform
 					case Aspect.AspectFit:
 						width = desiredWidth * (height / desiredHeight);
 						width = desiredWidth * (height / desiredHeight);
+
 						break;
 					case Aspect.AspectFill:
 						height = heightConstraint!.Value;
 						width = desiredWidth * (height / desiredHeight);
+
 						break;
 					case Aspect.Fill:
 						width = Math.Min(desiredWidth, widthConstraint!.Value);
 						height = desiredHeight * (width / desiredWidth);
+
 						break;
 				}
 			}
@@ -95,14 +108,17 @@ namespace Microsoft.Maui.Platform
 					case Aspect.AspectFit:
 						width = Math.Min(desiredWidth, widthConstraint!.Value);
 						height = desiredHeight * (width / desiredWidth);
+
 						break;
 					case Aspect.AspectFill:
 						width = widthConstraint!.Value;
 						height = desiredHeight * (width / desiredWidth);
+
 						break;
 					case Aspect.Fill:
 						height = Math.Min(desiredHeight, heightConstraint!.Value);
 						width = desiredWidth * (height / desiredHeight);
+
 						break;
 				}
 			}
@@ -132,25 +148,11 @@ namespace Microsoft.Maui.Platform
 			if (allocation.Width == 1 && allocation.Height == 1 && allocation.X == -1 && allocation.Y == -1) // the allocation coordinates on reallocation
 				return base.OnDrawn(cr);
 
-
 			var imgSize = Measure(Aspect, new Size(image.Width, image.Height), allocation.Width, allocation.Height);
 			var x = (allocation.Width - imgSize.Width) / 2;
 			var y = (allocation.Height - imgSize.Height) / 2;
 
-			if (false)
-#pragma warning disable CS0162 // Unreachable code detected
-			{
-				using var region = Window.VisibleRegion;
-				using var frame = Window.BeginDrawFrame(region);
-				using var crr = frame.CairoContext;
-				crr.DrawPixbuf(image, x, y, allocation.Width, allocation.Height);
-				Window.EndDrawFrame(frame);
-			}
-#pragma warning restore CS0162 // Unreachable code detected
-			else
-			{
-				cr.DrawPixbuf(image, x, y, imgSize.Width, imgSize.Height);
-			}
+			cr.DrawPixbuf(image, x, y, imgSize.Width, imgSize.Height);
 
 			return false;
 		}
@@ -204,5 +206,7 @@ namespace Microsoft.Maui.Platform
 				natural_width = Math.Max(Image.Width, minimum_width);
 			}
 		}
+
 	}
+
 }
