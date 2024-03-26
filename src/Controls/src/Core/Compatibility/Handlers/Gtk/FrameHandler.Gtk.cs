@@ -1,6 +1,4 @@
 ﻿using System;
-using Microsoft.Maui.Controls;
-using Microsoft.Maui.Graphics;
 
 namespace Microsoft.Maui.Controls.Handlers.Compatibility
 {
@@ -26,7 +24,6 @@ namespace Microsoft.Maui.Controls.Handlers.Compatibility
 			: base(mapper ?? Mapper, commandMapper ?? CommandMapper) { }
 
 		
-		[MissingMapper]
 		protected override FrameView CreatePlatformView()
 		{
 			_ = VirtualView ?? throw new InvalidOperationException($"{nameof(VirtualView)} must be set to create a {nameof(Frame)}");
