@@ -2,8 +2,8 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Globalization;
-using Microsoft.Maui.Graphics;
 using Microsoft.Maui.Controls.Handlers.Items.Platform;
+using Microsoft.Maui.Graphics;
 using PlatformView = Gtk.Widget;
 using Size = Microsoft.Maui.Graphics.Size;
 
@@ -95,7 +95,7 @@ namespace Microsoft.Maui.Controls.Handlers.Items
 
 		public override IView? GetTemplatedView(PlatformView view)
 		{
-			return _platformTable.TryGetValue (view, out View? value) ? value : null;
+			return _platformTable.TryGetValue(view, out View? value) ? value : null;
 		}
 
 		public override IView? GetTemplatedView(int index)
@@ -278,7 +278,7 @@ namespace Microsoft.Maui.Controls.Handlers.Items
 
 			try
 			{
-				var measured = (view as IView).Measure(widthConstraint, heightConstraint).ToPixel(); 
+				var measured = (view as IView).Measure(widthConstraint, heightConstraint).ToPixel();
 				return measured;
 			}
 			finally

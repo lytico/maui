@@ -119,7 +119,7 @@ namespace Microsoft.Maui.Handlers
 		[MissingMapper]
 		public void UpdateZIndex(IView view)
 		{
-			
+
 		}
 
 		public static partial void MapBackground(ILayoutHandler handler, ILayout layout)

@@ -59,8 +59,8 @@ namespace Microsoft.Maui.Controls.Handlers.Items.Platform
 			}
 		}
 
-		double ColumnSize => (IsHorizontal ? _allocatedSize.Height  : _allocatedSize.Width );
-		
+		double ColumnSize => (IsHorizontal ? _allocatedSize.Height : _allocatedSize.Width);
+
 		double ItemWidthConstraint => IsHorizontal ? double.PositiveInfinity : _allocatedSize.Width;
 
 		double ItemHeightConstraint => IsHorizontal ? _allocatedSize.Height : double.PositiveInfinity;
@@ -161,7 +161,7 @@ namespace Microsoft.Maui.Controls.Handlers.Items.Platform
 
 			if (double.IsInfinity(columnSize))
 				columnSize = BaseColumnSize;
-			
+
 			if (!_hasUnevenRows)
 			{
 				itemSize = BaseItemSize;

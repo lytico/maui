@@ -2,9 +2,9 @@
 
 namespace Microsoft.Maui.Handlers
 {
-	
+
 	// https://docs.gtk.org/gtk3/class.Switch.html
-	
+
 	public partial class SwitchHandler : ViewHandler<ISwitch, Switch>
 	{
 		// 

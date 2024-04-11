@@ -1,9 +1,9 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using PlatformView = Gtk.Widget;
 using Rect = Microsoft.Maui.Graphics.Rect;
 using Size = Microsoft.Maui.Graphics.Size;
-using PlatformView = Gtk.Widget;
 
 namespace Microsoft.Maui.Controls.Handlers.Items.Platform
 {

@@ -9,7 +9,7 @@ namespace Microsoft.Maui
 			platformView.Time = timePicker.Time;
 
 		}
-		
+
 		public static void UpdateFormat(this MauiTimePicker platformView, ITimePicker timePicker)
 		{
 			platformView.Format = timePicker.Format;

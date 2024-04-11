@@ -51,7 +51,8 @@ namespace Microsoft.Maui.Handlers
 			if (PlatformView is not { } nativeView || VirtualView is not { } virtualView)
 				return;
 
-			if (sender != nativeView.Buffer) return;
+			if (sender != nativeView.Buffer)
+				return;
 
 			var text = nativeView.Buffer.Text;
 
@@ -114,7 +115,7 @@ namespace Microsoft.Maui.Handlers
 
 		[MissingMapper]
 		public static void MapSelectionLength(IEditorHandler handler, ITextInput editor) { }
-		
+
 		/// <summary>
 		/// Maps the abstract <see cref="ITextInput.IsSpellCheckEnabled"/> property to the platform-specific implementations.
 		/// </summary>

@@ -1,6 +1,6 @@
 using System;
-using Microsoft.Maui.Controls.Platform;
 using Gtk;
+using Microsoft.Maui.Controls.Platform;
 
 namespace Microsoft.Maui.Controls.Compatibility.Platform.Gtk
 {

@@ -70,7 +70,7 @@ public static class FrameExtensions
 		platformView.SetStyleValueNode($"{Clamp(tr.Value)}px", mainNode, "border-top-right-radius", subNode);
 		platformView.SetStyleValueNode($"{Clamp(br.Value)}px", mainNode, "border-bottom-right-radius", subNode);
 		platformView.SetStyleValueNode($"{Clamp(bl.Value)}px", mainNode, "border-bottom-left-radius", subNode);
-		
+
 		// no effect:
 		platformView.SetStyleValueNode("padding-box", mainNode, "background-clip");
 	}

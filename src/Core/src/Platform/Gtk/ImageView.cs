@@ -43,9 +43,9 @@ namespace Microsoft.Maui.Platform
 			get => _aspect;
 			set
 			{
-				if(_aspect==value)
+				if (_aspect == value)
 					return;
-				
+
 				_aspect = value;
 				QueueResize();
 			}

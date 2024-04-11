@@ -79,7 +79,7 @@ public class PlatformTouchGraphicsView : Microsoft.Maui.Graphics.Platform.Gtk.Gt
 	{
 		_graphicsView = graphicsView;
 		Events |= EventMask.ButtonPressMask | EventMask.ButtonReleaseMask | EventMask.PointerMotionMask |
-		          EventMask.ButtonMotionMask | EventMask.LeaveNotifyMask | EventMask.EnterNotifyMask
+				  EventMask.ButtonMotionMask | EventMask.LeaveNotifyMask | EventMask.EnterNotifyMask
 			;
 	}
 

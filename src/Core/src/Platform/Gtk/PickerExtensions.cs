@@ -44,12 +44,12 @@ namespace Microsoft.Maui
 			if (platformView == null)
 				return;
 
-			if (platformView.HasEntry && platformView.Entry.Attributes.AttrListFor(spacing) is {} entryAttributes)
+			if (platformView.HasEntry && platformView.Entry.Attributes.AttrListFor(spacing) is { } entryAttributes)
 			{
 				platformView.Entry.Attributes = entryAttributes;
 			}
 
-			if (platformView.GetCellRendererText() is { } cell && cell.Attributes.AttrListFor(spacing) is {} cellAttrList)
+			if (platformView.GetCellRendererText() is { } cell && cell.Attributes.AttrListFor(spacing) is { } cellAttrList)
 				cell.Attributes = cellAttrList;
 		}
 

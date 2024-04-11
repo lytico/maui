@@ -5,7 +5,7 @@ namespace Microsoft.Maui.Handlers
 {
 
 	// https://docs.gtk.org/gtk3/class.CheckButton.html
-	
+
 	public partial class CheckBoxHandler : ViewHandler<ICheckBox, CheckButton>
 	{
 

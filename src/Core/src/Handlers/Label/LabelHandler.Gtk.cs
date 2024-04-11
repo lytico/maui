@@ -16,7 +16,8 @@ namespace Microsoft.Maui.Handlers
 		PlatformStringSizeService stringSizeService => _stringSizeService ??= new();
 
 		public Microsoft.Maui.Graphics.Platform.Gtk.TextLayout SharedTextLayout => _textLayout ??= new Microsoft.Maui.Graphics.Platform.Gtk.TextLayout(
-			stringSizeService.SharedContext) { HeightForWidth = true };
+			stringSizeService.SharedContext)
+		{ HeightForWidth = true };
 
 		// https://docs.gtk.org/gtk3/class.Label.html
 		protected override LabelView CreatePlatformView()

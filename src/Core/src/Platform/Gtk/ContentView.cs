@@ -32,7 +32,7 @@ namespace Microsoft.Maui.Platform
 				_content = value;
 			}
 		}
-		
+
 		Size CrossPlatformMeasure(double widthConstraint, double heightConstraint)
 		{
 			return CrossPlatformLayout?.CrossPlatformMeasure(widthConstraint, heightConstraint) ?? Size.Zero;

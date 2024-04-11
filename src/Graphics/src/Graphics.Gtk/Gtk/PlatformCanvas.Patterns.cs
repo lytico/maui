@@ -16,63 +16,63 @@ public partial class PlatformCanvas
 		{
 
 			case SolidPaint solidPaint:
-			{
-				fillColor = solidPaint.Color;
+				{
+					fillColor = solidPaint.Color;
 
-				break;
-			}
+					break;
+				}
 
 			case LinearGradientPaint linearGradientPaint:
-			{
-				try
 				{
-					if (linearGradientPaint.GetCairoPattern(rectangle, DisplayScale) is { } pattern)
+					try
 					{
-						context.SetSource(pattern);
-						pattern.Dispose();
+						if (linearGradientPaint.GetCairoPattern(rectangle, DisplayScale) is { } pattern)
+						{
+							context.SetSource(pattern);
+							pattern.Dispose();
+						}
+						else
+						{
+							fillColor = paint.BackgroundColor;
+						}
 					}
-					else
+					catch (Exception exc)
 					{
-						fillColor = paint.BackgroundColor;
+						System.Diagnostics.Debug.WriteLine(exc);
+						fillColor = linearGradientPaint.BlendStartAndEndColors();
 					}
-				}
-				catch (Exception exc)
-				{
-					System.Diagnostics.Debug.WriteLine(exc);
-					fillColor = linearGradientPaint.BlendStartAndEndColors();
-				}
 
-				break;
-			}
+					break;
+				}
 
 			case RadialGradientPaint radialGradientPaint:
-			{
-
-				try
 				{
-					if (radialGradientPaint.GetCairoPattern(rectangle, DisplayScale) is { } pattern)
-					{
-						context.SetSource(pattern);
-						pattern.Dispose();
-					}
-					else
-					{
-						fillColor = paint.BackgroundColor;
-					}
-				}
-				catch (Exception exc)
-				{
-					System.Diagnostics.Debug.WriteLine(exc);
-					fillColor = radialGradientPaint.BlendStartAndEndColors();
-				}
 
-				break;
-			}
+					try
+					{
+						if (radialGradientPaint.GetCairoPattern(rectangle, DisplayScale) is { } pattern)
+						{
+							context.SetSource(pattern);
+							pattern.Dispose();
+						}
+						else
+						{
+							fillColor = paint.BackgroundColor;
+						}
+					}
+					catch (Exception exc)
+					{
+						System.Diagnostics.Debug.WriteLine(exc);
+						fillColor = radialGradientPaint.BlendStartAndEndColors();
+					}
+
+					break;
+				}
 
 			case PatternPaint patternPaint:
-			{
-				try
 				{
+					try
+					{
 
 #if UseSurfacePattern
 						// would be nice to have: draw pattern without creating a pixpuf:
@@ -89,38 +89,16 @@ public partial class PlatformCanvas
 							fillColor = paint.BackgroundColor;
 						}
 #else
-					using var pixbuf = patternPaint.GetPatternBitmap(DisplayScale);
+						using var pixbuf = patternPaint.GetPatternBitmap(DisplayScale);
 
-					if (pixbuf?.CreatePattern(DisplayScale) is { } pattern)
-					{
-						pattern.Extend = Cairo.Extend.Repeat;
-						context.SetSource(pattern);
-						pattern.Dispose();
-					}
+						if (pixbuf?.CreatePattern(DisplayScale) is { } pattern)
+						{
+							pattern.Extend = Cairo.Extend.Repeat;
+							context.SetSource(pattern);
+							pattern.Dispose();
+						}
 
 #endif
-
-				}
-				catch (Exception exc)
-				{
-					System.Diagnostics.Debug.WriteLine(exc);
-					fillColor = paint.BackgroundColor;
-				}
-
-				break;
-			}
-
-			case ImagePaint { Image: PlatformImage image } imagePaint:
-			{
-				var pixbuf = image.NativeImage;
-
-				if (pixbuf?.CreatePattern(DisplayScale) is { } pattern)
-				{
-					try
-					{
-
-						context.SetSource(pattern);
-						pattern.Dispose();
 
 					}
 					catch (Exception exc)
@@ -128,14 +106,36 @@ public partial class PlatformCanvas
 						System.Diagnostics.Debug.WriteLine(exc);
 						fillColor = paint.BackgroundColor;
 					}
-				}
-				else
-				{
-					fillColor = paint.BackgroundColor ?? Colors.White;
+
+					break;
 				}
 
-				break;
-			}
+			case ImagePaint { Image: PlatformImage image } imagePaint:
+				{
+					var pixbuf = image.NativeImage;
+
+					if (pixbuf?.CreatePattern(DisplayScale) is { } pattern)
+					{
+						try
+						{
+
+							context.SetSource(pattern);
+							pattern.Dispose();
+
+						}
+						catch (Exception exc)
+						{
+							System.Diagnostics.Debug.WriteLine(exc);
+							fillColor = paint.BackgroundColor;
+						}
+					}
+					else
+					{
+						fillColor = paint.BackgroundColor ?? Colors.White;
+					}
+
+					break;
+				}
 
 			case ImagePaint imagePaint:
 				fillColor = paint.BackgroundColor ?? Colors.White;

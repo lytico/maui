@@ -34,14 +34,14 @@ namespace Maui.SimpleSampleApp
 
 		const bool ShowLorem = false;
 		ScrollOrientation ScrollOrientation = ScrollOrientation.Vertical;
-		
+
 		public ExamplePage(IServiceProvider services, MainPageViewModel viewModel)
 		{
 			_services = services;
 			BindingContext = _viewModel = viewModel;
 			SetupMauiLayout();
 			// SetupMauiLorem();
-			
+
 			// SetupMauiLayoutLayouts();
 
 			// SetupMauiLayoutSimple();
@@ -58,7 +58,7 @@ namespace Maui.SimpleSampleApp
 			};
 
 			AddLorem(verticalStack);
-			
+
 			Content = new ScrollView
 			{
 				Content = verticalStack,

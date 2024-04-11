@@ -18,7 +18,7 @@ namespace Microsoft.Maui.Platform
 		internal Func<Graphics.Rect, Graphics.Size>? CrossPlatformArrange { get; set; }
 		internal Func<double, double, Size>? CrossPlatformMeasure { get; set; }
 
-		protected   void _OnAdjustSizeRequest(Orientation orientation, out int minimum_size, out int natural_size)
+		protected void _OnAdjustSizeRequest(Orientation orientation, out int minimum_size, out int natural_size)
 		{
 			base.OnAdjustSizeRequest(orientation, out minimum_size, out natural_size);
 
@@ -40,8 +40,8 @@ namespace Microsoft.Maui.Platform
 			if (CrossPlatformMeasure is { })
 			{
 				var size = Size.Zero;
-				size = orientation == Orientation.Vertical ? 
-					new Size(constraint, hConstraint) : 
+				size = orientation == Orientation.Vertical ?
+					new Size(constraint, hConstraint) :
 					new Size(wConstraint, constraint);
 
 				var measure = CrossPlatformMeasure(size.Width, size.Height);
@@ -52,7 +52,7 @@ namespace Microsoft.Maui.Platform
 			}
 		}
 
-		protected void OnSizeAllocated_ (Gdk.Rectangle allocation)
+		protected void OnSizeAllocated_(Gdk.Rectangle allocation)
 		{
 			if (CrossPlatformArrange is { } && CrossPlatformMeasure is { })
 			{

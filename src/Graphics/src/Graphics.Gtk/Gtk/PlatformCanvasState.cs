@@ -2,9 +2,11 @@ using System;
 
 namespace Microsoft.Maui.Graphics.Platform.Gtk;
 
-public class PlatformCanvasState : CanvasState {
+public class PlatformCanvasState : CanvasState
+{
 
-	public PlatformCanvasState() {
+	public PlatformCanvasState()
+	{
 		Alpha = 1;
 
 		StrokeColor = Colors.Black.ToCairoColor();
@@ -62,13 +64,14 @@ public class PlatformCanvasState : CanvasState {
 
 	private readonly double[] zerodash = Array.Empty<double>();
 
-	public double[] NativeDash => StrokeDashPattern != null ? Array.ConvertAll(StrokeDashPattern, f => (double) f) : zerodash;
+	public double[] NativeDash => StrokeDashPattern != null ? Array.ConvertAll(StrokeDashPattern, f => (double)f) : zerodash;
 
 	public (SizeF offset, float blur, Color color) Shadow { get; set; }
 
 	public (Paint paint, RectF rectangle) FillPaint { get; set; }
 
-	public override void Dispose() {
+	public override void Dispose()
+	{
 
 		FillPaint = default;
 		Shadow = default;

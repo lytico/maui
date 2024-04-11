@@ -6,7 +6,8 @@ using System;
 namespace Microsoft.Maui.Graphics.Platform.Gtk;
 
 [Flags]
-public enum LineBreakMode {
+public enum LineBreakMode
+{
 
 	None = 0,
 

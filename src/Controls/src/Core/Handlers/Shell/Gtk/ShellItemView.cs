@@ -2,8 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Linq;
-using Microsoft.Maui.Controls.Handlers.Items;
 using Gtk;
+using Microsoft.Maui.Controls.Handlers.Items;
 using Color = Microsoft.Maui.Graphics.Color;
 
 namespace Microsoft.Maui.Controls.Platform

@@ -68,7 +68,7 @@ namespace Microsoft.Maui.Controls.Handlers
 				_navigationManager.NavigationView != view)
 			{
 				_navigationManager.Disconnect(_navigationManager.NavigationView, PlatformView);
-			
+
 				if (view is IStackNavigation stackNavigation)
 				{
 					_navigationManager.Connect(stackNavigation, PlatformView);

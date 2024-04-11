@@ -50,7 +50,7 @@ namespace Microsoft.Maui.Handlers
 		}
 
 		public Gtk.Entry? QueryEditor => PlatformView?.Entry;
-		
+
 		public static void MapFont(ISearchBarHandler handler, ISearchBar searchBar)
 		{
 			var fontManager = handler.GetRequiredService<IFontManager>();
@@ -68,7 +68,7 @@ namespace Microsoft.Maui.Handlers
 		public static void MapVerticalTextAlignment(ISearchBarHandler handler, ISearchBar searchBar)
 		{
 		}
-		
+
 		public static void MapTextColor(ISearchBarHandler handler, ISearchBar searchBar)
 		{
 			handler.PlatformView?.Entry?.UpdateTextColor(searchBar.TextColor);
@@ -95,7 +95,7 @@ namespace Microsoft.Maui.Handlers
 
 		[MissingMapper]
 		public static void MapCancelButtonColor(IViewHandler handler, ISearchBar searchBar) { }
-		
+
 		/// <summary>
 		/// Maps the abstract <see cref="ITextInput.IsSpellCheckEnabled"/> property to the platform-specific implementations.
 		/// </summary>
@@ -103,7 +103,7 @@ namespace Microsoft.Maui.Handlers
 		/// <param name="searchBar"> The associated <see cref="ISearchBar"/> instance.</param>
 		[MissingMapper]
 		public static void MapIsSpellCheckEnabled(IViewHandler handler, ISearchBar searchBar) { }
-		
+
 		[MissingMapper]
 		public static void MapKeyboard(IViewHandler handler, ISearchBar searchBar) { }
 

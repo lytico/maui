@@ -11,7 +11,8 @@ namespace Microsoft.Maui
 			var text = editor.Text;
 			var buffer = platformView.Buffer;
 
-			if (buffer.Text == text) return;
+			if (buffer.Text == text)
+				return;
 
 			if (text == null)
 			{

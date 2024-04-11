@@ -62,13 +62,13 @@ namespace Microsoft.Maui.Controls.Handlers.Items
 		public static void MapItemsUpdatingScrollMode(ItemsViewHandler<TItemsView> handler, ItemsView itemsView)
 		{
 		}
-		
+
 		public override void PlatformArrange(Rect rect)
 		{
 			// PlatformView?.Arrange(rect);
 			base.PlatformArrange(rect);
 		}
-		
+
 #if DEBUG
 
 		public override Size GetDesiredSize(double widthConstraint, double heightConstraint)

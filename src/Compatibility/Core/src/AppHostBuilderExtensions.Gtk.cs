@@ -1,9 +1,9 @@
 #nullable enable
 
-using Microsoft.Maui.LifecycleEvents;
-using Microsoft.Maui.Controls.Compatibility;
 using System;
+using Microsoft.Maui.Controls.Compatibility;
 using Microsoft.Maui.Hosting;
+using Microsoft.Maui.LifecycleEvents;
 
 namespace Microsoft.Maui.Controls.Compatibility.Hosting
 {
