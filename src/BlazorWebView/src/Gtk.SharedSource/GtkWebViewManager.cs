@@ -25,7 +25,6 @@ namespace GtkSharp.BlazorWebKit;
 [SuppressMessage("ApiDesign", "RS0016:Öffentliche Typen und Member der deklarierten API hinzufügen")]
 public partial class GtkWebViewManager : Microsoft.AspNetCore.Components.WebView.WebViewManager
 {
-
 	protected const string AppHostAddress = "localhost";
 
 	protected static readonly string AppHostScheme = "app";
@@ -87,7 +86,6 @@ public partial class GtkWebViewManager : Microsoft.AspNetCore.Components.WebView
 
 		if (uriSchemeHandler.tryGetResponseContent(uri, false, out int statusCode, out string statusMessage, out Stream content, out IDictionary<string, string> headers))
 		{
-
 			var (inputStream, length) = InputStreamNewFromStream(content);
 
 			request.Finish(inputStream, length, headers["Content-Type"]);
@@ -190,8 +188,7 @@ public partial class GtkWebViewManager : Microsoft.AspNetCore.Components.WebView
 				{
 					MessageReceived(_appBaseUri, s);
 				}
-				finally
-				{ }
+				finally { }
 			}
 		};
 

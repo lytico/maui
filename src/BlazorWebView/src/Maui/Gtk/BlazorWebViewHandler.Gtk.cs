@@ -37,7 +37,7 @@ namespace Microsoft.AspNetCore.Components.WebView.Maui
 			if (Directory.Exists(contentRootDir))
 			{
 				// Typical case after publishing, or if you're copying content to the bin dir in development for some nonstandard reason
-				return new PhysicalFileProvider(contentRootDir);
+				return new GtkMauiAssetFileProvider(contentRootDir);
 			}
 
 			// Typical case in development, as the files come from Microsoft.AspNetCore.Components.WebView.StaticContentProvider

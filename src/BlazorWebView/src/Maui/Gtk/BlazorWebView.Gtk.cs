@@ -27,6 +27,6 @@ public partial class BlazorWebView
 	private void Window_Destroying(object? sender, EventArgs e)
 	{
 		var platformView = ((BlazorWebViewHandler?)Handler)?.PlatformView;
-		// TODO: cleanup on clsoing
+		// TODO: cleanup on closing
 	}
 }
