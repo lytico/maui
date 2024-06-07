@@ -49,7 +49,7 @@ namespace Microsoft.Maui.AppiumTests
 			{
 				TestDevice.Android, TestDevice.iOS, TestDevice.Mac, TestDevice.Windows
 			}, "https://github.com/dotnet/maui/pull/19181");
-			
+
 			App.WaitForElement(FirstItemMark);
 
 			App.Tap(ToggleButtonMark);

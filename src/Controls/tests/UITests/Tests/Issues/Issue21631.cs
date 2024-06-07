@@ -8,7 +8,7 @@ namespace Microsoft.Maui.AppiumTests.Issues
 	{
 		public Issue21631(TestDevice device) : base(device) { }
 
-		public override string Issue => 
+		public override string Issue =>
 			"Injecting base tag in Webview2 works";
 
 		[Test]

@@ -12,7 +12,7 @@ public class Issue19926 : _IssuesUITest
 		: base(device)
 	{ }
 
-    [Test]
+	[Test]
 	public void PropertiesShouldBeCorrectlyApplied()
 	{
 		this.IgnoreIfPlatforms(new TestDevice[] { TestDevice.iOS, TestDevice.Mac, TestDevice.Windows });
