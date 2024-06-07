@@ -159,7 +159,7 @@ namespace UITest.Appium
 
 			OpenQA.Selenium.Appium.Interactions.PointerInputDevice touchDevice = new OpenQA.Selenium.Appium.Interactions.PointerInputDevice(PointerKind.Touch);
 			var longPress = new ActionSequence(touchDevice, 0);
-		
+
 			longPress.AddAction(touchDevice.CreatePointerMove(element, 0, 0, TimeSpan.FromMilliseconds(0)));
 			longPress.AddAction(touchDevice.CreatePointerDown(PointerButton.TouchContact));
 			longPress.AddAction(touchDevice.CreatePointerMove(element, 0, 0, TimeSpan.FromMilliseconds(2000)));
@@ -168,7 +168,7 @@ namespace UITest.Appium
 
 			return CommandResponse.SuccessEmptyResponse;
 		}
-		
+
 		CommandResponse DragAndDrop(IDictionary<string, object> actionParams)
 		{
 			AppiumElement? sourceAppiumElement = GetAppiumElement(actionParams["sourceElement"]);

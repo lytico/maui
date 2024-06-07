@@ -21,7 +21,7 @@ namespace Microsoft.Maui.AppiumTests.Issues
 			{
 				_ = App.WaitForElement("GoToTest");
 				App.Tap("GoToTest");
-				
+
 				_ = App.WaitForElement("entry");
 				App.Tap("entry");
 				App.Tap("button");

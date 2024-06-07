@@ -206,8 +206,8 @@ namespace Microsoft.Maui.Controls.Platform
 
 			var titleRectHeight = platformButton.GetTitleBoundingRect(padding).Height;
 
-			var buttonContentHeight = 
-				+ (nfloat)Math.Max(titleRectHeight, platformButton.CurrentImage?.Size.Height ?? 0)
+			var buttonContentHeight =
+				+(nfloat)Math.Max(titleRectHeight, platformButton.CurrentImage?.Size.Height ?? 0)
 				+ (nfloat)padding.Top
 				+ (nfloat)padding.Bottom;
 
@@ -271,7 +271,7 @@ namespace Microsoft.Maui.Controls.Platform
 				&& (button.Height != double.NaN || button.Width != double.NaN))
 			{
 				var contentWidth = platformButton.Bounds.Width - (nfloat)padding.Left - (nfloat)padding.Right;
-					
+
 				if (image.Size.Width - contentWidth > buffer)
 				{
 					availableWidth = contentWidth;

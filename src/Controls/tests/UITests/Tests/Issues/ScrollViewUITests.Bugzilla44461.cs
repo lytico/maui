@@ -29,7 +29,7 @@ namespace Microsoft.Maui.AppiumTests
 
 		(System.Drawing.Rectangle initialPosition, System.Drawing.Rectangle finalPosition) TapButton(int position)
 		{
-			var buttonId= $"{position}";
+			var buttonId = $"{position}";
 			App.WaitForElement(buttonId);
 			var initialPosition = App.FindElement(buttonId).GetRect();
 			App.Tap(buttonId);
