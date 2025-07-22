@@ -151,9 +151,17 @@ Task("dotnet-build")
         {
             RunMSBuildWithDotNet("./Microsoft.Maui.sln");
         }
-        else
+        else if (IsRunningOnMacOs())
         {
             RunMSBuildWithDotNet("./Microsoft.Maui-mac.slnf");
+        }
+        else if (IsRunningOnLinux())
+        {
+            RunMSBuildWithDotNet("./Microsoft.Maui.Gtk.slnf");
+        }
+        else  // ??
+        {
+            throw new Exception("This build script only supports Windows, MacOS, or Linux.");
         }
     });
 
